@@ -48,7 +48,7 @@
 				holder = root
 				change = scope:change
 			}
-			copy_title_history = title:e_spqr
+			copy_title_history = title:e_western_roman_empire
 		}
 		resolve_title_and_vassal_change = scope:change
 
@@ -163,33 +163,37 @@ restore_western_roman_provinces_system_decision_effect = {
 		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
 		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
 		title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
-		title:k_roma_court = { set_de_jure_liege_title = title:e_roma_court }
 
 		title:e_praetorian_prefecture_italia = { set_de_jure_liege_title = title:h_western_roman_empire }
 		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_western_roman_empire }	
-		title:e_roma_court = { set_de_jure_liege_title = title:h_western_roman_empire }
 	}
 	else_if = { 
-		limit = { exists = title:e_spqr.holder }
-		title:k_diocese_illyricum = { set_de_jure_liege_title = title:e_spqr }
-		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_spqr }
-		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_spqr }
-		title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_spqr }
-		title:k_roma_court = { set_de_jure_liege_title = title:e_spqr }
+		limit = { exists = title:e_western_roman_empire.holder }
+		title:k_diocese_illyricum = { set_de_jure_liege_title = title:e_western_roman_empire }
+		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_western_roman_empire }
+		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_western_roman_empire }
+		title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
-	hidden_effect = {
-		every_county_in_region = {
-			region = custom_roman_illyricum
-			duchy = { add_to_list = custom_roman_illyricum_list }
-		}	
-		every_in_list = {
-			list = custom_roman_illyricum_list
-			limit = {
-				NOT = { de_jure_liege = title:k_diocese_illyricum }
-			}
-			set_de_jure_liege_title = title:k_diocese_illyricum
+		# Creating the Hegemony of Western Roman Empire
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
 		}
-	
+		title:e_western_roman_empire = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+			copy_title_history = title:e_spqr
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		every_held_title = { #Should destroy all other Empires owned at the time.
+			title_tier = empire
+			root = { destroy_title = prev }
+		}
+	hidden_effect = {	
 		every_county_in_region = {
 			region = custom_roman_italia_annonaria
 			duchy = { add_to_list = custom_roman_italia_annonaria_list }
@@ -212,18 +216,6 @@ restore_western_roman_provinces_system_decision_effect = {
 				NOT = { de_jure_liege = title:k_diocese_italia_suburbicaria }
 			}
 			set_de_jure_liege_title = title:k_diocese_italia_suburbicaria
-		}
-
-		every_county_in_region = {
-			region = custom_roman_court_title_roma
-			duchy = { add_to_list = custom_roman_court_title_roma_list }
-		}
-		every_in_list = {
-			list = custom_roman_court_title_roma_list
-			limit = {
-				NOT = { de_jure_liege = title:k_roma_court }
-			}
-			set_de_jure_liege_title = title:k_roma_court
 		}
 	}
 
@@ -927,8 +919,8 @@ restore_roman_provinces_viennensis_decision_effect = {
 	}
 	else_if = {
 		limit = { exists = title:e_spqr.holder }
-		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_spqr }
-		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_spqr }
+		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_western_roman_empire }
+		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
 	# Destroy useless kingdoms
 	if = {
@@ -1094,8 +1086,8 @@ restore_roman_provinces_lugdunensis_decision_effect = {
 	}
 	else_if = {
 		limit = { exists = title:e_spqr.holder }
-		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_spqr }
-		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_spqr }
+		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_western_roman_empire }
+		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
 	# Destroy useless kingdoms
 	if = {
@@ -1259,8 +1251,8 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 	}
 	else_if = {
 		limit = { exists = title:e_spqr.holder }
-		title:k_diocese_africa = { set_de_jure_liege_title = title:e_spqr }
-		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_spqr }
+		title:k_diocese_africa = { set_de_jure_liege_title = title:e_western_roman_empire }
+		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
 
 	# Destroy useless kingdoms
@@ -1572,7 +1564,7 @@ restore_roman_provinces_hispania_decision_effect = {
 	title:k_diocese_hispania = { set_de_jure_liege_title = title:e_spain }
 	if = {
 		limit = { exists = title:e_spqr.holder }
-		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_spqr }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
 		
 	title:e_spain = { set_coa = e_spain }
@@ -1671,7 +1663,7 @@ restore_roman_provinces_britannia_decision_effect = {
 	title:k_diocese_britannia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	if = {
 		limit = { exists = title:e_spqr.holder }
-		title:k_diocese_britannia = { set_de_jure_liege_title = title:e_spqr }
+		title:k_diocese_britannia = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
 	#Fix Northumberland
 	title:c_northumberland = { set_de_jure_liege_title = title:d_lothian }
