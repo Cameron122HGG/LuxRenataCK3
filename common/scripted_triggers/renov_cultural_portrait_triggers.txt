@@ -1,0 +1,16 @@
+﻿renov_roman_portrait_trigger = {
+	exists = this
+	OR = {
+		this.culture = culture:roman
+		this.culture = {
+			any_parent_culture = { #not "any_parent_culture_or_above" because otherwise the culture strays too far from Roman
+				this = culture:roman
+			}
+			OR = { #only descendant cultures with the correct heritage
+				has_cultural_pillar = heritage_latin
+				has_cultural_pillar = heritage_byzantine
+			}
+		}
+	}
+	this.culture = { has_clothing_gfx = old_roman_clothing_gfx }
+}
