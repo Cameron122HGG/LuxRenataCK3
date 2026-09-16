@@ -1414,10 +1414,13 @@ tgp_japan_restore_japanese_monarchy_decision = {
 		has_tgp_dlc_trigger = yes
 		government_is_japanese_trigger = yes
 		# Chrysanthemum no longer part of Japan or destroyed
-		trigger_if = {
-			limit = { exists = title:k_chrysanthemum_throne.holder }
-			NOT = { title:e_japan.holder ?= title:k_chrysanthemum_throne.holder.top_liege }
-		}
+    		NOT = {
+				OR = {
+        			exists = title:k_chrysanthemum_throne.holder
+            		exists = title:k_chrysanthemum_throne_south.holder
+            		exists = title:k_chrysanthemum_throne_north.holder
+    			}
+			}
 		# Japanese culture
 		culture = {
 			OR = {
@@ -1874,3 +1877,80 @@ tgp_japan_emperor_war_decision = {
 		base = 200
 	}
 }
+unite_the_courts_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	}
+	decision_group_type = major
+	confirm_text = unite_the_courts_decision_confirm
+	ai_check_interval = 8
+	desc = unite_the_courts_decision_desc
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:unite_the_courts
+			}
+		}
+		
+		OR = {
+			has_title = title:e_north_japan
+			has_title = title:e_south_japan
+		}
+		OR = {
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_clan
+			government_is_japanese_trigger = yes
+		}
+	}
+
+	is_valid = {
+		has_title = title:e_north_japan
+		OR = {
+			has_title = title:e_south_japan
+			completely_controls_region = world_asia_japan
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		#is_independent_ruler = yes
+	}
+
+	effect = {
+		save_scope_as = japan_restorer
+		hidden_effect = {
+			unite_the_courts_decision_effects = yes
+		}
+
+		#Events
+		trigger_event = tgp_japan_decision.9901 #Placeholder
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:unite_the_courts
+		}
+		set_global_variable = {
+			name = unite_the_courts_decision
+			value = scope:japan_uniter
+		}
+	}
+
+	cost = { 
+		gold = 300 
+		prestige = 1000
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
