@@ -45,8 +45,6 @@
 	realm_mask_scale = { 1 1 }
 }
 
-
-
 roman_administrative_government = { #Roman Administrative Government, Hellenistic Administrative Government, etc.
 	government_rules = {
 		create_cadet_branches = yes
@@ -361,4 +359,62 @@ roman_autocratic_government = { # e.g. Restored Roman Empire, Gallic Empire, Wes
 	color = { 155 28 85 }
 	realm_mask_offset = { 0.0 0.0 }
 	realm_mask_scale = { 1 1 }
+}
+
+decayed_principate_government = {
+	government_rules = {
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		dynasty_named_realms = no
+		administrative = yes
+		landless_playable = yes
+		legitimacy = yes
+		state_faith = yes
+		use_as_base_on_landed = yes
+		use_as_base_on_rank_up = yes
+		inherit_from_dynastic_government = no
+	}
+
+	domicile_type = classical_group_estate
+	royal_court = top_liege
+	main_administrative_tier = county
+	min_appointment_tier = county
+	minimum_provincial_maa_tier = duchy
+
+
+	fallback = 7
+
+	primary_holding = castle_holding
+	valid_holdings = { city_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+
+	vassal_contract_group = decayed_principate_vassal
+
+	character_modifier = {
+		levy_size = -0.5
+		feudal_government_tax_contribution_mult = -0.5
+		feudal_government_levy_contribution_mult = -0.5
+		clan_government_tax_contribution_mult = -0.5
+		clan_government_levy_contribution_mult = -0.5
+		men_at_arms_cap = -2
+		men_at_arms_limit = -2
+		knight_limit = -5
+		vassal_limit = 100
+	}
+
+	 #Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
+	flags = {
+		government_is_classical_group
+		government_is_principate
+		government_is_roman_government
+		government_has_county_tier_noble_families
+		government_is_settled
+		government_uses_domicile_but_not_adventurer
+		government_uses_domain_limit
+		government_uses_admin_province_obligations
+	}
+	mechanic_type = administrative
+	is_mechanic_type_default = no
+
+	color = { 199 0 57 }
 }
