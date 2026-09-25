@@ -6238,7 +6238,38 @@ on_game_start_after_lobby = {
 			### JAPAN
 
 			# Special variable that UI uses to display correct title
-			title:e_japan = {
+			title:e_north_japan = {
+				# More starting house relations
+				holder = {
+					every_noble_family = {
+						holder.house ?= {
+							save_temporary_scope_as = house_temp
+							every_house_member = {
+								limit = {
+									is_married = yes
+									exists = primary_spouse.house
+									NOT = {
+										primary_spouse.house = { has_house_relation_with = scope:house_temp }
+									}
+								}
+								save_temporary_scope_as = member_temp
+								primary_spouse = { save_temporary_scope_as = spouse_temp }
+								house = {
+									change_house_relation_effect = {
+										HOUSE = scope:member_temp.primary_spouse.house
+										VALUE = house_relation_improve_minor_value
+										REASON = preexisting_marriage
+										CHAR = scope:member_temp
+										TARGET_CHAR = scope:spouse_temp
+										TITLE = scope:dummy_gender
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			title:e_south_japan = {
 				# More starting house relations
 				holder = {
 					every_noble_family = {
