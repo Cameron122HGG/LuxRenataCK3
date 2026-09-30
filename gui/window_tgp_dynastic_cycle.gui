@@ -1057,6 +1057,11 @@ window = {
 	situation_catalysts_history_window = {
 		visible = "[VariableSystem.Exists( 'situation_catalysts_history_window' )]"
 
+		blockoverride "situation_datacontext"
+		{
+			datacontext = "[SituationWindow.GetSituation]"
+		}
+
 		blockoverride "header_text"
 		{
 			text = "DYNASTIC_CYCLE_WINDOW_HISTORY_LIST"
@@ -1092,24 +1097,15 @@ types DynasticCycleTypes
 				datacontext = "[ActivityType.FindJoinableOpenActivityOfType]"
 			}
 
-			button_dynastic_cycle_decision = {
-				datacontext = "[GetDecisionWithKey( 'favor_dynastic_cycle_era_decision' ) ]"
-			}
+			vbox = {
+				name = "situation_decisions_container"
+				spacing = 2
 
-			button_dynastic_cycle_decision = {
-				datacontext = "[GetDecisionWithKey('favored_movement_consults_heaven_decision')]"
-			}
-
-			button_dynastic_cycle_decision = {
-				datacontext = "[GetDecisionWithKey('movement_petition_decision')]"
-			}
-
-			button_dynastic_cycle_decision = {
-				datacontext = "[GetDecisionWithKey('situation_dynastic_cycle_claim_mandate_decision')]"
-			}
-
-			button_dynastic_cycle_decision = {
-				datacontext = "[GetDecisionWithKey( 'situation_dynastic_cycle_favor_own_culture_for_appointments' ) ]"
+				layoutpolicy_horizontal = expanding
+				datamodel = "[SituationWindow.GetSituationDecisions]"
+				item = {
+					button_dynastic_cycle_decision = {}
+				}
 			}
 
 			block "actions_area_favor_movement_decision"
@@ -1125,15 +1121,13 @@ types DynasticCycleTypes
 					datacontext = "[GetDecisionWithKey('situation_dynastic_cycle_choose_movement_decision')]"
 				}
 			}
-
 		}
 	}
-
 
 	type button_dynastic_cycle_decision = button_decision_entry {
 		visible = "[Decision.IsShownForPlayer]"
 		layoutpolicy_horizontal = expanding
-		onclick = "[OpenGameViewData( 'decision_detail', Decision.Self ) ]"
+		onclick = "[SituationWindow.OnDecisionClick( Decision.Self )]"
 		using = tooltip_ws
 	}
 
@@ -2732,7 +2726,9 @@ types DynasticCycleTypes
 			using = Animation_FadeOut_Quick
 		}
 
-		datacontext = "[SituationWindow.GetSituation]"
+		block "situation_datacontext"
+		{
+		}
 
 		vbox = {
 			using = Window_Margins
@@ -2773,11 +2769,14 @@ types DynasticCycleTypes
 							layoutpolicy_horizontal = expanding
 
 							item = {
-								vbox = {
-									layoutpolicy_horizontal = expanding
+								block "history_item"
+								{
+									vbox = {
+										layoutpolicy_horizontal = expanding
 
-									standard_history_entry_hbox = {}
-									special_history_entry_hbox = {}
+										standard_history_entry_hbox = {}
+										special_history_entry_hbox = {}
+									}
 								}
 							}
 						}
@@ -2796,32 +2795,35 @@ types DynasticCycleTypes
 
 					expand = {}
 
-					button_select_arrow = {
-						enabled = "[GreaterThan_int32( SituationWindow.GetHistoryPageUIIndex, '(int32)1' )]"
-						size = { 25 25 }
-						mirror = horizontal
+					block "navigation_buttons"
+					{
+						button_select_arrow = {
+							enabled = "[GreaterThan_int32( SituationWindow.GetHistoryPageUIIndex, '(int32)1' )]"
+							size = { 25 25 }
+							mirror = horizontal
 
-						block "onclick_prev"
-						{
-							onclick = "[SituationWindow.PreviousHistoryPage]"
-							clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+							block "onclick_prev"
+							{
+								onclick = "[SituationWindow.PreviousHistoryPage]"
+								clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+							}
 						}
-					}
 
-					text_single = {
-						margin = { 5 5 }
-						align = nobaseline
-						raw_text = "[SituationWindow.GetHistoryPageUIIndex] / [SituationWindow.GetHistoryPageCount]"
-					}
+						text_single = {
+							margin = { 5 5 }
+							align = nobaseline
+							raw_text = "[SituationWindow.GetHistoryPageUIIndex] / [SituationWindow.GetHistoryPageCount]"
+						}
 
-					button_select_arrow = {
-						enabled = "[SituationWindow.HasNextHistoryPage]"
-						size = { 25 25 }
+						button_select_arrow = {
+							enabled = "[SituationWindow.HasNextHistoryPage]"
+							size = { 25 25 }
 
-						block "onclick_next"
-						{
-							onclick = "[SituationWindow.NextHistoryPage]"
-							clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_increment"
+							block "onclick_next"
+							{
+								onclick = "[SituationWindow.NextHistoryPage]"
+								clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_increment"
+							}
 						}
 					}
 					expand = {}
