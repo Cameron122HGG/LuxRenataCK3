@@ -35,6 +35,19 @@ scripted_trigger ep3_wedding_0001_flirter_trigger = {
 	}
 	is_physically_able_ai_adult = yes
 	#Needs to be a member of the other family
+	ep3_wedding_0001_family_member_trigger = yes
+	#Either willing to do adultery or not in relationship
+	might_cheat_on_every_partner_trigger = yes
+	is_attracted_to_gender_of = root
+	NOR = {
+		has_trait = chaste
+		has_trait = celibate
+		this = scope:activity.special_guest:spouse_1
+		this = scope:activity.special_guest:spouse_2
+	}
+}
+
+scripted_trigger ep3_wedding_0001_family_member_trigger = {
 	OR = {
 		AND = {
 			root = scope:activity.special_guest:spouse_1
@@ -57,24 +70,11 @@ scripted_trigger ep3_wedding_0001_flirter_trigger = {
 			is_close_family_of = scope:activity.special_guest:spouse_1
 		}
 	}
-	#Either willing to do adultery or not in relationship
-	might_cheat_on_every_partner_trigger = yes
-	is_attracted_to_gender_of = root
-	NOR = {
-		has_trait = chaste
-		has_trait = celibate
-		this = scope:activity.special_guest:spouse_1
-		this = scope:activity.special_guest:spouse_2
-	}
 }
 
 scripted_trigger ep3_wedding_0001_pervert_trigger = {
 	OR = {
-		has_trait = lustful
-		has_trait = seducer
-		has_trait = rakish
-		is_deviant_trigger = yes
-		has_focus = intrigue_temptation_focus
+		has_lustful_adjacent_trait_trigger = yes
 		has_trait = drunkard
 		has_activity_intent = woo_attendee_intent
 	}
@@ -205,9 +205,7 @@ ep3_wedding.0001 = {
 						}
 					}
 					root = { is_attracted_to_gender_of = prev }
-					NOT = {
-						attraction < 0
-					}
+					attraction >= 0
 					ep3_wedding_0001_relative_ages_trigger = yes
 				}
 			}
@@ -215,66 +213,22 @@ ep3_wedding.0001 = {
 			scope:activity = {
 				any_attending_character = {
 					has_activity_intent = woo_attendee_intent
-					scope:host.intent_target = root
+					intent_target ?= root
 					is_ai = yes
-					OR = {
-						AND = {
-							root = scope:activity.special_guest:spouse_1
-							is_close_family_of = scope:activity.special_guest:spouse_2
-						}
-						AND = {
-							root = {
-								is_close_family_of = scope:activity.special_guest:spouse_1
-							}
-							is_close_family_of = scope:activity.special_guest:spouse_2
-						}
-						AND = {
-							root = scope:activity.special_guest:spouse_2
-							is_close_family_of = scope:activity.special_guest:spouse_1
-						}
-						AND = {
-							root = {
-								is_close_family_of = scope:activity.special_guest:spouse_2
-							}
-							is_close_family_of = scope:activity.special_guest:spouse_1
-						}
-					}
+					ep3_wedding_0001_family_member_trigger = yes
 				}
 			}
 			#Targeting with wooing
 			AND = {
 				has_activity_intent = woo_attendee_intent
-				exists = scope:host.intent_target
-				scope:host.intent_target = {
+				intent_target ?= {
 					ep3_wedding_0001_flirter_trigger = yes
 					###incest check
 					OR = {
 						NOT = { is_close_family_of = root }
 						ep3_wedding_0001_pervert_trigger = yes
 					}
-					NOR = {
-						#Root is old
-						AND = {
-							root = {
-								age > 55
-							}
-							OR = {
-								age < 40
-								NOT = { is_deviant_trigger = yes }
-							}
-							
-						}
-						#Target is old
-						AND = {
-							root = {
-								OR = {
-									age < 40
-									NOT = { is_deviant_trigger = yes }
-								}
-							}
-							age > 55
-						}
-					}
+					ep3_wedding_0001_relative_ages_trigger = yes
 				}
 			}
 		}
@@ -298,11 +252,11 @@ ep3_wedding.0001 = {
 				is_married = no
 				AND = {
 					is_male = yes
-					faith = { has_doctrine = doctrine_adultery_men_accepted }
+					rite = { rite_has_doctrine = doctrine_adultery_men_accepted }
 				}
 				AND = {
 					is_female = yes
-					faith = { has_doctrine = doctrine_adultery_women_accepted }
+					rite = { rite_has_doctrine = doctrine_adultery_women_accepted }
 				}
 			}
 		}
@@ -347,40 +301,17 @@ ep3_wedding.0001 = {
 		if = {
 			limit = {
 				has_activity_intent = woo_attendee_intent
-				exists = scope:host.intent_target
-				scope:host.intent_target = {
+				intent_target ?= {
 					ep3_wedding_0001_flirter_trigger = yes
 					###incest check
 					OR = {
 						NOT = { is_close_family_of = root }
 						ep3_wedding_0001_pervert_trigger = yes
 					}
-					NOR = {
-						#Root is old
-						AND = {
-							root = {
-								age > 55
-							}
-							OR = {
-								age < 40
-								NOT = { is_deviant_trigger = yes }
-							}
-							
-						}
-						#Target is old
-						AND = {
-							root = {
-								OR = {
-									age < 40
-									NOT = { is_deviant_trigger = yes }
-								}
-							}
-							age > 55
-						}
-					}
+					ep3_wedding_0001_relative_ages_trigger = yes
 				}
 			}
-			scope:host.intent_target = {
+			intent_target = {
 				save_scope_as = flirting_in_law
 			}
 		}
@@ -389,30 +320,9 @@ ep3_wedding.0001 = {
 				scope:activity = {
 					any_attending_character = {
 						has_activity_intent = woo_attendee_intent
-						scope:host.intent_target = root
+						intent_target ?= root
 						is_ai = yes
-						OR = {
-							AND = {
-								root = scope:activity.special_guest:spouse_1
-								is_close_family_of = scope:activity.special_guest:spouse_2
-							}
-							AND = {
-								root = {
-									is_close_family_of = scope:activity.special_guest:spouse_1
-								}
-								is_close_family_of = scope:activity.special_guest:spouse_2
-							}
-							AND = {
-								root = scope:activity.special_guest:spouse_2
-								is_close_family_of = scope:activity.special_guest:spouse_1
-							}
-							AND = {
-								root = {
-									is_close_family_of = scope:activity.special_guest:spouse_2
-								}
-								is_close_family_of = scope:activity.special_guest:spouse_1
-							}
-						}
+						ep3_wedding_0001_family_member_trigger = yes
 					}
 				}
 			}
@@ -420,30 +330,9 @@ ep3_wedding.0001 = {
 				random_attending_character = {
 					limit = {
 						has_activity_intent = woo_attendee_intent
-						scope:host.intent_target = root
+						intent_target ?= root
 						is_ai = yes
-						OR = {
-							AND = {
-								root = scope:activity.special_guest:spouse_1
-								is_close_family_of = scope:activity.special_guest:spouse_2
-							}
-							AND = {
-								root = {
-									is_close_family_of = scope:activity.special_guest:spouse_1
-								}
-								is_close_family_of = scope:activity.special_guest:spouse_2
-							}
-							AND = {
-								root = scope:activity.special_guest:spouse_2
-								is_close_family_of = scope:activity.special_guest:spouse_1
-							}
-							AND = {
-								root = {
-									is_close_family_of = scope:activity.special_guest:spouse_2
-								}
-								is_close_family_of = scope:activity.special_guest:spouse_1
-							}
-						}
+						ep3_wedding_0001_family_member_trigger = yes
 					}
 					save_scope_as = flirting_in_law
 				}
@@ -473,9 +362,7 @@ ep3_wedding.0001 = {
 							}
 						}
 						root = { is_attracted_to_gender_of = prev }
-						NOT = {
-							attraction < 0
-						}
+						attraction >= 0
 						ep3_wedding_0001_relative_ages_trigger = yes
 					}
 					save_scope_as = flirting_in_law
@@ -666,7 +553,7 @@ ep3_wedding.0001 = {
 			}
 		}
 		
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			loyal = miniscule_stress_impact_loss
 			just = miniscule_stress_impact_loss
 			compassionate = miniscule_stress_impact_loss
@@ -924,7 +811,7 @@ ep3_wedding.0001 = {
 					this = scope:activity.special_guest:spouse_1
 				}
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				fickle = minor_stress_impact_loss
 				arrogant = minor_stress_impact_loss
 				impatient = minor_stress_impact_loss
@@ -937,7 +824,7 @@ ep3_wedding.0001 = {
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				fickle = minor_stress_impact_loss
 				arrogant = miniscule_stress_impact_loss
 				impatient = minor_stress_impact_loss
@@ -1005,7 +892,7 @@ ep3_wedding.0001 = {
 			opinion = 30
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 			shy = minor_stress_impact_gain
 			lazy = minor_stress_impact_gain
@@ -1258,7 +1145,7 @@ ep3_wedding.0002 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lustful = minor_stress_impact_gain
 			fickle = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
@@ -1312,7 +1199,7 @@ ep3_wedding.0002 = {
 			target = scope:flirting_in_law
 			reason = lover_absconded_during_wedding
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lustful = miniscule_stress_impact_loss
 			fickle = minor_stress_impact_gain
 			chaste = major_stress_impact_gain
@@ -1664,7 +1551,7 @@ ep3_wedding.0003 = {
 					is_incestuous_trigger = yes
 					is_deviant_trigger = yes
 					NOT = {
-						trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:incestuous FAITH = scope:other_family_spouse.faith GENDER_CHARACTER = scope:other_family_spouse }
+						trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:incestuous RITE = scope:other_family_spouse.rite GENDER_CHARACTER = scope:other_family_spouse }
 					}
 					has_trait = lustful
 					has_trait = drunkard
@@ -1690,7 +1577,7 @@ ep3_wedding.0003 = {
 					is_incestuous_trigger = yes
 					is_deviant_trigger = yes
 					NOT = {
-						trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:incestuous FAITH = scope:flirting_in_law.faith GENDER_CHARACTER = scope:flirting_in_law }
+						trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:incestuous RITE = scope:flirting_in_law.rite GENDER_CHARACTER = scope:flirting_in_law }
 					}
 					has_trait = lustful
 					has_trait = drunkard
@@ -1796,7 +1683,7 @@ ep3_wedding.0003 = {
 		else = {
 			add_diplomacy_skill = 1
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			chaste = major_stress_impact_gain
 			content = minor_stress_impact_gain
 		}
@@ -1888,14 +1775,14 @@ ep3_wedding.0003 = {
 				}
 				NOR = {
 					AND = {
-						scope:other_family_spouse.faith = {
-							has_doctrine = doctrine_adultery_men_accepted
+						scope:other_family_spouse.rite = {
+							rite_has_doctrine = doctrine_adultery_men_accepted
 						}
 						is_male = yes
 					}
 					AND = {
-						scope:other_family_spouse.faith = {
-							has_doctrine = doctrine_adultery_women_accepted
+						scope:other_family_spouse.rite = {
+							rite_has_doctrine = doctrine_adultery_women_accepted
 						}
 						is_female = yes
 					}
@@ -1924,7 +1811,7 @@ ep3_wedding.0003 = {
 			}
 			remove_relation_soulmate = scope:other_family_spouse
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = major_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 			trusting = minor_stress_impact_gain
@@ -2179,14 +2066,14 @@ ep3_wedding.0003 = {
 							}
 							NOR = {
 								AND = {
-									scope:other_family_spouse.faith = {
-										has_doctrine = doctrine_adultery_men_accepted
+									scope:other_family_spouse.rite = {
+										rite_has_doctrine = doctrine_adultery_men_accepted
 									}
 									is_male = yes
 								}
 								AND = {
-									scope:other_family_spouse.faith = {
-										has_doctrine = doctrine_adultery_women_accepted
+									scope:other_family_spouse.rite = {
+										rite_has_doctrine = doctrine_adultery_women_accepted
 									}
 									is_female = yes
 								}
@@ -2220,7 +2107,7 @@ ep3_wedding.0003 = {
 			}
 			remove_relation_soulmate = scope:other_family_spouse
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = minor_stress_impact_gain
 			just = medium_stress_impact_gain
 			honest = major_stress_impact_gain
@@ -2294,10 +2181,10 @@ ep3_wedding.0003 = {
 				scope:flirting_in_law = {
 					is_male = yes
 				}
-				trait_is_shunned_or_criminal_in_faith_trigger = {
+				trait_is_shunned_or_criminal_in_rite_trigger = {
 					TRAIT = trait:sodomite
 					GENDER_CHARACTER = root
-					FAITH = root.faith
+					RITE = root.rite
 				}
 				NOT = { has_trait = sodomite }
 			}
@@ -2305,7 +2192,7 @@ ep3_wedding.0003 = {
 		}
 		if = {
 			limit = {
-				relation_with_character_is_incestuous_in_my_or_lieges_faith_trigger = { CHARACTER = scope:flirting_in_law }
+				relation_with_character_is_incestuous_in_my_or_lieges_rite_trigger = { CHARACTER = scope:flirting_in_law }
 				NOT = { has_trait = incestuous }
 			}
 			add_trait = incestuous
@@ -2313,10 +2200,10 @@ ep3_wedding.0003 = {
 		if = {
 			limit = {
 				is_married = yes
-				trait_is_shunned_or_criminal_in_faith_trigger = {
+				trait_is_shunned_or_criminal_in_rite_trigger = {
 					TRAIT = trait:adulterer
 					GENDER_CHARACTER = root
-					FAITH = root.faith
+					RITE = root.rite
 				}
 				NOT = { has_trait = adulterer }
 			}
@@ -2325,10 +2212,10 @@ ep3_wedding.0003 = {
 		if = {
 			limit = {
 				is_married = no
-				trait_is_shunned_or_criminal_in_faith_trigger = {
+				trait_is_shunned_or_criminal_in_rite_trigger = {
 					TRAIT = trait:fornicator
 					GENDER_CHARACTER = root
-					FAITH = root.faith
+					RITE = root.rite
 				}
 				NOT = { has_trait = fornicator }
 			}
@@ -2339,10 +2226,10 @@ ep3_wedding.0003 = {
 				scope:flirting_in_law = {
 					is_married = yes
 				}
-				trait_is_shunned_or_criminal_in_faith_trigger = {
+				trait_is_shunned_or_criminal_in_rite_trigger = {
 					TRAIT = trait:adulterer
 					GENDER_CHARACTER = scope:flirting_in_law
-					FAITH = scope:flirting_in_law.faith
+					RITE = scope:flirting_in_law.rite
 				}
 				scope:flirting_in_law = {
 					NOT = { has_trait = adulterer }
@@ -2355,10 +2242,10 @@ ep3_wedding.0003 = {
 				scope:flirting_in_law = {
 					is_married = no
 				}
-				trait_is_shunned_or_criminal_in_faith_trigger = {
+				trait_is_shunned_or_criminal_in_rite_trigger = {
 					TRAIT = trait:fornicator
 					GENDER_CHARACTER = scope:flirting_in_law
-					FAITH = scope:flirting_in_law.faith
+					RITE = scope:flirting_in_law.rite
 				}
 				scope:flirting_in_law = { 
 					NOT = { has_trait = fornicator }
@@ -2372,10 +2259,10 @@ ep3_wedding.0003 = {
 				scope:flirting_in_law = {
 					is_male = yes
 				}
-				trait_is_shunned_or_criminal_in_faith_trigger = {
+				trait_is_shunned_or_criminal_in_rite_trigger = {
 					TRAIT = trait:sodomite
 					GENDER_CHARACTER = scope:flirting_in_law
-					FAITH = scope:flirting_in_law.faith
+					RITE = scope:flirting_in_law.rite
 				}
 				scope:flirting_in_law = {
 					NOT = { has_trait = sodomite }
@@ -2386,7 +2273,7 @@ ep3_wedding.0003 = {
 		if = {
 			limit = {
 				scope:flirting_in_law = {
-					relation_with_character_is_incestuous_in_my_or_lieges_faith_trigger = { CHARACTER = root }
+					relation_with_character_is_incestuous_in_my_or_lieges_rite_trigger = { CHARACTER = root }
 					NOT = { has_trait = incestuous }
 				}
 			}
@@ -2400,14 +2287,14 @@ ep3_wedding.0003 = {
 				}
 				NOR = {
 					AND = {
-						scope:other_family_spouse.faith = {
-							has_doctrine = doctrine_adultery_men_accepted
+						scope:other_family_spouse.rite = {
+							rite_has_doctrine = doctrine_adultery_men_accepted
 						}
 						is_male = yes
 					}
 					AND = {
-						scope:other_family_spouse.faith = {
-							has_doctrine = doctrine_adultery_women_accepted
+						scope:other_family_spouse.rite = {
+							rite_has_doctrine = doctrine_adultery_women_accepted
 						}
 						is_female = yes
 					}
@@ -2460,16 +2347,16 @@ ep3_wedding.0003 = {
 						this != root
 						NOR = {
 							AND = {
-								faith = {
-									has_doctrine = doctrine_adultery_men_accepted
+								rite = {
+									rite_has_doctrine = doctrine_adultery_men_accepted
 								}
 								scope:flirting_in_law = {
 									is_male = yes
 								}
 							}
 							AND = {
-								faith = {
-									has_doctrine = doctrine_adultery_women_accepted
+								rite = {
+									rite_has_doctrine = doctrine_adultery_women_accepted
 								}
 								scope:flirting_in_law = {
 									is_female = yes
@@ -2491,7 +2378,7 @@ ep3_wedding.0003 = {
 			}
 			remove_relation_soulmate = scope:other_family_spouse
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			paranoid = minor_stress_impact_gain
 			just = medium_stress_impact_gain
 			compassionate = minor_stress_impact_gain
@@ -2507,14 +2394,14 @@ ep3_wedding.0003 = {
 				add = -75
 				OR = {
 					AND = {
-						faith = {
-							has_doctrine = doctrine_adultery_men_shunned
+						rite = {
+							rite_has_doctrine = doctrine_adultery_men_shunned
 						}
 						is_male = yes
 					}
 					AND = {
-						faith = {
-							has_doctrine = doctrine_adultery_women_shunned
+						rite = {
+							rite_has_doctrine = doctrine_adultery_women_shunned
 						}
 						is_female = yes
 					}
@@ -2525,14 +2412,14 @@ ep3_wedding.0003 = {
 				OR = {
 					has_trait = just
 					AND = {
-						faith = {
-							has_doctrine = doctrine_adultery_men_crime
+						rite = {
+							rite_has_doctrine = doctrine_adultery_men_crime
 						}
 						is_male = yes
 					}
 					AND = {
-						faith = {
-							has_doctrine = doctrine_adultery_women_crime
+						rite = {
+							rite_has_doctrine = doctrine_adultery_women_crime
 						}
 						is_female = yes
 					}
@@ -2589,7 +2476,7 @@ ep3_wedding.0003 = {
 			}
 			remove_relation_soulmate = scope:other_family_spouse
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			callous = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain

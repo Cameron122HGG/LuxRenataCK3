@@ -301,14 +301,7 @@ diplomacy_foreign_special_1010_court_visit_join_seduction_successfully_effect = 
 	$CHARACTER$ = {
 		if = {
 			limit = {
-				matching_gender_and_sexuality_trigger = {
-					CHARACTER_1 = $CHARACTER$
-					CHARACTER_2 = root
-				}
-				NOR = {
-					has_relation_lover = root
-					is_consort_of = root
-				}
+				can_set_relation_lover_trigger = { CHARACTER = root }
 			}
 			set_relation_lover = { reason = lover_court_visit_seduction target = root }
 		}
@@ -319,7 +312,7 @@ diplomacy_foreign_special_1010_court_visit_join_seduction_successfully_effect = 
 		}
 		hidden_effect = {
 			reverse_add_opinion = {
-				target = $CHARACTER$
+				target = prev
 				modifier = pleased_opinion
 				opinion = 30
 			}

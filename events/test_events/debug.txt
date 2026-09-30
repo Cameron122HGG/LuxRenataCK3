@@ -16,13 +16,13 @@ debug.1 = { # Max Portraits in Event Window
 
 	left_portrait = {
 		character = root
-		animation = dancing
+		scripted_animation = bow_closed
 		# camera = camera_event_kneeling
 	}
 
 	right_portrait = {
 		character = scope:portrait_2
-		animation = throne_room_kneel_1
+		animation = whipping
 		# camera = camera_event_standing_with_horse_right
 	}
 
@@ -1555,7 +1555,7 @@ debug.335 = {
 	orphan = yes
 
 	immediate = {
-		create_artifact_pedestal_crucifix_effect = { OWNER = root }
+		create_artifact_pedestal_crucifix_effect = { OWNER = root CREATOR = root }
 	}
 
 	option = {
@@ -1571,7 +1571,7 @@ debug.336 = {
 	orphan = yes
 
 	immediate = {
-		create_artifact_pedestal_cross_effect = { OWNER = root }
+		create_artifact_pedestal_cross_effect = { OWNER = root CREATOR = root }
 	}
 
 	option = {
@@ -1745,18 +1745,16 @@ debug.347 = {
 	orphan = yes
 
 	trigger = {
-		faith = {
-			NOR = {
-				has_doctrine = tenet_aniconism
-				religion = religion:judaism_religion
-				religion = religion:christianity_religion
-				religion = religion:islam_religion
-			}
+		NOR = {
+			rite = { rite_has_tenet = tenet_aniconism }
+			faith.religion = religion:judaism_religion
+			faith.religion = religion:christianity_religion
+			faith.religion = religion:islam_religion
 		}
 	}
 
 	immediate = {
-		create_artifact_sculpture_religious_effect = { OWNER = root }
+		create_artifact_sculpture_religious_effect = { OWNER = root CREATOR = root }
 	}
 
 	option = {
@@ -1772,12 +1770,8 @@ debug.348 = {
 	orphan = yes
 
 	trigger = {
-		faith = {
-			NOT = {
-				has_doctrine = tenet_aniconism
-			}
-			religion = religion:christianity_religion
-		}
+		NOT = { rite = { rite_has_tenet = tenet_aniconism } }
+		faith.religion = religion:christianity_religion
 	}
 
 	immediate = {
@@ -2310,7 +2304,8 @@ debug.411 = { # For usage debugging achievements. Should be a generic command ra
 		debug_log = "Iberia Converted to Mozarab!"
 		every_county_in_region = {
 			region = world_europe_west_iberia
-			set_county_faith = faith:mozarabic_church
+			set_county_faith = faith:christian_faith
+			set_county_rite = rite:mozarabic_church
 		}
 
 		debug_log = "Woosh! Caucasian Iberia is now yours!"
@@ -2340,6 +2335,7 @@ debug.412 = { # Spawn the CHESS-A-THRON 3000, a perfect creature designed to bea
 			gender_female_chance = root_faith_dominant_gender_female_chance
 			culture = root.culture
 			faith = root.faith
+			rite = root.rite
 			random_traits = yes
 			martial = 100
 			learning = 100
@@ -2782,7 +2778,7 @@ debug.510 = { # Placeholder debug event - Used to mark the location of placehold
 	#orphan = yes
 	theme = mental_break
 	left_portrait = root
-	#right_portrait = character:33922
+	right_portrait = character:33922
 
 	option = { name = debug_generic_option  } # Dear debug console, quiet please.
 	option = { name = debug_generic_option trigger = { always = no } trigger_event = debug.510 }
@@ -2804,7 +2800,7 @@ debug.511 = { # Set secret faith for Character
 		}
 
 		root = {
-			set_character_secret_faith = faith:rabbinism
+			set_character_secret_faith = faith:rabbinic_faith
 		}
 	}
 
@@ -2856,7 +2852,7 @@ debug.605 = {
 
 	option = {
 		name = debug_main
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = 30
 		}
 	}
@@ -2883,7 +2879,7 @@ debug.605 = {
 	}
 	option = {
 		name = debug_main
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = 30
 		}
 
@@ -3028,7 +3024,7 @@ debug.9600 = { # Event for testing Tax Collector script support
 			scope:tax_collector = {
 				tax_collector_aptitude = {
 					target = clan_tax_slot
-					value = 1
+					value = 0
 				}
 			}
 		}
@@ -3042,7 +3038,7 @@ debug.9600 = { # Event for testing Tax Collector script support
 			scope:tax_collector = {
 				tax_collector_aptitude = {
 					target = clan_tax_slot
-					value = 2
+					value = 1
 				}
 			}
 		}
@@ -3056,7 +3052,7 @@ debug.9600 = { # Event for testing Tax Collector script support
 			scope:tax_collector = {
 				tax_collector_aptitude = {
 					target = clan_tax_slot
-					value = 3
+					value = 2
 				}
 			}
 		}
@@ -3070,7 +3066,7 @@ debug.9600 = { # Event for testing Tax Collector script support
 			scope:tax_collector = {
 				tax_collector_aptitude = {
 					target = clan_tax_slot
-					value = 4
+					value = 3
 				}
 			}
 		}
@@ -3084,7 +3080,7 @@ debug.9600 = { # Event for testing Tax Collector script support
 			scope:tax_collector = {
 				tax_collector_aptitude = {
 					target = clan_tax_slot
-					value = 5
+					value = 4
 				}
 			}
 		}
@@ -3144,6 +3140,7 @@ debug.9610 = { # Spawn a super tax collector
 			gender_female_chance = root_faith_dominant_gender_female_chance
 			culture = root.culture
 			faith = root.faith
+			rite = root.rite
 			random_traits = yes
 			trait = blind
 			stewardship = 100
@@ -3176,6 +3173,7 @@ debug.9611 = { # Spawn a assassin
 			gender_female_chance = root_faith_dominant_gender_female_chance
 			culture = root.culture
 			faith = root.faith
+			rite = root.rite
 			random_traits = yes
 			intrigue = 100
 			prowess = 100
@@ -3634,6 +3632,7 @@ debug.1005 = {
 debug.1006 = {
 	type = character_event
 	window = fullscreen_event
+	queue_icon = "gfx/interface/icons/situation_types/the_great_steppe.dds"
 	title = LOREM_IPSUM_TITLE
 	desc = LOREM_IPSUM_DESCRIPTION
 	theme = legend

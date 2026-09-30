@@ -64,13 +64,6 @@ destination_events.10 = { # A good Caravan Master for hire
 
 	immediate = {
 		if = {
-			limit = { employs_court_position = travel_leader_court_position }
-			random_court_position_holder = {
-				limit = { has_court_position = travel_leader_court_position }
-				save_scope_as = current_travel_leader
-			}
-		}
-		if = {
 			limit = {
 				NOT = { exists = scope:provider_character }
 			}
@@ -100,8 +93,9 @@ destination_events.10 = { # A good Caravan Master for hire
 				template = travel_leader_court_position_template
 				age = { 25 45 }
 				gender = root
-				employer = root
+				location = root.location
 				faith = root.faith
+				rite = root.rite
 				culture = root.culture
 
 				after_creation = {
@@ -115,21 +109,12 @@ destination_events.10 = { # A good Caravan Master for hire
 		name = destination_events.10.a
 		remove_treasury_or_gold = tiny_treasury_or_gold_value
 		custom_tooltip = destination_events.10.a.tt
-		if = {
-			limit = { employs_court_position = travel_leader_court_position }
-			replace_court_position = {
-				recipient = scope:travel_leader_character
-				holder = scope:current_travel_leader
-				court_position = travel_leader_court_position
-			}
+		court_position_grant_effect = {
+			EMPLOYER = root
+			POS = travel_leader
+			CANDIDATE = scope:travel_leader_character
 		}
-		else = {
-			appoint_court_position = {
-				recipient = scope:travel_leader_character
-				court_position = travel_leader_court_position
-			}
-		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			paranoid = minor_stress_gain
 		}
 		ai_chance = {
@@ -469,7 +454,7 @@ destination_events.40 = { # Remember the language of <X>?
 			modifier = destination_inspired_by_language
 			years = 10
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = minor_stress_gain
 			diligent = medium_stress_loss
 		}

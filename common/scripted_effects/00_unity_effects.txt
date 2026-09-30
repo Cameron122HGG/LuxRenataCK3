@@ -126,16 +126,16 @@ accept_faith_conversion_add_clan_unity_effect = {
 	# If we are clan, we want to affect unity when converting another house member to our faith...
 	if = { # But you only gain unity if you are converting a member TO the house's primary faith
 		limit = {
-			exists = scope:actor.house
-			scope:actor.house = {
+			exists = scope:puppet_or_actor.house
+			scope:puppet_or_actor.house = {
 				any_house_member = {
 					percent >= 0.6
-					faith = scope:actor.faith
+					faith = scope:puppet_or_actor.faith
 				}
 			}
 		}
 		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:actor
+			CHARACTER = scope:puppet_or_actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
 			DESC = clan_unity_conversion_accepted.desc
@@ -144,8 +144,8 @@ accept_faith_conversion_add_clan_unity_effect = {
 	}
 	else_if = { # If you are converting them AWAY from the primary faith, lose unity
 		limit = {
-			exists = scope:actor.house
-			scope:actor.house = {
+			exists = scope:puppet_or_actor.house
+			scope:puppet_or_actor.house = {
 				any_house_member = {
 					percent >= 0.6
 					faith = scope:recipient.faith
@@ -153,7 +153,7 @@ accept_faith_conversion_add_clan_unity_effect = {
 			}
 		}
 		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:actor
+			CHARACTER = scope:puppet_or_actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
 			DESC = clan_unity_conversion_accepted.desc
@@ -166,16 +166,16 @@ refuse_faith_conversion_add_clan_unity_effect = {
 	# If we are clan, we want to affect unity when we fail to convert another house member to our faith...
 	if = { # If target declines to convert TO the house's primary faith, lose unity
 		limit = {
-			exists = scope:actor.house
-			scope:actor.house = {
+			exists = scope:puppet_or_actor.house
+			scope:puppet_or_actor.house = {
 				any_house_member = {
 					percent >= 0.6
-					faith = scope:actor.faith
+					faith = scope:puppet_or_actor.faith
 				}
 			}
 		}
 		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:actor
+			CHARACTER = scope:puppet_or_actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
 			DESC = clan_unity_conversion_declined.desc
@@ -184,8 +184,8 @@ refuse_faith_conversion_add_clan_unity_effect = {
 	}
 	else_if = { # If target declines to convert while BEING of the primary faith, gain unity
 		limit = {
-			exists = scope:actor.house
-			scope:actor.house = {
+			exists = scope:puppet_or_actor.house
+			scope:puppet_or_actor.house = {
 				any_house_member = {
 					percent >= 0.6
 					faith = scope:recipient.faith
@@ -193,7 +193,7 @@ refuse_faith_conversion_add_clan_unity_effect = {
 			}
 		}
 		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:actor
+			CHARACTER = scope:puppet_or_actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
 			DESC = clan_unity_conversion_declined.desc

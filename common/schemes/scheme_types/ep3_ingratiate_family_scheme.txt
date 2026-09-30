@@ -2,7 +2,7 @@
 	# Basic Setup
 	skill = diplomacy
 	desc = ingratiate_family_desc_general
-	success_desc = "ep3_ingratiated_family_modifier_desc"
+	success_desc = "INGRATIATE_FAMILY_SUCCESS_DESC"
 	icon = icon_ingratiate_family
 	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
 	category = political
@@ -76,6 +76,11 @@
 			}
 			desc = SCHEME_YOUR_DIPLOMACY
 		}
+
+		diplomacy_scheme_base_chance_modifier = yes
+
+		# Countermeasures
+		apply_political_scheme_success_chance_adjustments_modifier = yes
 
 		opinion_modifier = {
 			who = scope:target
@@ -223,13 +228,6 @@
 		#Family Feud
 		house_feud_sway_scheme_success_modifier = yes
 
-		# Modifiers
-		modifier = {
-			scope:owner = { has_character_modifier = poet_for_diplo_schemes_modifier }
-			desc = poet_for_diplo_schemes_modifier
-			add = 15
-		}
-
 		modifier = {
 			scope:owner.house = { is_dominant_family = yes }
 			add = 25
@@ -274,6 +272,12 @@
 		}
 	}
 
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:political
+		}
+	}
 	# On Actions
 	on_phase_completed = {
 		ingratiate_family_scheme_prep_effect = yes

@@ -1,0 +1,407 @@
+﻿study_scripture = {
+	# Basic Setup
+	skill = learning
+	desc = "study_scripture_desc_general"
+	success_desc = "STUDY_SCRIPTURE_SCHEME_SUCCESS_DESC"
+	icon = icon_scheme_study_scriptures
+	illustration = "gfx/interface/illustrations/event_scenes/pam_romanesque_church_interior.dds"
+	category = personal
+	target_type = character
+
+	is_secret = no
+	is_basic = yes
+
+	hide_target_name = yes
+	freeze_scheme_when_traveling = yes
+
+	# Parameters
+	speed_per_skill_point = -1
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	base_progress_goal = 300
+	base_maximum_success = 95
+	minimum_success = 5
+
+	# Core Triggers
+	allow = {
+		age >= 12
+		is_imprisoned = no
+		is_incapable = no
+	}
+
+	valid = {
+		scope:target = scope:owner
+		NOT = {
+			has_character_modifier = partially_mute_modifier
+		}
+		is_imprisoned = no
+		is_incapable = no
+	}
+
+	# Mirrors base_success_chance below so the displayed band matches what actually resolves
+	odds_prediction = {
+		add = {
+			value = scope:owner.learning
+			desc = SCHEME_MY_LEARNING
+		}
+		if = {
+			limit = {
+				scope:owner = { pam_study_scripture_pursuit_of_knowledge_trigger = yes }
+			}
+			add = {
+				value = 15
+				desc = STUDY_SCRIPTURE_PURSUIT_OF_KNOWLEDGE
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { pam_study_scripture_scholasticism_trigger = yes }
+			}
+			add = {
+				value = 10
+				desc = STUDY_SCRIPTURE_SCHOLASTICISM
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					domicile ?= { has_domicile_parameter = estate_study_scripture_success_1 }
+				}
+			}
+			add = {
+				value = ecclesiastical_domicile_study_scripture_success_value_1
+				desc = STUDY_SCRIPTURE_ESTATE_SCHOOL
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					domicile ?= { has_domicile_parameter = estate_study_scripture_success_2 }
+				}
+			}
+			add = {
+				value = ecclesiastical_domicile_study_scripture_success_value_2
+				desc = STUDY_SCRIPTURE_ESTATE_SCHOOL
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					domicile ?= { has_domicile_parameter = estate_study_scripture_success_3 }
+				}
+			}
+			add = {
+				value = ecclesiastical_domicile_study_scripture_success_value_3
+				desc = STUDY_SCRIPTURE_ESTATE_SCHOOL
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					domicile ?= { has_domicile_parameter = estate_study_scripture_focus_1 }
+				}
+			}
+			add = {
+				value = ecclesiastical_domicile_study_scripture_success_value_1
+				desc = STUDY_SCRIPTURE_ESTATE_CELLS
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					domicile ?= { has_domicile_parameter = estate_study_scripture_focus_2 }
+				}
+			}
+			add = {
+				value = ecclesiastical_domicile_study_scripture_success_value_2
+				desc = STUDY_SCRIPTURE_ESTATE_CELLS
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					domicile ?= { has_domicile_parameter = estate_study_scripture_focus_3 }
+				}
+			}
+			add = {
+				value = ecclesiastical_domicile_study_scripture_success_value_3
+				desc = STUDY_SCRIPTURE_ESTATE_CELLS
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_character_modifier = pam_renewed_zeal_modifier }
+			}
+			add = {
+				value = 10
+				desc = STUDY_SCRIPTURE_RENEWED_ZEAL
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					liege ?= {
+						NOT = { this = scope:owner }
+						pam_is_archbishop_or_higher_trigger = yes
+					}
+				}
+			}
+			add = {
+				value = scope:owner.liege.learning
+				desc = STUDY_SCRIPTURE_CLERICAL_SUPERIOR
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { stress_level >= 1 }
+			}
+			add = {
+				value = -10
+				multiply = scope:owner.stress_level
+				desc = STUDY_SCRIPTURE_STRESSED
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_trait = lazy }
+			}
+			add = {
+				value = -10
+				desc = SCHEME_OWNER_LAZY
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_trait = diligent }
+			}
+			add = {
+				value = 10
+				desc = SCHEME_OWNER_DILIGENT
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_trait = impatient }
+			}
+			add = {
+				value = -10
+				desc = SCHEME_OWNER_IMPATIENT
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_trait = stubborn }
+			}
+			add = {
+				value = 10
+				desc = SCHEME_OWNER_STUBBORN
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_trait = ambitious }
+			}
+			add = {
+				value = 10
+				desc = SCHEME_OWNER_AMBITIOUS
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_trait = zealous }
+			}
+			add = {
+				value = 10
+				desc = STUDY_SCRIPTURE_ZEALOUS
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = { has_trait = cynical }
+			}
+			add = {
+				value = -10
+				desc = STUDY_SCRIPTURE_CYNICAL
+			}
+		}
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		# Skill
+		modifier = {
+			add = scope:owner.learning
+			desc = "SCHEME_MY_LEARNING"
+		}
+		# Faith
+		modifier = {
+			add = 15
+			desc = "STUDY_SCRIPTURE_PURSUIT_OF_KNOWLEDGE"
+			scope:owner = { pam_study_scripture_pursuit_of_knowledge_trigger = yes }
+		}
+		modifier = {
+			add = 10
+			desc = "STUDY_SCRIPTURE_SCHOLASTICISM"
+			scope:owner = { pam_study_scripture_scholasticism_trigger = yes }
+		}
+		# Ecclesiastical estate buildings
+		modifier = {
+			add = ecclesiastical_domicile_study_scripture_success_value_1
+			desc = "STUDY_SCRIPTURE_ESTATE_SCHOOL"
+			scope:owner = {
+				domicile ?= { has_domicile_parameter = estate_study_scripture_success_1 }
+			}
+		}
+		modifier = {
+			add = ecclesiastical_domicile_study_scripture_success_value_2
+			desc = "STUDY_SCRIPTURE_ESTATE_SCHOOL"
+			scope:owner = {
+				domicile ?= { has_domicile_parameter = estate_study_scripture_success_2 }
+			}
+		}
+		modifier = {
+			add = ecclesiastical_domicile_study_scripture_success_value_3
+			desc = "STUDY_SCRIPTURE_ESTATE_SCHOOL"
+			scope:owner = {
+				domicile ?= { has_domicile_parameter = estate_study_scripture_success_3 }
+			}
+		}
+		modifier = {
+			add = ecclesiastical_domicile_study_scripture_success_value_1
+			desc = "STUDY_SCRIPTURE_ESTATE_CELLS"
+			scope:owner = {
+				domicile ?= { has_domicile_parameter = estate_study_scripture_focus_1 }
+			}
+		}
+		modifier = {
+			add = ecclesiastical_domicile_study_scripture_success_value_2
+			desc = "STUDY_SCRIPTURE_ESTATE_CELLS"
+			scope:owner = {
+				domicile ?= { has_domicile_parameter = estate_study_scripture_focus_2 }
+			}
+		}
+		modifier = {
+			add = ecclesiastical_domicile_study_scripture_success_value_3
+			desc = "STUDY_SCRIPTURE_ESTATE_CELLS"
+			scope:owner = {
+				domicile ?= { has_domicile_parameter = estate_study_scripture_focus_3 }
+			}
+		}
+	# Renewed zeal
+		modifier = {
+			add = 10
+			desc = "STUDY_SCRIPTURE_RENEWED_ZEAL"
+			scope:owner = {
+				has_character_modifier = pam_renewed_zeal_modifier
+			}
+		}
+		# Clerical superior
+		modifier = {
+			add = {
+				value = 0
+				scope:owner = {
+					liege = {
+						add = learning
+					}
+				}
+			}
+			desc = "STUDY_SCRIPTURE_CLERICAL_SUPERIOR"
+			scope:owner = {
+				liege ?= {
+					NOT = { this = scope:owner }
+					pam_is_archbishop_or_higher_trigger = yes
+				}
+			}
+		}
+		# Situation
+		modifier = {
+			add = {
+				value = -10
+				multiply = scope:owner.stress_level
+			}
+			desc = STUDY_SCRIPTURE_STRESSED
+			scope:owner = { stress_level >= 1 }
+		}
+		# Personality traits
+		modifier = {
+			add = -10
+			desc = SCHEME_OWNER_LAZY
+			scope:owner = { has_trait = lazy }
+		}
+		modifier = {
+			add = 10
+			desc = SCHEME_OWNER_DILIGENT
+			scope:owner = { has_trait = diligent }
+		}
+		modifier = {
+			add = -10
+			desc = SCHEME_OWNER_IMPATIENT
+			scope:owner = { has_trait = impatient }
+		}
+		modifier = {
+			add = 10
+			desc = SCHEME_OWNER_STUBBORN
+			scope:owner = { has_trait = stubborn }
+		}
+		modifier = {
+			add = 10
+			desc = SCHEME_OWNER_AMBITIOUS
+			scope:owner = { has_trait = ambitious }
+		}
+		modifier = {
+			add = 10
+			desc = STUDY_SCRIPTURE_ZEALOUS
+			scope:owner = { has_trait = zealous }
+		}
+		modifier = {
+			add = -10
+			desc = STUDY_SCRIPTURE_CYNICAL
+			scope:owner = { has_trait = cynical }
+		}
+	}
+
+	# On Actions
+	on_phase_completed = {
+		# Save scopes
+		save_scope_as = scheme
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = { save_scope_as = owner }
+		# Stressed AI sets the books aside instead of studying on
+		if = {
+			limit = {
+				scope:owner = {
+					is_ai = yes
+					stress_level >= 1
+				}
+			}
+			end_scheme = yes
+		}
+		else = {
+			# Let's see if we made progress
+			random = {
+				chance = scope:scheme.scheme_success_chance
+				save_scope_value_as = {
+					name = scheme_successful
+					value = yes
+				}
+			}
+			# Determine the outcome
+			scope:owner = {
+				if = {
+					limit = { exists = scope:scheme_successful }
+					trigger_event = { on_action = study_scripture_success }
+				}
+				else = {
+					trigger_event = { on_action = study_scripture_failure }
+				}
+			}
+			reset_scheme_progress = yes
+		}
+	}
+
+	## Invalidation
+	on_invalidated = {
+	}
+}

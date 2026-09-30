@@ -41,7 +41,7 @@ fp1_tbc.0001 = {
 	}
 	theme = prison
 	left_portrait = {
-		character = scope:actor
+		character = scope:puppet_or_actor
 		scripted_animation = duel_wield_weapon
 	}
 	right_portrait = {
@@ -58,7 +58,7 @@ fp1_tbc.0001 = {
 			is_alive = yes
 			is_imprisoned = no
 		}
-		# Check that scope:actor is still in a valid state to fight.
+		# Check that scope:puppet_or_actor is still in a valid state to fight.
 		trial_by_combat_shown_and_not_invalid_trigger = yes
 		# And scope:champion likewise.
 		scope:champion = {
@@ -71,20 +71,33 @@ fp1_tbc.0001 = {
 
 	on_trigger_fail = {
 		# Inform both parties that the duel has invalidated.
-		scope:actor = {
+		scope:puppet_or_actor = {
 			send_interface_toast = {	
 				title = fp1_tbc.0001.trigger_failure.actor
 				left_icon = scope:recipient
 			}
 		}
+		if = {
+			limit = {
+				scope:is_puppet_action ?= yes
+				scope:actor != scope:recipient
+			}
+			scope:actor = {
+				send_interface_toast = {
+					title = fp1_tbc.0001.trigger_failure.actor_puppeteer
+					left_icon = scope:puppet_or_actor
+					right_icon = scope:recipient
+				}
+			}
+		}
 		scope:recipient = {
 			send_interface_toast = {	
 				title = fp1_tbc.0001.trigger_failure.recipient
-				left_icon = scope:actor
+				left_icon = scope:puppet_or_actor
 			}
 		}
-		# Reset scope:actor's cooldowns against scope:recipient.
-		scope:actor = {
+		# Reset scope:puppet_or_actor's cooldowns against scope:recipient.
+		scope:puppet_or_actor = {
 			remove_interaction_cooldown = challenge_to_trial_by_combat_interaction
 			remove_interaction_cooldown_against = {
 				interaction = challenge_to_trial_by_combat_interaction
@@ -107,20 +120,20 @@ fp1_tbc.0001 = {
 	option = {
 		name = fp1_tbc.0001.a
 
-		# Inform scope:actor that the bout will begin immediately.
+		# Inform scope:puppet_or_actor that the bout will begin immediately.
 		custom_tooltip = fp1_tbc.0001.a.tt
 		# Configure the bout.
 		## Tribals strip to the waist.
 		single_combat_apply_default_shirtlessness_effect = {
-			ATTACKER = scope:actor
+			ATTACKER = scope:puppet_or_actor
 			DEFENDER = scope:champion
 		}
 		## Deadly fights.
 		if = {
 			limit = { scope:tbc_death = yes }
 			configure_start_single_combat_effect = {
-				SC_INITIATOR = scope:actor
-				SC_ATTACKER = scope:actor
+				SC_INITIATOR = scope:puppet_or_actor
+				SC_ATTACKER = scope:puppet_or_actor
 				SC_DEFENDER = scope:champion
 				FATALITY = always
 				FIXED = no
@@ -132,8 +145,8 @@ fp1_tbc.0001 = {
 		## Non-deadly fights.
 		else = {
 			configure_start_single_combat_effect = {
-				SC_INITIATOR = scope:actor
-				SC_ATTACKER = scope:actor
+				SC_INITIATOR = scope:puppet_or_actor
+				SC_ATTACKER = scope:puppet_or_actor
 				SC_DEFENDER = scope:champion
 				FATALITY = no
 				FIXED = no
@@ -159,7 +172,7 @@ scripted_effect fp1_tbc_non_lethal_results_effect = {
 		if = {
 			limit = { scope:tbc_gold = yes }
 			fp1_tbc_gold_effect = {
-				TBC_VICTOR = scope:actor
+				TBC_VICTOR = scope:puppet_or_actor
 				TBC_LOSER = scope:recipient
 			}
 		}
@@ -167,7 +180,7 @@ scripted_effect fp1_tbc_non_lethal_results_effect = {
 		if = {
 			limit = { scope:tbc_weak_hook = yes }
 			fp1_tbc_hook_effect = {
-				TBC_VICTOR = scope:actor
+				TBC_VICTOR = scope:puppet_or_actor
 				TBC_LOSER = scope:recipient
 			}
 		}
@@ -176,7 +189,7 @@ scripted_effect fp1_tbc_non_lethal_results_effect = {
 			limit = { scope:tbc_humiliation = yes }
 			fp1_tbc_humiliation_effect = {
 				TBC_LOSER = scope:recipient
-				TBC_VICTOR = scope:actor
+				TBC_VICTOR = scope:puppet_or_actor
 			}
 		}
 	}
@@ -185,10 +198,10 @@ scripted_effect fp1_tbc_non_lethal_results_effect = {
 scripted_effect fp1_tbc_consume_imprisonment_reasons_effect = {
 	if = {
 		limit = {
-			scope:actor = { is_alive = yes }
+			scope:puppet_or_actor = { is_alive = yes }
 			scope:recipient = { is_alive = yes }
 		}
-		scope:actor = { consume_imprisonment_reasons = scope:recipient }
+		scope:puppet_or_actor = { consume_imprisonment_reasons = scope:recipient }
 	}
 }
 
@@ -199,16 +212,16 @@ fp1_tbc.0011 = {
 	immediate = {
 		# If any clothes were stripped, put 'em back on.
 		single_combat_clean_shirtlessness_effect = {
-			ATTACKER = scope:actor
+			ATTACKER = scope:puppet_or_actor
 			DEFENDER = scope:champion
 		}
-		# Did scope:actor win?
+		# Did scope:puppet_or_actor win?
 		if = {
-			limit = { scope:sc_victor = scope:actor }
+			limit = { scope:sc_victor = scope:puppet_or_actor }
 			# Apply effects; we do this separately so that there's not a weird day's delay.
 			fp1_tbc_non_lethal_results_effect = yes
 			# And send out the ending events.
-			scope:actor = {
+			scope:puppet_or_actor = {
 				trigger_event = {
 					id = fp1_tbc.0041
 					days = 1
@@ -224,18 +237,18 @@ fp1_tbc.0011 = {
 		# Or was it scope:champion?
 		else_if = {
 			limit = { scope:sc_victor = scope:champion }
-			# If scope:actor is still alive, they gain stress.
+			# If scope:puppet_or_actor is still alive, they gain stress.
 			if = {
 				limit = {
-					scope:actor = { is_alive = yes }
+					scope:puppet_or_actor = { is_alive = yes }
 				}
 				fp1_tbc_actor_defeated_effect = {
-					TBC_LOSER = scope:actor
+					TBC_LOSER = scope:puppet_or_actor
 					TBC_VICTOR = scope:recipient
 				}
 			}
 			# And send out the ending events.
-			scope:actor = {
+			scope:puppet_or_actor = {
 				trigger_event = {
 					id = fp1_tbc.0051
 					days = 1
@@ -251,7 +264,7 @@ fp1_tbc.0011 = {
 		# If both parties are alive, and aren't good losers/don't have good reasons to forgive each other, then we mark them as potential rivals.
 		if = {
 			limit = {
-				scope:actor = {
+				scope:puppet_or_actor = {
 					is_alive = yes
 					NOR = {
 						has_trait = humble
@@ -268,10 +281,10 @@ fp1_tbc.0011 = {
 						has_trait = just
 						has_trait = forgiving
 					}
-					can_set_relation_potential_rival_trigger = { CHARACTER = scope:actor }
+					can_set_relation_potential_rival_trigger = { CHARACTER = scope:puppet_or_actor }
 				}
 			}
-			scope:actor = { set_relation_potential_rival = scope:recipient }
+			scope:puppet_or_actor = { set_relation_potential_rival = scope:recipient }
 		}
 	}
 }
@@ -283,24 +296,37 @@ fp1_tbc.0021 = {
 	immediate = {
 		# Put your shirts back on.
 		single_combat_clean_shirtlessness_effect = {
-			ATTACKER = scope:actor
+			ATTACKER = scope:puppet_or_actor
 			DEFENDER = scope:recipient
 		}
 		# Inform both parties that the duel has invalidated.
-		scope:actor = {
+		scope:puppet_or_actor = {
 			send_interface_toast = {	
 				title = fp1_tbc.0021.trigger_failure.actor
 				left_icon = scope:recipient
 			}
 		}
+		if = {
+			limit = {
+				scope:is_puppet_action ?= yes
+				scope:actor != scope:recipient
+			}
+			scope:actor = {
+				send_interface_toast = {
+					title = fp1_tbc.0021.trigger_failure.actor_puppeteer
+					left_icon = scope:puppet_or_actor
+					right_icon = scope:recipient
+				}
+			}
+		}
 		scope:recipient = {
 			send_interface_toast = {	
 				title = fp1_tbc.0021.trigger_failure.recipient
-				left_icon = scope:actor
+				left_icon = scope:puppet_or_actor
 			}
 		}
-		# Reset scope:actor's cooldowns against scope:recipient.
-		scope:actor = {
+		# Reset scope:puppet_or_actor's cooldowns against scope:recipient.
+		scope:puppet_or_actor = {
 			remove_interaction_cooldown = challenge_to_trial_by_combat_interaction
 			remove_interaction_cooldown_against = {
 				interaction = challenge_to_trial_by_combat_interaction
@@ -316,6 +342,13 @@ fp1_tbc.0031 = {
 	opening = fp1_tbc.0031.opening
 	desc = fp1_tbc.0031.desc
 	sender = scope:recipient
+
+	immediate = {
+		notify_puppeteer_of_outcome_effect = {
+			TYPE = event_toast_effect_bad
+			TITLE = fp1_tbc.0031.toast_puppeteer
+		}
+	}
 
 	option = { name = fp1_tbc.0031.a }
 }
@@ -379,7 +412,7 @@ fp1_tbc.0041 = {
 	}
 	theme = prison
 	left_portrait = {
-		character = scope:actor
+		character = scope:puppet_or_actor
 		animation = personality_bold
 	}
 	right_portrait = {
@@ -400,10 +433,14 @@ fp1_tbc.0041 = {
 		show_as_tooltip = { fp1_tbc_non_lethal_results_effect = yes }
 		# Sadly, we have to apply some effects here instead of in the initial output event in order to not break tooltips.
 		single_combat_have_slain_kin_effect = {
-			ATTACKER = scope:actor
+			ATTACKER = scope:puppet_or_actor
 			DEFENDER = scope:champion
 		}
 		fp1_tbc_consume_imprisonment_reasons_effect = yes
+		notify_puppeteer_of_outcome_effect = {
+			TYPE = event_toast_effect_good
+			TITLE = fp1_tbc.0041.toast_puppeteer
+		}
 	}
 
 	# The bout closes.
@@ -438,7 +475,7 @@ fp1_tbc.0051 = {
 	}
 	theme = prison
 	left_portrait = {
-		character = scope:actor
+		character = scope:puppet_or_actor
 		animation = shock
 	}
 	right_portrait = {
@@ -458,19 +495,23 @@ fp1_tbc.0051 = {
 		# Show duel results from the player's POV.
 		if = {
 			limit = {
-				scope:actor = { is_alive = yes }
+				scope:puppet_or_actor = { is_alive = yes }
 			}
 			fp1_tbc_actor_defeated_effect = {
-				TBC_LOSER = scope:actor
+				TBC_LOSER = scope:puppet_or_actor
 				TBC_VICTOR = scope:recipient
 			}
 		}
 		show_as_tooltip = {
 			fp1_tbc_consume_imprisonment_reasons_effect = yes
 			single_combat_have_slain_kin_effect = {
-				ATTACKER = scope:actor
+				ATTACKER = scope:puppet_or_actor
 				DEFENDER = scope:champion
 			}
+		}
+		notify_puppeteer_of_outcome_effect = {
+			TYPE = event_toast_effect_bad
+			TITLE = fp1_tbc.0051.toast_puppeteer
 		}
 	}
 
@@ -660,6 +701,7 @@ fp1_tbc.0101 = {
 				location = scope:recipient.capital_province
 				template = new_warrior_character
 				faith = scope:recipient.capital_county.faith
+				rite = scope:recipient.capital_county.rite
 				culture = scope:recipient.capital_county.culture
 				save_scope_as = knight_best
 			}
@@ -778,7 +820,7 @@ fp1_tbc.0101 = {
 		}
 	}
 
-	# Then, we skip over to scope:actor to inform them what's up.
+	# Then, we skip over to scope:puppet_or_actor to inform them what's up.
 	after = {
 		# Clean up any errant scopes we no longer need to avoid debug bloat.
 		clear_saved_scope = knight_best
@@ -795,7 +837,7 @@ fp1_tbc.0101 = {
 			clear_saved_scope = knight_opinion
 		}
 		# And transition.
-		scope:actor = { trigger_event = fp1_tbc.0001 }
+		scope:puppet_or_actor = { trigger_event = fp1_tbc.0001 }
 	}
 }
 
@@ -823,14 +865,14 @@ fp1_tbc.0111 = {
 		# Scope:actor died in the fighting; we don't account for
 		triggered_desc = {
 			trigger = {
-				scope:actor = { is_alive = no }
+				scope:puppet_or_actor = { is_alive = no }
 			}
 			desc = fp1_tbc.0111.desc.opponent_died.recipient_fighting
 		}
 		# Scope:actor is still alive.
 		triggered_desc = {
 			trigger = {
-				scope:actor = { is_alive = yes}
+				scope:puppet_or_actor = { is_alive = yes}
 			}
 			desc = {
 				first_valid = {
@@ -852,7 +894,7 @@ fp1_tbc.0111 = {
 		animation = personality_bold
 	}
 	right_portrait = {
-		character = scope:actor
+		character = scope:puppet_or_actor
 		animation = shock
 	}
 	override_background = { reference = throne_room }
@@ -868,16 +910,16 @@ fp1_tbc.0111 = {
 		# Show duel results from the player's POV.
 		if = {
 			limit = {
-				scope:actor = { is_alive = yes }
+				scope:puppet_or_actor = { is_alive = yes }
 			}
 			fp1_tbc_actor_defeated_effect = {
-				TBC_LOSER = scope:actor
+				TBC_LOSER = scope:puppet_or_actor
 				TBC_VICTOR = scope:recipient
 			}
 		}
 		# Sadly, we have to apply some effects here instead of in the initial output event in order to not break tooltips.
 		single_combat_have_slain_kin_effect = {
-			ATTACKER = scope:actor
+			ATTACKER = scope:puppet_or_actor
 			DEFENDER = scope:champion
 		}
 		fp1_tbc_consume_imprisonment_reasons_effect = yes
@@ -939,7 +981,7 @@ fp1_tbc.0121 = {
 		animation = shock
 	}
 	right_portrait = {
-		character = scope:actor
+		character = scope:puppet_or_actor
 		animation = personality_bold
 	}
 	override_background = { reference = throne_room }

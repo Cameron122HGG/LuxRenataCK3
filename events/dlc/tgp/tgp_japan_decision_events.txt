@@ -42,14 +42,14 @@ tgp_japan_decision.9001 = { # CHOOSE HOUSE NAME EVENT - WITH WIDGET
 				trigger = {
 					has_character_flag = establish_house_fief
 					var:petition_liege_house_fief_allowed_flag ?= top_liege
-					top_liege = { government_allows = administrative }
+					top_liege = { government_has_mechanic = administrative }
 				}
 				desc = tgp_japan_decision.9001.desc.permission
 			}
 			triggered_desc = {
 				trigger = {
 					has_character_flag = establish_house_fief
-					top_liege = { government_allows = administrative }
+					top_liege = { government_has_mechanic = administrative }
 				}
 				desc = tgp_japan_decision.9001.desc.crime
 			}
@@ -1492,47 +1492,7 @@ tgp_japan_decision.9001 = { # CHOOSE HOUSE NAME EVENT - WITH WIDGET
 
 	immediate = {
 		top_liege = { save_scope_as = regent }
-		save_scope_as = new_head
-		save_scope_as = new_house_head # don't ask
-		house = {
-			save_scope_as = old_house
-			house_head = { save_scope_as = old_head }
-		}
-		if = {
-			limit = { domicile.domicile_location.county.holder ?= root }
-			domicile.domicile_location.barony = {
-				save_scope_as = domicile_barony
-				county = { save_scope_as = domicile_county }
-			}
-		}
-		else_if = {
-			limit = {
-				is_landed = no
-				scope:old_head.domicile.domicile_location.county.holder ?= scope:old_head
-			}
-			scope:old_head.domicile.domicile_location.barony = {
-				save_scope_as = domicile_barony
-				county = { save_scope_as = domicile_county }
-			}
-		}
-		else_if = {
-			limit = { is_landed = yes }
-			save_scope_as = land_haver
-		}
-		else = {
-			limit = { house.house_head = { is_landed = yes } }
-			house.house_head = { save_scope_as = land_haver }
-		}
-		scope:land_haver.capital_county ?= {
-			save_scope_as = primary_county
-			random_county_province = {
-				limit = {
-					NOT = { has_holding_type = church_holding }
-				}
-				alternative_limit = { always = yes }
-				barony = { save_scope_as = random_barony }
-			}
-		}
+		setup_japan_house_name_scopes_effect = yes
 		hidden_effect = {
 			if = {
 				limit = {
@@ -1609,7 +1569,7 @@ tgp_japan_decision.9001 = { # CHOOSE HOUSE NAME EVENT - WITH WIDGET
 					trigger = {
 						exists = scope:old_head
 						has_character_flag = found_cadet_branch
-						government_allows = administrative
+						government_has_mechanic = administrative
 					}
 					set_variable = {
 						name = new_japanese_house_name
@@ -1685,7 +1645,9 @@ tgp_japan_decision.9001 = { # CHOOSE HOUSE NAME EVENT - WITH WIDGET
 				is_ai = yes
 				exists = scope:new_title
 				exists = domicile
-				exists = scope:old_head.domicile
+				scope:old_head.domicile ?= {
+					has_ongoing_domicile_construction = no
+				}
 			}
 			scope:old_head.domicile = {
 				if = {
@@ -1755,13 +1717,13 @@ tgp_japan_decision.9002 = { # SAME CLAN EVENT - NO WIDGET
 			triggered_desc = {
 				trigger = {
 					var:petition_liege_house_fief_allowed_flag ?= top_liege
-					top_liege = { government_allows = administrative }
+					top_liege = { government_has_mechanic = administrative }
 				}
 				desc = tgp_japan_decision.9001.desc.permission
 			}
 			triggered_desc = {
 				trigger = {
-					top_liege = { government_allows = administrative }
+					top_liege = { government_has_mechanic = administrative }
 				}
 				desc = tgp_japan_decision.9001.desc.crime
 			}
@@ -1840,6 +1802,7 @@ tgp_japan_decision.9005 = { # NOTIFICATION FOR OLD HOUSE HEADS
 tgp_japan_decision.9101 = {
 	type = character_event
 	window = fullscreen_event
+	queue_icon = "gfx/interface/icons/splash_icons/splash_japan_feudal.dds"
 	title = tgp_japan_decision.9101.t
 	desc = tgp_japan_decision.9101.desc
 	theme = crown
@@ -1873,8 +1836,8 @@ tgp_japan_decision.9101 = {
 		}
 		# Inform Vassals
 		every_vassal_or_below = {
-			limit = { 
-				is_ruler = yes 
+			limit = {
+				is_ruler = yes
 			}
 			trigger_event = tgp_japan_decision.9102
 		}
@@ -1988,6 +1951,10 @@ tgp_japan_decision.9201 = {
 		house = {
 			save_scope_as = old_house
 			house_head = { save_scope_as = old_house_head }
+		}
+		set_variable = {
+			name = block_dynamic_dynasty_naming
+			days = 1
 		}
 	}
 
@@ -2268,7 +2235,7 @@ tgp_japan_decision.9401 = {
 					add = 10
 				}
 				modifier = {
-					has_trait = scholar
+					has_trait = erudite
 					add = 10
 				}
 				send_interface_toast = {
@@ -2441,7 +2408,7 @@ tgp_japan_decision.9602 = { # Vassal AI event
 				}
 				modifier = {
 					add = 15
-					government_allows = administrative
+					government_has_mechanic = administrative
 				}
 				save_temporary_scope_as = war_joiner_temp
 				scope:daijo_daijin = {
@@ -2621,8 +2588,6 @@ tgp_japan_decision.9604 = { # War setup
 				list = bloc_leaders
 				order_by = {
 					value = 0
-					# TODO_CD_TGP_JP AWAITING CODE SUPPORT
-					#add = tgp_confederation_military_power
 				}
 				max = 3
 				if = {
@@ -3112,7 +3077,7 @@ scripted_trigger dominion_fight_partial = {
 	}
 }
 #Assert Regional Dominion
-#tgp_japan_decision.9960
+#Laurence Kennedy
 tgp_japan_decision.9960 = {
 	type = character_event
 	window = big_event_window

@@ -35,15 +35,6 @@ prowess_law_cost_modifier = {
 	min = -0.5
 }
 
-#Faith: The modifier used to calculate the Legalism modifier if the character's faith has Legalism
-legalism_law_cost_modifier = {
-	value = 0
-	add = num_sinful_traits
-	subtract = num_virtuous_traits
-	divide = 10
-	min = -0.3
-}
-
 #Faith: The modifier used to calculate the Warmonger modifier if the character's faith has Warmonger
 warmonger_law_cost_modifier = {
 	value = 0
@@ -61,6 +52,11 @@ natural_primitivism_modifier = 1.5
 
 #Crown Authority Change
 increase_crown_authority_prestige_base = 100
+
+#Church Authority Change
+increase_church_authority_piety_cost = {
+	add = increase_crown_authority_prestige_cost
+}
 
 increase_crown_authority_prestige_cost = {
 	add = {
@@ -121,26 +117,10 @@ increase_crown_authority_prestige_cost = {
 		}
 	}
 
-	# Tenet Modifiers
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = legalism_modified_law_costs
-			}
-		}
-		add = {
-			desc = "rite_legalism_law_cost_tooltip"
-			value = {
-				add = increase_crown_authority_prestige_base
-				add = subrealm_size_modifier
-			}
-			multiply = legalism_law_cost_modifier
-		}
-	}
-	if = {
-		limit = {
-			faith = {
-				has_doctrine_parameter = natural_primitivism_law_cost_increase
+			rite = {
+				rite_has_parameter = natural_primitivism_law_cost_increase
 			}
 		}
 		multiply = {
@@ -160,8 +140,8 @@ increase_crown_authority_prestige_cost = {
 	}
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = religious_legal_pronouncements_law_cost_reduction
+			rite = {
+				rite_has_parameter = religious_legal_pronouncements_law_cost_reduction
 			}
 		}
 		multiply = {
@@ -173,9 +153,10 @@ increase_crown_authority_prestige_cost = {
 	# Apply All-Things cooldown breaker multiplier.
 	if = {
 		limit = {
-			OR = {
-				has_variable = crown_authority_cooldown
-				has_variable = imperial_bureaucracy_cooldown
+			has_variable = {
+				name = crown_authority_cooldown
+				name = church_authority_cooldown
+				name = imperial_bureaucracy_cooldown
 			}
 			culture = { has_innovation = innovation_all_things }
 		}
@@ -259,26 +240,10 @@ increase_tribal_authority_prestige_cost = {
 		}
 	}
 
-	# Tenet Modifiers
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = legalism_modified_law_costs
-			}
-		}
-		add = {
-			desc = "rite_legalism_law_cost_tooltip"
-			value = {
-				add = increase_crown_authority_prestige_base
-				add = subrealm_size_modifier
-			}
-			multiply = legalism_law_cost_modifier
-		}
-	}
-	if = {
-		limit = {
-			faith = {
-				has_doctrine_parameter = natural_primitivism_law_cost_increase
+			rite = {
+				rite_has_parameter = natural_primitivism_law_cost_increase
 			}
 		}
 		add = {
@@ -288,8 +253,8 @@ increase_tribal_authority_prestige_cost = {
 	}
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = religious_legal_pronouncements_law_cost_reduction
+			rite = {
+				rite_has_parameter = religious_legal_pronouncements_law_cost_reduction
 			}
 		}
 		multiply = {
@@ -405,8 +370,8 @@ increase_nomadic_authority_prestige_cost = {
 	# Tenet Modifiers
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = warmonger
+			rite = {
+				rite_has_parameter = warmonger
 			}
 		}
 		add = {
@@ -464,23 +429,10 @@ change_succession_law_prestige_cost = {
 			multiply = 4
 		}
 	}
-	#Calculate the Legalism modifier if relevant
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = legalism_modified_law_costs
-			}
-		}
-		add = {
-			desc = "rite_legalism_law_cost_tooltip"
-			value = change_succession_law_prestige_base
-			multiply = legalism_law_cost_modifier
-		}
-	}
-	if = {
-		limit = {
-			faith = {
-				has_doctrine_parameter = natural_primitivism_law_cost_increase
+			rite = {
+				rite_has_parameter = natural_primitivism_law_cost_increase
 			}
 		}
 		add = {
@@ -500,8 +452,8 @@ change_succession_law_prestige_cost = {
 	}
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = religious_legal_pronouncements_law_cost_reduction
+			rite = {
+				rite_has_parameter = religious_legal_pronouncements_law_cost_reduction
 			}
 		}
 		multiply = {
@@ -517,24 +469,10 @@ change_title_succession_law_prestige_cost = {
 		value = change_succession_law_prestige_base
 		multiply = @title_succession_law_mult
 	}
-	#Calculate the Legalism modifier if relevant
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = legalism_modified_law_costs
-			}
-		}
-		add = {
-			desc = "rite_legalism_law_cost_tooltip"
-			value = change_succession_law_prestige_base
-			multiply = legalism_law_cost_modifier
-			multiply = @title_succession_law_mult
-		}
-	}
-	if = {
-		limit = {
-			faith = {
-				has_doctrine_parameter = natural_primitivism_law_cost_increase
+			rite = {
+				rite_has_parameter = natural_primitivism_law_cost_increase
 			}
 		}
 		add = {
@@ -554,8 +492,8 @@ change_title_succession_law_prestige_cost = {
 	}
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = religious_legal_pronouncements_law_cost_reduction
+			rite = {
+				rite_has_parameter = religious_legal_pronouncements_law_cost_reduction
 			}
 		}
 		multiply = {
@@ -572,24 +510,10 @@ change_hre_title_succession_law_prestige_cost = {
 		value = change_succession_law_prestige_base
 		multiply = @hre_title_succession_law_mult
 	}
-	#Calculate the Legalism modifier if relevant
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = legalism_modified_law_costs
-			}
-		}
-		add = {
-			desc = "rite_legalism_law_cost_tooltip"
-			value = change_succession_law_prestige_base
-			multiply = legalism_law_cost_modifier
-			multiply = @hre_title_succession_law_mult
-		}
-	}
-	if = {
-		limit = {
-			faith = {
-				has_doctrine_parameter = natural_primitivism_law_cost_increase
+			rite = {
+				rite_has_parameter = natural_primitivism_law_cost_increase
 			}
 		}
 		add = {
@@ -599,8 +523,8 @@ change_hre_title_succession_law_prestige_cost = {
 	}
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = religious_legal_pronouncements_law_cost_reduction
+			rite = {
+				rite_has_parameter = religious_legal_pronouncements_law_cost_reduction
 			}
 		}
 		multiply = {
@@ -612,7 +536,7 @@ change_hre_title_succession_law_prestige_cost = {
 
 admin_law_prestige_base_cost = 200
 admin_law_realm_size_cost = {
-	value = realm_size
+	value = sub_realm_size
 	max = admin_law_prestige_base_cost # Realm size can double the cost
 	if = {
 		limit = {
@@ -680,26 +604,10 @@ admin_law_prestige_cost = {
 		}
 	}
 
-	# Tenet Modifiers
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = legalism_modified_law_costs
-			}
-		}
-		add = {
-			desc = "rite_legalism_law_cost_tooltip"
-			value = {
-				add = admin_law_prestige_base_cost
-				add = admin_law_realm_size_cost
-			}
-			multiply = legalism_law_cost_modifier
-		}
-	}
-	if = {
-		limit = {
-			faith = {
-				has_doctrine_parameter = natural_primitivism_law_cost_increase
+			rite = {
+				rite_has_parameter = natural_primitivism_law_cost_increase
 			}
 		}
 		multiply = {
@@ -709,8 +617,8 @@ admin_law_prestige_cost = {
 	}
 	if = {
 		limit = {
-			faith = {
-				has_doctrine_parameter = religious_legal_pronouncements_law_cost_reduction
+			rite = {
+				rite_has_parameter = religious_legal_pronouncements_law_cost_reduction
 			}
 		}
 		multiply = {
@@ -745,4 +653,11 @@ change_admin_budget_law_prestige_cost = {
 		value = change_admin_budget_law_prestige_base_cost
 		format = "BASE_VALUE_FORMAT"
 	}
+}
+
+realm_authority_level = {
+	if = { limit = { has_realm_law_flag = authority_level_4 } value = 4 }
+	else_if = { limit = { has_realm_law_flag = authority_level_3 } value = 3 }
+	else_if = { limit = { has_realm_law_flag = authority_level_2 } value = 2 }
+	else_if = { limit = { has_realm_law_flag = authority_level_1 } value = 1 }
 }

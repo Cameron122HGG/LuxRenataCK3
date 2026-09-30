@@ -1,4 +1,26 @@
 ﻿story_cycle_pet_eagle = {
+	visible = yes
+
+	icon = {
+		trigger = {
+			always = yes
+		}
+		reference = "gfx/interface/icons/artifact/artifact_feather.dds"
+	}
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/ep2_travel_mountains.dds"
+	}
+	
+	visualization = {
+		custom_string_key = "EAGLE_INFORMATION_STRING"
+		modifiers = {
+			eagle_story_modifier
+			weak_eagle_modifier
+			very_weak_eagle_modifier
+			strong_eagle_modifier
+			skilled_eagle_modifier
+		}
+	}
     on_setup = {
         story_owner = {
             if = {
@@ -17,7 +39,50 @@
 				}
 			}
         }
-        
+        if = {
+			limit = {
+				NOT = { exists = var:eagle_gender }
+				exists = story_owner.var:eagle_gender
+			}
+			if = {
+				limit = {
+					story_owner.var:eagle_gender = flag:male
+				}
+				set_variable = {
+					name = eagle_gender
+					value = flag:male
+				}
+			}
+			else_if = {
+				limit = {
+					story_owner.var:eagle_gender = flag:female
+				}
+				set_variable = {
+					name = eagle_gender
+					value = flag:female
+				}
+			}
+		}
+		else = {
+			assign_eagle_gender_effect = { GENDER = random }
+		}
+		
+		if = {
+			limit = {
+				NOT = { exists = var:eagle_age_variable }
+				exists = story_owner.var:eagle_age_variable
+			}
+			set_variable = {
+				name = eagle_age_variable
+				value = story_owner.var:eagle_age_variable
+			}
+		}
+		else = {
+			set_variable = {
+				name = eagle_age_variable
+				value = 1
+			}
+		}
     }
 
     on_end = {

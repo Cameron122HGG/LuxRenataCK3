@@ -39,19 +39,6 @@ administrative_themes = {
 					}
 					add = 1
 				}
-				if = {
-					limit = {
-						scope:liege = {
-							is_independent_ruler = no
-							OR = {
-								vassal_contract_has_flag = admin_theme_balanced
-								vassal_contract_has_flag = admin_theme_imperial
-								vassal_contract_has_flag = admin_theme_naval
-							}
-						}
-					}
-					add = 100
-				}				
 			}
 			ai_subject_desire = 0
 			
@@ -63,6 +50,7 @@ administrative_themes = {
 			}
 			
 			flag = admin_theme_balanced
+			flag = province_balanced
 		}
 		admin_theme_civilian = {
 			position = { 2 0 }
@@ -95,15 +83,6 @@ administrative_themes = {
 					}
 					add = 1
 				}
-				if = {
-					limit = {
-						scope:liege = {
-							is_independent_ruler = no
-							vassal_contract_has_flag = admin_theme_civilian
-						}
-					}
-					add = 100
-				}
 			}
 			ai_subject_desire = 0
 			
@@ -124,6 +103,7 @@ administrative_themes = {
 			flag = admin_influence_construction_bonus
 			flag = admin_ai_is_builder
 			flag = admin_theme_civilian
+			flag = province_civilian
 			flag = obligation_high_taxes
 		}
 		admin_theme_military = {
@@ -158,18 +138,6 @@ administrative_themes = {
 					}
 					add = 1
 				}
-				if = {
-					limit = {
-						scope:liege = {
-							is_independent_ruler = no
-							OR = {
-								vassal_contract_has_flag = admin_theme_military
-								vassal_contract_has_flag = admin_theme_frontier
-							}
-						}
-					}
-					add = 100
-				}
 			}
 			ai_subject_desire = 0
 			
@@ -189,6 +157,7 @@ administrative_themes = {
 			
 			flag = admin_martial_obligation_bonus
 			flag = admin_theme_military
+			flag = province_military
 			flag = obligation_high_levies
 		}
 		admin_theme_frontier = {
@@ -206,18 +175,6 @@ administrative_themes = {
 					}
 					add = 5
 				}
-				#if = {
-				#	limit = {
-				#		scope:liege = {
-				#			is_independent_ruler = no
-				#			OR = {
-				#				vassal_contract_has_flag = admin_theme_military
-				#				vassal_contract_has_flag = admin_theme_frontier
-				#			}
-				#		}
-				#	}
-				#	add = 100
-				#}				
 			}
 			ai_subject_desire = 0
 			
@@ -257,6 +214,7 @@ administrative_themes = {
 			flag = admin_duchy_expansion_unlocked
 			flag = admin_ai_is_warlike
 			flag = admin_theme_frontier
+			flag = province_military
 			flag = admin_theme_can_raid
 		}
 		admin_theme_imperial = {
@@ -276,7 +234,7 @@ administrative_themes = {
 						scope:subject = {
 							is_ai = yes
 							culture = scope:liege.culture
-							faith = top_liege.primary_title.state_faith
+							rite = top_liege.primary_title.state_rite
 						}
 					}
 					add = 5
@@ -297,7 +255,6 @@ administrative_themes = {
 			
 			is_valid = {
 				scope:liege = {
-					is_independent_ruler = yes
 					highest_held_title_tier >= tier_empire
 				}
 				custom_tooltip = {
@@ -336,6 +293,7 @@ administrative_themes = {
 			flag = admin_theme_imperial
 			flag = admin_prestige_obligation_bonus
 			flag = admin_cannot_revoke_titles_without_cause
+			flag = province_civilian
 			flag = obligation_high_taxes
 		}
 		admin_theme_naval = {
@@ -425,6 +383,7 @@ administrative_themes = {
 			flag = admin_naval_duchy_expansion_unlocked
 			flag = admin_tradeport_obligation_bonus
 			flag = admin_theme_naval
+			flag = province_military
 		}
 	}
 }

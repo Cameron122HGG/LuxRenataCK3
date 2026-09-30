@@ -63,24 +63,28 @@ confederation_elective = {
 	}
 	
 	electors = {
-		add = holder
-		add = {
-			type = holder_direct_vassals
-			limit = {
-				highest_held_title_tier >= tier_county
-				NOR = {
-					has_trait = incapable
-					is_at_war_with = scope:holder
-				}
-				custom_tooltip = {
-					OR = {
-						government_has_flag = government_is_nomadic
-						government_has_flag = government_is_tribal
+		character_sets = {
+			confederation_electors_holder = {
+				type = holder
+			}
+			confederation_electors_direct_vassals = {
+				type = holder_direct_vassals
+				limit = {
+					highest_held_title_tier >= tier_county
+					NOR = {
+						has_trait = incapable
+						is_at_war_with = scope:holder
 					}
-					text = is_nomadic_or_tribal_tt
-				}
-				NOT = {
-					government_has_flag = government_is_herder
+					custom_tooltip = {
+						OR = {
+							government_has_flag = government_is_nomadic
+							government_has_flag = government_is_tribal
+						}
+						text = is_nomadic_or_tribal_tt
+					}
+					NOT = {
+						government_has_flag = government_is_herder
+					}
 				}
 			}
 		}
@@ -113,42 +117,44 @@ confederation_elective = {
 	
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
 	candidates = {
-		add = {
-			type = holder_direct_vassals	
-			limit = {
-				feudal_elective_potential_landed_candidate_trigger = yes
-				highest_held_title_tier >= tier_county
-				custom_tooltip = {
+		character_sets = {
+			confederation_elective_direct_vassals = {
+				type = holder_direct_vassals
+				limit = {
+					feudal_elective_potential_landed_candidate_trigger = yes
+					highest_held_title_tier >= tier_county
 					custom_tooltip = {
-						OR = {
-							government_has_flag = government_is_nomadic
-							government_has_flag = government_is_tribal
+						custom_tooltip = {
+							OR = {
+								government_has_flag = government_is_nomadic
+								government_has_flag = government_is_tribal
+							}
+							text = is_nomadic_or_tribal_tt
 						}
 						text = is_nomadic_or_tribal_tt
 					}
-					text = is_nomadic_or_tribal_tt
 				}
 			}
-		}
-		add = {
-			type = holder_close_or_extended_family
-			limit = {
-				feudal_elective_potential_landless_dynastic_candidate_trigger = yes
-				OR = {
-					is_close_family_of = scope:holder
-					is_grandchild_of = scope:holder
-				}
-				OR = {
-					is_landed = no
-					custom_tooltip = {
-						OR = {
-							government_has_flag = government_is_nomadic
-							government_has_flag = government_is_tribal
-						}
-						text = is_nomadic_or_tribal_tt
+			confederation_elective_family = {
+				type = holder_close_or_extended_family
+				limit = {
+					feudal_elective_potential_landless_dynastic_candidate_trigger = yes
+					OR = {
+						is_close_family_of = scope:holder
+						is_grandchild_of = scope:holder
 					}
+					OR = {
+						is_landed = no
+						custom_tooltip = {
+							OR = {
+								government_has_flag = government_is_nomadic
+								government_has_flag = government_is_tribal
+							}
+							text = is_nomadic_or_tribal_tt
+						}
+					}
+
 				}
-				
 			}
 		}
 	}

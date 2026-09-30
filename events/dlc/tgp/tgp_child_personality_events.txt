@@ -49,29 +49,11 @@ tgp_child_personality.0002 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = arrogant
-					has_trait = compassionate
-					has_trait = callous
-				}
-			}
-		}
-		modifier = {
-			add = 2
-			NOT = {
-				any_relation = {
-					type = guardian
-				}
-			}
-			court_owner.court_position:court_tutor_court_position ?= {
-				OR = {
-					has_trait = arrogant
-					has_trait = compassionate
-					has_trait = callous
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = arrogant }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -100,8 +82,16 @@ tgp_child_personality.0002 = {
 				save_scope_as = guardian
 			}
 		}
-		else = {
+		else_if = {
+			limit = {
+				exists = court_owner.court_position:court_tutor_court_position
+			}
 			court_owner.court_position:court_tutor_court_position ?= {
+				save_scope_as = guardian
+			}
+		}
+		else = {
+			court_owner.court_position:court_guru_court_position ?= {
 				save_scope_as = guardian
 			}
 		}
@@ -125,11 +115,11 @@ tgp_child_personality.0002 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = arrogant }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = arrogant }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = humble }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = humble }
 			}
 		}
 		add_trait = arrogant
@@ -137,7 +127,7 @@ tgp_child_personality.0002 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1021 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1021 }
 		}	
 	}
 
@@ -154,13 +144,13 @@ tgp_child_personality.0002 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = compassionate }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_2_trait = {
-					TRAIT = callous
-					TRAIT_2 = sadistic
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
 				}
 			}
 			modifier = {
@@ -175,7 +165,7 @@ tgp_child_personality.0002 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1022 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1022 }
 		}
 	}
 
@@ -192,14 +182,14 @@ tgp_child_personality.0002 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_2_trait = {
-					TRAIT = callous
-					TRAIT_2 = sadistic
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
 				}
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = compassionate }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
 			}
 		}
 		add_trait = callous
@@ -207,7 +197,7 @@ tgp_child_personality.0002 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1023 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1023 }
 		}	
 	}
 	after = {
@@ -272,29 +262,11 @@ tgp_child_personality.0003 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = deceitful
-					has_trait = honest
-					has_trait = humble
-				}
-			}
-		}
-		modifier = {
-			add = 2
-			NOT = {
-				any_relation = {
-					type = guardian
-				}
-			}
-			court_owner.court_position:court_tutor_court_position ?= {
-				OR = {
-					has_trait = deceitful
-					has_trait = honest
-					has_trait = humble
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = deceitful }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = honest }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = humble }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -335,11 +307,11 @@ tgp_child_personality.0003 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = deceitful }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = deceitful }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = honest }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = honest }
 			}
 		}
 		add_trait = deceitful
@@ -347,7 +319,7 @@ tgp_child_personality.0003 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1031 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1031 }
 		}	
 	}
 
@@ -363,11 +335,11 @@ tgp_child_personality.0003 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = honest }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = honest }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = deceitful }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = deceitful }
 			}
 			modifier = {
 				add = 100
@@ -381,7 +353,7 @@ tgp_child_personality.0003 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1032 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1032 }
 		}	
 	}
 
@@ -397,11 +369,11 @@ tgp_child_personality.0003 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = humble }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = humble }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = arrogant }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = arrogant }
 			}
 			modifier = {
 				add = 100
@@ -415,7 +387,7 @@ tgp_child_personality.0003 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1033 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1033 }
 		}	
 	}
 }
@@ -475,29 +447,11 @@ tgp_child_personality.0004 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = generous
-					has_trait = diligent
-					has_trait = patient
-				}
-			}
-		}
-		modifier = {
-			add = 2
-			NOT = {
-				any_relation = {
-					type = guardian
-				}
-			}
-			court_owner.court_position:court_tutor_court_position ?= {
-				OR = {
-					has_trait = generous
-					has_trait = diligent
-					has_trait = patient
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = generous }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = diligent }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = patient }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -548,11 +502,11 @@ tgp_child_personality.0004 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = generous }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = generous }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = greedy }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = greedy }
 			}
 			modifier = {
 				add = 100
@@ -566,7 +520,7 @@ tgp_child_personality.0004 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1041 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1041 }
 		}	
 	}
 
@@ -582,11 +536,11 @@ tgp_child_personality.0004 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = diligent }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = diligent }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = lazy }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = lazy }
 			}
 			modifier = {
 				add = 100
@@ -600,7 +554,7 @@ tgp_child_personality.0004 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1042 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1042 }
 		}	
 	}
 
@@ -616,11 +570,11 @@ tgp_child_personality.0004 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = patient }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = patient }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = impatient }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = impatient }
 			}
 			modifier = {
 				add = 100
@@ -634,7 +588,7 @@ tgp_child_personality.0004 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1043 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1043 }
 		}	
 	}
 }
@@ -681,29 +635,11 @@ tgp_child_personality.0007 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = just
-					has_trait = cynical
-					has_trait = temperate
-				}
-			}
-		}
-		modifier = {
-			add = 2
-			NOT = {
-				any_relation = {
-					type = guardian
-				}
-			}
-			court_owner.court_position:court_tutor_court_position ?= {
-				OR = {
-					has_trait = just
-					has_trait = cynical
-					has_trait = temperate
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = just }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = cynical }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = temperate }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -754,11 +690,11 @@ tgp_child_personality.0007 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = just }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = just }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = arbitrary }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = arbitrary }
 			}
 			modifier = {
 				add = 100
@@ -772,7 +708,7 @@ tgp_child_personality.0007 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1071 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1071 }
 		}	
 	}
 
@@ -788,11 +724,11 @@ tgp_child_personality.0007 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = cynical }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = cynical }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = trusting }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = trusting }
 			}
 		}
 		add_trait = cynical
@@ -800,7 +736,7 @@ tgp_child_personality.0007 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1072 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1072 }
 		}	
 	}
 
@@ -816,11 +752,11 @@ tgp_child_personality.0007 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = temperate }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = temperate }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = gluttonous }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = gluttonous }
 			}
 			modifier = {
 				add = 100
@@ -834,7 +770,7 @@ tgp_child_personality.0007 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1073 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1073 }
 		}
 	}
 	after = {
@@ -879,29 +815,11 @@ tgp_child_personality.0009 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = brave
-					has_trait = calm
-					has_trait = zealous
-				}
-			}
-		}
-		modifier = {
-			add = 2
-			NOT = {
-				any_relation = {
-					type = guardian
-				}
-			}
-			court_owner.court_position:court_tutor_court_position ?= {
-				OR = {
-					has_trait = brave
-					has_trait = calm
-					has_trait = zealous
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = brave }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = calm }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = zealous }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -941,11 +859,11 @@ tgp_child_personality.0009 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = brave }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = brave }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = craven }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = craven }
 			}
 		}
 		add_trait = brave
@@ -954,7 +872,7 @@ tgp_child_personality.0009 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1091 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1091 }
 		}
 	}
 
@@ -970,11 +888,11 @@ tgp_child_personality.0009 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = calm }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = calm }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = wrathful }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = wrathful }
 			}
 			modifier = {
 				add = 100
@@ -988,7 +906,7 @@ tgp_child_personality.0009 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1092 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1092 }
 		}
 	}
 
@@ -1004,11 +922,11 @@ tgp_child_personality.0009 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = zealous }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = zealous }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = cynical }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = cynical }
 			}
 			modifier = {
 				add = 100
@@ -1022,7 +940,7 @@ tgp_child_personality.0009 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1093 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1093 }
 		}	
 	}
 }
@@ -1089,29 +1007,11 @@ tgp_child_personality.0010 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = ambitious
-					has_trait = sadistic
-					has_trait = paranoid
-				}
-			}
-		}
-		modifier = {
-			add = 2
-			NOT = {
-				any_relation = {
-					type = guardian
-				}
-			}
-			court_owner.court_position:court_tutor_court_position ?= {
-				OR = {
-					has_trait = ambitious
-					has_trait = sadistic
-					has_trait = paranoid
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = ambitious }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = paranoid }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -1142,11 +1042,11 @@ tgp_child_personality.0010 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = ambitious }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = ambitious }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = content }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = content }
 			}
 			modifier = {
 				add = 100
@@ -1160,7 +1060,7 @@ tgp_child_personality.0010 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1101 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1101 }
 		}	
 	}
 
@@ -1177,7 +1077,7 @@ tgp_child_personality.0010 = {
 			base = 0.25
 			modifier = {
 				add = 2
-				guardian_or_court_tutor_trait = { TRAIT = sadistic }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
 			}
 			modifier = {
 				add = 500 #To be sure this happens if they're marked for it
@@ -1189,7 +1089,7 @@ tgp_child_personality.0010 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1102 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1102 }
 		}
 	}
 
@@ -1205,11 +1105,11 @@ tgp_child_personality.0010 = {
 			base = 1
 			modifier = {
 				add = 4
-				guardian_or_court_tutor_trait = { TRAIT = paranoid }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = paranoid }
 			}
 			modifier = {
 				add = -0.5
-				guardian_or_court_tutor_trait = { TRAIT = trusting }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = trusting }
 			}
 		}
 		add_trait = paranoid
@@ -1217,7 +1117,7 @@ tgp_child_personality.0010 = {
 			limit = {
 				is_ai = yes
 			}
-			guardian_or_court_tutor_trigger_event = { EVENT = tgp_child_personality.1103 }
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.1103 }
 		}	
 	}
 }
@@ -1281,14 +1181,11 @@ tgp_child_personality.7000 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = diligent
-					has_trait = gregarious
-					has_trait = temperate
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = diligent }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = gregarious }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = temperate }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -1331,19 +1228,13 @@ tgp_child_personality.7000 = {
 				is_ai = yes
 			}
 			add_character_flag = diligent
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7001
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7001 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = diligent
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = diligent }
 			}
 			modifier = {
 				add = 100
@@ -1353,10 +1244,7 @@ tgp_child_personality.7000 = {
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = lazy
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = lazy }
 			}
 		}
 	}
@@ -1375,26 +1263,17 @@ tgp_child_personality.7000 = {
 				is_ai = yes
 			}
 			add_character_flag = gregarious
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7001
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7001 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = gregarious
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = gregarious }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = shy
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = shy }
 			}
 		}
 	}
@@ -1413,26 +1292,17 @@ tgp_child_personality.7000 = {
 				is_ai = yes
 			}
 			add_character_flag = temperate
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7001
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7001 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = temperate
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = temperate }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = gluttonous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = gluttonous }
 			}
 			modifier = {
 				add = 100
@@ -1477,13 +1347,21 @@ tgp_child_personality.7300 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = eccentric
-					has_trait = gregarious
-					has_trait = compassionate
-				}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = eccentric }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = gregarious }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
+ 			}
+		}
+		modifier = {
+			add = 5
+			culture = {
+				has_cultural_parameter = compassionate_trait_more_common
+			}
+			NOR = {
+				has_trait = compassionate
+				has_trait = callous
+				has_trait = sadistic
 			}
 		}
 	}
@@ -1508,28 +1386,19 @@ tgp_child_personality.7300 = {
 				is_ai = yes
 			}
 			add_character_flag = eccentric
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7301
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7301 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = eccentric
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = eccentric }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					OR = {
-						has_trait = fickle
-						has_trait = stubborn
-					}
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = fickle }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = stubborn }
 				}
 			}
 		}
@@ -1551,28 +1420,25 @@ tgp_child_personality.7300 = {
 				is_ai = yes
 			}
 			add_character_flag = compassionate
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7301
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7301 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = compassionate
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					OR = {
-						has_trait = sadistic
-						has_trait = callous
-					}
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
+				}
+			}
+			modifier = {
+				add = 100
+				culture = {
+					has_cultural_parameter = compassionate_trait_more_common
 				}
 			}
 		}
@@ -1594,26 +1460,17 @@ tgp_child_personality.7300 = {
 				is_ai = yes
 			}
 			add_character_flag = callous
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7301
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7301 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = callous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = compassionate
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
 			}
 		}
 	}
@@ -1655,14 +1512,11 @@ tgp_child_personality.7010 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = zealous
-					has_trait = ambitious
-					has_trait = sadistic
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = zealous }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = ambitious }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -1704,26 +1558,17 @@ tgp_child_personality.7010 = {
 				is_ai = yes
 			}
 			add_character_flag = zealous
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7011
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7011 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = zealous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = zealous }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = cynical
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = cynical }
 			}
 			modifier = {
 				add = 100
@@ -1748,26 +1593,17 @@ tgp_child_personality.7010 = {
 				is_ai = yes
 			}
 			add_character_flag = ambitious
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7011
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7011 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = ambitious
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = ambitious }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = content
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = content }
 			}
 			modifier = {
 				add = 100
@@ -1793,26 +1629,17 @@ tgp_child_personality.7010 = {
 				is_ai = yes
 			}
 			add_character_flag = sadistic
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7011
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7011 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = sadistic
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = compassionate
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
 			}
 		}
 	}
@@ -1855,14 +1682,11 @@ tgp_child_personality.7020 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = shy
-					has_trait = paranoid
-					has_trait = craven
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = shy }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = paranoid }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = craven }
+ 			}
 		}
 	}
 
@@ -1890,26 +1714,17 @@ tgp_child_personality.7020 = {
 				is_ai = yes
 			}
 			add_character_flag = shy
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7021
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7021 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = shy
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = shy }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = gregarious
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = gregarious }
 			}
 		}
 	}
@@ -1928,26 +1743,17 @@ tgp_child_personality.7020 = {
 				is_ai = yes
 			}
 			add_character_flag = paranoid
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7021
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7021 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = paranoid
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = paranoid }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = trusting
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = trusting }
 			}
 		}
 	}
@@ -1966,26 +1772,17 @@ tgp_child_personality.7020 = {
 				is_ai = yes
 			}
 			add_character_flag = craven
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7021
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7021 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = craven
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = craven }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = brave
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = brave }
 			}
 		}
 	}
@@ -2032,14 +1829,11 @@ tgp_child_personality.7050 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = just
-					has_trait = greedy
-					has_trait = callous
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = just }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = greedy }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -2072,26 +1866,17 @@ tgp_child_personality.7050 = {
 				is_ai = yes
 			}
 			add_character_flag = just
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7051
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7051 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = just
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = just }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = arbitrary
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = arbitrary }
 			}
 			modifier = {
 				add = 100
@@ -2117,26 +1902,17 @@ tgp_child_personality.7050 = {
 				is_ai = yes
 			}
 			add_character_flag = greedy
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7051
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7051 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = greedy
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = greedy }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = generous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = generous }
 			}
 		}
 	}
@@ -2157,28 +1933,19 @@ tgp_child_personality.7050 = {
 				is_ai = yes
 			}
 			add_character_flag = callous
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7051
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7051 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = callous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					OR = {
-						has_trait = callous
-						has_trait = sadistic
-					}
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
 				}
 			}
 		}
@@ -2213,6 +1980,7 @@ tgp_child_personality.7200 = {
 			OR = {
 				has_trait = stubborn
 				has_trait = fickle
+				has_trait = eccentric
 			}
 			OR = {
 				has_trait = wrathful
@@ -2226,14 +1994,11 @@ tgp_child_personality.7200 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = brave
-					has_trait = stubborn
-					has_trait = wrathful
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = brave }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = stubborn }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = wrathful }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -2243,6 +2008,7 @@ tgp_child_personality.7200 = {
 			NOR = {
 				has_trait = stubborn
 				has_trait = fickle
+				has_trait = eccentric
 			}
 		}
 	}
@@ -2272,26 +2038,17 @@ tgp_child_personality.7200 = {
 				is_ai = yes
 			}
 			add_character_flag = brave
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7201
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7201 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = brave
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = brave }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = craven
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = craven }
 			}
 		}
 	}
@@ -2302,6 +2059,7 @@ tgp_child_personality.7200 = {
 			NOR = {
 				has_trait = fickle
 				has_trait = stubborn
+				has_trait = eccentric
 			}
 		}
 		add_trait = stubborn
@@ -2311,25 +2069,19 @@ tgp_child_personality.7200 = {
 				is_ai = yes
 			}
 			add_character_flag = stubborn
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7201
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7201 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = stubborn
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = stubborn }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = fickle
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = fickle }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = eccentric }
 				}
 			}
 			modifier = {
@@ -2356,26 +2108,17 @@ tgp_child_personality.7200 = {
 				is_ai = yes
 			}
 			add_character_flag = wrathful
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7201
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7201 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = wrathful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = wrathful }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = calm
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = calm }
 			}
 		}
 	}
@@ -2446,14 +2189,11 @@ tgp_child_personality.7070 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = vengeful
-					has_trait = deceitful
-					has_trait = calm
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = vengeful }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = deceitful }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = calm }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -2503,26 +2243,17 @@ tgp_child_personality.7070 = {
 				is_ai = yes
 			}
 			add_character_flag = vengeful
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7071
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7071 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = vengeful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = vengeful }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = forgiving
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = forgiving }
 			}
 			modifier = {
 				add = 100
@@ -2548,26 +2279,17 @@ tgp_child_personality.7070 = {
 				is_ai = yes
 			}
 			add_character_flag = deceitful
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7071
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7071 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = deceitful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = deceitful }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = honest
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = honest }
 			}
 		}
 	}
@@ -2587,26 +2309,17 @@ tgp_child_personality.7070 = {
 				is_ai = yes
 			}
 			add_character_flag = calm
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7071
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7071 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = calm
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = calm }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = wrathful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = wrathful }
 			}
 			modifier = {
 				add = 100
@@ -2649,12 +2362,9 @@ tgp_child_personality.7040 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = lustful
-					has_trait = chaste
-				}
+			OR = {
+				guardian_or_court_tutor_trait_trigger = { TRAIT = lustful }
+				guardian_or_court_tutor_trait_trigger = { TRAIT = chaste }
 			}
 		}
 		modifier = {
@@ -2683,26 +2393,17 @@ tgp_child_personality.7040 = {
 				is_ai = yes
 			}
 			add_character_flag = lustful
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7041
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7041 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = lustful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = lustful }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = chaste
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = chaste }
 			}
 		}
 	}
@@ -2715,26 +2416,17 @@ tgp_child_personality.7040 = {
 				is_ai = yes
 			}
 			add_character_flag = chaste
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7041
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7041 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = chaste
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = chaste }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = lustful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = lustful }
 			}
 		}
 	}
@@ -2783,14 +2475,11 @@ tgp_child_personality.7080 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = generous
-					has_trait = fickle
-					has_trait = arrogant
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = generous }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = fickle }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = arrogant }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -2829,26 +2518,17 @@ tgp_child_personality.7080 = {
 				is_ai = yes
 			}
 			add_character_flag = generous
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7081
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7081 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = generous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = generous }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = greedy
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = greedy }
 			}
 			modifier = {
 				add = 100
@@ -2865,6 +2545,7 @@ tgp_child_personality.7080 = {
 			NOR = {
 				has_trait = stubborn
 				has_trait = fickle
+				has_trait = eccentric
 			}
 		}
 		add_trait = fickle
@@ -2874,25 +2555,19 @@ tgp_child_personality.7080 = {
 				is_ai = yes
 			}
 			add_character_flag = fickle
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7081
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7081 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = fickle
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = fickle }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = stubborn
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = eccentric }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = stubborn }
 				}
 			}
 		}
@@ -2913,26 +2588,17 @@ tgp_child_personality.7080 = {
 				is_ai = yes
 			}
 			add_character_flag = arrogant
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7081
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7081 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = arrogant
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = arrogant }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = humble
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = humble }
 			}
 		}
 	}
@@ -2985,14 +2651,11 @@ tgp_child_personality.7030 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = lazy
-					has_trait = gluttonous
-					has_trait = compassionate
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = lazy }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = gluttonous }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -3045,26 +2708,17 @@ tgp_child_personality.7030 = {
 				is_ai = yes
 			}
 			add_character_flag = lazy
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7031
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7031 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = lazy
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = lazy }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = diligent
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = diligent }
 			}
 		}
 	}
@@ -3085,26 +2739,17 @@ tgp_child_personality.7030 = {
 				is_ai = yes
 			}
 			add_character_flag = gluttonous
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7031
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7031 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = gluttonous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = gluttonous }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = temperate
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = temperate }
 			}
 		}
 	}
@@ -3125,28 +2770,19 @@ tgp_child_personality.7030 = {
 				is_ai = yes
 			}
 			add_character_flag = compassionate
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7031
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7031 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = compassionate
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = compassionate }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					OR = {
-						has_trait = callous
-						has_trait = sadistic
-					}
+				OR = {
+					guardian_or_court_tutor_trait_trigger = { TRAIT = callous }
+					guardian_or_court_tutor_trait_trigger = { TRAIT = sadistic }
 				}
 			}
 			modifier = {
@@ -3202,14 +2838,11 @@ tgp_child_personality.7090 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = forgiving
-					has_trait = trusting
-					has_trait = patient
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = forgiving }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = trusting }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = patient }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -3261,26 +2894,17 @@ tgp_child_personality.7090 = {
 				is_ai = yes
 			}
 			add_character_flag = forgiving
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7091
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7091 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = forgiving
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = forgiving }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = vengeful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = vengeful }
 			}
 		}
 	}
@@ -3300,26 +2924,17 @@ tgp_child_personality.7090 = {
 				is_ai = yes
 			}
 			add_character_flag = trusting
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7091
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7091 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = trusting
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = trusting }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = paranoid
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = paranoid }
 			}
 		}
 	}
@@ -3339,26 +2954,17 @@ tgp_child_personality.7090 = {
 				is_ai = yes
 			}
 			add_character_flag = patient
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7091
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7091 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = patient
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = patient }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = impatient
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = impatient }
 			}
 			modifier = {
 				add = 100
@@ -3414,14 +3020,11 @@ tgp_child_personality.7060 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = humble
-					has_trait = cynical
-					has_trait = content
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = humble }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = cynical }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = content }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -3470,26 +3073,17 @@ tgp_child_personality.7060 = {
 				is_ai = yes
 			}
 			add_character_flag = humble
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7061
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7061 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = humble
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = humble }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = arrogant
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = arrogant }
 			}
 			modifier = {
 				add = 100
@@ -3515,26 +3109,17 @@ tgp_child_personality.7060 = {
 				is_ai = yes
 			}
 			add_character_flag = cynical
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7061
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7061 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = cynical
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = cynical }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = zealous
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = zealous }
 			}
 		}
 	}
@@ -3554,26 +3139,17 @@ tgp_child_personality.7060 = {
 				is_ai = yes
 			}
 			add_character_flag = content
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7061
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7061 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = content
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = content }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = ambitious
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = ambitious }
 			}
 			modifier = {
 				add = 100
@@ -3648,14 +3224,11 @@ tgp_child_personality.7100 = {
 		base = 1
 		modifier = {
 			add = 2
-			any_relation = {
-				type = guardian
-				OR = {
-					has_trait = honest
-					has_trait = arbitrary
-					has_trait = impatient
-				}
-			}
+			OR = {
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = honest }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = arbitrary }
+ 				guardian_or_court_tutor_trait_trigger = { TRAIT = impatient }
+ 			}
 		}
 		modifier = {
 			add = 5
@@ -3689,26 +3262,17 @@ tgp_child_personality.7100 = {
 				is_ai = yes
 			}
 			add_character_flag = honest
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7101
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7101 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = honest
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = honest }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = deceitful
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = deceitful }
 			}
 			modifier = {
 				add = 100
@@ -3734,26 +3298,17 @@ tgp_child_personality.7100 = {
 				is_ai = yes
 			}
 			add_character_flag = arbitrary
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7101
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7101 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = arbitrary
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = arbitrary }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = just
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = just }
 			}
 		}
 	}
@@ -3773,26 +3328,17 @@ tgp_child_personality.7100 = {
 				is_ai = yes
 			}
 			add_character_flag = impatient
-			random_relation = {
-				type = guardian
-				trigger_event = tgp_child_personality.7101
-			}
+			guardian_or_court_tutor_trigger_event_effect = { EVENT = tgp_child_personality.7101 }
 		}
 		ai_chance = {
 			base = 1
 			modifier = {
 				add = 4
-				any_relation = {
-					type = guardian
-					has_trait = impatient
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = impatient }
 			}
 			modifier = {
 				add = -0.5
-				any_relation = {
-					type = guardian
-					has_trait = patient
-				}
+				guardian_or_court_tutor_trait_trigger = { TRAIT = patient }
 			}
 		}
 	}
@@ -3870,7 +3416,7 @@ tgp_child_personality.1021 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -3892,7 +3438,7 @@ tgp_child_personality.1021 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -3953,7 +3499,7 @@ tgp_child_personality.1022 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -3975,7 +3521,7 @@ tgp_child_personality.1022 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4046,7 +3592,7 @@ tgp_child_personality.1023 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4074,7 +3620,7 @@ tgp_child_personality.1023 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4129,7 +3675,7 @@ tgp_child_personality.1031 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4151,7 +3697,7 @@ tgp_child_personality.1031 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4206,7 +3752,7 @@ tgp_child_personality.1032 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4228,7 +3774,7 @@ tgp_child_personality.1032 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4283,7 +3829,7 @@ tgp_child_personality.1033 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4305,7 +3851,7 @@ tgp_child_personality.1033 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4378,7 +3924,7 @@ tgp_child_personality.1041 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4400,7 +3946,7 @@ tgp_child_personality.1041 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4471,7 +4017,7 @@ tgp_child_personality.1042 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4493,7 +4039,7 @@ tgp_child_personality.1042 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4554,7 +4100,7 @@ tgp_child_personality.1043 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4576,7 +4122,7 @@ tgp_child_personality.1043 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4638,7 +4184,7 @@ tgp_child_personality.1071 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4660,7 +4206,7 @@ tgp_child_personality.1071 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4721,7 +4267,7 @@ tgp_child_personality.1072 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4743,7 +4289,7 @@ tgp_child_personality.1072 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4805,7 +4351,7 @@ tgp_child_personality.1073 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4827,7 +4373,7 @@ tgp_child_personality.1073 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4889,7 +4435,7 @@ tgp_child_personality.1091 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4911,7 +4457,7 @@ tgp_child_personality.1091 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4972,7 +4518,7 @@ tgp_child_personality.1092 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -4994,7 +4540,7 @@ tgp_child_personality.1092 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5055,7 +4601,7 @@ tgp_child_personality.1093 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5077,7 +4623,7 @@ tgp_child_personality.1093 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5144,7 +4690,7 @@ tgp_child_personality.1101 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5166,7 +4712,7 @@ tgp_child_personality.1101 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5231,7 +4777,7 @@ tgp_child_personality.1102 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5253,7 +4799,7 @@ tgp_child_personality.1102 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5316,7 +4862,7 @@ tgp_child_personality.1103 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5339,7 +4885,7 @@ tgp_child_personality.1103 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5464,7 +5010,7 @@ tgp_child_personality.7001 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5497,7 +5043,7 @@ tgp_child_personality.7001 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5530,7 +5076,7 @@ tgp_child_personality.7001 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5674,7 +5220,7 @@ tgp_child_personality.7011 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5707,7 +5253,7 @@ tgp_child_personality.7011 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5741,7 +5287,7 @@ tgp_child_personality.7011 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5885,7 +5431,7 @@ tgp_child_personality.7021 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5918,7 +5464,7 @@ tgp_child_personality.7021 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -5951,7 +5497,7 @@ tgp_child_personality.7021 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6095,7 +5641,7 @@ tgp_child_personality.7031 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6128,7 +5674,7 @@ tgp_child_personality.7031 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6162,7 +5708,7 @@ tgp_child_personality.7031 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6277,7 +5823,7 @@ tgp_child_personality.7041 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6303,7 +5849,7 @@ tgp_child_personality.7041 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6440,7 +5986,7 @@ tgp_child_personality.7051 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6473,7 +6019,7 @@ tgp_child_personality.7051 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6507,7 +6053,7 @@ tgp_child_personality.7051 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6652,7 +6198,7 @@ tgp_child_personality.7061 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6685,7 +6231,7 @@ tgp_child_personality.7061 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6718,7 +6264,7 @@ tgp_child_personality.7061 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6862,7 +6408,7 @@ tgp_child_personality.7071 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6895,7 +6441,7 @@ tgp_child_personality.7071 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -6928,7 +6474,7 @@ tgp_child_personality.7071 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7072,7 +6618,7 @@ tgp_child_personality.7081 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7099,13 +6645,14 @@ tgp_child_personality.7081 = {
 				NOR = {
 					has_trait = fickle
 					has_trait = stubborn
+					has_trait = eccentric
 				}
 			}
 		}
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7138,7 +6685,7 @@ tgp_child_personality.7081 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7282,7 +6829,7 @@ tgp_child_personality.7091 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7315,7 +6862,7 @@ tgp_child_personality.7091 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7348,7 +6895,7 @@ tgp_child_personality.7091 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7492,7 +7039,7 @@ tgp_child_personality.7101 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7525,7 +7072,7 @@ tgp_child_personality.7101 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7558,7 +7105,7 @@ tgp_child_personality.7101 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7702,7 +7249,7 @@ tgp_child_personality.7201 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7729,13 +7276,14 @@ tgp_child_personality.7201 = {
 				NOR = {
 					has_trait = stubborn
 					has_trait = fickle
+					has_trait = eccentric
 				}
 			}
 		}
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7768,7 +7316,7 @@ tgp_child_personality.7201 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7907,7 +7455,7 @@ tgp_child_personality.7301 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7939,7 +7487,7 @@ tgp_child_personality.7301 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {
@@ -7971,7 +7519,7 @@ tgp_child_personality.7301 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = child_trait_change_stress_penalty
 		}
 		scope:child = {

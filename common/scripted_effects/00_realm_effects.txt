@@ -2,117 +2,56 @@
 #####################################################################
 # EFFECT LIST
 #####################################################################
-
-increase_crown_authority_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_crown_authority }
-		#Laws
-		if = {
-			limit = { has_realm_law = crown_authority_0 }
-			add_realm_law = crown_authority_1
+change_authority_effect = {
+	switch = {
+		trigger = has_realm_law_in_group
+		celestial_bureaucracy = {
+			change_realm_law_level = {
+				law_group = celestial_bureaucracy
+				change = $CHANGE$
+			}
 		}
-		else_if = {
-			limit = { has_realm_law = crown_authority_1 }
-			add_realm_law = crown_authority_2
+		imperial_bureaucracy = {
+			change_realm_law_level = {
+				law_group = imperial_bureaucracy
+				change = $CHANGE$
+			}
 		}
-		else_if = {
-			limit = { has_realm_law = crown_authority_2 }
-			add_realm_law = crown_authority_3
+		japanese_bureaucracy = {
+			change_realm_law_level = {
+				law_group = japanese_bureaucracy
+				change = $CHANGE$
+			}
 		}
-	}
-}
-
-decrease_crown_authority_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_crown_authority }
-		#Laws
-		if = {
-			limit = { has_realm_law = crown_authority_3 }
-			add_realm_law = crown_authority_2
+		meritocratic_bureaucracy = {
+			change_realm_law_level = {
+				law_group = meritocratic_bureaucracy
+				change = $CHANGE$
+			}
 		}
-		else_if = {
-			limit = { has_realm_law = crown_authority_2 }
-			add_realm_law = crown_authority_1
+		crown_authority = {
+			change_realm_law_level = {
+				law_group = crown_authority
+				change = $CHANGE$
+			}
 		}
-		else_if = {
-			limit = { has_realm_law = crown_authority_1 }
-			add_realm_law = crown_authority_0
+		tribal_authority = {
+			change_realm_law_level = {
+				law_group = tribal_authority
+				change = $CHANGE$
+			}
 		}
-	}
-}
-
-increase_tribal_authority_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_tribal_authority }
-		#Laws
-		if = {
-			limit = { has_realm_law = tribal_authority_0 }
-			add_realm_law = tribal_authority_1
+		nomadic_authority = {
+			change_realm_law_level = {
+				law_group = nomadic_authority
+				change = $CHANGE$
+			}
 		}
-		else_if = {
-			limit = { has_realm_law = tribal_authority_1 }
-			add_realm_law = tribal_authority_2
-		}
-		else_if = {
-			limit = { has_realm_law = tribal_authority_2 }
-			add_realm_law = tribal_authority_3
-		}
-	}
-}
-
-decrease_tribal_authority_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_tribal_authority }
-		#Laws
-		if = {
-			limit = { has_realm_law = tribal_authority_3 }
-			add_realm_law = tribal_authority_2
-		}
-		else_if = {
-			limit = { has_realm_law = tribal_authority_2 }
-			add_realm_law = tribal_authority_1
-		}
-		else_if = {
-			limit = { has_realm_law = tribal_authority_1 }
-			add_realm_law = tribal_authority_0
-		}
-	}
-}
-
-increase_imperial_bureaucracy_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_imperial_bureaucracy }
-		#Laws
-		if = {
-			limit = { has_realm_law = imperial_bureaucracy_0 }
-			add_realm_law = imperial_bureaucracy_1
-		}
-		else_if = {
-			limit = { has_realm_law = imperial_bureaucracy_1 }
-			add_realm_law = imperial_bureaucracy_2
-		}
-		else_if = {
-			limit = { has_realm_law = imperial_bureaucracy_2 }
-			add_realm_law = imperial_bureaucracy_3
-		}
-	}
-}
-
-decrease_imperial_bureaucracy_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_imperial_bureaucracy }
-		#Laws
-		if = {
-			limit = { has_realm_law = imperial_bureaucracy_3 }
-			add_realm_law = imperial_bureaucracy_2
-		}
-		else_if = {
-			limit = { has_realm_law = imperial_bureaucracy_2 }
-			add_realm_law = imperial_bureaucracy_1
-		}
-		else_if = {
-			limit = { has_realm_law = imperial_bureaucracy_1 }
-			add_realm_law = imperial_bureaucracy_0
+		church_authority = {
+			change_realm_law_level = {
+				law_group = church_authority
+				change = $CHANGE$
+			}
 		}
 	}
 }
@@ -142,44 +81,6 @@ remove_vassal_directives = {
 	remove_character_flag = vassal_directive_raid_herd_intent
 }
 
-increase_nomadic_authority_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_nomadic_authority }
-		#Laws
-		if = {
-			limit = { has_realm_law = nomadic_authority_1 }
-			add_realm_law = nomadic_authority_2
-		}
-		else_if = {
-			limit = { has_realm_law = nomadic_authority_2 }
-			add_realm_law = nomadic_authority_3
-		}
-		else_if = {
-			limit = { has_realm_law = nomadic_authority_3 }
-			add_realm_law = nomadic_authority_4
-		}
-	}
-}
-
-decrease_nomadic_authority_effect = {
-	if = {
-		limit = { has_realm_law_flag = uses_nomadic_authority }
-		#Laws
-		if = {
-			limit = { has_realm_law = nomadic_authority_4 }
-			add_realm_law = nomadic_authority_3
-		}
-		else_if = {
-			limit = { has_realm_law = nomadic_authority_3 }
-			add_realm_law = nomadic_authority_2
-		}
-		else_if = {
-			limit = { has_realm_law = nomadic_authority_2 }
-			add_realm_law = nomadic_authority_1
-		}
-	}
-}
-
 # Should be used in the county title scope
 add_law_of_the_land_title_succession_law_if_appropriate_effect = {
 	save_scope_as = county_title
@@ -188,13 +89,11 @@ add_law_of_the_land_title_succession_law_if_appropriate_effect = {
 			#tier = tier_county # Commented out for performance reasons, comment back in if this effect is used outside of on_title_gained
 			NOT = { has_title_law = law_of_the_land_succession_law }
 			is_noble_family_title = no
-			title_province ?= {
-				holding_type = {
-					has_required_heir_governments = yes
-					NOT = {
-						any_required_heir_government_type = {
-							this = scope:county_title.holder.government_type
-						}
+			title_province.holding_type ?= {
+				has_required_heir_governments = yes
+				NOT = {
+					any_required_heir_government_type = {
+						this = scope:county_title.holder.government_type
 					}
 				}
 			}

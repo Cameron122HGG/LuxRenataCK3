@@ -776,18 +776,63 @@ middle_europe_decisions.0013 = {
 middle_europe_decisions.0015 = {
 	type = character_event
 	title = middle_europe_decisions.0015.t
-	desc = middle_europe_decisions.0015.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:hre_blessing_authority }
+				desc = middle_europe_decisions.0015.desc
+			}
+			desc = middle_europe_decisions.0015.desc.unblessed
+		}
+	}
 	theme = realm
 	left_portrait =	{
 		character = scope:founder
 		animation = personality_bold
 	}
+	artifact = {
+		target = scope:newly_created_artifact
+		position = lower_right_portrait
+	}
 
 	immediate = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		restore_holy_roman_empire_decision_scripted_effect = yes
+		custom_tooltip = hre_elector_list_created_tt
 		legend_seed_new_title_effect = yes
 		create_artifact_reichskrone_effect = { OWNER = this }
+		if = {
+			limit = {
+				has_pam_dlc_trigger = yes
+				exists = scope:hre_blessing_authority
+				religion = religion:christianity_religion
+				situation:the_christian_church ?= {
+					situation_top_has_catalyst = catalyst_restore_hre_with_pope_blessing
+				}
+			}
+			situation:the_christian_church = {
+				trigger_situation_catalyst = {
+					catalyst = catalyst_restore_hre_with_pope_blessing
+					character = root
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_pam_dlc_trigger = yes
+				NOT = { exists = scope:hre_blessing_authority }
+				religion = religion:christianity_religion
+				situation:the_christian_church ?= {
+					situation_top_has_catalyst = catalyst_the_christian_church_restored_hre_without_blessing
+				}
+			}
+			situation:the_christian_church = {
+				trigger_situation_catalyst = {
+					catalyst = catalyst_the_christian_church_restored_hre_without_blessing
+					character = root
+				}
+			}
+		}
 	}
 
 	#Renovatio Imperii!
@@ -796,11 +841,15 @@ middle_europe_decisions.0015 = {
 		give_nickname = nick_the_great
 		add_prestige_experience = monumental_fame_gain
 		every_vassal = {
+			custom = custom_every_rightful_vassal
+			limit = {
+				save_temporary_scope_as = vassal_temp
+				root = { is_rightful_liege_of = scope:vassal_temp }
+			}
 			add_opinion = {
 				modifier = reformed_holy_roman_empire_opinion
 				target = root
 			}
-			custom = restore_holy_roman_empire_decision_effects_vassal_opinion.tt
 		}
 		ai_chance = {	#When taken, the AI should always pick this.
 			base = 100
@@ -820,7 +869,15 @@ middle_europe_decisions.0015 = {
 middle_europe_decisions.0016 = {
 	type = character_event
 	title = middle_europe_decisions.0015.t
-	desc = middle_europe_decisions.0016.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:hre_blessing_authority }
+				desc = middle_europe_decisions.0016.desc
+			}
+			desc = middle_europe_decisions.0016.desc.unblessed
+		}
+	}
 	theme = realm
 	left_portrait =	{
 		character = scope:founder
@@ -830,7 +887,7 @@ middle_europe_decisions.0016 = {
 	immediate = {
 		#Other emperors are not happy about this.
 		if = {
-			limit = { highest_held_title_tier = tier_empire }
+			limit = { highest_held_title_tier >= tier_empire }
 			play_music_cue = "mx_cue_combat_2"
 		}
 	}
@@ -839,19 +896,19 @@ middle_europe_decisions.0016 = {
 	option = {
 		name = {	#Other emperors are threatened.
 			trigger = {
-				highest_held_title_tier = tier_empire
-				NOT = { has_title = title:e_byzantium }
+				highest_held_title_tier >= tier_empire
+				is_roman_emperor_trigger = no
 			}
 			text = middle_europe_decisions.0016.a
 		}
 		name = {	#The true emperor is a tad pissed off.
-			trigger = { has_title = title:e_byzantium }
+			trigger = { is_roman_emperor_trigger = yes }
 			text = middle_europe_decisions.0016.b
 		}
 		name = {	#All other rulers fear Roman invasion.
 			trigger = {
 				NOR = {
-					highest_held_title_tier = tier_empire
+					highest_held_title_tier >= tier_empire
 					any_liege_or_above = { this = scope:founder }
 				}
 			}

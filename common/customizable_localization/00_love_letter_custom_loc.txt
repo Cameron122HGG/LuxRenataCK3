@@ -209,11 +209,11 @@ love_letter_section_1_part_1 = {
 				OR = {
 					has_trait = gallant
 					trigger_if = {
-						limit = { faith = { has_doctrine = doctrine_gender_female_dominated } }
+						limit = { rite = { rite_has_doctrine = doctrine_gender_female_dominated } }
 						is_female = yes
 					}
 					trigger_else_if = {
-						limit = { faith = { has_doctrine = doctrine_gender_male_dominated } }
+						limit = { rite = { rite_has_doctrine = doctrine_gender_male_dominated } }
 						is_male = yes
 					}
 					trigger_else = {
@@ -427,6 +427,14 @@ love_letter_section_1_part_1 = {
 	text = {
 		localization_key = ll_caress
 	}
+
+	text = { # Pairs with ll_better_than_wine to echo the Song of Songs
+		trigger = {
+			scope:second = { is_female = yes }
+			var:love_letter_quality >= 3
+		}
+		localization_key = ll_your_breasts
+	}
 }
 
 
@@ -514,6 +522,13 @@ love_letter_section_1_part_2 = {
 	text = {
 		trigger = { var:love_letter_quality <= 2 }
 		localization_key = ll_better_than_ham
+	}
+
+	text = { # The refined counterpart to ll_better_than_ham
+		trigger = {
+			var:love_letter_quality >= 3
+		}
+		localization_key = ll_better_than_wine
 	}
 }
 
@@ -1022,6 +1037,11 @@ love_letter_compliment_system_section_1_part_1 = {
 		trigger = { var:love_letter_compliment_type = flag:strong }
 		localization_key = ll_cs_s1p1_strong
 	}
+
+	text = {
+		trigger = { var:love_letter_compliment_type = flag:rational }
+		localization_key = ll_cs_s1p1_rational
+	}
 }
 
 
@@ -1083,6 +1103,11 @@ love_letter_compliment_system_section_2_part_2 = {
 	text = {
 		trigger = { var:love_letter_compliment_type = flag:strong }
 		localization_key = ll_cs_s2p2_strong
+	}
+
+	text = {
+		trigger = { var:love_letter_compliment_type = flag:rational }
+		localization_key = ll_cs_s2p2_rational
 	}
 }
 

@@ -250,19 +250,17 @@ scripted_effect ce1_dec_1000_integrate = {
 	# Hegemonies suck, find an empire within your hegemony that borders the kingdom
 	else_if = {
 		limit = {
-			root.primary_title = {
-				tier = tier_hegemony
-				any_in_de_jure_hierarchy = {
-					tier = tier_empire
-					any_title_to_title_neighboring_and_across_water_kingdom = { this = $KINGDOM$ }
-				}
-			}
+			root.primary_title.tier = tier_hegemony
 		}
 		root.primary_title = {
 			random_in_de_jure_hierarchy = {
 				limit = {
 					tier = tier_empire
 					any_title_to_title_neighboring_and_across_water_kingdom = { this = $KINGDOM$ }
+				}
+				# otherwise don't make an invalid decision that actually do nothing!
+				alternative_limit = {
+					is_landless_type_title = no
 				}
 				$KINGDOM$ = {
 					set_de_jure_liege_title = prev
@@ -392,7 +390,7 @@ ce1_decision_events.1000 = {
 				first_valid = {
 					triggered_desc = {
 						trigger = {
-							primary_title.tier = tier_empire
+							primary_title.tier >= tier_empire
 						}
 						desc = ce1_decision_events.1000.a.empire
 					}
@@ -417,7 +415,7 @@ ce1_decision_events.1000 = {
 				first_valid = {
 					triggered_desc = {
 						trigger = {
-							primary_title.tier = tier_empire
+							primary_title.tier >= tier_empire
 						}
 						desc = ce1_decision_events.1000.b.empire
 					}
@@ -442,7 +440,7 @@ ce1_decision_events.1000 = {
 				first_valid = {
 					triggered_desc = {
 						trigger = {
-							primary_title.tier = tier_empire
+							primary_title.tier >= tier_empire
 						}
 						desc = ce1_decision_events.1000.c.empire
 					}

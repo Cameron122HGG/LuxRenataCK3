@@ -82,6 +82,7 @@ travel_events.4000 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = mystic_scope
 			after_creation = {
@@ -129,7 +130,7 @@ travel_events.4000 = {
 				}
 			}
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			greedy = minor_stress_impact_gain
 			cynical = minor_stress_impact_gain
 		}
@@ -145,14 +146,14 @@ travel_events.4000 = {
 	option = {
 		trigger = {
 			OR = {
-				root.faith = {
+				root.rite = {
 					NOR = {
-						has_doctrine_parameter = witchcraft_illegal
-						has_doctrine_parameter = witchcraft_shunned
+						rite_has_parameter = witchcraft_illegal
+						rite_has_parameter = witchcraft_shunned
 					}
 				}
 				is_witch_trigger = yes
-				root.faith = { trait_is_virtue = lifestyle_mystic }
+				root.rite = { trait_is_virtue_rite = lifestyle_mystic }
 				NOT = { scope:mystic_scope = { has_trait = witch } }
 			}
 			NOR = {
@@ -176,10 +177,21 @@ travel_events.4000 = {
 				value = lifestyle_mystic_xp_gain_minor_value
 			}
 		}
-		stress_impact = {
-			lifestyle_mystic = minor_stress_impact_loss
-			paranoid = medium_stress_impact_gain
-			cynical = medium_stress_impact_gain
+		if = {
+			limit = { scope:mystic_scope = { has_trait = witch } }
+			pam_witch_embrace_fulfillment_effect = yes
+			stress_impact = {
+				lifestyle_mystic = minor_stress_impact_loss
+				paranoid = medium_stress_impact_gain
+				cynical = medium_stress_impact_gain
+			}
+		}
+		else = {
+			stress_and_fulfillment_impact = {
+				lifestyle_mystic = minor_stress_impact_loss
+				paranoid = medium_stress_impact_gain
+				cynical = medium_stress_impact_gain
+			}
 		}
 		ai_chance = {
 			base = 100
@@ -192,13 +204,13 @@ travel_events.4000 = {
 			}
 			modifier = {
 				add = -50
-				faith = {
+				rite = {
 					OR = {
-						has_doctrine_parameter = witchcraft_illegal
-						has_doctrine_parameter = witchcraft_shunned
+						rite_has_parameter = witchcraft_illegal
+						rite_has_parameter = witchcraft_shunned
 					}
 					OR = {
-						NOT = { trait_is_virtue = lifestyle_mystic }
+						NOT = { trait_is_virtue_rite = lifestyle_mystic }
 						scope:mystic_scope = { has_trait = witch }
 					}
 				}
@@ -216,7 +228,7 @@ travel_events.4000 = {
 	#Pass them by
 	option = {
 		name = travel_events.4000.c
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			paranoid = minor_stress_impact_gain
 			zealous = minor_stress_impact_gain
 			gregarious = minor_stress_impact_gain
@@ -232,16 +244,14 @@ travel_events.4000 = {
 	option = {
 		name = travel_events.4000.d
 		trigger = {
-			root.faith = {
-				OR = {
-					has_doctrine_parameter = witchcraft_illegal
-					has_doctrine_parameter = witchcraft_shunned
-				}
+			OR = {
+				root.rite = { rite_has_parameter = witchcraft_illegal }
+				root.rite = { rite_has_parameter = witchcraft_shunned }
 			}
 			NOT = { is_witch_trigger = yes }
 			OR = {
 				NOT = {
-					root.faith = { trait_is_virtue = lifestyle_mystic }
+					root.rite = { trait_is_virtue_rite = lifestyle_mystic }
 				}
 				scope:mystic_scope = { has_trait = witch }
 			}
@@ -260,12 +270,22 @@ travel_events.4000 = {
 		}
 		add_piety = minor_piety_gain
 		add_dread = minor_dread_gain
-		stress_impact = {
-			base = minor_stress_impact_gain
-			sadistic = medium_stress_impact_loss
-			zealous = minor_stress_impact_loss
-			wrathful = minor_stress_impact_loss
-			compassionate = major_stress_impact_gain
+		if = {
+			limit = { scope:mystic_scope = { has_trait = witch } }
+			pam_witch_justice_fulfillment_effect = yes
+			stress_and_fulfillment_impact = {
+				base = minor_stress_impact_gain
+				compassionate = major_stress_impact_gain
+			}
+		}
+		else = {
+			stress_and_fulfillment_impact = {
+				base = minor_stress_impact_gain
+				sadistic = medium_stress_impact_loss
+				zealous = minor_stress_impact_loss
+				wrathful = minor_stress_impact_loss
+				compassionate = major_stress_impact_gain
+			}
 		}
 		ai_chance = {
 			base = 100
@@ -318,6 +338,7 @@ travel_events.4001 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = loyal_fan_scope
 			after_creation = {
@@ -342,7 +363,7 @@ travel_events.4001 = {
 		root.current_travel_plan = {
 			add_companion = scope:loyal_fan_scope
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			arrogant = minor_stress_impact_loss
 			paranoid = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -362,7 +383,7 @@ travel_events.4001 = {
 	option = {
 		name = travel_events.4001.b
 		remove_short_term_gold = tiny_gold_value
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			generous = minor_stress_impact_loss
 			profligate = minor_stress_impact_loss
 			greedy = medium_stress_impact_gain
@@ -392,7 +413,7 @@ travel_events.4001 = {
 		scope:loyal_fan_scope = {
 			increase_wounds_no_death_effect = { REASON = fight }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_gain
 			sadistic = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
@@ -490,6 +511,7 @@ travel_events.4002 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = local_beauty_scope
 			after_creation = {
@@ -528,7 +550,7 @@ travel_events.4002 = {
 			add_stress = medium_stress_gain
 		}
 		else = {
-			stress_impact = {   
+			stress_and_fulfillment_impact = {   
 				lustful = medium_stress_impact_loss
 				rakish = medium_stress_impact_loss
 				seducer = medium_stress_impact_loss
@@ -580,7 +602,7 @@ travel_events.4002 = {
 			add_companion = scope:local_beauty_scope
 		}
 		make_concubine = scope:local_beauty_scope
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			lustful = medium_stress_impact_loss
 			paranoid = medium_stress_impact_gain
 			chaste = medium_stress_impact_gain
@@ -623,7 +645,7 @@ travel_events.4002 = {
 			marry = scope:local_beauty_scope
 		}
 		else = { marry_matrilineal = scope:local_beauty_scope }
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			eccentric = major_stress_impact_loss
 			lustful = medium_stress_impact_loss
 			paranoid = medium_stress_impact_gain
@@ -649,14 +671,9 @@ travel_events.4002 = {
 	option = {
 		name = travel_events.4002.d
 		scope:local_beauty_scope = {
-			if = {
-				limit = {
-					root = { is_ai = yes }
-				}
-				silent_disappearance_effect = yes
-			}
+			silent_disappearance_ai_if_created_effect = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lustful = medium_stress_impact_gain
 			gregarious = minor_stress_impact_gain
 		}
@@ -673,7 +690,10 @@ travel_events.4002 = {
 	}
 	after = {
 		scope:local_beauty_scope = {
-			silent_disappearance_ai_if_created_effect = yes
+			if = {
+				limit = { is_alive = yes }
+				remove_character_flag = created
+			}
 		}
 	}
 }
@@ -809,6 +829,7 @@ travel_events.4003 = {
 				location = root.location
 				culture = scope:pirate_county_scope.culture
 				faith = scope:pirate_county_scope.faith
+				rite = scope:pirate_county_scope.rite
 				#Set up the scope
 				save_scope_as = viking_scope
 				after_creation = {
@@ -840,6 +861,7 @@ travel_events.4003 = {
 				location = root.location
 				culture = scope:pirate_county_scope.culture
 				faith = scope:pirate_county_scope.faith
+				rite = scope:pirate_county_scope.rite
 				#Set up the scope
 				save_scope_as = viking_scope
 				after_creation = {
@@ -853,6 +875,7 @@ travel_events.4003 = {
 				location = root.location
 				culture = root.culture
 				faith = root.faith
+				rite = root.rite
 				#Set up the scope
 				save_scope_as = viking_scope
 				after_creation = {
@@ -944,7 +967,7 @@ travel_events.4003 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			calm = medium_stress_impact_gain
 			craven = major_stress_impact_gain
 		}
@@ -963,7 +986,7 @@ travel_events.4003 = {
 	option = {
 		name = travel_events.4003.b
 		remove_short_term_gold = medium_gold_value
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			greedy = medium_stress_impact_gain
 			wrathful = medium_stress_impact_gain
 			brave = medium_stress_impact_gain
@@ -1035,7 +1058,7 @@ travel_events.4003 = {
 				}
 			}
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			arrogant = medium_stress_impact_gain
 			brave = medium_stress_impact_gain
 		}
@@ -1111,7 +1134,7 @@ travel_events.4003 = {
 				}
 			}
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			greedy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -1183,6 +1206,7 @@ travel_events.4004 = {
 			location = root.location
 			culture = scope:fishermen_county_scope.culture
 			faith = scope:fishermen_county_scope.faith
+			rite = scope:fishermen_county_scope.rite
 			#Set up the scope
 			save_scope_as = fisherman_scope
 			after_creation = {
@@ -1200,7 +1224,7 @@ travel_events.4004 = {
 				months = 2
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
 			wrathful = medium_stress_impact_gain
@@ -1254,7 +1278,7 @@ travel_events.4004 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			vengeful = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			wrathful = minor_stress_impact_loss
@@ -1291,7 +1315,7 @@ travel_events.4004 = {
 	# Just go by without bothering the fishermen
 	option = {
 		name = travel_events.4004.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 		}
 		ai_chance = {
@@ -1378,6 +1402,7 @@ travel_events.4005 = {
 				location = root.location
 				culture = scope:merchant_base_scope.culture
 				faith = scope:merchant_base_scope.faith
+				rite = scope:merchant_base_scope.rite
 				#Set up the scope
 				save_scope_as = merchant_character_scope
 				after_creation = {
@@ -1478,7 +1503,7 @@ travel_events.4005 = {
 			remove_short_term_gold = medium_gold_value
 		}
 		scope:merchant_artifact_scope = { set_owner = root }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			generous = medium_stress_impact_loss
 			greedy = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
@@ -1530,7 +1555,7 @@ travel_events.4005 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
 			compassionate = medium_stress_impact_gain
@@ -1563,7 +1588,7 @@ travel_events.4005 = {
 	# Just go by without buying anything
 	option = {
 		name = travel_events.4005.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			generous = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -1582,16 +1607,8 @@ travel_events.4005 = {
 				}
 				destroy_artifact = scope:merchant_artifact_scope
 			}
-			if = {
-				limit = { is_ai = yes }
-				scope:merchant_character_scope = {
-					if = {
-						limit = {
-							root = { is_ai = yes }
-						}
-						silent_disappearance_effect = yes
-					}
-				}
+			scope:merchant_character_scope = {
+				silent_disappearance_ai_if_created_effect = yes
 			}
 		}
 	}
@@ -1680,13 +1697,15 @@ travel_events.4006 = {
 				years = 2
 			}
 		}
-		change_current_weight = -10
+		hidden_effect = {
+			change_current_weight = -10
+		}
 		progress_towards_friend_effect = {
 			REASON = friend_listened_to_advice
 			CHARACTER = scope:superstituous_caravan_member
 			OPINION = default_friend_opinion
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_gain
 			vengeful = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
@@ -1887,7 +1906,7 @@ travel_events.4007 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			brave = medium_stress_impact_gain
 		}
@@ -1905,7 +1924,7 @@ travel_events.4007 = {
 	# Take the helm yourself!
 	option = {
 		name = travel_events.4007.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = minor_stress_impact_loss
 			craven = medium_stress_impact_gain
 		}
@@ -1993,7 +2012,7 @@ travel_events.4007 = {
 			}
 		}
 		add_prestige = minor_prestige_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			brave = medium_stress_impact_gain
 		}
@@ -2087,7 +2106,7 @@ travel_events.4008 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			craven = medium_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 		}
@@ -2105,7 +2124,7 @@ travel_events.4008 = {
 	# Ignore it
 	option = {
 		name = travel_events.4008.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			brave = medium_stress_impact_gain
 			curious = medium_stress_impact_gain
@@ -2209,6 +2228,7 @@ travel_events.4011 = {
 			location = root.location
 			culture = scope:nearby_coast_scope.culture
 			faith = scope:nearby_coast_scope.faith
+			rite = scope:nearby_coast_scope.rite
 			#Set up the scope
 			save_scope_as = castaway_scope
 			after_creation = {
@@ -2221,7 +2241,7 @@ travel_events.4011 = {
 		name = travel_events.4011.a
 		add_piety = minor_piety_value
 		add_gold = minor_gold_value
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = minor_stress_impact_gain
 			callous = minor_stress_impact_gain
 			sadistic = medium_stress_impact_gain
@@ -2235,7 +2255,7 @@ travel_events.4011 = {
 			add_companion = scope:castaway_scope
 		}
 		add_gold = minor_gold_value
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = minor_stress_impact_gain
 			callous = minor_stress_impact_gain
 			paranoid = medium_stress_impact_gain
@@ -2245,7 +2265,7 @@ travel_events.4011 = {
 	# Abandon them there
 	option = {
 		name = travel_events.4011.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = minor_stress_impact_loss
 			paranoid = minor_stress_impact_loss
 			sadistic = medium_stress_impact_loss
@@ -2301,6 +2321,7 @@ travel_events.4012 = {
 			location = root.location
 			culture = root.location.county.culture # They should look like a local
 			faith = root.faith
+			rite = root.rite
 			dynasty = none
 			#Set up the scope
 			save_scope_as = feral_child_scope
@@ -2378,7 +2399,7 @@ travel_events.4012 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			paranoid = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
 		}
@@ -2408,7 +2429,7 @@ travel_events.4012 = {
 				silent_disappearance_effect = yes
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -2466,7 +2487,7 @@ travel_events.4012 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_gain
 			sadistic = medium_stress_impact_loss
 			zealous = minor_stress_impact_loss
@@ -2525,46 +2546,23 @@ travel_events.4013 = {
 	# Adopt them as your child
 	option = {
 		name = travel_events.4013.a
-		if = {
-			limit = {
-				exists = dynasty
-				dynasty.dynast = root
-				NOT = {
-					culture = {
-						has_cultural_tradition = tradition_tgp_japanese_houses
-					}
-				}
+		trigger = {
+			NOT = { 
+				has_game_rule = no_adoption
 			}
-			dynasty = { add_dynasty_prestige = major_dynasty_prestige_loss }
 		}
-		else_if = {
-			limit = {
-				NOT = {
-					culture = {
-						has_cultural_tradition = tradition_tgp_japanese_houses
-					}
-				}
-			}				
-			add_prestige = massive_prestige_loss
+		adopt_effect = {
+			CHILD = scope:feral_child_scope
+			ADOPTER = root
 		}
 		if = {
-			limit = {
-				is_male = yes
+			limit = { NOT = { has_relation_friend = scope:feral_child_scope } }
+			set_relation_friend = {
+				reason = friend_adopted
+				target = scope:feral_child_scope
 			}
-			scope:feral_child_scope = { set_father = root }
 		}
-		else = {
-			scope:feral_child_scope = { set_mother = root }
-		}
-		if = {
-			limit = { exists = house }
-			scope:feral_child_scope = { set_house = root.house }
-		}
-		set_relation_friend = {
-			reason = friend_adopted
-			target = scope:feral_child_scope
-		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_loss
 			paranoid = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
@@ -2588,7 +2586,7 @@ travel_events.4013 = {
 		name = travel_events.4013.b
 		add_learning_lifestyle_xp = massive_lifestyle_xp
 		add_piety = medium_piety_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			humble = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 		}
@@ -2656,7 +2654,7 @@ travel_events.4014 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_loss
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
@@ -2694,7 +2692,7 @@ travel_events.4014 = {
 				silent_disappearance_effect = yes
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			patient = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
@@ -2809,7 +2807,6 @@ scripted_trigger 4016_is_hot_climate_trigger = {
 		geographical_region = world_middle_east
 		geographical_region = world_india
 		geographical_region = world_africa
-		geographical_region = world_burma
 		geographical_region = world_asia_southeast
 		AND = {
 			OR = {
@@ -2845,7 +2842,8 @@ scripted_trigger 4016_is_cold_climate_trigger = { # Explicitly looking for place
 		geographical_region = world_middle_east
 		geographical_region = world_india
 		geographical_region = world_africa
-		geographical_region = world_burma
+		geographical_region = world_asia_southeast
+		geographical_region = world_asia_china
 	}
 }
 
@@ -2938,7 +2936,7 @@ travel_events.4016 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			patient = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
 		}
@@ -2993,7 +2991,7 @@ travel_events.4016 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			patient = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
 			honest = medium_stress_impact_gain
@@ -3071,6 +3069,7 @@ travel_events.4017 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = warrior_scope
 			after_creation = {
@@ -3103,7 +3102,7 @@ travel_events.4017 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 			greedy = medium_stress_impact_gain
 		}
@@ -3167,7 +3166,7 @@ travel_events.4017 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			humble = minor_stress_impact_gain
 			shy = medium_stress_impact_gain
 			generous = medium_stress_impact_gain
@@ -3199,7 +3198,7 @@ travel_events.4017 = {
 			modifier = cheaper_merc_contracts
 			years = 5
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			craven = minor_stress_impact_gain
 			generous = medium_stress_impact_gain
 		}
@@ -3218,7 +3217,7 @@ travel_events.4017 = {
 	# Move on without hiring their services
 	option = {
 		name = travel_events.4017.d
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			brave = minor_stress_impact_gain
 			generous = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
@@ -3296,6 +3295,7 @@ travel_events.4018 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = mystic_scope
 			after_creation = {
@@ -3323,7 +3323,7 @@ travel_events.4018 = {
 				death_reason = death_burned_witch
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = medium_stress_impact_loss
 			callous = medium_stress_impact_loss
 			zealous = minor_stress_impact_loss
@@ -3376,7 +3376,7 @@ travel_events.4018 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 			cynical = medium_stress_impact_gain
 		}
@@ -3415,7 +3415,7 @@ travel_events.4018 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			cynical = medium_stress_impact_loss
 			zealous = major_stress_impact_gain
 			arrogant = medium_stress_impact_gain
@@ -3429,7 +3429,7 @@ travel_events.4018 = {
 	# Pass them by
 	option = {
 		name = travel_events.4018.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -3555,7 +3555,7 @@ travel_events.4019 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gluttonous = medium_stress_impact_loss
 			comfort_eater = medium_stress_impact_loss
 			humble = medium_stress_impact_gain
@@ -3589,7 +3589,7 @@ travel_events.4019 = {
 				modifier = respect_opinion
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			inappetetic = minor_stress_impact_loss
 			temperate = minor_stress_impact_loss
 			gluttonous = medium_stress_impact_gain
@@ -3614,13 +3614,13 @@ travel_events.4019 = {
 			root.location.culture = {
 				has_cultural_tradition = tradition_culinary_art
 			}
-			has_trait = scholar
+			has_trait = erudite
 		}
 		add_character_modifier = {
 			modifier = exotic_recipe_modifier
 			years = 5
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -3666,6 +3666,7 @@ travel_events.4020 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = strong_believer_scope
 			after_creation = {
@@ -3704,7 +3705,7 @@ travel_events.4020 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			cynical = medium_stress_impact_gain
 			humble = medium_stress_impact_gain
 		}
@@ -3724,7 +3725,7 @@ travel_events.4020 = {
 	option = {
 		name = travel_events.4020.b
 		remove_short_term_gold = minor_gold_value
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			greedy = medium_stress_impact_gain
 			zealous = major_stress_impact_gain
@@ -3763,7 +3764,7 @@ travel_events.4020 = {
 				death_reason = death_burned_witch
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = medium_stress_impact_loss
 			callous = medium_stress_impact_loss
 			zealous = medium_stress_impact_loss
@@ -3866,6 +3867,7 @@ travel_events.4021 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = sacrificed_person_scope
 			after_creation = {
@@ -3910,7 +3912,7 @@ travel_events.4021 = {
 				target = root
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
 			greedy = medium_stress_impact_gain
@@ -3957,7 +3959,7 @@ travel_events.4021 = {
 				target = root
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			vengeful = medium_stress_impact_loss
 			sadistic = medium_stress_impact_loss
 			callous = medium_stress_impact_loss
@@ -3997,7 +3999,7 @@ travel_events.4021 = {
 				death_reason = death_sacrificed_to_gods
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = medium_stress_impact_loss
 			compassionate = medium_stress_impact_gain
 			just = medium_stress_impact_gain
@@ -4017,8 +4019,13 @@ travel_events.4021 = {
 	}
 	after = {
 		scope:sacrificed_person_scope ?= {
-			remove_character_flag = is_naked
-			silent_disappearance_ai_if_created_effect = yes
+			if = {
+				limit = {
+					is_alive = yes
+				}
+				remove_character_flag = is_naked
+				silent_disappearance_ai_if_created_effect = yes
+			}
 		}
 	}
 }
@@ -4034,14 +4041,14 @@ travel_events.4022 = {
 		triggered_animation = {
 			trigger = {
 				has_trait = zealous
-				NOT = { faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible } }
+				NOT = { rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible } }
 			}
 			animation = anger
 		}
 		triggered_animation = {
 			trigger = {
 				has_trait = zealous
-				faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
+				rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
 			}
 			animation = admiration
 		}
@@ -4058,8 +4065,9 @@ travel_events.4022 = {
 		is_location_valid_for_travel_event_on_land = yes
 		location = {
 			county = {
+				holder != root
 				faith != root.faith
-				faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
+				rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
 			}
 		}
 	}
@@ -4074,14 +4082,14 @@ travel_events.4022 = {
 					triggered_desc = {
 						trigger = {
 							has_trait = zealous
-							faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
+							rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
 						}
 						desc = travel_events.4022.a.not_so_different
 					}
 					triggered_desc = {
 						trigger = {
 							has_trait = zealous
-							NOT = { faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible } }
+							NOT = { rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible } }
 						}
 						desc = travel_events.4022.a.ignore_heretics
 					}
@@ -4089,20 +4097,20 @@ travel_events.4022 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = medium_stress_impact_gain
 		}
 		if = {
 			limit = {
-				faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
+				rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
 			}
 			add_piety = minor_piety_gain
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				zealous = minor_stress_impact_loss
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				zealous = medium_stress_impact_gain
 			}
 		}
@@ -4129,7 +4137,7 @@ travel_events.4022 = {
 					has_trait = sadistic
 					AND = {
 						has_trait = zealous
-						NOT = { faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible } }
+						NOT = { rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible } }
 					}
 				}
 			}
@@ -4140,7 +4148,7 @@ travel_events.4022 = {
 	option = {
 		name = travel_events.4022.b
 		trigger = {
-			NOT = { faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible } }
+			NOT = { rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible } }
 		}
 		duel = {
 			skill = prowess
@@ -4214,7 +4222,7 @@ travel_events.4022 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			compassionate = medium_stress_impact_gain
@@ -4244,7 +4252,7 @@ travel_events.4022 = {
 		name = travel_events.4022.c
 		if = {
 			limit = {
-				faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
+				rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
 			}
 			add_piety = medium_piety_gain
 		}
@@ -4269,7 +4277,7 @@ travel_events.4022 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			curious = minor_stress_impact_loss
 			gregarious = minor_stress_impact_loss
 			shy = medium_stress_impact_loss
@@ -4281,7 +4289,7 @@ travel_events.4022 = {
 				OR = {
 					has_trait = shy
 					AND = {
-						faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
+						rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
 						has_trait = zealous
 					}
 				}
@@ -4370,7 +4378,7 @@ travel_events.4023 = {
 		scope:prester_john_scope = {
 			trigger_event = travel_events.4024
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			cynical = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -4404,7 +4412,7 @@ travel_events.4023 = {
 				trigger_event = travel_events.4025
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			cynical = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -4440,7 +4448,7 @@ travel_events.4023 = {
 			}
 		}
 		add_piety = minor_piety_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			compassionate = medium_stress_impact_gain
@@ -4462,7 +4470,7 @@ travel_events.4023 = {
 	option = {
 		name = travel_events.4023.d
 		
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 			curious = medium_stress_impact_gain
 			gregarious = medium_stress_impact_gain
@@ -4512,7 +4520,7 @@ travel_events.4024 = {
 		scope:foreign_visitor = {
 			trigger_event = travel_events.4026
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			cynical = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -4570,7 +4578,7 @@ travel_events.4024 = {
 				trigger_event = travel_events.4027
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			compassionate = medium_stress_impact_gain
@@ -4608,7 +4616,7 @@ travel_events.4024 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			gregarious = medium_stress_impact_gain
@@ -4642,7 +4650,7 @@ travel_events.4024 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 			curious = medium_stress_impact_gain
 			gregarious = medium_stress_impact_gain
@@ -4726,7 +4734,7 @@ travel_events.4025 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_loss
 			compassionate = medium_stress_impact_gain
 			cynical = medium_stress_impact_gain
@@ -4759,7 +4767,7 @@ travel_events.4025 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gregarious = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -4802,7 +4810,7 @@ travel_events.4026 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -4828,7 +4836,7 @@ travel_events.4026 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gregarious = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -4971,8 +4979,8 @@ travel_events.4028 = {
 				}
 			}
 		}
-		stress_impact = {
-			scholar = medium_stress_impact_loss
+		stress_and_fulfillment_impact = {
+			erudite = medium_stress_impact_loss
 			dull = medium_stress_impact_gain
 			lazy = medium_stress_impact_gain
 			zealous = medium_stress_impact_gain
@@ -5002,7 +5010,7 @@ travel_events.4028 = {
 		else = {
 			add_piety = minor_piety_gain
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			compassionate = medium_stress_impact_gain
@@ -5027,11 +5035,11 @@ travel_events.4028 = {
 	# Just pass by
 	option = {
 		name = travel_events.4028.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			curious = minor_stress_impact_gain
 			zealous = minor_stress_impact_gain
 			sadistic = medium_stress_impact_gain
-			scholar = medium_stress_impact_gain
+			erudite = medium_stress_impact_gain
 		}
 		ai_chance = {
 			base = 100
@@ -5041,7 +5049,7 @@ travel_events.4028 = {
 					has_trait = curious
 					has_trait = zealous
 					has_trait = sadistic
-					has_trait = scholar
+					has_trait = erudite
 				}
 			}
 		}
@@ -5104,6 +5112,7 @@ travel_events.4029 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = brainless_character
 			after_creation = {
@@ -5129,7 +5138,7 @@ travel_events.4029 = {
 		name = travel_events.4029.a
 		custom_tooltip = brainless_may_reward_you_tt
 		trigger_event = travel_events.4030
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_loss
 			paranoid = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
@@ -5158,7 +5167,7 @@ travel_events.4029 = {
 			IMPRISONER = root
 		}
 		add_piety = minor_piety_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = minor_stress_impact_loss
 			sadistic = minor_stress_impact_loss
 			compassionate = medium_stress_impact_gain
@@ -5196,7 +5205,7 @@ travel_events.4029 = {
 				silent_disappearance_effect = yes
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_gain
 			just = medium_stress_impact_gain
 		}
@@ -5268,7 +5277,7 @@ travel_events.4030 = {
 				years = 10
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -5309,12 +5318,12 @@ travel_events.4030 = {
 		if = {
 			limit = {
 				NOT = { # We currently don't have any doctrines that do this, but good to future-proof
-					root.faith = { trait_is_virtue = greedy }
+					root.rite = { trait_is_virtue_rite = greedy }
 				}
 			}
 			add_piety = minor_piety_loss
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			humble = medium_stress_impact_gain
 			generous = medium_stress_impact_gain
 		}
@@ -5334,7 +5343,7 @@ travel_events.4030 = {
 	option = {
 		name = travel_events.4030.c
 		add_piety = medium_piety_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -5422,6 +5431,7 @@ travel_events.4031 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = heartless_knight_scope
 			after_creation = {
@@ -5449,7 +5459,7 @@ travel_events.4031 = {
 			type = favor_hook
 			target = scope:heartless_knight_scope
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
 			generous = medium_stress_impact_gain
@@ -5512,7 +5522,7 @@ travel_events.4031 = {
 				POS = bodyguard
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain
 			paranoid = medium_stress_impact_gain
@@ -5544,7 +5554,7 @@ travel_events.4031 = {
 					has_trait = sadistic
 				}
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				compassionate = minor_stress_impact_gain
 				just = minor_stress_impact_gain
 				forgiving = medium_stress_impact_gain
@@ -5552,7 +5562,7 @@ travel_events.4031 = {
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				callous = medium_stress_impact_loss
 				sadistic = medium_stress_impact_loss
 				compassionate = medium_stress_impact_gain
@@ -5634,6 +5644,7 @@ travel_events.4032 = {
 				location = root.location
 				culture = root.location.county.culture
 				faith = root.location.county.faith
+				rite = root.location.county.rite
 				#Set up the scope
 				save_scope_as = cowardly_knight_scope
 				after_creation = {
@@ -5720,7 +5731,7 @@ travel_events.4032 = {
 			pious_type_option_effect = yes
 			
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
 			brave = minor_stress_impact_gain
@@ -5802,7 +5813,7 @@ travel_events.4032 = {
 			pious_type_option_effect = yes
 			
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			craven = major_stress_impact_gain
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
@@ -5832,7 +5843,7 @@ travel_events.4032 = {
 				death_reason = death_wild_animal
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = medium_stress_impact_loss
 			sadistic = medium_stress_impact_loss
 			craven = medium_stress_impact_loss
@@ -5903,14 +5914,12 @@ travel_events.4033 = {
         is_playable_character = yes
 		is_witch_trigger = no
 		is_location_valid_for_travel_event_on_land = yes
-		location = {
-			county = {
-				faith = { has_doctrine_parameter = witchcraft_accepted }
+		location.county.rite = { rite_has_parameter = witchcraft_accepted }
+		rite = {
+			OR = {
+				rite_has_parameter = witchcraft_shunned
+				rite_has_parameter = witchcraft_illegal
 			}
-		}
-		OR = {
-			faith = { has_doctrine_parameter = witchcraft_shunned }
-			faith = { has_doctrine_parameter = witchcraft_illegal }
 		}
 	}
 	immediate = {
@@ -5920,6 +5929,7 @@ travel_events.4033 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = witch_scope
 			after_creation = {
@@ -5981,7 +5991,7 @@ travel_events.4033 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			cynical = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -6034,7 +6044,7 @@ travel_events.4033 = {
 			}
 		}
 		custom_tooltip = cheaper_to_convert_to_witchy_faith_tt
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_gain
 			cynical = medium_stress_impact_loss
 		}
@@ -6050,7 +6060,7 @@ travel_events.4033 = {
 	# Pass them by
 	option = {
 		name = travel_events.4033.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -6079,7 +6089,7 @@ travel_events.4033 = {
 					scope:witch_scope = {
 						death = {
 							killer = root
-							death_reason = death_burned
+							death_reason = death_burned_witch
 						}
 					}
 				}
@@ -6106,6 +6116,7 @@ travel_events.4033 = {
 				}
 			}
 		}
+		pam_witch_justice_fulfillment_effect = yes
 		stress_impact = {
 			sadistic = medium_stress_impact_loss
 			callous = medium_stress_impact_loss
@@ -6278,15 +6289,13 @@ travel_events.4035 = {
         is_playable_character = yes
 		is_witch_trigger = yes
 		is_location_valid_for_travel_event_on_land = yes
-		location = {
-			county = {
-				OR = {
-					faith = { has_doctrine_parameter = witchcraft_shunned }
-					faith = { has_doctrine_parameter = witchcraft_illegal }
-				}
+		location.county.rite = {
+			OR = {
+				rite_has_parameter = witchcraft_shunned
+				rite_has_parameter = witchcraft_illegal
 			}
 		}
-		faith = { has_doctrine_parameter = witchcraft_accepted }
+		rite = { rite_has_parameter = witchcraft_accepted }
 	}
 	immediate = {
 		create_character = {
@@ -6294,6 +6303,7 @@ travel_events.4035 = {
 			location = root.location
 			culture = root.location.county.culture
 			faith = root.location.county.faith
+			rite = root.location.county.rite
 			#Set up the scope
 			save_scope_as = zealous_priest_scope
 			after_creation = {
@@ -6357,7 +6367,7 @@ travel_events.4035 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 			cynical = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
@@ -6404,7 +6414,7 @@ travel_events.4035 = {
 			}
 		}
 		custom_tooltip = cheaper_to_convert_to_priest_faith_tt
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_gain
 			ambitious = minor_stress_impact_loss
 			cynical = medium_stress_impact_loss
@@ -6433,7 +6443,7 @@ travel_events.4035 = {
 	# Run away!
 	option = {
 		name = travel_events.4035.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 			brave = major_stress_impact_gain
 		}
@@ -6532,7 +6542,7 @@ travel_events.4035 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = medium_stress_impact_loss
 			callous = medium_stress_impact_loss
 			zealous = minor_stress_impact_loss
@@ -6590,20 +6600,21 @@ travel_events.4036 = {
 		}
 	}
 	immediate = {
-		create_character = {
-			template = generic_peasant_character
-			location = root.location
-			culture = root.location.culture
-			faith = root.location.faith
-			#Set up the scope
-			save_scope_as = merchant_character_scope
-			after_creation = {
-				add_character_flag = created
+		hidden_effect_new_object = {
+			create_character = {
+				template = generic_peasant_character
+				location = root.location
+				culture = root.location.culture
+				faith = root.location.faith
+				rite = root.location.rite
+				#Set up the scope
+				save_scope_as = merchant_character_scope
+				after_creation = {
+					add_character_flag = created
+				}
 			}
-		}
-		root.location.kingdom = { save_scope_as = kingdom_scope }
-		scope:merchant_character_scope = {
-			hidden_effect = {
+			root.location.kingdom = { save_scope_as = kingdom_scope }
+			scope:merchant_character_scope = {
 				add_trait = avaricious
 				random_list = {
 					10 = {
@@ -6668,7 +6679,7 @@ travel_events.4036 = {
 			remove_short_term_gold = medium_gold_value
 		}
 		scope:merchant_artifact_scope = { set_owner = root }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
@@ -6723,7 +6734,7 @@ travel_events.4036 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
 			base = medium_stress_impact_gain
@@ -6805,7 +6816,7 @@ travel_events.4036 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 			deceitful = medium_stress_impact_gain
 			honest = medium_stress_impact_gain
@@ -6877,28 +6888,7 @@ travel_events.4037 = {
         is_playable_character = yes
 		is_location_valid_for_travel_event_on_land = yes
 		location.faith != root.faith
-		OR = {
-			AND = {
-				religion = { is_in_family = rf_eastern }
-				location.faith = { has_doctrine_parameter = eastern_syncretic_actor_opinion_active }
-			}
-			AND = {
-				faith = { has_doctrine_parameter = unreformed }
-				location.faith = { has_doctrine_parameter = unreformed_syncretic_actor_opinion_active }
-			}
-			AND = {
-				religion = religion:christianity_religion
-				location.faith = { has_doctrine_parameter = christian_syncretic_actor_opinion_active }
-			}
-			AND = {
-				religion = religion:islam_religion
-				location.faith = { has_doctrine_parameter = islamic_syncretic_actor_opinion_active }
-			}
-			AND = {
-				religion = religion:judaism_religion
-				location.faith = { has_doctrine_parameter = jewish_syncretic_actor_opinion_active }
-			}
-		}
+		location.faith = { faith_is_syncretic_with = { FAITH = root.faith } }
 	}
 	immediate = {
 		wayfarer_storyteller_fame_effect = { VALUE = roaming_reward_fame_small }
@@ -6907,6 +6897,7 @@ travel_events.4037 = {
 			location = root.location
 			culture = root.location.culture
 			faith = root.location.faith
+			rite = root.location.rite
 			#Set up the scope
 			save_scope_as = fanboy_character_scope
 			after_creation = {
@@ -6952,7 +6943,7 @@ travel_events.4037 = {
 				value = lifestyle_mystic_xp_gain_minor_value
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			lazy = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -6999,7 +6990,7 @@ travel_events.4037 = {
 			}
 		}
 		custom_tooltip = cheaper_to_convert_to_fanboy_faith_tt
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
@@ -7023,7 +7014,7 @@ travel_events.4037 = {
 	# Eww go away, syncretic weirdos
 	option = {
 		name = travel_events.4037.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_gain
 			zealous = medium_stress_impact_loss
 			gregarious = minor_stress_impact_gain
@@ -7078,28 +7069,7 @@ travel_events.4038 = {
 			barony.holder = { is_ai = yes }
 			barony.holder != root
 		}
-		OR = {
-			AND = {
-				faith = { has_doctrine_parameter = eastern_syncretic_actor_opinion_active }
-				location.religion = { is_in_family = rf_eastern }
-			}
-			AND = {
-				faith = { has_doctrine_parameter = unreformed_syncretic_actor_opinion_active }
-				location.faith = { has_doctrine_parameter = unreformed }
-			}
-			AND = {
-				faith = { has_doctrine_parameter = christian_syncretic_actor_opinion_active }
-				location.religion = religion:christianity_religion
-			}
-			AND = {
-				faith = { has_doctrine_parameter = islamic_syncretic_actor_opinion_active }
-				location.religion = religion:islam_religion
-			}
-			AND = {
-				faith = { has_doctrine_parameter = jewish_syncretic_actor_opinion_active }
-				location.religion = religion:judaism_religion
-			}
-		}
+		faith = { faith_is_syncretic_with = { FAITH = root.location.faith } }
 	}
 	immediate = {
 		wayfarer_storyteller_fame_effect = { VALUE = roaming_reward_fame_small }
@@ -7129,7 +7099,7 @@ travel_events.4038 = {
 				value = lifestyle_mystic_xp_gain_minor_value
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 			lazy = medium_stress_impact_gain
 			cynical = medium_stress_impact_gain
@@ -7180,7 +7150,7 @@ travel_events.4038 = {
 					add_piety = minor_piety_loss
 					if = {
 						limit = {
-							faith = { has_doctrine_parameter = eastern_syncretic_actor_opinion_active }
+							faith = { has_doctrine_parameter = eastern_syncretic_actor }
 						}
 						add_character_modifier = {
 							modifier = offended_eastern_modifier
@@ -7189,7 +7159,16 @@ travel_events.4038 = {
 					}
 					else_if = {
 						limit = {
-							faith = { has_doctrine_parameter = unreformed_syncretic_actor_opinion_active }
+							faith = { has_doctrine_parameter = sinitic_syncretic_actor }
+						}
+						add_character_modifier = {
+							modifier = offended_sinitic_modifier
+							years = 5
+						}
+					}
+					else_if = {
+						limit = {
+							faith = { has_doctrine_parameter = unreformed_syncretic_actor }
 						}
 						add_character_modifier = {
 							modifier = offended_pagan_modifier
@@ -7198,7 +7177,7 @@ travel_events.4038 = {
 					}
 					else_if = {
 						limit = {
-							faith = { has_doctrine_parameter = christian_syncretic_actor_opinion_active }
+							faith = { has_doctrine_parameter = christian_syncretic_actor }
 						}
 						add_character_modifier = {
 							modifier = offended_christian_modifier
@@ -7207,7 +7186,7 @@ travel_events.4038 = {
 					}
 					else_if = {
 						limit = {
-							faith = { has_doctrine_parameter = islamic_syncretic_actor_opinion_active }
+							faith = { has_doctrine_parameter = islamic_syncretic_actor }
 						}
 						add_character_modifier = {
 							modifier = offended_muslim_modifier
@@ -7216,7 +7195,7 @@ travel_events.4038 = {
 					}
 					else_if = {
 						limit = {
-							faith = { has_doctrine_parameter = jewish_syncretic_actor_opinion_active }
+							faith = { has_doctrine_parameter = jewish_syncretic_actor }
 						}
 						add_character_modifier = {
 							modifier = offended_jewish_modifier
@@ -7226,7 +7205,7 @@ travel_events.4038 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			lazy = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -7246,7 +7225,7 @@ travel_events.4038 = {
 	# Eww go away, weirdos
 	option = {
 		name = travel_events.4038.c
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_gain
 			zealous = medium_stress_impact_loss
 			gregarious = minor_stress_impact_gain
@@ -7282,8 +7261,8 @@ travel_events.4039 = {
 		is_available_travelling = yes
         is_playable_character = yes
 		is_location_valid_for_travel_event_on_land = yes
-		faith = { NOT = { has_doctrine_parameter = host_honored_guests_active } }
-		location.faith = { has_doctrine_parameter = host_honored_guests_active }
+		rite = { NOT = { rite_has_parameter = host_honored_guests_active } }
+		location.rite = { rite_has_parameter = host_honored_guests_active }
 	}
 
 	immediate = {
@@ -7305,7 +7284,7 @@ travel_events.4039 = {
 			modifier = pampered_by_locals_modifier
 			years = 5
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = medium_stress_impact_loss
 			diligent = medium_stress_impact_gain
 		}
@@ -7320,7 +7299,7 @@ travel_events.4039 = {
 	# No, we *must* keep going!
 	option = {
 		name = travel_events.4039.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -7366,6 +7345,7 @@ travel_events.4040 = {
 			location = root.location
 			culture = root.location.culture
 			faith = root.location.faith
+			rite = root.location.rite
 			#Set up the scope
 			save_scope_as = fanboy_character_scope
 			after_creation = {
@@ -7382,7 +7362,7 @@ travel_events.4040 = {
 	option = {
 		name = travel_events.4040.a
 		add_prestige = minor_prestige_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_loss
 			humble = medium_stress_impact_gain
 		}
@@ -7417,7 +7397,7 @@ travel_events.4040 = {
 				add_scheme_modifier = { type = xenophile_bonus_modifier }
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain

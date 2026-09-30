@@ -383,3 +383,39 @@ process_tour_achievement_tallies_effect = {
 		}
 	}
 }
+
+ce3_papal_bull_check_effect = { # Papal Bull
+	# had_sex_with_effect runs this, and the pope may be root or scope:had_sex_with_effect_partner
+	if = {
+		limit = {
+			has_title = title:k_papal_state
+			pam_pope_is_head_of_faith_or_rite_trigger = yes
+			exists = puppeteer
+			puppeteer = {
+				any_spouse = { this = scope:had_sex_with_effect_partner }
+			}
+		}
+		puppeteer = {
+			add_achievement_global_variable_effect = {
+				VARIABLE = ce3_12_papal_bull_achievement_unlocked
+				VALUE = yes
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			scope:had_sex_with_effect_partner ?= {
+				has_title = title:k_papal_state
+				pam_pope_is_head_of_faith_or_rite_trigger = yes
+				exists = puppeteer
+				puppeteer = { any_spouse = { this = root } }
+			}
+		}
+		scope:had_sex_with_effect_partner.puppeteer = {
+			add_achievement_global_variable_effect = {
+				VARIABLE = ce3_12_papal_bull_achievement_unlocked
+				VALUE = yes
+			}
+		}
+	}
+}

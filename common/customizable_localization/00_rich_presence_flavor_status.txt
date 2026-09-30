@@ -135,14 +135,14 @@
 		}
 		localization_key = rich_presence_raiding
 	}
-	
+
 	text = { # Imprisoned
 		trigger = {
 			is_imprisoned = yes
 		}
 		localization_key = rich_presence_prison
 	}
-	
+
 	text = { # Activity - Chariot
 		trigger = {
 			involved_activity ?= {
@@ -160,7 +160,7 @@
 		}
 		localization_key = rich_presence_pilgrimage
 	}
-	
+
 	text = { # Activity - Tour
 		trigger = {
 			involved_activity ?= {
@@ -177,7 +177,7 @@
 		}
 		localization_key = rich_presence_holding_court
 	}
-	
+
 	text = { # Hosting Activity
 		trigger = {
 			involved_activity ?= {
@@ -190,7 +190,7 @@
 		}
 		localization_key = rich_presence_hosting_activity
 	}
-	
+
 	text = { # Murder Activity
 		trigger = {
 			has_multiple_players = no
@@ -201,7 +201,7 @@
 		}
 		localization_key = rich_presence_hosting_murder_activity
 	}
-	
+
 	text = { # Attending Activity
 		trigger = {
 			involved_activity ?= {
@@ -210,14 +210,14 @@
 		}
 		localization_key = rich_presence_attending_activity
 	}
-	
+
 	text = { # Stress Level 3
 		trigger = {
 			stress_level >= 3
 		}
 		localization_key = rich_presence_stress_3
 	}
-	
+
 	text = { # Stress Level 2
 		trigger = {
 			stress_level >= 2
@@ -225,19 +225,6 @@
 		localization_key = rich_presence_stress_2
 	}
 
-	text = { # Admin Government - Scheming
-		trigger = {
-			top_liege != this
-			government_allows = administrative
-			highest_held_title_tier >= tier_duchy
-			liege = { government_allows = administrative }
-			any_scheme = {
-				intrigue_scheme_trigger = yes
-			}
-		}
-		localization_key = rich_presence_admin_scheming
-	}
-	
 	text = { # Intrigue Scheme
 		setup_scope = {
 			random_scheme = {
@@ -251,7 +238,7 @@
 		}
 		localization_key = rich_presence_intrigue_scheme
 	}
-	
+
 	text = { # Diplomacy Scheme
 		setup_scope = {
 			random_scheme = {
@@ -264,11 +251,11 @@
 		}
 		localization_key = rich_presence_diplomacy_scheme
 	}
-	
+
 	text = { # Dying of Illness
 		setup_scope = {
 			random_character_trait = {
-				limit = { 
+				limit = {
 					is_debilitating_illness_trait = yes
 				}
 				save_scope_as = trait
@@ -308,21 +295,21 @@
 		}
 		localization_key = rich_presence_house_modifier_rebuilding_efforts
 	}
-	
-	text = { # Post-Iranian Struggle - New Frontiers 
+
+	text = { # Post-Iranian Struggle - New Frontiers
 		trigger = {
 			house ?= { has_house_modifier = fp3_house_modifier_frontier_ambitions }
 		}
 		localization_key = rich_presence_house_modifier_frontier_ambitions
 	}
-	
+
 	text = { # Post-Iranian Struggle - Destroyed Caliphate
 		trigger = {
 			house ?= { has_house_modifier = fp3_house_modifier_destroyed_the_caliphate }
 		}
 		localization_key = rich_presence_house_modifier_destroyed_the_caliphate
 	}
-	
+
 	text = { # Iranian Struggle Ending - Strengthening Caliphate
 		trigger = {
 			global_var:fp3_struggle_ending ?= flag:fp3_struggle_strengthen_caliphate_ending
@@ -342,21 +329,21 @@
 		}
 		localization_key = rich_presence_fp3_struggle_rekindle_iran_ending
 	}
-	
+
 	text = { # Kinslayer
 		trigger = {
 			has_trait = kinslayer
 		}
 		localization_key = rich_presence_kinslayer
 	}
-	
+
 	text = { # Cannibal
 		trigger = {
 			has_trait = cannibal
 		}
 		localization_key = rich_presence_cannibal
 	}
-	
+
 	text = { # Religious Head
 		trigger = {
 			faith.religious_head ?= {
@@ -365,14 +352,14 @@
 		}
 		localization_key = rich_presence_religion_head
 	}
-	
+
 	text = { # Roman Empire
 		trigger = {
 			is_roman_emperor_excluding_byzantium_trigger = yes
 		}
 		localization_key = rich_presence_rome
 	}
-	
+
 	text = { # Incest
 		trigger = {
 			any_spouse = {
@@ -388,13 +375,13 @@
 		}
 		localization_key = rich_presence_torturer
 	}
-	
+
 	text = { # Seducer
 		trigger = {
 			has_trait = seducer
 		}
 		localization_key = rich_presence_seduction
-	}	
+	}
 
 	text = { # Nemeses
 		trigger = {
@@ -485,7 +472,7 @@
 		}
 		localization_key = rich_presence_fp3_struggle_involvement
 	}
-	
+
 	text = { # Poet
 		trigger = {
 			has_trait = lifestyle_poet
@@ -499,7 +486,7 @@
 		}
 		localization_key = rich_presence_drinking
 	}
-	
+
 	text = { # Tax Collector - Minimum
 		trigger = {
 			government_has_flag = government_is_clan
@@ -548,6 +535,19 @@
 			this = house.house_head
 		}
 		localization_key = rich_presence_house_unity_antagonistic
+	}
+
+	text = { # Admin Government - Scheming
+		trigger = {
+			top_liege != this
+			government_has_mechanic = administrative
+			highest_held_title_tier >= tier_duchy
+			liege = { government_has_mechanic = administrative }
+			any_scheme = {
+				intrigue_scheme_trigger = yes
+			}
+		}
+		localization_key = rich_presence_admin_scheming
 	}
 
 	text = { # Mandate of Heaven - instability
@@ -633,9 +633,9 @@
 	text = { # Admin Government
 		trigger = {
 			top_liege != this
-			government_allows = administrative
+			government_has_mechanic = administrative
 			highest_held_title_tier >= tier_duchy
-			liege = { government_allows = administrative }
+			liege = { government_has_mechanic = administrative }
 		}
 		localization_key = rich_presence_admin
 	}
@@ -670,49 +670,49 @@
 		}
 		localization_key = rich_presence_sayyid
 	}
-	
+
 	text = { # Gluttonous
 		trigger = {
 			has_trait = gluttonous
 		}
 		localization_key = rich_presence_gluttonous
 	}
-	
+
 	text = { # Content
 		trigger = {
 			has_trait = content
 		}
 		localization_key = rich_presence_content
 	}
-	
+
 	text = { # Craven
 		trigger = {
 			has_trait = craven
 		}
 		localization_key = rich_presence_craven
 	}
-	
+
 	text = { # Paranoid
 		trigger = {
 			has_trait = paranoid
 		}
 		localization_key = rich_presence_paranoid
 	}
-	
+
 	text = { # Greedy
 		trigger = {
 			has_trait = greedy
 		}
 		localization_key = rich_presence_greedy
 	}
-	
+
 	text = { # Horrible Stewardship
 		trigger = {
 			stewardship <= low_skill_rating
 		}
 		localization_key = rich_presence_ruling_poorly
 	}
-	
+
 	text = { # Gold 1000+
 		trigger = {
 			gold >= 1000

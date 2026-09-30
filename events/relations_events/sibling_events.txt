@@ -195,14 +195,14 @@ namespace = sibling
 #			short_term_gold < medium_gold_value
 #		}
 #		remove_short_term_gold = medium_gold_value
-#		stress_impact = {
+#		stress_and_fulfillment_impact = {
 #			greedy = minor_stress_impact_gain
 #		}
 #	}
 #
 #	option = { #No!
 #		name = sibling.0002.b
-#		stress_impact = {
+#		stress_and_fulfillment_impact = {
 #			generous = minor_stress_impact_gain
 #		}
 #		scope:sibling = {
@@ -409,7 +409,7 @@ sibling.0004 = {
 	option = { #Chide them both
 		name = sibling.0004.c
 		add_prestige = minor_prestige_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_gain
 		}
 	}
@@ -557,7 +557,7 @@ sibling.0005 = {
 
 	option = { #Sigh, give it up, sibling.
 		name = sibling.0005.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = major_stress_gain
 		}
 		scope:sibling = {
@@ -677,7 +677,7 @@ sibling.1001 = {
 
 	option = { #No
 		name = sibling.1001.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_gain
 		}
 		scope:sibling = {
@@ -758,7 +758,7 @@ sibling.1002 = {
 
 	option = {
 		name = sibling.1002.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_gain
 		}
 		scope:sibling = {
@@ -837,7 +837,7 @@ sibling.1003 = {
 
 	option = {
 		name = sibling.1003.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_gain
 		}
 		scope:sibling = {
@@ -916,7 +916,7 @@ sibling.1004 = {
 
 	option = {
 		name = sibling.1004.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_gain
 		}
 		scope:sibling = {
@@ -995,7 +995,7 @@ sibling.1005 = {
 
 	option = {
 		name = sibling.1005.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_loss
 		}
 		scope:sibling = {
@@ -1080,7 +1080,7 @@ sibling.2001 = {
 
 	option = {
 		name = sibling.2001.a
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_gain
 		}
 		scope:sibling = {
@@ -1238,7 +1238,7 @@ sibling.8002 = {
 				has_trait = greedy
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = minor_stress_impact_gain
 		}
 		every_held_title = {
@@ -1261,7 +1261,7 @@ sibling.8002 = {
 
 	option = {
 		name = sibling.8002.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			generous = minor_stress_impact_gain
 		}
 		scope:sibling = {
@@ -1282,6 +1282,8 @@ scripted_trigger sibling_8003_lustful_sibling_trigger = {
 	is_available_ai_adult = yes
 	has_trait = lustful
 	is_male = yes
+	might_cheat_on_every_partner_trigger = yes
+	NOT = { has_sexuality = asexual }
 }
 
 sibling.8003 = {
@@ -1327,14 +1329,12 @@ sibling.8003 = {
 		name = sibling.8003.a
 		custom_tooltip = risk_of_sibling_producing_bastard_tt
 		hidden_effect = {
-			hidden_effect = {
+			scope:sibling = {
 				if = { #Had sex with a man
 					limit = {
-						scope:sibling = {
-							OR = {
-								var:servant_romance_target = flag:stable_boy
-								var:servant_romance_target = flag:page
-							}
+						OR = {
+							var:servant_romance_target = flag:stable_boy
+							var:servant_romance_target = flag:page
 						}
 					}
 					had_sex_with_unknown_effect = {
@@ -1343,11 +1343,9 @@ sibling.8003 = {
 				}
 				else_if = { #Had sex with a woman
 					limit = {
-						scope:sibling = {
-							OR = {
-								var:servant_romance_target = flag:scullery_maid
-								var:servant_romance_target = flag:launderer
-							}
+						OR = {
+							var:servant_romance_target = flag:scullery_maid
+							var:servant_romance_target = flag:launderer
 						}
 					}
 					had_sex_with_unknown_effect = {
@@ -1380,7 +1378,7 @@ sibling.8003 = {
 
 	option = { #Forbid the relationship
 		name = sibling.8003.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_gain
 		}
 		scope:sibling = {
@@ -1547,7 +1545,7 @@ sibling.8005 = {
 
 	option = {
 		name = sibling.8005.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_gain
 		}
 		add_prestige = medium_prestige_loss
@@ -1634,7 +1632,7 @@ sibling.8006 = {
 
 	option = { # They are simply helping me with MY job
 		name = sibling.8006.b
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_loss
 		}
 	}

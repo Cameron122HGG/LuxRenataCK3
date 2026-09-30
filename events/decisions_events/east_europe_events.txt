@@ -166,70 +166,71 @@ east_europe.0011 = { #by Mathilda Bjarnehed
 }
 
 #I am the Defender of Defensive Pagan Highgod (pick holy site)
-east_europe.0015 = { #by Mathilda Bjarnehed
-	type = character_event
-	title = east_europe.0015.t
-	desc = east_europe.0015.desc
-	theme = faith
-	left_portrait = {
-		character = root
-		animation = personality_zealous
-	}
+#east_europe.0015 = { #by Mathilda Bjarnehed
+#	orphan = yes
+#	type = character_event
+#	title = east_europe.0015.t
+#	desc = east_europe.0015.desc
+#	theme = faith
+#	left_portrait = {
+#		character = root
+#		animation = personality_zealous
+#	}
 
-	immediate = {
-		#Music cue in follow-up event.
-		faith = {
-			every_holy_site = {
-				limit = {
-					county.holder = root
-					title_province = { has_special_building = no  }
+#	immediate = {
+#		#Music cue in follow-up event.
+#		faith = {
+#			every_holy_site_barony = {
+#				limit = {
+#					county.holder = root
+#					title_province = { has_special_building = no  }
 					# barony = { }
-				}
-				add_to_list = holy_sites
-			}
-		}
+#				}
+#				add_to_list = holy_sites
+#			}
+#		}
 
-		save_target_list_as_separate_scopes_effect = { TARGET_LIST = holy_sites }
-	}
+#		save_target_list_as_separate_scopes_effect = { TARGET_LIST = holy_sites }
+#	}
 
-	option = {
-		name = east_europe.0015.a
-		custom_tooltip = east_europe.0015.tooltip
-		scope:target_list_member_a = {
-			save_scope_as = holy_site
-		}
-	}
+#	option = {
+#		name = east_europe.0015.a
+#		custom_tooltip = east_europe.0015.tooltip
+#		scope:target_list_member_a = {
+#			save_scope_as = holy_site
+#		}
+#	}
 
-	option = {
-		name = east_europe.0015.b
-		custom_tooltip = east_europe.0015.tooltip
-		scope:target_list_member_b = {
-			save_scope_as = holy_site
-		}
-	}
+#	option = {
+#		name = east_europe.0015.b
+#		custom_tooltip = east_europe.0015.tooltip
+#		scope:target_list_member_b = {
+#			save_scope_as = holy_site
+#		}
+#	}
 
-	option = {
-		trigger = { exists = scope:target_list_member_c }
-		name = east_europe.0015.c
-		custom_tooltip = east_europe.0015.tooltip
-		scope:target_list_member_c = {
-			save_scope_as = holy_site
-		}
-	}
+#	option = {
+#		trigger = { exists = scope:target_list_member_c }
+#		name = east_europe.0015.c
+#		custom_tooltip = east_europe.0015.tooltip
+#		scope:target_list_member_c = {
+#			save_scope_as = holy_site
+#		}
+#	}
 
-	option = {
-		trigger = { exists = scope:target_list_member_d }
-		name = east_europe.0015.d
-		custom_tooltip = east_europe.0015.tooltip
-		scope:target_list_member_d = {
-			save_scope_as = holy_site
-		}
-	}
+#	option = {
+#		trigger = { exists = scope:target_list_member_d }
+#		name = east_europe.0015.d
+#		custom_tooltip = east_europe.0015.tooltip
+#		scope:target_list_member_d = {
+#			save_scope_as = holy_site
+#		}
+#	}
 
-	after = {
-		trigger_event = east_europe.0016
-	}
-}
+#	after = {
+#		trigger_event = east_europe.0016
+#	}
+#}
 
 #I am the Defender of Defensive Pagan Highgod (actual event)
 east_europe.0016 = { #by Mathilda Bjarnehed
@@ -443,28 +444,28 @@ east_europe.0032 = {
 		if = {
 			limit = { scope:old_faith.religion = religion:christianity_religion }
 			faith:magyar_pagan = {
-				remove_doctrine = tenet_astrology
-				add_doctrine = tenet_christian_syncretism
+				remove_tenet = tenet_astrology
+				add_tenet = tenet_christian_syncretism
 			}
 		}
 		else_if = {
 			limit = { scope:old_faith.religion = religion:islam_religion }
 			faith:magyar_pagan = {
-				remove_doctrine = tenet_astrology
-				add_doctrine = tenet_islamic_syncretism
+				remove_tenet = tenet_astrology
+				add_tenet = tenet_islamic_syncretism
 			}
 		}
 		else_if = {
 			limit = { scope:old_faith.religion = religion:judaism_religion }
 			faith:magyar_pagan = {
-				remove_doctrine = tenet_astrology
-				add_doctrine = tenet_jewish_syncretism
+				remove_tenet = tenet_astrology
+				add_tenet = tenet_jewish_syncretism
 			}
 		}
 		else = {
 			faith:magyar_pagan = {
-				remove_doctrine = tenet_astrology
-				add_doctrine = tenet_eastern_syncretism
+				remove_tenet = tenet_astrology
+				add_tenet = tenet_eastern_syncretism
 			}
 		}
 		#Sort notification copy for players.
@@ -481,8 +482,8 @@ east_europe.0032 = {
 		add_piety_experience = major_piety_value
 		#Human sacrifice replaces ancestor worship-
 		faith:magyar_pagan = {
-			remove_doctrine = tenet_ancestor_worship
-			add_doctrine = tenet_human_sacrifice
+			remove_tenet = tenet_ancestor_worship
+			add_tenet = tenet_human_sacrifice
 		}
 		#Sort notification copy for players.
 		save_scope_value_as = {
@@ -498,8 +499,8 @@ east_europe.0032 = {
 		add_piety_experience = major_piety_value
 		#Adaptive replaces auspicious birthright.
 		faith:magyar_pagan = {
-			remove_doctrine = tenet_mystical_birthright
-			add_doctrine = tenet_adaptive
+			remove_tenet = tenet_mystical_birthright
+			add_tenet = tenet_adaptive
 		}
 		#Sort notification copy for players.
 		save_scope_value_as = {
@@ -611,7 +612,7 @@ east_europe.0101 = {
 		#Your legacy will be remembered.
 		add_prestige_experience = major_prestige_gain
 
-		stress_impact = { arrogant = minor_stress_impact_loss }
+		stress_and_fulfillment_impact = { arrogant = minor_stress_impact_loss }
 		ai_chance = {
 			base = 100
 			ai_value_modifier = {
@@ -628,7 +629,7 @@ east_europe.0101 = {
 		#Your piety will be remembered.
 		add_piety_experience = major_piety_gain
 
-		stress_impact = { zealous = minor_stress_impact_loss }
+		stress_and_fulfillment_impact = { zealous = minor_stress_impact_loss }
 		ai_chance = {
 			base = 100
 			ai_value_modifier = {
@@ -645,7 +646,7 @@ east_europe.0101 = {
 		#Your wry smile walking away from your coronation will be remembered.
 		add_stress = major_stress_loss
 
-		stress_impact = { cynical = minor_stress_impact_loss }
+		stress_and_fulfillment_impact = { cynical = minor_stress_impact_loss }
 		ai_chance = {
 			base = 100
 			ai_value_modifier = {
@@ -1095,7 +1096,7 @@ east_europe.0114 = {
 			}
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_loss
 			lazy = minor_stress_impact_gain
 			craven = minor_stress_impact_gain
@@ -1136,7 +1137,7 @@ east_europe.0114 = {
 		if = {
 			limit = {
 				has_strong_usable_hook = scope:hof
-				scope:hof.faith = { has_doctrine_parameter = excommunication_active }
+				scope:hof.rite = { rite_has_parameter = excommunication_active }
 				NOT = {
 					scope:accuser = { has_strong_hook = scope:hof}
 				}
@@ -1155,7 +1156,7 @@ east_europe.0114 = {
 			days = { 7 14 }
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = medium_stress_impact_loss
 			arbitrary = medium_stress_impact_loss
 			honest = medium_stress_impact_gain
@@ -1234,7 +1235,7 @@ east_europe.0114 = {
 			}
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = medium_stress_impact_loss
 			arbitrary = medium_stress_impact_loss
 			honest = medium_stress_impact_gain
@@ -1273,7 +1274,7 @@ east_europe.0114 = {
 		custom_tooltip = east_europe.0114.d.tt
 		trigger_event = east_europe.0116
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			humble = minor_stress_impact_loss
 			cynical = major_stress_impact_loss
 			arrogant = minor_stress_impact_gain
@@ -1322,7 +1323,7 @@ east_europe.0114 = {
 			days = { 7 14 }
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = minor_stress_impact_loss
 			zealous = major_stress_impact_loss
 			humble = minor_stress_impact_gain
@@ -1510,7 +1511,7 @@ east_europe.0116 = {
 		#Aaaand notify scope:accuser.
 		scope:accuser = { trigger_event = east_europe.0115 }
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			stubborn = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			fickle = minor_stress_impact_gain
@@ -1563,7 +1564,7 @@ east_europe.0116 = {
 		#Aaaand notify scope:accuser.
 		scope:accuser = { trigger_event = east_europe.0115 }
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			fickle = minor_stress_impact_loss
 			arbitrary = minor_stress_impact_loss
 			stubborn = medium_stress_impact_gain
@@ -1736,7 +1737,7 @@ east_europe.0117 = {
 			custom_tooltip = east_europe.0111.tt.regular_cooldown
 		}
 
-		stress_impact = { forgiving = minor_stress_impact_gain }
+		stress_and_fulfillment_impact = { forgiving = minor_stress_impact_gain }
 		ai_chance = {
 			#The AI does not have access to this option.
 			base = 0
@@ -1784,7 +1785,7 @@ east_europe.0117 = {
 		}
 
 
-		stress_impact = { zealous = major_stress_impact_loss }
+		stress_and_fulfillment_impact = { zealous = major_stress_impact_loss }
 		ai_chance = {
 			#The AI doesn't use custom faith reformation, so it'll never take this option.
 			base = 0
@@ -1868,7 +1869,7 @@ east_europe.0118 = {
 		#Give them a little reward for doing well.
 		add_piety = medium_piety_value
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_loss
 			cynical = minor_stress_impact_gain
 		}
@@ -1895,7 +1896,7 @@ east_europe.0118 = {
 
 		add_stress = massive_stress_loss
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			cynical = medium_stress_impact_loss
 			zealous = minor_stress_impact_gain
 		}
@@ -2944,7 +2945,7 @@ east_europe.0200 = {
 		else = {
 			give_nickname = nick_scourge_of_the_baltic
 		}
-		stress_impact = { arrogant = minor_stress_impact_loss }
+		stress_and_fulfillment_impact = { arrogant = minor_stress_impact_loss }
 		ai_chance = {
 			base = 100
 			ai_value_modifier = {
@@ -2961,7 +2962,7 @@ east_europe.0200 = {
 		#Your piety will be remembered.
 		add_piety = major_piety_gain
 
-		stress_impact = { zealous = minor_stress_impact_loss }
+		stress_and_fulfillment_impact = { zealous = minor_stress_impact_loss }
 		ai_chance = {
 			base = 100
 			ai_value_modifier = {

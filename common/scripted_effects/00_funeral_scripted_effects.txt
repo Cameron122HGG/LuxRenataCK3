@@ -10,6 +10,11 @@ funeral_add_funeral_targets_to_list = {
 		every_past_holder = {
 			limit = {
 				body_is_available = yes
+				# so vasssals can't 'steal' funeral for new liege just cuz previous liege granted a title to them.
+				trigger_if = {
+					limit = { highest_held_title_tier > prev.tier }
+					NOT = { primary_title.holder.dynasty ?= dynasty }
+				}
 			}
 			scope:list_scope = {
 				add_to_variable_list = {
@@ -49,6 +54,7 @@ funeral_add_funeral_targets_to_list = {
 				has_memory_type = friend_died
 				has_memory_type = lover_died
 				has_memory_type = soulmate_died
+				has_memory_type = best_friend_died
 			}
 			trigger_if = {
 				limit = { exists = memory_participant:dead_relation }

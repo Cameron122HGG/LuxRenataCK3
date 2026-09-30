@@ -176,52 +176,13 @@ war_end_legitimacy_effect = {
 					
 					add_legitimacy = {
 						value = {
-							value = 0
-							
-							if = { # You get a lot of Legitimacy for punching above your weight
-								limit = { # Specially if you are a Duke/Count against an Emperor
-									OR = {
-										primary_title.tier = tier_county
-										primary_title.tier = tier_duchy
-									}
-									$LOSER$.primary_title.tier = tier_empire
-								}
-								value = 200
-							}
-							else_if = { # Or a Count against a King
-								limit = {
-									primary_title.tier = tier_county
-									$LOSER$.primary_title.tier = tier_kingdom
-								}
-								value = 150
-							}
-							else_if = { # Or a Count vs a Duke
-								limit = {
-									primary_title.tier = tier_county
-									$LOSER$.primary_title.tier = tier_duchy
-								}
-								value = 100
-							}
-							else_if = { # Or a Duke vs a King
-								limit = {
-									primary_title.tier = tier_duchy
-									$LOSER$.primary_title.tier = tier_kingdom
-								}
-								value = 100
-							}
-							else_if = { # Or King vs Emperor
-								limit = {
-									primary_title.tier = tier_kingdom
-									$LOSER$.primary_title.tier = tier_empire
-								}
-								value = 100
-							}
-							else_if = { # Special Legitimacy gain for same tier
-								limit = {
-									primary_title.tier = $LOSER$.primary_title.tier
-								}
-								value = 50
-							}
+							value = 1
+
+							# You get a lot of Legitimacy for punching above your weight
+							add = $LOSER$.primary_title.tier
+							subtract = primary_title.tier
+
+							multiply = 50
 						}
 						
 						if = { # We give you extra Legitimacy for Religious Wars
@@ -248,18 +209,18 @@ war_end_legitimacy_effect = {
 							multiply = 3
 						}
 						
-						#if = { # We give you extra Legitimacy for special On Start Wars
-						#	limit = {
-						#		root.war ?= {
-						#			OR = {
-						#				using_cb = norman_conquest_cb
-						#				using_cb = norwegian_invasion_cb
-						#				using_cb = sons_of_lothbrok_invasion_cb
-						#			}
-						#		}
-						#	}
-						#	multiply = 4
-						#}
+						if = { # We give you extra Legitimacy for special On Start Wars
+							limit = {
+								root.war ?= {
+									OR = {
+										using_cb = norman_conquest_cb
+										using_cb = norwegian_invasion_cb
+										using_cb = sons_of_lothbrok_invasion_cb
+									}
+								}
+							}
+							multiply = 4
+						}
 						
 						if = { # And we 50% increase whatever you have if you are a nomad
 							limit = {

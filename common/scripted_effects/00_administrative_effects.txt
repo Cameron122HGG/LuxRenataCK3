@@ -1,5 +1,4 @@
-﻿#LUX RENATA GOVERNMENT WORK#
-#THIS MEANS THIS IS PART OF THE GOV WORK FLOW#
+﻿
 change_to_administrative_hereditary_effect = {
 	scope:recipient = {
 		save_scope_as = petition_vassal
@@ -25,26 +24,21 @@ change_to_administrative_holding_effect = {
 	# Structured like this for clean tooltips
 	capital_province = {
 		if = {
-			limit = {
-				OR = {
-					has_holding_type = tribal_holding
-					has_holding_type = herder_holding
-					has_holding_type = nomad_holding
-				}
-			}
+			limit = { holding_is_tribal = yes }
 			county.holder = { custom_tooltip = change_to_administrative_holding_tt }
-			hidden_effect = { set_holding_type = castle_holding }
+			hidden_effect = {
+				holding_pre_feudalize_effect = yes
+				set_holding_type = castle_holding
+			}
 		}
 		county = {
 			if = {
 				limit = { has_county_modifier = mpo_siberian_permafrost_modifier }
 				holder = { custom_tooltip = change_to_administrative_permafrost_tt }
-				hidden_effect = { remove_county_modifier = mpo_siberian_permafrost_modifier }
 			}
 			else_if = {
 				limit = { has_county_modifier = mpo_siberian_permafrost_modifier_bad }
 				holder = { custom_tooltip = change_to_administrative_permafrost_bad_tt }
-				hidden_effect = { remove_county_modifier = mpo_siberian_permafrost_modifier_bad }
 			}
 		}
 	}
@@ -73,48 +67,10 @@ change_to_administrative_effect = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { government_allows = administrative }
+				NOT = { government_has_mechanic = administrative }
 				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_japan_administrative }
-					NOT = { government_has_flag = government_is_japan_administrative }
-				}
-				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_meritocratic }
-					NOT = { government_has_flag = government_is_meritocratic }
-				}
-				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_celestial }
-					NOT = { government_has_flag = government_is_celestial }
-				}
-				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_steppe_admin }
-					NOT = { government_has_flag = government_is_steppe_admin }
-				}
-				NOT = { government_allows = administrative }
-				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_roman_administrative }
-					NOT = { government_has_flag = government_is_roman_administrative }
-				}
-				
-				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_gaul_administrative }
-					NOT = { government_has_flag = government_is_gaul_administrative }
-				}
-				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_alexandrian_administrative }
-					NOT = { government_has_flag = government_is_alexandrian_administrative }
-				}
-				AND = {
-					government_allows = administrative
-					scope:governor_liege = { government_has_flag = government_is_western_administrative }
-					NOT = { government_has_flag = government_is_western_administrative }
+					scope:governor_liege = { government_has_mechanic = administrative }
+					government_type != scope:governor_liege.government_type
 				}
 			}
 		}
@@ -128,34 +84,25 @@ change_to_administrative_effect = {
 			}
 			save_scope_as = new_admin
 		}
+		# If we are greek, let's ensure we become administrative
 		if = {
 			limit = {
-				NAND = {
-					government_has_flag = government_is_gaul_feudal
-					scope:governor_liege = { government_has_flag = government_is_gaul_administrative }
+				NOT = { exists = scope:has_selected_a_government }
+				scope:governor_liege = {
+					this = scope:governor # not vassal of some other admin liege
+					culture = {
+						OR = {
+							this = culture:greek
+							any_parent_culture_or_above = { this = culture:greek }
+						}
+					}
 				}
 			}
-			save_scope_as = new_admin
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:administrative
+			}
 		}
-		# If we are greek, let's ensure we become administrative #LETS NOT DO THAT PLAYBOY #LUX RENATA -Cameron122
-		#if = {
-		#	limit = {
-		#		NOT = { exists = scope:has_selected_a_government }
-		#		scope:governor_liege = {
-		#			this = scope:governor # not vassal of some other admin liege
-		#			culture = {
-		#				OR = {
-		#					this = culture:greek
-		#					any_parent_culture_or_above = { this = culture:greek }
-		#				}
-		#			}
-		#		}
-		#	}
-		#	save_scope_value_as = {
-		#		name = has_selected_a_government
-		#		value = flag:administrative
-		#	}
-		#}
 		# Change government
 		# We first check if you have a selected government, then if you are independent, then what your liege has
 		if = { # Ritsuryo
@@ -183,32 +130,6 @@ change_to_administrative_effect = {
 				NEW_GOVERNMENT_TYPE = japan_administrative_government
 			}
 			change_government = japan_administrative_government
-		}
-		if = { # Palatine
-			limit = {
-				trigger_if = {
-					limit = {
-						exists = scope:has_selected_a_government
-					}
-					scope:has_selected_a_government = flag:gaul_administrative
-				}
-				trigger_else_if = {
-					limit = {
-						top_liege = this
-					}
-					has_tgp_dlc_trigger = yes
-					LR_tgp_can_become_gaul_administrative_trigger = yes
-				}
-				trigger_else = {
-					scope:governor_liege = { government_has_flag = government_is_gaul_administrative }
-				}
-			}
-			change_to_administrative_holding_effect = yes
-			tgp_domicile_conversion_when_changing_government_type = {
-				NEW_DOMICILE_TYPE = gallic_manor
-				NEW_GOVERNMENT_TYPE = gaul_administrative_government
-			}
-			change_government = gaul_administrative_government
 		}
 		else_if = { # Celestial
 			limit = {
@@ -290,92 +211,14 @@ change_to_administrative_effect = {
 			}
 			change_government = meritocratic_government
 		}
-		else_if = { ##Roman Admin
-			limit = {
-				trigger_if = {
-					limit = {
-						exists = scope:has_selected_a_government
-					}
-					scope:has_selected_a_government = flag:roman_administrative
-				}
-				trigger_else_if = {
-					limit = {
-						scope:governor_liege ?= this
-					}
-					has_ep3_dlc_trigger = yes
-					should_become_roman_admin_trigger = yes
-				}
-				trigger_else = {
-					scope:governor_liege = { government_has_flag = government_is_roman_administrative }
-				}
-			}
-			change_to_administrative_holding_effect = yes
-			tgp_domicile_conversion_when_changing_government_type = {
-				NEW_DOMICILE_TYPE = classical_group_estate
-				NEW_GOVERNMENT_TYPE = roman_administrative_government
-			}
-			change_government = roman_administrative_government
-		}
-		else_if = { ##Diadochi Admin
-			limit = {
-				trigger_if = {
-					limit = {
-						exists = scope:has_selected_a_government
-					}
-					scope:has_selected_a_government = flag:alexandrian_administrative
-				}
-				trigger_else_if = {
-					limit = {
-						scope:governor_liege ?= this
-					}
-					has_ep3_dlc_trigger = yes
-					should_become_alexandrian_admin_trigger = yes
-				}
-				trigger_else = {
-					scope:governor_liege = { government_has_flag = government_is_alexandrian_administrative }
-				}
-			}
-			change_to_administrative_holding_effect = yes
-			tgp_domicile_conversion_when_changing_government_type = {
-				NEW_DOMICILE_TYPE = classical_group_estate
-				NEW_GOVERNMENT_TYPE = alexandrian_administrative_government
-			}
-			change_government = alexandrian_administrative_government
-		}
-		else_if = { ##Western Admin
-			limit = {
-				trigger_if = {
-					limit = {
-						exists = scope:has_selected_a_government
-					}
-					scope:has_selected_a_government = flag:western_administrative
-				}
-				trigger_else_if = {
-					limit = {
-						scope:governor_liege ?= this
-					}
-					has_ep3_dlc_trigger = yes
-					should_become_western_admin_trigger = yes
-				}
-				trigger_else = {
-					scope:governor_liege = { government_has_flag = government_is_western_administrative }
-				}
-			}
-			change_to_administrative_holding_effect = yes
-			tgp_domicile_conversion_when_changing_government_type = {
-				NEW_DOMICILE_TYPE = western_group_estate
-				NEW_GOVERNMENT_TYPE = western_administrative_government
-			}
-			change_government = western_administrative_government
-		}
-		else_if = { # Administrative
+		else = { # Administrative
 			add_character_flag = new_government_is_byz_admin
 			change_to_administrative_holding_effect = yes
 			tgp_domicile_conversion_when_changing_government_type = {
 				NEW_DOMICILE_TYPE = estate
 				NEW_GOVERNMENT_TYPE = administrative_government
 			}
-			change_government = administrative_government 
+			change_government = administrative_government
 			remove_character_flag = new_government_is_byz_admin
 		}
 	}
@@ -385,7 +228,7 @@ change_to_administrative_effect = {
 			primary_title.tier >= min_appointment_tier
 			liege = {
 				scope:governor_liege = this
-				government_allows = administrative
+				government_allows = noble_families
 			}
 			house.house_head = {
 				top_liege = scope:governor_liege
@@ -500,11 +343,11 @@ change_to_administrative_interaction_effect = {
 		change_to_administrative_effect = yes
 
 		#And now we also convert all the administrative vassals below so they also match the actor's form of admin.
-		#For non admin sub-vassals the newly converted main vassal can still ask using the same interaction but we 
+		#For non admin sub-vassals the newly converted main vassal can still ask using the same interaction but we
 		hidden_effect = {
 			every_vassal_or_below = {
 				limit = {
-					government_allows = administrative
+					government_has_mechanic = administrative
 					is_ai = yes #Humans get to be asked directly
 				}
 				change_to_administrative_effect = yes
@@ -537,6 +380,7 @@ give_new_noble_family_title_effect = {
 	if = {
 		limit = {
 			is_house_head = yes
+			government_allows = noble_families
 			trigger_if = {
 				limit = {
 					government_has_flag = government_has_county_tier_noble_families
@@ -659,40 +503,6 @@ set_up_domicile_estate_effect = {
 			}
 		}
 		fill_external_east_asian_estate_building_effect = yes
-	}
-	else_if = {
-		limit = { is_domicile_type = gallic_manor }
-		# Intentionally one level lower than what you can get
-		if = {
-			limit = {
-				NOT = { has_domicile_building_or_higher = gallic_manor_main_02 }
-				owner.culture ?= { has_innovation = innovation_city_planning }
-			}
-			add_domicile_building = gallic_manor_main_02
-		}
-		if = {
-			limit = {
-				has_domicile_building = gallic_manor_main_02
-				NOT = { has_domicile_building_or_higher = japanese_manor_main_03 }
-				owner.culture ?= { has_innovation = innovation_manorialism }
-			}
-			add_domicile_building = gallic_manor_main_03
-		}
-		hidden_effect = {
-			switch = {
-				trigger = has_domicile_building
-				gallic_manor_main_03 = {
-					while = {
-						count = 2
-						add_random_internal_gallic_manor_building = yes
-					}
-				}
-				gallic_manor_main_02 = {
-					add_random_internal_gallic_manor_building = yes
-				}
-			}
-		}
-		fill_external_gallic_manor_building_effect = yes
 	}
 }
 

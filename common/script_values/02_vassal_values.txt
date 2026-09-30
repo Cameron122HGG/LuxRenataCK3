@@ -165,23 +165,9 @@ stop_war_attacker_likelihood_calculation = {
 				is_governor = yes
 			}
 			add = 50
-			if = {
-				limit = {
-					scope:target = { has_realm_law = imperial_bureaucracy_3 }
-				}
-				add = 30
-			}
-			else_if = {
-				limit = {
-					scope:target = { has_realm_law = imperial_bureaucracy_2 }
-				}
-				add = 20
-			}
-			else_if = {
-				limit = {
-					scope:target = { has_realm_law = imperial_bureaucracy_1 }
-				}
-				add = 10
+			add = {
+				value = scope:recipient.liege.realm_authority_level
+				multiply = 10
 			}
 		}
 
@@ -203,23 +189,21 @@ stop_war_defender_likelihood_calculation = {
 	}
 	else_if = {
 		#If it's a war over the defender's last county, they won't say yes.
-		if = {
-			limit = {
-				exists = scope:target
-				any_held_title = {
-					count = 1
-					title_tier = county
-					always = yes
-					save_temporary_scope_as = last_county_title
-				}
-				scope:target.casus_belli = {
-					any_target_title = {
-						this = scope:last_county_title
-					}
+		limit = {
+			exists = scope:target
+			any_held_title = {
+				count = 1
+				title_tier = county
+				always = yes
+				save_temporary_scope_as = last_county_title
+			}
+			scope:target.casus_belli = {
+				any_target_title = {
+					this = scope:last_county_title
 				}
 			}
-			value = 0
 		}
+		value = 0
 	}
 	else = {
 		# Calculate chance of character accepting.
@@ -311,23 +295,9 @@ stop_war_defender_likelihood_calculation = {
 				is_governor = yes
 			}
 			add = 50
-			if = {
-				limit = {
-					scope:target = { has_realm_law = imperial_bureaucracy_3 }
-				}
-				add = 30
-			}
-			else_if = {
-				limit = {
-					scope:target = { has_realm_law = imperial_bureaucracy_2 }
-				}
-				add = 20
-			}
-			else_if = {
-				limit = {
-					scope:target = { has_realm_law = imperial_bureaucracy_1 }
-				}
-				add = 10
+			add = {
+				value = scope:recipient.liege.realm_authority_level
+				multiply = 10
 			}
 		}
 

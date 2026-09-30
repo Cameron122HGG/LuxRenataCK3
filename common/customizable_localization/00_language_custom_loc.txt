@@ -50,24 +50,12 @@ IberiaRomanceLanguage = {
 #Taoism
 #Jainism
 #Zoroastrianism
-#Graeco-Roman
+#Greco-Roman
 
 GetFaithSacredLanguage = {
 	type = all
 	
-	text = {
-		trigger = {
-			OR = {
-				faith = faith:catholic
-				faith = faith:conversos
-				faith = faith:lollard
-				faith = faith:insular_celtic
-				faith = faith:mozarabic_church
-			}
-		}
-		localization_key = language_latin_name #Latin
-	}
-
+	# Narrowest Christian branch first, otherwise the Latin and Greek fallbacks would match these
 	text = {
 		trigger = {
 			faith = faith:cathar
@@ -76,20 +64,50 @@ GetFaithSacredLanguage = {
 	}
 
 	text = {
-		trigger = { faith = faith:nestorian }
-		localization_key = language_aramaic_name #Armaic
+		trigger = {
+			OR = {
+				faith = faith:nestorian
+				rite = { this = rite:antiochian_rite }
+			}
+		}
+		localization_key = language_aramaic_name #Aramaic
 	}
 
 	text = {
-		trigger = { faith = faith:armenian_apostolic }
+		trigger = { rite = { pam_armenian_as_liturgical_language_trigger = yes } }
 		localization_key = language_armenian_name #Armenian
+	}
+
+	text = {
+		trigger = { rite = { this = rite:coptic_rite } }
+		localization_key = language_coptic_name #Coptic
+	}
+
+	text = {
+		trigger = { rite = { pam_ethiopic_as_liturgical_language_trigger = yes } }
+		localization_key = language_geez_name #Ge'ez
+	}
+
+	text = {
+		trigger = { rite = { pam_irish_as_liturgical_language_trigger = yes } }
+		localization_key = language_goidelic_name #Goidelic
 	}
 
 	text = {
 		trigger = {
 			OR = {
-				faith = faith:orthodox
-				faith = faith:coptic
+				faith = faith:conversos
+				faith = faith:lollard
+				rite = { pam_latin_as_liturgical_language_trigger = yes }
+			}
+		}
+		localization_key = language_latin_name #Latin
+	}
+
+	text = {
+		trigger = {
+			OR = {
+				rite = { pam_greek_as_liturgical_language_trigger = yes }
 				religion = religion:christianity_religion #fallback for all Christian Faiths
 			}
 		}
@@ -112,17 +130,17 @@ GetFaithSacredLanguage = {
 	}
 
 	text = {
-		trigger = { faith = faith:theravada }
+		trigger = { faith = faith:theravada_faith }
 		localization_key = language_pali_name #Pali
 	}
 
 	text = {
 		trigger = {
 			OR = {
-				faith = faith:lamaism
+				faith = faith:vajrayana_faith
 				religion = religion:bon_religion
 				AND = {
-					faith = faith:vajrayana
+					faith = faith:vajrayana_faith
 					culture = {
 						has_cultural_pillar = heritage_tibetan
 					}
@@ -170,19 +188,7 @@ GetFaithSacredLanguage = {
 GetFaithSacredLanguageCharacter = {
 	type = character
 	
-	text = {
-		trigger = {
-			OR = {
-				faith = faith:catholic
-				faith = faith:conversos
-				faith = faith:lollard
-				faith = faith:insular_celtic
-				faith = faith:mozarabic_church
-			}
-		}
-		localization_key = language_latin_name #Latin
-	}
-
+	# Narrowest branch first, otherwise the Latin and Greek end in a culture fallback that would match these
 	text = {
 		trigger = {
 			faith = faith:cathar
@@ -191,20 +197,50 @@ GetFaithSacredLanguageCharacter = {
 	}
 
 	text = {
-		trigger = { faith = faith:nestorian }
-		localization_key = language_aramaic_name #Armaic
+		trigger = {
+			OR = {
+				faith = faith:nestorian
+				rite = { this = rite:antiochian_rite }
+			}
+		}
+		localization_key = language_aramaic_name #Aramaic
 	}
 
 	text = {
-		trigger = { faith = faith:armenian_apostolic }
+		trigger = { rite = { pam_armenian_as_liturgical_language_trigger = yes } }
 		localization_key = language_armenian_name #Armenian
+	}
+
+	text = {
+		trigger = { rite = { this = rite:coptic_rite } }
+		localization_key = language_coptic_name #Coptic
+	}
+
+	text = {
+		trigger = { rite = { pam_ethiopic_as_liturgical_language_trigger = yes } }
+		localization_key = language_geez_name #Ge'ez
+	}
+
+	text = {
+		trigger = { rite = { pam_irish_as_liturgical_language_trigger = yes } }
+		localization_key = language_goidelic_name #Goidelic
 	}
 
 	text = {
 		trigger = {
 			OR = {
-				faith = faith:orthodox
-				faith = faith:coptic
+				faith = faith:conversos
+				faith = faith:lollard
+				rite = { pam_latin_as_liturgical_language_trigger = yes }
+			}
+		}
+		localization_key = language_latin_name #Latin
+	}
+
+	text = {
+		trigger = {
+			OR = {
+				rite = { pam_greek_as_liturgical_language_trigger = yes }
 				religion = religion:christianity_religion #fallback for all Christian Faiths
 			}
 		}
@@ -227,17 +263,17 @@ GetFaithSacredLanguageCharacter = {
 	}
 
 	text = {
-		trigger = { faith = faith:theravada }
+		trigger = { faith = faith:theravada_faith }
 		localization_key = language_pali_name #Pali
 	}
 
 	text = {
 		trigger = {
 			OR = {
-				faith = faith:lamaism
+				faith = faith:vajrayana_faith
 				religion = religion:bon_religion
 				AND = {
-					faith = faith:vajrayana
+					faith = faith:vajrayana_faith
 					culture = {
 						has_cultural_pillar = heritage_tibetan
 					}

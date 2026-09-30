@@ -123,7 +123,7 @@ contest_events.5000 = {
 		}
 		if = {
 			limit = { is_eunuch_trigger = yes }
-			stress_impact = {   
+			stress_and_fulfillment_impact = {   
 				base = minor_stress_impact_loss
 				vengeful = minor_stress_impact_loss
 				lustful = minor_stress_impact_loss
@@ -135,7 +135,7 @@ contest_events.5000 = {
 			}
 		}
 		else = {
-			stress_impact = {   
+			stress_and_fulfillment_impact = {   
 				base = minor_stress_impact_loss
 				vengeful = minor_stress_impact_loss
 				lustful = minor_stress_impact_loss
@@ -199,8 +199,8 @@ contest_events.5000 = {
 				}
 				modifier = { # The crowd doesn't believe being lustful is bad
 					factor = 0.5
-					root.location.county.faith = {
-						trait_is_virtue = lustful
+					root.location.county.rite = {
+						trait_is_virtue_rite = lustful
 					}
 				}
 				modifier = { # It is bad for them to be lecherous
@@ -209,11 +209,11 @@ contest_events.5000 = {
 						OR = {
 							AND = {
 								is_female = yes
-								faith = { NOT = { has_doctrine_parameter = adultery_female_accepted } }
+								rite = { NOT = { rite_has_parameter = adultery_female_accepted } }
 							}
 							AND = {
 								is_male = yes
-								faith = { NOT = { has_doctrine_parameter = adultery_male_accepted } }
+								rite = { NOT = { rite_has_parameter = adultery_male_accepted } }
 							}
 						}
 					}
@@ -259,7 +259,7 @@ contest_events.5000 = {
 			CHARACTER = scope:enemy
 			OPINION = default_rival_opinion
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			base = minor_stress_impact_loss
 			vengeful = minor_stress_impact_loss
 			chaste = minor_stress_impact_loss
@@ -353,7 +353,7 @@ contest_events.5000 = {
 			CHARACTER = scope:enemy
 			OPINION = default_rival_opinion
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			base = minor_stress_impact_loss
 			vengeful = minor_stress_impact_loss
 			chaste = minor_stress_impact_loss
@@ -441,7 +441,7 @@ contest_events.5000 = {
 			CHARACTER = scope:enemy
 			OPINION = default_rival_opinion
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			base = minor_stress_impact_loss
 			vengeful = minor_stress_impact_loss
 			chaste = minor_stress_impact_loss
@@ -548,12 +548,14 @@ contest_events.5010 = {
 				}
 			}
 		}
-		progress_towards_rival_effect = {
-			REASON = rival_recital_insult
-			CHARACTER = scope:enemy
-			OPINION = default_rival_opinion
+		scope:enemy = {
+			progress_towards_rival_effect = {
+				REASON = rival_recital_insult
+				CHARACTER = root
+				OPINION = default_rival_opinion
+			}
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			base = minor_stress_impact_loss
 			vengeful = minor_stress_impact_loss
 			forgiving = medium_stress_impact_gain
@@ -615,7 +617,7 @@ contest_events.5010 = {
 				}
 			}
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			base = minor_stress_impact_loss
 			dull = medium_stress_impact_gain
 			impatient = medium_stress_impact_gain
@@ -720,7 +722,7 @@ contest_events.5020 = {
 				}
 			}
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			content = medium_stress_impact_gain
 			humble = medium_stress_impact_gain
 		}
@@ -741,7 +743,7 @@ contest_events.5020 = {
 	option = {
 		name = contest_events.5020.b
 		activity_tournament_change_contestant_score_effect = { SCORE = increase_minor }
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			ambitious = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			stubborn = minor_stress_impact_gain
@@ -836,7 +838,7 @@ contest_events.5030 = {
 				}
 			}
 		}
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			content = medium_stress_impact_gain
 			humble = medium_stress_impact_gain
 		}
@@ -857,7 +859,7 @@ contest_events.5030 = {
 	option = {
 		name = contest_events.5030.b
 		activity_tournament_change_contestant_score_effect = { SCORE = decrease_minor }
-		stress_impact = {   
+		stress_and_fulfillment_impact = {   
 			ambitious = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			stubborn = minor_stress_impact_gain

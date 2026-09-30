@@ -93,7 +93,7 @@ hunt_mystical_animal.1002 = {
 			save_temporary_scope_as = story
 		}
 		location.county = scope:story.var:legendary_county
-		NOT = { exists = involved_activity }
+		is_in_activity = no
 	}
 
 	immediate = {
@@ -178,7 +178,7 @@ hunt_mystical_animal.1003 = {
 			short_term_gold < medium_gold_value
 		}
 		remove_short_term_gold = medium_gold_value
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 		}
 	}
@@ -200,7 +200,7 @@ hunt_mystical_animal.1003 = {
 				opinion = 15
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = minor_stress_impact_gain
 		}
 	}
@@ -258,6 +258,9 @@ hunt_mystical_animal.1004 = {
 				this != root.location.county
 				any_neighboring_county = { this = root.location.county }
 			}
+		}
+		NOT = {
+			has_character_modifier = modifier_hunt_hunting_trophy
 		}
 	}
 
@@ -382,6 +385,9 @@ hunt_mystical_animal.1005 = {
 			}
 		}
 		any_owned_story = { type = story_cycle_hunt_mystical_animal }
+		NOT = {
+			has_character_modifier = modifier_hunt_hunting_trophy
+		}
 	}
 
 	immediate = {
@@ -483,6 +489,10 @@ hunt_mystical_animal.1007 = {
 	}
 
 	immediate = {
+		random_owned_story = {
+			limit = { story_type = story_cycle_hunt_mystical_animal }
+			save_scope_as = story
+		}
 		hunt_mystical_animal_immediate_effect = {
 			EVENT_NUMBER = 1007
 			ENCOUNTER = yes
@@ -657,7 +667,7 @@ hunt_mystical_animal.1008 = {
 	option = { #Hire people to look for the animal
 		name = hunt_mystical_animal.1008.a
 		add_prestige = medium_prestige_loss
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 		}
 	}
@@ -820,7 +830,7 @@ hunt_mystical_animal.9001 = {
 			can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:host }
 		}
 		hunt_animal_bow_kill_effect = { DEATH = yes VAR = scope:activity.var:animal_type }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -840,7 +850,7 @@ hunt_mystical_animal.9001 = {
 		name = hunt.1032.e
 		custom_tooltip = hunt.1032.e.tt
 		hunt_no_pelt_effect = yes # No pelt trophies
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			brave = minor_stress_impact_gain

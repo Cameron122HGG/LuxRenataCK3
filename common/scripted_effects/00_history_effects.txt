@@ -30,3 +30,27 @@
 		}
 	}
 }
+
+# Both rites are expected to belong to the same faith; heads of rite are code-managed and left alone.
+eliminate_and_replace_rite_effect = {
+	every_county = {
+		limit = { rite = $TARGET_RITE$ }
+		set_variable = {
+			name = forbid_crypto_reconversion
+			value = yes
+			days = 30
+		}
+		set_county_rite = $REPLACEMENT_RITE$
+	}
+	$TARGET_RITE$.faith = {
+		every_faith_character = {
+			limit = { rite = $TARGET_RITE$ }
+			set_variable = {
+				name = forbid_crypto_reconversion
+				value = yes
+				days = 30
+			}
+			set_character_rite = $REPLACEMENT_RITE$
+		}
+	}
+}

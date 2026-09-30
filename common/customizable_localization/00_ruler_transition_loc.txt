@@ -81,25 +81,25 @@ DeathMessageIntro = {
 				has_trait = excommunicated
 				AND = {
 					has_trait = kinslayer
-					NOT = { faith = { has_doctrine = doctrine_kinslaying_accepted } }
+					NOT = { rite = { rite_has_parameter = kinslaying_accepted } }
 				}
 				AND = {
 					has_trait = deviant
-					NOT = { faith = { has_doctrine_parameter = deviancy_accepted } }
+					NOT = { rite = { rite_has_parameter = deviancy_accepted } }
 				}
 				AND = {
 					has_trait = cannibal
 					NOT = {
-						faith = { has_doctrine_parameter = cannibalism_legal }
+						rite = { rite_has_parameter = cannibalism_legal }
 					}
 				}
 				AND = {
 					has_trait = sodomite
-					NOT = { faith = { has_doctrine = doctrine_homosexuality_accepted } }
+					NOT = { rite = { rite_has_parameter = homosexuality_accepted } }
 				}
 				AND = {
 					has_trait = incestuous
-					NOT = { faith = { has_doctrine = doctrine_consanguinity_unrestricted } }
+					NOT = { rite = { rite_has_parameter = allows_unrestricted_marriage } }
 				}
 				AND = {
 					OR = {
@@ -107,7 +107,7 @@ DeathMessageIntro = {
 						has_trait = fornicator
 					}
 					is_female = no
-					NOT = { faith = { has_doctrine = doctrine_adultery_men_accepted } }
+					NOT = { rite = { rite_has_parameter = adultery_male_accepted } }
 				}
 				AND = {
 					OR = {
@@ -115,12 +115,12 @@ DeathMessageIntro = {
 						has_trait = fornicator
 					}
 					is_female = yes
-					NOT = { faith = { has_doctrine = doctrine_adultery_women_accepted } }
+					NOT = { rite = { rite_has_parameter = adultery_female_accepted } }
 				}
 				has_trait = murderer
 				AND = {
 					has_trait = witch
-					NOT = { faith = { has_doctrine_parameter = witchcraft_accepted } }
+					NOT = { rite = { rite_has_parameter = witchcraft_accepted } }
 				}
 			}
 		}
@@ -154,19 +154,19 @@ DeathMessageIntro = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_ISLAM_1
 		trigger = {
-			faith.religion = faith:ashari.religion
+			faith.religion = faith:sunni.religion
 		}
 	}
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_ISLAM_2
 		trigger = {
-			faith.religion = faith:ashari.religion
+			faith.religion = faith:sunni.religion
 		}
 	}
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_ISLAM_3
 		trigger = {
-			faith.religion = faith:ashari.religion
+			faith.religion = faith:sunni.religion
 		}
 	}
 	text = {
@@ -185,9 +185,9 @@ DeathMessageIntro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_EASTERN_1
 		trigger = {
 			OR = {
-				faith.religion = faith:vaishnavism.religion
-				faith.religion = faith:theravada.religion
-				faith.religion = faith:digambara.religion
+				faith.religion = faith:vaishnava_faith.religion
+				faith.religion = faith:theravada_faith.religion
+				faith.religion = faith:jain_faith.religion
 			}
 		}
 	}
@@ -287,7 +287,7 @@ DeathMessageReason = {
 # administrator
 # schemer
 # seducer
-# scholar
+# erudite
 # torturer
 # family_first
 # lifestyle_mystic
@@ -427,7 +427,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_MIND_POSSESSED_POSITIVE
 		trigger = {
 			has_trait = possessed
-			faith = { has_doctrine = tenet_adorcism }
+			rite = { rite_has_tenet = tenet_adorcism }
 		}
 		weight_multiplier = {
 			base = 3
@@ -437,7 +437,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_MIND_POSSESSED_NEGATIVE
 		trigger = {
 			has_trait = possessed
-			NOT = { faith = { has_doctrine = tenet_adorcism } }
+			NOT = { rite = { rite_has_tenet = tenet_adorcism } }
 		}
 		weight_multiplier = {
 			base = 3
@@ -496,7 +496,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_SCANDAL_KINSLAYER
 		trigger = {
 			has_trait = kinslayer
-			NOT = { faith = { has_doctrine = doctrine_kinslaying_accepted } }
+			NOT = { rite = { rite_has_parameter = kinslaying_accepted } }
 		}
 		weight_multiplier = {
 			base = 2
@@ -506,7 +506,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_SCANDAL_DEVIANT
 		trigger = {
 			has_trait = deviant
-			NOT = { faith = { has_doctrine_parameter = deviancy_accepted } }
+			NOT = { rite = { rite_has_parameter = deviancy_accepted } }
 		}
 		weight_multiplier = {
 			base = 2
@@ -517,7 +517,7 @@ DeathMessageOutro = {
 		trigger = {
 			has_trait = cannibal
 			NOT = {
-				faith = { has_doctrine_parameter = cannibalism_legal }
+				rite = { rite_has_parameter = cannibalism_legal }
 			}
 		}
 		weight_multiplier = {
@@ -528,7 +528,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_SCANDAL_SODOMITE
 		trigger = {
 			has_trait = sodomite
-			NOT = { faith = { has_doctrine = doctrine_homosexuality_accepted } }
+			NOT = { rite = { rite_has_parameter = homosexuality_accepted } }
 		}
 		weight_multiplier = {
 			base = 2
@@ -538,7 +538,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_SCANDAL_INCESTUOUS
 		trigger = {
 			has_trait = incestuous
-			NOT = { faith = { has_doctrine = doctrine_consanguinity_unrestricted } }
+			NOT = { rite = { rite_has_parameter = allows_unrestricted_marriage } }
 		}
 		weight_multiplier = {
 			base = 2
@@ -551,11 +551,11 @@ DeathMessageOutro = {
 			OR = {
 				AND = {
 					is_female = no
-					NOT = { faith = { has_doctrine = doctrine_adultery_men_accepted } }
+					NOT = { rite = { rite_has_parameter = adultery_male_accepted } }
 				}
 				AND = {
 					is_female = yes
-					NOT = { faith = { has_doctrine = doctrine_adultery_women_accepted } }
+					NOT = { rite = { rite_has_parameter = adultery_female_accepted } }
 				}
 			}
 		}
@@ -570,11 +570,11 @@ DeathMessageOutro = {
 			OR = {
 				AND = {
 					is_female = no
-					NOT = { faith = { has_doctrine = doctrine_adultery_men_accepted } }
+					NOT = { rite = { rite_has_parameter = adultery_male_accepted } }
 				}
 				AND = {
 					is_female = yes
-					NOT = { faith = { has_doctrine = doctrine_adultery_women_accepted } }
+					NOT = { rite = { rite_has_parameter = adultery_female_accepted } }
 				}
 			}
 		}
@@ -595,7 +595,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_SCANDAL_WITCH
 		trigger = {
 			has_trait = witch
-			NOT = { faith = { has_doctrine_parameter = witchcraft_accepted } }
+			NOT = { rite = { rite_has_parameter = witchcraft_accepted } }
 		}
 		weight_multiplier = {
 			base = 2
@@ -684,7 +684,7 @@ DeathMessageOutro = {
 		}
 	}
 	text = {
-		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_LIFESTYLE_SCHOLAR
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_LIFESTYLE_ERUDITE
 		trigger = {
 			has_learning_lifestyle_trait_trigger = yes
 		}
@@ -1064,7 +1064,7 @@ HeirMessageInterface = {
 		}
 	}
 	text = {
-		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_SCHOLAR
+		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_ERUDITE
 		trigger = {
 			is_adult = yes
 			has_learning_lifestyle_trait_trigger = yes
@@ -1088,14 +1088,14 @@ HeirMessageInterface = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_POSSESSED_BAD
 		trigger = {
 			has_trait = possessed
-			NOT = { faith = { has_doctrine = tenet_adorcism } }
+			NOT = { rite = { rite_has_tenet = tenet_adorcism } }
 		}
 	}
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_POSSESSED_GOOD
 		trigger = {
 			has_trait = possessed
-			faith = { has_doctrine = tenet_adorcism }
+			rite = { rite_has_tenet = tenet_adorcism }
 		}
 	}
 	text = {
@@ -1392,7 +1392,7 @@ HeirMessageInterface = {
 			is_adult = yes
 			has_trait = cannibal
 			NOT = {
-				faith = { has_doctrine_parameter = cannibalism_legal }
+				rite = { rite_has_parameter = cannibalism_legal }
 			}
 		}
 	}
@@ -1402,19 +1402,19 @@ HeirMessageInterface = {
 			is_adult = yes
 			AND = {
 				has_trait = kinslayer
-				NOT = { faith = { has_doctrine = doctrine_kinslaying_accepted } }
+				NOT = { rite = { rite_has_parameter = kinslaying_accepted } }
 			}
 			AND = {
 				has_trait = deviant
-				NOT = { faith = { has_doctrine_parameter = deviancy_accepted } }
+				NOT = { rite = { rite_has_parameter = deviancy_accepted } }
 			}
 			AND = {
 				has_trait = sodomite
-				NOT = { faith = { has_doctrine = doctrine_homosexuality_accepted } }
+				NOT = { rite = { rite_has_parameter = homosexuality_accepted } }
 			}
 			AND = {
 				has_trait = incestuous
-				NOT = { faith = { has_doctrine = doctrine_consanguinity_unrestricted } }
+				NOT = { rite = { rite_has_parameter = allows_unrestricted_marriage } }
 			}
 			AND = {
 				OR = {
@@ -1422,7 +1422,7 @@ HeirMessageInterface = {
 					has_trait = fornicator
 				}
 				is_female = no
-				NOT = { faith = { has_doctrine = doctrine_adultery_men_accepted } }
+				NOT = { rite = { rite_has_parameter = adultery_male_accepted } }
 			}
 			AND = {
 				OR = {
@@ -1430,7 +1430,7 @@ HeirMessageInterface = {
 					has_trait = fornicator
 				}
 				is_female = yes
-				NOT = { faith = { has_doctrine = doctrine_adultery_women_accepted } }
+				NOT = { rite = { rite_has_parameter = adultery_female_accepted } }
 			}
 			has_trait = murderer
 		}
@@ -1441,7 +1441,7 @@ HeirMessageInterface = {
 			is_adult = yes
 			AND = {
 				has_trait = witch
-				NOT = { faith = { has_doctrine_parameter = witchcraft_accepted } }
+				NOT = { rite = { rite_has_parameter = witchcraft_accepted } }
 			}
 		}
 	}
@@ -1543,6 +1543,7 @@ HeirMessageInterface = {
 				has_trait = chaste
 				has_trait = family_first
 			}
+			is_married = yes
 		}
 	}
 	text = {
@@ -1827,6 +1828,28 @@ GameOverMessageInterface = {
 	}
 }
 
+GameOverMessageLineage = {
+	type = character
+
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_GAME_OVER_LINEAGE_DYNASTY
+		trigger = {
+			exists = dynasty
+		}
+	}
+
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_GAME_OVER_LINEAGE_ORGANIZATION
+		trigger = {
+			exists = organization
+		}
+	}
+
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_GAME_OVER_LINEAGE_NONE
+	}
+}
+
 GameOverMessageInterfaceDuration = {
 	type = character
 
@@ -1948,6 +1971,13 @@ GameOverMessageInterfaceSplendor = {
 				dynasty_prestige_level < low_dynasty_prestige_level
 				dynasty_prestige_level >= min_dynasty_prestige_level
 			}
+		}
+	}
+
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_GAME_OVER_NO_DYNASTY_SPLENDOR
+		trigger = {
+			NOT = { exists = dynasty }
 		}
 	}
 }

@@ -3225,8 +3225,9 @@ fp1_scandi_adventurer_conquest = {
 
 		# Prestige loss for the attacker
 		scope:attacker = {
-			pay_short_term_gold_reparations_effect = {
-				GOLD_VALUE = 5
+			if = {
+				limit = { scope:war ?= { NOT = { has_variable = no_gold_reparations } } }
+				pay_short_term_gold_reparations_effect = { GOLD_VALUE = 5 }
 			}
 			add_prestige = {
 				value = major_prestige_value
@@ -3277,7 +3278,8 @@ fp1_scandi_adventurer_conquest = {
 			else_if = {
 				limit = {
 					has_variable = fp1_has_beaten_sa_progress
-					var:fp1_has_beaten_sa_progress <= 9
+					## If <9 adventurers has already been defeated, add +1 otherwise...
+					var:fp1_has_beaten_sa_progress <= 8
 				}
 				change_variable = {
 					name = fp1_has_beaten_sa_progress
@@ -3285,6 +3287,7 @@ fp1_scandi_adventurer_conquest = {
 				}
 			}
 			## ... towards a pay-off.
+			## if >8 adventures has already been defeated give nickname
 			else_if = {
 				limit = {
 					OR = {
@@ -3339,9 +3342,8 @@ fp1_scandi_adventurer_conquest = {
 	max_attacker_score_from_occupation = 150
 }
 
-
 ##########
-# Special 'vassalize' CB used by diarchs when trying to retract a vassal from a co-vassal.
+# Special 'vassalise' CB used by diarchs when trying to retract a vassal from a co-vassal.
 # If victorious, the diarch takes the affected vassal for their own.
 ##########
 
@@ -3457,7 +3459,7 @@ diarch_vassalisation_cb = {
 				value = minor_prestige_value
 				multiply = -1.0
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -3473,7 +3475,7 @@ diarch_vassalisation_cb = {
 		}
 		
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -3729,7 +3731,7 @@ remove_regent_cb = {
 				value = minor_prestige_value
 				multiply = -1.0
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -3757,7 +3759,7 @@ remove_regent_cb = {
 					}
 				}
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}

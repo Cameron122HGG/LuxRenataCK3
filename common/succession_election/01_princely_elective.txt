@@ -43,7 +43,7 @@ princely_elective = { #HRE Elective.
 				has_council_position = councillor_court_chaplain
 			}
 			faith = scope:holder.faith
-			faith = { has_doctrine = doctrine_theocracy_lay_clergy }
+			rite = { rite_has_doctrine = doctrine_theocracy_lay_clergy }
 			root != scope:holder.faith.religious_head
 		}
 		modifier = { #Papal Influence
@@ -61,27 +61,31 @@ princely_elective = { #HRE Elective.
 	
 	electors = {
 		max = 8  #Seven Prince-Electors + 1 Emperor.
-		add = holder #The Emperor
-		add = {
-			type = title_dejure_vassals
-			limit = {
-				scope:title = { #Either title is higher than Duke-tier, or must be primary.
-					OR = {
-						tier >= tier_kingdom
-						holder = { has_primary_title = prev }
+		character_sets = {
+			princely_electors_holder = { #The Emperor
+				type = holder
+			}
+			princely_electors_dejure_vassals = {
+				type = title_dejure_vassals
+				limit = {
+					scope:title = { #Either title is higher than Duke-tier, or must be primary.
+						OR = {
+							tier >= tier_kingdom
+							holder = { has_primary_title = prev }
+						}
 					}
-				}
-				OR = { #Either de facto direct vassal, or independent ruler who is de jure vassal. (no sub-vassals)
-					is_vassal_of = scope:holder
-					top_liege = this
-				}
-				trigger_if = { #Must be true priests
-					limit = { government_has_flag = government_is_theocracy }
-					trigger_if = {
-						limit = { is_female = yes }
-						faith_dominant_gender_female_or_equal = yes
+					OR = { #Either de facto direct vassal, or independent ruler who is de jure vassal. (no sub-vassals)
+						is_vassal_of = scope:holder
+						top_liege = this
 					}
-					trigger_else = { faith_dominant_gender_male_or_equal = yes }
+					trigger_if = { #Must be true priests
+						limit = { government_has_flag = government_is_theocracy }
+						trigger_if = {
+							limit = { is_female = yes }
+							faith_dominant_gender_female_or_equal = yes
+						}
+						trigger_else = { faith_dominant_gender_male_or_equal = yes }
+					}
 				}
 			}
 		}
@@ -196,30 +200,32 @@ princely_elective = { #HRE Elective.
 	
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
 	candidates = {
-		add = {
-			type = holder_direct_vassals
-			limit = {
-				feudal_elective_potential_landed_candidate_trigger = yes
+		character_sets = {
+			princely_elective_direct_vassals = {
+				type = holder_direct_vassals
+				limit = {
+					feudal_elective_potential_landed_candidate_trigger = yes
+				}
 			}
-		}
-		add = {
-			type = title_dejure_vassals
-			limit = {
-				top_liege = this #De jure vassals of the title who are not de facto vassals of the current ruler.
-				feudal_elective_potential_landed_candidate_trigger = yes
+			princely_elective_dejure_vassals = {
+				type = title_dejure_vassals
+				limit = {
+					top_liege = this #De jure vassals of the title who are not de facto vassals of the current ruler.
+					feudal_elective_potential_landed_candidate_trigger = yes
+				}
 			}
-		}
-		add = {
-			type = title_claimants
-			limit = {
-				feudal_elective_potential_landless_claimant_candidate_trigger = yes
+			princely_elective_claimants = {
+				type = title_claimants
+				limit = {
+					feudal_elective_potential_landless_claimant_candidate_trigger = yes
+				}
 			}
-		}
-		add = {
-			type = holder_close_or_extended_family
-			limit = {
-				is_close_family_of = scope:holder
-				feudal_elective_potential_landless_dynastic_candidate_trigger = yes
+			princely_elective_family = {
+				type = holder_close_or_extended_family
+				limit = {
+					is_close_family_of = scope:holder
+					feudal_elective_potential_landless_dynastic_candidate_trigger = yes
+				}
 			}
 		}
 	}

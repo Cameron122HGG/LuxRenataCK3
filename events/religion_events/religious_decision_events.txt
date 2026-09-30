@@ -74,7 +74,7 @@ religious_decision.0001 = {
 			name = offering
 			value = flag:expensive
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_gain
 			cynical = medium_stress_gain
 		}
@@ -122,7 +122,7 @@ religious_decision.0001 = {
 			name = offering
 			value = flag:none
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			generous = medium_stress_gain
 			humble = medium_stress_gain
 		}
@@ -218,21 +218,12 @@ religious_decision.0002 = {
 			animation = ecstasy
 		}
 		triggered_animation = {
-			trigger = { 
-				OR = {
-					scope:outcome = flag:possessed 
-					scope:outcome = flag:impotent
-				}
-			}
+			trigger = { scope:outcome = flag:possessed }
 			animation = paranoia
 		}
 		triggered_animation = {
 			trigger = { scope:outcome = flag:ill }
 			animation = sick
-		}
-		triggered_animation = {
-			trigger = { scope:outcome = flag:infirm }
-			animation = personality_irrational
 		}
 		animation = disbelief
 	}
@@ -275,7 +266,7 @@ religious_decision.0002 = {
 			limit = { exists = scope:realm_priest }
 			random_list = {
 				# Positive Effect
-				40 = { # Maximum ~85% chance of a good effect (Expensive offering nullifies no outcome; 60 weight good vs. 10 weight bad)
+				40 = { # Maximum ~90% chance of a good effect (Expensive offering nullifies no outcome; 40 weight good vs. 10 weight bad)
 					compare_modifier = {
 						value = {
 							value = scope:realm_priest.learning
@@ -440,9 +431,9 @@ religious_decision.0002 = {
 					}
 				}
 				# Negative Effect
-				20 = {
+				10 = {
 					modifier = {
-						add = 20
+						add = 10
 						scope:offering = flag:none
 					}
 					compare_modifier = {
@@ -453,36 +444,18 @@ religious_decision.0002 = {
 						}
 					}
 					random_list = {
-						25 = {
+						30 = {
 							trigger = { NOT = { has_trait = possessed } }
-							modifier = {
-								add = 100
-								scope:offering = flag:expensive
-							}
 							save_scope_value_as = {
 								name = outcome
 								value = flag:possessed
 							}
 						}
-						25 = {
-							trigger = { NOT = { has_trait = impotent } }
-							save_scope_value_as = {
-								name = outcome
-								value = flag:impotent
-							}
-						}
-						25 = {
+						10 = {
 							trigger = { can_contract_disease_trigger = { DISEASE = ill } }
 							save_scope_value_as = {
 								name = outcome
 								value = flag:ill
-							}
-						}
-						25 = {
-							trigger = { NOT = { has_trait = infirm } }
-							save_scope_value_as = {
-								name = outcome
-								value = flag:infirm
 							}
 						}
 					}
@@ -493,7 +466,7 @@ religious_decision.0002 = {
 		else = {
 			random_list = {
 				# Positive Effect
-				40 = { # Maximum ~85% chance of a good effect (Expensive offering nullifies no outcome; 60 weight good vs. 10 weight bad)
+				40 = { # Maximum ~90% chance of a good effect (Expensive offering nullifies no outcome; 40 weight good vs. 10 weight bad)
 					compare_modifier = {
 						value = {
 							value = learning
@@ -654,9 +627,9 @@ religious_decision.0002 = {
 					}
 				}
 				# Negative Effect
-				20 = {
+				10 = {
 					modifier = {
-						add = 20
+						add = 10
 						scope:offering = flag:none
 					}
 					compare_modifier = {
@@ -667,36 +640,18 @@ religious_decision.0002 = {
 						}
 					}
 					random_list = {
-						25 = {
+						30 = {
 							trigger = { NOT = { has_trait = possessed } }
-							modifier = {
-								add = 100
-								scope:offering = flag:expensive
-							}
 							save_scope_value_as = {
 								name = outcome
 								value = flag:possessed
 							}
 						}
-						25 = {
-							trigger = { NOT = { has_trait = impotent } }
-							save_scope_value_as = {
-								name = outcome
-								value = flag:impotent
-							}
-						}
-						25 = {
+						10 = {
 							trigger = { can_contract_disease_trigger = { DISEASE = ill } }
 							save_scope_value_as = {
 								name = outcome
 								value = flag:ill
-							}
-						}
-						25 = {
-							trigger = { NOT = { has_trait = infirm } }
-							save_scope_value_as = {
-								name = outcome
-								value = flag:infirm
 							}
 						}
 					}
@@ -739,13 +694,7 @@ religious_decision.0002 = {
 			text = religious_decision.0002.good
 		}
 		name = {
-			trigger = {
-				OR = {
-					scope:outcome = flag:ill
-					scope:outcome = flag:impotent
-					scope:outcome = flag:infirm
-				}
-			}
+			trigger = { scope:outcome = flag:ill }
 			text = religious_decision.0002.bad
 		}
 		name = {
@@ -830,16 +779,48 @@ religious_decision.0002 = {
 			add_trait = possessed_1
 		}
 		else_if = {
-			limit = { scope:outcome = flag:impotent }
-			add_trait = impotent
-		}
-		else_if = {
 			limit = { scope:outcome = flag:ill }
 			contract_disease_effect = { DISEASE = ill TREATMENT_EVENT = yes }
 		}
 		else_if = {
-			limit = { scope:outcome = flag:infirm }
-			add_trait = infirm
+			limit = { scope:outcome = flag:no_effect }
+			add_stress = major_stress_loss
+			change_spiritual_fulfillment = miniscule_spiritual_fulfillment_value
+		}
+
+		if = {
+			limit = {
+				OR = {
+					scope:outcome = flag:shrewd
+					scope:outcome = flag:strong
+					scope:outcome = flag:wind_spirit
+					scope:outcome = flag:water_spirit
+					scope:outcome = flag:tree_spirit
+					scope:outcome = flag:bush_spirit
+					scope:outcome = flag:rock_spirit
+				}
+			}
+			custom_tooltip = religious_decision.0002.common_loot
+			hidden_effect = {
+				generate_trinket_effect = {
+					TRINKET_RECEIVER = root
+					TRINKET_GIVER = root
+					HISTORY_TYPE = discovered
+					GRAB_ALL_TRINKETS = yes
+				}
+				scope:new_trinket ?= {
+					set_artifact_rarity = common
+				}
+			}
+			if = {
+				limit = { exists = scope:new_trinket }
+				send_interface_toast = {
+					title = religious_decision.0002.common_loot
+					type = event_toast_effect_good
+					left_icon = root
+					right_icon = scope:new_trinket
+				}
+			}
 		}
 	}
 }
@@ -859,7 +840,7 @@ religious_decision.0101 = {
 			triggered_desc = {
 				trigger = {
 					faith = {
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnavism }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnava_faith }
 					}
 				}
 				desc = religious_decision.0101.desc.vaishnavism
@@ -867,7 +848,7 @@ religious_decision.0101 = {
 			triggered_desc = {
 				trigger = {
 					faith = {
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 					}
 				}
 				desc = religious_decision.0101.desc.shaivism
@@ -879,6 +860,10 @@ religious_decision.0101 = {
 					}
 				}
 				desc = religious_decision.0101.desc.smartism
+			}
+			triggered_desc = {
+				trigger = { religion = religion:buddhism_religion }
+				desc = religious_decision.0101.desc.sukhavati
 			}
 			desc = religious_decision.0101.desc.generic
 		}
@@ -898,10 +883,11 @@ religious_decision.0101 = {
 				# vaishnavism includes this one
 				faith = {
 					OR = {
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:smartism }
 					}
 				}
+				religion = religion:buddhism_religion
 				has_character_modifier = bhakti_hinduism_ganga
 			}
 		}
@@ -914,11 +900,12 @@ religious_decision.0101 = {
 			NOR = {
 				faith = {
 					OR = {
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnavism }
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnava_faith }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:smartism }
 					}
 				}
+				religion = religion:buddhism_religion
 				has_character_modifier = bhakti_hinduism_saraswati
 			}
 		}
@@ -931,11 +918,12 @@ religious_decision.0101 = {
 			NOR = {
 				faith = {
 					OR = {
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnavism }
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnava_faith }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:smartism }
 					}
 				}
+				religion = religion:buddhism_religion
 				has_character_modifier = bhakti_hinduism_kali
 			}
 		}
@@ -948,10 +936,11 @@ religious_decision.0101 = {
 			NOR = {
 				faith = {
 					OR = {
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnavism }
-						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnava_faith }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 					}
 				}
+				religion = religion:buddhism_religion
 				# smartism includes this one
 				has_character_modifier = bhakti_hinduism_kubera
 			}
@@ -959,12 +948,40 @@ religious_decision.0101 = {
 		set_bhakti_effect = { BHAKTI = bhakti_hinduism_kubera }
 	}
 
+	# Pure Land Buddhism
+	option = {
+		name = religious_decision.0101.amitabha
+		trigger = {
+			religion = religion:buddhism_religion
+			NOT = { has_character_modifier = bhakti_buddhism_amitabha }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_buddhism_amitabha }
+	}
+
+	option = {
+		name = religious_decision.0101.avalokiteshvara
+		trigger = {
+			religion = religion:buddhism_religion
+			NOT = { has_character_modifier = bhakti_buddhism_avalokiteshvara }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_buddhism_avalokiteshvara }
+	}
+
+	option = {
+		name = religious_decision.0101.bhaisajyaguru
+		trigger = {
+			religion = religion:buddhism_religion
+			NOT = { has_character_modifier = bhakti_buddhism_bhaisajyaguru }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_buddhism_bhaisajyaguru }
+	}
+
 	# Vaishnavism
 	option = {
 		name = religious_decision.0101.lakishmi
 		trigger = {
 			faith = {
-				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnavism }
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnava_faith }
 			}
 			NOT = { has_character_modifier = bhakti_vaishnavism_lakishmi }
 		}
@@ -975,7 +992,7 @@ religious_decision.0101 = {
 		name = religious_decision.0101.jagganath
 		trigger = {
 			faith = {
-				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnavism }
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnava_faith }
 			}
 			NOT = { has_character_modifier = bhakti_vaishnavism_jagganath }
 		}
@@ -986,7 +1003,7 @@ religious_decision.0101 = {
 		name = religious_decision.0101.hayagriva
 		trigger = {
 			faith = {
-				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnavism }
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:vaishnava_faith }
 			}
 			NOT = { has_character_modifier = bhakti_vaishnavism_hayagriva }
 		}
@@ -998,7 +1015,7 @@ religious_decision.0101 = {
 		name = religious_decision.0101.parvati
 		trigger = {
 			faith = {
-				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 			}
 			NOT = { has_character_modifier = bhakti_shaivism_parvati }
 		}
@@ -1009,7 +1026,7 @@ religious_decision.0101 = {
 		name = religious_decision.0101.virabhadra
 		trigger = {
 			faith = {
-				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 			}
 			NOT = { has_character_modifier = bhakti_shaivism_virabhadra }
 		}
@@ -1020,7 +1037,7 @@ religious_decision.0101 = {
 		name = religious_decision.0101.munishwarar
 		trigger = {
 			faith = {
-				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 			}
 			NOT = { has_character_modifier = bhakti_shaivism_munishwarar }
 		}
@@ -1031,7 +1048,7 @@ religious_decision.0101 = {
 		name = religious_decision.0101.dakshinamoorthy
 		trigger = {
 			faith = {
-				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaivism }
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:shaiva_faith }
 			}
 			NOT = { has_character_modifier = bhakti_shaivism_dakshinamoorthy }
 		}
@@ -1933,33 +1950,33 @@ religious_decision.0211 = {
 	option = {
 		name = {
 			trigger = {
-				OR = {
-					has_character_flag = meditation_epiphany
-					has_character_flag = meditation_fugue
-					has_character_flag = meditation_major_stress_loss
+				has_variable = {
+					name = meditation_epiphany
+					name = meditation_fugue
+					name = meditation_major_stress_loss
 				}
 			}
 			text = religious_decision.0211.a.critical_success
 		}
 		name = {
 			trigger = {
-				OR = {
-					has_character_flag = meditation_reflection
-					has_character_flag = meditation_medium_stress_loss
-					has_character_flag = meditation_minor_stress_loss
+				has_variable = {
+					name = meditation_reflection
+					name = meditation_medium_stress_loss
+					name = meditation_minor_stress_loss
 				}
 			}
 			text = religious_decision.0211.a.success
 		}
 		name = {
 			trigger = {
-				OR = {
-					has_character_flag = meditation_secret
-					has_character_flag = meditation_impatient
-					has_character_flag = meditation_hungry
-					has_character_flag = meditation_thirsty
-					has_character_flag = meditation_distraction
-					has_character_flag = meditation_headache
+				has_variable = {
+					name = meditation_secret
+					name = meditation_impatient
+					name = meditation_hungry
+					name = meditation_thirsty
+					name = meditation_distraction
+					name = meditation_headache
 				}
 			}
 			text = religious_decision.0211.a.failure
@@ -2018,6 +2035,45 @@ religious_decision.0211 = {
 			limit = { has_character_flag = meditation_distraction }
 			add_stress = minor_stress_gain
 		}
+		# Successful meditation is spiritually fulfilling when it is a practice of the faith (not when merely calm/Sufi/refreshed)
+		if = {
+			limit = {
+				rite = { rite_has_parameter = meditation_mechanics_active }
+				has_variable = {
+					name = meditation_minor_stress_loss
+					name = meditation_medium_stress_loss
+					name = meditation_major_stress_loss
+					name = meditation_reflection
+					name = meditation_fugue
+					name = meditation_epiphany
+				}
+			}
+			change_spiritual_fulfillment = medium_spiritual_fulfillment_value
+		}
+		if = {
+			limit = { has_personal_tenet_flag = tenet_inner_journey_meditation_bonus }
+			custom_tooltip = pam_inner_journey_meditation_toast
+			add_piety = medium_piety_gain
+			change_spiritual_fulfillment = minor_spiritual_fulfillment_value
+		}
+		if = {
+			limit = {
+				has_personal_tenet_flag = tenet_anachoresis_meditation_bonus
+				scope:at_home = no
+			}
+			custom_tooltip = pam_anachoresis_meditation_toast
+			add_piety = major_piety_gain
+			change_spiritual_fulfillment = medium_spiritual_fulfillment_value
+		}
+		if = {
+			limit = {
+				has_personal_tenet_flag = tenet_hesychasm_meditation_bonus
+				scope:at_home = yes
+			}
+			custom_tooltip = pam_hesychasm_meditation_toast
+			add_piety = major_piety_gain
+			change_spiritual_fulfillment = medium_spiritual_fulfillment_value
+		}
 	}
 
 	after = {
@@ -2069,8 +2125,8 @@ religious_decision.0301 = {
 	# Faiths with Sky Burial need to have this character saved as a variable on their successor.
 	trigger = {
 		exists = player_heir
-		faith = {
-			has_doctrine_parameter = sky_burials_active
+		rite = {
+			rite_has_parameter = sky_burials_active
 		}
 	}
 
@@ -2144,18 +2200,19 @@ religious_decision.0302 = {
 
 	immediate = {
 		add_piety = major_piety_value
+		change_spiritual_fulfillment = medium_spiritual_fulfillment_value
 		if = {
 			limit = {
 				any_vassal = {
-					faith = {
-						has_doctrine_parameter = sky_burials_active
+					rite = {
+						rite_has_parameter = sky_burials_active
 					}
 				}
 			}
 			every_vassal = {
 				limit = {
-					faith = {
-						has_doctrine_parameter = sky_burials_active
+					rite = {
+						rite_has_parameter = sky_burials_active
 					}
 				}
 				custom = give_sky_burial_vassals
@@ -2314,6 +2371,10 @@ religious_decision.0401 = {
 				}
 			}
 			20 = {
+				modifier = {
+					has_personal_tenet_flag = tenet_astrology_divination_bonus
+					factor = 0
+				}
 				save_scope_value_as = {
 					name = divination_outcome
 					value = flag:betrayal
@@ -2337,7 +2398,7 @@ religious_decision.0401 = {
 			}
 			add_character_modifier = {
 				modifier = astrology_great_battle
-				years = 10
+				years = pam_astrology_divination_duration_years
 			}
 		}
 		else_if = {
@@ -2346,7 +2407,7 @@ religious_decision.0401 = {
 			}
 			add_character_modifier = {
 				modifier = astrology_new_friends
-				years = 10
+				years = pam_astrology_divination_duration_years
 			}
 		}
 		else_if = {
@@ -2355,7 +2416,7 @@ religious_decision.0401 = {
 			}
 			add_character_modifier = {
 				modifier = astrology_hard_work
-				years = 10
+				years = pam_astrology_divination_duration_years
 			}
 		}
 		else_if = {
@@ -2364,7 +2425,7 @@ religious_decision.0401 = {
 			}
 			add_character_modifier = {
 				modifier = astrology_betrayal
-				years = 10
+				years = pam_astrology_divination_duration_years
 			}
 		}
 		else_if = {
@@ -2373,8 +2434,20 @@ religious_decision.0401 = {
 			}
 			add_character_modifier = {
 				modifier = astrology_new_beginnings
-				years = 10
+				years = pam_astrology_divination_duration_years
 			}
+		}
+
+		if = {
+			limit = {
+				is_playable_character = yes	# Only playable characters have spiritual fulfillment
+				has_personal_tenet_flag = tenet_astrology_divination_bonus
+			}
+			change_spiritual_fulfillment = medium_spiritual_fulfillment_value
+		}
+		else_if = {
+			limit = { is_playable_character = yes }
+			change_spiritual_fulfillment = minor_spiritual_fulfillment_value
 		}
 
 		# Remove the blocking flag.
@@ -2456,7 +2529,7 @@ religious_decision.0501 = {
 				opinion = 30
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = major_stress_impact_gain
 			cynical = minor_stress_impact_loss
 		}
@@ -2494,7 +2567,7 @@ religious_decision.0501 = {
 		ai_chance = {
 			base = 100
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = minor_stress_impact_loss
 		}
 	}
@@ -2531,7 +2604,7 @@ religious_decision.0501 = {
 		ai_chance = {
 			base = 100
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = minor_stress_impact_loss
 		}
 	}
@@ -2576,7 +2649,7 @@ religious_decision.0501 = {
 				trigger_event = religious_decision.0502
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = major_stress_impact_loss
 			gregarious = minor_stress_impact_gain
 		}
@@ -2592,9 +2665,9 @@ religious_decision.0502 = {
 		desc = religious_decision.0502.desc.body
 		triggered_desc = {
 			trigger = {
-				scope:khazar_khan.faith = {
+				scope:khazar_khan.rite = {
 					NOT = {
-						has_doctrine = doctrine_pluralism_fundamentalist
+						rite_has_doctrine = doctrine_pluralism_fundamentalist
 					}
 				}
 			}
@@ -2602,8 +2675,8 @@ religious_decision.0502 = {
 		}
 		triggered_desc = {
 			trigger = {
-				scope:khazar_khan.faith = {
-					has_doctrine = doctrine_pluralism_fundamentalist
+				scope:khazar_khan.rite = {
+					rite_has_doctrine = doctrine_pluralism_fundamentalist
 				}
 			}
 			desc = religious_decision.0502.desc.fundamentalist
@@ -2620,9 +2693,9 @@ religious_decision.0502 = {
 		name = religious_decision.0502.a
 		trigger = {
 			NOT = { has_faith = faith:kabarism }
-			scope:khazar_khan.faith = {
+			scope:khazar_khan.rite = {
 				NOT = {
-					has_doctrine = doctrine_pluralism_fundamentalist
+					rite_has_doctrine = doctrine_pluralism_fundamentalist
 				}
 			}
 		}
@@ -2640,7 +2713,7 @@ religious_decision.0502 = {
 		name = religious_decision.0502.a
 		trigger = {
 			NOT = { has_faith = faith:kabarism }
-			scope:khazar_khan.faith = { has_doctrine = doctrine_pluralism_fundamentalist }
+			scope:khazar_khan.rite = { rite_has_doctrine = doctrine_pluralism_fundamentalist }
 		}
 		show_as_tooltip = {
 			scope:khazar_khan.faith = {
@@ -2653,9 +2726,9 @@ religious_decision.0502 = {
 		name = religious_decision.0502.b
 		trigger = {
 			has_faith = faith:kabarism
-			scope:khazar_khan.faith = {
+			scope:khazar_khan.rite = {
 				NOT = {
-					has_doctrine = doctrine_pluralism_fundamentalist
+					rite_has_doctrine = doctrine_pluralism_fundamentalist
 				}
 			}
 		}
@@ -2673,7 +2746,7 @@ religious_decision.0502 = {
 		name = religious_decision.0502.b
 		trigger = {
 			has_faith = faith:kabarism
-			scope:khazar_khan.faith = { has_doctrine = doctrine_pluralism_fundamentalist }
+			scope:khazar_khan.rite = { rite_has_doctrine = doctrine_pluralism_fundamentalist }
 		}
 		show_as_tooltip = {
 			scope:khazar_khan.faith = {
@@ -2840,6 +2913,7 @@ religious_decision.0602 = {
 			modifier = {
 				add = 100
 				NOT = { in_diplomatic_range = scope:old_caliph }
+				in_diplomatic_range = scope:founder
 			}
 		}
 	}
@@ -2888,6 +2962,7 @@ religious_decision.0602 = {
 			modifier = {
 				add = 100
 				in_diplomatic_range = scope:old_caliph
+				NOT = { in_diplomatic_range = scope:founder }
 			}
 			# Heirs to scope:founder won't voluntarily disinherit themselves unless they're zealous.
 			modifier = {

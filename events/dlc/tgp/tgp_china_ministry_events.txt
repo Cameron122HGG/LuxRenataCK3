@@ -192,7 +192,7 @@ tgp_china_ministry.0004 = {
 				limit = {
 					scope:contributor = {
 						NOT = {
-							any_character_war = { this = prev }
+							any_character_war = { this = scope:grand_campaign_war }
 						}
 					}
 				}
@@ -296,7 +296,10 @@ tgp_china_ministry.0005 = {
 			trigger = { list_size:titles_won >= list_size:titles_lost }
 			text = tgp_china_ministry.0005.a_win
 		}
-		name = tgp_china_ministry.0005.a_lost
+		name = {
+			trigger = { list_size:titles_won < list_size:titles_lost }
+			text = tgp_china_ministry.0005.a_lost
+		}
 		if = {
 			limit = {
 				list_size:titles_won >= list_size:titles_lost
@@ -472,7 +475,10 @@ tgp_china_ministry.0008 = {
 			trigger = { list_size:titles_won >= list_size:titles_lost }
 			text = tgp_china_ministry.0005.a_win
 		}
-		name = tgp_china_ministry.0005.a_lost
+		name = {
+			trigger = { list_size:titles_won < list_size:titles_lost }
+			text = tgp_china_ministry.0005.a_lost
+		}
 		show_as_tooltip = {
 			scope:owner = {
 				if = {
@@ -506,6 +512,7 @@ tgp_china_ministry.0008 = {
 }
 # Minister of Revenue - Budget events
 # Top liege is enforced to enact a new budget
+# NOTE: Also used for other Treasury budget using governments - Administrative & Meritocratic (not Ecclesiastical)
 tgp_china_ministry.0100 = {
 	type = character_event
 	title = tgp_china_ministry.0100.t
@@ -582,6 +589,10 @@ tgp_china_ministry.0100 = {
 		OR = { # You are not travelling, but we don't mind if AI is
 			is_ai = yes
 			is_travelling = no
+		}
+		# Exclude Church Treasury (it is simpler and gets auto-enacted yearly)
+		NOT = {
+			government_has_mechanic = theocracy
 		}
 		# You should enact a new budget if you fulfill ANY of these reasons
 		OR = {

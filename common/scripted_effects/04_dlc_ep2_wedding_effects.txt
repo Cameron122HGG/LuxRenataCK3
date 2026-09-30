@@ -31,12 +31,20 @@ set_grand_wedding_betrothal_variables = {
 }
 
 clean_grand_wedding_betrothal_variables = {
-	var:promised_grand_wedding_marriage_countdown = {
-		remove_variable = promised_grand_wedding_by
-		betrothed = { remove_variable = promised_grand_wedding_by }
+	scope:spouse_1 ?= { remove_variable ?= promised_grand_wedding_by } # in case the countdown expired during activity
+	scope:spouse_2 ?= { remove_variable ?= promised_grand_wedding_by }
+	var:promised_grand_wedding_marriage_countdown ?= {
+		remove_variable ?= promised_grand_wedding_by
+		betrothed ?= { remove_variable ?= promised_grand_wedding_by }
 	}
-	remove_variable = promised_grand_wedding_marriage_countdown
-	remove_variable = promised_grand_wedding_to
+	if = {
+		limit = { exists = var:promised_grand_wedding_marriage_countdown }
+		remove_variable = promised_grand_wedding_marriage_countdown
+	}
+	if = {
+		limit = { exists = var:promised_grand_wedding_to }
+		remove_variable = promised_grand_wedding_to
+	}
 }
 
 # Recreate the variables setup if the host dies and is replaced
@@ -216,7 +224,7 @@ wedding_assign_officiant_effect = {
 		}
 		else_if = {
 			limit = {
-				NOT = { scope:host.faith = { has_doctrine = doctrine_theocracy_lay_clergy } }
+				NOT = { scope:host.rite = { rite_has_doctrine = doctrine_theocracy_lay_clergy } }
 			}
 			if = {
 				limit = {

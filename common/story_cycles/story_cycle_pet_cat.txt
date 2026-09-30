@@ -1,4 +1,65 @@
 ﻿story_cycle_pet_cat = {
+	visible = yes
+	icon = {
+		trigger = {
+			var:cat_fur_color ?= flag:orange
+		}
+		reference = "gfx/interface/icons/pets/artifact_cat_ginger.dds"
+	}
+	icon = {
+		trigger = {
+			var:cat_fur_color ?= flag:black
+		}
+		reference = "gfx/interface/icons/pets/artifact_cat_black.dds"
+	}
+	icon = {
+		trigger = {
+			var:cat_fur_color ?= flag:brown
+		}
+		reference = "gfx/interface/icons/pets/artifact_cat_tabby.dds"
+	}
+	icon = {
+		trigger = {
+			var:cat_fur_color ?= flag:gray
+		}
+		reference = "gfx/interface/icons/pets/artifact_cat_gray.dds"
+	}
+	icon = {
+		trigger = {
+			var:cat_fur_color ?= flag:white
+		}
+		reference = "gfx/interface/icons/pets/artifact_cat_white.dds"
+	}
+	icon = {
+		trigger = {
+			always = yes
+		}
+		reference = "gfx/interface/icons/pets/artifact_cat_calico.dds"
+	}
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/garden.dds"
+	}
+	
+	visualization = {
+		custom_string_key = "CAT_INFORMATION_STRING"
+		modifiers = {
+			cat_story_modifier
+			cat_story_allergy_modifier
+			rat_hunting_cat_modifier
+			adventurous_pet_modifier
+			feral_pet_modifier
+			feast_well_fed_cat_modifier
+			cat_dopey_modifier
+			cat_wrangler_modifier
+			cat_coitus_interrupted_modifier
+			cat_rejection_modifier
+			cat_ill_modifier
+			cat_lover_modifier
+		}
+		decisions = {
+			pet_cat_decision
+		}
+	}
 
 	on_setup = {
 		assign_cat_gender_effect = { GENDER = random }
@@ -79,10 +140,7 @@
 			}
 			story_owner = {
 				add_character_flag = is_naming_cat
-				trigger_event = {
-					id = pet_animal.0001
-					days = 2
-				}
+				trigger_event = pet_animal.0001
 			}
 		}
 
@@ -133,6 +191,7 @@
 						flag = cat_is_dying
 					}
 					trigger_event = pet_animal.0199
+					create_character_memory = { type = cat_died }
 				}
 			}
 		}

@@ -47,8 +47,29 @@ run_setup_tests_effect = {
 						has_subject_contract_group = tributary_nomadic
 						has_subject_contract_group = tributary_steppe
 					}
+					OR = {
+						suzerain = { has_government = nomad_government }
+						suzerain = { has_government = steppe_admin_government }
+					}
 				}
-				error_log = "[THIS.Char.GetLogName] is a herder or nomad tributary with a non-nomadic/steppe subject contract!"
+				error_log = "[THIS.Char.GetLogName] is a herder or nomad tributary under a nomad/steppe suzerain but does not have a nomadic/steppe subject contract!"
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_government = nomad_government
+						has_government = herder_government
+					}
+					OR = {
+						has_subject_contract_group = tributary_nomadic
+						has_subject_contract_group = tributary_steppe
+					}
+					NOR = {
+						suzerain = { has_government = nomad_government }
+						suzerain = { has_government = steppe_admin_government }
+					}
+				}
+				error_log = "[THIS.Char.GetLogName] is a herder or nomad tributary under a non-nomad/steppe suzerain but has a nomadic/steppe subject contract!"
 			}
 		}
 	}

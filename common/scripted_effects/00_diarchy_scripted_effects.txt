@@ -196,7 +196,7 @@ diarch_coup_preamble_effects_effect = {
 		break_alliance_due_to_attack_effect = { TARGET = scope:liege }
 	}
 	# And don't forget stress!
-	stress_impact = {
+	stress_and_fulfillment_impact = {
 		base = major_stress_impact_gain
 		disloyal = medium_stress_impact_loss
 		ambitious = minor_stress_impact_loss
@@ -262,30 +262,43 @@ remove_strife_per_invited_powerful_vassal_effect = {
 diarch_changed_own_contract_effect = {
 	if = {
 		limit = { always = scope:diarch }
-		scope:recipient = {
-			custom_tooltip = liege_modify_vassal_contract_interaction.tt.diarch_powers_used
-			# Co-rulers lose a fair bit less & can change multiple times.
-			if = {
-				limit = {
-					diarch ?= scope:actor
-					has_diarchy_active_parameter = diarchy_is_co_rulership
+		if = {
+			limit = { scope:recipient = { is_diarch_of_target = scope:puppet_or_actor } }
+			scope:puppet_or_actor = { save_scope_as = liege }
+			scope:recipient = { save_scope_as = diarch }
+		}
+		else_if = {
+			limit = { scope:puppet_or_actor = { is_diarch_of_target = scope:recipient } }
+			scope:recipient = { save_scope_as = liege }
+			scope:puppet_or_actor = { save_scope_as = diarch }
+		}
+		if = {
+			limit = { exists = scope:diarch }
+			scope:diarch = {
+				custom_tooltip = liege_modify_vassal_contract_interaction.tt.diarch_powers_used
+				# Co-rulers lose a fair bit less & can change multiple times.
+				if = {
+					limit = {
+						diarch ?= scope:liege
+						has_diarchy_active_parameter = diarchy_is_co_rulership
+					}
+					add_opinion = {
+						target = scope:liege
+						modifier = abused_position_of_trust_opinion
+						opinion = -10
+					}
 				}
-				add_opinion = {
-					target = scope:actor
-					modifier = abused_position_of_trust_opinion
-					opinion = -10
-				}
-			}
-			# Everyone else loses much more.
-			else = {
-				add_to_variable_list = {
-					name = diarch_contract_rights_used_list
-					target = scope:actor
-				}
-				add_opinion = {
-					target = scope:actor
-					modifier = abused_position_of_trust_opinion
-					opinion = -40
+				# Everyone else loses much more.
+				else = {
+					add_to_variable_list = {
+						name = diarch_contract_rights_used_list
+						target = scope:liege
+					}
+					add_opinion = {
+						target = scope:liege
+						modifier = abused_position_of_trust_opinion
+						opinion = -40
+					}
 				}
 			}
 		}
@@ -535,17 +548,6 @@ diarch_legal_meddling_interaction_apply_success_effect = {
 diarch_legal_meddling_interaction_apply_fail_effect = {
 	# Notify other parties.
 	hidden_effect = {
-		# Inform scope:secondary_recipient.
-		scope:secondary_recipient = {
-			send_interface_message = {
-				type = msg_diarch_acting_text_and_effect
-				title = diarch_using_powers.t
-				desc = diarch_legal_meddling_interaction.tt.failure.liege
-				right_icon = scope:recipient
-				left_icon = scope:actor
-				show_as_tooltip = { diarch_legal_meddling_interaction_fail_effect = yes }
-			}
-		}
 		# Inform scope:recipient.
 		scope:recipient = {
 			send_interface_toast = {
@@ -949,7 +951,7 @@ diarch_shift_privileges_interaction_apply_fail_effect = {
 	# Notify other parties.
 	hidden_effect = {
 		# Inform scope:secondary_recipient.
-		scope:secondary_recipient = {
+		scope:secondary_recipient ?= {
 			send_interface_message = {
 				type = msg_diarch_acting_text_and_effect
 				title = diarch_using_powers.t
@@ -1108,6 +1110,7 @@ diarch_swing_scales_guts_effect = {
 				scope:swing_piety = yes
 				scope:swing_gold = yes
 			}
+			scope:recipient = { has_legitimacy = yes }
 		}
 		if = {
 			limit = { scope:recipient.legitimacy_level <= 2 }
@@ -1124,7 +1127,7 @@ overthrow_regent_scheme_interaction_actor_stress_effect = {
 		limit = {
 			scope:recipient = { diarch_loyalty >= diarch_loyalty_visibly_loyal_threshold }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			honest = medium_stress_impact_gain
 			compassionate = major_stress_impact_gain
 			just = major_stress_impact_gain
@@ -1140,7 +1143,7 @@ overthrow_regent_scheme_interaction_actor_stress_effect = {
 		limit = {
 			scope:recipient = { diarch_loyalty <= diarch_loyalty_visibly_disloyal_threshold }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			loyal = major_stress_impact_loss
 			honest = medium_stress_impact_loss
 			compassionate = major_stress_impact_loss
@@ -1158,7 +1161,7 @@ overthrow_regent_scheme_interaction_actor_stress_effect = {
 		limit = {
 			scope:recipient = { diarch_loyalty >= diarch_loyalty_visibly_loyal_threshold }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			disloyal = major_stress_impact_loss
 			honest = medium_stress_impact_loss
 			compassionate = major_stress_impact_loss
@@ -1171,7 +1174,7 @@ overthrow_regent_scheme_interaction_actor_stress_effect = {
 	}
 	# Else, standard.
 	else = {
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			honest = medium_stress_impact_gain
 			compassionate = major_stress_impact_gain
 			just = major_stress_impact_gain
@@ -1181,7 +1184,7 @@ overthrow_regent_scheme_interaction_actor_stress_effect = {
 
 invalidate_diarch_grand_wedding_effect = {
 	# Invalidate grand weddings
-	diarch = {
+	diarch ?= {
 		if = {
 			limit = {
 				# scope:diarch is currently an active Diarch
@@ -1194,7 +1197,7 @@ invalidate_diarch_grand_wedding_effect = {
 				# scope:diarch was promised a Grand Wedding
 				has_variable = promised_grand_wedding_by
 			}
-			betrothed = { save_scope_as = betrothed }
+			betrothed ?= { save_scope_as = betrothed } # A promised wedding can outlive the betrothal
 			# Save scopes of spouses, and organizers from variables
 			scope:diarch = {
 				add_to_list = informee
@@ -1203,7 +1206,7 @@ invalidate_diarch_grand_wedding_effect = {
 					var:promised_grand_wedding_to ?= { add_to_list = informee }
 				}
 			}
-			scope:betrothed = {
+			scope:betrothed ?= {
 				add_to_list = informee
 				var:promised_grand_wedding_by ?= {
 					add_to_list = informee
@@ -1221,7 +1224,7 @@ invalidate_diarch_grand_wedding_effect = {
 					title = grand_wedding_cancelled_by_regency_title
 					left_icon = scope:diarch
 					right_icon = scope:betrothed
-					desc = grand_wedding_cancelled_by_regency_desc
+					custom_tooltip = grand_wedding_cancelled_by_regency_desc
 				}
 			}
 		}
@@ -1733,7 +1736,7 @@ diarch_demand_despotate_interaction_accepted_effect = {
 							any_liege_or_above = { this = scope:recipient }
 						}
 					}
-					limit = {
+					alternative_limit = {
 						holder = {
 							any_liege_or_above = { this = scope:recipient }
 						}
@@ -2564,5 +2567,15 @@ designated_diarch_overwridden_by_co_ruler_effect = {
 				}
 			}
 		}
+	}
+}
+
+diarchy_validation_check_effect = {
+	if = {
+		limit = {
+			is_diarch = yes
+			NOT = { liege_or_court_owner.diarch ?= this }
+		}
+		end_diarchy = yes
 	}
 }

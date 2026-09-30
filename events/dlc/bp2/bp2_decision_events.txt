@@ -46,12 +46,16 @@ bp2_decision.0001 = { #find wet nurse candidates
 					exists = capital_province
 					any_pool_character = {
 						province = root.capital_province
+						age <= 25
 						can_be_employed_as = wet_nurse_court_position
 					}
 				}
 				random_pool_character = {
 					province = root.capital_province
-					limit = { can_be_employed_as = wet_nurse_court_position}
+					limit = {
+						can_be_employed_as = wet_nurse_court_position
+						age <= 25
+					}
 					save_scope_as = wet_nurse_candidate_1
 				}
 				if = {
@@ -59,6 +63,7 @@ bp2_decision.0001 = { #find wet nurse candidates
 						exists = capital_province
 						any_pool_character = {
 							province = root.capital_province
+							age <= 25
 							can_be_employed_as = wet_nurse_court_position
 							this != scope:wet_nurse_candidate_1
 						}
@@ -72,6 +77,7 @@ bp2_decision.0001 = { #find wet nurse candidates
 						age = { 18 25 }
 						culture = root.culture
 						faith = root.faith
+						rite = root.rite
 						location = root.location
 						save_scope_as = wet_nurse_candidate_2
 					}
@@ -88,6 +94,7 @@ bp2_decision.0001 = { #find wet nurse candidates
 					age = { 0 5 }
 					culture = root.culture
 					faith = root.faith
+					rite = root.rite
 					location = root.location
 					save_scope_as = wet_nurse_candidate_1_child
 				}
@@ -100,6 +107,7 @@ bp2_decision.0001 = { #find wet nurse candidates
 					age = { 18 25 }
 					culture = root.culture
 					faith = root.faith
+					rite = root.rite
 					location = root.location
 					save_scope_as = wet_nurse_candidate_2
 				}
@@ -139,7 +147,7 @@ bp2_decision.0001 = { #find wet nurse candidates
 				court_position = wet_nurse_court_position
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = major_stress_impact_gain
 		}
 		ai_chance = {
@@ -189,7 +197,7 @@ bp2_decision.0001 = { #find wet nurse candidates
 				court_position = wet_nurse_court_position
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -407,14 +415,32 @@ bp2_decision.0002 = { #rites of passage
 				save_scope_as = teentribal
 			}
 		}
-		if = { #grab a court chaplain if you have one
+		if = {
 			limit = {
-				cp:councillor_court_chaplain ?= {
-					is_available_ai_adult = yes
+				government_has_flag = government_is_nomadic
+			}
+			if = {
+				limit = {
+					employs_court_position = court_astrologer_court_position
+					court_position:court_astrologer_court_position ?= {
+						is_available_ai_adult = yes
+					}
+				}
+				court_position:court_astrologer_court_position ?= {
+					save_scope_as = priest
 				}
 			}
-			cp:councillor_court_chaplain = {
-				save_scope_as = priest
+		}
+		else = {
+			if = { #grab a court chaplain if you have one
+				limit = {
+					cp:councillor_court_chaplain ?= {
+						is_available_ai_adult = yes
+					}
+				}
+				cp:councillor_court_chaplain = {
+					save_scope_as = priest
+				}
 			}
 		}
 		if = { #duel rite for warrior cultures

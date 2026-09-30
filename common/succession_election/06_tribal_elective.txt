@@ -13,7 +13,7 @@ tribal_elective = { #Loya Jirga
 		base = 0
 		modifier = { #Each voter is the "representative" of all the free men living in his domain. The larger the domain, the more voting power he has.
 			desc = tooltip_tribal_elective_development
-			is_landed_or_landless_administrative = yes
+			is_landed_or_landless_administrative_or_theocratic = yes
 			domain_size >= 1
 			any_held_title = {
 				title_tier = county
@@ -48,7 +48,7 @@ tribal_elective = { #Loya Jirga
 		}
 		modifier = { #Further boost/reduction is given depending on capital county's opinion.
 			desc = tooltip_tribal_elective_capital_opinion
-			is_landed_or_landless_administrative = yes
+			is_landed_or_landless_administrative_or_theocratic = yes
 			exists = capital_county
 			OR = {
 				capital_county.county_opinion <= -5
@@ -63,25 +63,29 @@ tribal_elective = { #Loya Jirga
 	}
 	
 	electors = {  
-		add = holder
-		add = {
-			type = title_dejure_vassals
-			limit = {
-				OR = { #Is either a dynasty head, or a somewhat respected elder
-					AND = { 
-						is_house_head = yes
-						exists = dynasty
+		character_sets = {
+			tribal_electors_holder = {
+				type = holder
+			}
+			tribal_electors_dejure_vassals = {
+				type = title_dejure_vassals
+				limit = {
+					OR = { #Is either a dynasty head, or a somewhat respected elder
+						AND = {
+							is_house_head = yes
+							exists = dynasty
+						}
+						AND = {
+							is_adult = yes
+							piety_level >= 2
+						}
 					}
-					AND = {
-						is_adult = yes
-						piety_level >= 2
+					is_incapable = no
+					any_held_title = { #Elector title must be a de jure vassal of the title being voted on; multi-Dukes (or similar) might have two duchies in multiple electoral domains, which they should be able to vote on. This is only valid for the highest-tier title (so a Duke-Elector who also owns a County which is an electoral title for another title does not get a vote from that county).
+						tier = root.highest_held_title_tier
+						exists = de_jure_liege
+						target_is_de_jure_liege_or_above = scope:title
 					}
-				}
-				NOT = { has_trait = incapable }
-				any_held_title = { #Elector title must be a de jure vassal of the title being voted on; multi-Dukes (or similar) might have two duchies in multiple electoral domains, which they should be able to vote on. This is only valid for the highest-tier title (so a Duke-Elector who also owns a County which is an electoral title for another title does not get a vote from that county).
-					tier = root.highest_held_title_tier
-					exists = de_jure_liege
-					target_is_de_jure_liege_or_above = scope:title
 				}
 			}
 		}
@@ -114,22 +118,24 @@ tribal_elective = { #Loya Jirga
 	
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
 	candidates = {
-		add = {
-			type = title_claimants
-			limit = {
-				feudal_elective_potential_landless_claimant_candidate_trigger = yes
+		character_sets = {
+			tribal_elective_claimants = {
+				type = title_claimants
+				limit = {
+					feudal_elective_potential_landless_claimant_candidate_trigger = yes
+				}
 			}
-		}
-		add = {
-			type = title_dejure_vassals	
-			limit = {
-				feudal_elective_potential_landed_candidate_trigger = yes
+			tribal_elective_dejure_vassals = {
+				type = title_dejure_vassals
+				limit = {
+					feudal_elective_potential_landed_candidate_trigger = yes
+				}
 			}
-		}
-		add = {
-			type = holder_dynasty
-			limit = {
-				feudal_elective_potential_landless_dynastic_candidate_trigger = yes
+			tribal_elective_dynasty = {
+				type = holder_dynasty
+				limit = {
+					feudal_elective_potential_landless_dynastic_candidate_trigger = yes
+				}
 			}
 		}
 	}

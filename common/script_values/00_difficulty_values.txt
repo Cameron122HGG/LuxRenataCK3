@@ -482,7 +482,7 @@ trait_difficulty_values = {
 	if = {
 		limit = {
 			has_trait = sodomite
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:sodomite FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:sodomite RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -492,7 +492,7 @@ trait_difficulty_values = {
 	if = {
 		limit = {
 			has_trait = incestuous
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:incestuous FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:incestuous RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -502,7 +502,7 @@ trait_difficulty_values = {
 	if = {
 		limit = {
 			has_trait = fornicator
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:fornicator FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:fornicator RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -512,7 +512,7 @@ trait_difficulty_values = {
 	if = {
 		limit = {
 			has_trait = adulterer
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:adulterer FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:adulterer RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -522,7 +522,7 @@ trait_difficulty_values = {
 	if = {
 		limit = {
 			has_trait = deviant
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:deviant FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:deviant RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -532,7 +532,7 @@ trait_difficulty_values = {
 	if = {
 		limit = {
 			has_trait = cannibal
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:cannibal FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:cannibal RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -542,7 +542,7 @@ trait_difficulty_values = {
 	if = {
 		limit = {
 			has_trait = witch
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:witch FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:witch RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -556,7 +556,7 @@ trait_difficulty_values = {
 				has_trait = kinslayer_2
 				has_trait = kinslayer_3
 			}
-			trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:kinslayer_1 FAITH = faith GENDER_CHARACTER = this }
+			trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:kinslayer_1 RITE = rite GENDER_CHARACTER = this }
 		}
 		add = {
 			value = medium_trait_difficulty
@@ -1105,6 +1105,10 @@ circumstantial_difficulty_values = {
 				}
 			}
 			primary_heir.dynasty != root.dynasty
+			NOR = {
+				has_government = ecclesiastical_government
+				has_government = theocracy_government
+			}
 		}
 		add = {
 			value = 500
@@ -1117,6 +1121,10 @@ circumstantial_difficulty_values = {
 			any_child = {
 				count = all
 				dynasty != root.dynasty
+			}
+			NOR = {
+				has_government = ecclesiastical_government
+				has_government = theocracy_government
 			}
 		}
 		add = {
@@ -1145,11 +1153,11 @@ circumstantial_difficulty_values = {
 			OR = {
 				AND = {
 					is_female = yes
-					faith = { has_doctrine = doctrine_gender_male_dominated }
+					rite = { rite_has_doctrine = doctrine_gender_male_dominated }
 				}
 				AND = {
 					is_female = no
-					faith = { has_doctrine = doctrine_gender_female_dominated }
+					rite = { rite_has_doctrine = doctrine_gender_female_dominated }
 				}
 			}
 		}

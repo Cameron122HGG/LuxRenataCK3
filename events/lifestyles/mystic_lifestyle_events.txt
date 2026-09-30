@@ -21,8 +21,8 @@ mystic_lifestyle.0001 = {
 #################################
 
 scripted_trigger mystic_lifestyle_not_a_virtue = {
-	faith = {
-		NOT = { trait_is_virtue = lifestyle_mystic }
+	rite = {
+		NOT = { trait_is_virtue_rite = lifestyle_mystic }
 	}
 }
 
@@ -194,7 +194,16 @@ scripted_trigger mystic_lifestyle_1003_vassal_trigger = {
 mystic_lifestyle.1003 = {
 	type = letter_event
 	opening = mystic_lifestyle.1003.opening
-	desc = mystic_lifestyle.1003.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				# A vassal cannot claim a clergy ruler's own priesthood disowns the practice; appeal to the ruler's calling instead.
+				trigger = { pam_is_clergy_ruler_trigger = yes }
+				desc = mystic_lifestyle.1003.desc.clergy
+			}
+			desc = mystic_lifestyle.1003.desc
+		}
+	}
 	sender = {
 		character = scope:vassal
 		animation = disapproval
@@ -466,9 +475,22 @@ mystic_lifestyle.1006 = {
 	title = mystic_lifestyle.1006.t
 	desc = mystic_lifestyle.1006.desc
 	theme = learning_theology_focus
+	override_background = {
+		reference = fp3_cave
+	}
 	left_portrait = {
 		character = root
-		animation = menacing
+		animation = throne_room_ruler
+		camera = camera_head_designer
+		triggered_outfit = {
+			remove_default_outfit = no
+			outfit_tags = { beggar_rags }
+		}
+	}
+	widgets = {
+		widget = { gui = event_window_widget_vfx_background_night_scene container = foreground_shader_vfx_container }
+		widget = { gui = event_window_widget_vfx_left_character_night_scene container = foreground_shader_vfx_container }
+		widget = { gui = event_window_widget_vfx_conclusion_smoke container = foreground_shader_vfx_container }
 	}
 	
 	trigger = {

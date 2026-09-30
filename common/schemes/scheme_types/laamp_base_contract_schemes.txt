@@ -485,7 +485,7 @@ laamp_base_1001_contract_scheme = {
 	# Basic Setup
 	skill = martial
 	desc = laamp_base_1001_contract_scheme_desc_general
-	success_desc = laamp_base_1001_contract_scheme_desc_success
+	success_desc = laamp_base_0000_contract_scheme_desc_success
 	icon = martial
 	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
 	target_type = character
@@ -563,7 +563,7 @@ laamp_base_1011_contract_scheme = {
 	# Basic Setup
 	skill = martial
 	desc = laamp_base_1011_contract_scheme_desc_general
-	success_desc = laamp_base_1011_contract_scheme_desc_success
+	success_desc = laamp_base_0000_contract_scheme_desc_success
 	icon = martial
 	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
 	target_type = character
@@ -792,7 +792,7 @@ laamp_base_1041_contract_scheme = {
 	# Basic Setup
 	skill = martial
 	desc = laamp_base_1041_contract_scheme_desc_general
-	success_desc = laamp_base_1041_contract_scheme_desc_success
+	success_desc = laamp_base_0000_contract_scheme_desc_success
 	icon = martial
 	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
 	target_type = character
@@ -1396,6 +1396,11 @@ laamp_base_3011_contract_scheme = {
 		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
 		
 		laamp_contract_scheme_basic_success_chance_modifier = yes
+
+		hostile_scheme_base_chance_modifier = yes
+		dangerous_hostile_scheme_base_chance_modifier = yes
+		# Countermeasures.
+		apply_calculated_scheme_success_chance_adjustments_modifier = yes
 	}
 	base_secrecy = {
 		add = secrecy_base_value
@@ -1404,6 +1409,10 @@ laamp_base_3011_contract_scheme = {
 	
 	# On Actions
 	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:calculating
+		}
 		add_scheme_starting_opportunities_intrigue_effect = yes
 	}
 	on_phase_completed = {
@@ -1498,6 +1507,11 @@ laamp_base_3021_contract_scheme = {
 		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
 		
 		laamp_contract_scheme_basic_success_chance_modifier = yes
+
+		hostile_scheme_base_chance_modifier = yes
+		dangerous_hostile_scheme_base_chance_modifier = yes
+		# Countermeasures.
+		apply_calculated_scheme_success_chance_adjustments_modifier = yes
 	}
 	base_secrecy = {
 		add = secrecy_base_value
@@ -1506,6 +1520,10 @@ laamp_base_3021_contract_scheme = {
 	
 	# On Actions
 	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:calculating
+		}
 		add_scheme_starting_opportunities_intrigue_effect = yes
 	}
 	on_phase_completed = {

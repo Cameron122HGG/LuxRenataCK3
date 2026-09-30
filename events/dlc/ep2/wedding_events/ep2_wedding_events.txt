@@ -135,7 +135,12 @@ ep2_wedding.0001 = {
 							}
 						}
 					}
-					# TODO informing event
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = ep2_wedding_promise_invalid_toast
+						left_icon = scope:spouse_1
+						right_icon = scope:spouse_2
+					}
 					clean_grand_wedding_betrothal_variables = yes
 				}
 				else_if = {
@@ -180,7 +185,12 @@ ep2_wedding.0001 = {
 							}
 						}
 					}
-					# TODO: add an event
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = ep2_wedding_promise_lapsed_toast
+						left_icon = scope:spouse_1
+						right_icon = scope:spouse_2
+					}
 					clean_grand_wedding_betrothal_variables = yes
 				}
 				else_if = {
@@ -533,7 +543,7 @@ ep2_wedding.0151 = {
 							has_trait = education_learning_3
 							has_trait = education_learning_4
 							has_trait = education_learning_5
-							has_trait = scholar
+							has_trait = erudite
 							has_trait = theologian
 							has_trait = zealous
 							has_character_modifier = bp1_superstition_modifier
@@ -745,12 +755,12 @@ ep2_wedding.0151 = {
 				}
 			}
 		}
-		scope:spouse_1.dynasty ?= { add_dynasty_prestige = medium_dynasty_prestige_gain }
+		scope:spouse_1.dynasty ?= { add_dynasty_prestige = scope:host.medium_dynasty_prestige_gain }
 		if = {
 			limit = {
 				NOT = { scope:spouse_2.dynasty ?= scope:spouse_1.dynasty }
 			}
-			scope:spouse_2.dynasty ?= { add_dynasty_prestige = medium_dynasty_prestige_gain }
+			scope:spouse_2.dynasty ?= { add_dynasty_prestige = scope:host.medium_dynasty_prestige_gain }
 		}
 		if = {
 			limit = {
@@ -878,6 +888,43 @@ ep2_wedding.0152 = {
 	}
 }
 
+ep2_wedding.0153 = {
+	type = character_event
+	title = ep2_wedding.0152.t
+	desc = ep2_wedding.0153.desc
+	theme = wedding_ceremony_activity
+
+	left_portrait = {
+		character = scope:spouse_1
+		animation = wedding_objection_start
+	}
+	right_portrait = {
+		character = scope:spouse_2
+		animation = shock
+	}
+	lower_right_portrait = scope:scorned_matchmaker
+
+	immediate = {
+		scope:spouse_2.matchmaker = {
+			if = {
+				limit = {
+					this != scope:spouse_2
+				}
+				save_scope_as = scorned_matchmaker
+			}
+		}
+		show_as_tooltip = {
+			scope:previous_host = {
+				# the betrothal is broken: hand out the consequences
+				break_grand_wedding_betrothal_effect = yes
+			}
+		}
+	}
+
+	option = {
+		name = ep2_wedding.0153.a
+	}
+}
 
 # ON START - BANQUET
 
@@ -1279,7 +1326,7 @@ ep2_wedding.0910 = {
 				dead_spouse = scope:dead_spouse
 			}
 		}
-		error_log = "Invalidating [activity.GetName] of [activity.GetOwner.GetLogName] because a spouse is dead"
+		error_log = "Invalidating [activity.GetName] of [activity.GetHost.GetLogName] because a spouse is dead"
 	}
 
 	option = {
@@ -1886,7 +1933,7 @@ ep2_wedding.1000 = {
 									opinion = 20
 								}
 								add_prestige = minor_prestige_gain
-								stress_impact = {
+								stress_and_fulfillment_impact = {
 									base = minor_stress_impact_loss
 									impatient = minor_stress_impact_gain
 									arrogant = minor_stress_impact_gain
@@ -1917,7 +1964,7 @@ ep2_wedding.1000 = {
 							target = scope:1000_relative
 						}
 						root = {
-							stress_impact = {
+							stress_and_fulfillment_impact = {
 								base = minor_stress_impact_gain
 								impatient = medium_stress_impact_gain
 								arrogant = medium_stress_impact_gain
@@ -1964,7 +2011,7 @@ ep2_wedding.1000 = {
 			}
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			patient = medium_stress_impact_gain
 			humble = medium_stress_impact_gain
 		}
@@ -1989,7 +2036,7 @@ ep2_wedding.1000 = {
 			has_activity_intent = reduce_stress_intent
 		}
 		reason = activity_intent
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 		}
 		ai_chance = {
@@ -2070,6 +2117,7 @@ ep2_wedding.1010 = {
 		}
 
 		scope:host = root
+		intent_target.location ?= { is_sea_province = no }
 		intent_target.location = root.location
 
 		intent_target = {
@@ -2179,7 +2227,7 @@ ep2_wedding.1010 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						lustful = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -2222,7 +2270,7 @@ ep2_wedding.1010 = {
 									modifier = bored_opinion
 									opinion = -20
 								}
-								stress_impact = {
+								stress_and_fulfillment_impact = {
 									base = minor_stress_impact_gain
 									lustful = medium_stress_impact_gain
 									arrogant = medium_stress_impact_gain
@@ -2337,7 +2385,7 @@ ep2_wedding.1010 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						lustful = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -2393,7 +2441,7 @@ ep2_wedding.1010 = {
 									modifier = bored_opinion
 									opinion = -20
 								}
-								stress_impact = {
+								stress_and_fulfillment_impact = {
 									base = minor_stress_impact_gain
 									lustful = medium_stress_impact_gain
 									arrogant = medium_stress_impact_gain
@@ -2445,7 +2493,7 @@ ep2_wedding.1010 = {
 			modifier = feeling_welcome_opinion
 			opinion = 5
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 		}
 		ai_chance = {
@@ -2875,22 +2923,22 @@ ep2_wedding.1100 = {
 				this = scope:activity.special_guest:spouse_1
 				any_spouse = {
 					even_if_dead = yes
-					NOT = { exists = this }
+					count = 0
 				}
 				any_former_spouse = {
 					even_if_dead = yes
-					NOT = { exists = this }
+					count = 0
 				}
 			}
 			AND = {
 				this = scope:activity.special_guest:spouse_2
 				any_spouse = {
 					even_if_dead = yes
-					NOT = { exists = this }
+					count = 0
 				}
 				any_former_spouse = {
 					even_if_dead = yes
-					NOT = { exists = this }
+					count = 0
 				}
 			}
 			AND = {
@@ -3176,7 +3224,7 @@ ep2_wedding.1100 = {
 				# Effect
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 		}
 
@@ -3193,7 +3241,7 @@ ep2_wedding.1100 = {
 			this = scope:bride
 		}
 		reason = activity_intent
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 		}
 		ai_chance = {
@@ -3266,7 +3314,7 @@ ep2_wedding.1100 = {
 			modifier = wedding_thinking_outside_box_modifier
 			years = 10
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 			cynical = medium_stress_impact_loss
 		}
@@ -3348,9 +3396,9 @@ ep2_wedding.1020 = {
 		has_ep2_dlc_trigger = yes
 
 		scope:activity = {
-			NOR = {
-				has_variable = has_had_event_1020
-				has_variable = has_had_event_1180
+			has_none_of_variables = {
+				name = has_had_event_1020
+				name = has_had_event_1180
 			}
 		}
 
@@ -3665,12 +3713,12 @@ ep2_wedding.1030 = {
 			limit = {
 				has_activity_intent = reduce_stress_intent
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = medium_stress_impact_loss
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_impact_loss
 			}
 		}
@@ -3700,13 +3748,13 @@ ep2_wedding.1030 = {
 				limit = {
 					has_activity_intent = reduce_stress_intent
 				}
-				stress_impact = {
+				stress_and_fulfillment_impact = {
 					base = minor_stress_impact_loss
 				}
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_impact_gain
 			}
 			scope:activity = {
@@ -3731,7 +3779,7 @@ ep2_wedding.1030 = {
 			has_character_flag = bad_thing_flag
 			has_character_modifier = bp1_superstition_modifier
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_gain
 		}
 		scope:activity = {
@@ -4094,7 +4142,7 @@ ep2_wedding.1120 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 			patient = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -4166,7 +4214,7 @@ ep2_wedding.1120 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_loss
 			patient = minor_stress_impact_loss
 			humble = minor_stress_impact_loss
@@ -4203,7 +4251,7 @@ ep2_wedding.1120 = {
 				value = scope:trouble_child
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = major_stress_impact_gain
 			honest = major_stress_impact_loss
 		}
@@ -4537,7 +4585,7 @@ ep2_wedding.1121 = {
 			modifier = ep2_wedding_authoritarian_modifier
 			years = 10
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = major_stress_impact_gain
 			arrogant = major_stress_impact_gain
 			patient = medium_stress_impact_gain
@@ -4573,7 +4621,7 @@ ep2_wedding.1121 = {
 			modifier = ep2_wedding_family_focus_modifier
 			years = 10
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = major_stress_impact_gain
 			arrogant = major_stress_impact_gain
 			wrathful = major_stress_impact_gain
@@ -4798,7 +4846,7 @@ ep2_wedding.1122 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			vengeful = massive_stress_impact_gain
 		}
 		ai_chance = {
@@ -4848,7 +4896,7 @@ ep2_wedding.1122 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			forgiving = massive_stress_impact_gain
 		}
 		ai_chance = {
@@ -4884,7 +4932,7 @@ ep2_wedding.1122 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			vengeful = massive_stress_impact_gain
 		}
 		ai_chance = {
@@ -4927,7 +4975,7 @@ ep2_wedding.1122 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			forgiving = massive_stress_impact_gain
 		}
 		ai_chance = {
@@ -4997,6 +5045,7 @@ ep2_wedding.1130 = {
 		has_any_secrets = yes
 		scope:activity = {
 			any_attending_character = {
+				this != root
 				any_known_secret = {
 					secret_owner = root
 					NOT = { secret_target ?= prev }
@@ -5011,10 +5060,10 @@ ep2_wedding.1130 = {
 		modifier = {
 			scope:activity = {
 				any_attending_character = {
+					this != root
 					any_known_secret = {
 						secret_owner = root
 						NOT = { secret_target ?= prev }
-
 					}
 					has_trait = contrite
 				}
@@ -5024,6 +5073,7 @@ ep2_wedding.1130 = {
 		modifier = {
 			scope:activity = {
 				any_attending_character = {
+					this != root
 					any_known_secret = {
 						secret_owner = root
 						NOT = { secret_target ?= prev }
@@ -5051,6 +5101,7 @@ ep2_wedding.1130 = {
 		scope:activity = {
 			random_attending_character = {
 				limit = {
+					this != root
 					any_known_secret = {
 						secret_owner = root
 						NOT = { secret_target ?= prev }
@@ -5108,7 +5159,7 @@ ep2_wedding.1130 = {
 				complete_activity_intent = yes
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = major_stress_impact_gain
 			contrite = massive_stress_impact_loss
 			honest = major_stress_impact_loss
@@ -5161,7 +5212,7 @@ ep2_wedding.1130 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			contrite = massive_stress_impact_gain
 			honest = major_stress_impact_gain
 		}
@@ -5362,7 +5413,7 @@ ep2_wedding.1131 = {
 				type = favor_hook
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = minor_stress_impact_gain
 			callous = medium_stress_impact_gain
 			wrathful = medium_stress_impact_gain
@@ -5388,7 +5439,7 @@ ep2_wedding.1131 = {
 			modifier = wedding_trust_compromised_modifier
 			years = 10
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = minor_stress_impact_loss
 			callous = medium_stress_impact_loss
 			wrathful = medium_stress_impact_loss
@@ -5542,7 +5593,7 @@ ep2_wedding.1132 = {
 			}
 			complete_activity_intent = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			honest = major_stress_impact_loss
 			contrite = massive_stress_impact_loss
 		}
@@ -5580,7 +5631,7 @@ ep2_wedding.1132 = {
 				type = favor_hook
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = major_stress_impact_loss
 		}
 		ai_chance = {
@@ -5805,7 +5856,7 @@ ep2_wedding.1140 = {
 							tags = { good }
 							score = 50
 							character = root
-							target = scope:spouse_1
+							target = scope:fumbling_spouse
 
 							root = {
 								if = {
@@ -5850,7 +5901,7 @@ ep2_wedding.1140 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						arrogant = medium_stress_impact_loss
 						ambitious = medium_stress_impact_loss
@@ -5886,7 +5937,7 @@ ep2_wedding.1140 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = medium_stress_impact_gain
 						shy = medium_stress_impact_gain
 						ambitious = medium_stress_impact_gain
@@ -5917,7 +5968,7 @@ ep2_wedding.1140 = {
 				opinion = -15
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 			gregarious = medium_stress_impact_gain
 			shy = medium_stress_impact_loss
@@ -5952,7 +6003,7 @@ ep2_wedding.1140 = {
 				opinion = 20
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 		}
 		scope:activity = {
@@ -6105,7 +6156,7 @@ ep2_wedding.1150 = {
 						}
 						add_diplomacy_lifestyle_xp = major_lifestyle_experience
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						ambitious = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -6141,7 +6192,7 @@ ep2_wedding.1150 = {
 							opinion = -15
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = medium_stress_impact_gain
 						shy = medium_stress_impact_gain
 						lustful = medium_stress_impact_gain
@@ -6187,7 +6238,7 @@ ep2_wedding.1150 = {
 						}
 						add_intrigue_lifestyle_xp = major_lifestyle_experience
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						ambitious = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -6223,7 +6274,7 @@ ep2_wedding.1150 = {
 							opinion = -15
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = medium_stress_impact_gain
 						shy = medium_stress_impact_gain
 						lustful = medium_stress_impact_gain
@@ -6269,7 +6320,7 @@ ep2_wedding.1150 = {
 						}
 						add_learning_lifestyle_xp = major_lifestyle_experience
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						ambitious = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -6305,7 +6356,7 @@ ep2_wedding.1150 = {
 							opinion = -15
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = medium_stress_impact_gain
 						shy = medium_stress_impact_gain
 						lustful = medium_stress_impact_gain
@@ -6385,7 +6436,7 @@ ep2_wedding.1160 = {
 			save_scope_as = mischief_maker
 		}
 		scope:host = { trigger_event = ep2_wedding.1161 }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			wrathful = medium_stress_impact_loss
 			impatient = medium_stress_impact_loss
@@ -6420,7 +6471,7 @@ ep2_wedding.1160 = {
 	option = {
 		name = ep2_wedding.1160.b
 		flavor = ep2_wedding.1160.b.tt
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			gluttonous = medium_stress_impact_loss
 			diligent = medium_stress_impact_loss
@@ -6453,7 +6504,7 @@ ep2_wedding.1160 = {
 	# Option C: this is below me
 	option = {
 		name = ep2_wedding.1160.c	
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = minor_stress_impact_loss
 			temperate = minor_stress_impact_loss
 			lazy = minor_stress_impact_loss
@@ -6537,7 +6588,7 @@ ep2_wedding.1161 = {
 						}
 					}
 
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						wrathful = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -6578,7 +6629,7 @@ ep2_wedding.1161 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						wrathful = medium_stress_impact_gain
 						arrogant = medium_stress_impact_gain
 						callous = medium_stress_impact_gain
@@ -6620,12 +6671,12 @@ ep2_wedding.1161 = {
 			limit = {
 				has_activity_intent = reduce_stress_intent
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = medium_stress_impact_loss
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				generous = medium_stress_impact_loss
 				humble = medium_stress_impact_loss
 				gregarious = medium_stress_impact_loss
@@ -6808,7 +6859,7 @@ ep2_wedding.1170 = {
 		name = ep2_wedding.1170.a
 		flavor = ep2_wedding.1170.a.tt
 		add_gold = minor_gold_value
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_loss
 			generous = medium_stress_impact_gain
 			compassionate = medium_stress_impact_gain
@@ -6830,7 +6881,7 @@ ep2_wedding.1170 = {
 			}
 		}
 		flavor = ep2_wedding.1170.b.tt
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			generous = medium_stress_impact_loss
 			compassionate = medium_stress_impact_loss
@@ -6851,7 +6902,7 @@ ep2_wedding.1170 = {
 			has_activity_intent = reduce_stress_intent
 		}
 		reason = activity_intent
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 			humble = major_stress_impact_loss
 			compassionate = major_stress_impact_loss
@@ -6875,7 +6926,7 @@ ep2_wedding.1170 = {
 			modifier = wedding_parade_mayhem_modifier
 			years = 5
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 		}
 		ai_chance = {
@@ -6922,7 +6973,7 @@ ep2_wedding.1170 = {
 						}
 					}
 					complete_activity_intent = yes
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						vengeful = medium_stress_impact_loss
 						paranoid = medium_stress_impact_loss
@@ -6942,7 +6993,7 @@ ep2_wedding.1170 = {
 					title = ep2_wedding.1170.failure.tt
 					left_icon = root
 					right_icon = scope:murderee
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						vengeful = medium_stress_impact_gain
 						paranoid = medium_stress_impact_gain
@@ -7056,7 +7107,7 @@ ep2_wedding.1180 = {
 				opinion = -20
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			humble = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 			callous = minor_stress_impact_loss
@@ -7130,7 +7181,7 @@ ep2_wedding.1180 = {
 			}
 			set_relation_wedding_good_fertility = scope:other_spouse
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = minor_stress_impact_gain
 			fickle = minor_stress_impact_gain
 			lustful = minor_stress_impact_loss
@@ -7158,7 +7209,7 @@ ep2_wedding.1180 = {
 				opinion = -10
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = major_stress_impact_loss
 		}
 		ai_chance = {
@@ -7216,10 +7267,10 @@ ep2_wedding.1190 = {
 					has_trait = theologian
 					has_trait = zealous
 				}
-				faith = {
+				rite = {
 					NOR = {
-						trait_is_virtue = lustful
-						trait_is_virtue = gluttonous
+						trait_is_virtue_rite = lustful
+						trait_is_virtue_rite = gluttonous
 					}
 				}
 			}
@@ -7244,10 +7295,10 @@ ep2_wedding.1190 = {
 						this = scope:host
 					}
 					this = root.faith.religious_head
-					faith = {
+					rite = {
 						NOR = {
-							trait_is_virtue = lustful
-							trait_is_virtue = gluttonous
+							trait_is_virtue_rite = lustful
+							trait_is_virtue_rite = gluttonous
 						}
 					}
 				}
@@ -7257,10 +7308,10 @@ ep2_wedding.1190 = {
 						this = scope:host
 					}
 					has_trait = devoted
-					faith = {
+					rite = {
 						NOR = {
-							trait_is_virtue = lustful
-							trait_is_virtue = gluttonous
+							trait_is_virtue_rite = lustful
+							trait_is_virtue_rite = gluttonous
 						}
 					}
 				}
@@ -7270,10 +7321,10 @@ ep2_wedding.1190 = {
 						this = scope:host
 					}
 					has_trait = theologian
-					faith = {
+					rite = {
 						NOR = {
-							trait_is_virtue = lustful
-							trait_is_virtue = gluttonous
+							trait_is_virtue_rite = lustful
+							trait_is_virtue_rite = gluttonous
 						}
 					}
 				}
@@ -7283,10 +7334,10 @@ ep2_wedding.1190 = {
 						this = scope:host
 					}
 					has_trait = zealous
-					faith = {
+					rite = {
 						NOR = {
-							trait_is_virtue = lustful
-							trait_is_virtue = gluttonous
+							trait_is_virtue_rite = lustful
+							trait_is_virtue_rite = gluttonous
 						}
 					}
 				}
@@ -7342,7 +7393,7 @@ ep2_wedding.1190 = {
 			}
 			add_learning_lifestyle_xp = medium_lifestyle_experience
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_loss
 			humble = minor_stress_impact_loss
 			temperate = minor_stress_impact_loss
@@ -7375,7 +7426,7 @@ ep2_wedding.1190 = {
 			REASON = rival_kicked_out_priest
 			OPINION = default_rival_opinion
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = major_stress_impact_gain
 			cynical = medium_stress_impact_loss
 			arrogant = medium_stress_impact_loss
@@ -7414,7 +7465,7 @@ ep2_wedding.1190 = {
 				opinion = -5
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 			cynical = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
@@ -7463,7 +7514,7 @@ ep2_wedding.1190 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 		}
 		ai_chance = {
@@ -7716,7 +7767,7 @@ ep2_wedding.1200 = {
 		name = ep2_wedding.1200.a
 		add_prestige = minor_prestige_gain
 		dynasty ?= { add_dynasty_prestige = minor_dynasty_prestige_gain }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 		}
 		ai_chance = {
@@ -7767,7 +7818,7 @@ ep2_wedding.1200 = {
 				target = scope:listener
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			vengeful = medium_stress_impact_loss
 			callous = medium_stress_impact_loss
 			sadistic = medium_stress_impact_loss
@@ -7822,7 +7873,7 @@ ep2_wedding.1200 = {
 						REASON = lover_love_is_in_the_air
 						OPINION = default_lover_opinion
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						lustful = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -7852,7 +7903,7 @@ ep2_wedding.1200 = {
 							opinion = -10
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						lustful = medium_stress_impact_gain
 						arrogant = medium_stress_impact_gain
@@ -7921,7 +7972,7 @@ ep2_wedding.1200 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						ambitious = medium_stress_impact_loss
 					}
@@ -7943,7 +7994,7 @@ ep2_wedding.1200 = {
 					title = ep2_wedding.1200.failure.tt
 					left_icon = root
 					right_icon = scope:listener
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						ambitious = medium_stress_impact_gain
 					}
@@ -8012,7 +8063,7 @@ ep2_wedding.1200 = {
 							opinion = 15
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						family_first = medium_stress_impact_loss
 						arrogant = medium_stress_impact_loss
@@ -8045,7 +8096,7 @@ ep2_wedding.1200 = {
 							opinion = -10
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						family_first = medium_stress_impact_gain
 						arrogant = medium_stress_impact_gain
@@ -8234,7 +8285,7 @@ ep2_wedding.1210 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						deceitful = medium_stress_impact_loss
 						sadistic = medium_stress_impact_loss
@@ -8267,7 +8318,7 @@ ep2_wedding.1210 = {
 						modifier = threatened_opinion
 						opinion = -20
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						deceitful = medium_stress_impact_gain
 						sadistic = medium_stress_impact_gain
@@ -8339,7 +8390,7 @@ ep2_wedding.1210 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						ambitious = medium_stress_impact_loss
 						gregarious = medium_stress_impact_loss
@@ -8381,7 +8432,7 @@ ep2_wedding.1210 = {
 							opinion = -10
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						ambitious = medium_stress_impact_gain
 						gregarious = medium_stress_impact_gain
@@ -8460,7 +8511,7 @@ ep2_wedding.1210 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						ambitious = major_stress_impact_loss
 					}
@@ -8497,7 +8548,7 @@ ep2_wedding.1210 = {
 							opinion = -20
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						ambitious = medium_stress_impact_gain
 					}
@@ -8735,7 +8786,7 @@ ep2_wedding.1220 = {
 				opinion = 15
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = minor_stress_impact_loss
 			calm = medium_stress_impact_loss
 			patient = medium_stress_impact_loss
@@ -8776,7 +8827,7 @@ ep2_wedding.1220 = {
 				OPINION = 0
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = minor_stress_impact_gain
 			calm = medium_stress_impact_gain
 			patient = medium_stress_impact_gain
@@ -8868,7 +8919,7 @@ ep2_wedding.1220 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 						calm = medium_stress_impact_loss
 						patient = medium_stress_impact_loss
@@ -8899,7 +8950,7 @@ ep2_wedding.1220 = {
 							OPINION = default_rival_opinion
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 						paranoid = minor_stress_impact_gain
 						wrathful = medium_stress_impact_gain
@@ -8927,7 +8978,7 @@ ep2_wedding.1220 = {
 			add_intrigue_lifestyle_xp = medium_lifestyle_xp
 		}
 		add_dread = minor_dread_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 			arrogant = major_stress_impact_loss
 			stubborn = major_stress_impact_loss
@@ -9043,7 +9094,7 @@ ep2_wedding.1040 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = minor_stress_impact_gain
 			reclusive = minor_stress_impact_gain
 			paranoid = minor_stress_impact_gain
@@ -9076,7 +9127,7 @@ ep2_wedding.1040 = {
 			modifier = unfriendly_opinion
 			opinion = -15
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gregarious = medium_stress_impact_gain
 			reclusive = major_stress_impact_loss
 			paranoid = major_stress_impact_loss
@@ -9357,7 +9408,7 @@ ep2_wedding.1050 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			craven = massive_stress_impact_gain
 		}
 		ai_chance = {
@@ -9483,7 +9534,7 @@ ep2_wedding.1050 = {
 				root = { add_dread = medium_dread_gain }
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = major_stress_impact_gain
 			callous = medium_stress_impact_loss
 			vengeful = major_stress_impact_loss
@@ -9534,7 +9585,7 @@ ep2_wedding.1050 = {
 			}
 			
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			brave = massive_stress_impact_gain
 		}
 		ai_chance = {
@@ -9782,7 +9833,7 @@ ep2_wedding.1070 = {
 					limit = {
 						this = scope:host
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = major_stress_impact_gain
 						ambitious = major_stress_impact_gain
 						diligent = medium_stress_impact_gain
@@ -9820,7 +9871,7 @@ ep2_wedding.1070 = {
 				scope:host = { add_prestige = medium_prestige_gain }
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 		}
 		ai_chance = {
@@ -9890,7 +9941,7 @@ ep2_wedding.1070 = {
 						}
 					}
 					root = {
-						stress_impact = {
+						stress_and_fulfillment_impact = {
 							base = minor_stress_impact_loss
 							brave = medium_stress_impact_loss
 							gregarious = medium_stress_impact_loss
@@ -9962,7 +10013,7 @@ ep2_wedding.1070 = {
 						}
 					}
 				}
-				stress_impact = {
+				stress_and_fulfillment_impact = {
 					arrogant = medium_stress_impact_gain
 					ambitious = medium_stress_impact_gain
 					stubborn = medium_stress_impact_gain
@@ -10045,7 +10096,7 @@ ep2_wedding.1070 = {
 						}
 					}
 					root = {
-						stress_impact = {
+						stress_and_fulfillment_impact = {
 							base = minor_stress_impact_loss
 							ambitious = medium_stress_impact_loss
 							lifestyle_hunter = medium_stress_impact_loss
@@ -10112,7 +10163,7 @@ ep2_wedding.1070 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = medium_stress_impact_gain
 						ambitious = medium_stress_impact_gain
 						lifestyle_hunter = medium_stress_impact_gain
@@ -10251,7 +10302,7 @@ ep2_wedding.1070 = {
 						}
 					}
 					root = {
-						stress_impact = {
+						stress_and_fulfillment_impact = {
 							base = minor_stress_impact_loss
 							ambitious = medium_stress_impact_loss
 							lifestyle_hunter = medium_stress_impact_loss
@@ -10322,7 +10373,7 @@ ep2_wedding.1070 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = medium_stress_impact_gain
 						ambitious = medium_stress_impact_gain
 						lifestyle_hunter = medium_stress_impact_gain
@@ -10394,7 +10445,7 @@ ep2_wedding.1070 = {
 						send_interface_toast = {
 							title = ep2_wedding.1070.h.tt.survive
 							left_icon = scope:1070_target
-							stress_impact = {
+							stress_and_fulfillment_impact = {
 								ambitious = minor_stress_impact_gain
 								callous = minor_stress_impact_gain
 								deceitful = medium_stress_impact_gain
@@ -10449,7 +10500,7 @@ ep2_wedding.1070 = {
 									}
 								}
 							}
-							stress_impact = {
+							stress_and_fulfillment_impact = {
 								compassionate = major_stress_impact_gain
 								ambitious = minor_stress_impact_loss
 								callous = minor_stress_impact_loss
@@ -10532,7 +10583,7 @@ ep2_wedding.1070 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 					}
 				}
@@ -10572,7 +10623,7 @@ ep2_wedding.1070 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						greedy = medium_stress_impact_gain
 						arrogant = medium_stress_impact_gain
 					}
@@ -10654,7 +10705,7 @@ ep2_wedding.1070 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 			brave = medium_stress_impact_gain
 		}
@@ -10878,7 +10929,7 @@ ep2_wedding.1090 = {
 								target = scope:1090_match
 							}
 						}
-						stress_impact = {
+						stress_and_fulfillment_impact = {
 							base = minor_stress_impact_gain
 						}
 					}
@@ -11032,7 +11083,7 @@ ep2_wedding.1060 = {
 			id = ep2_wedding.1061
 			days = 3
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 			patient = medium_stress_impact_gain
@@ -11091,7 +11142,7 @@ ep2_wedding.1060 = {
 		}
 		scope:spouse_1 = { remove_character_flag = busy_in_wnight_event }
 		scope:spouse_2 = { remove_character_flag = busy_in_wnight_event }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = medium_stress_impact_gain
 			lustful = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
@@ -11262,7 +11313,7 @@ ep2_wedding.1061 = {
 			}
 			set_relation_wedding_good_fertility = scope:spouse_2
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			lustful = medium_stress_impact_loss
 		}
@@ -11299,7 +11350,7 @@ ep2_wedding.1061 = {
 				modifier = wedding_useless_spouse_opinion
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			calm = minor_stress_impact_gain
 			patient = medium_stress_impact_gain
 			chaste = medium_stress_impact_gain
@@ -11364,7 +11415,7 @@ ep2_wedding.1061 = {
 			}
 			set_relation_wedding_bad_fertility = scope:spouse_2
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain
 			callous = minor_stress_impact_gain
@@ -11495,7 +11546,7 @@ ep2_wedding.1065 = {
 			id = ep2_wedding.1066
 			days = 3
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			honest = medium_stress_impact_gain
 			lustful = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
@@ -11627,7 +11678,7 @@ ep2_wedding.1065 = {
 		}
 		scope:spouse_1 = { remove_character_flag = busy_in_wnight_event }
 		scope:spouse_2 = { remove_character_flag = busy_in_wnight_event }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = medium_stress_impact_gain
 			honest = medium_stress_impact_loss
 			humble = minor_stress_impact_loss			
@@ -11768,7 +11819,7 @@ ep2_wedding.1066 = {
 			modifier = wedding_nagging_spouse_modifier
 			years = 10
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			lustful = medium_stress_impact_loss
 		}
@@ -11834,7 +11885,7 @@ ep2_wedding.1066 = {
 						}
 						set_relation_wedding_very_bad_fertility = scope:spouse_2
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_gain
 					}
 				}
@@ -11876,7 +11927,7 @@ ep2_wedding.1066 = {
 						}
 						set_relation_wedding_bad_fertility = scope:spouse_2
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 					}
 				}
@@ -12064,7 +12115,7 @@ ep2_wedding.1110 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_gain
 			gregarious = minor_stress_impact_gain
 			patient = medium_stress_impact_gain
@@ -12135,7 +12186,7 @@ ep2_wedding.1110 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			gregarious = medium_stress_impact_loss
 			drunkard = major_stress_impact_loss
@@ -12465,12 +12516,12 @@ ep2_wedding.1111 = {
 					has_activity_intent = banquet_mischief_intent
 				}
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_impact_loss
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				humble = medium_stress_impact_gain
 				temperate = major_stress_impact_gain
 			}
@@ -12524,7 +12575,7 @@ ep2_wedding.1111 = {
 						modifier = respect_opinion
 						opinion = 15
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						arrogant = medium_stress_impact_gain
 						drunkard = medium_stress_impact_gain
 					}
@@ -12643,9 +12694,9 @@ ep2_wedding.1300 = {
 			}
 			OR = {
 				ep2_wedding_1300_appearance_insecurity_trigger = yes
-				has_any_shunned_or_criminal_trait_in_faith_trigger = {
+				has_any_shunned_or_criminal_trait_in_rite_trigger = {
 					CHARACTER = scope:activity.special_guest:spouse_2
-					FAITH = scope:activity.special_guest:spouse_2.faith
+					RITE = scope:activity.special_guest:spouse_2.rite
 				}
 				ep2_wedding_1300_voice_insecurity_trigger = yes
 				is_lowborn = yes
@@ -12683,9 +12734,9 @@ ep2_wedding.1300 = {
 		}
 		else_if = {
 			limit = {
-				has_any_shunned_or_criminal_trait_in_faith_trigger = {
+				has_any_shunned_or_criminal_trait_in_rite_trigger = {
 					CHARACTER = scope:spouse_2
-					FAITH = scope:spouse_2.faith
+					RITE = scope:spouse_2.rite
 				}
 			}
 			save_scope_value_as = {
@@ -12749,9 +12800,9 @@ ep2_wedding.1300 = {
 			scope:spouse_2 = { num_virtuous_traits >= 1 }
 			NOR = {
 				scope:spouse_2 = { num_sinful_traits >= 1 }
-				has_any_shunned_or_criminal_trait_in_faith_trigger = {
+				has_any_shunned_or_criminal_trait_in_rite_trigger = {
 					CHARACTER = scope:spouse_2
-					FAITH = scope:spouse_2.faith
+					RITE = scope:spouse_2.rite
 				}
 			}
 		}
@@ -12786,7 +12837,7 @@ ep2_wedding.1300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = minor_stress_impact_gain
 			wrathful = minor_stress_impact_gain
 			cynical = minor_stress_impact_gain
@@ -12867,7 +12918,7 @@ ep2_wedding.1300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = minor_stress_impact_gain
 			content = minor_stress_impact_gain
 			fickle = medium_stress_impact_gain
@@ -12946,7 +12997,7 @@ ep2_wedding.1300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arbitrary = minor_stress_impact_gain
 			zealous = minor_stress_impact_gain
 			diligent = minor_stress_impact_loss
@@ -13011,7 +13062,7 @@ ep2_wedding.1300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 			calm = minor_stress_impact_gain
 			sadistic = minor_stress_impact_loss
@@ -13091,7 +13142,7 @@ ep2_wedding.1300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_loss
 			calm = minor_stress_impact_loss
 			sadistic = minor_stress_impact_gain
@@ -13171,7 +13222,7 @@ ep2_wedding.1300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			chaste = minor_stress_impact_gain
 			lustful = minor_stress_impact_loss
 			honest = minor_stress_impact_loss
@@ -13234,7 +13285,7 @@ ep2_wedding.1300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			chaste = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 			lustful = medium_stress_impact_loss
@@ -13985,7 +14036,7 @@ ep2_wedding.1310 = {
 							opinion = -30
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = medium_stress_impact_loss
 					}
 				}
@@ -14043,7 +14094,7 @@ ep2_wedding.1310 = {
 										province = root.location
 									}
 								}
-								stress_impact = {
+								stress_and_fulfillment_impact = {
 									gregarious = medium_stress_impact_loss
 								}
 							}
@@ -14095,7 +14146,7 @@ ep2_wedding.1310 = {
 									modifier = friendliness_opinion
 									opinion = 30
 								}
-								stress_impact = {
+								stress_and_fulfillment_impact = {
 									gregarious = minor_stress_impact_loss
 								}
 							}
@@ -14136,7 +14187,7 @@ ep2_wedding.1310 = {
 								}
 							}
 							root = {
-								stress_impact = {
+								stress_and_fulfillment_impact = {
 									base = minor_stress_impact_gain
 								}
 							}
@@ -14243,7 +14294,7 @@ ep2_wedding.1310 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gregarious = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -14281,7 +14332,7 @@ scripted_trigger ep2_wedding_1320_forgiving_rival_trigger = {
 		has_trait = compassionate
 		AND = {
 			has_trait = zealous
-			this.faith = { trait_is_virtue = forgiving }
+			this.rite = { trait_is_virtue_rite = forgiving }
 		}
 		trait_compatibility = {
 			target = root
@@ -14428,7 +14479,7 @@ ep2_wedding.1320 = {
 				any_attending_character = {
 					ep2_wedding_1320_forgiving_rival_trigger = yes
 					has_trait = zealous
-					faith = { trait_is_virtue = forgiving }
+					rite = { trait_is_virtue_rite = forgiving }
 				}
 			}
 			add = 1
@@ -14446,7 +14497,7 @@ ep2_wedding.1320 = {
 						has_trait = compassionate
 						AND = {
 							has_trait = zealous
-							faith = { trait_is_virtue = forgiving }
+							rite = { trait_is_virtue_rite = forgiving }
 						}
 					}
 				}
@@ -14556,7 +14607,7 @@ ep2_wedding.1320 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			vengeful = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
 			forgiving = massive_stress_impact_loss
@@ -14644,13 +14695,13 @@ ep2_wedding.1320 = {
 			limit = {
 				has_activity_intent = banquet_mischief_intent
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_impact_loss
 				vengeful = major_stress_impact_loss
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				vengeful = medium_stress_impact_loss
 				arrogant = medium_stress_impact_loss
 				forgiving = massive_stress_impact_gain
@@ -14801,7 +14852,7 @@ ep2_wedding.1320 = {
 			limit = {
 				has_activity_intent = reduce_stress_intent
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_impact_loss
 			}
 		}
@@ -14901,7 +14952,7 @@ ep2_wedding.1330 = {
 		# Achievements
 		player_succeeded_at_a_thousand_and_one_nights_achievement_effect = yes
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			seducer = medium_stress_impact_gain
 			rakish = medium_stress_impact_gain
 			deceitful = minor_stress_impact_gain
@@ -14932,7 +14983,7 @@ ep2_wedding.1330 = {
 			years = 20
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			fickle = medium_stress_impact_gain
 		}
 		
@@ -15028,7 +15079,7 @@ ep2_wedding.1330 = {
 			modifier = {
 				has_trait = lustful
 				has_trait = zealous
-				root.faith = { trait_is_virtue = chaste }
+				root.rite = { trait_is_virtue_rite = chaste }
 				add = 80
 			}
 		}
@@ -15040,7 +15091,7 @@ ep2_wedding.1330 = {
 		trigger = {
 			is_deviant_trigger = yes
 			NOR = {
-				faith = { has_doctrine_parameter = deviancy_accepted }
+				rite = { rite_has_parameter = deviancy_accepted }
 				scope:spouse = { is_deviant_trigger = yes }
 			}
 		}
@@ -15164,7 +15215,7 @@ ep2_wedding.1330 = {
 			opinion = 100
 		}
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = major_stress_impact_loss
 			stubborn = medium_stress_impact_gain
 			chaste = medium_stress_impact_gain
@@ -15297,7 +15348,7 @@ ep2_wedding.1330 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			trusting = minor_stress_impact_gain
 		}
 		
@@ -15314,7 +15365,7 @@ ep2_wedding.1330 = {
 	option = {
 		name = ep2_wedding.1330.g
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 			honest = major_stress_impact_loss
 		}
@@ -15339,6 +15390,7 @@ ep2_wedding.1330 = {
 ##################################################
 
 scripted_trigger ep2_wedding_1340_marriage_cynic_trigger = {
+	this != scope:host
 	is_ai = yes 
 	OR = {
 		any_spouse = { # dislikes a spouse
@@ -15374,8 +15426,7 @@ scripted_trigger ep2_wedding_1340_unusual_hobbies_trigger = {
 		has_trait = rakish
 		has_trait = cannibal
 		any_secret = { type = secret_cannibal }
-		has_trait = witch
-		any_secret = { type = secret_witch }
+		is_witch_trigger = yes
 	}
 }
 
@@ -15908,7 +15959,7 @@ ep2_wedding.1340 = {
 	option = { # Get out of my face, you bitter wretch.
 		name = ep2_wedding.1340.e
 		trigger = { has_trait = wrathful }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 		}
 		reverse_add_opinion = {
@@ -16031,7 +16082,7 @@ ep2_wedding.1350 = {
 
 	option = { # Enjoy a quiet moment together.
 		name = ep2_wedding.1350.a
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 		}
 		reverse_add_opinion = {
@@ -16106,7 +16157,7 @@ scripted_trigger ep2_wedding_2000_is_nerd = {
 		has_lifestyle = learning_lifestyle
 		learning >= high_skill_rating
 		has_trait = theologian
-		has_trait = scholar
+		has_trait = erudite
 		has_trait = diligent
 		has_trait = shrewd
 	}
@@ -16329,7 +16380,7 @@ ep2_wedding.2000 = {
 		name = ep2_wedding.2000.a
 		custom_tooltip = ep2_wedding.2000.a.tt
 		trigger_event = ep2_wedding.2001
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = medium_stress_impact_gain
 			patient = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -16409,7 +16460,7 @@ ep2_wedding.2000 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			reclusive = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -16847,7 +16898,7 @@ ep2_wedding.3000 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lazy = medium_stress_impact_gain
 			patient = medium_stress_impact_gain
 		}
@@ -16975,7 +17026,7 @@ ep2_wedding.3000 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			reclusive = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -16997,7 +17048,7 @@ ep2_wedding.3000 = {
 				opinion = 5
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = medium_stress_impact_gain
 			gregarious = medium_stress_impact_gain
 		}
@@ -17212,7 +17263,7 @@ ep2_wedding.3010 = {
 				}
 			}
 			root = {
-				stress_impact = { #intended to be a very stressful moment
+				stress_and_fulfillment_impact = { #intended to be a very stressful moment
 					calm = medium_stress_impact_gain
 					content = medium_stress_impact_gain
 					diligent = medium_stress_impact_gain
@@ -17245,7 +17296,7 @@ ep2_wedding.3010 = {
 			modifier = wnight_clear_conscience_modifier
 			years = 10
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -17295,7 +17346,7 @@ ep2_wedding.3010 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = minor_stress_impact_gain
 			paranoid = minor_stress_impact_gain
 		}
@@ -17461,7 +17512,7 @@ ep2_wedding.3020 = {
 	#Well... not my problem
 	option = {
 		name = ep2_wedding.3020.a
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -17508,7 +17559,7 @@ ep2_wedding.3020 = {
 			}
 			set_relation_wedding_bad_fertility = scope:my_spouse
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lustful = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
 		}
@@ -17754,13 +17805,13 @@ ep2_wedding.3030 = {
 			limit = {
 				has_activity_intent = reduce_stress_intent
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_impact_loss
 				paranoid = minor_stress_impact_gain
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				paranoid = medium_stress_impact_gain
 			}
 		}
@@ -17808,7 +17859,7 @@ ep2_wedding.3030 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 		}
@@ -17857,7 +17908,7 @@ ep2_wedding.3030 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 			lustful = medium_stress_impact_gain
 			paranoid = medium_stress_impact_gain
@@ -17896,7 +17947,7 @@ ep2_wedding.3030 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = major_stress_impact_loss
 		}
 		ai_chance = {
@@ -18082,7 +18133,7 @@ ep2_wedding.3040 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain
 			craven = medium_stress_impact_gain
@@ -18139,7 +18190,7 @@ ep2_wedding.3040 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_gain
 			just = minor_stress_impact_gain
 			brave = medium_stress_impact_gain
@@ -18205,7 +18256,7 @@ ep2_wedding.3040 = {
 			add_martial_lifestyle_xp = medium_lifestyle_xp
 		}
 		#no fertility gain because you're doing for yourself
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
 			craven = major_stress_impact_gain
@@ -18398,7 +18449,7 @@ ep2_wedding.3050 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			craven = medium_stress_impact_gain
 			patient = medium_stress_impact_gain
 			compassionate = medium_stress_impact_gain
@@ -18464,7 +18515,7 @@ ep2_wedding.3050 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			wrathful = medium_stress_impact_gain
 			vengeful = medium_stress_impact_gain
 			craven = medium_stress_impact_gain
@@ -18494,7 +18545,7 @@ ep2_wedding.3050 = {
 			name = wnight_chandelier_murder_var
 			value = scope:intent_victim
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			wrathful = medium_stress_impact_gain
 			impatient = medium_stress_impact_gain
 		}
@@ -18647,10 +18698,16 @@ ep2_wedding.3200 = {
 		}
 		OR = {
 			scope:activity.special_guest:spouse_1 ?= {
-				NOT = { has_trait = gregarious }
+				NOR = {
+					has_trait = gregarious
+					is_deviant_trigger = yes
+				}
 			}
 			scope:activity.special_guest:spouse_2 ?= {
-				NOT = { has_trait = gregarious }
+				NOR = {
+					has_trait = gregarious
+					is_deviant_trigger = yes
+				}
 			}
 		}
 	}
@@ -18761,7 +18818,7 @@ ep2_wedding.3200 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = minor_stress_impact_loss
 			reclusive = minor_stress_impact_loss
 			paranoid = minor_stress_impact_loss
@@ -18861,7 +18918,7 @@ ep2_wedding.3200 = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						shy = minor_stress_impact_loss
 						reclusive = medium_stress_impact_loss
 						paranoid = minor_stress_impact_loss
@@ -18887,7 +18944,7 @@ ep2_wedding.3200 = {
 						CHARACTER = scope:my_spouse
 						PREGNANCY_CHANCE = 5
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						shy = miniscule_stress_impact_gain
 						reclusive = minor_stress_impact_gain
 						paranoid = miniscule_stress_impact_gain
@@ -18956,7 +19013,7 @@ ep2_wedding.3200 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			stubborn = miniscule_stress_impact_gain
 			compassionate = minor_stress_impact_loss
 			callous = miniscule_stress_impact_gain
@@ -18984,7 +19041,7 @@ ep2_wedding.3200 = {
 			CHARACTER = scope:my_spouse
 			PREGNANCY_CHANCE = 20
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gregarious = medium_stress_impact_loss
 			zealous = medium_stress_impact_loss
 			diligent = medium_stress_impact_loss
@@ -19026,7 +19083,7 @@ ep2_wedding.3200 = {
 			CHARACTER = scope:my_spouse
 			PREGNANCY_CHANCE = 20
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = minor_stress_impact_gain
 			reclusive = minor_stress_impact_gain
 			paranoid = minor_stress_impact_gain
@@ -19507,7 +19564,7 @@ ep2_wedding.3300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = minor_stress_impact_loss
 			rakish = minor_stress_impact_loss
 			lustful = minor_stress_impact_loss
@@ -19594,7 +19651,7 @@ ep2_wedding.3300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = minor_stress_impact_loss
 			sadistic = minor_stress_impact_loss
 			compassionate = miniscule_stress_impact_gain
@@ -19697,7 +19754,7 @@ ep2_wedding.3300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			drunkard = minor_stress_impact_loss
 			honest = minor_stress_impact_loss
 			temperate = miniscule_stress_impact_gain
@@ -19803,7 +19860,7 @@ ep2_wedding.3300 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			ambitious = minor_stress_impact_loss
 			stubborn = minor_stress_impact_loss
 			fickle = miniscule_stress_impact_gain
@@ -19861,15 +19918,15 @@ scripted_trigger wedding_3400_suitor_trigger = {
 		allowed_more_spouses = yes
 		trigger_if = {
 			limit = { is_female = yes }
-			faith = { has_doctrine = doctrine_adultery_women_accepted }
-			root.faith = { has_doctrine = doctrine_adultery_women_accepted }
-			$SUITOR$.faith = { has_doctrine = doctrine_adultery_women_accepted }
+			rite = { rite_has_doctrine = doctrine_adultery_women_accepted }
+			root.rite = { rite_has_doctrine = doctrine_adultery_women_accepted }
+			$SUITOR$.rite = { rite_has_doctrine = doctrine_adultery_women_accepted }
 			
 		}
 		trigger_else = {
-			faith = { has_doctrine = doctrine_adultery_men_accepted }
-			root.faith = { has_doctrine = doctrine_adultery_men_accepted }
-			$SUITOR$.faith = { has_doctrine = doctrine_adultery_men_accepted }
+			rite = { rite_has_doctrine = doctrine_adultery_men_accepted }
+			root.rite = { rite_has_doctrine = doctrine_adultery_men_accepted }
+			$SUITOR$.rite = { rite_has_doctrine = doctrine_adultery_men_accepted }
 		}
 	}
 }
@@ -20133,7 +20190,7 @@ ep2_wedding.3400 = {
 				wedding_3400_knowledge_effect = { OTHER = root }
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			ambitious = minor_stress_impact_loss
 			diligent = minor_stress_impact_loss
 			content = miniscule_stress_impact_gain
@@ -20186,7 +20243,7 @@ ep2_wedding.3400 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_loss
 			trusting = minor_stress_impact_loss
 			callous = miniscule_stress_impact_gain
@@ -20243,7 +20300,7 @@ ep2_wedding.3400 = {
 					chance = 1
 					add_trait = drunkard
 				}
-				stress_impact = {
+				stress_and_fulfillment_impact = {
 					base = minor_stress_impact_loss
 					drunkard = minor_stress_impact_loss
 					lifestyle_reveler = minor_stress_impact_loss
@@ -20260,7 +20317,7 @@ ep2_wedding.3400 = {
 				chance = 1
 				add_trait = hashishiyah
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_impact_loss
 				hashishiyah = minor_stress_impact_loss
 				lifestyle_reveler = minor_stress_impact_loss
@@ -20300,7 +20357,7 @@ ep2_wedding.3400 = {
 			CHARACTER = scope:other_family_relative
 			OPINION = default_friend_opinion
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gregarious = minor_stress_impact_loss
 			humble = minor_stress_impact_loss
 			shy = miniscule_stress_impact_gain
@@ -20396,7 +20453,7 @@ ep2_wedding.3400 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lustful = minor_stress_impact_loss
 			rakish = minor_stress_impact_loss
 			chaste = miniscule_stress_impact_gain
@@ -20620,6 +20677,7 @@ ep2_wedding.3410 = {
 			}
 			scope:jealousy_usurper = {
 				every_close_family_member = {
+					limit = { this != root }
 					custom = every_usurper_close_family_tt
 					add_opinion = {
 						target = scope:jealousy_focus
@@ -20638,7 +20696,7 @@ ep2_wedding.3410 = {
 			TARGET = scope:jealousy_focus
 			EXPOSER = root
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			wrathful = minor_stress_impact_loss
 			calm = miniscule_stress_impact_gain
@@ -20689,7 +20747,7 @@ ep2_wedding.3410 = {
 			add_scheme_modifier = { type = wedding_consorts_envy_modifier }
 		}
 		custom_tooltip = ep2_wedding.3410.b.tt
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			vengeful = minor_stress_impact_loss
 			zealous = miniscule_stress_impact_gain
 			just = miniscule_stress_impact_gain
@@ -20742,7 +20800,7 @@ ep2_wedding.3410 = {
 			}
 			lose_lover_effect = { LOVER = scope:jealousy_usurper }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			fickle = minor_stress_impact_loss
 			base = miniscule_stress_impact_gain
 			stubborn = miniscule_stress_impact_gain
@@ -20764,7 +20822,7 @@ ep2_wedding.3410 = {
 			modifier = wedding_old_news_modifier
 			years = 5
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			humble = minor_stress_impact_loss
 			content = minor_stress_impact_loss
 			arrogant = miniscule_stress_impact_gain
@@ -21271,6 +21329,7 @@ ep2_wedding.3420 = {
 								has_trait = celibate
 								has_trait = devoted
 							}
+							might_cheat_on_every_partner_trigger = yes
 						}
 						modifier = {
 							has_trait = chaste
@@ -21606,7 +21665,7 @@ ep2_wedding.3420 = {
 		trait = gluttonous
 		trait = comfort_eater
 		target_weight_modifier_effect = { VALUE = 2 }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gluttonous = medium_stress_impact_loss
 			comfort_eater = medium_stress_impact_loss
 			temperate = minor_stress_impact_gain
@@ -21640,7 +21699,7 @@ ep2_wedding.3420 = {
 				value = medium_trait_xp
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 			drunkard = medium_stress_impact_loss
 			hashishiyah = medium_stress_impact_loss
@@ -21672,7 +21731,7 @@ ep2_wedding.3420 = {
 		else = {
 			had_sex_with_unknown_effect = { GENDER = male }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			lustful = medium_stress_impact_loss
 			rakish = medium_stress_impact_loss
 			chaste = minor_stress_impact_gain
@@ -21694,7 +21753,7 @@ ep2_wedding.3420 = {
 		trait = greedy
 		trait = avaricious
 		add_gold = { 10 25 }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_loss
 			avaricious = medium_stress_impact_loss
 			generous = medium_stress_impact_gain
@@ -21717,7 +21776,7 @@ ep2_wedding.3420 = {
 		trait = shy
 		trait = reclusive
 		add_prestige = miniscule_prestige_loss
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = minor_stress_impact_loss
 			paranoid = minor_stress_impact_loss
 			shy = medium_stress_impact_loss
@@ -21742,7 +21801,7 @@ ep2_wedding.3420 = {
 		trait = improvident
 		remove_short_term_gold = { 10 25 }
 		add_piety = minor_piety_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			generous = medium_stress_impact_loss
 			improvident = medium_stress_impact_loss
 			greedy = minor_stress_impact_gain
@@ -21769,7 +21828,7 @@ ep2_wedding.3420 = {
 			CHARACTER = scope:social_guest
 			OPINION = default_friend_opinion
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gregarious = medium_stress_impact_loss
 			trusting = medium_stress_impact_loss
 			shy = minor_stress_impact_gain
@@ -21792,7 +21851,7 @@ ep2_wedding.3420 = {
 		trait = arrogant
 		trait = ambitious
 		add_prestige = minor_prestige_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_loss
 			ambitious = medium_stress_impact_loss
 			humble = minor_stress_impact_gain
@@ -21824,7 +21883,7 @@ ep2_wedding.3420 = {
 			}	
 		}
 		scope:blab_secret = { expose_secret = root }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			honest = medium_stress_impact_loss
 			contrite = medium_stress_impact_loss
 		}
@@ -21858,7 +21917,7 @@ ep2_wedding.3420 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = medium_stress_impact_loss
 			schemer = medium_stress_impact_loss
 			honest = minor_stress_impact_gain
@@ -21912,7 +21971,7 @@ ep2_wedding.3420 = {
 			CHARACTER = scope:help_guest
 			OPINION = default_friend_opinion
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_loss
 			callous = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain
@@ -21933,7 +21992,7 @@ ep2_wedding.3420 = {
 		trigger = { exists = scope:wedding_pray }
 		trait = zealous
 		add_piety = minor_piety_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_loss
 			zealous = medium_stress_impact_loss
 			cynical = minor_stress_impact_gain
@@ -22083,13 +22142,13 @@ scripted_trigger ep2_wedding_3500_dislikes_fornicators_trigger = {
 		limit = {
 			scope:other_family_spouse = { is_female = yes }
 		}
-		faith = {
-			NOT = { has_doctrine = doctrine_adultery_women_accepted }
+		rite = {
+			NOT = { rite_has_doctrine = doctrine_adultery_women_accepted }
 		}
 	}
 	trigger_else = {
-		faith = {
-			NOT = { has_doctrine = doctrine_adultery_men_accepted }
+		rite = {
+			NOT = { rite_has_doctrine = doctrine_adultery_men_accepted }
 		}
 	}
 }
@@ -22529,7 +22588,7 @@ ep2_wedding.3500 = {
 	option = {
 		name = ep2_wedding.3500.d
 		add_prestige = minor_prestige_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = miniscule_stress_impact_gain
 			content = miniscule_stress_impact_gain
 			callous = minor_stress_impact_loss
@@ -22547,7 +22606,7 @@ ep2_wedding.3500 = {
 	option = {
 		name = ep2_wedding.3500.e
 		add_piety = minor_prestige_gain
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			cynical = miniscule_stress_impact_gain
 			diligent = miniscule_stress_impact_gain
 			zealous = minor_stress_impact_loss
@@ -22713,7 +22772,7 @@ ep2_wedding.4000 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			craven = medium_stress_impact_gain
 			patient = medium_stress_impact_gain
 		}
@@ -22780,7 +22839,7 @@ ep2_wedding.4000 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			brave = medium_stress_impact_gain
 			impatient = medium_stress_impact_gain
 		}
@@ -22996,7 +23055,7 @@ ep2_wedding.2010 = {
 			}
 		}
 		remove_short_term_gold = minor_gold_value
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 			honest = medium_stress_impact_gain
 		}
@@ -23020,7 +23079,7 @@ ep2_wedding.2010 = {
 	option = {
 		name = ep2_wedding.2010.b
 		remove_variable = animal_type
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gallant = medium_stress_impact_gain
 			gregarious = medium_stress_impact_gain
 			lifestyle_reveler = medium_stress_impact_gain
@@ -23099,7 +23158,7 @@ ep2_wedding.2011 = {
 				modifier = pleased_opinion
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 			ambitious = medium_stress_impact_gain
 			deceitful = major_stress_impact_gain
@@ -23165,7 +23224,7 @@ ep2_wedding.2011 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			trusting = medium_stress_impact_gain
 			just = medium_stress_impact_gain
 			honest = major_stress_impact_gain
@@ -23330,7 +23389,7 @@ ep2_wedding.2020 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			deceitful = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
@@ -23377,7 +23436,7 @@ ep2_wedding.2020 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = major_stress_impact_gain
 		}
 		ai_chance = {
@@ -23460,7 +23519,7 @@ ep2_wedding.2020 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			calm = medium_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 			compassionate = major_stress_impact_gain

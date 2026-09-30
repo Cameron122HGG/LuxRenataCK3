@@ -32,7 +32,7 @@ bishop.1001 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					relation_with_character_is_incestuous_in_my_faith_trigger = {
+					relation_with_character_is_incestuous_in_my_rite_trigger = {
 						CHARACTER = scope:spouse
 					}
 				}
@@ -46,12 +46,17 @@ bishop.1001 = {
 	trigger = {
 		NOT = { has_character_flag = had_event_bishop_1001 }
 		is_available_adult = yes
-		root.faith = { has_doctrine = doctrine_theocracy_temporal }
+		root.rite = { rite_has_doctrine = doctrine_theocracy_temporal }
 		exists = cp:councillor_court_chaplain
 		any_spouse = {
-			NOT = { this = root.cp:councillor_court_chaplain }
+			this != root.cp:councillor_court_chaplain
 			is_ai = yes
 			save_temporary_scope_as = spouse_check
+			root = {
+				relation_with_character_is_incestuous_in_my_rite_trigger = {
+					CHARACTER = scope:spouse_check
+				}
+			}
 		}
 		cp:councillor_court_chaplain = {
 			bishop_1001_suitable_theocrat_trigger = yes
@@ -96,8 +101,10 @@ bishop.1001 = {
 				this != scope:bishop
 				is_ai = yes
 				save_temporary_scope_as = spouse_check_2
-				relation_with_character_is_incestuous_in_my_faith_trigger = {
-					CHARACTER = scope:spouse_check_2
+				root = {
+					relation_with_character_is_incestuous_in_my_rite_trigger = {
+						CHARACTER = scope:spouse_check_2
+					}
 				}
 			}
 			save_scope_as = spouse
@@ -311,7 +318,7 @@ bishop.1011 = {
 	trigger = {
 		NOT = { has_character_flag = had_event_bishop_1011 }
 		is_ai = no
-		root.faith = { has_doctrine = doctrine_theocracy_temporal }
+		root.rite = { rite_has_doctrine = doctrine_theocracy_temporal }
 		exists = cp:councillor_court_chaplain
 		cp:councillor_court_chaplain = {
 			bishop_1001_suitable_theocrat_trigger = yes
@@ -547,7 +554,7 @@ bishop.1011 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -767,7 +774,7 @@ bishop.2001 = {
 	trigger = {
 		NOT = { has_character_flag = had_event_bishop_2001_cooldown }
 		is_available_adult = yes
-		root.faith = { has_doctrine = doctrine_theocracy_temporal }
+		root.rite = { rite_has_doctrine = doctrine_theocracy_temporal }
 		exists = cp:councillor_court_chaplain
 		cp:councillor_court_chaplain = {
 			bishop_2001_suitable_theocrat_trigger = yes
@@ -999,7 +1006,7 @@ bishop.2001 = {
 				opinion = -20
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -1267,7 +1274,7 @@ bishop.2002 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -1325,7 +1332,7 @@ bishop.2002 = {
 				opinion = 10
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			cynical = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -1345,7 +1352,7 @@ bishop.2002 = {
 			modifier = scorned_theocrats_modifier
 			years = 2
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_gain
 			patient = minor_stress_impact_gain
 		}
@@ -1485,12 +1492,12 @@ bishop.2003 = {
 			limit = {
 				faith = scope:scoped_bishop.faith
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				greedy = minor_stress_impact_gain
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				zealous = medium_stress_impact_gain
 			}
 		}
@@ -1517,7 +1524,7 @@ bishop.2003 = {
 			limit = {
 				OR = {
 					faith = scope:scoped_bishop.faith
-					faith = { has_doctrine = doctrine_pluralism_pluralistic }
+					rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
 				}
 			}
 			every_sub_realm_county = {
@@ -1569,7 +1576,7 @@ bishop.2003 = {
 					faith = scope:scoped_bishop.faith
 					OR = {
 						faith = root.faith
-						faith = { has_doctrine = doctrine_pluralism_pluralistic }
+						rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
 					}
 				}
 				add_opinion = {
@@ -1589,15 +1596,15 @@ bishop.2003 = {
 			limit = {
 				OR = {
 					faith = scope:scoped_bishop.faith
-					faith = { has_doctrine = doctrine_pluralism_pluralistic }
+					rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
 				}
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				compassionate = minor_stress_impact_gain
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				zealous = medium_stress_impact_gain
 			}
 		}
@@ -1625,7 +1632,7 @@ bishop.2004 = { # Set Zealot vassals against ruler
 	}
 	right_portrait = {
 		character = scope:scoped_bishop
-		animation = wedding_objection_start
+		animation = preaching
 	}
 	theme = faith
 	
@@ -1748,7 +1755,7 @@ bishop.2004 = { # Set Zealot vassals against ruler
 			gold = minor_gold_value
 		}
 		
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			cynical = major_stress_impact_gain
 			greedy = major_stress_impact_gain
 			callous = medium_stress_impact_gain
@@ -1786,7 +1793,7 @@ bishop.2004 = { # Set Zealot vassals against ruler
 			}
 		}
 		
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			zealous = major_stress_impact_gain
 			humble = major_stress_impact_gain
 			just = medium_stress_impact_gain

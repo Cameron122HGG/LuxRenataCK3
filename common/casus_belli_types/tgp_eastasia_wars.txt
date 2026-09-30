@@ -87,21 +87,11 @@ mandala_plunder_cb = {
 			#EP2 Accolade glory gain from winning against higher ranked enemy
 			accolade_attacker_war_end_glory_gain_low_effect = yes
 
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_piety = minor_piety_gain }
-				tier_duchy = { add_piety = medium_piety_gain }
-				tier_kingdom = { add_piety = major_piety_gain }
-				tier_empire = { add_piety = massive_piety_gain }
-				tier_hegemony = { add_piety = monumental_piety_gain }
+			add_piety = {
+				value = scope:defender.tier_scaled_piety_value
 			}
 
 			random_great_project = {
@@ -174,7 +164,7 @@ mandala_plunder_cb = {
 	on_white_peace = {
 		scope:attacker = { 
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -193,7 +183,7 @@ mandala_plunder_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -216,21 +206,13 @@ mandala_plunder_cb = {
 		scope:attacker = { 
 			show_pow_release_message_effect = yes 
 
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_piety = minor_piety_loss }
-				tier_duchy = { add_piety = medium_piety_loss }
-				tier_kingdom = { add_piety = major_piety_loss }
-				tier_empire = { add_piety = massive_piety_loss }
-				tier_hegemony = { add_piety = monumental_piety_loss }
+			add_piety = {
+				value = 0
+				subtract = tier_scaled_piety_value
 			}
 
 			save_temporary_scope_as = loser
@@ -242,21 +224,11 @@ mandala_plunder_cb = {
 			#EP2 Accolade glory gain from winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_low_effect = yes 
 
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_piety = minor_piety_gain }
-				tier_duchy = { add_piety = medium_piety_gain }
-				tier_kingdom = { add_piety = major_piety_gain }
-				tier_empire = { add_piety = massive_piety_gain }
-				tier_hegemony = { add_piety = monumental_piety_gain }
+			add_piety = {
+				value = tier_scaled_piety_value
 			}
 		}
 
@@ -394,40 +366,22 @@ mandala_raze_capital_structure_cb = {
 			#EP2 Accolade glory gain from winning against higher ranked enemy
 			accolade_attacker_war_end_glory_gain_low_effect = yes
 
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_piety = medium_piety_gain }
-				tier_duchy = { add_piety = major_piety_gain }
-				tier_kingdom = { add_piety = massive_piety_gain }
-				tier_empire = { add_piety = massive_piety_gain }
-				tier_hegemony = { add_piety = monumental_piety_gain }
+			add_piety = {
+				value = scope:defender.tier_scaled_piety_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_piety = medium_piety_loss }
-				tier_duchy = { add_piety = major_piety_loss }
-				tier_kingdom = { add_piety = massive_piety_loss }
-				tier_empire = { add_piety = massive_piety_loss }
-				tier_hegemony = { add_piety = monumental_piety_loss }
+			add_piety = {
+				value = 0
+				subtract = tier_scaled_piety_value
 			}
 
 			capital_province = {
@@ -472,7 +426,7 @@ mandala_raze_capital_structure_cb = {
 	on_white_peace = {
 		scope:attacker = { 
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -491,7 +445,7 @@ mandala_raze_capital_structure_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -514,21 +468,13 @@ mandala_raze_capital_structure_cb = {
 		scope:attacker = { 
 			show_pow_release_message_effect = yes 
 
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_piety = minor_piety_loss }
-				tier_duchy = { add_piety = medium_piety_loss }
-				tier_kingdom = { add_piety = major_piety_loss }
-				tier_empire = { add_piety = massive_piety_loss }
-				tier_hegemony = { add_piety = monumental_piety_loss }
+			add_piety = {
+				value = 0
+				subtract = tier_scaled_piety_value
 			}
 
 			capital_province = {
@@ -556,21 +502,11 @@ mandala_raze_capital_structure_cb = {
 			#EP2 Accolade glory gain from winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_low_effect = yes
 
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_piety = minor_piety_gain }
-				tier_duchy = { add_piety = medium_piety_gain }
-				tier_kingdom = { add_piety = major_piety_gain }
-				tier_empire = { add_piety = massive_piety_gain }
-				tier_hegemony = { add_piety = monumental_piety_gain }
+			add_piety = {
+				value = tier_scaled_piety_value
 			}
 		}
 

@@ -21,7 +21,6 @@ tgp_create_house_bloc_effect = {
 			limit = {
 				OR = {
 					has_house_aspiration_parameter = ceremony_cheaper_feasts
-					has_house_aspiration_parameter = is_gallic_ceremony
 					scope:type = flag:ceremony
 				}
 			}
@@ -37,7 +36,6 @@ tgp_create_house_bloc_effect = {
 			limit = {
 				OR = {
 					has_house_aspiration_parameter = unlocks_japanese_manor_watch_house
-					has_house_aspiration_parameter = is_gallic_determination
 					scope:type = flag:determination
 				}
 			}
@@ -53,7 +51,6 @@ tgp_create_house_bloc_effect = {
 			limit = {
 				OR = {
 					has_house_aspiration_parameter = unlocks_japanese_manor_shrine
-					has_house_aspiration_parameter = is_gallic_humility
 					scope:type = flag:humility
 				}
 			}
@@ -69,7 +66,6 @@ tgp_create_house_bloc_effect = {
 			limit = {
 				OR = {
 					has_house_aspiration_parameter = unlocks_japanese_manor_brewery
-					has_house_aspiration_parameter = is_gallic_prosperity
 					scope:type = flag:prosperity
 				}
 			}
@@ -85,7 +81,6 @@ tgp_create_house_bloc_effect = {
 			limit = {
 				OR = {
 					has_house_aspiration_parameter = unlocks_japanese_manor_archive
-					has_house_aspiration_parameter = is_gallic_service
 					scope:type = flag:service
 				}
 			}
@@ -101,7 +96,6 @@ tgp_create_house_bloc_effect = {
 			limit = {
 				OR = {
 					has_house_aspiration_parameter = unlocks_japanese_manor_armory
-					has_house_aspiration_parameter = is_gallic_strength
 					scope:type = flag:strength
 				}
 			}
@@ -113,16 +107,6 @@ tgp_create_house_bloc_effect = {
 				}
 			}
 		}
-		###LR - added Ceremony Block as a fallback
-		else = {
-			house_head = {
-				create_confederation = {
-					name = CONFEDERATION_HOUSE_NAME
-					type = confederation_type:house_bloc_ceremony
-					leader = house
-				}
-			}
-		}		
 		house_confederation ?= {
 			save_scope_as = bloc
 			set_coa = scope:bloc_creator
@@ -155,6 +139,9 @@ tgp_join_house_bloc_effect = {
 				limit = { exists = scope:old_bloc }
 				scope:old_bloc != scope:bloc
 			}
+		}
+		hidden_effect = {
+			scope:old_bloc ?= { remove_confederation_member_house = scope:joiner }
 		}
 		# ADD MEMBER HOUSE
 		custom_description = {
@@ -460,7 +447,7 @@ tgp_set_house_bloc_leading_house_effect = {
 tgp_setup_historical_house_bloc_effect = {
 	### 867
 	if = {
-		limit = { game_start_date = 5867.1.1 }
+		limit = { game_start_date = 867.1.1 }
 		# Ceremony
 		dynasty:japanese_fujiwara.dynasty_founder.house ?= {
 			tgp_create_historical_house_bloc_effect = { TYPE = ceremony } # Northern Fujiwara
@@ -513,7 +500,7 @@ tgp_setup_historical_house_bloc_effect = {
 	}
 	### 1066
 	else_if = {
-		limit = { game_start_date = 6066.9.15 }
+		limit = { game_start_date = 1066.9.15 }
 		# Ceremony
 		dynasty:japanese_fujiwara.dynasty_founder.house ?= {
 			tgp_create_historical_house_bloc_effect = { TYPE = ceremony } # Northern Fujiwara
@@ -582,7 +569,7 @@ tgp_setup_historical_house_bloc_effect = {
 	}
 	### 1178 ###
 	else_if = {
-		limit = { game_start_date = 6178.10.1 }
+		limit = { game_start_date = 1178.10.1 }
 		# Ceremony
 		house:house_fujiwara_matsudono = {
 			tgp_create_historical_house_bloc_effect = { TYPE = ceremony } # Matsudono Fujiwara
@@ -791,7 +778,7 @@ tgp_on_member_left_shared_effect = {
 						NOT = { house = scope:character.house }
 					}
 				}
-				scope:vassal_house_temp = { leave_faction = scope:faction_temp }
+				scope:leaver = { leave_faction = scope:faction_temp }
 			}
 		}
 	}
@@ -1264,22 +1251,52 @@ set_cadet_aspiration_cooldown_effect = {
 			switch = {
 				trigger = has_house_aspiration_parameter
 				ceremony_cheaper_feasts = {
-					scope:house_temp = { set_house_aspiration = { type = ceremony } }
+					scope:house_temp = {
+						if = {
+							limit = { NOT = { has_house_aspiration_parameter = ceremony_cheaper_feasts } }
+							set_house_aspiration = { type = ceremony }
+						}
+					}
 				}
 				unlocks_japanese_manor_watch_house = {
-					scope:house_temp = { set_house_aspiration = { type = determination } }
+					scope:house_temp = {
+						if = {
+							limit = { NOT = { has_house_aspiration_parameter = unlocks_japanese_manor_watch_house } }
+							set_house_aspiration = { type = determination }
+						}
+					}
 				}
 				unlocks_japanese_manor_shrine = {
-					scope:house_temp = { set_house_aspiration = { type = humility } }
+					scope:house_temp = {
+						if = {
+							limit = { NOT = { has_house_aspiration_parameter = unlocks_japanese_manor_shrine } }
+							set_house_aspiration = { type = humility }
+						}
+					}
 				}
 				unlocks_japanese_manor_brewery = {
-					scope:house_temp = { set_house_aspiration = { type = prosperity } }
+					scope:house_temp = {
+						if = {
+							limit = { NOT = { has_house_aspiration_parameter = unlocks_japanese_manor_brewery } }
+							set_house_aspiration = { type = prosperity }
+						}
+					}
 				}
 				unlocks_japanese_manor_archive = {
-					scope:house_temp = { set_house_aspiration = { type = service } }
+					scope:house_temp = {
+						if = {
+							limit = { NOT = { has_house_aspiration_parameter = unlocks_japanese_manor_archive } }
+							set_house_aspiration = { type = service }
+						}
+					}
 				}
 				unlocks_japanese_manor_armory = {
-					scope:house_temp = { set_house_aspiration = { type = strength } }
+					scope:house_temp = {
+						if = {
+							limit = { NOT = { has_house_aspiration_parameter = unlocks_japanese_manor_armory } }
+							set_house_aspiration = { type = strength }
+						}
+					}
 				}
 			}
 		}
@@ -1405,7 +1422,7 @@ tgp_save_bloc_leaving_reason_effect = {
 				}
 				else_if = { # COHESION
 					limit = {
-						house.house_confederation ?= { cohesion <= 25 }
+						house_confederation ?= { cohesion <= 25 }
 					}
 					set_variable = {
 						name = bloc_leaving_reason

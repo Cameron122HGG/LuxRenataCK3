@@ -112,19 +112,21 @@ ep1_decision.0201 = {
 				template = court_linguist_good_template
 				culture = scope:ling_cul_2
 				faith = scope:ling_cul_2_ruler.faith
+				rite = scope:ling_cul_2_ruler.rite
 				location = root.capital_province
 				save_scope_as = good_linguist
 			}
 			# Scholarly Linguist
 			if = {
-				limit = { has_trait = scholar }
+				limit = { has_trait = erudite }
 				create_character = {
 					dynasty = none
 					template = court_linguist_good_template
 					culture = scope:ling_cul_1
 					faith = scope:ling_cul_1_ruler.faith
+					rite = scope:ling_cul_1_ruler.rite
 					location = root.capital_province
-					trait = scholar
+					trait = erudite
 					save_scope_as = scholarly_linguist
 				}
 				if = {
@@ -148,7 +150,7 @@ ep1_decision.0201 = {
 			gold = medium_gold_value
 		}
 		learn_language_linguist_effect = { LINGUIST = scope:good_linguist }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -168,7 +170,7 @@ ep1_decision.0201 = {
 			gold = minor_gold_value
 		}
 		learn_language_linguist_effect = { LINGUIST = scope:medium_linguist }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -183,8 +185,8 @@ ep1_decision.0201 = {
 	# I know a good tutor through scholarly circles!
 	option = {
 		name = ep1_decision.0201.c
-		trait = scholar
-		trigger = { has_trait = scholar }
+		trait = erudite
+		trigger = { has_trait = erudite }
 		learn_language_linguist_effect = { LINGUIST = scope:scholarly_linguist }
 		ai_chance = {
 			base = 100
@@ -200,7 +202,7 @@ ep1_decision.0201 = {
 		ai_chance = {
 			base = 1000
 			modifier = { # Don't do it if you can hire the cool guy
-				has_trait = scholar
+				has_trait = erudite
 				factor = 0
 			}
 		}
@@ -214,7 +216,7 @@ ep1_decision.0201 = {
 			modifier = {
 				short_term_gold < minor_gold_value_check
 				NOR = {
-					has_trait = scholar
+					has_trait = erudite
 					has_trait = greedy
 				}
 				add = 10
@@ -277,7 +279,7 @@ ep1_decision.0101 = {
 		# Evict your guests.
 		order_mass_eviction_decision_guests_only_effect = yes
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = minor_stress_impact_loss
 			gregarious = medium_stress_impact_gain
 		}
@@ -306,7 +308,7 @@ ep1_decision.0101 = {
 		# Evict your guests *&* courtiers.
 		order_mass_eviction_decision_courtiers_&_guests_effect = yes
 
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_loss
 			gregarious = major_stress_impact_gain
 		}
@@ -395,7 +397,7 @@ scripted_effect ep1_decision_0111_apply_hall_effect = {
 	}
 
 	# Stress impact handled in the scripted effect, since it'll always be the same for each char.
-	stress_impact = {
+	stress_and_fulfillment_impact = {
 		architect = minor_stress_impact_loss
 		humble = medium_stress_impact_loss
 		arrogant = major_stress_impact_gain
@@ -406,7 +408,20 @@ scripted_effect ep1_decision_0111_apply_hall_effect = {
 ep1_decision.0111 = {
 	type = character_event
 	title = ep1_decision.0111.t
-	desc = ep1_decision.0111.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:option_3 }
+				desc = ep1_decision.0111.desc.3
+			}
+			triggered_desc = {
+				trigger = { exists = scope:option_2 }
+				desc = ep1_decision.0111.desc.2
+			}
+			desc = ep1_decision.0111.desc.1
+		}
+		desc = ep1_decision.0111.desc.outro
+	}
 	theme = court
 	left_portrait = {
 		character = root
@@ -552,7 +567,18 @@ ep1_decision.0111 = {
 
 	# These all seem quite foreign...
 	option = {
-		name = ep1_decision.0111.d
+		name = {
+			trigger = {
+				exists = scope:option_2
+			}
+			text = ep1_decision.0111.d
+		}
+		name = {
+			trigger = {
+				NOT = { exists = scope:option_2 }
+			}
+			text = ep1_decision.0111.d.single
+		}
 
 		# Refund the gold paid; we mention this in a tooltip so that it's a bit less noticeable.
 		hidden_effect = { add_gold = var:exoticise_a_grand_hall_decision_refund_value }

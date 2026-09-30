@@ -141,14 +141,21 @@ tgp_house_blocs.1001 = {
 
 	option = {
 		name = tgp_house_blocs.1001.a
+		# Not being at war with the bloc leader does not mean you are outside this war already
 		scope:war = {
-			add_attacker = root
+			if = {
+				limit = { NOT = { is_participant = root } }
+				add_attacker = root
+			}
 		}
 		every_in_list = {
 			list = war_joiners
 			save_temporary_scope_as = war_joiner_temp
 			scope:war = {
-				add_attacker = scope:war_joiner_temp 
+				if = {
+					limit = { NOT = { is_participant = scope:war_joiner_temp } }
+					add_attacker = scope:war_joiner_temp 
+				}
 			}
 		}
 		ai_chance = {

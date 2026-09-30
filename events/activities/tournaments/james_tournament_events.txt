@@ -19,9 +19,9 @@ scripted_trigger 8000_valid_to_offer_favor = {
 		might_cheat_on_every_partner_trigger = yes
 	}
 	NOT = {
-		relation_with_character_is_incestuous_in_faith_trigger = {
+		relation_with_character_is_incestuous_in_rite_trigger = {
 			CHARACTER = root
-			FAITH = root.faith
+			RITE = root.rite
 		}
 	}
 	OR = {
@@ -30,10 +30,10 @@ scripted_trigger 8000_valid_to_offer_favor = {
 	}
 	OR = {
 		AND = {
-			root.faith = { NOT = { has_doctrine_parameter = homosexuality_accepted } }
+			NOT = { root.rite = { rite_has_parameter = homosexuality_accepted } }
 			NOT = { sex_same_as = root }
 		}
-		root.faith = { has_doctrine_parameter = homosexuality_accepted }
+		root.rite = { rite_has_parameter = homosexuality_accepted }
 	}
 	NOR = {
 		has_relation_soulmate = root
@@ -42,7 +42,7 @@ scripted_trigger 8000_valid_to_offer_favor = {
 		# No priests giving favours
 		AND = {
 			is_clergy = yes
-			NOT = { faith = { has_doctrine_parameter = clergy_can_marry } }
+			NOT = { rite = { rite_has_parameter = clergy_can_marry } }
 		}
 	}
 }
@@ -104,7 +104,7 @@ tournament_events.8000 = { # Start
 		NOT = { has_trait = celibate }
 		OR = { # For AI priests in tournaments
 			is_clergy = no
-			faith = { has_doctrine_parameter = clergy_can_marry }
+			rite = { rite_has_parameter = clergy_can_marry }
 		}
 	}
 
@@ -173,13 +173,13 @@ tournament_events.8000 = { # Start
 						}
 					}
 					save_scope_as = favor_giver_1
-					hidden_effect = {
+					hidden_effect_new_object = {
 						create_artifact_tournament_favor_effect = {
 							OWNER = scope:favor_giver_1
 							RECIPIENT = root
 						}
+						scope:newly_created_artifact = { save_scope_as = favor_1 }
 					}
-					scope:newly_created_artifact = { save_scope_as = favor_1 }
 				}
 				if = {
 					limit = {
@@ -234,13 +234,13 @@ tournament_events.8000 = { # Start
 							}
 						}
 						save_scope_as = favor_giver_2
-						hidden_effect = {
+						hidden_effect_new_object = {
 							create_artifact_tournament_favor_effect = {
 								OWNER = scope:favor_giver_2
 								RECIPIENT = root
 							}
+							scope:newly_created_artifact = { save_scope_as = favor_2 }
 						}
-						scope:newly_created_artifact = { save_scope_as = favor_2 }
 					}
 				}
 			}
@@ -317,7 +317,7 @@ tournament_events.8000 = { # Start
 		 		opinion = -15
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gallant = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			chaste = minor_stress_impact_gain
@@ -414,7 +414,7 @@ tournament_events.8000 = { # Start
 	 		modifier = rebuffed_opinion
 	 		opinion = -15
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gallant = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			chaste = minor_stress_impact_gain
@@ -470,7 +470,7 @@ tournament_events.8000 = { # Start
 		 		opinion = -15
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			gallant = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			lustful = minor_stress_impact_gain

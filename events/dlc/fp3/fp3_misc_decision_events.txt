@@ -447,7 +447,7 @@ fp3_misc_decisions.0020 = { # Actor Duel Outcome(s)
 			}
 		}
 		trigger_event = fp3_misc_decisions.0041
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			content = major_stress_impact_gain
 			just = medium_stress_impact_gain
 			forgiving = medium_stress_impact_gain
@@ -509,7 +509,7 @@ fp3_misc_decisions.0020 = { # Actor Duel Outcome(s)
 				REVERSE_NON_HOUSE_TARGET = yes
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = major_stress_impact_gain
 			ambitious = medium_stress_impact_gain
 		}
@@ -1617,7 +1617,7 @@ fp3_misc_decisions.0029 = { # Actor response
 		}
 		save_scope_as = negotiate_bargain_accept
 		scope:recipient = { trigger_event = fp3_misc_decisions.0030 }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			content = minor_stress_impact_gain
@@ -1636,7 +1636,7 @@ fp3_misc_decisions.0029 = { # Actor response
 		}
 		save_scope_as = negotiate_bargain_reject
 		scope:recipient = { trigger_event = fp3_misc_decisions.0030 }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			generous = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain
@@ -1654,7 +1654,7 @@ fp3_misc_decisions.0029 = { # Actor response
 				exists = scope:negotiate_accept
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain
 			wrathful = minor_stress_impact_gain
@@ -2047,6 +2047,7 @@ scripted_effect fp3_misc_decisions_0031_create_char_no_dynasty_effect = {
 		dynasty = none
 		culture = scope:batch_$BATCH$_county.culture
 		faith = scope:batch_$BATCH$_county.faith
+		rite = scope:batch_$BATCH$_county.rite
 		after_creation = {
 			add_to_list = batch_$BATCH$_characters_list
 			# Set an employer if there's a valid one available.
@@ -2110,6 +2111,7 @@ scripted_effect fp3_misc_decisions_0031_create_char_with_dynasty_effect = {
 		location = scope:batch_$BATCH$_county.title_province
 		culture = scope:batch_$BATCH$_county.culture
 		faith = scope:batch_$BATCH$_county.faith
+		rite = scope:batch_$BATCH$_county.rite
 		after_creation = {
 			add_to_list = batch_$BATCH$_characters_list
 			# Set an employer if there's a valid one available.
@@ -2862,7 +2864,7 @@ fp3_misc_decisions.0051 = { # Adopt Clan Government through House
 	lower_right_portrait = house.house_head
 
 	immediate = {
-		change_government = iqta_government
+		change_government = clan_government
 		# Increase unity, uses this effect since both chars are not clan when script is evaluated
 		house.house_head = {
 			apply_clan_unity_interaction_effect = {
@@ -2882,7 +2884,7 @@ fp3_misc_decisions.0051 = { # Adopt Clan Government through House
 					show_as_tooltip = {
 						root = {
 							# Change government type
-							change_government = iqta_government
+							change_government = clan_government
 							# Increase unity, uses this effect since both chars are not clan when script is evaluated
 							house.house_head = {
 								apply_clan_unity_interaction_effect = {

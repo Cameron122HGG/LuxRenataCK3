@@ -54,7 +54,7 @@ house_arrest_ongoing.0001 = {
 
 	option = { #You're an anxious mess
 		name = house_arrest_ongoing.0001.a
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			ambitious = major_stress_impact_gain
 		}
 		ai_chance = {
@@ -81,7 +81,7 @@ house_arrest_ongoing.0001 = {
 		}
 		trait = calm
 		trait = patient
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			ambitious = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -142,7 +142,7 @@ house_arrest_ongoing.0002 = {
 
 	option = { #I'm insulted!
 		name = house_arrest_ongoing.0002.a
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = major_stress_impact_gain
 		}
 		ai_chance = {
@@ -160,7 +160,7 @@ house_arrest_ongoing.0002 = {
 		}
 		trait = calm
 		trait = patient
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -250,16 +250,9 @@ house_arrest_ongoing.0003 = {
 				save_scope_as = friendly_prisoner
 				if = {
 					limit = {
-						OR = {
-							AND = {
-								is_attracted_to_women = yes
-								scope:friendly_prisoner = { is_female = yes }
-							}
-							AND = {
-								is_attracted_to_men = yes
-								scope:friendly_prisoner = { is_male = yes }
-							}
-						}
+						can_set_relation_lover_trigger = { CHARACTER = scope:friendly_prisoner }
+						scope:friendly_prisoner = { might_cheat_on_every_partner_trigger = yes }
+						might_cheat_on_every_partner_trigger = yes
 						OR = {
 							opinion = {
 								target = root
@@ -336,9 +329,9 @@ house_arrest_ongoing.0003 = {
 	option = { #All alone
 		name = house_arrest_ongoing.0003.a
 		trigger = {
-			NOR ={
-				has_character_flag = lover
-				has_character_flag = friend
+			has_none_of_variables = {
+				name = lover
+				name = friend
 			}
 		}
 		trait = shy
@@ -346,7 +339,7 @@ house_arrest_ongoing.0003 = {
 			limit = {
 				NOT = { has_trait = shy }
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = minor_stress_gain
 			}
 		}
@@ -354,7 +347,7 @@ house_arrest_ongoing.0003 = {
 			limit = {
 				has_trait = shy
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = medium_stress_gain
 			}
 		}
@@ -366,7 +359,7 @@ house_arrest_ongoing.0003 = {
 			has_trait = gregarious
 		}
 		trait = gregarious
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_loss
 		}
 		
@@ -409,7 +402,7 @@ house_arrest_ongoing.0003 = {
 			exists = scope:friendly_prisoner
 			scope:friendly_prisoner = root
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_loss
 		}
 	}
@@ -551,7 +544,7 @@ house_arrest_ongoing.0004 = {
 			modifier = helped_me_in_time_of_need
 			target = scope:friend_at_court
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_loss
 		}
 	}
@@ -631,7 +624,7 @@ house_arrest_ongoing.0005 = {
 			modifier = mocked_me_in_time_of_need
 			target = scope:rival_at_court
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_gain
 		}
 	}

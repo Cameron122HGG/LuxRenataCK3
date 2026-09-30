@@ -243,6 +243,11 @@ murders_at_court.1002 = {
 		scope:story = {
 			var:escalation >= 1
 		}
+		any_courtier = {
+			basic_is_available_ai = yes
+			NOT = { is_close_or_extended_family_of = root }
+			this != scope:story.var:murderer
+		}
 	}
 
 	immediate = {
@@ -272,6 +277,7 @@ murders_at_court.1002 = {
 						stewardship > high_skill_rating
 						prowess > high_skill_rating
 					}
+					this != scope:story.var:murderer
 				}
 			}
 			random_courtier = {
@@ -279,6 +285,7 @@ murders_at_court.1002 = {
 					basic_is_available_ai = yes
 					NOT = { is_close_or_extended_family_of = root }
 					has_friendly_relationship_with_root_trigger = yes
+					this != scope:story.var:murderer
 				}
 				alternative_limit = {
 					basic_is_available_ai = yes
@@ -291,6 +298,12 @@ murders_at_court.1002 = {
 						stewardship > high_skill_rating
 						prowess > high_skill_rating
 					}
+					this != scope:story.var:murderer
+				}
+				alternative_limit = {
+					basic_is_available_ai = yes
+					NOT = { is_close_or_extended_family_of = root }
+					this != scope:story.var:murderer
 				}
 				save_scope_as = victim
 				show_as_tooltip = {
@@ -530,6 +543,9 @@ murders_at_court.1003 = {
 	option = {
 		name = murders_at_court.2002.a
 		add_piety = minor_piety_gain
+		stress_and_fulfillment_impact = {
+			zealous = minor_stress_impact_loss
+		}
 	}
 
 	option = { #Limit the movement of everyone with access to the court
@@ -719,6 +735,9 @@ murders_at_court.1004 = {
 	option = {
 		name = murders_at_court.2002.a
 		add_piety = minor_piety_gain
+		stress_and_fulfillment_impact = {
+			zealous = minor_stress_impact_loss
+		}
 	}
 
 	option = { #Limit the movement of everyone with access to the court
@@ -1097,6 +1116,9 @@ murders_at_court.2002 = {
 	option = {
 		name = murders_at_court.2002.a
 		add_piety = minor_piety_gain
+		stress_and_fulfillment_impact = {
+			zealous = minor_stress_impact_loss
+		}
 	}
 
 	option = { #Limit the movement of everyone with access to the court
@@ -2610,7 +2632,7 @@ murders_at_court.9099 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = massive_stress_impact_gain
 		}
 		ai_chance = {

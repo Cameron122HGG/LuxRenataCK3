@@ -214,7 +214,7 @@ fp3_ending_effects_assertion = {
 
 	faith = {
 		change_fervor = {
-			value = 50
+			value = major_fervor_gain
 			desc = fervor_gain_strengthen_caliphate
 		}
 		# Propagate the Caliph's Faith in the struggle region
@@ -223,24 +223,24 @@ fp3_ending_effects_assertion = {
 			struggle:persian_struggle = {
 				every_involved_county = {
 					limit = {
-						faith != root.faith
+						rite != root.rite
 					}
 					random = {
 						chance = fp3_strengthen_caliphate_ending_conversion_chance_percent_value
 						set_county_faith = root.faith
+						set_county_rite = root.rite
 					}
 				}
-
 				every_involved_ruler = {
 					limit = {
-						NOR = {
-							faith = root.faith
-							primary_title = { is_mercenary_company = yes }
-						}
+						NOT = { religious_head_or_challenger ?= this }
+						rite != root.rite
+						primary_title = { is_mercenary_company = no }
 					}
 					random = {
 						chance = fp3_strengthen_caliphate_ending_conversion_chance_percent_value
 						set_character_faith = root.faith
+						set_character_rite = root.rite
 					}
 				}
 			}
@@ -289,11 +289,13 @@ fp3_struggle_ending_shia_caliphate_effects = {
 	### FAITH
 	faith = {
 		change_fervor = {
-			value = 50
+			value = major_fervor_gain
 			desc = fervor_gain_shia_caliphate
 		}
+	}
+	rite = {
 		if = {
-			limit = { has_doctrine = muhammad_succession_muhakkima_doctrine }
+			limit = { rite_has_doctrine = muhammad_succession_muhakkima_doctrine }
 			# Muhakkima faiths gets a bonus for the rest of the game converting other counties
 			custom_tooltip = {
 				text = struggle_persia_ending_assertion_boost_muhakkima_county_conversion_tt
@@ -304,7 +306,7 @@ fp3_struggle_ending_shia_caliphate_effects = {
 			}
 		}
 		else_if = {
-			limit = { has_doctrine = muhammad_succession_zandaqa_doctrine }
+			limit = { rite_has_doctrine = muhammad_succession_zandaqa_doctrine }
 			# Zandaqa faiths gets a bonus for the rest of the game converting other counties
 			custom_tooltip = {
 				text = struggle_persia_ending_assertion_boost_zandaqa_county_conversion_tt
@@ -315,7 +317,7 @@ fp3_struggle_ending_shia_caliphate_effects = {
 			}
 		}
 		else_if = {
-			limit = { has_doctrine = muhammad_succession_sunni_doctrine }
+			limit = { rite_has_doctrine = muhammad_succession_sunni_doctrine }
 			# Sunni faiths gets a bonus for the rest of the game converting other counties
 			custom_tooltip = {
 				text = struggle_persia_ending_assertion_boost_sunni_county_conversion_tt
@@ -341,23 +343,24 @@ fp3_struggle_ending_shia_caliphate_effects = {
 			struggle:persian_struggle = {
 				every_involved_county = {
 					limit = {
-						faith != root.faith
+						rite != root.rite
 					}
 					random = {
 						chance = fp3_shia_caliphate_ending_conversion_chance_percent_value
 						set_county_faith = root.faith
+						set_county_rite = root.rite
 					}
 				}
 				every_involved_ruler = {
 					limit = {
-						NOR = {
-							faith = root.faith
-							primary_title = { is_mercenary_company = yes }
-						}
+						NOT = { religious_head_or_challenger ?= this }
+						rite != root.rite
+						primary_title = { is_mercenary_company = no }
 					}
 					random = {
 						chance = fp3_shia_caliphate_ending_conversion_chance_percent_value
 						set_character_faith = root.faith
+						set_character_rite = root.rite
 					}
 				}
 			}
@@ -838,6 +841,8 @@ fp3_struggle_ending_concession_effects = {
 			}
 		}
 	}
+	title:d_sunni = { remove_variable = struggle_block_dissolution_faction }
+	title:e_arabia = { remove_variable = struggle_block_dissolution_faction }
 }
 
 
@@ -916,24 +921,25 @@ fp3_struggle_rekindle_iran_effects = {
 				every_involved_county = {
 					limit = {
 						culture = { has_cultural_pillar = heritage_iranian }
-						faith != scope:propagated_faith
+						rite != scope:propagated_rite
 					}
 					random = {
 						chance = fp3_iranian_faith_for_rekindle_persia_conversion_chance_percent_value
 						set_county_faith = scope:propagated_faith
+						set_county_rite = scope:propagated_rite
 					}
 				}
 				every_involved_ruler = {
 					limit = {
 						culture = { has_cultural_pillar = heritage_iranian }
-						faith != scope:propagated_faith
-						NOT = {
-							primary_title = { is_mercenary_company = yes }
-						}
+						NOT = { religious_head_or_challenger ?= this }
+						rite != scope:propagated_rite
+						primary_title = { is_mercenary_company = no }
 					}
 					random = {
 						chance = fp3_iranian_faith_for_rekindle_persia_conversion_chance_percent_value
 						set_character_faith = scope:propagated_faith
+						set_character_rite = scope:propagated_rite
 					}
 				}
 			}
@@ -1071,7 +1077,7 @@ fp3_sundered_caliphate_effects = {
 		# This is here to make effect order pretty
 		every_vassal = {
 			custom = fp3_sunder_the_caliphate_same_faith_vassal_tt
-			limit = { faith = scope:sunderer.faith }
+			limit = { rite = scope:sunderer.rite }
 			# vassals from same religion as root gains opinion and give hook
 			save_scope_as = same_faith_caliph_vassal
 			add_opinion = {
@@ -1102,10 +1108,10 @@ fp3_sundered_caliphate_effects = {
 		every_vassal = {
 			custom = fp3_sunder_the_caliphate_hostile_faith_vassal_tt
 			limit = {
-				faith != root.faith
-				faith = {
-					faith_hostility_level = {
-						target = scope:the_caliph.faith
+				rite != root.rite
+				rite = {
+					rite_hostility_level = {
+						target = scope:the_caliph.rite
 						value >= religious_cb_enabled_hostility_level
 					}
 				}
@@ -1119,7 +1125,7 @@ fp3_sundered_caliphate_effects = {
 		}
 		custom_tooltip = destroys_caliph_titles_caliph_tt
 		if = {
-			limit = {title:e_arabia.holder = scope:the_caliph }
+			limit = { title:e_arabia.holder = scope:the_caliph }
 			custom_tooltip = destroys_caliph_titles_arabia_tt
 		}
 	}

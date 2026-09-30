@@ -20,16 +20,36 @@ GetGovernmentAuthority = {
 	type = character
 
 	text = {
-		trigger = { government_has_flag = government_is_administrative }
-		localization_key = government_authority_administrative
+		trigger = { realm_law_use_imperial_bureaucracy = yes }
+		localization_key = imperial_bureaucracy
 	}
 	text = {
-		trigger = { government_has_flag = government_is_tribal }
-		localization_key = government_authority_tribe
+		trigger = { realm_law_use_tribal_authority = yes }
+		localization_key = tribal_authority
+	}
+	text = {
+		trigger = { realm_law_use_nomadic_authority = yes }
+		localization_key = nomadic_authority
+	}
+	text = {
+		trigger = { realm_law_use_celestial_bureaucracy = yes }
+		localization_key = celestial_bureaucracy
+	}
+	text = {
+		trigger = { realm_law_use_meritocratic_bureaucracy = yes }
+		localization_key = meritocratic_bureaucracy
+	}
+	text = {
+		trigger = { realm_law_use_japanese_bureaucracy = yes }
+		localization_key = japanese_bureaucracy
+	}
+	text = {
+		trigger = { realm_law_use_crown_authority = yes }
+		localization_key = crown_authority
 	}
 	text = {
 		trigger = { always = no }
-		localization_key = government_authority_crown
+		localization_key = government_authority
 		fallback = yes
 	}
 }
@@ -300,7 +320,7 @@ GetSubjectPlural = {
 
 GetSuccessionHeirMotion = {
 	type = character
-	
+
 	text = {
 		trigger = {
 			trigger_if = {
@@ -310,7 +330,7 @@ GetSuccessionHeirMotion = {
 					AND = {
 						OR = {
 							any_held_title = { is_noble_family_title = yes }
-							government_allows = administrative
+							government_has_mechanic = administrative
 						}
 						is_independent_ruler = no
 					}
@@ -434,7 +454,7 @@ GetRealmOrDomicile = {
 
 GetRealmOrDomicileTooltip = {
 	type = character
-	
+
 	text = {
 		trigger = {
 			trigger_if = {
@@ -805,7 +825,7 @@ GetFollowerOrVassal = {
 GetFollowerOrVassalPlural = {
 	type = character
 	parent = GetFollowerOrVassal
-	suffix = _plural	
+	suffix = _plural
 }
 
 GetGameKeepers = {
@@ -839,7 +859,27 @@ GetDoorPlural = {
 GetGovernmentIcon = {
 	type = character
 
-	text = { # Holy Order
+	text = { # Monastic Order
+		trigger = {
+			trigger_if = {
+				limit = {
+					is_alive = no
+				}
+				has_government = monastic_holy_order_government
+			}
+			trigger_else = {
+				trigger_if = {
+					limit = { is_ruler = yes }
+					government_has_flag = government_is_monastic_holy_order
+				}
+				trigger_else = {
+					liege ?= { government_has_flag = government_is_monastic_holy_order }
+				}
+			}
+		}
+		localization_key = monastic_holy_order_icon_concept
+	}
+	text = { # Military Order
 		trigger = {
 			trigger_if = {
 				limit = {
@@ -1028,13 +1068,11 @@ GetGovernmentIcon = {
 			trigger_else = {
 				trigger_if = {
 					limit = { is_ruler = yes }
-					government_has_flag = government_is_tribal
-					NOT = { government_has_flag = government_is_wanua }
+					government_has_flag = government_is_tribal_excluding_wanua
 				}
 				trigger_else = {
 					liege ?= { 
-						government_has_flag = government_is_tribal 
-						NOT = { government_has_flag = government_is_wanua }
+						government_has_flag = government_is_tribal_excluding_wanua
 					}
 				}
 			}
@@ -1052,10 +1090,10 @@ GetGovernmentIcon = {
 			trigger_else = {
 				trigger_if = {
 					limit = { is_ruler = yes }
-					has_government = clan_government
+					government_has_flag = government_is_clan
 				}
 				trigger_else = {
-					liege ?= { has_government = clan_government }
+					liege ?= { government_has_flag = government_is_clan }
 				}
 			}
 		}
@@ -1090,10 +1128,10 @@ GetGovernmentIcon = {
 			trigger_else = {
 				trigger_if = {
 					limit = { is_ruler = yes }
-					government_has_flag = government_is_vanilla_administrative
+					government_has_flag = government_is_administrative
 				}
 				trigger_else = {
-					liege ?= { government_has_flag = government_is_vanilla_administrative }
+					liege ?= { government_has_flag = government_is_administrative }
 				}
 			}
 		}
@@ -1118,6 +1156,26 @@ GetGovernmentIcon = {
 			}
 		}
 		localization_key = republic_icon_concept
+	}
+	text = { # Ecclesiastical
+		trigger = {
+			trigger_if = {
+				limit = {
+					is_alive = no
+				}
+				has_government = ecclesiastical_government
+			}
+			trigger_else = {
+				trigger_if = {
+					limit = { is_ruler = yes }
+					government_has_flag = government_is_ecclesiastical
+				}
+				trigger_else = {
+					liege ?= { government_has_flag = government_is_ecclesiastical }
+				}
+			}
+		}
+		localization_key = ecclesiastical_icon_concept
 	}
 	text = { # Theocracy
 		trigger = {

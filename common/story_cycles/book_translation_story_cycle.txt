@@ -1,5 +1,39 @@
 ﻿book_translation_story = { #Used for the Scholarship progress event
-
+	visible = yes
+	icon = {
+		trigger = {
+			always = yes
+		}
+		reference = "gfx/interface/icons/artifact/artifact_chronicle.dds"
+	}
+	
+	visualization = {
+		
+		basic_counter = { 
+			variable_name = "translation_quality" 
+			min = 0 
+			max = 7 
+			label = "TRANSLATION_QUALITY"
+			min_label = "POOR_TRANSLATION"
+			max_label = "EXCELLENT_TRANSLATION"
+		}
+		tug_of_war_counter = { 
+			variable_name = "scholarship_zealous_cynical_value" 
+			min = -5 
+			max = 5 
+			label = "PROGRESS_TOWARDS_CYNICISM"
+			min_label = "CYNICISM"
+			max_label = "ZEALOTRY"
+		}
+		modifiers = { 
+			book_translation_ongoing_modifier
+			book_translation_excellent_modifier
+			book_translation_mediocre_modifier
+			terrified_courtiers_modifier
+		}
+		
+		custom_string_key = "TRANSLATION_STORY"
+	}
 	on_setup = {
 		set_variable = {
 			name = translation_book

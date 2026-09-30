@@ -55,7 +55,7 @@ imperial_examination_update_cheat_washing_effect = {
 
 imperial_examination_cheat_washing_effect = {
 	#What a relief.
-	stress_impact = { base = major_stress_impact_loss }
+	stress_and_fulfillment_impact = { base = major_stress_impact_loss }
 	#Gonzo!
 	custom_tooltip = imperial_examination.cheat_wash.tt
 	remove_variable ?= been_caught_cheating
@@ -149,6 +149,7 @@ imperial_examination_disburse_activity_host_rewards = {
 			}
 		}
 	}
+	pam_vows_of_poverty_host_completion_piety_effect = yes
 }
 
 local_examination_disburse_activity_host_rewards = {
@@ -246,6 +247,7 @@ local_examination_disburse_activity_host_rewards = {
 			}
 		}
 	}
+	pam_vows_of_poverty_host_completion_piety_effect = yes
 }
 
 imperial_examination_disburse_activity_examiner_rewards = {
@@ -437,9 +439,9 @@ imperial_examination_disburse_activity_entrant_rewards = {
         if = {
         	limit = {
         		has_character_flag = exam_cheat_intent
-        		NOR = {
-        			has_variable = been_caught_cheating
-        			has_variable = been_caught_cheating_longterm
+        		has_none_of_variables = {
+        			name = been_caught_cheating
+        			name = been_caught_cheating_longterm
         		}
 				government_allows = merit
         	}
@@ -592,9 +594,9 @@ local_examination_disburse_activity_entrant_rewards = {
         if = {
         	limit = {
         		has_character_flag = exam_cheat_intent
-        		NOR = {
-        			has_variable = been_caught_cheating
-        			has_variable = been_caught_cheating_longterm
+        		has_none_of_variables = {
+        			name = been_caught_cheating
+        			name = been_caught_cheating_longterm
         		}
 				government_allows = merit
         	}
@@ -865,7 +867,7 @@ imperial_examination_set_up_examiners_effect = {
 							value < examiners_amount
 						}
 						any_attending_character = {
-							location = scope:activity_location
+							location = scope:location
 							this != scope:host
 							is_ai = yes
 							tgp_gender_can_be_exam_entrant_trigger = yes
@@ -884,7 +886,7 @@ imperial_examination_set_up_examiners_effect = {
 					}
 					random_attending_character = {
 						limit = {
-							location = scope:activity_location
+							location = scope:location
 							is_ai = yes
 							this != scope:host
 							tgp_gender_can_be_exam_entrant_trigger = yes
@@ -1144,10 +1146,20 @@ imperial_examination_set_up_examiners_effect = {
 							}
 						}
 						add_character_flag = passed_metropolitan_exam
+						add_character_modifier = {
+							modifier = tgp_passed_metropolitan_exam_modifier
+						}
+						add_character_flag = passed_provincial_exam
+						add_character_modifier = {
+							modifier = tgp_passed_provincial_exam_modifier
+						}
 					}
 					else = {
 						add_character_flag = passed_provincial_exam
-					}				
+						add_character_modifier = {
+							modifier = tgp_passed_provincial_exam_modifier
+						}
+					}			
 				}
 				$HOST$ = { add_courtier = scope:new_examiner }
 				scope:activity = {
@@ -1171,9 +1183,19 @@ imperial_examination_set_up_examiners_effect = {
 							}
 						}
 						add_character_flag = passed_metropolitan_exam
+						add_character_modifier = {
+							modifier = tgp_passed_metropolitan_exam_modifier
+						}
+						add_character_flag = passed_provincial_exam
+						add_character_modifier = {
+							modifier = tgp_passed_provincial_exam_modifier
+						}
 					}
 					else = {
 						add_character_flag = passed_provincial_exam
+						add_character_modifier = {
+							modifier = tgp_passed_provincial_exam_modifier
+						}
 					}				
 				}
 				$HOST$ = { add_courtier = scope:new_examiner }
@@ -1465,7 +1487,6 @@ imperial_examination_gather_stray_entrants_effect = {
 			limit = {
 				involved_activity ?= scope:activity
 				this != root
-				is_landed = no
 				trigger_if = {
 					limit = {
 						scope:activity = {
@@ -1475,24 +1496,15 @@ imperial_examination_gather_stray_entrants_effect = {
 					NOT = { has_character_flag = passed_palace_exam}
 				}
 				trigger_else = {
-					NOR = {
-						has_character_flag = passed_provincial_exam
-						has_character_flag = passed_metropolitan_exam
+					has_none_of_variables = {
+						name = passed_provincial_exam
+						name = passed_metropolitan_exam
 					}
 				}
 				# To make sure no characters appear that shouldn't.
 				NOR = {
 					has_trait = devoted
 					has_trait = eunuch
-				}
-				trigger_if = {
-					limit = {
-						exists = primary_title
-					}
-					primary_title = {
-						is_mercenary_company = no
-						is_holy_order = no
-					}
 				}
 				tgp_gender_can_be_exam_entrant_trigger = yes
 			}
@@ -1509,12 +1521,12 @@ imperial_examination_gather_stray_entrants_effect = {
 								has_activity_type = activity_imperial_examination
 							}
 						}
-						NOT = { has_character_flag = passed_palace_exam}
+						NOT = { has_character_flag = passed_palace_exam }
 					}
 					trigger_else = {
-						NOR = {
-							has_character_flag = passed_provincial_exam
-							has_character_flag = passed_metropolitan_exam
+						has_none_of_variables = {
+							name = passed_provincial_exam
+							name = passed_metropolitan_exam
 						}
 					}
 					# To make sure no characters appear that shouldn't.
@@ -1540,11 +1552,11 @@ imperial_examination_gather_stray_entrants_effect = {
 			list = entourage_entrants
 			if = {
 				limit = {
-					can_join_activity = scope:activity
 					NOT = {
 						involved_activity ?= scope:activity
 					}
 					location = scope:activity.activity_location
+					can_join_activity = scope:activity
 				}
 				add_to_activity_without_travel = scope:activity
 			}
@@ -1871,9 +1883,9 @@ imperial_examination_grab_nr_of_family_entrants_effect = {
 	every_in_list = {
 		list = parent_relevant_entrants
 		limit = {
-			OR = {
-				has_character_flag = passed_palace_exam
-				has_character_flag = passed_metropolitan_exam
+			has_variable = {
+				name = passed_palace_exam
+				name = passed_metropolitan_exam
 			}
 		}
 		root = {

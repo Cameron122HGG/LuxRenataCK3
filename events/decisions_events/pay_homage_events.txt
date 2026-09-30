@@ -183,19 +183,19 @@ pay_homage.0001 = {
 			limit = {
 				NOT = { has_relation_rival = scope:homage_vassal }
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 				just = medium_stress_impact_gain
 			}
 		}
 		else = {
-			stress_impact = { base = medium_stress_impact_loss }
+			stress_and_fulfillment_impact = { base = medium_stress_impact_loss }
 			if = {
 				limit = {
 					is_ai = no
 					scope:homage_vassal = { is_ai = yes }
 				}
-				scope:homage_vassal = { add_stress = medium_stress_gain }
+				scope:homage_vassal = { stress_and_fulfillment_impact = { base = medium_stress_gain } }
 			}
 		}
 		ai_chance = {
@@ -749,8 +749,22 @@ pay_homage.0101 = {
 	theme = crown
 	override_sound = { reference = "event:/SFX/Events/Themes/sfx_event_theme_type_duty" }
 	left_portrait = {
+		triggered_animation = {
+			trigger = {
+				religion = religion:christianity_religion
+				highest_held_title_tier >= tier_kingdom
+			}
+			animation = scepter
+		}
+		triggered_animation = {
+			trigger = {
+				coronation_host_east_asian_steppe_admin_trigger = yes
+				highest_held_title_tier >= tier_kingdom
+			}
+			animation = holding_hu
+		}
+		animation = personality_honorable
 		character = scope:homage_liege
-		animation = war_over_win
 		camera = camera_event_very_left
 	}
 	right_portrait = {
@@ -758,7 +772,7 @@ pay_homage.0101 = {
 		animation = throne_room_bow_1
 	}
 
-	trigger ={
+	trigger = {
 		scope:homage_vassal = {
 			is_alive = yes
 			is_imprisoned = no
@@ -892,7 +906,7 @@ pay_homage.0101 = {
 		show_as_tooltip = {
 			scope:homage_vassal = { add_prestige = minor_prestige_loss }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			callous = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
 		}
@@ -993,7 +1007,7 @@ pay_homage.0101 = {
 				opinion = -10
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			just = medium_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 			humble = medium_stress_impact_gain
@@ -1246,7 +1260,7 @@ pay_homage.0201 = {
 				exists = scope:homage_faux_pas_delivery
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
 		}
@@ -1264,7 +1278,7 @@ pay_homage.0201 = {
 			}
 		}
 		pay_homage_give_nickname_effect = yes
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			shy = major_stress_impact_gain
 			arrogant = major_stress_impact_gain
 		}

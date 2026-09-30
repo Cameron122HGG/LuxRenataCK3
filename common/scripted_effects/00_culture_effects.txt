@@ -134,10 +134,7 @@ convert_family_culture_and_notify_vassals_effect = {
 	every_close_family_member = {
 		custom = every_close_family_member_sharing_your_culture
 		limit = {
-			OR = {
-				is_courtier_of = scope:converter
-				is_vassal_of = scope:converter
-			}
+			is_courtier_of = scope:converter
 			# Exclude previous generations
 			NOT = { is_parent_of = root }
 			NOT = { is_grandparent_of = root }
@@ -174,10 +171,11 @@ convert_family_culture_and_notify_vassals_effect = {
 	}
 
 	# Offer every same-culture vassal a chance to convert
-	every_vassal = {
+	every_vassal_or_below = {
 		custom = every_old_culture_vassal_holding_new_culture_land
 		limit = {
 			culture = scope:old_culture
+			culture = liege.culture
 			NOT = { is_in_list = notified_of_culture_change }
 		}
 		custom_description = {
@@ -449,10 +447,10 @@ norse_assimilate_local_traditions_effect = {
 	}
 }
 
-expand_hybrid_culture_from_origin_point = {
+expand_new_culture_from_origin_point = {
 	every_title_to_title_neighboring_and_across_water_county = {
 		limit = {
-			holder.top_liege = $CONVERTEE$.top_liege
+			holder = { target_is_same_character_or_above = $CONVERTEE$ }
 			save_temporary_scope_as = county_check
 			$CULTURE$ = {
 				any_parent_culture = {
@@ -461,362 +459,38 @@ expand_hybrid_culture_from_origin_point = {
 			}
 		}
 
-		random = {
-			chance = {
-				value = 30
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 45 }
-							}
-						}
+		set_county_culture = $CULTURE$
+		every_title_to_title_neighboring_and_across_water_county = {
+			limit = {
+				holder = { target_is_same_character_or_above = $CONVERTEE$ }
+				save_temporary_scope_as = county_check
+				$CULTURE$ = {
+					any_parent_culture = {
+						this = scope:county_check.culture
 					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 50 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 55 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 60 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 65 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 70 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 75 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 80 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 85 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 90 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 95 }
-							}
-						}
-					}
-					add = 5
-				}
-				if = {
-					limit = {
-						$CULTURE$ = {
-							any_parent_culture = {
-								save_temporary_scope_as = first_parent
-							}
-							any_parent_culture = {
-								this != scope:first_parent
-								cultural_acceptance = { target = scope:first_parent value >= 100 }
-							}
-						}
-					}
-					add = 5
 				}
 			}
-			set_county_culture = $CULTURE$
-			every_title_to_title_neighboring_and_across_water_county = {
-				limit = {
-					holder.top_liege = $CONVERTEE$.top_liege
-					save_temporary_scope_as = county_check
-					$CULTURE$ = {
-						any_parent_culture = {
-							this = scope:county_check.culture
-						}
-					}
+			random = {
+				chance = {
+					value = $CULTURE$.expand_new_culture_chance
 				}
-				random = {
-					chance = {
-						value = 30
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 45 }
-									}
-								}
+				set_county_culture = $CULTURE$
+				every_title_to_title_neighboring_and_across_water_county = {
+					limit = {
+						holder.top_liege = $CONVERTEE$.top_liege
+						save_temporary_scope_as = county_check
+						$CULTURE$ = {
+							any_parent_culture = {
+								this = scope:county_check.culture
 							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 50 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 55 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 60 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 65 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 70 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 75 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 80 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 85 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 90 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 95 }
-									}
-								}
-							}
-							add = 5
-						}
-						if = {
-							limit = {
-								$CULTURE$ = {
-									any_parent_culture = {
-										save_temporary_scope_as = first_parent
-									}
-									any_parent_culture = {
-										this != scope:first_parent
-										cultural_acceptance = { target = scope:first_parent value >= 100 }
-									}
-								}
-							}
-							add = 5
 						}
 					}
-					set_county_culture = $CULTURE$
+					random = {
+						chance = {
+							value = $CULTURE$.expand_new_culture_chance
+						}
+						set_county_culture = $CULTURE$
+					}
 				}
 			}
 		}
@@ -848,7 +522,7 @@ new_culture_created_conversion_effect = {
 			}
 			capital_county = {
 				set_county_culture = $CULTURE$
-				expand_hybrid_culture_from_origin_point = {
+				expand_new_culture_from_origin_point = {
 					CONVERTEE = $CONVERTEE$
 					CULTURE = $CULTURE$
 				}
@@ -877,7 +551,7 @@ new_culture_created_conversion_effect = {
 					}
 				}
 				set_county_culture = $CULTURE$
-				expand_hybrid_culture_from_origin_point = {
+				expand_new_culture_from_origin_point = {
 					CONVERTEE = $CONVERTEE$
 					CULTURE = $CULTURE$
 				}
@@ -904,7 +578,7 @@ new_culture_created_conversion_effect = {
 					}
 				}
 				set_county_culture = $CULTURE$
-				expand_hybrid_culture_from_origin_point = {
+				expand_new_culture_from_origin_point = {
 					CONVERTEE = $CONVERTEE$
 					CULTURE = $CULTURE$
 				}
@@ -918,8 +592,8 @@ new_culture_created_conversion_effect = {
 				OR = {
 					is_courtier_of = $CONVERTER$
 					is_courtier_of = $CONVERTEE$
-					is_vassal_of = $CONVERTER$
-					is_vassal_of = $CONVERTEE$
+					is_vassal_or_below_of = $CONVERTER$
+					is_vassal_or_below_of = $CONVERTEE$
 				}
 				save_temporary_scope_as = spouse_check
 				$CULTURE$ = {
@@ -948,7 +622,7 @@ new_culture_created_conversion_effect = {
 				is_ruler = yes
 				any_close_or_extended_family_member = {
 					court_owner ?= $CONVERTEE$
-					NOT = { culture = $CULTURE$ }
+					culture != $CULTURE$
 					is_ai = yes
 				}
 			}
@@ -958,7 +632,7 @@ new_culture_created_conversion_effect = {
 				custom = all_family_members_at_court
 				limit = {
 					court_owner ?= $CONVERTEE$
-					NOT = { culture = $CULTURE$ }
+					culture != $CULTURE$
 					is_ai = yes
 					save_temporary_scope_as = family_check
 					$CULTURE$ = {
@@ -986,7 +660,7 @@ new_culture_created_conversion_effect = {
 		hidden_effect = {
 			every_courtier_or_guest = {
 				limit = {
-					NOT = { culture = $CULTURE$ }
+					culture != $CULTURE$
 					is_ai = yes
 					has_no_particular_noble_roots_trigger = yes
 					save_temporary_scope_as = family_check
@@ -1015,7 +689,7 @@ new_culture_created_conversion_effect = {
 				every_pool_character = {
 					province = $CONVERTEE$.capital_province
 					limit = {
-						NOT = { culture = $CULTURE$ }
+						culture != $CULTURE$
 						is_ai = yes
 						has_no_particular_noble_roots_trigger = yes
 						save_temporary_scope_as = family_check
@@ -1139,8 +813,8 @@ new_culture_created_vassal_conversion_effect = {
 				OR = {
 					is_courtier_of = $CONVERTER$
 					is_courtier_of = $CONVERTEE$
-					is_vassal_of = $CONVERTER$
-					is_vassal_of = $CONVERTEE$
+					is_vassal_or_below_of = $CONVERTER$
+					is_vassal_or_below_of = $CONVERTEE$
 				}
 				save_temporary_scope_as = spouse_check
 				$CULTURE$ = {
@@ -1169,7 +843,7 @@ new_culture_created_vassal_conversion_effect = {
 				is_ruler = yes
 				any_close_or_extended_family_member = {
 					court_owner ?= $CONVERTEE$
-					NOT = { culture = $CULTURE$ }
+					culture != $CULTURE$
 					is_ai = yes
 				}
 			}
@@ -1179,7 +853,7 @@ new_culture_created_vassal_conversion_effect = {
 				custom = all_family_members_at_court
 				limit = {
 					court_owner ?= $CONVERTEE$
-					NOT = { culture = $CULTURE$ }
+					culture != $CULTURE$
 					is_ai = yes
 					save_temporary_scope_as = family_check
 					$CULTURE$ = {
@@ -1208,7 +882,7 @@ new_culture_created_vassal_conversion_effect = {
 		hidden_effect = {
 			every_courtier_or_guest = {
 				limit = {
-					NOT = { culture = $CULTURE$ }
+					culture != $CULTURE$
 					is_ai = yes
 					has_no_particular_noble_roots_trigger = yes
 					save_temporary_scope_as = family_check
@@ -1237,7 +911,7 @@ new_culture_created_vassal_conversion_effect = {
 				every_pool_character = {
 					province = $CONVERTEE$.capital_province
 					limit = {
-						NOT = { culture = $CULTURE$ }
+						culture != $CULTURE$
 						is_ai = yes
 						has_no_particular_noble_roots_trigger = yes
 						save_temporary_scope_as = family_check

@@ -251,4 +251,75 @@ assign_court_type_traits_to_courtiers_effect = {
 		court_trait_save_scopes_and_send_interface_message_effect = { COURT_TYPE = scholarly }
 	}
 }
+
+local_court_type_skill_point_effect = {
+	if = {
+		limit = {
+			$PROVINCE$.barony.holder ?= {
+				has_royal_court = yes
+				has_court_type = court_diplomatic
+			}
+		}
+		add_diplomacy_skill = 1
+	}
+	else_if = {
+		limit = {
+			$PROVINCE$.barony.holder ?= {
+				has_royal_court = yes
+				has_court_type = court_warlike
+			}
+		}
+		add_martial_skill = 1
+	}
+	else_if = {
+		limit = {
+			$PROVINCE$.barony.holder ?= {
+				has_royal_court = yes
+				has_court_type = court_administrative
+			}
+		}
+		add_stewardship_skill = 1
+	}
+	else_if = {
+		limit = {
+			$PROVINCE$.barony.holder ?= {
+				has_royal_court = yes
+				has_court_type = court_intrigue
+			}
+		}
+		add_intrigue_skill = 1
+	}
+	else_if = {
+		limit = {
+			$PROVINCE$.barony.holder ?= {
+				has_royal_court = yes
+				has_court_type = court_scholarly
+			}
+		}
+		add_learning_skill = 1
+	}
+	else_if = {
+		limit = {
+			$PROVINCE$.barony.holder ?= {
+				has_royal_court = yes
+				OR = {
+					has_court_type = court_tribal
+					has_court_type = court_nomadic
+				}
+			}
+		}
+		add_prowess_skill = 1
+	}
+	else = {
+		random_list = {
+			1 = { add_prowess_skill = 1 }
+			1 = { add_learning_skill = 1 }
+			1 = { add_intrigue_skill = 1 }
+			1 = { add_stewardship_skill = 1 }
+			1 = { add_martial_skill = 1 }
+			1 = { add_diplomacy_skill = 1 }
+		}
+	}
+	force_character_skill_recalculation = yes
+}
  

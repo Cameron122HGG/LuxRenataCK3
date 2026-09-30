@@ -1,17 +1,46 @@
 ﻿story_foreign_raised_reformer = {
 	# by Jason Cantalini
+	visible = yes
+	
+	icon = {
+		trigger = {
+			always = yes
+		}
+		reference = "gfx/interface/icons/artifact/artifact_icon_statue_roman_woman.dds"
+	}
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/ep3_medi_study.dds"
+	}
+	
+	visualization = {
+		custom_string_key = "REFORMER_INFORMATION_STRING"
+		basic_counter = {
+			variable_name = "reform_counter"
+			min = 0
+			max = 3
+			label = "REFORM_LABEL"
+			min_label = "REFORM_MIN_VALUE_LABEL"
+			max_label = "REFORM_MAX_VALUE_LABEL"
+		}
+		basic_counter = {
+			variable_name = "reaffirmation_counter"
+			min = 0
+			max = 2
+			label = "REAFFIRMATION_LABEL"
+			min_label = "REAFFIRMATION_MIN_VALUE_LABEL"
+			max_label = "REAFFIRMATION_MAX_VALUE_LABEL"
+		}
+	}
 	
 	on_setup = {
-		story_owner = {
-			set_variable = {
- 				name = reform_counter
- 				value = 0
- 			}
- 			set_variable = {
- 				name = reaffirmation_counter
- 				value = 0
- 			}
- 		}
+		set_variable = {
+			name = reform_counter
+			value = 0
+		}
+		set_variable = {
+			name = reaffirmation_counter
+			value = 0
+		}
 	}
 #
 	on_end = {
@@ -117,8 +146,8 @@
 						culture = prev.culture
 					}
 				}
-				var:reaffirmation_counter >= 2
 			}
+			var:reaffirmation_counter >= 2
 		}
 
 		first_valid = {
@@ -148,8 +177,8 @@
 				is_imprisoned = no
 				is_incapable = no
 				NOT = { has_character_flag = had_event_bp2_yearly_6100 }
-				var:reform_counter >= 3
 			}
+			var:reform_counter >= 3
 		}
 
 		first_valid = {
