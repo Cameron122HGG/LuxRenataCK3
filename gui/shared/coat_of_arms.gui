@@ -32,8 +32,9 @@ types CoATypes
 
 	## Tiny Realm CoA
 	type coa_realm_tiny_crown = coa_realm_tiny {
-		blockoverride "crown" {
-			visible = "[And(And(Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder)), Not(Character.GetGovernment.IsType('landless_adventurer_government')))]"
+		blockoverride "crown"
+		{
+			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -43,33 +44,6 @@ types CoATypes
 		block "government_datacontext"
 		{
 			datacontext = "[Character.GetGovernment]"
-		}
-
-		widget = {
-			parentanchor = hcenter
-			position = { 0 -24 }
-			icon = {
-				name = "adventurer_top_decor"
-				visible = "[GovernmentType.IsType('landless_adventurer_government')]"
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_28.dds"
-			}
-
-			icon = {
-				name = "mercenary"
-				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
-				visible_at_creation = no
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/mercenary_topframe_28.dds"
-			}
-
-			icon = {
-				name = "holy_order"
-				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
-				visible_at_creation = no
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/holyorder_topframe_28.dds"
-			}
 		}
 
 		flowcontainer = {
@@ -86,6 +60,40 @@ types CoATypes
 				block "crown" {
 					visible = no
 				}
+			}
+
+			icon = {
+				name = "adventurer_top_decor"
+				visible = "[GovernmentType.IsType('landless_adventurer_government')]"
+				parentanchor = hcenter
+				size = { 32 22 }
+				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_28.dds"
+			}
+
+			icon = {
+				name = "mercenary"
+				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
+				visible_at_creation = no
+				parentanchor = hcenter
+				size = { 32 22 }
+				texture = "gfx/interface/coat_of_arms/mercenary_topframe_28.dds"
+			}
+
+			icon = {
+				name = "holy_order"
+				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
+				visible_at_creation = no
+				parentanchor = hcenter
+				size = { 32 22 }
+				texture = "gfx/interface/coat_of_arms/holyorder_topframe_28.dds"
+			}
+
+			icon = {
+				name = "ecclesiastic_top_decor"
+				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				parentanchor = hcenter
+				size = { 32 22 }
+				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_28.dds"
 			}
 
 			widget = {
@@ -137,41 +145,14 @@ types CoATypes
 
 	## Small Realm CoA
 	type coa_realm_small_crown = coa_realm_small {
-		blockoverride "crown" {
-			visible = "[And(And(Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder)), Not(Character.GetGovernment.IsType('landless_adventurer_government')))]"
+		blockoverride "crown"
+		{
+			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
 	type coa_realm_small = button_group {
 		using = CoA_Realm_Defaults
-
-		widget = {
-			parentanchor = hcenter
-			position = { 0 -34 }
-
-			icon = {
-				name = "adventurer_top_decor"
-				visible = "[Character.GetGovernment.IsType('landless_adventurer_government')]"
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_44.dds"
-			}
-
-			icon = {
-				name = "mercenary"
-				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
-				visible_at_creation = no
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/mercenary_topframe_44.dds"
-			}
-
-			icon = {
-				name = "holy_order"
-				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
-				visible_at_creation = no
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/holyorder_topframe_44.dds"
-			}
-		}
 
 		flowcontainer = {
 			direction = vertical
@@ -193,6 +174,44 @@ types CoATypes
 				block "crown" {
 					visible = no
 				}
+			}
+
+			icon = {
+				name = "adventurer_top_decor"
+				visible = "[Character.GetGovernment.IsType('landless_adventurer_government')]"
+				parentanchor = hcenter
+				size = { 52 32 }
+				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_44.dds"
+
+				block "top_decor_visible" {}
+			}
+
+			icon = {
+				name = "mercenary"
+				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
+				visible_at_creation = no
+				parentanchor = hcenter
+				size = { 52 32 }
+				texture = "gfx/interface/coat_of_arms/mercenary_topframe_44.dds"
+			}
+
+			icon = {
+				name = "holy_order"
+				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
+				visible_at_creation = no
+				parentanchor = hcenter
+				size = { 52 32 }
+				texture = "gfx/interface/coat_of_arms/holyorder_topframe_44.dds"
+			}
+
+			icon = {
+				name = "ecclesiastic_top_decor"
+				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				parentanchor = hcenter
+				size = { 52 32 }
+				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_44.dds"
+
+				block "top_decor_visible" {}
 			}
 
 			widget = {
@@ -244,8 +263,9 @@ types CoATypes
 
 	## Medium Realm CoA
 	type coa_realm_medium_crown = coa_realm_medium {
-		blockoverride "crown" {
-			visible = "[And(And(Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder)), Not(Character.GetGovernment.IsType('landless_adventurer_government')))]"
+		blockoverride "crown"
+		{
+			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -279,6 +299,7 @@ types CoATypes
 				name = "adventurer_top_decor"
 				visible = "[GovernmentType.IsType('landless_adventurer_government')]"
 				parentanchor = hcenter
+				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_62.dds"
 			}
 
@@ -287,6 +308,7 @@ types CoATypes
 				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
 				visible_at_creation = no
 				parentanchor = hcenter
+				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/mercenary_topframe_62.dds"
 			}
 
@@ -295,7 +317,16 @@ types CoATypes
 				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
 				visible_at_creation = no
 				parentanchor = hcenter
+				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/holyorder_topframe_62.dds"
+			}
+
+			icon = {
+				name = "ecclesiastic_top_decor"
+				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				parentanchor = hcenter
+				size = { 64 40 }
+				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_62.dds"
 			}
 
 			widget = {
@@ -350,8 +381,9 @@ types CoATypes
 
 	## Big Realm CoA
 	type coa_realm_big_crown = coa_realm_big {
-		blockoverride "crown" {
-			visible = "[And(And(Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder)), Not(Character.GetGovernment.IsType('landless_adventurer_government')))]"
+		blockoverride "crown"
+		{
+			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -384,6 +416,7 @@ types CoATypes
 				name = "adventurer_top_decor"
 				visible = "[GovernmentType.IsType('landless_adventurer_government')]"
 				parentanchor = hcenter
+				size = { 96 60 }
 				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_86.dds"
 			}
 
@@ -392,6 +425,7 @@ types CoATypes
 				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
 				visible_at_creation = no
 				parentanchor = hcenter
+				size = { 96 60 }
 				texture = "gfx/interface/coat_of_arms/mercenary_topframe_86.dds"
 			}
 
@@ -400,7 +434,16 @@ types CoATypes
 				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
 				visible_at_creation = no
 				parentanchor = hcenter
+				size = { 96 60 }
 				texture = "gfx/interface/coat_of_arms/holyorder_topframe_86.dds"
+			}
+
+			icon = {
+				name = "ecclesiastic_top_decor"
+				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				parentanchor = hcenter
+				size = { 96 60 }
+				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_86.dds"
 			}
 
 			widget = {
@@ -455,8 +498,9 @@ types CoATypes
 
 	## Huge Realm CoA
 	type coa_realm_huge_crown = coa_realm_huge {
-		blockoverride "crown" {
-			visible = "[And(And(Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder)), Not(Character.GetGovernment.IsType('landless_adventurer_government')))]"
+		blockoverride "crown"
+		{
+			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -466,7 +510,7 @@ types CoATypes
 		flowcontainer = {
 			direction = vertical
 			ignoreinvisible = yes
-			spacing = 3
+			spacing = 2
 
 			block "government_datacontext"
 			{
@@ -489,6 +533,7 @@ types CoATypes
 				name = "adventurer_top_decor"
 				visible = "[GovernmentType.IsType('landless_adventurer_government')]"
 				parentanchor = hcenter
+				size = { 128 80 }
 				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_115.dds"
 			}
 
@@ -496,6 +541,7 @@ types CoATypes
 				name = "mercenary"
 				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
 				parentanchor = hcenter
+				size = { 128 80 }
 				texture = "gfx/interface/coat_of_arms/mercenary_topframe_115.dds"
 			}
 
@@ -504,7 +550,16 @@ types CoATypes
 				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
 				visible_at_creation = no
 				parentanchor = hcenter
+				size = { 128 80 }
 				texture = "gfx/interface/coat_of_arms/holyorder_topframe_115.dds"
+			}
+
+			icon = {
+				name = "ecclesiastic_top_decor"
+				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				parentanchor = hcenter
+				size = { 128 80 }
+				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_115.dds"
 			}
 
 			widget = {
@@ -515,7 +570,6 @@ types CoATypes
 					texture = "[GovernmentType.GetRealmFrameShadow('(int32)115')]"
 					size = { 128 128 }
 					framesize = { 128 128 }
-					position = { 0 2 }
 
 					using = CoA_Realm_Hover_Glow
 				}
@@ -523,7 +577,6 @@ types CoATypes
 				coat_of_arms_icon = {
 					parentanchor = center
 					size = { 128 128 }
-					position = { 0 2 }
 					coat_of_arms = "[Character.GetPrimaryTitle.GetTitleCoA.GetTexture('(int32)230','(int32)230')]"
 					coat_of_arms_slot = "[Character.GetPrimaryTitle.GetTitleCoA.GetSlot('(int32)230','(int32)230')]"
 					coat_of_arms_mask = "[GovernmentType.GetRealmMask]"
@@ -546,7 +599,7 @@ types CoATypes
 
 					coa_realm_topframe = {
 						texture ="gfx/interface/coat_of_arms/topframe_115.dds"
-						position = { 0 -16 }
+						position = { 0 -14 }
 						size = { 128 128 }
 						framesize = { 128 128 }
 					}
@@ -590,7 +643,6 @@ types CoATypes
 	# Standard Ttile Coa of Arms types
 
 	## Tiny Title CoA
-	## Character window - Titles
 	type coa_title_tiny_crown = coa_title_tiny {
 		blockoverride "crown" {}
 	}
@@ -599,20 +651,13 @@ types CoATypes
 		using = CoA_Title_Defaults
 
 		flowcontainer = {
-			# direction = vertical
-			# position = { 0 -10 }
-			# spacing = -4
-			
-			direction = vertical 		# PS
-			# margin = { -1 3 } 				# PS
-			spacing = -3						# PS
-			
+			direction = vertical
+
 			block "position" {
-			# position = { 0 -10 }
-			position = { 0 -7 }				# PS			
+				position = { 0 -10 }
 			}
 
-			
+			spacing = -4
 			ignoreinvisible = yes
 
 			icon = {
@@ -637,21 +682,23 @@ types CoATypes
 					coat_of_arms = "[Title.GetTitleCoA.GetTexture('(int32)56','(int32)56')]"
 					coat_of_arms_slot = "[Title.GetTitleCoA.GetSlot('(int32)56','(int32)56')]"
 					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+					coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+					coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
-					using = CoA_Title_Hover_Glow_Medium
+					using = CoA_Title_Hover_Glow
 
 					block "coa_icon" {}
 
 					coa_title_frame = {
 						parentanchor = center
 						texture = "gfx/interface/coat_of_arms/title_28.dds"
-						size = { 32 32 }
+						size = { 36 36 }
 					}
 
 					coa_title_frame_no_holder = {
 						parentanchor = center
 						texture = "gfx/interface/coat_of_arms/title_no_holder_28.dds"
-						size = { 34 34 }
+						size = { 36 36 }
 					}
 				}
 			}
@@ -659,7 +706,6 @@ types CoATypes
 	}
 
 	## Small Title CoA
-	## Character window - Titles, expanded view - No crown : County view
 	type coa_title_small_crown = coa_title_small {
 		blockoverride "crown" {}
 	}
@@ -670,14 +716,9 @@ types CoATypes
 		using = CoA_Title_Defaults
 
 		flowcontainer = {
-			# direction = vertical
-			# spacing = -3
-			# ignoreinvisible = yes
-
-			# margin = { 3 7 }
 			direction = vertical
-			spacing = -1
-			ignoreinvisible = yes			
+			spacing = -3
+			ignoreinvisible = yes
 
 			icon = {
 				name = "crown"
@@ -693,7 +734,7 @@ types CoATypes
 
 			widget = {
 				parentanchor = hcenter
-				size = { 50 50 } # { 52 52 }
+				size = { 52 52 }
 
 				coat_of_arms_icon = {
 					parentanchor = center
@@ -701,19 +742,21 @@ types CoATypes
 					coat_of_arms = "[Title.GetTitleCoA.GetTexture('(int32)88','(int32)88')]"
 					coat_of_arms_slot = "[Title.GetTitleCoA.GetSlot('(int32)88','(int32)88')]"
 					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+					coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+					coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
-					using = CoA_Title_Hover_Glow_Medium
+					using = CoA_Title_Hover_Glow
 
 					coa_title_frame = {
 						parentanchor = center
 						texture = "gfx/interface/coat_of_arms/title_44.dds"
-						size = { 50 50 } # { 52 52 }
+						size = { 52 52 }
 					}
 
 					coa_title_frame_no_holder = {
 						parentanchor = center
 						texture = "gfx/interface/coat_of_arms/title_no_holder_44.dds"
-						size = { 50 50 } # { 56 56 }
+						size = { 56 56 }
 					}
 				}
 			}
@@ -755,18 +798,21 @@ types CoATypes
 					coat_of_arms = "[Title.GetTitleCoA.GetTexture('(int32)124','(int32)124')]"
 					coat_of_arms_slot = "[Title.GetTitleCoA.GetSlot('(int32)124','(int32)124')]"
 					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
-					using = CoA_Title_Hover_Glow_Low
+					coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+					coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
+
+					using = CoA_Title_Hover_Glow
 
 					coa_title_frame = {
 						parentanchor = center
 						texture = "gfx/interface/coat_of_arms/title_62.dds"
-						size = { 70 70 }
+						size = { 72 72 }
 					}
 
 					coa_title_frame_no_holder = {
 						parentanchor = center
 						texture = "gfx/interface/coat_of_arms/title_no_holder_62.dds"
-						size = { 74 74 }
+						size = { 80 80 }
 					}
 				}
 			}
@@ -783,16 +829,15 @@ types CoATypes
 
 		flowcontainer = {
 			direction = vertical
-			spacing = -15 # Adjusted for scale 0.85
+			spacing = -3
 			ignoreinvisible = yes
-			
+
 			icon = {
 				name = "crown"
 				parentanchor = hcenter
 				texture = "gfx/interface/coat_of_arms/crown_strip_115.dds"
 				frame = "[Title.GetTierFrame]"
 				framesize = { 128 80 }
-				scale = 0.85 # Come on, let's not make it bigger than the shield	
 
 				block "crown" {
 					visible = no
@@ -809,8 +854,10 @@ types CoATypes
 					coat_of_arms = "[Title.GetTitleCoA.GetTexture('(int32)172','(int32)172')]"
 					coat_of_arms_slot = "[Title.GetTitleCoA.GetSlot('(int32)172','(int32)172')]"
 					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+					coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+					coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
-					using = CoA_Title_Hover_Glow_Low
+					using = CoA_Title_Hover_Glow
 
 					coa_title_frame = {
 						texture = "gfx/interface/coat_of_arms/title_86.dds"
@@ -819,122 +866,12 @@ types CoATypes
 
 					coa_title_frame_no_holder = {
 						texture = "gfx/interface/coat_of_arms/title_no_holder_86.dds"
-						size = { 96 96 }
+						size = { 104 104 }
 					}
 				}
 			}
 		}
 	}
-
-	#### PATRUM SCUTA Huge Title COA (115)
-
-	type coa_title_huge_crown = coa_title_huge {
-		blockoverride "crown" {}
-	}
-
-	type coa_title_huge = button_group {
-		using = CoA_Title_Defaults
-
-		flowcontainer = {
-			# margin = { 3 2 }
-			direction = vertical
-			spacing = -4
-			ignoreinvisible = yes
-
-			icon = {
-				name = "crown"
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/crown_strip_115.dds"
-				frame = "[Title.GetTierFrame]"
-				framesize = { 128 80 } # 1.18
-				
-				block "crown" {
-					visible = no
-				}
-			}
-
-			widget = {
-				parentanchor = hcenter
-				size = { 128 128 } # 128px
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 115 115 } # 115 size
-					coat_of_arms = "[Title.GetTitleCoA.GetTexture('(int32)230','(int32)230')]"
-					coat_of_arms_slot = "[Title.GetTitleCoA.GetSlot('(int32)230','(int32)230')]"
-					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"	
-
-					using = CoA_Title_Hover_Glow_Low # lower
-
-
-					coa_title_frame = {
-						texture = "gfx/interface/coat_of_arms/title_115.dds"
-						size = { 128 128 }				
-					}
-
-					coa_title_frame_no_holder = {
-						texture = "gfx/interface/coat_of_arms/title_no_holder_115.dds" # 115 size
-						size = { 128 128 }	
-					}
-				}
-			}
-		}
-	}
-
-	#### PATRUM SCUTA Giga Title COA (x4)
-
-	type coa_title_giga_crown = coa_title_giga {
-		blockoverride "crown" {}
-	}
-
-	type coa_title_giga = button_group {
-		using = CoA_Title_Defaults
-
-		flowcontainer = {
-			# margin = { 3 7 }
-			direction = vertical
-			spacing = 110
-			ignoreinvisible = yes
-
-			icon = {
-				name = "crown"
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/crown_strip_115.dds"
-				frame = "[Title.GetTierFrame]"
-				framesize = { 128 80 } # 1.18
-				scale = 2.5 # TODO Blurry so this will need some proper texture
-
-				block "crown" {
-					visible = no
-				}
-			}
-
-			widget = {
-				parentanchor = hcenter
-				size = { 384 384 } # 400%
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 344 344 }
-					coat_of_arms = "[Title.GetTitleCoA.GetTexture('(int32)345','(int32)345')]"
-					coat_of_arms_slot = "[Title.GetTitleCoA.GetSlot('(int32)345','(int32)345')]"
-					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"		
-
-					using = CoA_Title_Hover_Glow
-
-					coa_title_frame = {
-						texture = "gfx/interface/coat_of_arms/title_344.dds"
-						size = { 384 384 }						
-					}
-					coa_title_frame_no_holder = {
-						texture = "gfx/interface/coat_of_arms/title_no_holder_344.dds"
-						size = { 384 384 }	
-					}
-				}
-			}
-		}
-	}
-
 
 	## The frames around the Title CoA texture
 	type coa_title_frame = highlight_icon {
@@ -962,7 +899,9 @@ types CoATypes
 				size = { 62 62 }
 			}
 			texture = "gfx/interface/coat_of_arms/lowborn.dds"
-			tooltip = "[lowborn|E]"
+			block "lowborn_tooltip" {
+				tooltip = "[lowborn|E]"
+			}
 		}
 	}
 
@@ -981,82 +920,85 @@ types CoATypes
 	{
 		size = { 48 48 }
 
-		coa_dynasty_lowborn_widget = {
-			parentanchor = center
-			size = { 40 40 }
+		hbox = {
+			margin = { 4 4 }
 
-			blockoverride "icon_size"
-			{
-				size = { 28 28 }
-			}
-		}
+			coa_dynasty_lowborn_widget = {
+				size = { 40 40 }
 
-		coa_dynasty_widget = {
-			size = { 40 40 }
-			using = CoA_Dynasty_Defaults
-			parentanchor = center
-			# scale = 8 # This is for testing purpose, don't try this at home folks
-
-			coat_of_arms_icon = {
-				parentanchor = center
-				size = { 28 28 }
-				coat_of_arms = "[Dynasty.GetDynastyCoA.GetTexture('(int32)56','(int32)56')]"
-				coat_of_arms_slot = "[Dynasty.GetDynastyCoA.GetSlot('(int32)56','(int32)56')]"
-				coat_of_arms_mask = "[Dynasty.GetCulture.GetCultureDynastyCoAMask]"
-				coat_of_arms_offset = "[Dynasty.GetCulture.GetCultureDynastyCoAOffset]"
-				coat_of_arms_scale = "[Dynasty.GetCulture.GetCultureDynastyCoAScale]"
-
-				modify_texture = {
-					texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
-					blend_mode = overlay
-					alpha = @overlay_alpha
+				blockoverride "icon_size"
+				{
+					size = { 28 28 }
 				}
 			}
 
-			coa_dynasty_frame = {
-				size = { 36 36 }
-				texture = "[Dynasty.GetCulture.GetCultureDynastyCoAFrame]"
+			coa_dynasty_widget = {
+				size = { 40 40 }
+				using = CoA_Dynasty_Defaults
+
+				coat_of_arms_icon = {
+					parentanchor = center
+					size = { 28 28 }
+					coat_of_arms = "[Dynasty.GetDynastyCoA.GetTexture('(int32)56','(int32)56')]"
+					coat_of_arms_slot = "[Dynasty.GetDynastyCoA.GetSlot('(int32)56','(int32)56')]"
+					coat_of_arms_mask = "[Dynasty.GetCulture.GetCultureDynastyCoAMask]"
+					coat_of_arms_offset = "[Dynasty.GetCulture.GetCultureDynastyCoAOffset]"
+					coat_of_arms_scale = "[Dynasty.GetCulture.GetCultureDynastyCoAScale]"
+
+					modify_texture = {
+						texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+				}
+
+				coa_dynasty_frame = {
+					size = { 40 40 }
+					texture = "[Dynasty.GetCulture.GetCultureDynastyCoAFrame]"
+				}
 			}
 		}
 	}
 
 	type coa_dynasty_small = widget
 	{
-		size = { 72 72 }
+		size = { 64 64 }
 
-		coa_dynasty_lowborn_widget = {
-			parentanchor = center
-			size = { 56 56 }
-			blockoverride "icon_size"
-			{
-				size = { 44 44 }
-			}
-		}
+		hbox = {
+			margin = { 4 4 }
 
-		coa_dynasty_widget = {
-			size = { 56 56 }
-			using = CoA_Dynasty_Defaults
-			parentanchor = center
-
-			coat_of_arms_icon = {
-				parentanchor = center
-				size = { 44 44 }
-				coat_of_arms = "[Dynasty.GetDynastyCoA.GetTexture('(int32)88','(int32)88')]"
-				coat_of_arms_slot = "[Dynasty.GetDynastyCoA.GetSlot('(int32)88','(int32)88')]"
-				coat_of_arms_mask = "[Dynasty.GetCulture.GetCultureDynastyCoAMask]"
-				coat_of_arms_offset = "[Dynasty.GetCulture.GetCultureDynastyCoAOffset]"
-				coat_of_arms_scale = "[Dynasty.GetCulture.GetCultureDynastyCoAScale]"
-
-				modify_texture = {
-					texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
-					blend_mode = overlay
-					alpha = @overlay_alpha
+			coa_dynasty_lowborn_widget = {
+				size = { 56 56 }
+				blockoverride "icon_size"
+				{
+					size = { 44 44 }
 				}
 			}
 
-			coa_dynasty_frame = {
+			coa_dynasty_widget = {
 				size = { 56 56 }
-				texture = "[Dynasty.GetCulture.GetCultureDynastyCoAFrame]"
+				using = CoA_Dynasty_Defaults
+
+				coat_of_arms_icon = {
+					parentanchor = center
+					size = { 44 44 }
+					coat_of_arms = "[Dynasty.GetDynastyCoA.GetTexture('(int32)88','(int32)88')]"
+					coat_of_arms_slot = "[Dynasty.GetDynastyCoA.GetSlot('(int32)88','(int32)88')]"
+					coat_of_arms_mask = "[Dynasty.GetCulture.GetCultureDynastyCoAMask]"
+					coat_of_arms_offset = "[Dynasty.GetCulture.GetCultureDynastyCoAOffset]"
+					coat_of_arms_scale = "[Dynasty.GetCulture.GetCultureDynastyCoAScale]"
+
+					modify_texture = {
+						texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+				}
+
+				coa_dynasty_frame = {
+					size = { 56 56 }
+					texture = "[Dynasty.GetCulture.GetCultureDynastyCoAFrame]"
+				}
 			}
 		}
 	}
@@ -1104,42 +1046,43 @@ types CoATypes
 
 	type coa_dynasty_big = widget
 	{
-		size = { 128 128 }
+		size = { 120 120 }
 
-		coa_dynasty_lowborn_widget = {
-			parentanchor = center
-			size = { 112 112 }
-			blockoverride "icon_size"
-			{
-				size = { 88 88 }
-			}
-		}
+		hbox = {
+			margin = { 3 5 }
 
-		coa_dynasty_widget = {
-			size = { 112 112 }
-			using = CoA_Dynasty_Defaults
-			parentanchor = center
-			# scale = 2 # This is for testing purpose, don't try this at home folks
-
-			coat_of_arms_icon = {
-				parentanchor = center
-				size = { 88 88 }
-				coat_of_arms = "[Dynasty.GetDynastyCoA.GetTexture('(int32)172','(int32)172')]"
-				coat_of_arms_slot = "[Dynasty.GetDynastyCoA.GetSlot('(int32)172','(int32)172')]"
-				coat_of_arms_mask = "[Dynasty.GetCulture.GetCultureDynastyCoAMask]"
-				coat_of_arms_offset = "[Dynasty.GetCulture.GetCultureDynastyCoAOffset]"
-				coat_of_arms_scale = "[Dynasty.GetCulture.GetCultureDynastyCoAScale]"
-
-				modify_texture = {
-					texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
-					blend_mode = overlay
-					alpha = @overlay_alpha
+			coa_dynasty_lowborn_widget = {
+				size = { 112 112 }
+				blockoverride "icon_size"
+				{
+					size = { 86 86 }
 				}
 			}
 
-			coa_dynasty_frame = {
+			coa_dynasty_widget = {
 				size = { 112 112 }
-				texture = "[Dynasty.GetCulture.GetCultureDynastyCoAFrame]"
+				using = CoA_Dynasty_Defaults
+
+				coat_of_arms_icon = {
+					parentanchor = center
+					size = { 86 86 }
+					coat_of_arms = "[Dynasty.GetDynastyCoA.GetTexture('(int32)172','(int32)172')]"
+					coat_of_arms_slot = "[Dynasty.GetDynastyCoA.GetSlot('(int32)172','(int32)172')]"
+					coat_of_arms_mask = "[Dynasty.GetCulture.GetCultureDynastyCoAMask]"
+					coat_of_arms_offset = "[Dynasty.GetCulture.GetCultureDynastyCoAOffset]"
+					coat_of_arms_scale = "[Dynasty.GetCulture.GetCultureDynastyCoAScale]"
+
+					modify_texture = {
+						texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+				}
+
+				coa_dynasty_frame = {
+					size = { 112 112 }
+					texture = "[Dynasty.GetCulture.GetCultureDynastyCoAFrame]"
+				}
 			}
 		}
 	}
@@ -1180,7 +1123,7 @@ types CoATypes
 
 			coa_dynasty_frame = {
 				texture = "[Dynasty.GetCulture.GetCultureDynastyCoAFrame]"
-				size = { 156 156 }
+				size = { 172 172 }
 			}
 		}
 	}
@@ -1209,7 +1152,8 @@ types CoATypes
 		layoutpolicy_horizontal = expanding
 		visible = "[DynastyHouse.IsValid]"
 	}
-	
+
+
 	## House relation icon
 	#
 	# Show the House Relation level between the players house,
@@ -1220,7 +1164,8 @@ types CoATypes
 		size = { 16 16 }
 
 		texture = "[DynastyHouse.GetHouseRelationWith( GetPlayer.GetHouse ).GetLevel.GetFlatIcon]"
-	}	
+	}
+
 
 	type coa_house_lowborn_widget = widget
 	{
@@ -1253,7 +1198,6 @@ types CoATypes
 			coa_house_widget = {
 				size = { 40 40 }
 				using = CoA_House_Defaults
-				# scale = 8 # This is for testing purpose, don't try this at home folks
 
 				coat_of_arms_icon = {
 					parentanchor = center
@@ -1272,7 +1216,7 @@ types CoATypes
 				}
 
 				coa_house_frame = {
-					size = { 36 36 }
+					size = { 40 40 }
 					texture = "[CultureTemplateData.GetCultureHouseCoAFrame]"
 				}
 			}
@@ -1301,7 +1245,6 @@ types CoATypes
 			coa_house_widget = {
 				size = { 24 24 }
 				using = CoA_House_Defaults
-				# scale = 8 # This is for testing purpose, don't try this at home folks
 
 				coat_of_arms_icon = {
 					parentanchor = center
@@ -1320,7 +1263,7 @@ types CoATypes
 				}
 
 				coa_house_frame = {
-					size = { 20 20 }
+					size = { 24 24 }
 					texture = "[CultureTemplateData.GetCultureHouseCoAFrame]"
 				}
 			}
@@ -1349,7 +1292,6 @@ types CoATypes
 			coa_house_widget = {
 				size = { 56 56 }
 				using = CoA_House_Defaults
-				# scale = 4 # This is for testing purpose, don't try this at home folks
 
 				coat_of_arms_icon = {
 					parentanchor = center
@@ -1398,7 +1340,6 @@ types CoATypes
 			coa_house_widget = {
 				size = { 80 80 }
 				using = CoA_House_Defaults
-				# scale = 4 # This is for testing purpose, don't try this at home folks
 
 				coat_of_arms_icon = {
 					parentanchor = center
@@ -1448,11 +1389,10 @@ types CoATypes
 			coa_house_widget = {
 				size = { 112 112 }
 				using = CoA_House_Defaults
-				# scale = 4 # This is for testing purpose, don't try this at home folks
 
 				coat_of_arms_icon = {
 					parentanchor = center
-					size = { 86 87 } # 1.19 slightly offcenter otherwise
+					size = { 86 86 }
 					coat_of_arms = "[DynastyHouse.GetHouseCoA.GetTexture('(int32)172','(int32)172')]"
 					coat_of_arms_slot = "[DynastyHouse.GetHouseCoA.GetSlot('(int32)172','(int32)172')]"
 					coat_of_arms_mask = "[CultureTemplateData.GetCultureHouseCoAMask]"
@@ -1519,7 +1459,7 @@ types CoATypes
 					texture = "[CultureTemplateData.GetCultureHouseCoAFrame]"
 					size = { 156 156 }
 				}
-				
+
 				block "house_relation_icon"
 				{
 					icon_house_relation = {
@@ -1527,7 +1467,7 @@ types CoATypes
 						position = { 16 -16 }
 						size = { 32 32 }
 					}
-				}				
+				}
 			}
 		}
 	}
@@ -1605,6 +1545,8 @@ types CoATypes
 			coat_of_arms = "[Confederation.GetConfederationCoA.GetTexture('(int32)56','(int32)56')]"
 			coat_of_arms_slot = "[Confederation.GetConfederationCoA.GetSlot('(int32)56','(int32)56')]"
 			coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+			coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+			coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
 			block "glow" {
 				using = CoA_Confederation_Hover_Glow
@@ -1634,6 +1576,8 @@ types CoATypes
 			coat_of_arms = "[Confederation.GetConfederationCoA.GetTexture('(int32)88','(int32)88')]"
 			coat_of_arms_slot = "[Confederation.GetConfederationCoA.GetSlot('(int32)88','(int32)88')]"
 			coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+			coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+			coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
 			block "glow" {
 				using = CoA_Confederation_Hover_Glow
@@ -1665,6 +1609,8 @@ types CoATypes
 			coat_of_arms = "[Confederation.GetConfederationCoA.GetTexture('(int32)124','(int32)124')]"
 			coat_of_arms_slot = "[Confederation.GetConfederationCoA.GetSlot('(int32)124','(int32)124')]"
 			coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+			coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+			coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
 			block "glow" {
 				using = CoA_Confederation_Hover_Glow
@@ -1696,6 +1642,8 @@ types CoATypes
 			coat_of_arms = "[Confederation.GetConfederationCoA.GetTexture('(int32)172','(int32)172')]"
 			coat_of_arms_slot = "[Confederation.GetConfederationCoA.GetSlot('(int32)172','(int32)172')]"
 			coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+			coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+			coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
 			block "glow" {
 				using = CoA_Confederation_Hover_Glow
@@ -1727,6 +1675,8 @@ types CoATypes
 			coat_of_arms = "[Confederation.GetConfederationCoA.GetTexture('(int32)230','(int32)230')]"
 			coat_of_arms_slot = "[Confederation.GetConfederationCoA.GetSlot('(int32)230','(int32)230')]"
 			coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+			coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+			coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
 			block "glow" {
 				using = CoA_Confederation_Hover_Glow
@@ -1928,6 +1878,7 @@ types CoATypes
 
 			icon = {
 				name = "crown"
+				visible = "[SaveGameItem.HasCoatOfArms]"
 				parentanchor = hcenter
 				texture = "gfx/interface/coat_of_arms/crown_strip_44.dds"
 				frame = "[SaveGameItem.GetPlayerTier]"
@@ -1936,6 +1887,7 @@ types CoATypes
 
 			widget = {
 				size = { 52 52 }
+				visible = "[SaveGameItem.HasCoatOfArms]"
 
 				coa_realm_shadow = {
 					texture = "[SaveGameItem.GetPlayerGovernment.GetRealmFrameShadow('(int32)44')]"
@@ -1973,6 +1925,16 @@ types CoATypes
 						position = { 0 -7 }
 						size = { 52 52 }
 					}
+				}
+			}
+
+			widget = {
+				size = { 52 52 }
+				visible = "[Not( SaveGameItem.HasCoatOfArms )]"
+
+				icon = {
+					size = { 52 52 }
+					texture = "gfx/interface/_default_icon.dds"
 				}
 			}
 		}
@@ -2014,7 +1976,7 @@ types CoATypes
 			onclick = "[GameSetup.SetSelectedCharacter( BookmarkCharacter.Self )]"
 		}
 
-		tooltip = "BOOKMARK_DYNASTY_OR_HOUSE_TOOLTIP"
+		tooltip = "[SelectLocalization( Or( BookmarkCharacter.HasDynastyTemplate, BookmarkCharacter.HasDynastyHouse ), 'BOOKMARK_DYNASTY_OR_HOUSE_TOOLTIP', 'BOOKMARK_CHARACTER_REALM' )]"
 
 		flowcontainer = {
 			margin = { 3 0 }
@@ -2024,14 +1986,12 @@ types CoATypes
 				size = { 56 56 }
 
 				# Dynasty CoA and frame
-				
 				coat_of_arms_icon = {
-					visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
+					visible = "[And( BookmarkCharacter.HasDynastyTemplate, Not( BookmarkCharacter.HasDynastyHouse ) )]"
 					parentanchor = center
 					size = { 44 44 }
 					coat_of_arms = "[BookmarkCharacter.GetDynastyTemplate.GetCoA.GetTexture('(int32)88','(int32)88')]"
 					coat_of_arms_slot = "[BookmarkCharacter.GetDynastyTemplate.GetCoA.GetSlot('(int32)88','(int32)88')]"
-					
 					coat_of_arms_mask = "[BookmarkCharacter.GetDynastyTemplate.GetCultureTemplate.GetCultureTemplateDynastyCoAMask]"
 					coat_of_arms_offset = "[BookmarkCharacter.GetDynastyTemplate.GetCultureTemplate.GetCultureTemplateDynastyCoAOffset]"
 					coat_of_arms_scale = "[BookmarkCharacter.GetDynastyTemplate.GetCultureTemplate.GetCultureTemplateDynastyCoAScale]"
@@ -2043,27 +2003,26 @@ types CoATypes
 				}
 
 				coa_house_frame = {
-					visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
+					visible = "[And( BookmarkCharacter.HasDynastyTemplate, Not( BookmarkCharacter.HasDynastyHouse ) )]"
 					blockoverride "frame_override"
 					{
 						frame = "[BookmarkCharacter.GetDynastySplendorFrame]"
 					}
 					size = { 56 56 }
 					texture = "[BookmarkCharacter.GetDynastyTemplate.GetCultureTemplate.GetCultureTemplateDynastyCoAFrame]"
-				}			
+				}
 
 				# House CoA and frame
 				coat_of_arms_icon = {
 					visible = "[BookmarkCharacter.HasDynastyHouse]"
 					parentanchor = center
-					size = { 44 44 } 	# v { 48 52 } 1.19 to fix main menu house frame mask glitch
+					size = { 48 52 }
 					coat_of_arms = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetTexture('(int32)88','(int32)88')]"
 					coat_of_arms_slot = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetSlot('(int32)88','(int32)88')]"
-					
 					coat_of_arms_mask = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCultureTemplate.GetCultureTemplateHouseCoAMask]"
 					coat_of_arms_offset = "[BookmarkCharacter.GetDynastyTemplate.GetCultureTemplate.GetCultureTemplateHouseCoAOffset]"
 					coat_of_arms_scale = "[BookmarkCharacter.GetDynastyTemplate.GetCultureTemplate.GetCultureTemplateHouseCoAScale]"
-					
+
 					modify_texture = {
 						texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
 						blend_mode = overlay
@@ -2079,7 +2038,39 @@ types CoATypes
 					size = { 56 56 }
 					texture = "[BookmarkCharacter.GetDynastyTemplate.GetCultureTemplate.GetCultureTemplateHouseCoAFrame]"
 				}
-				
+
+				# Fallback for non-dynastic bookmarks: use primary title CoA
+				coat_of_arms_icon = {
+					visible = "[And( BookmarkCharacter.StartAsExistingRuler, Not( Or( BookmarkCharacter.HasDynastyTemplate, BookmarkCharacter.HasDynastyHouse ) ) )]"
+					parentanchor = center
+					size = { 52 52 }
+					coat_of_arms = "[BookmarkCharacter.GetLandedTitleTemplate.GetCoA.GetTexture('(int32)88','(int32)88')]"
+					coat_of_arms_slot = "[BookmarkCharacter.GetLandedTitleTemplate.GetCoA.GetSlot('(int32)88','(int32)88')]"
+					coat_of_arms_mask = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+					coat_of_arms_offset = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskOffset]"
+					coat_of_arms_scale = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskScale]"
+
+					modify_texture = {
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+
+					coa_realm_overlay = {
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmFrame('(int32)44')]"
+						frame = "[BookmarkCharacter.GetTier]"
+						size = { 52 52 }
+						framesize = { 52 52 }
+					}
+
+					coa_realm_topframe = {
+						texture = "gfx/interface/coat_of_arms/topframe_44.dds"
+						position = { 0 -7 }
+						size = { 52 52 }
+						framesize = { 52 52 }
+						frame = "[BookmarkCharacter.GetTier]"
+					}
+				}
 			}
 		}
 	}
@@ -2096,6 +2087,15 @@ types CoATypes
 				texture = "gfx/interface/coat_of_arms/crown_strip_62.dds"
 				frame = "[BookmarkCharacter.GetTier]"
 				framesize = { 64 40 }
+				visible = "[Not(BookmarkCharacter.GetGovernmentType.IsType('ecclesiastical_government'))]"
+			}
+
+			icon = {
+				name = "ecclesiastic_top_decor"
+				visible = "[BookmarkCharacter.GetGovernmentType.IsType('ecclesiastical_government')]"
+				parentanchor = hcenter
+				size = { 64 40 }
+				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_62.dds"
 			}
 
 			widget = {
@@ -2110,6 +2110,7 @@ types CoATypes
 				}
 
 				coat_of_arms_icon = {
+					visible = "[Not(BookmarkCharacter.GetGovernmentType.IsType('ecclesiastical_government'))]"
 					parentanchor = center
 					size = { 64 64 }
 					alwaystransparent = yes
@@ -2142,6 +2143,42 @@ types CoATypes
 						size = { 64 64 }
 						frame = "[BookmarkCharacter.GetTier]"
 					}
+				}
+				coat_of_arms_icon = {
+					visible = "[BookmarkCharacter.GetGovernmentType.IsType('ecclesiastical_government')]"
+					parentanchor = center
+					size = { 64 64 }
+					alwaystransparent = yes
+
+					coat_of_arms = "[BookmarkCharacter.GetLandedTitleTemplate.GetCoA.GetTexture('(int32)124','(int32)124')]"
+					coat_of_arms_slot = "[BookmarkCharacter.GetLandedTitleTemplate.GetCoA.GetSlot('(int32)124','(int32)124')]"
+					coat_of_arms_mask = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+					coat_of_arms_offset = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskOffset]"
+					coat_of_arms_scale = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskScale]"
+
+					modify_texture = {
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+
+					coa_realm_overlay = {
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmFrame('(int32)62')]"
+						size = { 64 64 }
+						frame = 1
+						framesize = { 64 64 }
+						inherit_visual_state = no
+					}
+
+					coa_realm_topframe = {
+						inherit_visual_state = no
+						texture ="gfx/interface/coat_of_arms/topframe_62.dds"
+						position = { 0 -8 }
+						framesize = { 64 64 }
+						size = { 64 64 }
+						frame = "[BookmarkCharacter.GetTier]"
+					}
+
 				}
 			}
 		}
@@ -2408,138 +2445,35 @@ types CoATypes
 			}
 		}
 	}
-	
+
 	#########################################
 	######### COAT OF ARMS DESIGNER #########
 	#########################################
 	# These widgets require a "CoatOfArms" datacontext (CCoatOfArmsSprite in code)
 
-	# VANILLA - REALM HUGE PREVIEW
 	# modelled after coa_realm_huge_crown
 	type coa_preview_realm_huge_crown = button_group {
 		alwaystransparent = yes
 
 		flowcontainer = {
-			margin = { 3 7 }
 			direction = vertical
-			spacing = -3
 			ignoreinvisible = yes
+			spacing = -2
 
 			icon = {
 				name = "crown"
 				parentanchor = hcenter
 				texture = "gfx/interface/coat_of_arms/crown_strip_115.dds"
+
 				block "frame_override"
 				{
 					frame = 2
 				}
-				framesize = { 80 56 }
+				framesize = { 128 80 }
 
 				block "crown"
 				{
 					visible = yes
-				}
-			}
-
-			icon = {
-				name = "mercenary"
-
-				block "mercenary_visible"
-				{
-					visible = no
-				}
-
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/mercenary_topframe_115.dds"
-			}
-
-			icon = {
-				name = "holy_order"
-
-				block "holy_order_visible"
-				{
-					visible = no
-				}
-
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/holyorder_topframe_115.dds"
-			}
-
-			widget = {
-				parentanchor = hcenter
-				size = { 115 128 }
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 115 115 }
-					coat_of_arms = "[CoatOfArms.GetTexture('(int32)230','(int32)230')]"
-					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)230','(int32)230')]"
-					block "coat_of_arms_mask"
-					{
-						coat_of_arms_mask = "gfx/interface/icons/realm_masks/_default.dds"
-					}
-
-					modify_texture = {
-						block "realm_mask_texture"
-						{
-							texture = "gfx/interface/icons/realm_masks/_default.dds"
-						}
-						blend_mode = overlay
-						alpha = @overlay_alpha
-					}
-
-					coa_realm_overlay = {
-						block "realm_frame_texture"
-						{
-							texture = "gfx/interface/icons/realm_frames/_default_115.dds"
-						}
-						block "frame_override"
-						{
-							frame = 2
-						}
-						size = { 115 128 }
-						framesize = { 115 128 }
-					}
-
-					coa_realm_topframe = {
-						texture ="gfx/interface/coat_of_arms/topframe_115.dds"
-						block "frame_override"
-						{
-							frame = 2
-						}
-						size = { 115 128 }
-						framesize = { 115 128 }
-					}
-				}
-			}
-		}
-	}
-	# END VANILLA - REALM PREVIEW
-	
-	# PATRUM SCUTA - REALM HUGE PREVIEW
-	type ps_coa_preview_realm_huge_crown = button_group {
-		alwaystransparent = yes
-
-		flowcontainer = {
-			margin = { 3 7 }
-			direction = vertical
-			spacing = -3
-			ignoreinvisible = yes
-
-			icon = {
-				name = "crown"
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/crown_strip_115.dds"
-				block "frame_override"
-				{
-					frame = 2
-				}
-				# framesize = { 80 56 }
-				framesize = { 128 80 } # 1.18
-
-				block "crown"
-				{
-					visible = no
 				}
 			}
 
@@ -2617,98 +2551,13 @@ types CoATypes
 						}
 						size = { 128 128 }
 						framesize = { 128 128 }
-						position = { 0 -16 }
+						position = { 0 -12}
 					}
 				}
 			}
 		}
-	}	
-	
-	type ps_coa_preview_realm_huge = button_group {
-		alwaystransparent = yes
+	}
 
-		flowcontainer = {
-			margin = { 3 16 }
-			direction = vertical
-			spacing = -3
-			ignoreinvisible = yes
-
-			icon = {
-				name = "mercenary"
-
-				block "mercenary_visible"
-				{
-					visible = no
-				}
-
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/mercenary_topframe_115.dds"
-			}
-
-			icon = {
-				name = "holy_order"
-
-				block "holy_order_visible"
-				{
-					visible = no
-				}
-
-				parentanchor = hcenter
-				texture = "gfx/interface/coat_of_arms/holyorder_topframe_115.dds"
-			}
-
-			widget = {
-				parentanchor = hcenter
-				size = { 115 128 }
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 115 115 }
-					coat_of_arms = "[CoatOfArms.GetTexture('(int32)230','(int32)230')]"
-					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)230','(int32)230')]"
-					block "coat_of_arms_mask"
-					{
-						coat_of_arms_mask = "gfx/interface/icons/realm_masks/_default.dds"
-					}
-
-					modify_texture = {
-						block "realm_mask_texture"
-						{
-							texture = "gfx/interface/icons/realm_masks/_default.dds"
-						}
-						blend_mode = overlay
-						alpha = @overlay_alpha
-					}
-
-					coa_realm_overlay = {
-						block "realm_frame_texture"
-						{
-							texture = "gfx/interface/icons/realm_frames/_default_115.dds"
-						}
-						block "frame_override"
-						{
-							frame = 2 
-						}
-						size = { 115 128 } 
-						framesize = { 115 128 } 
-					}
-
-					coa_realm_topframe = {
-						texture ="gfx/interface/coat_of_arms/topframe_115.dds"
-						block "frame_override"
-						{
-							frame = 6
-						}
-						size = { 115 128 }
-						framesize = { 115 128 }
-					}
-				}
-			}
-		}
-	}		
-	# END PATRUM SCUTA - REALM HUGE PREVIEW
-
-	# VANILLA - TITLE BIG PREVIEW
 	# modelled after coa_title_big_crown
 	type coa_preview_title_big_crown = button_group {
 		alwaystransparent = yes
@@ -2727,7 +2576,7 @@ types CoATypes
 				{
 					frame = 2
 				}
-				framesize = { 80 56 }
+				framesize = { 128 80 }
 
 				block "crown"
 				{
@@ -2745,6 +2594,8 @@ types CoATypes
 					coat_of_arms = "[CoatOfArms.GetTexture('(int32)172','(int32)172')]"
 					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)172','(int32)172')]"
 					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+					coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+					coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
 					coa_title_frame = {
 						texture = "gfx/interface/coat_of_arms/title_86.dds"
@@ -2755,221 +2606,7 @@ types CoATypes
 			}
 		}
 	}
-	# END VANILLA - TITLE BIG PREVIEW	
-	
-	# PATRUM SCUTA - COA DESIGNER DEFAULT TITLE FRAME (replaced by grid variant below)
-	type ps_coa_preview_title_big_crown = button_group {
-		alwaystransparent = yes
 
-		flowcontainer = {
-			margin = { 3 7 }
-			direction = vertical
-			spacing = -3
-			ignoreinvisible = yes
-
-			widget = {
-				parentanchor = hcenter
-				size = { 384 384 }
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 344 344 }
-
-					#coat_of_arms = "[GetCoatOfArms.GetTexture('(int32)512','(int32)512')]"
-					#coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)230','(int32)230')]"					
-					
-					coat_of_arms = "[CoatOfArms.GetTexture('(int32)345','(int32)345')]"
-					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)345','(int32)345')]"
-					
-					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
-
-					coa_title_frame = {
-						texture = "gfx/interface/coat_of_arms/title_344.dds"
-						size = { 384 384 }
-						alwaystransparent = yes
-					}
-				}
-			}
-		}
-	}	
-	# END PATRUM SCUTA - COA DESIGNER DEFAULT TITLE FRAME
-	
-	###### GRID OVERLAY VARIANTS ######
-	
-	# PATRUM SCUTA - COA DESIGNER DEFAULT TITLE FRAME
-	type ps_coa_preview_title_big_crown_grid = button_group {
-		alwaystransparent = yes
-
-		flowcontainer = {
-			margin = { 3 7 }
-			direction = vertical
-			spacing = -3
-			ignoreinvisible = yes
-
-			widget = {
-				parentanchor = hcenter
-				size = { 384 384 }
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 344 344 }
-
-					#coat_of_arms = "[GetCoatOfArms.GetTexture('(int32)512','(int32)512')]"
-					#coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)230','(int32)230')]"					
-					
-					coat_of_arms = "[CoatOfArms.GetTexture('(int32)345','(int32)345')]"
-					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)345','(int32)345')]"
-					
-					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
-
-					coa_title_frame = {
-						texture = "gfx/interface/coat_of_arms/title_344.dds"
-						size = { 384 384 }
-						alwaystransparent = yes
-					}
-
-					icon = { # Black grid
-						name = "ps_grid"
-						visible = "[GetVariableSystem.Exists('is_grid_overlay_active')]"
-						texture = "gfx/interface/icons/ps_coa_designer_grid_black.dds"
-						size = { 345 345 }
-						alwaystransparent = yes
-					}
-					
-					icon = { # White grid
-						name = "ps_grid_negative"
-						visible = "[And(GetVariableSystem.Exists('is_grid_overlay_active'), GetVariableSystem.Exists('is_grid_overlay_negative'))]"
-						texture = "gfx/interface/icons/ps_coa_designer_grid_white.dds"
-						size = { 345 345 }
-						alwaystransparent = yes
-					}		
-					
-					icon = { # Legend
-						name = "ps_grid_leg"
-						visible = "[And(GetVariableSystem.Exists('is_grid_overlay_active'), GetVariableSystem.Exists('is_grid_legend_active'))]"
-						texture = "gfx/interface/icons/ps_coa_designer_grid_legend_overlay.dds"
-						size = { 414 414 }
-						# alwaystransparent = yes
-						position = { -34 -34 }
-					}							
-					
-				}
-			}
-		}
-	}	
-	
-	# PATRUM SCUTA - COA DESIGNER HOUSE FRAME
-	type ps_coa_designer_preview_house_frame_grid = button_group {
-		alwaystransparent = yes
-
-		flowcontainer = {
-			margin = { 3 7 }
-			direction = vertical
-			spacing = -3
-			ignoreinvisible = yes
-
-			widget = {
-				parentanchor = hcenter
-				size = { 384 384 }
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 344 344 }
-					coat_of_arms = "[CoatOfArms.GetTexture('(int32)345','(int32)345')]"
-					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)345','(int32)345')]"
-					coat_of_arms_mask = "[Culture.GetCultureDynastyCoAMask]"
-					coat_of_arms_offset = "[Culture.GetCultureDynastyCoAOffset]"
-					coat_of_arms_scale = "[Culture.GetCultureDynastyCoAScale]"
-
-					coa_dynasty_frame = {
-						texture = "[Culture.GetCultureDynastyCoAFrame]"
-						size = { 384 384 }
-						alwaystransparent = yes
-						scale = 1.15 # may not be a 100% match but close enough
-
-						#block "coa_frame_size" {}
-
-						blockoverride "frame_override"
-						{
-							frame = 2
-						}
-					}
-					
-					icon = { # Black grid
-						name = "ps_grid"
-						visible = "[GetVariableSystem.Exists('is_grid_overlay_active')]"
-						texture = "gfx/interface/icons/ps_coa_designer_grid_black.dds"
-						size = { 345 345 }
-						alwaystransparent = yes
-					}
-					
-					icon = { # White grid
-						name = "ps_grid_negative"
-						visible = "[And(GetVariableSystem.Exists('is_grid_overlay_active'), GetVariableSystem.Exists('is_grid_overlay_negative'))]"
-						texture = "gfx/interface/icons/ps_coa_designer_grid_white.dds"
-						size = { 345 345 }
-						alwaystransparent = yes
-					}		
-					
-					icon = { # Legend
-						name = "ps_grid_leg"
-						visible = "[And(GetVariableSystem.Exists('is_grid_overlay_active'), GetVariableSystem.Exists('is_grid_legend_active'))]"
-						texture = "gfx/interface/icons/ps_coa_designer_grid_legend_overlay.dds"
-						size = { 414 414 }
-						# alwaystransparent = yes
-						position = { -34 -34 }
-					}		
-				}
-			}
-		}
-	}	
-	# END COA DESIGNER HOUSE FRAME	
-	
-	###### END GRID OVERLAY VARIANTS ######
-
-	# PATRUM SCUTA - COA DESIGNER HOUSE FRAME (replaced by above grid variant)
-	type ps_coa_designer_preview_house_frame = button_group {
-		alwaystransparent = yes
-
-		flowcontainer = {
-			margin = { 3 7 }
-			direction = vertical
-			spacing = -3
-			ignoreinvisible = yes
-
-			widget = {
-				parentanchor = hcenter
-				size = { 384 384 }
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 344 344 }
-					coat_of_arms = "[CoatOfArms.GetTexture('(int32)345','(int32)345')]"
-					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)345','(int32)345')]"
-					coat_of_arms_mask = "[Culture.GetCultureDynastyCoAMask]"
-					coat_of_arms_offset = "[Culture.GetCultureDynastyCoAOffset]"
-					coat_of_arms_scale = "[Culture.GetCultureDynastyCoAScale]"
-
-					coa_dynasty_frame = {
-						texture = "[Culture.GetCultureDynastyCoAFrame]"
-						size = { 384 384 }
-						alwaystransparent = yes
-						scale = 1.15 # may not be a 100% match but close enough
-
-						#block "coa_frame_size" {}
-
-						blockoverride "frame_override"
-						{
-							frame = 2
-						}
-					}
-				}
-			}
-		}
-	}	
-	# END COA DESIGNER HOUSE FRAME
-
-	# VANILLA - TITLE TINY PREVIEW
 	# modelled after coa_title_tiny
 	type coa_preview_title_tiny = button_group {
 		alwaystransparent = yes
@@ -2996,6 +2633,8 @@ types CoATypes
 					coat_of_arms = "[CoatOfArms.GetTexture('(int32)56','(int32)56')]"
 					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)56','(int32)56')]"
 					coat_of_arms_mask = "gfx/interface/coat_of_arms/title_mask.dds"
+					coat_of_arms_offset = "[DefaultCoATitleMaskOffset]"
+					coat_of_arms_scale = "[DefaultCoATitleMaskScale]"
 
 					coa_title_frame = {
 						parentanchor = center
@@ -3006,9 +2645,8 @@ types CoATypes
 			}
 		}
 	}
-	# END VANILLA - TITLE TINY PREVIEW	
 
-	# VANILLA - DYNASTY HUGE PREVIEW
+	# modelled after coa_dynasty_huge
 	type coa_preview_dynasty_huge = widget
 	{
 		size = { 172 172 }
@@ -3022,7 +2660,7 @@ types CoATypes
 
 			coat_of_arms_icon = {
 				parentanchor = center
-				size = { 120 120 }
+				size = { 128 128 }
 				coat_of_arms = "[CoatOfArms.GetTexture('(int32)230','(int32)230')]"
 				coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)230','(int32)230')]"
 				coat_of_arms_mask = "[Culture.GetCultureDynastyCoAMask]"
@@ -3038,7 +2676,7 @@ types CoATypes
 
 			coa_dynasty_frame = {
 				texture = "[Culture.GetCultureDynastyCoAFrame]"
-				size = { 156 156 }
+				size = { 172 172 }
 				alwaystransparent = yes
 
 				#block "coa_frame_size" {}
@@ -3050,56 +2688,7 @@ types CoATypes
 			}
 		}
 	}
-	# END VANILLA - DYNASTY HUGE PREVIEW
 
-	# PATRUM SCUTA - DYNASTY HUGE PREVIEW
-	# modelled after coa_dynasty_huge
-	type ps_coa_preview_dynasty_huge = widget
-	{
-		size = { 165 170 }
-
-		#block "coa_widget_size"
-
-		button_group = {
-			parentanchor = center
-			size = { 153 150 }
-			alwaystransparent = yes
-
-			coat_of_arms_icon = {
-				parentanchor = center
-				size = { 115 115 }
-				coat_of_arms = "[CoatOfArms.GetTexture('(int32)230','(int32)230')]"
-				coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)230','(int32)230')]"
-				coat_of_arms_mask = "gfx/interface/coat_of_arms/house_mask.dds"
-
-				#block "coa_icon_size" {}
-
-				modify_texture = {
-					texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
-					blend_mode = overlay
-					alpha = @overlay_alpha
-				}
-			}
-
-			coa_dynasty_frame = {
-				texture = "gfx/interface/coat_of_arms/dynasty_115.dds"
-				framesize = { 169 172 }
-				size = { 169 172 }
-				alwaystransparent = yes
-				position = { -1 0 }				
-
-				#block "coa_frame_size" {}
-
-				blockoverride "frame_override"
-				{
-					frame = 5
-				}
-			}
-		}
-	}
-	# END PATRUM SCUTA - DYNASTY HUGE PREVIEW	
-
-	# VANILLA - HOUSE HUGE SHIELD PREVIEW
 	# modelled after coa_house_huge
 	type coa_preview_house_huge = widget
 	{
@@ -3143,52 +2732,6 @@ types CoATypes
 			}
 		}
 	}
-	# END VANILLA - HOUSE HUGE SHIELD PREVIEW	
-
-	# PATRUM SCUTA - HOUSE HUGE SHIELD PREVIEW	
-	# modelled after coa_house_huge
-	type ps_coa_preview_house_huge = widget
-	{
-		size = { 159 160 }
-		
-		hbox = {
-			margin = { 3 5 }
-
-			coa_house_widget = {
-				visible = yes
-				size = { 153 150 }
-				alwaystransparent = yes
-
-				coat_of_arms_icon = {
-					parentanchor = center
-					size = { 115 115 }
-					coat_of_arms = "[CoatOfArms.GetTexture('(int32)230','(int32)230')]"
-					coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)230','(int32)230')]"
-					coat_of_arms_mask = "gfx/interface/coat_of_arms/house_mask.dds"
-					alwaystransparent = yes
-
-					modify_texture = {
-						texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
-						blend_mode = overlay
-						alpha = @overlay_alpha
-					}
-				}
-
-				coa_house_frame = {
-					texture = "gfx/interface/coat_of_arms/house_115.dds"
-					framesize = { 153 150 }
-					size = { 153 150 }
-					alwaystransparent = yes
-
-					blockoverride "frame_override"
-					{
-						frame = 5
-					}
-				}
-			}
-		}
-	}
-	# END PATRUM SCUTA - HOUSE HUGE SHIELD PREVIEW	
 
 	####################################
 	######### CULTURE PREVIEW ##########
@@ -3250,93 +2793,9 @@ types CoATypes
 			}
 		}
 	}
-	
+
 	##### Sigil Coat of Arms
-	# PS letter seals
 	type coa_character_sigil = widget
-	{
-		block "size"
-		{
-			size = { 100 100 } # 50
-		}
-
-		icon = {
-			name = "sigil_bg"
-			texture = "gfx/interface/window_event/ps_seal_bg_128.dds"
-			alwaystransparent = yes
-			#background = { using = Background_Area_Dark }
-			parentanchor = center
-
-			block "size"
-			{
-				size = { 100 100 } # 50
-			}
-		}
-
-		icon = {
-			name = "sigil"
-			visible = "[Character.HasSealCoA]"
-			gfxtype = coatofarmsgfx
-			shaderfile = "gfx/FX/gui_coatofarms.shader"
-			effectname = PdxGuiSeal
-			alwaystransparent = yes
-			datacontext = "[Character.GetSealCoA]"
-			coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)124','(int32)124')]"
-			coat_of_arms = "[CoatOfArms.GetTexture('(int32)124','(int32)124')]"
-			coat_of_arms_mask = "gfx/interface/window_event/sigil_center.dds"
-			parentanchor = center
-
-			block "sigil_size"
-			{
-				size = { 50 50 } # 34
-			}
-		}
-
-		icon = {
-			name = "sigil_lowborn"
-			visible = "[Not( Character.HasSealCoA )]"
-			texture = "gfx/interface/window_event/sigil_center_lowborn.dds"
-			alwaystransparent = yes
-			parentanchor = center
-
-			block "sigil_size"
-			{
-				size = { 50 50 } # 34
-			}
-		}
-		
-		coa_house_widget = {
-			using = CoA_House_Defaults
-			visible = "[And(Character.HasSealCoA, Character.GetHouse.IsValid)]" # 1.19 update
-			# visible = "[Character.HasSealCoA]" # 1.18
-			datacontext = "[Character.GetHouse]"
-			parentanchor = center
-
-			block "sigil_size"
-			{
-				size = { 34 34 }
-			}
-
-			coat_of_arms_icon = {
-				parentanchor = center
-				block "sigil_size"
-				{
-					size = { 34 34 }
-				}
-				coat_of_arms = "[DynastyHouse.GetHouseCoA.GetTexture('(int32)124','(int32)124')]"
-				coat_of_arms_slot = "[DynastyHouse.GetHouseCoA.GetSlot('(int32)124','(int32)124')]"
-				coat_of_arms_mask = "gfx/interface/skinned/window_letter/asia_house_mask.dds"
-
-				modify_texture = {
-					texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
-					blend_mode = overlay
-					alpha = @overlay_alpha
-				}
-			}
-		}		
-	}		
-	# VANILLA (OFF)
-	type coa_character_sigil_vanilla = widget # RENAMED
 	{
 		block "size"
 		{
@@ -3393,8 +2852,7 @@ types CoATypes
 
 		coa_house_widget = {
 			using = CoA_House_Defaults
-			visible = "[And(Character.HasSealCoA, Character.GetHouse.IsValid)]" # 1.19 update
-			# visible = "[Character.HasSealCoA]" # 1.18
+			visible = "[And(Character.HasSealCoA, Character.GetHouse.IsValid)]"
 			datacontext = "[Character.GetHouse]"
 			parentanchor = center
 
@@ -3421,92 +2879,6 @@ types CoATypes
 			}
 		}
 	}
-	# END VANILLA SEAL ENTRY
-	
-	# PS Designer Preview
-	type ps_coa_character_sigil_preview = widget
-	{
-		block "size"
-		{
-			size = { 128 128 } # 50
-		}
-
-		icon = {
-			name = "sigil_bg"
-			texture = "gfx/interface/window_event/ps_seal_bg_128.dds"
-			alwaystransparent = yes
-			parentanchor = center
-
-			block "size"
-			{
-				size = { 128 128 } # 50
-			}
-		}
-
-		icon = {
-			name = "sigil"
-			# visible = "[Character.HasSealCoA]"
-			gfxtype = coatofarmsgfx
-			shaderfile = "gfx/FX/gui_coatofarms.shader"
-			effectname = PdxGuiSeal
-			alwaystransparent = yes
-			datacontext = "[Character.GetHouse]" # 1.19 change, that does not make any sense
-			coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)172','(int32)172')]"
-			coat_of_arms = "[CoatOfArms.GetTexture('(int32)172','(int32)172')]"
-			coat_of_arms_mask = "gfx/interface/window_event/sigil_center.dds"
-			parentanchor = center
-
-			block "sigil_size"
-			{
-				size = { 91 91 } # 34
-			}
-		}
-		
-		# icon = {
-		# 	name = "sigil_lowborn"
-		# 	visible = "[Not(Character.HasSealCoA)]"
-		# 	texture = "gfx/interface/window_event/sigil_center_lowborn.dds"
-		# 	alwaystransparent = yes
-		# 	parentanchor = center
-
-		# 	block "sigil_size"
-		# 	{
-		# 		size = { 78 84 } # 34
-		# 		position = { 0 -3 }
-		# 	}
-		# }		
-		
-		coa_house_widget = {
-			using = CoA_House_Defaults
-			visible = "[And(Character.HasSealCoA, Character.GetHouse.IsValid)]" # 1.19 update
-			# visible = "[Character.HasSealCoA]" # 1.18
-			datacontext = "[Character.GetHouse]"
-			parentanchor = center
-
-			block "sigil_size"
-			{
-				size = { 91 91 } # 34
-			}
-
-			coat_of_arms_icon = {
-				parentanchor = center
-				block "sigil_size"
-				{
-					size = { 91 91 } # 34
-				}
-				coat_of_arms = "[DynastyHouse.GetHouseCoA.GetTexture('(int32)124','(int32)124')]"
-				coat_of_arms_slot = "[DynastyHouse.GetHouseCoA.GetSlot('(int32)124','(int32)124')]"
-				coat_of_arms_mask = "gfx/interface/skinned/window_letter/asia_house_mask.dds"
-
-				modify_texture = {
-					texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
-					blend_mode = overlay
-					alpha = @overlay_alpha
-				}
-			}
-		}
-		
-	}			
 }
 
 ######################################################
@@ -3680,47 +3052,4 @@ template CoA_Confederation_Defaults
 		}
 	}
 	using = Confederation_Mouse_Entry
-}
-
-# PS Specific
-
-template CoA_Title_Hover_Glow_Low
-{
-	glow = {
-		block "coa_hover_glow_visible"
-		{
-			visible = "[Title.IsHovered]"
-		}
-		using = Color_Bright_Yellow
-		glow_radius = 5
-
-		glow_generation_rules = {
-			glow_alpha_mask = 0
-			glow_blur_passes = 6
-			glow_texture_downscale = 2.5f
-			glow_ignore_inside_pixels = yes
-		}
-	}
-
-	using = Animation_Glow_Pulse
-}
-
-template CoA_Title_Hover_Glow_Medium
-{
-	glow = {
-		block "coa_hover_glow_visible"
-		{
-			visible = "[Title.IsHovered]"
-		}
-		using = Color_Bright_Yellow
-		glow_radius = 4
-
-		glow_generation_rules = {
-			glow_alpha_mask = 0
-			glow_blur_passes = 8
-			glow_texture_downscale = 2.5f
-			glow_ignore_inside_pixels = yes
-		}
-	}
-	using = Animation_Glow_Pulse
 }
