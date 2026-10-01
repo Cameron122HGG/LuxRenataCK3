@@ -26,10 +26,10 @@ maa_regiments_valid_to_refill_trigger = {
 	maa_current_troops_count < maa_max_troops_count
 	trigger_if = {
 		limit = {
-			regiment_owner ?= { government_has_flag = government_is_landless_adventurer }
+			scope:actor = { government_has_flag = government_is_landless_adventurer }
 			is_unit_type = elephant_cavalry
 		}
-		regiment_owner.domicile ?= { has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere }
+		scope:actor.domicile ?= { has_domicile_parameter = camp_reinforce_elephant_regiments_anywhere }
 	}
 }
 
@@ -55,85 +55,85 @@ any_laamp_portion_at_sea_trigger = {
 	}
 }
 
-character_is_valid_for_harrying_of_the_north_trigger = {
-	title:k_england.holder ?= { owns_story_of_type = story_cycle_harrying_of_the_north }
-	trigger_if = {
-		limit = { is_ruler = yes }
-		OR = {
-			this = title:k_england.holder
-			any_liege_or_above = { this = title:k_england.holder }
-		}
-	}
-	trigger_else = {
-		domicile ?= {
-			domicile_location = {
-				county ?= {
-					holder = {
-						OR = {
-							this = title:k_england.holder
-							any_liege_or_above = { this = title:k_england.holder }
-						}
-					}
-				}
-			}
-		}
-	}
-	OR = {
-		character_is_valid_anglo_saxon_for_harrying_of_the_north_trigger = yes
-		character_is_valid_norman_for_harrying_of_the_north_trigger = yes
-	}
-}
+#character_is_valid_for_harrying_of_the_north_trigger = {
+#	title:k_england.holder ?= { owns_story_of_type = story_cycle_harrying_of_the_north }
+#	trigger_if = {
+#		limit = { is_ruler = yes }
+#		OR = {
+#			this = title:k_england.holder
+#			any_liege_or_above = { this = title:k_england.holder }
+#		}
+#	}
+#	trigger_else = {
+#		domicile ?= {
+#			domicile_location = {
+#				county ?= {
+#					holder = {
+#						OR = {
+#							this = title:k_england.holder
+#							any_liege_or_above = { this = title:k_england.holder }
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#	OR = {
+#		character_is_valid_anglo_saxon_for_harrying_of_the_north_trigger = yes
+#		character_is_valid_norman_for_harrying_of_the_north_trigger = yes
+#	}
+#}
 
-character_is_valid_anglo_saxon_for_harrying_of_the_north_trigger = {
-	culture = {
-		OR = {
-			this = culture:anglo_saxon
-			any_parent_culture_or_above = { this = culture:anglo_saxon }
-		}
-		NOR = {
-			this = culture:norman
-			any_parent_culture_or_above = { this = culture:norman }
-		}
-	}
-}
+#character_is_valid_anglo_saxon_for_harrying_of_the_north_trigger = {
+#	culture = {
+#		OR = {
+#			this = culture:anglo_saxon
+#			any_parent_culture_or_above = { this = culture:anglo_saxon }
+#		}
+#		NOR = {
+#			this = culture:norman
+#			any_parent_culture_or_above = { this = culture:norman }
+#		}
+#	}
+#}
 
-character_is_valid_norman_for_harrying_of_the_north_trigger = {
-	culture = {
-		OR = {
-			this = culture:norman
-			any_parent_culture_or_above = { this = culture:norman }
-		}
-		NOR = {
-			this = culture:anglo_saxon
-			any_parent_culture_or_above = { this = culture:anglo_saxon }
-		}
-	}
-}
+#character_is_valid_norman_for_harrying_of_the_north_trigger = {
+#	culture = {
+#		OR = {
+#			this = culture:norman
+#			any_parent_culture_or_above = { this = culture:norman }
+#		}
+#		NOR = {
+#			this = culture:anglo_saxon
+#			any_parent_culture_or_above = { this = culture:anglo_saxon }
+#		}
+#	}
+#}
 
-disable_interaction_for_hereward_trigger = {
-	trigger_if = {
-		limit = { scope:recipient = character:90028 }
-		custom_tooltip = {
-			text = owns_a_story_trigger
-			scope:puppet_or_actor = {
-				NOR = {
-					owns_story_of_type = story_cycle_harrying_of_the_north
-					any_liege_or_above = { owns_story_of_type = story_cycle_harrying_of_the_north }
-				}
-			}
-		}
-	}
-}
+#disable_interaction_for_hereward_trigger = {
+#	trigger_if = {
+#		limit = { scope:recipient = character:90028 }
+#		custom_tooltip = {
+#			text = owns_a_story_trigger
+#			scope:actor = {
+#				NOR = {
+#					owns_story_of_type = story_cycle_harrying_of_the_north
+#					any_liege_or_above = { owns_story_of_type = story_cycle_harrying_of_the_north }
+#				}
+#			}
+#		}
+#	}
+#}
 
-disable_interaction_for_hasan_trigger = {
-	trigger_if = {
-		limit = { scope:recipient = character:41702 }
-		custom_tooltip = {
-			text = owns_a_story_trigger
-			scope:recipient = { owns_story_of_type = story_hasan }
-		}
-	}
-}
+#disable_interaction_for_hasan_trigger = {
+#	trigger_if = {
+#		limit = { scope:recipient = character:41702 }
+#		custom_tooltip = {
+#			text = owns_a_story_trigger
+#			scope:recipient = { owns_story_of_type = story_hasan }
+#		}
+#	}
+#}
 
 laamp_request_likely_marriable_woman_trigger = {
 	is_available_quick = {
@@ -160,7 +160,7 @@ is_valid_for_laampdom = {
 		limit = {
 			NAND = {
 				is_ai = no
-				government_has_mechanic = administrative
+				government_allows = administrative
 				top_liege = this
 				is_landed = no
 			}
@@ -294,7 +294,7 @@ ep3_negotiate_settlement_valid_county_trigger = {
 		holder = scope:actor
 		trigger_if = {
 			limit = {
-				scope:actor = { government_has_mechanic = administrative }
+				scope:actor = { government_has_flag = government_is_administrative }
 			}
 			holder = { target_is_liege_or_above = scope:actor }
 		}
@@ -482,18 +482,11 @@ employer_has_treasury_to_offer_job_trigger = {
 		limit = { is_ai = no }
 		scope:employer = {
 			OR = {
-				treasury_or_gold >= {
-					value = 50
-					multiply = task_contract_employer_tier_gold_multiplier_value
-				}
+				treasury_or_gold >= 50
 				trigger_if = {
 					limit = { government_allows = barter }
-					barter_goods >= {
-						value = 50
-						multiply = task_contract_employer_tier_gold_multiplier_value
-						# wanua rulers start with lower than 100 barter goods
-						# divide = define:NBarter|BARTER_GOODS_TO_LOOT_MULT
-					}
+					# no define:NBarter|BARTER_GOODS_TO_LOOT_MULT here. wanua rulers start as lower than 100 barter goods
+					barter_goods >= 50
 				}
 			}
 		}
@@ -514,7 +507,7 @@ valid_laamp_sensible_start_trigger = {
 		limit = {
 			any_character_task_contract = {
 				count >= 1
-				task_contract_employer ?= scope:employer
+				task_contract_employer = scope:employer
 			}
 		}
 		always = no
@@ -672,7 +665,7 @@ council_task_contract_valid_employer_trigger = {
 						EMPLOYER = scope:employer.cp:$COUNCILLOR_TYPE$
 						LAAMP = scope:laamp
 					}
-				}
+				}	
 				AND = {
 					is_performing_council_task = $COUNCIL_TASK_TYPE$
 					valid_laamp_basic_trigger = {
@@ -689,8 +682,7 @@ council_task_contract_valid_employer_trigger = {
 # Travel Triggers
 
 is_laamp_exiled_from_province_trigger = {
-	# Sea provinces have no county and a county can sit unheld; nobody there can have exiled us
-	$PROVINCE$.county.holder ?= {
+	$PROVINCE$.county.holder = {
 		is_laamp_exiled_from_holder_or_liege_trigger = { LAAMP = $LAAMP$ }
 	}
 }
@@ -719,6 +711,7 @@ is_laamp_exiled_from_holder_or_liege_trigger = {
 		}
 	}
 }
+
 
 ##################################################
 # Event Triggers

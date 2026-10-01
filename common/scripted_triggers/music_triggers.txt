@@ -84,8 +84,15 @@ should_use_byzantine_music_trigger = {
 	OR = {
 		culture = { has_cultural_pillar = heritage_byzantine }
 		culture = { any_parent_culture_or_above = { has_cultural_pillar = heritage_byzantine } }
-		top_liege = { is_roman_emperor_trigger = yes }
+		top_liege = { has_title = title:e_byzantium }
+		top_liege = { has_title = title:h_eastern_roman_empire }
+		top_liege = { has_title = title:e_spqr }
+		top_liege = { has_title = title:h_western_roman_empire }
+		top_liege = { has_title = title:h_roman_empire }
 		religion = religion:christianity_religion
+		religion = religion:solar_religion
+		religion = religion:roman_religion
+		religion = religion:hellenism_religion
 	}
 }
 
@@ -194,10 +201,6 @@ should_use_specifically_persian_music_trigger = {
 	}
 }
 
-should_use_christian_music_trigger = {
-	religion = religion:christianity_religion
-}
-
 should_use_european_christian_music_trigger = {
 	NOT = { government_has_flag = government_is_nomadic }
 	religion = religion:christianity_religion
@@ -205,9 +208,9 @@ should_use_european_christian_music_trigger = {
 		AND = {
 			religion = religion:christianity_religion
 			faith != faith:orthodox
-			faith != faith:miaphysitism
 			faith != faith:armenian_apostolic
 			faith != faith:nestorian
+			faith != faith:coptic
 			faith != faith:messalian
 		}
 		AND = {

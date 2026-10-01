@@ -111,19 +111,19 @@ is_diarch_able_trigger = {
 	regency_for_personal_reasons_trigger = no
 	# You'd clearly be preoccupied.
 	trigger_if = {
-		limit = {
-			exists = involved_activity
-			# An independent candidate has no liege whose realm could clash with the activity
-			exists = liege
-		}
+		limit = { exists = involved_activity }
 		save_temporary_scope_as = diarch_temp
 		involved_activity.activity_location.county.holder = {
-			target_is_same_character_or_above = scope:diarch_temp.liege
+			NOR = {
+				this = scope:diarch_temp.liege
+				NOT = {
+					any_liege_or_above = { this = scope:diarch_temp.liege }
+				}
+			}
 		}
 	}
-	# allow diarchy of diarchy of diarchy anyway, otherwise grand secretary get broken.
 	# If you're in a diarchy for any other reason, you need to chill.
-	# NOT = { has_active_diarchy = yes }
+	NOT = { has_active_diarchy = yes }
 }
 
 # And *this* needs to be added to guest activity intents to keep diarchs from showing up to the same parties as their liege.
@@ -169,15 +169,15 @@ diarch_matches_liege_faith_gender_preference_trigger = {
 		# Female preference.
 		AND = {
 			is_female = yes
-			liege.rite = { rite_has_doctrine = doctrine_gender_female_dominated }
+			liege.faith = { has_doctrine = doctrine_gender_female_dominated }
 		}
 		# Male preference.
 		AND = {
 			is_male = yes
-			liege.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+			liege.faith = { has_doctrine = doctrine_gender_male_dominated }
 		}
 		# Equality.
-		liege.rite = { rite_has_doctrine = doctrine_gender_equal }
+		liege.faith = { has_doctrine = doctrine_gender_equal }
 	}
 }
 
@@ -186,7 +186,7 @@ diarch_matches_liege_faith_gender_preference_trigger = {
 
 basic_eligible_for_diarchy_trigger = {
 	highest_held_title_tier >= tier_county
-	is_landed_or_landless_administrative_or_theocratic = yes
+	is_landed_or_landless_administrative = yes
 	has_active_diarchy = no
 	NOT = { government_has_flag = government_is_landless_adventurer } # Laamps don't use diarchs
 }
@@ -198,7 +198,7 @@ regency_for_personal_reasons_trigger = {
 			AND = {
 				is_adult = no
 				NOT = {
-					liege ?= { has_diarchy_parameter = diarchy_type_is_junior_emperorship }
+					liege = { has_diarchy_parameter = diarchy_type_is_junior_emperorship }
 				}
 			}
 			is_incapable = yes
@@ -326,17 +326,17 @@ diarch_swing_scales_valid_shared_hof_trigger = {
 	# You must share a HoF to be able to petition one.
 	custom_tooltip = {
 		text = swing_scales_currency_interaction.tt.no_shared_hof
-		exists = scope:actor.religious_head_or_challenger
-		exists = scope:recipient.religious_head_or_challenger
-		scope:actor.religious_head_or_challenger = scope:recipient.religious_head_or_challenger
+		exists = scope:actor.faith.religious_head
+		exists = scope:recipient.faith.religious_head
+		scope:actor.faith.religious_head = scope:recipient.faith.religious_head
 	}
 	# And opinions've gotta line up.
 	trigger_if = {
-		limit = { exists = scope:actor.religious_head_or_challenger }
+		limit = { exists = scope:actor.faith.religious_head }
 		# They must like you.
 		custom_tooltip = {
 			text = swing_scales_currency_interaction.tt.hof_needs_to_like_you_more
-			scope:actor.religious_head_or_challenger = {
+			scope:actor.faith.religious_head = {
 				opinion = {
 					target = scope:actor
 					value >= high_positive_opinion
@@ -346,7 +346,7 @@ diarch_swing_scales_valid_shared_hof_trigger = {
 		# And not like scope:recipient too much.
 		custom_tooltip = {
 			text = swing_scales_currency_interaction.tt.hof_needs_to_like_them_less
-			scope:actor.religious_head_or_challenger = {
+			scope:actor.faith.religious_head = {
 				opinion = {
 					target = scope:recipient
 					value <= medium_positive_opinion
@@ -357,7 +357,7 @@ diarch_swing_scales_valid_shared_hof_trigger = {
 		custom_tooltip = {
 			text = swing_scales_currency_interaction.tt.hof_refuses_to_cross_recipient
 			NOT = {
-				scope:recipient = { has_strong_hook = scope:actor.religious_head_or_challenger }
+				scope:recipient = { has_strong_hook = scope:actor.faith.religious_head }
 			}
 		}
 	}
@@ -547,7 +547,7 @@ governor_can_be_called_as_ally_in_expedition_war_basic_trigger = {
 	scope:recipient = {
 		liege ?= scope:actor.liege
 		# Must be a governor.
-		government_has_mechanic = administrative
+		government_has_flag = government_is_administrative
 	}
 }
 
@@ -759,7 +759,10 @@ diarch_coup_attempt_is_valid_trigger = {
 		is_imprisoned = no
 		is_travelling = no
 		is_at_war = no
-		is_in_activity = no
+		custom_tooltip = {
+			text = custom.not_attending_activity
+			NOT = { exists = involved_activity }
+		}
 		age >= 5
 	}
 	# Support checks.
@@ -871,19 +874,6 @@ diarch_wants_to_engage_with_mandates_trigger = {
 	OR = {
 		scope:diarch_loyalty >= diarch_loyalty_visibly_loyal_threshold
 		scope:diarch_loyalty <= diarch_loyalty_visibly_disloyal_threshold
-	}
-}
-
-is_powerful_vassal_or_house_head_trigger = {
-	custom_tooltip = {
-		text = custom_description.tt.is_power_vassal_or_family
-		OR = {
-			AND = {
-				house ?= { is_powerful_family = yes }
-				is_house_head = yes
-			}
-			is_powerful_vassal = yes
-		}
 	}
 }
 

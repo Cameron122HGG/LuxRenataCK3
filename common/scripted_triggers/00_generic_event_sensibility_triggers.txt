@@ -28,112 +28,63 @@ are_characters_sensible_lovers_trigger = {
 	$INSTIGATING_LOVER$ = { save_temporary_scope_as = instigating_character }
 	$TARGET_OF_LOVE$ = { save_temporary_scope_as = target_of_love }
 	
-	trigger_if = {
-		limit = {
-			any_consort = { this = scope:target_of_love }
+	scope:instigating_character = {
+		this != scope:target_of_love
+		is_physically_able_adult = yes
+		might_cheat_on_every_partner_trigger = yes
+		can_set_relation_lover_trigger = { CHARACTER = scope:target_of_love }
+		is_attracted_to_gender_of = scope:target_of_love
+		NOR = {
+			has_trait = chaste
+			has_trait = celibate
+			has_sexuality = asexual
+			has_trait = beardless_eunuch
+			has_trait = leper
+			has_trait = great_pox
+			has_trait = bubonic_plague
+			has_trait = smallpox
+			has_trait = measles
+			has_trait = ergotism
+			has_trait = dysentery
+			has_trait = consumption
+			has_trait = typhus
+			has_trait = pneumonic
 		}
-		scope:instigating_character = {
-			this != scope:target_of_love
-			is_physically_able_adult = yes
-			can_set_relation_lover_trigger = { CHARACTER = scope:target_of_love }
-			is_attracted_to_gender_of = scope:target_of_love
-			NOR = {
-				has_trait = celibate
-				has_sexuality = asexual
-				has_trait = beardless_eunuch
-				has_trait = leper
-				has_trait = great_pox
-				has_trait = bubonic_plague
-				has_trait = smallpox
-				has_trait = measles
-				has_trait = ergotism
-				has_trait = dysentery
-				has_trait = consumption
-				has_trait = typhus
-				has_trait = pneumonic
-			}
-		}
-		
-		scope:target_of_love = {
-			this != scope:instigating_character
-			can_set_relation_lover_trigger = { CHARACTER = scope:instigating_character }
-			is_attracted_to_gender_of = scope:instigating_character
-			NOR = {
-				has_trait = celibate
-				has_sexuality = asexual
-				has_trait = beardless_eunuch
-				has_trait = leper
-				has_trait = great_pox
-				has_trait = bubonic_plague
-				has_trait = smallpox
-				has_trait = measles
-				has_trait = ergotism
-				has_trait = dysentery
-				has_trait = consumption
-				has_trait = typhus
-				has_trait = pneumonic
-			}
+		# These three only need to be checked on one char
+		age <= scope:target_of_love.age_plus_10
+		age >= scope:target_of_love.age_minus_10
+		trait_compatibility = {
+			target = scope:target_of_love
+			value >= low_positive_trait_compatibility
 		}
 	}
-	trigger_else = {
-		scope:instigating_character = {
-			this != scope:target_of_love
-			is_physically_able_adult = yes
-			might_cheat_on_every_partner_trigger = yes
-			can_set_relation_lover_trigger = { CHARACTER = scope:target_of_love }
-			is_attracted_to_gender_of = scope:target_of_love
-			NOR = {
-				has_trait = chaste
-				has_trait = celibate
-				has_sexuality = asexual
-				has_trait = beardless_eunuch
-				has_trait = leper
-				has_trait = great_pox
-				has_trait = bubonic_plague
-				has_trait = smallpox
-				has_trait = measles
-				has_trait = ergotism
-				has_trait = dysentery
-				has_trait = consumption
-				has_trait = typhus
-				has_trait = pneumonic
-			}
-			# These three only need to be checked on one char
-			age <= scope:target_of_love.age_plus_10
-			age >= scope:target_of_love.age_minus_10
-			trait_compatibility = {
-				target = scope:target_of_love
-				value >= low_positive_trait_compatibility
-			}
+	
+	scope:target_of_love = {
+		this != scope:instigating_character
+		might_cheat_on_every_partner_trigger = yes
+		can_set_relation_lover_trigger = { CHARACTER = scope:instigating_character }
+		is_attracted_to_gender_of = scope:instigating_character
+		NOR = {
+			has_trait = chaste
+			has_trait = celibate
+			has_sexuality = asexual
+			has_trait = beardless_eunuch
+			has_trait = leper
+			has_trait = great_pox
+			has_trait = bubonic_plague
+			has_trait = smallpox
+			has_trait = measles
+			has_trait = ergotism
+			has_trait = dysentery
+			has_trait = consumption
+			has_trait = typhus
+			has_trait = pneumonic
 		}
-		
-		scope:target_of_love = {
-			this != scope:instigating_character
-			might_cheat_on_every_partner_trigger = yes
-			can_set_relation_lover_trigger = { CHARACTER = scope:instigating_character }
-			is_attracted_to_gender_of = scope:instigating_character
-			NOR = {
-				has_trait = chaste
-				has_trait = celibate
-				has_sexuality = asexual
-				has_trait = beardless_eunuch
-				has_trait = leper
-				has_trait = great_pox
-				has_trait = bubonic_plague
-				has_trait = smallpox
-				has_trait = measles
-				has_trait = ergotism
-				has_trait = dysentery
-				has_trait = consumption
-				has_trait = typhus
-				has_trait = pneumonic
-			}
-		}
-		
-		accepts_incest_with_each_other_trigger = {
-			CHARACTER_1 = scope:instigating_character
-			CHARACTER_2 = scope:target_of_love
-		}
+	}
+	
+	accepts_incest_with_each_other_trigger = {
+		CHARACTER_1 = scope:instigating_character
+		CHARACTER_2 = scope:target_of_love
 	}
 }
 
@@ -159,8 +110,8 @@ are_characters_sensible_and_appropriate_lovers_trigger = {
 			limit = {
 				is_clergy = yes
 			}
-			rite = {
-				rite_has_parameter = clergy_can_marry
+			faith = {
+				has_doctrine_parameter = clergy_can_marry
 			}
 		}
 		trigger_if = {
@@ -182,17 +133,17 @@ are_characters_sensible_and_appropriate_lovers_trigger = {
 		trigger_if = {
 			limit = {
 				OR = {
-					rite = { 
-						rite_has_parameter = homosexuality_shunned
+					faith = { 
+						has_doctrine_parameter = homosexuality_shunned
 					}
-					liege.rite ?= {
-						rite_has_parameter = homosexuality_shunned
+					liege.faith ?= {
+						has_doctrine_parameter = homosexuality_shunned
 					}
-					rite = { 
-						rite_has_parameter = homosexuality_illegal
+					faith = { 
+						has_doctrine_parameter = homosexuality_illegal
 					}
-					liege.rite ?= {
-						rite_has_parameter = homosexuality_illegal
+					liege.faith ?= {
+						has_doctrine_parameter = homosexuality_illegal
 					}
 				}
 			}
@@ -221,8 +172,8 @@ are_characters_sensible_and_appropriate_lovers_trigger = {
 			limit = {
 				is_clergy = yes
 			}
-			rite = {
-				rite_has_parameter = clergy_can_marry
+			faith = {
+				has_doctrine_parameter = clergy_can_marry
 			}
 		}
 		trigger_if = {
@@ -244,17 +195,17 @@ are_characters_sensible_and_appropriate_lovers_trigger = {
 		trigger_if = {
 			limit = {
 				OR = {
-					rite = { 
-						rite_has_parameter = homosexuality_shunned
+					faith = { 
+						has_doctrine_parameter = homosexuality_shunned
 					}
-					liege.rite ?= {
-						rite_has_parameter = homosexuality_shunned
+					liege.faith ?= {
+						has_doctrine_parameter = homosexuality_shunned
 					}
-					rite = { 
-						rite_has_parameter = homosexuality_illegal
+					faith = { 
+						has_doctrine_parameter = homosexuality_illegal
 					}
-					liege.rite ?= {
-						rite_has_parameter = homosexuality_illegal
+					liege.faith ?= {
+						has_doctrine_parameter = homosexuality_illegal
 					}
 				}
 			}

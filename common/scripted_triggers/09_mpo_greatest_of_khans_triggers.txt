@@ -279,7 +279,10 @@ gok_desirable_vassal_trigger = {
 	}
 }
 mpo_greatest_of_khans_0030_willing_nomad_vassal = {
-	government_has_flag = government_is_in_steppe
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
 	OR = {
 		is_obedient = yes
 		opinion = {
@@ -301,7 +304,10 @@ mpo_greatest_of_khans_0030_willing_nomad_vassal = {
 }
 
 mpo_greatest_of_khans_0030_dominated_nomad_vassal = {
-	government_has_flag = government_is_in_steppe
+	OR = {
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+	}
 	OR = {
 		is_obedient = yes
 		opinion = {
@@ -328,7 +334,8 @@ mpo_greatest_of_khans_0030_dominated_nomad_vassal = {
 
 mpo_greatest_of_khans_0030_willing_sedentary_vassal = {
 	NOR = {
-		government_has_flag = government_is_in_steppe
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
 		government_has_flag = government_is_theocracy
 		government_has_flag = government_is_landless_adventurer
 	}
@@ -353,7 +360,8 @@ mpo_greatest_of_khans_0030_willing_sedentary_vassal = {
 }
 mpo_greatest_of_khans_0030_dominated_sedentary_vassal = {
 	NOR = {
-		government_has_flag = government_is_in_steppe
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
 		government_has_flag = government_is_theocracy
 		government_has_flag = government_is_landless_adventurer
 	}
@@ -406,9 +414,21 @@ gok_willing_new_admin_vassal_trigger = {
 	OR = {
 		mpo_greatest_of_khans_0030_dominated_nomad_vassal = yes
 		mpo_greatest_of_khans_0030_willing_sedentary_vassal = yes
-		culture_is_historically_admin_trigger = yes
+		culture = culture:greek
+		culture = {
+			any_parent_culture_or_above = {
+				this = culture:greek
+			}
+		}
+		culture = culture:han
+		culture = {
+			any_parent_culture_or_above = {
+				this = culture:han
+			}
+		}
 	}
 	NOR = {
+		government_has_flag = government_is_administrative
 		government_has_flag = government_is_tribal
 	}
 }

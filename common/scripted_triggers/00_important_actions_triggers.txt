@@ -16,26 +16,3 @@
 		}
 	}
 }
-
-is_local_clerical_region_succession_notification_trigger = {
-	has_clerical_region = yes
-	is_head_of_faith = no
-	$CHARACTER$.capital_county.clerical_region_title ?= this
-	exists = holder
-	holder != $CHARACTER$
-	$CHARACTER$ = {
-		has_pam_dlc_trigger = yes
-		is_landed = yes
-		government_has_flag = government_is_theocracy
-		is_head_of_faith = no
-		NOT = {
-			any_held_title = {
-				has_clerical_region = yes
-			}
-		}
-	}
-	place_in_line_of_succession = {
-		target = $CHARACTER$
-		value <= 3
-	}
-}

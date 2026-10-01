@@ -39,7 +39,7 @@ vassal_follows_directive_valid_trigger = {
 	scope:directive_vassal = {
 		trigger_if = {
 			limit = {
-				scope:directive_liege = { government_has_mechanic = administrative }
+				scope:directive_liege = { government_allows = administrative }
 			}
 			is_vassal_of = scope:directive_liege
 		}
@@ -57,9 +57,14 @@ vassal_follows_directive_trigger = {
 	$LIEGE$ = { save_temporary_scope_as = directive_liege }
 	scope:directive_vassal = {
 		OR = {
-			custom_tooltip = {
-				text = has_admin_gov
-				government_has_mechanic = administrative
+			trigger_if = {
+				limit = {
+					has_dlc_feature = roads_to_power
+				}
+				custom_tooltip = {
+					text = has_admin_gov
+					government_allows = administrative
+				}
 			}
 			opinion = {
 				value >= 50
@@ -73,7 +78,6 @@ vassal_follows_directive_trigger = {
 			scope:directive_liege = { has_perk = absolute_control_perk }
 			scope:directive_liege = { has_perk = honored_to_serve_perk }
 			scope:directive_liege = { has_realm_law = crown_authority_3 }
-			scope:directive_liege = { has_realm_law = church_authority_3 }
 			scope:directive_liege = { legitimacy_level >= 5 }
 		}
 	}

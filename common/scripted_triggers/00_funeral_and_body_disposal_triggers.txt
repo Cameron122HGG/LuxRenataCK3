@@ -15,11 +15,6 @@ has_available_funeral_target = {
 	OR = {
 		primary_title ?= { # Previous holders of your primary title
 			any_past_holder = {
-				# so vasssals can't 'steal' funeral for new liege just cuz previous liege granted a title to them.
-				trigger_if = {
-					limit = { highest_held_title_tier > prev.tier }
-					NOT = { primary_title.holder.dynasty ?= dynasty }
-				}
 				body_is_available = yes
 			}
 		}
@@ -36,7 +31,6 @@ has_available_funeral_target = {
 				has_memory_type = friend_died
 				has_memory_type = lover_died
 				has_memory_type = soulmate_died
-				has_memory_type = best_friend_died
 			}
 			trigger_if = {
 				limit = { exists = memory_participant:dead_relation }

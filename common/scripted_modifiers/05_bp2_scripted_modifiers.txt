@@ -323,10 +323,10 @@ bp2_hostage_culture_faith_modifier = {
 		desc = HOSTAGE_CULTURAL_ACCEPTANCE_REASON
 	}
 	modifier = {
-		$RECEIVER$.rite = {
-			NOT = { this = $SENDER$.rite }
-			rite_hostility_level = {
-				target = $SENDER$.rite
+		$RECEIVER$.faith = {
+			NOT = { this = $SENDER$.faith }
+			faith_hostility_level = {
+				target = $SENDER$.faith
 				value = faith_evil_level
 			}
 		}
@@ -334,10 +334,10 @@ bp2_hostage_culture_faith_modifier = {
 		desc = HOSTAGE_FAITH_EVIL
 	}
 	modifier = {
-		$RECEIVER$.rite = {
-			NOT = { this = $SENDER$.rite }
-			rite_hostility_level = {
-				target = $SENDER$.rite
+		$RECEIVER$.faith = {
+			NOT = { this = $SENDER$.faith }
+			faith_hostility_level = {
+				target = $SENDER$.faith
 				value = faith_hostile_level
 			}
 		}
@@ -345,10 +345,10 @@ bp2_hostage_culture_faith_modifier = {
 		desc = HOSTAGE_FAITH_HOSTILE
 	}
 	modifier = {
-		$RECEIVER$.rite = {
-			NOT = { this = $SENDER$.rite }
-			rite_hostility_level = {
-				target = $SENDER$.rite
+		$RECEIVER$.faith = {
+			NOT = { this = $SENDER$.faith }
+			faith_hostility_level = {
+				target = $SENDER$.faith
 				value = faith_astray_level
 			}
 		}
@@ -596,16 +596,16 @@ bp2_hostage_offer_personality_modifier = {
 		exists = scope:recipient.faith
 		exists = scope:actor.faith
 		scope:recipient.ai_zeal != 0
-		scope:recipient.rite ?= {
-			rite_hostility_level = { target = scope:actor.rite value >= faith_hostile_level }
+		scope:recipient.faith ?= {
+			faith_hostility_level = { target = scope:actor.faith value >= faith_hostile_level }
 		}
 		add = {
 			value = scope:recipient.ai_zeal
 			multiply = 0.5
 			if = {
 				limit = {
-					scope:recipient.rite ?= {
-						rite_hostility_level = { target = scope:actor.rite value >= faith_evil_level }
+					scope:recipient.faith ?= {
+						faith_hostility_level = { target = scope:actor.faith value >= faith_evil_level }
 					}
 				}
 				multiply = 2
@@ -695,15 +695,15 @@ bp2_hostage_demand_personality_modifier = {
 		exists = scope:recipient.faith
 		exists = scope:actor.faith
 		scope:recipient.ai_zeal > 0
-		scope:recipient.rite ?= {
-			rite_hostility_level = { target = scope:actor.rite value >= faith_hostile_level }
+		scope:recipient.faith ?= {
+			faith_hostility_level = { target = scope:actor.faith value >= faith_hostile_level }
 		}
 		add = {
 			value = scope:recipient.ai_zeal
 			if = {
 				limit = {
-					scope:recipient.rite ?= {
-						rite_hostility_level = { target = scope:actor.rite value >= faith_evil_level }
+					scope:recipient.faith ?= {
+						faith_hostility_level = { target = scope:actor.faith value >= faith_evil_level }
 					}
 				}
 				multiply = 2
@@ -780,15 +780,15 @@ bp2_hostage_exchange_personality_modifier = {
 		exists = scope:recipient.faith
 		exists = scope:actor.faith
 		scope:recipient.ai_zeal > 0
-		scope:recipient.rite ?= {
-			rite_hostility_level = { target = scope:actor.rite value >= faith_hostile_level }
+		scope:recipient.faith ?= {
+			faith_hostility_level = { target = scope:actor.faith value >= faith_hostile_level }
 		}
 		add = {
 			value = scope:recipient.ai_zeal
 			if = {
 				limit = {
-					scope:recipient.rite ?= {
-						rite_hostility_level = { target = scope:actor.rite value >= faith_evil_level }
+					scope:recipient.faith ?= {
+						faith_hostility_level = { target = scope:actor.faith value >= faith_evil_level }
 					}
 				}
 				multiply = 2
@@ -866,15 +866,15 @@ bp2_hostage_return_personality_modifier = {
 		exists = $WARDEN$.faith
 		exists = $HOME_COURT$.faith
 		$WARDEN$.ai_zeal > 0
-		$WARDEN$.rite ?= {
-			rite_hostility_level = { target = $HOME_COURT$.rite value >= faith_hostile_level }
+		$WARDEN$.faith ?= {
+			faith_hostility_level = { target = $HOME_COURT$.faith value >= faith_hostile_level }
 		}
 		add = {
 			value = $WARDEN$.ai_zeal
 			if = {
 				limit = {
-					$WARDEN$.rite ?= {
-						rite_hostility_level = { target = $HOME_COURT$.rite value >= faith_evil_level }
+					$WARDEN$.faith ?= {
+						faith_hostility_level = { target = $HOME_COURT$.faith value >= faith_evil_level }
 					}
 				}
 				multiply = 2

@@ -87,8 +87,8 @@ ai_zeal_target_modifier = {
 
 ai_military_threat_modifier_with_cbs = {
 	modifier = { # Casus bellis on target
-		$SENDER$ ?= { NOT = { has_government = herder_government } } # herders don't care
-		$RECEIVER$ ?= { NOT = { has_any_cb_on = $SENDER$ } }
+		$SENDER$ = { NOT = { has_government = herder_government } } # herders don't care
+		$RECEIVER$ = { NOT = { has_any_cb_on = $SENDER$ } }
 		add = {
 			add = dominant_negative_ai_value
 			multiply = $MULTIPLIER$
@@ -100,13 +100,13 @@ ai_military_threat_modifier_with_cbs = {
 
 ai_military_threat_modifier = {
 	modifier = { # Claims on target
-		$SENDER$ ?= {
+		$SENDER$ = {
 			any_held_title = {
 				tier >= tier_county 
 				save_temporary_scope_as = title_temp
 			}
 		}
-		$RECEIVER$ ?= { has_claim_on = scope:title_temp }
+		$RECEIVER$ = { has_claim_on = scope:title_temp }
 		add = {
 			value = 0
 			$SENDER$ = {
@@ -179,7 +179,7 @@ ai_military_threat_modifier = {
 			multiply = $MULTIPLIER$
 			if = {
 				limit = {
-					$RECEIVER$ ?= { government_has_flag = government_is_mandala }
+					$RECEIVER$ = { government_has_flag = government_is_mandala }
 				}
 				divide = 2
 			}
@@ -239,7 +239,7 @@ ai_military_threat_modifier = {
 	}
 	modifier = {
 		# Sender's power is higher, but with allies it's lower
-		$RECEIVER$ ?= { any_ally = { exists = this } }
+		$RECEIVER$ = { any_ally = { exists = this } }
 		$SENDER$.current_power_ninety_percent_value > $RECEIVER$.military_power
 		$SENDER$.current_power_with_allies_value < $RECEIVER$.current_power_with_allies_value
 		add = {

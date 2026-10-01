@@ -59,8 +59,14 @@ eligible_for_fp2_dynasty_legacies_trigger = {
 
 is_toledo_ownership_valid_trigger = {
 	title:c_toledo.holder = {
-		target_is_same_character_or_above = root
-		rite = rite:mozarabic_church
+		OR = {
+			this = root
+			liege = root
+			top_liege = root
+		}
+		faith = {
+			portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+		}
 	}
 }
 
@@ -501,15 +507,10 @@ fp2_struggle_secure_iberian_foothold_faith_trigger = {
 }
 
 fp2_struggle_secure_iberian_foothold_outsider_kingdom_trigger = {
-	exists = empire
-	empire != title:e_spain
-	kingdom.holder.top_liege = root
-}
-
-fp2_struggle_secure_iberian_foothold_neighbor_with_outsider_kingdom_trigger = {
 	any_de_jure_county = {
 		any_title_to_title_neighboring_and_across_water_county = {
-			fp2_struggle_secure_iberian_foothold_outsider_kingdom_trigger = yes
+			NOT = { empire = title:e_spain }
+			kingdom.holder = root
 		}
 	}
 }
@@ -611,13 +612,13 @@ struggle_can_access_unlocks_bargain_fealty_interaction_trigger = {
 
 fp2_lyonese_monk_0002_papal_hof_trigger = {
 	religion = religion:christianity_religion
-	exists = faith.main_rite.head_of_rite
+	exists = faith.religious_head
+	faith.religious_head_title = title:k_papal_state
 }
 
 fp2_lyonese_monk_0002_valid_character_configuration_trigger = {
 	OR = {
-		has_trait = erudite
-		has_trait = lifestyle_scholar
+		has_trait = scholar
 		has_trait = theologian
 		has_trait = lifestyle_mystic
 		AND = {
@@ -661,7 +662,7 @@ fp2_lyonese_monk_0000_out_of_realm_trigger = {
 			is_alive = no
 			is_imprisoned = yes
 			AND = {
-				is_landed_or_landless_administrative_or_theocratic = no
+				is_landed_or_landless_administrative = no
 				NOT = {
 					host = scope:acolyte_host
 					# Make an exception if you're in prison, since that should give a different event.
@@ -669,7 +670,7 @@ fp2_lyonese_monk_0000_out_of_realm_trigger = {
 				}
 			}
 			AND = {
-				is_landed_or_landless_administrative_or_theocratic = yes
+				is_landed_or_landless_administrative = yes
 				NOT = {
 					any_liege_or_above = { this = scope:acolyte_host }
 				}
@@ -681,13 +682,13 @@ fp2_lyonese_monk_0000_out_of_realm_trigger = {
 fp2_lyonese_monk_0000_out_of_freedom_trigger = { is_imprisoned = yes }
 
 fp2_lyonese_monk_0000_out_of_popes_trigger = {
-	NOT = { exists = faith.main_rite.head_of_rite }
+	NOT = { exists = scope:story.var:base_faith.religious_head }
 }
 
 fp2_lyonese_monk_0000_out_of_faith_trigger = {
 	OR = {
-		scope:acolyte.faith.main_rite.head_of_rite != scope:story.var:base_faith.main_rite.head_of_rite
-		scope:acolyte_host.faith.main_rite.head_of_rite != scope:story.var:base_faith.main_rite.head_of_rite
+		scope:acolyte.faith.religious_head != scope:story.var:base_faith.religious_head
+		scope:acolyte_host.faith.religious_head != scope:story.var:base_faith.religious_head
 	}
 }
 
@@ -730,6 +731,5 @@ fp2_purchase_truce_interaction_soft_requirements_trigger = {
 		}
 		has_perk = defensive_negotiations_perk
 		culture = { has_cultural_parameter = unlocks_purchase_truce }
-		has_personal_tenet_flag = tenet_peace_of_god_personal_truce
 	}
 }

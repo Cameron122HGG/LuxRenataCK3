@@ -10,11 +10,11 @@ house_relation_feud_flag_trigger = {
 
 # Feud relation targeting a specified House
 house_has_feud_relation_with_trigger = {
+	exists = house
 	exists = $TARGET$.house
+	house != $TARGET$.house
 	OR = {
-		house ?= {
-			this != $TARGET$.house
-			has_house_relation_with = $TARGET$.house
+		house = {
 			any_house_relation = {
 				has_house_relation_level = feud
 				any_relation_house = { $TARGET$.house = this }
@@ -172,7 +172,7 @@ bp1_yearly_8100_sycophant_trigger = {
 	}
 	trigger_if = {
 		limit = {
-			$LIEGE$.rite = { rite_has_doctrine = doctrine_clerical_succession_spiritual_fixed_appointment }
+			$LIEGE$.faith = { has_doctrine = doctrine_clerical_succession_spiritual_fixed_appointment }
 			exists = $LIEGE$.cp:councillor_court_chaplain
 		}
 		NOT = { this = $LIEGE$.cp:councillor_court_chaplain }
@@ -198,7 +198,7 @@ house_feud_ai_murder_join_trigger = {
 		any_house_member = {
 			any_scheme = {
 				type = murder
-				scheme_target_character.house ?= {
+				scope:scheme_target_character.house ?= {
 					NOT = { this = scope:instigator_temp.house }
 					any_house_relation = {
 						has_house_relation_parameter = members_more_likely_to_scheme_hostile

@@ -146,7 +146,7 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			scope:recipient = {
 				NOR = { #Of two different faiths AND the potential vassal's faith is not pluralistic.
 					faith = scope:actor.faith
-					rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
+					faith = { has_doctrine = doctrine_pluralism_pluralistic }
 				}
 			}
 		}
@@ -154,9 +154,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			value = -25
 			if = {
 					limit = {
-					scope:recipient.rite = {
-						rite_hostility_level = {
-							target = scope:actor.rite
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
 							value >= faith_hostile_level
 						}
 					}
@@ -165,9 +165,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			}
 			if = {
 				limit = {
-					scope:recipient.rite = {
-						rite_hostility_level = {
-							target = scope:actor.rite
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
 							value >= faith_evil_level
 						}
 					}
@@ -184,18 +184,18 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 					faith = scope:actor.faith
 				}
 				NOT = {
-					scope:actor.rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
+					scope:actor.faith = { has_doctrine = doctrine_pluralism_pluralistic }
 				}
-				rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
+				faith = { has_doctrine = doctrine_pluralism_pluralistic }
 			}
 		}
 		add = {
 			value = -10
 			if = {
 				limit = {
-					scope:recipient.rite = {
-						rite_hostility_level = {
-							target = scope:actor.rite
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
 							value >= faith_hostile_level
 						}
 					}
@@ -204,9 +204,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			}
 			if = {
 				limit = {
-					scope:recipient.rite = {
-						rite_hostility_level = {
-							target = scope:actor.rite
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
 							value >= faith_evil_level
 						}
 					}
@@ -222,17 +222,17 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 				NOT = {
 					faith = scope:actor.faith
 				}
-				scope:actor.rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
-				rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
+				scope:actor.faith = { has_doctrine = doctrine_pluralism_pluralistic }
+				faith = { has_doctrine = doctrine_pluralism_pluralistic }
 			}
 		}
 		add = {
 			value = -5
 			if = {
 				limit = {
-					scope:recipient.rite = {
-						rite_hostility_level = {
-							target = scope:actor.rite
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
 							value >= faith_hostile_level
 						}
 					}
@@ -241,9 +241,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			}
 			if = {
 				limit = {
-					scope:recipient.rite = {
-						rite_hostility_level = {
-							target = scope:actor.rite
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
 							value >= faith_evil_level
 						}
 					}
@@ -306,7 +306,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			scope:recipient = {
 				NOT = {
 					any_neighboring_top_liege_realm_owner = {
-						this != scope:actor
+						NOT = {
+							this = scope:actor
+						}
 					}
 				}
 				NOT = {
@@ -494,7 +496,6 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 	}
 	modifier = {
 		desc = "LOW_LEGITIMACY_REASON"
-		add = -15
 		scope:actor = {
 			is_independent_ruler = yes
 			has_legitimacy_flag = massively_reduced_vassalization_acceptance
@@ -625,7 +626,7 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 	#Is married to one of your close family
 	modifier = {
 		add = 20
-		desc = BLOOD_BROTHER_RECIPIENT_MARRIAGE_REASON
+		desc = BLOOD_BROTHER_TRUCE_REASON
 		
 		trigger = {
 			scope:recipient = {
@@ -642,7 +643,7 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 	#You are married to their close family
 	modifier = {
 		add = 20
-		desc = BLOOD_BROTHER_ACTOR_MARRIAGE_REASON
+		desc = BLOOD_BROTHER_TRUCE_REASON
 		
 		trigger = {
 			scope:recipient = {
@@ -688,8 +689,8 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 				}
 			}
 			NOT = {
-				rite = {
-					rite_has_parameter = gender_equal_law
+				faith = {
+					has_doctrine_parameter = gender_equal_law
 				}
 			}
 		}
@@ -713,8 +714,8 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 					}
 				}
 			}
-			rite = {
-				rite_has_parameter = gender_equal_law
+			faith = {
+				has_doctrine_parameter = gender_equal_law
 			}
 		}
 	}

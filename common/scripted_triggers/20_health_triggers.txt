@@ -244,10 +244,6 @@ has_disfiguring_physical_attribute_trigger = {
 
 #Takes argument disease
 can_contract_disease_trigger = {
-	can_contract_disease_trait_scope_trigger = { DISEASE = trait:$DISEASE$ }
-}
-
-can_contract_disease_trait_scope_trigger = {
 	save_temporary_scope_as = sick_character_check
 
 	# Is not immune to disease
@@ -258,26 +254,31 @@ can_contract_disease_trait_scope_trigger = {
 
 	#Only get measles once
 	trigger_if = {
-		limit = { $DISEASE$ = trait:measles }
-		NOT = { has_character_flag = disease_immunity_measles }
+		limit = { trait:$DISEASE$ = trait:measles }
+		NOT = { has_character_flag = measles_immunity }
 	}
 
 	#Only get bubonic plague once
 	trigger_if = {
-		limit = { $DISEASE$ = trait:bubonic_plague }
-		NOT = { has_character_flag = disease_immunity_bubonic_plague }
+		limit = { trait:$DISEASE$ = trait:bubonic_plague }
+		NOT = { has_character_flag = bubonic_immunity }
 	}
 
 	#Young characters do not get gout
 	trigger_if = {
-		limit = { $DISEASE$ = trait:gout_ridden }
+		limit = { trait:$DISEASE$ = trait:gout_ridden }
 		current_weight >= 50
 		is_young_character = no
 	}
 
+	save_temporary_scope_value_as = {
+		name = disease_type_for_trigger
+		value = flag:$DISEASE$
+	}
+	
 	trigger_if = { #Lover's pox can only be contracted if you are sexually active
 		limit = {
-			$DISEASE$ = trait:lovers_pox
+			scope:disease_type_for_trigger = flag:lovers_pox
 			is_imprisoned = yes
 		}
 		imprisoner = {
@@ -321,7 +322,7 @@ can_contract_disease_trait_scope_trigger = {
 	# Check to see that there is someone for you to have sex with if you are traveling
 	trigger_if = {
 		limit = {
-			$DISEASE$ = trait:lovers_pox
+			scope:disease_type_for_trigger = flag:lovers_pox
 			is_travelling = yes
 			# Do not block Goliardic Shenanigans!
 			involved_activity ?= {
@@ -343,25 +344,24 @@ can_contract_disease_trait_scope_trigger = {
 	#Secondary requirements (mutually exclusive diseases or immunity)
 	OR = {
 		NOR = { #No secondary requirement
-			$DISEASE$ = trait:ill
-			$DISEASE$ = trait:smallpox
-			$DISEASE$ = trait:measles
-			$DISEASE$ = trait:bubonic_plague
+			scope:disease_type_for_trigger = flag:ill
+			scope:disease_type_for_trigger = flag:smallpox
+			scope:disease_type_for_trigger = flag:bubonic_plague
 		}
 		AND = {
-			$DISEASE$ = trait:ill
+			scope:disease_type_for_trigger = flag:ill
 			NOT = { has_trait = pneumonic }
 		}
 		AND = {
-			$DISEASE$ = trait:smallpox
+			scope:disease_type_for_trigger = flag:smallpox
 			NOT = { has_character_flag = disease_immunity_smallpox }
 		}
 		AND = {
-			$DISEASE$ = trait:measles
+			scope:disease_type_for_trigger = flag:measles
 			NOT = { has_character_flag = disease_immunity_measles }
 		}
 		AND = {
-			$DISEASE$ = trait:bubonic_plague
+			scope:disease_type_for_trigger = flag:bubonic_plague
 			NOT = { has_character_flag = disease_immunity_bubonic_plague }
 		}
 	}
@@ -370,11 +370,11 @@ can_contract_disease_trait_scope_trigger = {
 	OR = {
 		can_get_non_epidemic_disease_trigger = yes
 		OR = {
-			$DISEASE$ = trait:bubonic_plague
-			$DISEASE$ = trait:smallpox
+			scope:disease_type_for_trigger = flag:bubonic_plague
+			scope:disease_type_for_trigger = flag:smallpox
 		}
 		AND = {
-			$DISEASE$ = trait:pneumonic
+			scope:disease_type_for_trigger = flag:pneumonic
 			has_trait = ill
 		}	
 	}
@@ -388,35 +388,35 @@ can_contract_disease_trait_scope_trigger = {
 		#Lover's pox and leper because you never recover
 		AND = {
 			has_character_flag = contraction_cooldown_pneumonic
-			$DISEASE$ = trait:pneumonic
+			scope:disease_type_for_trigger = flag:pneumonic
 		}
 		AND = {
 			has_character_flag = contraction_cooldown_gout_ridden
-			$DISEASE$ = trait:gout_ridden
+			scope:disease_type_for_trigger = flag:gout_ridden
 		}
 		AND = {
 			has_character_flag = contraction_cooldown_typhus
-			$DISEASE$ = trait:typhus
+			scope:disease_type_for_trigger = flag:typhus
 		}
 		AND = {
 			has_character_flag = contraction_cooldown_consumption
-			$DISEASE$ = trait:consumption
+			scope:disease_type_for_trigger = flag:consumption
 		}
 		AND = {
 			has_character_flag = contraction_cooldown_cancer
-			$DISEASE$ = trait:cancer
+			scope:disease_type_for_trigger = flag:cancer
 		}
 		AND = {
 			has_character_flag = contraction_cooldown_great_pox
-			$DISEASE$ = trait:great_pox
+			scope:disease_type_for_trigger = flag:great_pox
 		}
 		AND = {
 			has_character_flag = contraction_cooldown_dysentery
-			$DISEASE$ = trait:dysentery
+			scope:disease_type_for_trigger = flag:dysentery
 		}
 		AND = {
 			has_character_flag = contraction_cooldown_ergotism
-			$DISEASE$ = trait:ergotism
+			scope:disease_type_for_trigger = flag:ergotism
 		}
 	}
 }
@@ -522,7 +522,7 @@ can_be_court_physician_of = {
 	is_courtier_of = $EMPLOYER$
 	is_adult = yes
 	basic_is_available_ai = yes
-	is_incapable = no
+	NOT = { has_trait = incapable }
 }
 
 can_punish_court_physician = {
@@ -692,10 +692,7 @@ has_high_health_penalty_disease_type_trigger = { # >= 3.5
 		### CONSUMPTION
 		AND = {
 			scope:disease_type = flag:consumption #2 + 1 + 2
-			OR = {
-				is_adult = no
-				is_old_character = yes
-			}
+			is_old_character = yes
 		}
 		### CANCER
 		AND = {
@@ -705,7 +702,7 @@ has_high_health_penalty_disease_type_trigger = { # >= 3.5
 		### MEASLES
 		AND = {
 			scope:disease_type = flag:measles #3 + 3
-			is_adult = no
+			is_old_character = yes
 		}
 		### PNEUMONIA
 		AND = {
@@ -728,7 +725,6 @@ has_low_health_penalty_disease_type_trigger = { # < 3.5
 		### CONSUMPTION
 		AND = {
 			scope:disease_type = flag:consumption #2 + 1 + 2
-			is_adult = yes
 			is_old_character = no
 		}
 		### CANCER
@@ -739,7 +735,7 @@ has_low_health_penalty_disease_type_trigger = { # < 3.5
 		### MEASLES
 		AND = {
 			scope:disease_type = flag:measles #3 + 3
-			is_adult = yes
+			is_old_character = no
 		}
 		### PNEUMONIA
 		AND = {
@@ -889,7 +885,7 @@ native_trepanning_trigger = {
 				has_cultural_pillar = heritage_indo_aryan
 			}
 		}
-		root.rite = rite:armenian_rite
+		root.faith = faith:armenian_apostolic
 		root.culture = culture:armenian
 		has_title = title:k_hungary
 		has_title = title:k_cuman

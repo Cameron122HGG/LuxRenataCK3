@@ -24,7 +24,7 @@ special_succession_jirga_trigger = {
 
 historical_succession_access_single_heir_succession_law_trigger = {
 	trigger_if = {
-		limit = { government_has_mechanic = administrative }
+		limit = { government_allows = administrative }
 		OR = {
 			tgp_japan_single_heir_succession_override_trigger = yes
 			tgp_korea_single_heir_succession_override_trigger = yes
@@ -32,7 +32,10 @@ historical_succession_access_single_heir_succession_law_trigger = {
 			has_title = title:h_china
 			AND = {
 				is_independent_ruler = yes
-				government_has_flag = government_is_steppe_admin
+				OR = {
+					government_has_flag = government_is_steppe_admin
+					government_has_flag = government_is_classical_group
+				}
 			}
 		}
 	}
@@ -41,7 +44,7 @@ historical_succession_access_single_heir_succession_law_trigger = {
 			has_title = title:k_austria
 			is_roman_emperor_trigger = yes
 			AND = {
-				has_title = title:e_france
+				has_title = title:e_sacral_kingdom_gaul
 				is_target_in_global_variable_list = {
 					name = unavailable_unique_decisions
 					target = flag:flag_reformed_carolingian_empire
@@ -49,8 +52,12 @@ historical_succession_access_single_heir_succession_law_trigger = {
 			}
 			has_title = title:e_hindustan
 			has_title = title:h_china
+			has_title = title:k_sacral_king_gaul_throne
 			AND = {
-				government_has_flag = government_is_japan_feudal
+				OR = {
+					government_has_flag = government_is_japan_feudal
+					government_has_flag = government_is_classical_group
+				}
 				is_independent_ruler = yes
 			}
 			#Add any subsequent exceptions here.
@@ -59,7 +66,7 @@ historical_succession_access_single_heir_succession_law_trigger = {
 }
 
 historical_succession_access_single_heir_succession_law_youngest_trigger = {
-	NOT = { government_has_mechanic = administrative }
+	NOT = { government_allows = administrative }
 	OR = {
 		#has_title = title:e_byzantium
 		#Add any subsequent exceptions here.
@@ -67,7 +74,7 @@ historical_succession_access_single_heir_succession_law_youngest_trigger = {
 }
 
 historical_succession_access_single_heir_dynasty_house_trigger = {
-	NOT = { government_has_mechanic = administrative }
+	NOT = { government_allows = administrative }
 	AND = {
 		has_title = title:d_bohemia
 		culture = { has_innovation = innovation_table_of_princes }
@@ -78,7 +85,7 @@ can_have_meritocratic_regency_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 	is_independent_ruler = yes
 	highest_held_title_tier = tier_empire
-	government_has_mechanic = administrative
+	government_allows = administrative
 	government_allows = merit
 	NOT = { government_allows = obedience } # Stop Khanates
 	OR = {
@@ -86,7 +93,7 @@ can_have_meritocratic_regency_succession_law_trigger = {
 		exists = primary_title.var:administrative_ui_special_title
 		# Jipjeong Jeong Jung-bu
 		AND = {
-			game_start_date = 1178.10.1
+			game_start_date = 6178.10.1
 			has_title = title:e_goryeo
 			months_from_game_start < 1
 		}

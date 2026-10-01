@@ -30,7 +30,6 @@ mentor_positive_evaluation_modifiers = {
 mentor_negative_evaluation_modifiers = {
 	opinion_modifier = {
 		multiplier = -0.5
-		who = scope:mentor
 		opinion_target = scope:mentee
 	}
 	modifier = {
@@ -91,12 +90,8 @@ mentor_balanced_evaluation_modifiers = {
 
 # Tribute Mission common AI modifiers
 tribute_mission_decision_ai_will_do_modifiers = {
-	
-	### the below block of modifiers apply only if the character is already a tributary with subject standing
-
-	# moderate frequency of tribute missions based on how much they like their suzerain vs how much subject standing they already have
 	modifier = {
-		subject_standing >= 0
+		subject_standing >= 0 
 		add = {
 			add = "opinion(overlord)"
 			subtract = subject_standing
@@ -104,56 +99,40 @@ tribute_mission_decision_ai_will_do_modifiers = {
 		}
 		desc = ai_will_do_debug
 	}
-	
-	# if they are rivals it should be very unlikely
-	modifier = {
-		add = -50
-		subject_standing >= 0
-		has_relation_rival = overlord
-		desc = ai_will_do_debug
-	}
-
-	# additional debuff if the opinion is negative
-	modifier = {
-		add = -25
-		subject_standing >= 0
-		"opinion(overlord)" < 0
-		desc = ai_will_do_debug
-	}
-
-	### below block applies to all characters regardless of if they're currently tributaries with subject standing or not
 
 	modifier = { # AIs who can give gold are more likely
-		add = 25
+		add = 50
 		gold >= small_gold_tribute_value
 		ai_greed < 50
 		primary_title.tier > tier_county
 		desc = ai_will_do_debug
 	}
-
 	modifier = { # AIs who can give herd are more likely
-		add = 25
+		add = 50
 		domicile ?= { herd >= small_herd_tribute_value }
 		ai_greed < 50
 		primary_title.tier > tier_county
 		desc = ai_will_do_debug
 	}
 
-	modifier = { # Dukes should be more likely
-		add = 25
-		primary_title.tier = tier_duchy
+	modifier = {
+		add = -50
+		has_relation_rival = overlord
 		desc = ai_will_do_debug
 	}
 
-	modifier = { # Characters of unreformed faiths should be more likely
-		add = 10
-		faith = { has_doctrine_parameter = unreformed }
-		desc = ai_will_do_debug
-	}
-
-	modifier = { # Kings should be less likely to pay tribute to Hegemonies with worse than Astray faith, different Heritage, or cultural acceptance of < 50
+	modifier = {
 		add = -25
-		primary_title.tier = tier_kingdom
+		opinion = {
+			target = overlord
+			value < 0
+		}
+		desc = ai_will_do_debug
+	}
+
+	modifier = { # Dukes and above should be more weighted
+		add = 25
+		primary_title.tier >= tier_duchy
 		desc = ai_will_do_debug
 	}
 }

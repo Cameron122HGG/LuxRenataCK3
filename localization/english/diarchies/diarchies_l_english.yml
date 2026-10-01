@@ -80,7 +80,7 @@
  regency_diarch_title:0 "Regent"
  vizierate_diarchy_type: "[vizierate|E]"
  vizierate_diarch_title: "Vizier"
- grand_secretariat_diarchy_type: "[grand_secretariat_system|E]"
+ grand_secretariat_diarchy_type: "[grand_secretariat|E]"
  grand_secretariat_diarch_title: "Secretary Director"
  junior_emperorship_diarchy_type: "[nominal_duumvirate|E]"
  junior_emperorship_diarch_title: "Nominal Co-Emperor"
@@ -90,6 +90,9 @@
  co_monarchy_diarch_title: "[co_monarch|E]"
  nomad_regency_diarchy_type: "[nomadic|E] [regency|E]"
  nomad_regency_diarch_title: "$regency_diarch_title$"
+
+ ephorate_diarchy_type: "Ephorate"
+ ephorate_diarch_title: "Protoephor"
 
  ##################################################
  # #Mandates
@@ -206,11 +209,11 @@
  primeminister_dismissal_will_upset_administration: "[diarch|E] may be dismissed, but will give a #N negative#! [stewardship|E] and [income|E] [modifier|E] scaled to the current [scales_of_power|E]"
  primeminister_requires_county: "[diarchy|E] may be ended without negative [modifiers|E] by granting the [diarch|E] at least a [county|E]"
  primeminister_requires_duchy: "[diarchy|E] may be ended without negative [modifiers|E] by granting the [diarch|E] at least a [duchy|E]"
- primeminister_requires_duchy.tt.blocked_grant: "[puppet_or_actor.GetShortUINamePossessive|U] current [scales_of_power|E] require [puppet_or_actor.GetShortUIName] to give [recipient.GetFirstName] at least a [duchy|E] [title|E]"
- grant_titles_interaction.tt.primeminister_title_grant.duchy_sufficient: "Granting a [duchy|E] or better #ENC WILL#! end [puppet_or_actor.GetShortUINamePossessive] [puppet_or_actor.GetDiarchyTypeName]"
- grant_titles_interaction.tt.primeminister_title_grant.county_sufficient: "Granting a [county|E] or better #ENC WILL#! end [puppet_or_actor.GetShortUINamePossessive] [puppet_or_actor.GetDiarchyTypeName]"
- grant_titles_interaction.tt.primeminister_title_grant.county_insufficient: "Granting a [county|E] or worse #XB WON'T#! end [puppet_or_actor.GetShortUINamePossessive] [puppet_or_actor.GetDiarchyTypeName]"
- grant_titles_interaction.tt.primeminister_title_grant.barony_doesnt_end: "Granting a [barony|E] #XB WON'T#! end [puppet_or_actor.GetShortUINamePossessive] [puppet_or_actor.GetDiarchyTypeName]"
+ primeminister_requires_duchy.tt.blocked_grant: "Your current [scales_of_power|E] require you to give [recipient.GetFirstName] at least a [duchy|E] [title|E]"
+ grant_titles_interaction.tt.primeminister_title_grant.duchy_sufficient: "Granting a [duchy|E] or better #ENC WILL#! end your [actor.GetDiarchyTypeName]"
+ grant_titles_interaction.tt.primeminister_title_grant.county_sufficient: "Granting a [county|E] or better #ENC WILL#! end your [actor.GetDiarchyTypeName]"
+ grant_titles_interaction.tt.primeminister_title_grant.county_insufficient: "Granting a [county|E] or worse #XB WON'T#! end your [actor.GetDiarchyTypeName]"
+ grant_titles_interaction.tt.primeminister_title_grant.barony_doesnt_end: "Granting a [barony|E] #XB WON'T#! end your [actor.GetDiarchyTypeName]"
 
  diarch_aptitude_helps_tax_collectors_toggle: "[diarchs|E] gain [EmptyScope.ScriptValue('diarch_aptitude_helps_tax_collectors_buffed_by_swing_multiplier_value')|+%0] of current [scales_of_power|E] score as extra [tax_collector|E] [aptitude|E]"
  diarch_aptitude_helps_tax_collectors_postamble: "of the [diarch_possessive|E] [aptitude|E] as a bonus to their own $game_concept_aptitude$ #WEAK (does not stack)#!"
@@ -245,10 +248,6 @@
 
  diarch_can_appoint_self_co_emperor: "[SelectLocalization( IsAdministrativeRuler( GetPlayer ), '', '#WEAK Inactive for this Government: ')][regents|E] may appoint themselves [co_emperor|E][SelectLocalization( IsAdministrativeRuler( GetPlayer ), '', '#!')]"
 
- ##################################################
- # #Succession Loc
-
- # Categories.
  diarch_succession_score.category.familial_ties:0 "Familial Ties"
  diarch_succession_score.category.personal_ties:0 "Personal Ties"
  diarch_succession_score.category.societal_bonds:0 "Societal Bonds"
@@ -267,8 +266,14 @@
  # Familial Ties
  diarch_succession_score.familial_ties.your_parent:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] Parent"
  diarch_succession_score.familial_ties.your_child:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] [child|E]"
- diarch_succession_score.familial_ties.your_close_family:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] [close_family|E]"
- diarch_succession_score.familial_ties.your_extended_family:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] [extended_family|E]"
+ diarch_succession_score.familial_ties.your_sibling:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] [ROOT.Char.Custom('SisterBrother')|U]"
+ diarch_succession_score.familial_ties.your_grandparent:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] Grand[ROOT.Char.GetMotherFather]"
+ diarch_succession_score.familial_ties.your_grandchild:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] Grandchild"
+ diarch_succession_score.familial_ties.your_auntuncle:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] [ROOT.Char.Custom('GetAuntUncle')|U]"
+ diarch_succession_score.familial_ties.your_nibling:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] [ROOT.Char.Custom('GetNieceNephew')|U]"
+ diarch_succession_score.familial_ties.your_cousin:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] Cousin"
+ diarch_succession_score.familial_ties.your_greatgrandparent:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] Great Grand[ROOT.Char.GetMotherFather]"
+ diarch_succession_score.familial_ties.yourgreat_grandchild:0 "[ROOT.Char.GetLiege.Custom('GetLiegeYour')|U] Great Grandchild"
  diarch_succession_score.familial_ties.undignified: "Undignified for [ROOT.Char.GetLiege.Custom('GetLiegeYour')]"
  diarch_succession_score.familial_ties.undignified.close_family: "$diarch_succession_score.familial_ties.undignified$ [close_family|E]"
  diarch_succession_score.familial_ties.undignified.extended_family: "$diarch_succession_score.familial_ties.undignified$ [extended_family|E]"
@@ -383,11 +388,11 @@
  diarch_succession_score.disqualifiers.child:0 "Is a [child|E]"
  diarch_succession_score.disqualifiers.imprisoned:0 "Is [imprisoned|E]"
  diarch_succession_score.disqualifiers.incapable_or_infirm:0 "Is [GetTrait('incapable').GetName( ROOT.Char )] or [GetTrait('infirm').GetName( ROOT.Char )]"
- diarch_succession_score.disqualifiers.right_gendered_for_liege: "Gender does not match [liege|E]'s [faith|E] requirements"
- diarch_succession_score.disqualifiers.count_or_above: "Holds a title higher than a [barony|E]"
+ diarch_succession_score.disqualifiers.right_gendered_for_liege:0 "Gender does not match [liege|E]'s [faith|E] requirements"
+ diarch_succession_score.disqualifiers.count_or_above:0 "Holds a title higher than a [barony|E]"
+ diarch_succession_score.disqualifiers.event_filters.incumbent_politicking:0 "Is Currently politicking"
 
  ##################################################
- # #Loyalty Loc
  diarch_loyalty_score.regency.opinion_of_you:0 "[opinion|E] of [ROOT.Char.GetLiege.Custom('GetLiegeYou')]"
  diarch_loyalty_score.regency.liege_legitimacy: "[legitimacy|E] of [ROOT.Char.GetLiege.Custom('GetLiegeYou')]"
  diarch_loyalty_score.regency.pro_hegemon: "Member of [GetSituation('dynastic_cycle').GetTopParticipantGroupByKey( 'pro_hegemon_movement' ).GetName]"
