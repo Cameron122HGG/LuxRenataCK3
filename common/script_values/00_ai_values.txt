@@ -333,12 +333,6 @@ cautious_ai_minimum_war_chest_gold = {
 		}
 		add = 300
 	}
-	else_if = {
-		limit = {
-			highest_held_title_tier = tier_hegemony
-		}
-		add = 400
-	}
 	max = war_chest_gold_maximum
 }
 
@@ -409,12 +403,6 @@ cautious_ai_minimum_war_chest_treasury = {
 			highest_held_title_tier = tier_empire
 		}
 		add = 300
-	}
-	else_if = {
-		limit = {
-			highest_held_title_tier = tier_hegemony
-		}
-		add = 400
 	}
 	max = war_chest_treasury_maximum
 }
@@ -1571,16 +1559,16 @@ calc_rough_opcalc_char_opinion_value = {
 }
 
 ### Brief: ai_men_at_arms_expense_gold_min
-# The AI will quickly try to spend this much of its gold income on MAA
-# maintenance. This is referenced in code, so do not rename or remove this
-# without talking with a programmer about it.
-#
-# Value between 0 and 1, where 1 eqivalents using 100% of its income on maa
+# The AI will quickly try to spend this much of its gold income on MAA 
+# maintenance. This is referenced in code, so do not rename or remove this 
+# without talking with a programmer about it. 
+# 
+# Value between 0 and 1, where 1 eqivalents using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_gold_min = {
 	value = {
@@ -1640,16 +1628,16 @@ ai_men_at_arms_expense_gold_min = {
 
 ### Brief: ai_men_at_arms_expense_ideal
 # The AI will try to spend this much of its gold income on MAA maintenance. It won't
-# buy beyond this, but might end up higher due to reduced income. This is
-# referenced in code, so do not rename or remove this without talking with a
-# programmer about it.
+# buy beyond this, but might end up higher due to reduced income. This is 
+# referenced in code, so do not rename or remove this without talking with a 
+# programmer about it. 
 #
-# Value between 0 and 1, where 1 eqivalents using 100% of its income on maa
+# Value between 0 and 1, where 1 eqivalents using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_gold_ideal = {
 	value = {
@@ -1672,7 +1660,7 @@ ai_men_at_arms_expense_gold_ideal = {
 			}
 		}
 	}
-
+	
 
 	if = {
 		limit = {
@@ -1777,16 +1765,16 @@ ai_men_at_arms_expense_gold_ideal = {
 }
 
 ### Brief: ai_men_at_arms_expense_gold_max
-# The AI will disband MAA if it ends up spending more than this amount of its
+# The AI will disband MAA if it ends up spending more than this amount of its 
 # income on maintenance. This is referenced in code, so do not rename or remove
-# this without talking with a programmer about it.
+# this without talking with a programmer about it. 
 #
-# Value between 0 and 1, where 1 eqivalents using 100% of its income on maa
+# Value between 0 and 1, where 1 eqivalents using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_gold_max = {
 	value = {
@@ -1861,7 +1849,8 @@ ai_men_at_arms_expense_gold_max = {
 	}
 	if = {
 		limit = {
-			vassal_contract_has_flag = province_military
+			government_allows = administrative
+			NOT = { vassal_contract_has_flag = admin_theme_civilian }
 		}
 		add = {
 			desc = ai_admin_vassal
@@ -1871,11 +1860,11 @@ ai_men_at_arms_expense_gold_max = {
 
 	min = 0
 	max = 0.9
-
+	
 	if = {
 		limit = {
 			OR = {
-				government_has_mechanic = administrative
+				government_allows = administrative
 				government_has_flag = government_is_nomadic
 			}
 			debt_level <= 2
@@ -1885,16 +1874,16 @@ ai_men_at_arms_expense_gold_max = {
 }
 
 ### Brief: ai_men_at_arms_expense_prestige_min
-# The AI will quickly try to spend this much of its prestige income on MAA
-# maintenance. This is referenced in code, so do not rename or remove this
-# without talking with a programmer about it.
-#
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# The AI will quickly try to spend this much of its prestige income on MAA 
+# maintenance. This is referenced in code, so do not rename or remove this 
+# without talking with a programmer about it. 
+# 
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_prestige_min = {
 	value = {
@@ -1954,16 +1943,16 @@ ai_men_at_arms_expense_prestige_min = {
 
 ### Brief: ai_men_at_arms_expense_prestige_ideal
 # The AI will try to spend this much of its income on MAA maintenance. It won't
-# buy beyond this, but might end up higher due to reduced income. This is
-# referenced in code, so do not rename or remove this without talking with a
-# programmer about it.
+# buy beyond this, but might end up higher due to reduced income. This is 
+# referenced in code, so do not rename or remove this without talking with a 
+# programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_prestige_ideal = {
 	value = {
@@ -2069,16 +2058,16 @@ ai_men_at_arms_expense_prestige_ideal = {
 }
 
 ### Brief: ai_men_at_arms_expense_prestige_max
-# The AI will disband MAA if it ends up spending more than this amount of its
+# The AI will disband MAA if it ends up spending more than this amount of its 
 # income on maintenance. This is referenced in code, so do not rename or remove
-# this without talking with a programmer about it.
+# this without talking with a programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_prestige_max = {
 	value = {
@@ -2157,16 +2146,16 @@ ai_men_at_arms_expense_prestige_max = {
 }
 
 ### Brief: ai_men_at_arms_expense_herd_min
-# The AI will quickly try to spend this much of its herd income on MAA
-# maintenance. This is referenced in code, so do not rename or remove this
-# without talking with a programmer about it.
-#
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# The AI will quickly try to spend this much of its herd income on MAA 
+# maintenance. This is referenced in code, so do not rename or remove this 
+# without talking with a programmer about it. 
+# 
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_herd_min = {
 	value = {
@@ -2180,16 +2169,16 @@ ai_men_at_arms_expense_herd_min = {
 
 ### Brief: ai_men_at_arms_expense_herd_ideal
 # The AI will try to spend this much of its income on MAA maintenance. It won't
-# buy beyond this, but might end up higher due to reduced income. This is
-# referenced in code, so do not rename or remove this without talking with a
-# programmer about it.
+# buy beyond this, but might end up higher due to reduced income. This is 
+# referenced in code, so do not rename or remove this without talking with a 
+# programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_herd_ideal = {
 	value = {
@@ -2202,16 +2191,16 @@ ai_men_at_arms_expense_herd_ideal = {
 }
 
 ### Brief: ai_men_at_arms_expense_herd_max
-# The AI will disband MAA if it ends up spending more than this amount of its
+# The AI will disband MAA if it ends up spending more than this amount of its 
 # income on maintenance. This is referenced in code, so do not rename or remove
-# this without talking with a programmer about it.
+# this without talking with a programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_herd_max = {
 	value = {
@@ -2224,16 +2213,16 @@ ai_men_at_arms_expense_herd_max = {
 }
 
 ### Brief: ai_men_at_arms_expense_treasury_min
-# The AI will quickly try to spend this much of its treasury income on MAA
-# maintenance. This is referenced in code, so do not rename or remove this
-# without talking with a programmer about it.
-#
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# The AI will quickly try to spend this much of its treasury income on MAA 
+# maintenance. This is referenced in code, so do not rename or remove this 
+# without talking with a programmer about it. 
+# 
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_treasury_min = {
 	value = {
@@ -2279,7 +2268,9 @@ ai_men_at_arms_expense_treasury_min = {
 	if = {
 		limit = {
 			OR = {
-				vassal_contract_has_flag = province_military
+				vassal_contract_has_flag = celestial_province_protectorate
+				vassal_contract_has_flag = celestial_province_military
+				vassal_contract_has_flag = meritocratic_province_military
 				vassal_contract_has_flag = celestial_grand_marshal_obligation
 			}
 		}
@@ -2301,16 +2292,16 @@ ai_men_at_arms_expense_treasury_min = {
 
 ### Brief: ai_men_at_arms_expense_treasury_ideal
 # The AI will try to spend this much of its treasury income on MAA maintenance. It won't
-# buy beyond this, but might end up higher due to reduced income. This is
-# referenced in code, so do not rename or remove this without talking with a
-# programmer about it.
+# buy beyond this, but might end up higher due to reduced income. This is 
+# referenced in code, so do not rename or remove this without talking with a 
+# programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_treasury_ideal = {
 	value = {
@@ -2407,7 +2398,9 @@ ai_men_at_arms_expense_treasury_ideal = {
 	if = {
 		limit = {
 			OR = {
-				vassal_contract_has_flag = province_military
+				vassal_contract_has_flag = celestial_province_protectorate
+				vassal_contract_has_flag = celestial_province_military
+				vassal_contract_has_flag = meritocratic_province_military
 				vassal_contract_has_flag = celestial_grand_marshal_obligation
 			}
 		}
@@ -2428,16 +2421,16 @@ ai_men_at_arms_expense_treasury_ideal = {
 }
 
 ### Brief: ai_men_at_arms_expense_treasury_max
-# The AI will disband MAA if it ends up spending more than this treasury amount of its
+# The AI will disband MAA if it ends up spending more than this treasury amount of its 
 # income on maintenance. This is referenced in code, so do not rename or remove
-# this without talking with a programmer about it.
+# this without talking with a programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_treasury_max = {
 	value = {
@@ -2513,21 +2506,32 @@ ai_men_at_arms_expense_treasury_max = {
 	if = {
 		limit = {
 			OR = {
-				vassal_contract_has_flag = province_military
-				vassal_contract_has_flag = province_balanced
+				vassal_contract_has_flag = celestial_province_protectorate
+				vassal_contract_has_flag = celestial_province_military
+				vassal_contract_has_flag = meritocratic_province_military
 				vassal_contract_has_flag = celestial_grand_marshal_obligation
 			}
 		}
 		add = 0.3
 	}
+	if = {
+		limit = {
+			government_allows = administrative
+			NOT = { vassal_contract_has_flag = admin_theme_civilian }
+		}
+		add = {
+			desc = ai_admin_vassal
+			value = 0.3
+		}
+	}
 
 	min = 0
 	max = 0.9
-
+	
 	if = {
 		limit = {
 			OR = {
-				government_has_mechanic = administrative
+				government_allows = administrative
 				government_has_flag = government_is_nomadic
 			}
 			treasury_debt_level <= 2
@@ -2537,16 +2541,16 @@ ai_men_at_arms_expense_treasury_max = {
 }
 
 ### Brief: ai_men_at_arms_expense_barter_goods_min
-# The AI will quickly try to spend this much of its barter goods income on MAA
-# maintenance. This is referenced in code, so do not rename or remove this
-# without talking with a programmer about it.
-#
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# The AI will quickly try to spend this much of its barter goods income on MAA 
+# maintenance. This is referenced in code, so do not rename or remove this 
+# without talking with a programmer about it. 
+# 
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_barter_goods_min = {
 	value = {
@@ -2606,16 +2610,16 @@ ai_men_at_arms_expense_barter_goods_min = {
 
 ### Brief: ai_men_at_arms_expense_barter_goods_ideal
 # The AI will try to spend this much of its income on MAA maintenance. It won't
-# buy beyond this, but might end up higher due to reduced income. This is
-# referenced in code, so do not rename or remove this without talking with a
-# programmer about it.
+# buy beyond this, but might end up higher due to reduced income. This is 
+# referenced in code, so do not rename or remove this without talking with a 
+# programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_barter_goods_ideal = {
 	value = {
@@ -2721,16 +2725,16 @@ ai_men_at_arms_expense_barter_goods_ideal = {
 }
 
 ### Brief: ai_men_at_arms_expense_barter_goods_max
-# The AI will disband MAA if it ends up spending more than this amount of its
+# The AI will disband MAA if it ends up spending more than this amount of its 
 # income on maintenance. This is referenced in code, so do not rename or remove
-# this without talking with a programmer about it.
+# this without talking with a programmer about it. 
 #
-# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa
+# Value between 0 and 1, where 1 equivalents to using 100% of its income on maa 
 # maintenance.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_expense_barter_goods_max = {
 	value = {
@@ -2809,15 +2813,15 @@ ai_men_at_arms_expense_barter_goods_max = {
 }
 
 ### Brief: ai_men_at_arms_chance_expense_below_min
-# Chance the AI will prefer MaA to buildings when spending less than the ideal
+# Chance the AI will prefer MaA to buildings when spending less than the ideal 
 # on MaA.
-#
+# 
 # Value between 0 and 1, where 1 equivalents to a 100% chance of recruiting MaA
 # instead of a building.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_chance_expense_below_min = {
 	value = {
@@ -2898,7 +2902,9 @@ ai_men_at_arms_chance_expense_below_min = {
 	if = {
 		limit = {
 			OR = {
-				vassal_contract_has_flag = province_military
+				vassal_contract_has_flag = celestial_province_protectorate
+				vassal_contract_has_flag = celestial_province_military
+				vassal_contract_has_flag = meritocratic_province_military
 				vassal_contract_has_flag = celestial_grand_marshal_obligation
 			}
 		}
@@ -2920,15 +2926,15 @@ ai_men_at_arms_chance_expense_below_min = {
 }
 
 ### Brief: ai_men_at_arms_chance_expense_below_ideal
-# Chance the AI will prefer MaA to buildings when spending less than the ideal
+# Chance the AI will prefer MaA to buildings when spending less than the ideal 
 # on MaA.
-#
+# 
 # Value between 0 and 1, where 1 equivalents to a 100% chance of recruiting MaA
 # instead of a building.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_chance_expense_below_ideal = {
 	value = {
@@ -3022,16 +3028,20 @@ ai_men_at_arms_chance_expense_below_ideal = {
 		limit = {
 			ai_should_focus_on_building_in_their_capital = yes
 		}
-		value = 0.1
+		multiply = 0
+		add = 0.1
 	}
 	if = {
 		limit = {
 			OR = {
-				vassal_contract_has_flag = province_military
+				vassal_contract_has_flag = celestial_province_protectorate
+				vassal_contract_has_flag = celestial_province_military
+				vassal_contract_has_flag = meritocratic_province_military
 				vassal_contract_has_flag = celestial_grand_marshal_obligation
 			}
 		}
-		value = 0.9
+		multiply = 0
+		add = 0.9
 	}
 	if = {
 		limit = {
@@ -3050,16 +3060,16 @@ ai_men_at_arms_chance_expense_below_ideal = {
 
 ### Brief: ai_men_at_arms_chance_landless_ruler
 # Chance the AI will prefer MaA to buildings when they are a landless ruler.
-# Is used exclusively when the character fulfills the requirement:
+# Is used exclusively when the character fulfills the requirement: 
 #	- they are a ruler (they hold a title, which also means adventurers)
 #	- they are not landed
-#
+# 
 # Value between 0 and 1, where 1 equivalents to a 100% chance of recruiting MaA
 # instead of a building.
-#
+# 
 # Scopes:
 #	root - character
-#		AI character evaluating the ideal percentile.
+#		AI character evaluating the ideal percentile. 
 #
 ai_men_at_arms_chance_landless_ruler = {
 	value = {
@@ -3082,7 +3092,7 @@ ai_men_at_arms_chance_landless_ruler = {
 		}
 		if = { # Landless admin focus mostly on Buildings
 			limit = {
-				government_has_mechanic = administrative
+				government_allows = administrative
 			}
 			add = -0.3
 		}
@@ -3102,13 +3112,13 @@ ai_men_at_arms_chance_landless_ruler = {
 			}
 			multiply = 0
 		}
-		if = {
+		if = { # To avoid Adventurer travels becoming super-costly provision-wise, they should focus on buildings over MaA at certain ratios
 			limit = {
 				vassal_contract_has_flag = celestial_grand_marshal_obligation
 			}
 			add = 1
 		}
-
+		
 		min = 0
 		max = 0.9
 	}

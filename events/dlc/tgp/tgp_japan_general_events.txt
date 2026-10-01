@@ -365,9 +365,9 @@ tgp_japan_general.8800 = {
 					}
 					create_character = {
 						template = new_warrior_character
+						gender_female_chance = root_faith_dominant_gender_adjusted_female_chance
 						employer = root
 						faith = root.faith
-						rite = root.rite
 						culture = root.culture
 						dynasty = generate
 						gender_female_chance = root_soldier_female_chance
@@ -1072,7 +1072,6 @@ scripted_effect tgp_japan_soryo_eradicate_cb_kill_house = {
 	}
 }
 #You lost Eradicate House cb war tgp_japan_general.9550
-#Laurence Kennedy
 tgp_japan_general.9550 = {
 	type = character_event
 	title = tgp_japan_general.9550.t
@@ -1337,7 +1336,7 @@ tgp_japan_general.9550 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_impact_gain
 			craven = minor_stress_impact_loss
 		}
@@ -1574,6 +1573,12 @@ tgp_japan_general.9551 = {
 		#kill house
 		tgp_japan_soryo_eradicate_cb_kill_house = yes
 		add_dread = medium_dread_gain
+		house = {
+			add_house_modifier = {
+				modifier = rival_eradicated_modifier
+				years = house_eradicated_duration_value
+			}
+		}
 		#kill loser
 		if = {
 			limit = {
@@ -1584,12 +1589,6 @@ tgp_japan_general.9551 = {
 					death_reason = death_eradicated
 					killer = scope:winner
 				}
-			}
-		}
-		house = {
-			add_house_modifier = {
-				modifier = rival_eradicated_modifier
-				years = house_eradicated_duration_value
 			}
 		}
 	}

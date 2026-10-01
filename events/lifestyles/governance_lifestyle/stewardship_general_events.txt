@@ -29,13 +29,12 @@ stewardship_general.1054 = {
 	right_portrait = {
 		character = scope:witch
 		animation = beg
-		camera = camera_event_center_pointing_forward_fov35
 	}
 	
 	trigger = {
-		NOT = { rite = { rite_has_parameter = witchcraft_accepted } }
 		faith = {
 			NOR = { 
+				has_doctrine_parameter = witchcraft_accepted
 				religion = religion:shintoism_religion
 				religion = { is_in_family = rf_sinitic }
 				religion = { is_in_family = rf_eastern }
@@ -56,8 +55,8 @@ stewardship_general.1054 = {
 
 		modifier = {
 			add = 1
-			rite = {
-				rite_has_parameter = witchcraft_illegal
+			faith = {
+				has_doctrine_parameter = witchcraft_illegal
 			}
 		}
 		modifier = { #Since it creates such a GOOD character we don't want the ai to get it too often
@@ -102,7 +101,6 @@ stewardship_general.1054 = {
 							trait = beauty_good_2
 							trait = lifestyle_mystic
 							faith = this.faith
-							rite = this.rite
 							culture = this.culture
 							diplomacy = { 10 12 }
 							learning = { 8 10 }
@@ -120,7 +118,6 @@ stewardship_general.1054 = {
 							trait = lifestyle_mystic
 							trait = shrewd
 							faith = root.faith
-							rite = root.rite
 							culture = root.culture
 							learning = { 12 14 }
 							save_scope_as = witch
@@ -138,7 +135,6 @@ stewardship_general.1054 = {
 							trait = lunatic_1
 							trait = intellect_good_3
 							faith = root.faith
-							rite = root.rite
 							culture = root.culture
 							learning = { 10 12 }
 							diplomacy = { 2 4 }
@@ -184,9 +180,7 @@ stewardship_general.1054 = {
 			}
 		}
 
-		pam_witch_leniency_fulfillment_effect = yes
-
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = medium_stress_impact_gain
 			sadistic = minor_stress_impact_gain
 			vengeful = minor_stress_impact_gain
@@ -225,9 +219,7 @@ stewardship_general.1054 = {
 			}
 		}
 
-		pam_witch_justice_fulfillment_effect = yes
-
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			just = medium_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 			cynical = minor_stress_impact_gain
@@ -283,9 +275,7 @@ stewardship_general.1054 = {
 			}
 		}
 
-		pam_witch_embrace_fulfillment_effect = yes
-
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = major_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 		}
@@ -344,9 +334,7 @@ stewardship_general.1054 = {
 			}
 		}
 
-		pam_witch_embrace_fulfillment_effect = yes
-
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = major_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 			honest = medium_stress_impact_gain
@@ -391,8 +379,7 @@ scripted_effect stewardship_general_2001_free_outcome = {
 			title = stewardship_general_2001_success_msg.t
 			desc = stewardship_general_2001_free_msg.desc
 
-			add_stewardship_lifestyle_xp = major_lifestyle_experience
-			remove_short_term_gold = 1	
+			add_stewardship_lifestyle_xp = medium_lifestyle_experience	
 		}
 	}
 	#But if we didn't get help, they are impressed
@@ -408,8 +395,7 @@ scripted_effect stewardship_general_2001_free_outcome = {
 			title = stewardship_general_2001_success_msg.t
 			desc = stewardship_general_2001_free_msg.desc
 
-			add_stewardship_lifestyle_xp = major_lifestyle_experience
-			remove_short_term_gold = 1	
+			add_stewardship_lifestyle_xp = medium_lifestyle_experience	
 		}
 		#Setup for the follow-up event
 		##Our steward is impressed with our haggling skillz	
@@ -423,8 +409,7 @@ scripted_effect stewardship_general_2001_free_outcome = {
 			title = stewardship_general_2001_success_msg.t
 			desc = stewardship_general_2001_free_msg.desc
 
-			add_stewardship_lifestyle_xp = major_lifestyle_experience
-			remove_short_term_gold = 1
+			add_stewardship_lifestyle_xp = medium_lifestyle_experience
 		}
 	}
 	add_character_flag = {
@@ -446,8 +431,8 @@ scripted_effect stewardship_general_2001_tiny_outcome = {
 			title = stewardship_general_2001_success_msg.t
 			desc = stewardship_general_2001_tiny_msg.desc
 
-			add_stewardship_lifestyle_xp = medium_lifestyle_experience	
-			remove_short_term_gold = miniscule_gold_value
+			remove_short_term_gold = tiny_gold_value
+			add_stewardship_lifestyle_xp = minor_lifestyle_experience	
 		}
 	}
 	#But if we didn't get help, they are impressed
@@ -463,8 +448,8 @@ scripted_effect stewardship_general_2001_tiny_outcome = {
 			title = stewardship_general_2001_success_msg.t
 			desc = stewardship_general_2001_tiny_msg.desc
 
-			add_stewardship_lifestyle_xp = medium_lifestyle_experience
-			remove_short_term_gold = miniscule_gold_value
+			remove_short_term_gold = tiny_gold_value
+			add_stewardship_lifestyle_xp = minor_lifestyle_experience	
 		}
 		#Setup for the follow-up event
 		##Our steward is impressed with our haggling skillz
@@ -478,8 +463,54 @@ scripted_effect stewardship_general_2001_tiny_outcome = {
 			title = stewardship_general_2001_success_msg.t
 			desc = stewardship_general_2001_tiny_msg.desc
 
-			add_stewardship_lifestyle_xp = medium_lifestyle_experience
-			remove_short_term_gold = miniscule_gold_value
+			remove_short_term_gold = tiny_gold_value
+			add_stewardship_lifestyle_xp = minor_lifestyle_experience
+		}
+	}
+}
+
+scripted_effect stewardship_general_2001_minor_outcome = {
+	#If we got help, the councillor is not impressed/insulted
+	if = {
+		limit = { 
+			has_character_flag = helpful_option_stewardship_general.2001
+			exists = scope:helpful_councillor
+		}
+		send_interface_toast = {
+			type = event_toast_text_and_effect_bad
+			left_icon = root
+			right_icon = scope:helpful_councillor
+			title = stewardship_general_2001_failure_msg.t
+			desc = stewardship_general_2001_minor_msg.desc
+
+			remove_short_term_gold = minor_gold_value
+		}
+	}
+	#But if we didn't get help, they are insulted
+	else_if = {
+		limit = { exists = scope:helpful_councillor }
+		send_interface_toast = {
+			type = event_toast_text_and_effect_bad
+			left_icon = root
+			right_icon = scope:helpful_councillor
+			title = stewardship_general_2001_failure_msg.t
+			desc = stewardship_general_2001_minor_msg.desc
+
+			remove_short_term_gold = minor_gold_value
+		}
+		#Setup for the follow-up event
+		##Our steward/chaplain is insulted that we didn't listen to them AND failed at haggling
+		add_character_flag = { flag = insulted_councillor_stewardship_general.2001 }
+	}
+	#If the councillor doesn't exist, they can't get impressed/insulted
+	else = {
+		send_interface_toast = {
+			type = event_toast_text_and_effect_bad
+			left_icon = root
+			title = stewardship_general_2001_failure_msg.t
+			desc = stewardship_general_2001_minor_msg.desc
+
+			remove_short_term_gold = minor_gold_value
 		}
 	}
 }
@@ -497,7 +528,7 @@ scripted_effect stewardship_general_2001_expensive_outcome = {
 			right_icon = scope:helpful_councillor
 			title = stewardship_general_2001_failure_msg.t
 			desc = stewardship_general_2001_expensive_msg.desc
-			add_stewardship_lifestyle_xp = minor_lifestyle_experience
+
 			remove_short_term_gold = medium_gold_value
 		}
 	}
@@ -510,7 +541,7 @@ scripted_effect stewardship_general_2001_expensive_outcome = {
 			right_icon = scope:helpful_councillor
 			title = stewardship_general_2001_failure_msg.t
 			desc = stewardship_general_2001_expensive_msg.desc
-			add_stewardship_lifestyle_xp = minor_lifestyle_experience
+
 			remove_short_term_gold = medium_gold_value
 		}
 		#Setup for the follow-up event
@@ -524,7 +555,7 @@ scripted_effect stewardship_general_2001_expensive_outcome = {
 			left_icon = root
 			title = stewardship_general_2001_failure_msg.t
 			desc = stewardship_general_2001_expensive_msg.desc
-			add_stewardship_lifestyle_xp = minor_lifestyle_experience
+
 			remove_short_term_gold = medium_gold_value
 		}
 	}
@@ -587,27 +618,7 @@ stewardship_general.2001 = {
 	}
 	right_portrait = {
 		character = scope:peddler
-		triggered_animation = {
-			trigger = {
-				OR = {
-					root = { coronation_host_east_asian_admin_or_mandala_trigger = yes }
-					scope:peddler.culture = {
-						OR = {
-							has_graphical_east_asia_or_southeast_asia_group_trigger = yes
-							has_graphical_mena_culture_group_trigger = yes
-							has_graphical_india_culture_group_trigger = yes
-							has_graphical_steppe_culture_group_trigger = yes
-							steppe_building_gfx_use_east_asian_trigger = yes
-							steppe_building_gfx_use_southeast_asian_trigger = yes
-							steppe_building_gfx_use_mena_trigger = yes
-							steppe_building_gfx_use_indian_trigger = yes
-						}
-					}
-				}
-			}
-			animation = serving_tray
-		}
-		animation = storyteller
+		animation = flirtation
 	}
 	#Let's include our steward/chaplain if they match the criteria
 	lower_center_portrait = {
@@ -753,7 +764,7 @@ stewardship_general.2001 = {
 		}
 	}
 
-	#I'll haggle
+	#I'll pick my own CHEAP trinket
 	option = {
 		name = {
 			text = {
@@ -769,11 +780,15 @@ stewardship_general.2001 = {
 				}
 			}
 		}
-		flavor = stewardship_haggle_cheap_trinket_tt
-		custom_tooltip = stewardship_general.2001.trinket_artifact
+		#If we're greedy, we get a lil' bit of stress for wasting gold on a trinket
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_loss
+		}
 		duel = {
 			skill = stewardship
 			target = scope:peddler
+			localization = stewardship_haggle_cheap_trinket_tt
 			
 			#Free
 			2 = {		
@@ -787,6 +802,11 @@ stewardship_general.2001 = {
 			}
 			#Tiny cost
 			4 = {		
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 2
+					min = 1
+				}
 				desc = stewardship_general.2001.tiny_cost
 				stewardship_general_2001_tiny_outcome = yes	
 			}
@@ -794,7 +814,7 @@ stewardship_general.2001 = {
 			2 = {		
 				compare_modifier = {
 					value = scope:duel_value
-					multiplier = -2
+					multiplier = 1
 					min = 1
 				}
 				desc = stewardship_general.2001.expensive_cost
@@ -802,14 +822,8 @@ stewardship_general.2001 = {
 			}
 		}
 		add_character_flag = { flag = cheap_option_stewardship_general.2001 }
-
-		stress_and_fulfillment_impact = {
-			arbitrary = miniscule_stress_impact_loss
-			generous = minor_stress_impact_gain
-			content = minor_stress_impact_gain
-		}
 		ai_chance = {
-			base = 5
+			base = 75
 			compare_modifier = {
 				trigger = {
 					ai_rationality >= 10
@@ -821,15 +835,8 @@ stewardship_general.2001 = {
 				multiplier = 1000 # -10,000 at 0 Stewardship, +0 at 10 Stewardship, +10,000 at 20 Stewardship
 			}
 			ai_value_modifier = {
-				ai_greed = 0.5
-			}
-			modifier = {
-				factor = 0
-				OR = {
-					short_term_gold <= major_gold_value
-					has_trait = generous
-					has_trait = content
-				}
+				ai_rationality = medium_chance_impact_positive_ai_value
+				ai_greed = low_chance_impact_positive_ai_value
 			}
 		}
 	}
@@ -849,43 +856,57 @@ stewardship_general.2001 = {
 				}
 			}
 		}
-		flavor = stewardship_haggle_expensive_trinket_tt
-		custom_tooltip = stewardship_general.2001.trinket_artifact
-		if = {
-			limit = {
-				has_royal_court = yes
-			}
-			change_current_court_grandeur = minor_court_grandeur_gain
-		}
-		else = {
-			add_prestige = minor_prestige_gain
-		}
-		add_stewardship_lifestyle_xp = minor_lifestyle_experience
-		remove_short_term_gold = minor_gold_value
-		add_character_flag = { flag = expensive_option_stewardship_general.2001 }
-
-		#if we didn't get help, the councillor is insulted
-		if = {
-			limit = {
-				exists = scope:helpful_councillor
-			}
-			add_character_flag = { flag = insulted_councillor_stewardship_general.2001 }
+		trigger = {
+			#Only available if we have high stewardship skill
+			stewardship >= decent_skill_rating
 		}
 		#If we're greedy, we get a lil' bit of stress for wasting gold on a trinket
-		stress_and_fulfillment_impact = {
-			humble = minor_stress_impact_gain
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			arbitrary = miniscule_stress_impact_loss
 		}
-		ai_chance = {
-			base = 5
-			ai_value_modifier = {
-				ai_sociability = 0.5
-			}
-			modifier = {
-				factor = 0
-				OR = {
-					short_term_gold <= medium_gold_value
-					has_trait = humble
+		duel = {
+			skill = stewardship
+			target = scope:peddler
+			localization = stewardship_haggle_expensive_trinket_tt
+			
+			#Tiny cost
+			3 = {		
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 2
+					min = 1
 				}
+				desc = stewardship_general.2001.tiny_cost
+				stewardship_general_2001_tiny_outcome = yes
+			}
+			#Minor cost
+			5 = {		
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = 1
+				}
+				desc = stewardship_general.2001.minor_cost
+				stewardship_general_2001_minor_outcome = yes				
+			}
+		}
+		add_character_flag = { flag = expensive_option_stewardship_general.2001 }
+		ai_chance = {
+			base = 75
+			compare_modifier = {
+				trigger = {
+					ai_rationality >= 10
+				}
+				value = {
+					value = stewardship
+					add = -10
+				}
+				multiplier = 1000 # -10,000 at 0 Stewardship, +0 at 10 Stewardship, +10,000 at 20 Stewardship
+			}
+			ai_value_modifier = {
+				ai_rationality = medium_chance_impact_positive_ai_value
+				ai_greed = low_chance_impact_positive_ai_value
 			}
 		}
 	}
@@ -905,36 +926,75 @@ stewardship_general.2001 = {
 						}
 						desc = stewardship_general.2001.c.steward
 					}
-					desc = stewardship_general.2001.c.chaplain
+					#Chaplain description
+					triggered_desc = {
+						trigger = { 
+							exists = scope:helpful_councillor
+							scope:helpful_councillor = { has_council_position = councillor_court_chaplain }
+						}
+						desc = stewardship_general.2001.c.chaplain
+					}
 				}
 			}
 		}
-		flavor = stewardship_haggle_helpful_trinket_tt
-		custom_tooltip = stewardship_general.2001.trinket_artifact
-		scope:helpful_councillor = {
-			add_opinion = {
-				target = root
-				modifier = trust_opinion
-				opinion = 10
-			}
+		#If we're greedy, we get a lil' bit of stress for wasting gold on a trinket
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
 		}
 		#Flag to determine if you listened to the councillor or not
 		add_character_flag = { flag = helpful_option_stewardship_general.2001 }
-		add_stewardship_lifestyle_xp = minor_lifestyle_xp
-		remove_short_term_gold = miniscule_gold_value
-		#If we're greedy, we get a lil' bit of stress for wasting gold on a trinket
-		stress_and_fulfillment_impact = {
-			trusting = miniscule_stress_impact_loss
-			fickle = minor_stress_impact_gain
+		#Let's Steward it out!
+		duel = {
+			skill = stewardship
+			target = scope:peddler
+			localization = stewardship_haggle_helpful_trinket_tt
+		
+			#Free
+			3 = {		
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 2
+					min = 1
+				}
+				desc = stewardship_general.2001.free
+				stewardship_general_2001_free_outcome = yes	
+			}
+			#Tiny cost
+			3 = {		
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 2
+					min = 1
+				}
+				desc = stewardship_general.2001.tiny_cost
+				stewardship_general_2001_tiny_outcome = yes	
+			}
+			#Minor cost
+			1 = {		
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = 1
+				}
+				desc = stewardship_general.2001.minor_cost
+				stewardship_general_2001_minor_outcome = yes
+			}
 		}
 		ai_chance = {
-			base = 10
-			ai_value_modifier = {
-				ai_rationality = 1
+			base = 100
+			compare_modifier = {
+				trigger = {
+					ai_rationality >= 10
+				}
+				value = {
+					value = stewardship
+					add = -10
+				}
+				multiplier = 1000 # -10,000 at 0 Stewardship, +0 at 10 Stewardship, +10,000 at 20 Stewardship
 			}
-			modifier = {
-				factor = 0
-				has_trait = fickle
+			ai_value_modifier = {
+				ai_rationality = medium_chance_impact_positive_ai_value
+				ai_greed = low_chance_impact_positive_ai_value
 			}
 		}
 	}
@@ -963,16 +1023,35 @@ stewardship_general.2001 = {
 			}
 		}
 		#Phew, we didn't spend anything!
-		stress_and_fulfillment_impact = {
-			base = miniscule_stress_impact_loss
-			calm = minor_stress_impact_loss
-			eccentric = minor_stress_impact_loss
-			temperate = miniscule_stress_impact_loss
+		stress_impact = {
+			greedy = miniscule_stress_impact_loss
+		}
+		if = { 
+			limit = { 
+				has_trait = greedy
+				OR = {
+					has_trait = wrathful
+					has_trait = irritable
+					has_trait = impatient
+				}
+			}
+			reverse_add_opinion = { 
+				target = scope:peddler
+				modifier = scared_opinion
+				opinion = -20
+			}
+		}
+		else = {
+			reverse_add_opinion = { 
+				target = scope:peddler
+				modifier = dismissive_opinion
+				opinion = -10
+			}
 		}
 		ai_chance = {
 			base = 100
 			ai_value_modifier = {
-				ai_energy = -1
+				ai_greed = medium_chance_impact_positive_ai_value
 			}
 		}
 	}
@@ -1041,7 +1120,7 @@ stewardship_general.2001 = {
 				scope:new_trinket = {
 					set_variable = peddler_trinket
 				}
-				trigger_event = stewardship_general.2002
+				trigger_event = { id = stewardship_general.2002 }
 			}
 		}
 	}
@@ -1049,7 +1128,7 @@ stewardship_general.2001 = {
 
 
 scripted_effect apply_impressivity_effect = {
-	#Impressed
+	#Very Impressed
 	if = {
 		limit = { has_character_flag = impressed_councillor_stewardship_general.2001 }
 		reverse_add_opinion = { 
@@ -1058,20 +1137,20 @@ scripted_effect apply_impressivity_effect = {
 			opinion = 10
 		}
 	}
-	#Very Impressed
+	#Impressed
 	else_if = {
 		limit = { has_character_flag = very_impressed_councillor_stewardship_general.2001 }
 		reverse_add_opinion = { 
 			target = scope:helpful_councillor
 			modifier = impressed_opinion
-			opinion = 15
+			opinion = 20
 		}
 	}
 	#Insulted
 	else_if = {
 		limit = { has_character_flag = insulted_councillor_stewardship_general.2001 }
 		#We don't like people disliking us
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = miniscule_stress_impact_gain
 		}
 		reverse_add_opinion = { 
@@ -1083,13 +1162,13 @@ scripted_effect apply_impressivity_effect = {
 	#Very Insulted
 	else = {
 		#We don't like people disliking us
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_gain
 		}
 		reverse_add_opinion = { 
 			target = scope:helpful_councillor
 			modifier = dismissed_me_opinion
-			opinion = -15
+			opinion = -20
 		}
 	}
 }
@@ -1203,7 +1282,7 @@ stewardship_general.2002 = {
 	}
 
 	immediate = {
-		#We need to find our bought trinket in our inventory
+	#We need to find our bought trinket in our inventory
 		random_character_artifact = { 
 			limit = { has_variable = peddler_trinket }
 			save_scope_as = bought_trinket
@@ -1233,11 +1312,18 @@ stewardship_general.2002 = {
 				has_character_flag = very_impressed_councillor_stewardship_general.2001
 			}
 		}
+		#If we're humble or shy, this is stressful - but if we like it, it's soothing
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_loss
+			ambitious = miniscule_stress_impact_loss
+		}
 		duel = {
 			skill = stewardship
 			value = 10
 			#You talk bartering strategies
-			6 = {		
+			5 = {		
 				compare_modifier = {
 					value = scope:duel_value
 					multiplier = 2
@@ -1285,24 +1371,6 @@ stewardship_general.2002 = {
 				}
 			}
 		}
-		#If we're humble or shy, this is stressful - but if we like it, it's soothing
-		stress_and_fulfillment_impact = {
-			humble = minor_stress_impact_gain
-			lazy = minor_stress_impact_gain
-			arrogant = miniscule_stress_impact_loss
-			ambitious = miniscule_stress_impact_loss
-		}
-		ai_chance = {
-			base = 1
-			modifier = {
-				factor = 0
-				OR = {
-					has_trait = humble
-					has_trait = lazy
-					stewardship < high_skill_rating
-				}
-			}
-		}
 	}
 	#Attempt to convince them you made a steal
 	option = {
@@ -1315,12 +1383,18 @@ stewardship_general.2002 = {
 				has_character_flag = very_insulted_councillor_stewardship_general.2001
 			}
 		}
+		#If we're honest, just or compassionate we get a lil' bit of stress for fabricating the truth
+		stress_impact = {
+			honest = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+		}
 		duel = {
 			skill = stewardship
 			value = 10
 			
 			#You managed to convince them
-			6 = {		
+			5 = {		
 				compare_modifier = {
 					value = scope:duel_value
 					multiplier = 2
@@ -1365,23 +1439,6 @@ stewardship_general.2002 = {
 						opinion = -30
 					}	
 				}	
-			}
-		}
-		stress_and_fulfillment_impact = {
-			humble = minor_stress_impact_gain
-			arrogant = miniscule_stress_impact_loss
-			stubborn = miniscule_stress_impact_loss
-			trusting = minor_stress_impact_gain
-		}
-		ai_chance = {
-			base = 1
-			modifier = {
-				factor = 0
-				OR = {
-					has_trait = humble
-					has_trait = trusting
-					stewardship < high_skill_rating
-				}
 			}
 		}
 	}
@@ -1769,7 +1826,7 @@ stewardship_general.5041 = {
 			EXECUTIONER = root
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			forgiving = major_stress_impact_gain
 			compassionate = major_stress_impact_gain
 			content = medium_stress_impact_gain
@@ -1796,7 +1853,7 @@ stewardship_general.5041 = {
 		}
 		
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			forgiving = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 			trusting = minor_stress_impact_gain
@@ -1828,7 +1885,7 @@ stewardship_general.5041 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			wrathful = minor_stress_impact_gain
 			vengeful = medium_stress_impact_gain
 			paranoid = medium_stress_impact_gain

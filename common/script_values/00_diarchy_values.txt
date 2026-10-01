@@ -197,32 +197,29 @@ diarch_loyalty_score_type_grand_chancellor_value = {
 		# Overrides.
 		## Loyalty overrides.
 		add = diarch_loyalty_score_standard_values_overrides_loyalty_value
-		if = {
-			limit = { liege = { has_legitimacy = yes } }
-			add = {
-				desc = diarch_loyalty_score.regency.liege_legitimacy
-				value = 0
-				if = {
-					limit = {
-						liege.legitimacy_level > 4
-					}
-					add = diarch_loyalty_score_add_major_gain
+		add = {
+			desc = diarch_loyalty_score.regency.liege_legitimacy
+			value = 0
+			if = {
+				limit = {
+					liege.legitimacy_level > 4
 				}
-				else_if = {
-					limit = {
-						liege.legitimacy_level >= 2
-					}
-					add = diarch_loyalty_score_add_medium_gain
+				add = diarch_loyalty_score_add_major_gain
+			}
+			else_if = {
+				limit = {
+					liege.legitimacy_level >= 2
 				}
-				else_if = {
-					limit = {
-						liege.legitimacy_level = 1
-					}
-					add = diarch_loyalty_score_add_medium_loss
+				add = diarch_loyalty_score_add_medium_gain
+			}
+			else_if = {
+				limit = {
+					liege.legitimacy_level = 1
 				}
-				else = {
-					add = diarch_loyalty_score_add_omega_loss
-				}
+				add = diarch_loyalty_score_add_medium_loss
+			}
+			else = {
+				add = diarch_loyalty_score_add_omega_loss
 			}
 		}
 		if = {
@@ -320,32 +317,29 @@ diarch_loyalty_score_type_grand_marshall_value = {
 		# Overrides.
 		## Loyalty overrides.
 		add = diarch_loyalty_score_standard_values_overrides_loyalty_value
-		if = {
-			limit = { liege = { has_legitimacy = yes } }
-			add = {
-				desc = diarch_loyalty_score.regency.liege_legitimacy
-				value = 0
-				if = {
-					limit = {
-						liege.legitimacy_level > 4
-					}
-					add = diarch_loyalty_score_add_major_gain
+		add = {
+			desc = diarch_loyalty_score.regency.liege_legitimacy
+			value = 0
+			if = {
+				limit = {
+					liege.legitimacy_level > 4
 				}
-				else_if = {
-					limit = {
-						liege.legitimacy_level >= 2
-					}
-					add = diarch_loyalty_score_add_medium_gain
+				add = diarch_loyalty_score_add_major_gain
+			}
+			else_if = {
+				limit = {
+					liege.legitimacy_level >= 2
 				}
-				else_if = {
-					limit = {
-						liege.legitimacy_level = 1
-					}
-					add = diarch_loyalty_score_add_medium_loss
+				add = diarch_loyalty_score_add_medium_gain
+			}
+			else_if = {
+				limit = {
+					liege.legitimacy_level = 1
 				}
-				else = {
-					add = diarch_loyalty_score_add_omega_loss
-				}
+				add = diarch_loyalty_score_add_medium_loss
+			}
+			else = {
+				add = diarch_loyalty_score_add_omega_loss
 			}
 		}
 		if = {
@@ -628,9 +622,9 @@ diarch_loyalty_score_standard_values_general_culture_value = {
 						OR = {
 							tyranny >= 1
 							prestige_level <= 0
-							has_any_shunned_or_criminal_trait_in_rite_trigger = {
+							has_any_shunned_or_criminal_trait_in_faith_trigger = {
 								CHARACTER = liege
-								RITE = root.rite
+								FAITH = root.faith
 							}
 							# We avoid the actual ai_honour stat because it's a bit less exposed to the player.
 						}
@@ -1313,7 +1307,7 @@ diarchy_regent_succession_score_value = {
 						is_incapable = yes
 					}
 				}
-				is_close_or_extended_family_of = liege
+				any_close_or_extended_family_member = { this = liege }
 			}
 			# Ruling characters  get a bit less, as they have other duties.
 			if = {
@@ -1345,27 +1339,75 @@ diarchy_regent_succession_score_value = {
 				}
 			}
 			## Is child of
-			else_if = {
+			if = {
 				limit = { is_child_of = liege }
 				add = {
 					value = major_diarch_candidate_gain
 					desc = diarch_succession_score.familial_ties.your_child
 				}
 			}
-			## Is close family of
-			else_if = {
-				limit = { is_close_family_of = liege }
+			## Is sibling of
+			if = {
+				limit = { is_sibling_of = liege }
 				add = {
 					value = major_diarch_candidate_gain
-					desc = diarch_succession_score.familial_ties.your_close_family
+					desc = diarch_succession_score.familial_ties.your_sibling
 				}
 			}
-			## Is extended family of
-			else_if = {
-				limit = { is_extended_family_of = liege }
+			## Is grandparent of
+			if = {
+				limit = { is_grandparent_of = liege }
 				add = {
 					value = medium_diarch_candidate_gain
-					desc = diarch_succession_score.familial_ties.your_extended_family
+					desc = diarch_succession_score.familial_ties.your_grandparent
+				}
+			}
+			## Is grandchild of
+			if = {
+				limit = { is_grandchild_of = liege }
+				add = {
+					value = minor_diarch_candidate_gain
+					desc = diarch_succession_score.familial_ties.your_grandchild
+				}
+			}
+			## Is uncle/aunt of
+			if = {
+				limit = { is_uncle_or_aunt_of = liege }
+				add = {
+					value = medium_diarch_candidate_gain
+					desc = diarch_succession_score.familial_ties.your_auntuncle
+				}
+			}
+			## Is nibling of
+			if = {
+				limit = { is_nibling_of = liege }
+				add = {
+					value = medium_diarch_candidate_gain
+					desc = diarch_succession_score.familial_ties.your_nibling
+				}
+			}
+			## Is cousin of
+			if = {
+				limit = { is_cousin_of = liege }
+				add = {
+					value = minor_diarch_candidate_gain
+					desc = diarch_succession_score.familial_ties.your_cousin
+				}
+			}
+			## Is great grandparent of
+			if = {
+				limit = { is_great_grandparent_of = liege }
+				add = {
+					value = minor_diarch_candidate_gain
+					desc = diarch_succession_score.familial_ties.your_greatgrandparent
+				}
+			}
+			## Is great grandchild of
+			if = {
+				limit = { is_great_grandchild_of = liege }
+				add = {
+					value = miniscule_diarch_candidate_gain
+					desc = diarch_succession_score.familial_ties.yourgreat_grandchild
 				}
 			}
 		}
@@ -1376,7 +1418,8 @@ diarchy_regent_succession_score_value = {
 			## Is your heir
 			if = {
 				limit = {
-					liege.primary_heir ?= this
+					exists = liege.primary_heir
+					this = liege.primary_heir
 				}
 				add = {
 					value = massive_diarch_candidate_gain
@@ -1415,6 +1458,19 @@ diarchy_regent_succession_score_value = {
 					desc = diarch_succession_score.personal_ties.your_powerful_vassal
 				}
 			}
+			### Has positive opinion
+			#if = {
+			#	limit = {
+			#		opinion = {
+			#			target = liege
+			#			value >= medium_positive_opinion
+			#		}
+			#	}
+			#	add = {
+			#		value = miniscule_diarch_candidate_gain
+			#		desc = diarch_succession_score.personal_ties.likes_you
+			#	}
+			#}
 			## Has positive relationship
 			if = {
 				limit = {
@@ -1446,6 +1502,19 @@ diarchy_regent_succession_score_value = {
 					desc = diarch_succession_score.personal_ties.your_negative_relation
 				}
 			}
+			### Has negative opinion
+			#if = {
+			#	limit = {
+			#		opinion = {
+			#			target = liege
+			#			value <= medium_negative_opinion
+			#		}
+			#	}
+			#	add = {
+			#		value = miniscule_diarch_candidate_loss
+			#		desc = diarch_succession_score.personal_ties.dislikes_you
+			#	}
+			#}
 		}
 		# Societal bonds.
 		add = {
@@ -2800,7 +2869,7 @@ liege_diarchy_surcharge_interaction_revoke_title_interaction_value = {
 	}
 
 	# But, inside diarchies, there's a cost attached to various simple political actions.
-	scope:puppet_or_actor = {
+	scope:actor = {
 		if = {
 			limit = { has_active_diarchy = yes }
 			# Mild costs.
@@ -2847,7 +2916,7 @@ liege_diarchy_surcharge_interaction_retract_vassal_interaction_value = {
 	}
 
 	# But, inside diarchies, there's a cost attached to various simple political actions.
-	scope:puppet_or_actor = {
+	scope:actor = {
 		if = {
 			limit = { has_active_diarchy = yes }
 			# Mild costs.
@@ -2889,7 +2958,7 @@ liege_diarchy_surcharge_interaction_retract_vassal_interaction_value = {
 liege_diarchy_surcharge_interaction_imprison_interaction_value = {
 
 	# But, inside diarchies, there's a cost attached to various simple political actions.
-	scope:puppet_or_actor = {
+	scope:actor = {
 		if = {
 			limit = { has_active_diarchy = yes }
 			# Base value of zero, since this is free by default.
@@ -2941,7 +3010,7 @@ liege_diarchy_surcharge_interaction_execute_prisoner_interaction_value = {
 	}
 
 	# But, inside diarchies, there's a cost attached to various simple political actions.
-	scope:puppet_or_actor = {
+	scope:actor = {
 		if = {
 			limit = { has_active_diarchy = yes }
 			# Mild costs.
@@ -2979,10 +3048,10 @@ liege_diarchy_surcharge_interaction_execute_prisoner_interaction_value = {
 		}
 	}
 
-	# If our rite believes in HumSac, then this is a religious action and never costs prestige.
+	# If our faith believes in HumSac, then this is a religious action and never costs prestige.
 	if = {
 		limit = {
-			scope:puppet_or_actor.rite = { rite_has_parameter = human_sacrifice_active }
+			scope:actor.faith = { has_doctrine_parameter = human_sacrifice_active }
 		}
 		multiply = 0
 	}
@@ -3187,10 +3256,7 @@ swing_scales_influence_cost_value = {
 	## Should only affect the regent, not the ruler
 	if = {
 		limit = {
-			scope:recipient = {
-				is_liege_or_above_of = scope:actor
-				has_legitimacy = yes
-			}
+			scope:recipient = { is_liege_or_above_of = scope:actor }
 		}
 		# 1
 		if = {
@@ -3247,10 +3313,7 @@ swing_scales_prestige_cost_value = {
 	## Should only affect the regent, not the ruler
 	if = {
 		limit = {
-			scope:recipient = {
-				is_liege_or_above_of = scope:actor
-				has_legitimacy = yes
-			}
+			scope:recipient = { is_liege_or_above_of = scope:actor }
 		}
 		# 1
 		if = {
@@ -3292,9 +3355,10 @@ swing_scales_piety_cost_value = {
 	## Pure route.
 	if = {
 		limit = {
-			trigger_if = {
-				limit = { exists = scope:swing_piety }
-				scope:swing_piety = yes
+			OR = {
+				always = scope:swing_piety
+				# And if we're in the important_action...
+				NOT = { exists = scope:swing_piety }
 			}
 		}
 		value = 0
@@ -3314,7 +3378,7 @@ swing_scales_piety_cost_value = {
 	}
 	## Hybrid HoF route.
 	else_if = {
-		limit = { scope:swing_hof ?= yes }
+		limit = { always = scope:swing_hof }
 		value = 0
 		# Gate by liege tier.
 		## Count.
@@ -3335,10 +3399,7 @@ swing_scales_piety_cost_value = {
 	## Should only affect the regent, not the ruler
 	if = {
 		limit = {
-			scope:recipient = {
-				is_liege_or_above_of = scope:actor
-				has_legitimacy = yes
-			}
+			scope:recipient = { is_liege_or_above_of = scope:actor }
 		}
 		# 1
 		if = {
@@ -3379,9 +3440,10 @@ swing_scales_cash_cost_value = {
 	## Pure route.
 	if = {
 		limit = {
-			trigger_if = {
-				limit = { exists = scope:swing_gold }
-				scope:swing_gold = yes
+			OR = {
+				always = scope:swing_gold
+				# And if we're in the important action...
+				NOT = { exists = scope:swing_gold }
 			}
 		}
 		value = 0
@@ -3422,10 +3484,7 @@ swing_scales_cash_cost_value = {
 	## Should only affect the regent, not the ruler
 	if = {
 		limit = {
-			scope:recipient = {
-				is_liege_or_above_of = scope:actor
-				has_legitimacy = yes
-			}
+			scope:recipient = { is_liege_or_above_of = scope:actor }
 		}
 		# 1
 		if = {
@@ -3669,13 +3728,7 @@ pv_overthrow_threshold_value = {
 	value = 0
 	# Grab our sum total of powerful vassals.
 	liege = {
-		every_vassal = {
-			limit = {
-				this != prev
-				is_powerful_vassal_or_house_head_trigger = yes
-			}
-			add  = 1
-		}
+		every_powerful_vassal = { add = 1 }
 	}
 	# Halve it.
 	multiply = 0.5
@@ -3685,7 +3738,7 @@ pv_overthrow_threshold_value = {
 	add = 1
 	# ... but then subtract one if we're a powerful vassal, since we _won't_ be in the list but, naturally, support the coup.
 	if = {
-		limit = { is_powerful_vassal_or_house_head_trigger = yes }
+		limit = { is_powerful_vassal = yes }
 		add = -1
 	}
 }
@@ -3695,8 +3748,7 @@ pv_overthrow_tally_value = {
 	every_in_list = {
 		variable = coup_pv_supporters_list
 		limit = {
-			liege = root.liege
-			is_powerful_vassal_or_house_head_trigger = yes
+			is_powerful_vassal_of = root.liege
 			is_alive = yes
 		}
 		add = 1
@@ -3708,7 +3760,7 @@ pv_overthrow_threshold_display_value = {
 	value = pv_overthrow_threshold_value
 	# ... but then add back the one if we're a powerful vassal, since we _won't_ be in the list but, naturally, support the coup.
 	if = {
-		limit = { is_powerful_vassal_or_house_head_trigger = yes }
+		limit = { is_powerful_vassal = yes }
 		add = 1
 	}
 }
@@ -3718,7 +3770,7 @@ pv_overthrow_tally_display_value = {
 	# ... and remember to add one if we're a powerful vassal, since we _won't_ be in the list but, naturally, support the coup.
 	## We have to separate out the values like this, since the actual list checks powerful vassals and we're not actually in it.
 	if = {
-		limit = { is_powerful_vassal_or_house_head_trigger = yes }
+		limit = { is_powerful_vassal = yes }
 		add = 1
 	}
 }

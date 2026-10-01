@@ -58,8 +58,8 @@ restore_the_danelaw_effect = {
 
 	if = {
 		limit = {
-			highest_held_title_tier < tier_empire
-			primary_title != title:k_danelaw
+			NOT = { highest_held_title_tier = tier_empire }
+			NOT = { has_primary_title = title:k_danelaw }
 		}
 		set_primary_title_to = title:k_danelaw
 	}
@@ -68,7 +68,7 @@ restore_the_danelaw_effect = {
 	destroy_title = title:k_england
 }
 
-create_holy_order_accompanying_effect = {
+create_holy_order_effect = {
 	hidden_effect = {
 		if = { # set up currencies for the HO leader, has to be saved as scope:leader
 			limit = {
@@ -78,39 +78,17 @@ create_holy_order_accompanying_effect = {
 				add_gold = 100 #So that they have some money to lend out
 				add_piety_level = 2
 				add_gold = holy_order_starting_gold
-				#Get rid of non-martial gender courtiers before they get armored up
-				every_courtier = {
-					limit = {
-						NOT = {
-							can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:leader }
-						}
-					}
-					scope:leader = {
-						remove_courtier_or_guest = prev
-					}
-				}
 				every_courtier = {
 					add_trait = order_member
 				}
 			}
-
+			
 			# send messages
 			send_interface_toast = {
 				type = holy_order_founded_message
 				desc = i_created_holy_order_message
 				left_icon = scope:leader
 				right_icon = scope:new_holy_order.title
-			}
-			if = {
-				limit = {
-					has_personal_tenet_flag = leasing_to_military_order_give_spiritual_fulfillment_personal
-					faith = scope:leader.faith
-				}
-				send_interface_toast = {
-					type = event_generic_good
-					title = leasing_to_military_order_give_spiritual_fulfillment_personal_toast
-					change_spiritual_fulfillment = medium_spiritual_fulfillment_value
-				}
 			}
 		}
 		# send messages to relevant characters that HO got created
@@ -174,7 +152,7 @@ create_holy_order_accompanying_effect = {
 	# and boost the fervor
 	faith = {
 		change_fervor = {
-			value = significant_fervor_gain
+			value = 10
 			desc = fervor_gain_holy_order_founded
 		}
 	}
@@ -421,16 +399,16 @@ embrace_english_culture_effect = {
 		}
 	}
 
-	remove_global_variable = harrying_of_the_north
+	#remove_global_variable = harrying_of_the_north
 	every_player = {
 		limit = {
 			capital_province = {
 				geographical_region = world_europe_west_britannia
 			}
 		}
-		trigger_event = ep3_story_cycle_harrying.0004
+		#trigger_event = ep3_story_cycle_harrying.0004
 	}
-	global_var:harrying_of_the_north = { end_story = yes }
+	#global_var:harrying_of_the_north = { end_story = yes }
 }
 
 form_portugal_decision_effects = {
@@ -474,8 +452,10 @@ form_portugal_decision_effects = {
 
 	if = {
 		limit = {
-			highest_held_title_tier < tier_empire
-			primary_title != title:k_portugal
+			NOR = {
+				primary_title = { this = title:k_portugal }
+				highest_held_title_tier = tier_empire
+			}
 		}
 		set_primary_title_to = title:k_portugal
 	}
@@ -495,7 +475,7 @@ form_portugal_decision_effects = {
 			limit = { has_same_culture_as = scope:portugal_former }
 			add_to_list = convert_list
 		}
-		#transfer over innovations from previous culture.
+		#transfer over innovations from previous culture. 
 		culture:portuguese = {
 			hidden_effect = { reset_culture_creation_date = yes }
 			get_all_innovations_from = scope:portugal_former.culture
@@ -549,7 +529,7 @@ form_portugal_decision_effects = {
 	}
 
 	#Prestige
-	add_prestige = massive_prestige_gain
+	add_prestige = massive_prestige_gain	
 }
 
 
@@ -579,16 +559,18 @@ declare_canarias_decision_effects = {
 
 	if = {
 		limit = {
-			highest_held_title_tier < tier_empire
-			primary_title != title:k_canarias
+			NOR = {
+				primary_title = { this = title:k_canarias }
+				highest_held_title_tier = tier_empire
+			}
 		}
 		set_primary_title_to = title:k_canarias
 	}
 
 	#Prestige
-	add_prestige = massive_prestige_gain
+	add_prestige = massive_prestige_gain	
 }
-
+	
 
 
 unite_the_spanish_thrones_decision_effects = {
@@ -609,7 +591,7 @@ unite_the_spanish_thrones_decision_effects = {
 		}
 		add_realm_law_skip_effects = crown_authority_3
 	}
-
+	
 	# Coat of Arms
 	if = {
 		limit = { scope:spain_uniter.primary_title = title:k_castille }
@@ -625,7 +607,7 @@ unite_the_spanish_thrones_decision_effects = {
 	title:k_leon = { add_to_list = spanish_kingdoms }
 	title:k_spanish_galicia = { add_to_list = spanish_kingdoms }
 	title:k_portugal = { add_to_list = spanish_kingdoms }
-	title:k_aragon = { add_to_list = spanish_kingdoms }
+	title:k_visigoths = { add_to_list = spanish_kingdoms }
 	title:k_navarra = { add_to_list = spanish_kingdoms }
 	title:k_andalusia = { add_to_list = spanish_kingdoms }
 	title:k_badajoz = { add_to_list = spanish_kingdoms }
@@ -666,7 +648,7 @@ unite_africa_decision_effects = {
 					religion_tag = west_african_roog_religion
 					religion_tag = west_african_religion
 					religion_tag = west_african_bori_religion
-					this = faith:miaphysitism
+					this = faith:coptic
 
 				}
 			}
@@ -682,7 +664,7 @@ unite_africa_decision_effects = {
 		if = {
 			limit = {
 				any_vassal_or_below = {
-					rite != scope:africa_uniter.rite
+					faith != scope:africa_uniter.faith
 					is_ai = yes
 					capital_province ?= { geographical_region = world_africa }
 				}
@@ -690,13 +672,13 @@ unite_africa_decision_effects = {
 			every_vassal_or_below = {
 				custom = every_non_root_faith_vassal_africa
 				limit = {
-					rite != scope:africa_uniter.rite
+					faith != scope:africa_uniter.faith
 					is_ai = yes
 					capital_province ?= { geographical_region = world_africa }
 				}
 				random = {
 					chance = 33
-					set_character_rite = scope:africa_uniter.rite
+					set_character_faith = scope:africa_uniter.faith
 				}
 			}
 		}
@@ -704,13 +686,13 @@ unite_africa_decision_effects = {
 		if = {
 			limit = {
 				any_realm_province = {
-					rite != scope:africa_uniter.rite
+					faith != scope:africa_uniter.faith
 					geographical_region = world_africa
 				}
 			}
 			every_realm_province = {
 				limit = {
-					rite != scope:africa_uniter.rite
+					faith != scope:africa_uniter.faith
 					geographical_region = world_africa
 				}
 				county = { add_to_list = every_realm_county }
@@ -722,7 +704,7 @@ unite_africa_decision_effects = {
 				random = {
 					chance = 33
 					custom_tooltip = every_non_africa_uniter_faith_convert
-					hidden_effect = { set_county_rite = scope:africa_uniter.rite }
+					hidden_effect = { set_county_faith = scope:africa_uniter.faith }
 				}
 			}
 		}
@@ -730,7 +712,7 @@ unite_africa_decision_effects = {
 }
 
 avenge_the_battle_of_tours_decision_effects = {
-
+		
 	give_nickname = nick_the_avenger
 	add_character_modifier = {
 		modifier = avenger_of_the_martyrs
@@ -785,12 +767,12 @@ avenge_the_battle_of_tours_decision_effects = {
 			}
 			county = {
 				add_to_list = every_realm_county
-			}
+			}	
 		}
 
 		every_in_list = {
 			list = every_realm_county
-			custom = every_non_root_faith_county_west_europe
+			custom = every_non_root_faith_county_west_europe		
 			random = {
 				chance = 33
 				custom_tooltip = every_non_avenger_faith_convert
@@ -811,7 +793,7 @@ avenge_the_battle_of_tours_decision_effects = {
 	}
 
 	# Rattach south of France to the e_hispania
-	title:e_france = {
+	title:e_sacral_kingdom_gaul = {
 		every_in_de_jure_hierarchy = {
 			limit = {
 				tier = tier_kingdom
@@ -918,7 +900,7 @@ unite_the_western_slavs_decision_effects = {
 				set_de_jure_liege_title = scope:western_slav_uniter.primary_title
 			}
 		}
-	}
+	}	
 }
 
 unite_the_southern_slavs_decision_effects = {
@@ -935,9 +917,8 @@ unite_the_southern_slavs_decision_effects = {
 	title:k_croatia = { add_to_list = south_slavic_kingdoms }
 	title:k_serbia = { add_to_list = south_slavic_kingdoms }
 	title:k_bulgaria = { add_to_list = south_slavic_kingdoms }
-	title:k_dacia = { add_to_list = south_slavic_kingdoms }
+	title:k_warlord_roxolania = { add_to_list = south_slavic_kingdoms }
 	title:k_moldavia = { add_to_list = south_slavic_kingdoms }
-	title:k_bosnia = { add_to_list = south_slavic_kingdoms }
 
 	custom_tooltip = unite_the_southern_slavs_decision_titles_tt
 	hidden_effect = {
@@ -1023,7 +1004,7 @@ unite_the_slavs_decision_effects = {
 	set_primary_title_to = title:e_slavia
 	title:e_slavia = { save_scope_as = slavia } #For localisation
 
-	#Destroy the other empires if I have them
+	#Destroy the other three empires if I have them
 	if = {
 		limit = { has_title = title:e_russia }
 		destroy_title = title:e_russia
@@ -1036,10 +1017,6 @@ unite_the_slavs_decision_effects = {
 		limit = { has_title = title:e_carpathia }
 		destroy_title = title:e_carpathia
 	}
-	if = {
-		limit = { has_title = title:e_west_slavia }
-		destroy_title = title:e_west_slavia
-	}
 
 	###Handle de jure drift and empire destruction###
 
@@ -1051,7 +1028,7 @@ unite_the_slavs_decision_effects = {
 	title:k_croatia = { add_to_list = slavic_kingdoms }
 	title:k_serbia = { add_to_list = slavic_kingdoms }
 	title:k_bulgaria = { add_to_list = slavic_kingdoms }
-	title:k_dacia = { add_to_list = slavic_kingdoms }
+	title:k_warlord_roxolania = { add_to_list = slavic_kingdoms }
 	title:k_moldavia = { add_to_list = slavic_kingdoms }
 	title:k_white_rus = { add_to_list = slavic_kingdoms }
 	title:k_galicia-volhynia = { add_to_list = slavic_kingdoms }
@@ -1059,12 +1036,11 @@ unite_the_slavs_decision_effects = {
 	title:k_novgorod = { add_to_list = slavic_kingdoms }
 	title:k_opolye = { add_to_list = slavic_kingdoms }
 	title:k_hungary = { add_to_list = slavic_kingdoms }
-	title:k_sorbia = { add_to_list = slavic_kingdoms }
 	title:k_bosnia = { add_to_list = slavic_kingdoms }
 
 	# Inform players of the de jure drift
 	title:e_slavia = { custom_tooltip = unite_the_slavs_decision_titles_tt } #Scope change for tooltip formatting.
-
+	
 	if = {
 		limit = { has_dlc_feature = legends }
 		create_legend_seed = {
@@ -1099,7 +1075,6 @@ unite_india_decision_effect = {
 			holder = root
 			change = scope:title_change
 		}
-		set_capital_county = root.primary_title.title_capital_county
 	}
 	resolve_title_and_vassal_change = scope:title_change
 	set_primary_title_to = title:h_india
@@ -1155,13 +1130,14 @@ become_saoshyant_decision_effect = {
 	}
 	faith = {
 		change_fervor = {
-			value = substantial_fervor_gain
+			value = 15
 			desc = fervor_gain_saoshyant
 		}
 	}
 }
 
 build_grand_church_decision_effect = {
+	#faith = { activate_holy_site = segrada_familia }
 	if = {
 		limit = {
 			prestige_level < 5
@@ -1280,19 +1256,17 @@ found_university_decision_effect = {
 }
 
 lunatic_building_decision_effect = {
-	scope:lunatic_province = {
+	capital_province = {
 		set_variable = { #To unlock the building
 			name = variable_greenhouse
 			value = yes
 		}
-		hidden_effect = {
-			add_special_building_slot = special_greenhouse_01
-		}
+		add_special_building_slot = special_greenhouse_01
 		add_special_building = special_greenhouse_01
 		#add_province_modifier = extra_building_slot
 		#add_building = special_greenhouse_01
 	}
-
+	
 	give_nickname = nick_the_glass
 }
 
@@ -1320,10 +1294,10 @@ found_witch_coven_decision_effects = {
 convert_whole_realm_to_feudalism_effect = {
 	#TOOLTIP INFO
 	#PLAYER EFFECTS
-
+	
 	hidden_effect = {
 		## Spawn holdings in tribal counties
-
+		
 		every_sub_realm_county = { # Spawn temples in your holy sites
 			limit = {
 				any_county_province = {
@@ -1351,8 +1325,18 @@ convert_whole_realm_to_feudalism_effect = {
 				}
 				set_holding_type = church_holding
 			}
+			hidden_effect = {
+				if = {
+					limit = { has_county_modifier = mpo_siberian_permafrost_modifier }
+					remove_county_modifier = mpo_siberian_permafrost_modifier
+				}
+				else_if = {
+					limit = { has_county_modifier = mpo_siberian_permafrost_modifier_bad }
+					remove_county_modifier = mpo_siberian_permafrost_modifier_bad
+				}
+			}
 		}
-
+		
 		every_sub_realm_county = { # Spawn a City
 			limit = {
 				any_county_province = {
@@ -1426,8 +1410,18 @@ convert_whole_realm_to_feudalism_effect = {
 					set_holding_type = city_holding
 				}
 			}
+			hidden_effect = {
+				if = {
+					limit = { has_county_modifier = mpo_siberian_permafrost_modifier }
+					remove_county_modifier = mpo_siberian_permafrost_modifier
+				}
+				else_if = {
+					limit = { has_county_modifier = mpo_siberian_permafrost_modifier_bad }
+					remove_county_modifier = mpo_siberian_permafrost_modifier_bad
+				}
+			}
 		}
-
+		
 		every_sub_realm_county = { # Spawn a Temple
 			limit = {
 				any_county_province = {
@@ -1492,13 +1486,23 @@ convert_whole_realm_to_feudalism_effect = {
 					modifier = {
 						add = 20
 						OR = {
-							terrain = floodplains
+							terrain = floodplains	
 							terrain = oasis
 							terrain = farmlands
 							terrain = terraced_hills
 						}
 					}
 					set_holding_type = church_holding
+				}
+			}
+			hidden_effect = {
+				if = {
+					limit = { has_county_modifier = mpo_siberian_permafrost_modifier }
+					remove_county_modifier = mpo_siberian_permafrost_modifier
+				}
+				else_if = {
+					limit = { has_county_modifier = mpo_siberian_permafrost_modifier_bad }
+					remove_county_modifier = mpo_siberian_permafrost_modifier_bad
 				}
 			}
 		}
@@ -1527,7 +1531,6 @@ convert_whole_realm_to_feudalism_effect = {
 				value = combined_building_level
 				days = 1
 			}
-			holding_pre_feudalize_effect = yes
 			set_holding_type = castle_holding
 			while = {
 				limit = {
@@ -1541,9 +1544,21 @@ convert_whole_realm_to_feudalism_effect = {
 			}
 			remove_variable = tribal_to_feudal_building_level
 			remove_from_list = feudal_conversion
+			hidden_effect = {
+				county = {
+					if = {
+						limit = { has_county_modifier = mpo_siberian_permafrost_modifier }
+						remove_county_modifier = mpo_siberian_permafrost_modifier
+					}
+					else_if = {
+						limit = { has_county_modifier = mpo_siberian_permafrost_modifier_bad }
+						remove_county_modifier = mpo_siberian_permafrost_modifier_bad
+					}
+				}
+			}
 		}
 	}
-
+	
 	##Liege has Soryo? Convert to Soryo!
 	if = {
 		limit = {
@@ -1576,11 +1591,11 @@ convert_whole_realm_to_feudalism_effect = {
 				liege = { government_has_flag = government_is_clan }
 				AND = {
 					liege = { government_has_flag = government_is_tribal }
-					ep3_is_clan_inclined_trigger = yes
+					religion = religion:islam_religion
 				}
 			}
 		}
-		change_government = clan_government
+		change_government = iqta_government
 	}
 	##Liege has feudal? Convert to feudal!
 	else_if = {
@@ -1590,11 +1605,11 @@ convert_whole_realm_to_feudalism_effect = {
 				liege = { government_has_flag = government_is_feudal }
 				AND = {
 					liege = { government_has_flag = government_is_tribal }
-					ep3_is_clan_inclined_trigger = no
+					NOT = { religion = religion:islam_religion }
 				}
 			}
 		}
-		change_government = feudal_government
+		change_government = western_feudal_government
 	}
 	##You're an independent Japanese Heritage Character? Convert to Soryo!
 	else_if = {
@@ -1624,12 +1639,13 @@ convert_whole_realm_to_feudalism_effect = {
 	##You're an independent Muslim? Convert to clan!
 	else_if = {
 		limit = {
-			ep3_is_clan_inclined_trigger = yes
+			top_liege = this
+			faith = { religion_tag = islam_religion }
 		}
-		change_government = clan_government
+		change_government = iqta_government
 	}
 	##You're an independent anything else? Convert to feudal!
-	else = { change_government = feudal_government }
+	else = { change_government = western_feudal_government }
 	if = {
 		limit = {
 			government_has_flag = government_is_tribal
@@ -1766,7 +1782,7 @@ convert_whole_realm_to_feudalism_effect = {
 			}
 			every_vassal_or_below = {
 				limit = { government_has_flag = government_is_tribal }
-				change_government = clan_government
+				change_government = iqta_government
 				#Nuke tribal authorities.
 				if = {
 					limit = { has_realm_law = tribal_authority_0 }
@@ -1796,7 +1812,7 @@ convert_whole_realm_to_feudalism_effect = {
 		else = {
 			every_vassal_or_below = {
 				limit = { government_has_flag = government_is_tribal }
-				change_government = feudal_government
+				change_government = western_feudal_government
 				#Nuke tribal authorities.
 				if = {
 					limit = { has_realm_law = tribal_authority_0 }
@@ -1829,90 +1845,186 @@ convert_whole_realm_to_feudalism_effect = {
 # Add Special Succession Effects
 
 special_succession_witengamot_effect = {
-	every_held_title = {
-		limit = {
-			tier = prev.highest_held_title_tier
-			NOR = {
-				has_title_law_flag = advanced_succession_law
-				has_title_law_flag = elective_succession_law
+	if = {
+		limit = { highest_held_title_tier = tier_empire }
+		every_held_title = {
+			title_tier = empire
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
 			}
+			add_title_law = saxon_elective_succession_law
 		}
-		add_title_law = saxon_elective_succession_law
+		every_vassal = {
+			limit = { special_succession_witengamot_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_witengamot
+		}
 	}
-	every_vassal = {
-		limit = { special_succession_witengamot_trigger = yes }
-		add_opinion = {
-			modifier = implemented_traditional_succession_law_opinion
-			years = 20
-			target = root
+	else = {
+		every_held_title = {
+			title_tier = kingdom
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
+			}
+			add_title_law = saxon_elective_succession_law
 		}
-		custom = major_decisions.3100.tt_opinion_witengamot
+		every_vassal = {
+			limit = { special_succession_witengamot_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_witengamot
+		}
 	}
 }
 
 special_succession_thing_effect = {
-	every_held_title = {
-		limit = {
-			tier = prev.highest_held_title_tier
-			NOR = {
-				has_title_law_flag = advanced_succession_law
-				has_title_law_flag = elective_succession_law
+	if = {
+		limit = { highest_held_title_tier = tier_empire }
+		every_held_title = {
+			title_tier = empire
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
 			}
+			add_title_law = scandinavian_elective_succession_law
 		}
-		add_title_law = scandinavian_elective_succession_law
+		every_vassal = {
+			limit = { special_succession_thing_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_thing
+		}
 	}
-	every_vassal = {
-		limit = { special_succession_thing_trigger = yes }
-		add_opinion = {
-			modifier = implemented_traditional_succession_law_opinion
-			years = 20
-			target = root
+	else = {
+		every_held_title = {
+			title_tier = kingdom
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
+			}
+			add_title_law = scandinavian_elective_succession_law
 		}
-		custom = major_decisions.3100.tt_opinion_thing
+		every_vassal = {
+			limit = { special_succession_thing_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_thing
+		}
 	}
 }
 
 special_succession_tanistry_effect = {
-	every_held_title = {
-		limit = {
-			tier = prev.highest_held_title_tier
-			NOR = {
-				has_title_law_flag = advanced_succession_law
-				has_title_law_flag = elective_succession_law
+	if = {
+		limit = { highest_held_title_tier = tier_empire }
+		every_held_title = {
+			title_tier = empire
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
 			}
+			add_title_law = gaelic_elective_succession_law
 		}
-		add_title_law = gaelic_elective_succession_law
+		every_vassal = {
+			limit = { special_succession_tanistry_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_tanistry
+		}
 	}
-	every_vassal = {
-		limit = { special_succession_tanistry_trigger = yes }
-		add_opinion = {
-			modifier = implemented_traditional_succession_law_opinion
-			years = 20
-			target = root
+	else = {
+		every_held_title = {
+			title_tier = kingdom
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
+			}
+			add_title_law = gaelic_elective_succession_law
 		}
-		custom = major_decisions.3100.tt_opinion_tanistry
+		every_vassal = {
+			limit = { special_succession_tanistry_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_tanistry
+		}
 	}
 }
 
 special_succession_jirga_effect = {
-	every_held_title = {
-		limit = {
-			tier = prev.highest_held_title_tier
-			NOR = {
-				has_title_law_flag = advanced_succession_law
-				has_title_law_flag = elective_succession_law
+	if = {
+		limit = { highest_held_title_tier = tier_empire }
+		every_held_title = {
+			title_tier = empire
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
 			}
+			add_title_law = tribal_elective_succession_law
 		}
-		add_title_law = tribal_elective_succession_law
+		every_vassal = {
+			limit = { special_succession_jirga_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_thing
+		}
 	}
-	every_vassal = {
-		limit = { special_succession_jirga_trigger = yes }
-		add_opinion = {
-			modifier = implemented_traditional_succession_law_opinion
-			years = 20
-			target = root
+	else = {
+		every_held_title = {
+			title_tier = kingdom
+			limit = {
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
+			}
+			add_title_law = tribal_elective_succession_law
 		}
-		custom = major_decisions.3100.tt_opinion_thing
+		every_vassal = {
+			limit = { special_succession_jirga_trigger = yes }
+			add_opinion = {
+				modifier = implemented_traditional_succession_law_opinion
+				years = 20
+				target = root
+			}
+			custom = major_decisions.3100.tt_opinion_jirga
+		}
 	}
 }
 
@@ -2327,7 +2439,7 @@ launch_hungarian_migration_scripted_effect = {
 					}
 					#Assign the seceding titles to the new peasant warlord.
 					create_title_and_vassal_change = {
-						type = granted
+						type = usurped
 						save_scope_as = change
 						add_claim_on_loss = no
 					}
@@ -2426,7 +2538,7 @@ launch_hungarian_migration_scripted_effect = {
 					}
 					#Assign the seceding title to the new peasant warlord.
 					create_title_and_vassal_change = {
-						type = granted
+						type = usurped
 						save_scope_as = change
 						add_claim_on_loss = no
 					}
@@ -2450,7 +2562,6 @@ launch_hungarian_migration_scripted_effect = {
 					resolve_title_and_vassal_change = scope:change
 				}
 			}
-			update_domicile_and_courtier_location_effect = yes
 		}
 	}
 }
@@ -2668,7 +2779,6 @@ negotiate_the_danelaw_accept_effect = {
 			}
 		}
 	}
-	scope:ntd_actor = { give_nickname = nick_the_dane }
 }
 
 negotiate_the_danelaw_reject_effect = {
@@ -2875,131 +2985,153 @@ formalise_the_daneland_effect = {
 	}
 }
 
-save_best_location_for_house_name_effect = {
-	if = {
-		limit = { exists = domicile.domicile_location }
-		domicile.domicile_location = { save_scope_as = location }
-	}
-	else_if = {
-		limit = { exists = capital_province }
-		capital_province = { save_scope_as = location }
-	}
-	else = {
-		default_location = { save_scope_as = location }
-	}
-}
-
 ##################################################
-#Cultural variation for Cadet Branch Naming:
-create_cadet_house_with_name_effect = {
-	add_achievement_flag_effect = { FLAG = achievement_a_house_of_my_own_flag }
-	house.house_head = {
-		save_scope_as = former_house_head
-	}
-	house = {
-		save_scope_as = former_house
-	}
-	save_scope_as = new_head
-	save_scope_as = new_house_head # don't ask
-	save_best_location_for_house_name_effect = yes
-
-	if = { # Prefixed Primary Title - (PREFIX) (TITLE)
-		limit = {
-			is_landed = yes
-			highest_held_title_tier <= tier_duchy
-			OR = {
-				culture = { has_cultural_pillar = heritage_frankish }
-				top_liege = {
-					has_title = title:k_france
-					culture = { has_cultural_pillar = heritage_frankish }
-				}
-			}
-		}
-		create_cadet_branch = {
-			prefix = dynnp_de
-			name = cadet_name_style_primary_title
-			save_scope_as = new_house
-		}
-	}
-	else_if = { # Barony Dynasty - (BARONY) (DYNASTY)
-		limit = {
-			culture = {
-				OR = {
-					culture_uses_barony_dynasty_names_trigger = yes
-					culture_uses_barony_dynasty_names_only_branch_trigger = yes
-				}
-			}
-		}
-		create_cadet_branch = {
-			name = cadet_name_style_barony_dynasty
-			save_scope_as = new_house
-		}
-		scope:new_house ?= { generate_coa = yes } # Avoid western style cadet CoA
-	}
-	else_if = { # County Dynasty - (COUNTY) (DYNASTY)
-		limit = {
-			culture = { culture_uses_county_dynasty_names_only_branch_trigger = yes }
-		}
-		create_cadet_branch = {
-			name = cadet_name_style_county_dynasty
-			save_scope_as = new_house
-		}
-		scope:new_house ?= { generate_coa = yes } # Avoid western style cadet CoA
-	}
-	else_if = { # Japanese - (PLACE)
-		limit = {
-			culture = { culture_uses_japanese_dynasty_names_trigger = yes }
-		}
-		create_cadet_branch = {
-			name = {
-				first_valid = {
-					triggered_desc = {
-						trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_random_barony }
-						desc = japanese_house_random_barony
-					}
-					triggered_desc = {
-						trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_primary_county }
-						desc = japanese_house_primary_county
-					}
-					triggered_desc = {
-						trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_domicile_barony }
-						desc = japanese_house_domicile_barony
-					}
-					triggered_desc = {
-						trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_domicile_county }
-						desc = japanese_house_domicile_county
-					}
-					triggered_desc = {
-						trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_first_name }
-						desc = japanese_house_first_name
-					}
-					triggered_desc = {
-						trigger = { scope:new_head.var:new_japanese_house_name ?= flag:custom }
-						desc = japanese_house_name_custom
-					}
-					triggered_desc = {
-						trigger = { exists = scope:new_head.var:new_japanese_house_name }
-						desc = japanese_house_name_flag
-					}
-					desc = japanese_house_name_fallback
-				}
-			}
-			save_scope_as = new_house
-		}
-		scope:new_house ?= { generate_coa = yes } # Avoid western style cadet CoA
-	}
-	else = { #Standard Name Generation
-		create_cadet_branch = { save_scope_as = new_house }
-	}
-}
-
 # Found Cadet House Effects
 found_cadet_house_decision_effect = {
 	$CHARACTER$ = {
 		save_scope_as = new_head
+		save_scope_as = new_house_head # don't ask
+		hidden_effect = {
+			house.house_head = {
+				save_scope_as = former_house_head
+			}
+			house = {
+				save_scope_as = former_house
+			}
+			add_achievement_flag_effect = { FLAG = achievement_a_house_of_my_own_flag }
+
+			#Cultural variation for Cadet Branch Naming:
+
+			if = { # Prefixed Primary Title - (PREFIX) (TITLE)
+				limit = {
+					is_landed = yes
+					highest_held_title_tier <= tier_duchy
+					OR = {
+						culture = { has_cultural_pillar = heritage_frankish }
+						top_liege = {
+							has_title = title:k_france
+							culture = { has_cultural_pillar = heritage_frankish }
+						}
+					}
+				}
+				create_cadet_branch = {
+					prefix = dynnp_de
+					name = cadet_name_style_primary_title
+					save_scope_as = new_house
+				}
+			}
+			else_if = { # Barony Dynasty - (BARONY) (DYNASTY)
+				limit = {
+					is_landed = yes
+					culture = {
+						OR = {
+							# India
+							has_cultural_pillar = heritage_indo_aryan
+							has_cultural_pillar = heritage_dravidian
+							# Vietnam
+							has_cultural_pillar = heritage_viet
+							has_name_list = name_list_vietnamese
+							# Khmer
+							has_name_list = name_list_khmer
+							# Mon
+							has_name_list = name_list_mon
+							# Cham
+							has_name_list = name_list_cham
+							# Tai
+							has_name_list = name_list_tai
+							# China
+							has_cultural_pillar = heritage_chinese
+							has_name_list = name_list_han
+							# Korea
+							has_cultural_pillar = heritage_korean
+							has_name_list = name_list_korean
+							# Buyeo
+							has_cultural_pillar = heritage_buyeo
+							has_name_list = name_list_balhae
+						}
+					}
+					NOT = { faith.religion = religion:islam_religion }
+				}
+				create_cadet_branch = {
+					name = cadet_name_style_barony_dynasty
+					save_scope_as = new_house
+				}
+				scope:new_house = { generate_coa = yes } # Avoid western style cadet CoA
+			}
+			else_if = { # County Dynasty - (COUNTY) (DYNASTY)
+				limit = {
+					is_landed = yes
+					culture = {
+						OR = {
+							# Malaysia
+							has_name_list = name_list_malay
+						}
+					}
+				}
+				create_cadet_branch = {
+					name = cadet_name_style_county_dynasty
+					save_scope_as = new_house
+				}
+				scope:new_house = { generate_coa = yes } # Avoid western style cadet CoA
+			}
+			else_if = { # Japanese - (PLACE)
+				limit = {
+					exists = var:new_japanese_house_name
+					culture = {
+						# Japan
+						OR = {
+							has_cultural_pillar = heritage_japonic
+							has_name_list = name_list_yamato
+						}
+					}
+				}
+				create_cadet_branch = {
+					name = {
+						first_valid = {
+							triggered_desc = {
+								trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_random_barony }
+								desc = japanese_house_random_barony
+							}
+							triggered_desc = {
+								trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_primary_county }
+								desc = japanese_house_primary_county
+							}
+							triggered_desc = {
+								trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_domicile_barony }
+								desc = japanese_house_domicile_barony
+							}
+							triggered_desc = {
+								trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_domicile_county }
+								desc = japanese_house_domicile_county
+							}
+							triggered_desc = {
+								trigger = { scope:new_head.var:new_japanese_house_name ?= flag:japanese_house_first_name }
+								desc = japanese_house_first_name
+							}
+							triggered_desc = {
+								trigger = { scope:new_head.var:new_japanese_house_name ?= flag:custom }
+								desc = japanese_house_name_custom
+							}
+							triggered_desc = {
+								trigger = { exists = scope:new_head.var:new_japanese_house_name }
+								desc = japanese_house_name_flag
+							}
+							desc = japanese_house_name_fallback
+						}
+					}
+					save_scope_as = new_house
+				}
+				scope:new_house = { generate_coa = yes } # Avoid western style cadet CoA
+			}
+			else = { #Standard Name Generation
+				create_cadet_branch = { save_scope_as = new_house }
+			}
+		}
+
 		add_prestige = $PRESTIGE$
+		
 		hidden_effect_new_object = {
-			create_cadet_house_with_name_effect = yes
+			save_scope_as = new_head
 			every_player = {
 				limit = {
 					exists = house
@@ -3040,7 +3172,7 @@ found_cadet_house_decision_effect = {
 				add_house_artifact_claim = scope:new_branch_dynasty_banner
 			}
 		}
-
+			
 		# Struggle Catalysts
 		if = {
 			limit = {
@@ -3062,19 +3194,16 @@ found_cadet_house_decision_effect = {
 			}
 		}
 
-		if = {
-			limit = { exists = scope:new_house }
-			every_child = {
-				limit = {
-					has_trait = bastard
-					is_lowborn = no
-					dynasty = scope:new_head.dynasty
-					house = scope:new_house
-				}
-				set_house = scope:new_house
+		every_child = {
+			limit = {
+				has_trait = bastard
+				is_lowborn = no
+				dynasty = scope:new_head.dynasty
+				NOT =  { house = scope:new_house }
 			}
+			set_house = scope:new_house
 		}
-
+		
 		# If eligible, create a cadet branch for admin type governments
 		if = {
 			limit = {
@@ -3130,7 +3259,7 @@ linguist_bonus_culture_effect = {
 						has_same_culture_language = scope:$CULTURE$
 						has_same_culture_language = root.culture
 						AND = {
-							exists = scope:target_court_language
+							exists = scope:target_court_language.culture
 							has_same_culture_language = scope:target_court_language.culture
 						}
 						AND = {
@@ -3156,7 +3285,7 @@ linguist_bonus_culture_effect = {
 						has_same_culture_language = scope:$CULTURE$
 						has_same_culture_language = root.culture
 						AND = {
-							exists = scope:target_court_language
+							exists = scope:target_court_language.culture
 							has_same_culture_language = scope:target_court_language.culture
 						}
 						AND = {
@@ -3246,18 +3375,14 @@ isolate_single_character_effect = {
 		modifier = isolating_modifier
 		years = 5
 	}
-	involved_activity ?= {
+	if = {
+		limit = { exists = involved_activity }
 		if = {
-			limit = {
-				OR = {
-					activity_host = prev
-					is_required_special_guest = prev
-				}
-			}
-			invalidate_activity = this
+			limit = { involved_activity.activity_host = root }
+			invalidate_activity = involved_activity
 		}
 		else = {
-			prev = { remove_from_activity = involved_activity }
+			remove_from_activity = involved_activity
 		}
 	}
 }
@@ -3329,7 +3454,7 @@ isolate_family_decision_effect = {
 			years = 1
 		}
 	}
-	stress_and_fulfillment_impact = {
+	stress_impact = {
 		brave = minor_stress_impact_gain
 		gregarious = minor_stress_impact_gain
 	}
@@ -3355,7 +3480,7 @@ unisolate_family_decision_effect = {
 		clear_variable_list = isolating_relatives
 	}
 	remove_character_modifier = isolating_modifier
-	stress_and_fulfillment_impact = {
+	stress_impact = {
 		paranoid = minor_stress_impact_gain
 		shy = minor_stress_impact_gain
 	}
@@ -3368,27 +3493,19 @@ flagellation_decision_effect = {
 	if = {
 		limit = {
 			has_trait = flagellant
-			has_personal_tenet_flag = self_mutilation_active
+			faith = { has_doctrine_parameter = self_mutilation_active }
 		}
-		stress_and_fulfillment_impact = {
-			flagellant = major_stress_loss
-		}
+		add_stress = major_stress_loss
 		add_piety = medium_piety_value
 	}
 	#Only Piety
 	else_if = {
 		limit = {
-			has_personal_tenet_flag = self_mutilation_active
+			faith = { has_doctrine_parameter = self_mutilation_active }
 		}
 		add_piety = medium_piety_value
 	}
 	#Only Stress-loss
-	else_if = {
-		limit = { has_trait = flagellant }
-		stress_and_fulfillment_impact = {
-			flagellant = major_stress_loss
-		}
-	}
 	else = { add_stress = major_stress_loss }
 
 	#Be kind to the AI
@@ -3421,6 +3538,7 @@ flagellation_decision_effect = {
 
 }
 restore_carthage_scripted_effect = {
+
 	dynasty = { add_dynasty_prestige = monumental_dynasty_prestige_gain }
 	house = {
 		add_house_modifier = {
@@ -3428,7 +3546,6 @@ restore_carthage_scripted_effect = {
 			years = 100
 		}
 	}
-
 	create_title_and_vassal_change = {
 		type = created
 		save_scope_as = title_change
@@ -3582,7 +3699,6 @@ create_cossack_scripted_effect = {
 		location = root.location
 		culture = root.culture
 		faith = root.faith
-		rite = root.rite
 		gender = root
 		dynasty = none
 		random_traits = no

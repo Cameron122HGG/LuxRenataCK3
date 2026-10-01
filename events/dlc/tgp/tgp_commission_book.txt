@@ -101,8 +101,6 @@ author_book.0001 = {
 	}
 	option = { 
 		name = author_book.0001.b #I will let my elder/spouse/other select one
-		# The name and tooltip both name the influencer, so hide the option when nobody was found
-		trigger = { exists = scope:trusted_influencer }
 		custom_tooltip = author_book.0001.b.tt
 		scope:trusted_influencer = {
 			add_opinion = {
@@ -121,7 +119,7 @@ author_book.0001 = {
 			id = author_book.1000
 			days = 5 
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_gain
 			lazy = minor_stress_impact_gain
 			lifestyle_poet = minor_stress_impact_loss #offsets penalty a bit
@@ -250,7 +248,7 @@ author_book.0004 = {
 			id = author_book.1000
 			months = 6
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_impact_gain
 			lazy = minor_stress_impact_gain
 			journaller = minor_stress_impact_loss #offsets penalty a bit
@@ -378,7 +376,7 @@ author_book.0005 = {
 			id = author_book.1000
 			years = 1 
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = major_stress_impact_gain
 			lazy = minor_stress_impact_gain
 			journaller = minor_stress_impact_loss #offsets penalty a bit
@@ -578,7 +576,7 @@ author_book.1000 = {
 					generate_ci_poem_title_effect = yes #We need a title
 				}
 				create_artifact = {
-					name = TODO #This is replaced below
+					name = ci_poem_name
 					type = miscellaneous
 					creator = root
 					description = TODO #This is replaced below
@@ -768,7 +766,6 @@ author_book.1000 = {
 				}
 				#Now we set the description:
 				scope:newly_created_artifact = {
-					set_artifact_name = ci_poem_name
 					set_artifact_description = ci_poem_description_full
 					#And now we give modifiers:
 					switch = {

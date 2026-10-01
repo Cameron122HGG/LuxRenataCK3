@@ -8,7 +8,7 @@ make_noble_family_interaction = {
 	is_shown = {
 		debug_only = yes
 		scope:recipient = {
-			liege ?= scope:actor
+			liege = scope:actor
 			is_ruler = no
 		}
 	}
@@ -30,7 +30,7 @@ destroy_noble_family_interaction = {
 	is_shown = {
 		debug_only = yes
 		scope:recipient = {
-			liege ?= scope:actor
+			liege = scope:actor
 			any_held_title = {
 				is_noble_family_title = yes
 			}
@@ -66,8 +66,8 @@ invest_appointment_interaction = {
 	is_shown = {
 		debug_only = yes
 		scope:recipient = {
-			government_has_mechanic = administrative
-			liege ?= scope:actor
+			government_allows = administrative
+			liege = scope:actor
 		}
 	}
 
@@ -92,14 +92,13 @@ transfer_title_army_maa_interaction = {
 
 	auto_accept = yes
 
-	is_available = {
-		government_has_mechanic = administrative
-	}
-
 	is_shown = {
 		debug_only = yes
 		scope:recipient = {
-			government_has_mechanic = administrative
+			government_allows = administrative
+		}
+		scope:actor = {
+			government_allows = administrative
 		}
 		scope:actor != scope:recipient
 	}

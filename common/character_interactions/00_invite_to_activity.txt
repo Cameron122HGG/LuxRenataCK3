@@ -15,7 +15,10 @@
 	}
 
 	is_shown = {
-		scope:puppet_or_actor.involved_activity ?= {
+		exists = scope:actor.involved_activity
+		scope:actor = scope:actor.involved_activity.activity_host
+		scope:actor.involved_activity = {
+			is_current_phase_active = no
 			OR = {
 				has_activity_type = activity_tournament
 				has_activity_type = activity_wedding
@@ -23,44 +26,27 @@
 				has_activity_type = activity_hunt
 				has_activity_type = activity_chariot_race
 			}
-			is_current_phase_active = no
-			activity_host ?= scope:puppet_or_actor
 		}
-		scope:recipient = { can_join_activity = scope:puppet_or_actor.involved_activity }
+		scope:recipient = { can_join_activity = scope:actor.involved_activity }
 	}
 
 	on_send = {
 		scope:recipient = {
-			invite_to_activity = scope:puppet_or_actor.involved_activity
+			invite_to_activity = scope:actor.involved_activity
 		}
 	}
 	
 	on_accept = {
 		# Acceptance handled by the activity system itself
-		scope:puppet_or_actor = {
+		scope:actor = {
 			send_interface_message = {
 				type = event_activity_good_with_text
 				title = invite_to_activity_accepted
 				desc = invite_to_activity_accepted_desc
-				left_icon = scope:puppet_or_actor
+				left_icon = scope:actor
 				right_icon = scope:recipient
 				scope:recipient = {
-					accept_activity_invite = scope:puppet_or_actor.involved_activity
-				}
-			}
-		}
-		if = {
-			limit = {
-				scope:is_puppet_action ?= yes
-				scope:actor != scope:recipient
-			}
-			scope:actor = {
-				send_interface_message = {
-					type = event_activity_good_with_text
-					title = invite_to_activity_accepted_puppeteer
-					desc = invite_to_activity_accepted_desc_puppeteer
-					left_icon = scope:puppet_or_actor
-					right_icon = scope:recipient
+					accept_activity_invite = scope:actor.involved_activity
 				}
 			}
 		}
@@ -68,30 +54,15 @@
 
 	on_decline = {
 		# Acceptance handled by the activity system itself
-		scope:puppet_or_actor = {
+		scope:actor = {
 			send_interface_message = {
 				type = event_activity_bad_with_text
 				title = invite_to_activity_refused
 				desc = invite_to_activity_refused_desc
-				left_icon = scope:puppet_or_actor
+				left_icon = scope:actor
 				right_icon = scope:recipient
 				scope:recipient = {
-					decline_activity_invite = scope:puppet_or_actor.involved_activity
-				}
-			}
-		}
-		if = {
-			limit = {
-				scope:is_puppet_action ?= yes
-				scope:actor != scope:recipient
-			}
-			scope:actor = {
-				send_interface_message = {
-					type = event_activity_bad_with_text
-					title = invite_to_activity_refused_puppeteer
-					desc = invite_to_activity_refused_desc_puppeteer
-					left_icon = scope:puppet_or_actor
-					right_icon = scope:recipient
+					decline_activity_invite = scope:actor.involved_activity
 				}
 			}
 		}
@@ -105,7 +76,7 @@
 		# Any new activity should use base_activity_modifier = yes in their activity to get these default modifiers
 
 		activity_modifier = {
-			object = scope:puppet_or_actor.involved_activity
+			object = scope:actor.involved_activity
 			target = scope:recipient			
 		}
 	}

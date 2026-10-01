@@ -45,8 +45,12 @@ fp3_decision.0001 = {
 			OR = {
 				has_faith = faith:mazdakism 
 				has_faith = faith:zurvanism #Behafaridism
-				rite = { rite_has_parameter = vows_of_poverty_active }
-				rite = { rite_has_tenet = tenet_gnosticism }
+				faith = {
+					OR = { 
+						has_doctrine_parameter = vows_of_poverty_active
+						has_doctrine = tenet_gnosticism
+					}
+				}
 			}
 		}
 
@@ -60,7 +64,7 @@ fp3_decision.0001 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = { 
+		stress_impact = { 
 			zealous = major_stress_loss 
 			ambitious = minor_stress_loss 
 		}
@@ -96,8 +100,8 @@ fp3_decision.0001 = {
 							has_religion = religion:zoroastrianism_religion 
 						}
 						OR = {
-							rite = { rite_has_doctrine = doctrine_pluralism_fundamentalist }
-							rite = { rite_has_doctrine = doctrine_pluralism_righteous }
+							faith = { has_doctrine = doctrine_pluralism_fundamentalist }
+							faith = {	has_doctrine = doctrine_pluralism_righteous }	
 						}	
 					}
 					add_opinion = {
@@ -121,8 +125,8 @@ fp3_decision.0001 = {
 							has_religion = religion:zoroastrianism_religion 
 						}
 						OR = {
-							rite = { rite_has_doctrine = doctrine_pluralism_fundamentalist }
-							rite = { rite_has_doctrine = doctrine_pluralism_righteous }
+							faith = { has_doctrine = doctrine_pluralism_fundamentalist }
+							faith = {	has_doctrine = doctrine_pluralism_righteous }	
 						}	
 					}
 					add_opinion = {
@@ -149,7 +153,7 @@ fp3_decision.0001 = {
         	}
    		}  	
 
-   		stress_and_fulfillment_impact = { #Ambitious rulers of course like this, but paranoid ones are worried about offending people. 
+   		stress_impact = { #Ambitious rulers of course like this, but paranoid ones are worried about offending people. 
 			ambitious = medium_stress_impact_loss
 			arrogant = medium_stress_impact_loss
 			zealous = medium_stress_impact_loss 
@@ -182,8 +186,8 @@ fp3_decision.0001 = {
 							has_religion = religion:zoroastrianism_religion 
 						}
 						OR = {
-							rite = { rite_has_doctrine = doctrine_pluralism_fundamentalist }
-							rite = { rite_has_doctrine = doctrine_pluralism_righteous }
+							faith = { has_doctrine = doctrine_pluralism_fundamentalist }
+							faith = {	has_doctrine = doctrine_pluralism_righteous }	
 						}	
 					}
 					add_opinion = {
@@ -207,8 +211,8 @@ fp3_decision.0001 = {
 							has_religion = religion:zoroastrianism_religion 
 						}
 						OR = {
-							rite = { rite_has_doctrine = doctrine_pluralism_fundamentalist }
-							rite = { rite_has_doctrine = doctrine_pluralism_righteous }
+							faith = { has_doctrine = doctrine_pluralism_fundamentalist }
+							faith = {	has_doctrine = doctrine_pluralism_righteous }	
 						}	
 					}
 					add_opinion = {
@@ -235,7 +239,7 @@ fp3_decision.0001 = {
         	}
    		}  	
 
-   		stress_and_fulfillment_impact = { #Wasteful or ambitious rulers loathe this more moderate option, but temperate and content rulers love it. 
+   		stress_impact = { #Wasteful or ambitious rulers loathe this more moderate option, but temperate and content rulers love it. 
 			ambitious = minor_stress_impact_gain
 			zealous = miniscule_stress_impact_gain
 			august = minor_stress_impact_gain
@@ -392,15 +396,15 @@ fp3_decision.0003 = { #This is triggered from the restore_badd_fortress_decision
 	desc = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { current_date <= 900.1.1 } #The fortress was destroyed only recently 
+				trigger = { current_date <= 5900.1.1 } #The fortress was destroyed only recently 
 				desc = fp3_decision.0003.desc_recently
 			}
 			triggered_desc = {
-				trigger = { current_date <= 1000.1.1 } #The fortress was destroyed a while ago
+				trigger = { current_date <= 6000.1.1 } #The fortress was destroyed a while ago
 				desc = fp3_decision.0001.desc_less_recently
 			}
 			triggered_desc = {
-				trigger = { current_date > 1000.1.1 } #The fortress was destroyed long ago 
+				trigger = { current_date > 6000.1.1 } #The fortress was destroyed long ago 
 				desc = fp3_decision.0001.desc_long_ago 
 			}
 		}
@@ -416,7 +420,7 @@ fp3_decision.0003 = { #This is triggered from the restore_badd_fortress_decision
 			}
 			triggered_desc = {
 				trigger = { 
-					rite = { rite_has_doctrine = doctrine_heretic_branch_zandik }
+					faith = { has_doctrine = doctrine_heretic_branch_zandik }
 				}
 				desc = fp3_decision.0003.desc_zandik 
 			}
@@ -452,7 +456,7 @@ fp3_decision.0003 = { #This is triggered from the restore_badd_fortress_decision
 		# Add a unique nickname.
 		give_nickname = nick_the_fortress_builder 
 
-		stress_and_fulfillment_impact = { 
+		stress_impact = { 
 			ambitious = minor_stress_loss 
 			diligent = minor_stress_loss 
 			greedy = minor_stress_loss 
@@ -552,7 +556,7 @@ fp3_decision.0004 = { #This is triggered from the destroy_the_magi_decision, and
 
 		give_nickname = nick_the_reformer
 
-		stress_and_fulfillment_impact = { 
+		stress_impact = { 
 			ambitious = minor_stress_loss 
 			arrogant = minor_stress_loss 
 			vengeful = minor_stress_loss 
@@ -606,14 +610,12 @@ fp3_decision.0011 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					OR = {
-						rite = {
-							OR = {
-								rite_has_tenet = tenet_fp3_fedayeen
-								rite_has_tenet = tenet_warmonger
-							}
+					faith = {
+						OR = {
+							has_doctrine = tenet_fp3_fedayeen
+							has_doctrine = tenet_warmonger 
+							has_doctrine_parameter = pluralism_fundamentalist_proselytization_bonus
 						}
-						rite = { rite_has_parameter = pluralism_fundamentalist_proselytization_bonus }
 					}
 				}
 				desc = fp3_decision.0011_fanatic_murderer.desc
@@ -634,8 +636,8 @@ fp3_decision.0011 = {
 	immediate = {
 		play_music_cue = "mx_cue_combat_2"
 
-		character:33911 = { save_scope_as = ali }
-		character:163029 = { save_scope_as = muawiya }
+		#character:33911 = { save_scope_as = ali }
+		#character:163029 = { save_scope_as = muawiya }
 	}
 
 	option = {
@@ -643,7 +645,7 @@ fp3_decision.0011 = {
 
 		avenge_the_battle_of_nahrawan_scripted_effect = yes	
 
-		stress_and_fulfillment_impact = {  
+		stress_impact = {  
 			zealous = major_stress_impact_loss
 			vengeful = major_stress_impact_loss
 			ambitious = medium_stress_impact_loss
@@ -733,7 +735,6 @@ fp3_decision.0013 = {
 			age = { 25 75 } 
 			location = root.capital_province
 			faith = root.faith.religious_head.faith
-			rite = root.faith.religious_head.rite
 			gender_female_chance = root_faith_dominant_gender_female_chance #could be female, if given the right context.  
 			trait = diplomat  
 			template = priest_character_template
@@ -764,7 +765,7 @@ fp3_decision.0013 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {  
+		stress_impact = {  
 			zealous = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			craven = medium_stress_impact_gain
@@ -803,7 +804,7 @@ fp3_decision.0013 = {
   			target = flag:promote_persian_scripture_decision
   		}
 
-		stress_and_fulfillment_impact = {  
+		stress_impact = {  
 			trusting = medium_stress_impact_loss
 			craven = medium_stress_impact_loss
 			arrogant = medium_stress_impact_gain
@@ -864,7 +865,6 @@ fp3_decision.0014 = {
 			age = { 40 75 } 
 			location = root.capital_province
 			faith = root.faith
-			rite = root.rite
 			gender_female_chance = root_faith_dominant_gender_female_chance #could be female, if given the right context.  
 			trait = shrewd
 			trait = theologian 
@@ -922,7 +922,7 @@ fp3_decision.0014 = {
 ##################################################
 
 scripted_effect fp3_decision_0015_apply_rebellious_stress_effect = {
-	stress_and_fulfillment_impact = {
+	stress_impact = {
 		arrogant = miniscule_stress_impact_loss
 		ambitious = minor_stress_impact_loss
 		disloyal = minor_stress_impact_loss

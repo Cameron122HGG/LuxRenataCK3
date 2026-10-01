@@ -1,8 +1,8 @@
 ﻿namespace = fp3_scholarship
 
-########################### Persian Scholarship Events #########################
+# ========================= Persian Scholarship Events =========================
 # =   Events that relate to sponsoring scholars and innovation in your realm   =
-################################################################################
+# ==============================================================================
 #																			   =
 # 0000 – 0999: Hidden decision events										   =
 # 1000 – 1999: Scholarship events that don't need a court scholar to trigger   =
@@ -10,7 +10,7 @@
 # 8000 – 8999: Research Project events										   =
 # 9000 – 9999: Research Project conclusion events							   =
 #																			   =
-################################################################################
+# ==============================================================================
 
 # Sponsor Persian Scholars
 fp3_scholarship.0001 = {
@@ -81,13 +81,13 @@ fp3_scholarship.0001 = {
 				gender_female_chance = {
 					if = {
 						limit = {
-							rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+							faith = { has_doctrine = doctrine_gender_male_dominated }
 						}
 						add = 0
 					}
 					else_if = {
 						limit = {
-							rite = { rite_has_doctrine = doctrine_gender_female_dominated }
+							faith = { has_doctrine = doctrine_gender_female_dominated }
 						}
 						add = 100
 					}
@@ -97,7 +97,6 @@ fp3_scholarship.0001 = {
 				}
 				culture = root.culture
 				faith = root.faith
-				rite = root.rite
 
 				random_traits = yes
 				diplomacy	= { 2 10 }
@@ -109,7 +108,7 @@ fp3_scholarship.0001 = {
 				
 				random_traits_list = {
 					count = { 0 2 }
-					erudite = {}
+					scholar = {}
 					theologian = {}
 					lifestyle_physician = {}
 				}
@@ -332,23 +331,23 @@ fp3_scholarship.1000 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			paranoid = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
-			erudite = minor_stress_impact_loss
+			scholar = minor_stress_impact_loss
 		}
 		ai_chance = {
 			base = 10 #We don't want too many Indian mathematicians in Persia from this event
 			modifier = {
 				factor = 5
-				has_trait = erudite
+				has_trait = scholar
 			}
 		}
 	}
 
 	option = { # Offer some gold
 		name = fp3_scholarship.1000.b
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			paranoid = medium_stress_impact_gain
@@ -364,10 +363,10 @@ fp3_scholarship.1000 = {
 			id = fp3_scholarship.1001
 			days = { 7 14 }
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
-			erudite = minor_stress_impact_loss
+			scholar = minor_stress_impact_loss
 		}
 		ai_chance = {
 			base = 10
@@ -401,10 +400,10 @@ fp3_scholarship.1000 = {
 				add_courtier = scope:mathematician
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
-			erudite = minor_stress_impact_loss
+			scholar = minor_stress_impact_loss
 		}
 		ai_chance = {
 			base = 10
@@ -416,8 +415,8 @@ fp3_scholarship.1000 = {
 	}
 	option = { # Complete Opt Out
 		name = fp3_scholarship.1000.d
-		stress_and_fulfillment_impact = {
-			erudite = minor_stress_impact_gain
+		stress_impact = {
+			scholar = minor_stress_impact_gain
 		}
 		ai_chance = {
 			base = 100
@@ -432,13 +431,13 @@ scripted_effect fp3_scholarship_1001_create_indian_mathematician_effect = {
 		gender_female_chance = {
 			if = {
 				limit = {
-					scope:nearby_indian_ruler.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+					scope:nearby_indian_ruler.faith = { has_doctrine = doctrine_gender_male_dominated }
 				}
 				add = 0
 			}
 			else_if = {
 				limit = {
-					scope:nearby_indian_ruler.rite = { rite_has_doctrine = doctrine_gender_female_dominated }
+					scope:nearby_indian_ruler.faith = { has_doctrine = doctrine_gender_female_dominated }
 				}
 				add = 100
 			}
@@ -448,7 +447,6 @@ scripted_effect fp3_scholarship_1001_create_indian_mathematician_effect = {
 		}
 		culture = scope:nearby_indian_ruler.culture
 		faith = scope:nearby_indian_ruler.faith
-		rite = scope:nearby_indian_ruler.rite
 
 		random_traits_list = {
 			count = 3
@@ -483,7 +481,7 @@ scripted_effect fp3_scholarship_1001_create_indian_mathematician_effect = {
 			}
 			random = {
 				chance = 25
-				add_trait = erudite
+				add_trait = scholar
 			}
 			random = {
 				chance = 10
@@ -556,7 +554,7 @@ fp3_scholarship.1001 = {
 }
 
 scripted_trigger fp3_scholarship_1010_is_valid_magus_county = {
-	county.holder ?= { #Holder must be ROOT or a direct vassal of ROOT in order for root to grant protection
+	county.holder = { #Holder must be ROOT or a direct vassal of ROOT in order for root to grant protection
 		OR = {
 			this = root
 			liege ?= root
@@ -586,9 +584,9 @@ fp3_scholarship.1010 = {
 					# Consider the zoroastrian faith "dying" if it has no religious head of faith
 					NOT = { exists = scope:magus_faith.religious_head }
 				}
-				desc = fp3_scholarship.1010.desc_dying_faith
+			desc = fp3_scholarship.1010.desc_dying_faith
 			}
-			desc = fp3_scholarship.1010.desc_living_faith
+		desc = fp3_scholarship.1010.desc_living_faith
 		}
 	}
 	left_portrait = {
@@ -632,13 +630,13 @@ fp3_scholarship.1010 = {
 			gender_female_chance = {
 				if = {
 					limit = {
-						scope:magus_faith = { main_rite = { rite_has_doctrine = doctrine_clerical_gender_male_only } }
+						scope:magus_faith = { has_doctrine = doctrine_clerical_gender_male_only }
 					}
 					add = 0
 				}
 				else_if = {
 					limit = {
-						scope:magus_faith = { main_rite = { rite_has_doctrine = doctrine_clerical_gender_female_only } }
+						scope:magus_faith = { has_doctrine = doctrine_clerical_gender_female_only }
 					}
 					add = 100
 				}
@@ -648,7 +646,6 @@ fp3_scholarship.1010 = {
 			}
 			culture = scope:magus_county.culture
 			faith = scope:magus_county.faith
-			rite = scope:magus_county.rite
 
 			trait = brave
 			trait = devoted
@@ -687,7 +684,7 @@ fp3_scholarship.1010 = {
 				}
 				random = {
 					chance = 15
-					add_trait = erudite
+					add_trait = scholar
 				}
 				random = {
 					chance = 60
@@ -757,7 +754,7 @@ fp3_scholarship.1010 = {
 				killer = root
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = medium_stress_impact_gain
 			just = minor_stress_impact_gain
 			forgiving = minor_stress_impact_gain
@@ -803,7 +800,7 @@ fp3_scholarship.1010 = {
 				years = 10
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = medium_stress_impact_gain
 			callous = minor_stress_impact_gain
 			forgiving = minor_stress_impact_loss
@@ -874,7 +871,7 @@ fp3_scholarship.2000 = {
 				opinion = 10
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			just = minor_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 			generous = medium_stress_impact_gain
@@ -897,7 +894,7 @@ fp3_scholarship.2000 = {
 				opinion = 15
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -921,7 +918,7 @@ fp3_scholarship.2000 = {
 				opinion = -15
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			diligent = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain
 		}
@@ -956,7 +953,7 @@ fp3_scholarship.2010 = {
 	cooldown = { years = 10 }
 
 	trigger = {
-		rite = { trait_is_sin_rite = drunkard }
+		faith = { trait_is_sin = drunkard }
 		any_court_position_holder = {
 			type = court_scholar_court_position
 			NOT = { has_trait = zealous }
@@ -972,8 +969,8 @@ fp3_scholarship.2010 = {
 		random_county_in_region = {
 			region = world_india
 			limit = {
-				rite = {
-					NOT = { trait_is_sin_rite = drunkard }
+				faith = {
+					NOT = { trait_is_sin = drunkard }
 				}
 			}
 			save_scope_as = foreign_county
@@ -989,7 +986,6 @@ fp3_scholarship.2010 = {
 			random_traits = yes
 			location = root.capital_province
 			faith = scope:foreign_county.faith
-			rite = scope:foreign_county.rite
 			culture = scope:foreign_county.culture
 			gender_female_chance = root_faith_dominant_gender_adjusted_female_chance
 			learning = {
@@ -1031,7 +1027,7 @@ fp3_scholarship.2010 = {
 				years = 5
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -1114,7 +1110,7 @@ fp3_scholarship.2020 = {
 				years = 20
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			sadistic = minor_stress_impact_loss
 		}
@@ -1190,7 +1186,7 @@ fp3_scholarship.2030 = {
 			33 = {
 				trigger = {
 					scope:court_scholar =  {
-						NOT = { has_trait = erudite }
+						NOT = { has_trait = scholar }
 						learning > 15
 					}
 				}
@@ -1251,7 +1247,7 @@ fp3_scholarship.2030 = {
 			}
 			flag:scholar_trait = {
 				scope:court_scholar = {
-					add_trait = erudite
+					add_trait = scholar
 				}
 			}
 			flag:learning_education = {
@@ -1319,17 +1315,17 @@ scripted_effect fp3_research_completion_effect = {
 		}
 		1 = { # Critical Success: Unlock Innovation
 			trigger = {
-				culture = {
-					OR = {
-						AND = {
-							has_cultural_era_or_later = culture_era_early_medieval
-							NOT = { has_innovation = fp3_innovation_mural_sextant }
-						}
-						AND = {
-							has_cultural_era_or_later = culture_era_late_medieval
-							NOT = { has_innovation = fp3_innovation_fritware }
-						}
+				trigger_if = {
+					limit = {
+						NOT = { culture = { has_innovation = fp3_innovation_mural_sextant } }
 					}
+					culture = { has_cultural_era_or_later = culture_era_early_medieval }
+				}
+				trigger_if = {
+					limit = {
+						NOT = { culture = { has_innovation = fp3_innovation_fritware } }
+					}
+					culture = { has_cultural_era_or_later = culture_era_late_medieval }
 				}
 			}
 			modifier = {
@@ -1585,7 +1581,7 @@ fp3_scholarship.8100 = {
 		scope:inspiration_owner = {
 			change_artifact_quality_effect = { AMOUNT = 6 }
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = medium_stress_impact_gain
 			greedy = medium_stress_impact_gain
 		}
@@ -1608,7 +1604,7 @@ fp3_scholarship.8100 = {
 				opinion = -10
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = minor_stress_impact_loss
 		}
 		ai_chance = {

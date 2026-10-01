@@ -12,14 +12,13 @@
 	on_decline_summary = blackmail_decline_summary
 
 	is_shown = {
-		exists = scope:puppet_or_actor
 		scope:recipient = {
-			this != scope:puppet_or_actor
+			this != scope:actor
 			age > 10
 		}
 		scope:recipient = {
 			any_secret = {
-				is_known_by = scope:puppet_or_actor
+				is_known_by = scope:actor
 			}
 		}
 	}
@@ -27,15 +26,15 @@
 	is_valid_showing_failures_only = {
 		#Not at war with them
 		NOT = {
-			scope:puppet_or_actor = { is_at_war_with = scope:recipient }
+			scope:actor = { is_at_war_with = scope:recipient }
 		}
 		#Already have a strong hook
 		custom_description = {
 			text = "already_strong_hook"
-			subject = scope:puppet_or_actor
+			subject = scope:actor
 			object = scope:recipient
 			NOT = { 
-				scope:puppet_or_actor = { has_strong_hook = scope:recipient } 
+				scope:actor = { has_strong_hook = scope:recipient } 
 			}
 		}
 		#No appropriate secret
@@ -43,7 +42,7 @@
 			scope:recipient = {
 				any_secret = {
 					is_blackmailable_secret_trigger = { 
-						BLACKMAILER = scope:puppet_or_actor 
+						BLACKMAILER = scope:actor 
 						PARTICIPANT = scope:recipient 
 					}
 				}
@@ -55,11 +54,11 @@
 	is_highlighted = {
 		scope:recipient = {
 			any_secret = {
-				is_known_by = scope:puppet_or_actor
-				is_blackmailable_secret_trigger = { BLACKMAILER = scope:puppet_or_actor PARTICIPANT = scope:recipient }
+				is_known_by = scope:actor
+				is_blackmailable_secret_trigger = { BLACKMAILER = scope:actor PARTICIPANT = scope:recipient }
 			}
 		}
-		scope:puppet_or_actor = {
+		scope:actor = {
 			NOR = {
 				has_hook_of_type = {
 					target = scope:recipient
@@ -76,8 +75,8 @@
 	has_valid_target_showing_failures_only = {
 		exists = scope:target
 		scope:target = {
-			is_known_by = scope:puppet_or_actor
-			is_blackmailable_secret_trigger = { BLACKMAILER = scope:puppet_or_actor PARTICIPANT = scope:recipient }
+			is_known_by = scope:actor
+			is_blackmailable_secret_trigger = { BLACKMAILER = scope:actor PARTICIPANT = scope:recipient }
 		}
 	}
 
@@ -86,7 +85,7 @@
 		custom_description = { # Exploit prevention
 			text = "has_sent_interaction_already"
 			subject = scope:recipient
-			scope:puppet_or_actor = {
+			scope:actor = {
 				NOT = { exists = var:currently_blackmailing }
 			}
 		}
@@ -95,7 +94,7 @@
 	on_send = {
 		hidden_effect = {
 			# Block sending another interaction while rejection event is active
-			scope:puppet_or_actor = {
+			scope:actor = {
 				set_variable = {
 					name = currently_blackmailing
 					value = scope:recipient
@@ -140,7 +139,7 @@
 	}
 
 	on_accept = {
-		scope:puppet_or_actor = {
+		scope:actor = {
 			remove_variable = currently_blackmailing
 			play_music_cue = mx_cue_murder
 			if = {
@@ -174,7 +173,7 @@
 						}
 						trigger_situation_catalyst = {
 							catalyst = catalyst_minister_blackmailed
-							character = scope:puppet_or_actor
+							character = scope:actor
 						}
 					}
 				}
@@ -184,7 +183,7 @@
 
 		# If we're a clan this interaction affects unity
 		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:puppet_or_actor
+			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
 			DESC = clan_unity_blackmail.desc
@@ -207,21 +206,21 @@
 			if = {
 				limit = { exists = scope:secret }
 				scope:secret = {
-					expose_secret = scope:puppet_or_actor
+					expose_secret = scope:actor
 				}
 			}
 			if = {
 				limit = { exists = scope:target }
 				scope:target = {
-					expose_secret = scope:puppet_or_actor
+					expose_secret = scope:actor
 				}
 			}
 		}
-		scope:puppet_or_actor = { trigger_event = blackmail.0001 }
+		scope:actor = { trigger_event = blackmail.0001 }
 
 		# If we're a clan this interaction affects unity
 		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:puppet_or_actor
+			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_loss
 			DESC = clan_unity_blackmail.desc
@@ -230,7 +229,7 @@
 	}
 
 	on_blocked_effect = {
-		scope:puppet_or_actor = { remove_variable = currently_blackmailing }
+		scope:actor = { remove_variable = currently_blackmailing }
 	}
 
 	ai_accept = {
@@ -276,13 +275,13 @@
 			trigger = {
 				scope:recipient = {
 					opinion = {
-						target = scope:puppet_or_actor
+						target = scope:actor
 						value < 0
 					}
 				}
 			}
 			opinion_target = scope:recipient
-			who = scope:puppet_or_actor
+			who = scope:actor
 			multiplier = 0.3
 			desc = BLACKMAIL_INTERACTION_OPINION_ACCEPTANCE
 		}
@@ -290,7 +289,7 @@
 			add = -20
 			scope:recipient = {
 				has_opinion_modifier = {
-					target = scope:puppet_or_actor
+					target = scope:actor
 					modifier = trust_opinion
 					value < 0
 				}
@@ -300,7 +299,7 @@
 		modifier = {
 			add = 30
 			any_secret = {
-				is_known_by = scope:puppet_or_actor
+				is_known_by = scope:actor
 				is_criminal_for = scope:recipient
 			}
 			desc = BLACKMAIL_MAJOR_SECRET_ACCEPTANCE
@@ -311,7 +310,7 @@
 			add = intimidated_reason_value
 			scope:recipient = {
 				has_dread_level_towards = {
-					target = scope:puppet_or_actor
+					target = scope:actor
 					level = 1
 				}
 			}
@@ -321,7 +320,7 @@
 			add = cowed_reason_value
 			scope:recipient = {
 				has_dread_level_towards = {
-					target = scope:puppet_or_actor
+					target = scope:actor
 					level = 2
 				}
 			}
@@ -335,7 +334,7 @@
 	notification_text = {
 		triggered_desc = {
 			trigger = {
-				scope:puppet_or_actor = {
+				scope:actor = {
 					opinion = {
 						target = scope:recipient
 						value > 0	
@@ -389,7 +388,7 @@
 				trigger = {
 					scope:target = {
 						secret_type = secret_disputed_heritage
-						secret_target.real_father = scope:puppet_or_actor
+						secret_target.real_father = scope:actor
 						secret_target.mother = scope:recipient
 					}
 				}
@@ -408,7 +407,7 @@
 				trigger = {
 					scope:target = {
 						secret_type = secret_disputed_heritage
-						secret_target.real_father = scope:puppet_or_actor
+						secret_target.real_father = scope:actor
 						secret_target = {
 							OR = {
 								this = scope:recipient
@@ -437,7 +436,7 @@
 				trigger = {
 					scope:target = {
 						secret_type = secret_unmarried_illegitimate_child
-						secret_target.real_father = scope:puppet_or_actor
+						secret_target.real_father = scope:actor
 						secret_target.mother = scope:recipient
 					}
 				}
@@ -456,7 +455,7 @@
 				trigger = {
 					scope:target = {
 						secret_type = secret_unmarried_illegitimate_child
-						secret_target.real_father = scope:puppet_or_actor
+						secret_target.real_father = scope:actor
 						secret_target = {
 							OR = {
 								this = scope:recipient
@@ -516,19 +515,19 @@
 		
 		modifier = {
 			factor = 0
-			scope:puppet_or_actor.ai_honor >= 75
+			scope:actor.ai_honor >= 75
 		}
 		
 		modifier = {
 			factor = 0.1
-			scope:puppet_or_actor.ai_honor >= 30
+			scope:actor.ai_honor >= 30
 		}
 		
 		modifier = {
 			factor = 0
-			scope:puppet_or_actor.ai_honor >= -30
+			scope:actor.ai_honor >= -30
 			scope:recipient = {
-				has_relation_lover = scope:puppet_or_actor
+				has_relation_lover = scope:actor
 			}
 		}
 		
@@ -536,9 +535,9 @@
 			factor = 0
 			scope:recipient = {
 				OR = {
-					has_relation_friend = scope:puppet_or_actor
-					has_relation_best_friend = scope:puppet_or_actor
-					has_relation_soulmate = scope:puppet_or_actor
+					has_relation_friend = scope:actor
+					has_relation_best_friend = scope:actor
+					has_relation_soulmate = scope:actor
 				}
 			}
 		}
@@ -548,8 +547,8 @@
 		scope:recipient = {
 			random_secret = {
 				limit = {
-					is_known_by = scope:puppet_or_actor
-					is_blackmailable_secret_trigger = { BLACKMAILER = scope:puppet_or_actor PARTICIPANT = scope:recipient }
+					is_known_by = scope:actor
+					is_blackmailable_secret_trigger = { BLACKMAILER = scope:actor PARTICIPANT = scope:recipient }
 				}
 				save_scope_as = target
 			}

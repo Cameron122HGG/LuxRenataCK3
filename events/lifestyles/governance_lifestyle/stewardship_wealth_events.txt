@@ -175,7 +175,7 @@ stewardship_wealth.1001 = {
 		}
 
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			lazy = minor_stress_impact_gain
 			dull = minor_stress_impact_gain
 		}
@@ -241,7 +241,7 @@ stewardship_wealth.1001 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_gain
 			shy = minor_stress_impact_gain
 		}
@@ -277,7 +277,7 @@ stewardship_wealth.1001 = {
 
 		add_gold = medium_gold_value
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			forgiving = minor_stress_impact_gain
 		}
@@ -299,7 +299,7 @@ stewardship_wealth.1001 = {
 		add_piety = medium_piety_loss
 		add_gold = medium_gold_value
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = medium_stress_impact_gain
 			just = minor_stress_impact_gain
 		}
@@ -317,7 +317,7 @@ stewardship_wealth.1001 = {
 		name = stewardship_wealth.1001.e
 		add_gold = minor_gold_value
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_gain
 			gluttonous = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
@@ -416,7 +416,7 @@ stewardship_wealth.1011 = {
 		}
 		
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			humble = minor_stress_impact_gain
 			content = minor_stress_impact_gain
 		}
@@ -479,7 +479,7 @@ stewardship_wealth.1011 = {
 		}		
 
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			generous = medium_stress_impact_gain
 			honest = medium_stress_impact_gain
 		}
@@ -530,7 +530,7 @@ stewardship_wealth.1021 = {
 		OR = {
 			government_has_flag = government_is_clan
 			government_has_flag = government_is_feudal
-			government_has_mechanic = administrative
+			government_has_flag = government_is_administrative
 		}
 	}
 
@@ -581,7 +581,7 @@ stewardship_wealth.1021 = {
 			}	
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			generous = minor_stress_impact_gain
 		}
@@ -642,7 +642,7 @@ stewardship_wealth.1021 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			lazy = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -665,7 +665,7 @@ stewardship_wealth.1021 = {
 	option = {
 		name = stewardship_wealth.1021.c
 		custom_tooltip = stewardship_wealth.1021.c.tt
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_loss
 			lazy = minor_stress_impact_loss
 			diligent = medium_stress_impact_gain
@@ -869,7 +869,6 @@ stewardship_wealth.1051 = {
 				trait = intellect_good_2
 				trait = diligent
 				faith = this.faith
-				rite = this.rite
 				culture = this.culture
 				dynasty = none
 				stewardship = { 10 12 }
@@ -918,7 +917,7 @@ stewardship_wealth.1051 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = minor_stress_gain
 		}
 
@@ -945,7 +944,7 @@ stewardship_wealth.1051 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			paranoid = minor_stress_impact_gain
 		}
 
@@ -983,7 +982,7 @@ stewardship_wealth.1051 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			generous = medium_stress_impact_gain
 			humble = minor_stress_impact_gain
 			content = minor_stress_impact_gain
@@ -1271,7 +1270,7 @@ stewardship_wealth.1061 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			dull = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -1305,7 +1304,7 @@ stewardship_wealth.1061 = {
 			type = favor_hook
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain
 		}
@@ -1325,7 +1324,7 @@ stewardship_wealth.1061 = {
 
 		add_gold = major_gold_value
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			generous = minor_stress_impact_gain
 		}
@@ -1511,7 +1510,7 @@ stewardship_wealth.5001 = {
 		}
 		name = stewardship_wealth.5001.c
 		add_gold = medium_gold_value
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -1637,9 +1636,11 @@ stewardship_wealth.5002 = { #by Mathilda Bjarnehed
 			}
 			1 = {
 				trigger = {
-					NOR = {
-						rite = { rite_has_tenet = tenet_aniconism }
-						faith.religion = religion:islam_religion
+					faith = {
+						NOR = {
+							has_doctrine = tenet_aniconism
+							religion = religion:islam_religion
+						}
 					}
 				}
 				save_scope_value_as = {
@@ -1674,9 +1675,11 @@ stewardship_wealth.5002 = { #by Mathilda Bjarnehed
 			1 = {
 				trigger = {
 					NOT = { scope:safe_investment = flag:religious_sculptor }
-					NOR = {
-						rite = { rite_has_tenet = tenet_aniconism }
-						faith.religion = religion:islam_religion
+					faith = {
+						NOR = {
+							has_doctrine = tenet_aniconism
+							religion = religion:islam_religion
+						}
 					}
 				}
 				save_scope_value_as = {
@@ -1707,9 +1710,11 @@ stewardship_wealth.5002 = { #by Mathilda Bjarnehed
 		name = {
 			trigger = {
 				scope:safe_investment = flag:religious_sculptor
-				NOR = {
-					rite = { rite_has_tenet = tenet_aniconism }
-					faith.religion = religion:islam_religion
+				faith = {
+					NOR = {
+						has_doctrine = tenet_aniconism
+						religion = religion:islam_religion
+					}
 				}
 			}
 			text = stewardship_wealth.5002.a.religious_sculptor
@@ -1797,9 +1802,11 @@ stewardship_wealth.5002 = { #by Mathilda Bjarnehed
 		name = {
 			trigger = {
 				scope:risky_investment = flag:religious_sculptor
-				NOR = {
-					rite = { rite_has_tenet = tenet_aniconism }
-					faith.religion = religion:islam_religion
+				faith = {
+					NOR = {
+						has_doctrine = tenet_aniconism
+						religion = religion:islam_religion
+					}
 				}
 			}
 			text = stewardship_wealth.5002.a.religious_sculptor
@@ -2115,7 +2122,7 @@ stewardship_wealth.6001 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = miniscule_stress_impact_loss
 			generous = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
@@ -2204,7 +2211,7 @@ stewardship_wealth.7000 = {
 	trigger = {
 		has_focus = stewardship_wealth_focus
 		is_available = yes
-		is_landed_or_landless_administrative_or_theocratic = yes
+		is_landed_or_landless_administrative = yes
 		highest_held_title_tier <= tier_duchy
 		any_knight = {
 			stewardship_wealth_7000_enforcer_trigger = yes
@@ -2364,7 +2371,7 @@ stewardship_wealth.7000 = {
 		scope:victim = {
 				trigger_event = { id = stewardship_wealth.7001 days = 1 } 
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_loss
 			compassionate = major_stress_impact_gain
 			forgiving = medium_stress_impact_gain
@@ -2374,7 +2381,7 @@ stewardship_wealth.7000 = {
 			limit = {
 				NOT = { government_has_flag = government_is_tribal }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				just = major_stress_impact_gain
 			}
 		}
@@ -2436,7 +2443,7 @@ stewardship_wealth.7000 = {
 			flag = made_theft_justifications
 			days = 30
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_loss
 			compassionate = major_stress_impact_gain
 			generous = major_stress_impact_gain
@@ -2448,7 +2455,7 @@ stewardship_wealth.7000 = {
 			limit = {
 				NOT = { government_has_flag = government_is_tribal }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				just = major_stress_impact_gain
 			}
 		}
@@ -2523,7 +2530,7 @@ stewardship_wealth.7000 = {
 			flag = unleashed_knights
 			days = 30
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_loss
 			compassionate = major_stress_impact_gain
 			generous = major_stress_impact_gain
@@ -2535,12 +2542,12 @@ stewardship_wealth.7000 = {
 			limit = {
 				NOT = { government_has_flag = government_is_tribal }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				just = major_stress_impact_gain
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				just = medium_stress_impact_gain
 			}
 		}
@@ -2564,9 +2571,9 @@ stewardship_wealth.7000 = {
 		if = {
 			limit = {
 				OR = {
- 					rite = { trait_is_virtue_rite = forgiving }
- 					rite = { trait_is_virtue_rite = just }
- 					rite = { trait_is_sin_rite = greedy }
+ 					faith = { trait_is_virtue = forgiving }
+ 					faith = { trait_is_virtue = just }
+ 					faith = { trait_is_sin = greedy }
  				}
  			}
 			add_piety = medium_piety_gain
@@ -2590,7 +2597,7 @@ stewardship_wealth.7000 = {
 				opinion = 25
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			vengeful = major_stress_impact_gain
 			greedy = major_stress_impact_gain
 			sadistic = medium_stress_impact_gain
@@ -2706,7 +2713,7 @@ stewardship_wealth.7001 = {
 					is_available_healthy_ai_adult = yes
 					trigger_if = {
 						limit = {
-							root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+							root.faith = { has_doctrine = doctrine_gender_male_dominated }
 						}
 						is_female = no
 					}
@@ -2720,7 +2727,7 @@ stewardship_wealth.7001 = {
 					is_available_healthy_ai_adult = yes
 					trigger_if = {
 						limit = {
-							root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+							root.faith = { has_doctrine = doctrine_gender_male_dominated }
 						}
 						is_female = no
 					}
@@ -2751,7 +2758,7 @@ stewardship_wealth.7001 = {
 					is_available_healthy_ai_adult = yes
 					trigger_if = {
 						limit = {
-							root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+							root.faith = { has_doctrine = doctrine_gender_male_dominated }
 						}
 						is_female = no
 					}
@@ -2766,7 +2773,7 @@ stewardship_wealth.7001 = {
 					is_available_healthy_ai_adult = yes
 					trigger_if = {
 						limit = {
-							root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+							root.faith = { has_doctrine = doctrine_gender_male_dominated }
 						}
 						is_female = no
 					}
@@ -2812,7 +2819,7 @@ stewardship_wealth.7001 = {
 			modifier = stewardship_tax_enforcement_modifier
 			years = 5
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			just = major_stress_impact_gain
 			generous = major_stress_impact_gain
@@ -2851,7 +2858,7 @@ stewardship_wealth.7001 = {
 			modifier = stewardship_tax_exemption_modifier
 			years = 5
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			stubborn = major_stress_impact_gain
 			greedy = major_stress_impact_gain
 			arbitrary = major_stress_impact_gain
@@ -2923,7 +2930,7 @@ stewardship_wealth.2000 = {
 	cooldown = { years = 10 }
 
 	trigger = {
-		is_landed_or_landless_administrative_or_theocratic = yes
+		is_landed_or_landless_administrative = yes
 		exists = cp:councillor_steward
 
 		cp:councillor_steward = {
@@ -2993,7 +3000,7 @@ stewardship_wealth.2000 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_loss
 			deceitful = minor_stress_impact_loss
 			just = medium_stress_impact_gain
@@ -3054,7 +3061,7 @@ stewardship_wealth.2000 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_loss
 			diligent = minor_stress_impact_loss
 			greedy = medium_stress_impact_gain
@@ -3078,7 +3085,7 @@ stewardship_wealth.2000 = {
 		add_gold = medium_gold_value
 		add_tyranny = medium_tyranny_gain
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arbitrary = minor_stress_impact_loss
 			impatient = minor_stress_impact_loss
 			just = medium_stress_impact_gain

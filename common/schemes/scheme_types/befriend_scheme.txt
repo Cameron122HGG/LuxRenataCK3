@@ -14,7 +14,8 @@
 
 	# Parameters
 	speed_per_skill_point = -2.5
-	spymaster_speed_per_skill_point = 0
+	spymaster_speed_per_skill_point = 0	
+	uses_resistance = no
 	base_progress_goal = 365
 	base_maximum_success = 95
 	minimum_success = 5
@@ -32,10 +33,7 @@
 
 		is_below_ai_friend_soft_cap_trigger = yes
 		trigger_if = {
-			limit = {
-				is_ai = yes
-				NOT = { puppeteer ?= { is_ai = no } }
-			}
+			limit = { is_ai = yes }
 			scope:target = {
 				is_below_ai_friend_soft_cap_trigger = yes
 				NOT = {
@@ -83,7 +81,6 @@
 	base_success_chance = {
 		base = 5
 		scheme_type_skill_success_chance_modifier = { SKILL = DIPLOMACY }
-		diplomacy_scheme_base_chance_modifier = yes
 		#SCHEME OWNER#
 		opinion_modifier = {
 			desc = SCHEME_BEFRIEND_THEIR_OPINION
@@ -102,14 +99,6 @@
 
 		# Countermeasures.
 		apply_opportunistic_scheme_success_chance_adjustments_modifier = yes
-
-		modifier = {
-			desc = SCHEME_TARGET_HEAD_OF_FAITH
-			add = -75
-			scope:target = {
-				faith.religious_head ?= this
-			}
-		}
 		
 		# Their friend told you what they like
 		modifier = {
@@ -556,6 +545,19 @@
 		}
 		# Diarchs are better at schemes within their liege's realm
 		diarch_scheming_within_realm_bonus_modifier = yes
+		#Religious Heads
+		modifier = {
+			add = -50
+			desc = "SCHEME_VS_RELIGIOUS_HEAD"
+			scope:target = {
+				faith = scope:owner.faith
+				faith = {
+					religious_head ?= {
+			 			this = scope:target
+			 		}
+				}
+			}
+		}
 		modifier = { # Realm Priests care about Piety Level
 			add = {
 				add = 5
@@ -609,13 +611,20 @@
 		#Family Feud
 		house_feud_sway_scheme_success_modifier = yes
 
+		# Modifiers
+		modifier = {
+			scope:owner = { has_character_modifier = poet_for_diplo_schemes_modifier }
+			desc = poet_for_diplo_schemes_modifier
+			add = 15
+		}
+
 		#Mandala Serenity Aspect
 		modifier = {
 			scope:owner = { 
 				house ?= { has_house_head_parameter = improved_befriend_schemes }
 				is_house_head = yes
 			}
-			desc = aspect_of_serenity
+			desc = has_aspect_of_serenity
 			add = 25
 		}
 

@@ -1495,9 +1495,12 @@ health.1003 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					is_ruler = yes
-					has_royal_court = yes
-					amenity_level = { target = court_food_quality value >= 3 }
+					court_owner = { exists = yes }
+					root.court_owner = root
+					court_owner = {
+						has_royal_court = yes
+						amenity_level = { target = court_food_quality value >= 3 }
+					}
 					is_travelling = no
 				}
 				desc = health.1003.court_amenities_gout.desc
@@ -1582,8 +1585,7 @@ health.1003 = {
 			factor = 1.5
 		}
 		modifier = {
-			any_real_parent = {
-				even_if_dead = yes
+			any_parent = {
 				has_trait = gout_ridden
 			}
 			factor = 1.5
@@ -2434,7 +2436,7 @@ health.1007 = {
 		}
 		modifier = { #Parent had cancer
 			age >= 45
-			any_real_parent = {
+			any_parent = {
 				even_if_dead = yes
 				has_trait = cancer
 			}
@@ -2442,7 +2444,7 @@ health.1007 = {
 		}
 		modifier = { #Grandparent had cancer
 			age >= 45
-			any_real_grandparent = {
+			any_grandparent = {
 				even_if_dead = yes
 				has_trait = cancer
 			}
@@ -3600,27 +3602,27 @@ health.1015 = {
 		}
 		name = {
 			trigger = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e
 		}
 		name = {
 			trigger = {
-				has_variable = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				OR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e.already_looking
 		}
 		if = {
 			limit = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			find_court_physician_effect = yes
@@ -3636,9 +3638,9 @@ health.1015 = {
 		trigger = {
 			exists = scope:physician
 			liege_picks_treatment_trigger = yes
-			has_none_of_variables = {
-				name = seeking_epidemic_treatment
-				name = searching_for_physician
+			NOR = {
+				has_character_flag = seeking_epidemic_treatment
+				has_character_flag = searching_for_physician
 			}
 		}
 		name = health.1015.a
@@ -3847,27 +3849,27 @@ health.1016 = {
 		}
 		name = {
 			trigger = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e
 		}
 		name = {
 			trigger = {
-				has_variable = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				OR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e.already_looking
 		}
 		if = {
 			limit = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			find_court_physician_effect = yes
@@ -3883,9 +3885,9 @@ health.1016 = {
 		trigger = {
 			exists = scope:physician
 			liege_picks_treatment_trigger = yes
-			has_none_of_variables = {
-				name = seeking_epidemic_treatment
-				name = searching_for_physician
+			NOR = {
+				has_character_flag = seeking_epidemic_treatment
+				has_character_flag = searching_for_physician
 			}
 		}
 		name = health.1016.a
@@ -4094,27 +4096,27 @@ health.1017 = {
 		}
 		name = {
 			trigger = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e
 		}
 		name = {
 			trigger = {
-				has_variable = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				OR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e.already_looking
 		}
 		if = {
 			limit = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			find_court_physician_effect = yes
@@ -4130,9 +4132,9 @@ health.1017 = {
 		trigger = {
 			exists = scope:physician
 			liege_picks_treatment_trigger = yes
-			has_none_of_variables = {
-				name = seeking_epidemic_treatment
-				name = searching_for_physician
+			NOR = {
+				has_character_flag = seeking_epidemic_treatment
+				has_character_flag = searching_for_physician
 			}
 		}
 		name = health.1017.a
@@ -4711,21 +4713,15 @@ health.1200 = {
 	immediate = {
 
 		if = {
-			limit = { #Children, celibate characters, wedding_very_bad_fertility characters and characters without partners (or with sick partners) won't spread the disease
+			limit = { #Children, celibate characters, rejected_from_marriage_bed_modifier characters and characters without partners (or with sick partners) won't spread the disease
 				OR = {
 					is_adult = no
 					has_trait = celibate
+					has_character_modifier = rejected_from_marriage_bed_modifier
 					NOR = {
-						# is_married = yes
-						any_consort = {
-							NOT = { has_trait = lovers_pox }
-							NOT = { has_relation_wedding_very_bad_fertility = prev }
-						}
-						any_relation = {
-							type = lover
-							NOT = { has_trait = lovers_pox } 
-							NOT = { has_relation_wedding_very_bad_fertility = prev }
-						}
+						is_married = yes
+						any_consort = { NOT = { has_trait = lovers_pox } }
+						any_relation = { type = lover NOT = { has_trait = lovers_pox } }
 					}
 				}
 			}
@@ -4742,14 +4738,12 @@ health.1200 = {
 				type = lover
 				limit = {
 					NOT = { has_trait = lovers_pox }
-					NOT = { has_relation_wedding_very_bad_fertility = prev }
 				}
 				add_to_temporary_list = potential_contagion_victims
 			}
 			every_consort = {
 				limit = {
 					NOT = { has_trait = lovers_pox }
-					NOT = { has_relation_wedding_very_bad_fertility = prev }
 				}
 				add_to_temporary_list = potential_contagion_victims
 			}
@@ -4809,21 +4803,15 @@ health.1201 = {
 
 	immediate = {
 		if = {
-			limit = { #Children, celibate characters, wedding_very_bad_fertility characters and characters without partners (or with sick partners) won't spread the disease
+			limit = { #Children, celibate characters, rejected_from_marriage_bed_modifier characters and characters without partners (or with sick partners) won't spread the disease
 				OR = {
 					is_adult = no
 					has_trait = celibate
+					has_character_modifier = rejected_from_marriage_bed_modifier
 					NOR = {
-						# is_married = yes
-						any_consort = {
-							can_contract_disease_trigger = { DISEASE = great_pox }
-							NOT = { has_relation_wedding_very_bad_fertility = prev }
-						}
-						any_relation = {
-							type = lover
-							can_contract_disease_trigger = { DISEASE = great_pox }
-							NOT = { has_relation_wedding_very_bad_fertility = prev }
-						}
+						is_married = yes
+						any_consort = { can_contract_disease_trigger = { DISEASE = great_pox } }
+						any_relation = { type = lover can_contract_disease_trigger = { DISEASE = great_pox } }
 					}
 				}
 			}
@@ -4840,14 +4828,12 @@ health.1201 = {
 				type = lover
 				limit = {
 					can_contract_disease_trigger = { DISEASE = great_pox }
-					NOT = { has_relation_wedding_very_bad_fertility = prev }
 				}
 				add_to_temporary_list = potential_contagion_victims
 			}
 			every_consort = {
 				limit = {
 					can_contract_disease_trigger = { DISEASE = great_pox }
-					NOT = { has_relation_wedding_very_bad_fertility = prev }
 				}
 				add_to_temporary_list = potential_contagion_victims
 			}
@@ -5168,7 +5154,9 @@ health.2001 = {
 				remove_relation_lover = scope:std_partner
 			}
 			scope:std_partner = {
-				set_relation_wedding_very_bad_fertility = prev
+				add_character_modifier = {
+					modifier = rejected_from_marriage_bed_modifier
+				}
 			}
 			reverse_add_opinion = {
 				target = scope:std_partner
@@ -5183,7 +5171,7 @@ health.2001 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = medium_stress_gain
 			lustful = minor_stress_gain
 			forgiving = minor_stress_gain
@@ -5237,7 +5225,7 @@ health.2001 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = medium_stress_gain
 			lustful = minor_stress_gain
 			forgiving = minor_stress_gain
@@ -5281,7 +5269,7 @@ health.2001 = {
 			custom_tooltip = health.2001.c.tt
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			paranoid = major_stress_gain
 			vengeful = medium_stress_gain
 		}
@@ -5333,7 +5321,7 @@ health.2002 = {
 	option = {
 		trigger = { #Non-rejected consort
 			any_consort = { this = scope:std_partner }
-			NOT = { scope:std_partner = { any_relation = { type = wedding_very_bad_fertility } } }
+			NOT = { scope:std_partner = { has_character_modifier = rejected_from_marriage_bed_modifier } }
 		}
 		name = {
 			trigger = { has_std_trigger = no }
@@ -5351,7 +5339,9 @@ health.2002 = {
 				remove_relation_lover = scope:std_partner
 			}
 			scope:std_partner = {
-				set_relation_wedding_very_bad_fertility = prev
+				add_character_modifier = {
+					modifier = rejected_from_marriage_bed_modifier
+				}
 			}
 			reverse_add_opinion = {
 				target = scope:std_partner
@@ -5366,7 +5356,7 @@ health.2002 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_gain
 			lustful = minor_stress_gain
 			forgiving = minor_stress_gain
@@ -5420,7 +5410,7 @@ health.2002 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_gain
 			lustful = minor_stress_gain
 			forgiving = minor_stress_gain
@@ -5454,14 +5444,14 @@ health.2002 = {
 				}
 				AND = { # Non-rejected consort
 					any_consort = { this = scope:std_partner }
-					NOT = { scope:std_partner = { any_relation = { type = wedding_very_bad_fertility } } }
+					NOT = { scope:std_partner = { has_character_modifier = rejected_from_marriage_bed_modifier } }
 				}
 			}
 		}
 		name = health.2002.c
 		custom_tooltip = health.2001.c.tt
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			paranoid = major_stress_gain
 			vengeful = major_stress_gain
 		}
@@ -5475,7 +5465,7 @@ health.2002 = {
 	option = {
 		trigger = { #Rejected consort
 			any_consort = { this = scope:std_partner }
-			scope:std_partner = { any_relation = { type = wedding_very_bad_fertility } }
+			scope:std_partner = { has_character_modifier = rejected_from_marriage_bed_modifier }
 		}
 		name = {
 			trigger = { has_std_trigger = no }
@@ -5548,7 +5538,9 @@ health.2003 = {
 			limit = {
 				any_consort = { this = scope:other_partner }
 			}
-			set_relation_wedding_very_bad_fertility = scope:other_partner
+			add_character_modifier = {
+				modifier = rejected_from_marriage_bed_modifier
+			}
 		}
 		reverse_add_opinion = {
 			target = scope:other_partner
@@ -6243,27 +6235,27 @@ health.2201 = {
 		}
 		name = {
 			trigger = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e
 		}
 		name = {
 			trigger = {
-				has_variable = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				OR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			text = health.3101.e.already_looking
 		}
 		if = {
 			limit = {
-				has_none_of_variables = {
-					name = seeking_epidemic_treatment
-					name = searching_for_physician
+				NOR = {
+					has_character_flag = seeking_epidemic_treatment
+					has_character_flag = searching_for_physician
 				}
 			}
 			find_court_physician_effect = yes
@@ -6281,9 +6273,9 @@ health.2201 = {
 				root_picks_treatment_for_sick_character_trigger = yes
 				court_physician_available_trigger = yes
 			}
-			has_none_of_variables = {
-				name = seeking_epidemic_treatment
-				name = searching_for_physician
+			NOR = {
+				has_character_flag = seeking_epidemic_treatment
+				has_character_flag = searching_for_physician
 			}
 		}
 		name = health.2201.a
@@ -6298,11 +6290,11 @@ scripted_trigger health_2202_happy_recovery_trigger = {
 		has_relation_best_friend = scope:sick_character
 		has_relation_soulmate = scope:sick_character
 		AND = {
-			opinion = {
-				target = scope:sick_character
-				value > 0
-			}
 			scope:sick_character = {
+				opinion = {
+					target = root
+					value > 0
+				}
 				is_of_major_interest_to_root_trigger = yes
 			}
 		}
@@ -6313,9 +6305,11 @@ scripted_trigger health_2202_angry_recovery_trigger = {
 	OR = {
 		has_relation_rival = scope:sick_character
 		has_relation_nemesis = scope:sick_character
-		opinion = {
-			target = scope:sick_character
-			value < -35
+		scope:sick_character = {
+			opinion = {
+				target = root
+				value < -35
+			}
 		}
 	}
 }
@@ -6560,16 +6554,11 @@ health.2202 = {
 				}
 				scope:sick_character = {
 					has_std_trigger = no
-					any_relation = { type = wedding_very_bad_fertility }
+					has_character_modifier = rejected_from_marriage_bed_modifier
 				}
 			}
-			hidden_effect = {
-				scope:sick_character = {
-					every_relation = {
-						type = wedding_very_bad_fertility
-						remove_relation_wedding_very_bad_fertility = prev
-					}
-				}
+			scope:sick_character = {
+				remove_character_modifier = rejected_from_marriage_bed_modifier
 			}
 		}
 	}
@@ -6837,7 +6826,7 @@ health.3001 = {
 								add_trait = lifestyle_herbalist
 							}
 						}
-					}
+			}
 				}
 
 				#HIGH-SKILL CHARACTER
@@ -7092,7 +7081,7 @@ health.3001 = {
 			is_playable_character = yes #extra check to make sure they haven't lost their status
 		}
 		name = health.3001.e
-		trait = erudite
+		trait = scholar
 		skill = learning
 
 		custom_tooltip = health.3001.e.aptitude
@@ -7198,7 +7187,7 @@ health.3001 = {
 			PHYSICIAN = scope:mystic_option
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = minor_stress_impact_gain
 		}
 
@@ -7500,7 +7489,6 @@ health.3101 = {
 	option = {
 		name = health.3101.a
 		safe_disease_treatment_effect = { PATIENT = root TREATMENT_PICKER = root }
-		pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect = yes
 		ai_chance = { base = 10 }
 	}
 
@@ -7508,7 +7496,6 @@ health.3101 = {
 	option = {
 		name = health.3101.b
 		risky_disease_treatment_effect = { PATIENT = root TREATMENT_PICKER = root }
-		pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect = yes
 		ai_chance = { base = 1 }
 	}
 
@@ -7519,7 +7506,6 @@ health.3101 = {
 		}
 		name = health.3101.c
 		mystic_disease_treatment_effect = { PATIENT = root TREATMENT_PICKER = root }
-		pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect = yes
 		ai_chance = {
 			base = 0.5
 			modifier = {
@@ -7533,7 +7519,6 @@ health.3101 = {
 	option = {
 		name = health.3101.d
 		no_disease_treatment_effect = yes
-		pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect = yes
 		ai_chance = { base = 0 }
 	}
 }
@@ -10417,7 +10402,7 @@ health.6001 = {
 	}
 
 	trigger = {
-		is_incapable = no
+		NOT = { has_trait = incapable }
 	}
 
 	option = { #Fall
@@ -11482,7 +11467,7 @@ health.6203 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -11906,16 +11891,16 @@ health.7000 = {
 				}
 			}
 		}
-		# Shouldn't happen randomly for healthy characters
-		NAND = {
-			health >= good_health
-			age < 60
-		}
 	}
 
 	weight_multiplier = {
 		base = 1
 
+		modifier = { #Shouldn't happen randomly for healthy characters
+			health >= good_health
+			age < 60
+			factor = 0
+		}
 		modifier = {
 			health >= fine_health
 			age < 60
@@ -11977,10 +11962,7 @@ health.7000 = {
 			factor = 3
 		}
 		modifier = {
-			OR = {
-				rite = { rite_has_parameter = less_likely_to_become_infirm }
-				has_personal_tenet_flag = less_likely_to_become_infirm_personal
-			}
+			faith = { has_doctrine_parameter = less_likely_to_become_infirm }
 			factor = 0.5
 		}
 		modifier = {
@@ -12012,7 +11994,7 @@ health.7000 = {
 
 		add_trait = infirm
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			lazy = minor_stress_loss
 			diligent = medium_stress_gain
 		}
@@ -12042,12 +12024,14 @@ health.7100 = {
 			has_trait = depressed
 			has_character_flag = had_event_health_7100
 		}
-		# Don't fire on cheerful characters
-		NOT = { ai_energy >= medium_positive_energy }
 	}
 
 	weight_multiplier = {
 		base = 1
+		modifier = {
+			factor = 0
+			ai_energy >= medium_positive_energy
+		}
 		modifier = {
 			factor = 1.2
 			ai_energy <= low_positive_energy
@@ -12170,7 +12154,7 @@ health.7200 = {
 		}
 		# Genetics
 		modifier = {
-			any_real_parent = {
+			any_parent = {
 				even_if_dead = yes
 				has_trait = withering_mind
 			}
@@ -12178,11 +12162,11 @@ health.7200 = {
 		}
 		modifier = {
 			OR = {
-				any_real_grandparent = {
+				any_grandparent = {
 					even_if_dead = yes
 					has_trait = withering_mind
 				}
-				any_real_great_grandparent = {
+				any_great_grandparent = {
 					even_if_dead = yes
 					has_trait = withering_mind
 				}
@@ -12251,17 +12235,6 @@ health.7200 = {
 		modifier = {
 			culture = {
 				has_cultural_parameter = withering_mind_less_likely
-			}
-			factor = 0.5
-		}
-		modifier = {
-			rite = { rite_has_parameter = withering_mind_less_likely }
-			factor = 0.5
-		}
-		modifier = {
-			OR = {
-				rite = { rite_has_parameter = less_likely_to_become_infirm }
-				has_personal_tenet_flag = less_likely_to_become_infirm_personal
 			}
 			factor = 0.5
 		}
@@ -12379,7 +12352,7 @@ health.7300 = {
 		}
 		# Genetics
 		modifier = {
-			any_real_parent = {
+			any_parent = {
 				even_if_dead = yes
 				has_trait = clouded_eyes
 			}
@@ -12387,11 +12360,11 @@ health.7300 = {
 		}
 		modifier = {
 			OR = {
-				any_real_grandparent = {
+				any_grandparent = {
 					even_if_dead = yes
 					has_trait = clouded_eyes
 				}
-				any_real_great_grandparent = {
+				any_great_grandparent = {
 					even_if_dead = yes
 					has_trait = clouded_eyes
 				}
@@ -12404,19 +12377,12 @@ health.7300 = {
 			factor = 1.25
 		}
 		modifier = {
-			OR = {
-				rite = { rite_has_parameter = less_likely_to_become_infirm }
-				has_personal_tenet_flag = less_likely_to_become_infirm_personal
-			}
-			factor = 0.5
-		}
-		modifier = {
 			culture = { has_cultural_parameter = less_likely_to_gain_elder_health_traits }
 			factor = 0.5
 		}
 		modifier = { # Glare
 			is_ruler = yes # For performance reasons we limit this as checking modifiers is expensive
-			location ?= {
+			location = {
 				OR = {
 					has_province_modifier = winter_normal_modifier
 					has_province_modifier = winter_harsh_modifier
@@ -12425,7 +12391,7 @@ health.7300 = {
 			factor = 1.5
 		}
 		modifier = { # Bright sunlight
-			location ?= {
+			location = {
 				OR = {
 					terrain = desert
 					terrain = desert_mountains
@@ -12434,7 +12400,7 @@ health.7300 = {
 			factor = 1.25
 		}
 		modifier = { # Shade
-			location ?= {
+			location = {
 				OR = {
 					terrain = jungle
 					terrain = forest
@@ -12499,16 +12465,16 @@ health.7400 = {
 				}
 			}
 		}
-		# Shouldn't happen randomly for healthy characters
-		NAND = {
-			health >= good_health
-			age < 60
-		}
 	}
 
 	weight_multiplier = {
 		base = 1
 
+		modifier = { #Shouldn't happen randomly for healthy characters
+			health >= good_health
+			age < 60
+			factor = 0
+		}
 		modifier = {
 			health >= fine_health
 			age < 60
@@ -12547,19 +12513,12 @@ health.7400 = {
 			factor = 3
 		}
 		modifier = {
-			OR = {
-				rite = { rite_has_parameter = less_likely_to_become_infirm }
-				has_personal_tenet_flag = less_likely_to_become_infirm_personal
-			}
-			factor = 0.5
-		}
-		modifier = {
 			culture = { has_cultural_parameter = less_likely_to_gain_elder_health_traits }
 			factor = 0.5
 		}
 		# Genetics
 		modifier = {
-			any_real_parent = {
+			any_parent = {
 				even_if_dead = yes
 				has_trait = faltering_heart
 			}
@@ -12567,11 +12526,11 @@ health.7400 = {
 		}
 		modifier = {
 			OR = {
-				any_real_grandparent = {
+				any_grandparent = {
 					even_if_dead = yes
 					has_trait = faltering_heart
 				}
-				any_real_great_grandparent = {
+				any_great_grandparent = {
 					even_if_dead = yes
 					has_trait = faltering_heart
 				}
@@ -12700,16 +12659,16 @@ health.7500 = {
 			has_game_rule = infirm_only_elderly_health
 			has_trait_with_flag = is_immortal
 		}
-		# Shouldn't happen randomly for healthy characters
-		NAND = {
-			health >= good_health
-			age < 60
-		}
 	}
 
 	weight_multiplier = {
 		base = 1
 
+		modifier = { #Shouldn't happen randomly for healthy characters
+			health >= good_health
+			age < 60
+			factor = 0
+		}
 		modifier = {
 			health >= fine_health
 			age < 60
@@ -12748,34 +12707,21 @@ health.7500 = {
 			factor = 3
 		}
 		modifier = {
-			OR = {
-				rite = { rite_has_parameter = less_likely_to_become_infirm }
-				has_personal_tenet_flag = less_likely_to_become_infirm_personal
-			}
-			factor = 0.5
-		}
-		modifier = {
 			culture = { has_cultural_parameter = less_likely_to_gain_elder_health_traits }
 			factor = 0.5
 		}
 		# Genetics / unchangeable factors
 		modifier = {
-			any_real_parent = {
+			any_parent = {
 				even_if_dead = yes
 				has_trait = fragile_bones
 			}
 			factor = 1.5
 		}
 		modifier = {
-			OR = {
-				any_real_grandparent = {
-					even_if_dead = yes
-					has_trait = fragile_bones
-				}
-				any_real_great_grandparent = {
-					even_if_dead = yes
-					has_trait = fragile_bones
-				}
+			any_sibling = {
+				even_if_dead = yes
+				has_trait = fragile_bones
 			}
 			factor = 1.25
 		}
@@ -12800,7 +12746,7 @@ health.7500 = {
 			has_trait = hashishiyah
 			factor = 1.25
 		}
-		modifier = { # Weight-bearing exercise
+		modifier = { # Weight-bearing excercise
 			has_trait = athletic
 			factor = 0.5
 		}

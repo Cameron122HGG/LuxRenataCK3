@@ -179,9 +179,9 @@ travel_danger_events.1002 = { # Mountain Terrain - Bandits
 				terrain = mountains
 			}
 		}
-		has_none_of_variables = {
-			name = had_travel_event_1003_bandit_event_recently
-			name = had_travel_event_3070_bandit_event_recently
+		NOR = {
+			has_character_flag = had_travel_event_1003_bandit_event_recently
+			has_character_flag = had_travel_event_3070_bandit_event_recently
 		}
 	}
 
@@ -205,11 +205,6 @@ travel_danger_events.1002 = { # Mountain Terrain - Bandits
 		random_pool_character = {
 			province = root.location
 			limit = {
-				culture = root.location.culture
-				is_available_ai_adult = yes
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = THIS }
-			}
-			alternative_limit = {
 				is_available_ai_adult = yes
 				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = THIS }
 			}
@@ -227,11 +222,7 @@ travel_danger_events.1002 = { # Mountain Terrain - Bandits
 					location = root.location
 					culture = root.location.culture
 					faith = root.location.faith
-					rite = root.location.rite
 					save_scope_as = bandit
-					after_creation = {
-						add_character_flag = created
-					}
 				}
 				scope:bandit = {
 					move_to_pool = yes
@@ -478,7 +469,7 @@ travel_danger_events.1002 = { # Mountain Terrain - Bandits
 	after = {
 		mp_resume_travel_plan = yes
 		scope:bandit = {
-			silent_disappearance_ai_if_created_effect = yes
+			silent_disappearance_ai_effect = yes
 		}
 	}
 }
@@ -696,9 +687,6 @@ travel_danger_events.1006 = { # Lost in the forest
 				location = root.location
 				gender_female_chance = 50 
 				save_scope_as = guide
-				after_creation = {
-					add_character_flag = created
-				}
 			}
 		}
 		traveler_danger_xp_effect = {
@@ -798,7 +786,7 @@ travel_danger_events.1006 = { # Lost in the forest
 	after = {
 		mp_resume_travel_plan = yes
 		scope:guide = {
-			silent_disappearance_ai_if_created_effect = yes
+			silent_disappearance_ai_effect = yes
 		}
 	}
 }
@@ -1127,7 +1115,7 @@ travel_danger_events.1008 = { # Occupied Territory
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = massive_stress_impact_gain
 			trusting = massive_stress_impact_gain
 			just = medium_stress_impact_gain
@@ -1192,7 +1180,7 @@ travel_danger_events.1008 = { # Occupied Territory
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			craven = massive_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 		}
@@ -1236,7 +1224,7 @@ travel_danger_events.1008 = { # Occupied Territory
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			craven = massive_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 		}
@@ -1310,7 +1298,7 @@ travel_danger_events.1009 = { # Occupied Territory: Good intentions
 		}
 		add_piety = minor_piety_gain
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_gain
 			avaricious = massive_stress_impact_gain
 		}
@@ -1351,7 +1339,7 @@ travel_danger_events.1009 = { # Occupied Territory: Good intentions
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			just = massive_stress_impact_gain
 			sadistic = medium_stress_impact_loss
 			callous = minor_stress_impact_loss
@@ -1393,7 +1381,7 @@ travel_danger_events.1009 = { # Occupied Territory: Good intentions
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			craven = medium_stress_impact_gain
 			paranoid = massive_stress_impact_gain
 		}
@@ -1422,7 +1410,7 @@ travel_danger_events.1009 = { # Occupied Territory: Good intentions
 	option = { # Not really my problem, is it?
 		name = travel_danger_events.1009.d
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = massive_stress_impact_gain
 		}
 
@@ -1519,7 +1507,7 @@ travel_danger_events.1010 = { # Occupied Territory: Bad intentions
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			craven = massive_stress_impact_gain
 		}
 
@@ -1589,7 +1577,7 @@ travel_danger_events.1010 = { # Occupied Territory: Bad intentions
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = massive_stress_impact_gain
 		}
 
@@ -1853,7 +1841,7 @@ travel_danger_events.1020 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_loss
 			craven = minor_stress_gain
 			compassionate = minor_stress_gain
@@ -1943,7 +1931,7 @@ travel_danger_events.1020 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_gain
 			craven = minor_stress_loss
 			compassionate = minor_stress_gain
@@ -1971,7 +1959,7 @@ travel_danger_events.1020 = {
 			remove_character_modifier = horse_story_modifier
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_gain
 			craven = minor_stress_loss
 			compassionate = minor_stress_gain

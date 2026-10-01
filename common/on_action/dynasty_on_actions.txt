@@ -1,52 +1,10 @@
 ﻿on_dynasty_created = {
 	effect = {
-		# Cultural naming of dynamic dynasties
-		save_scope_as = new_dynasty
-		dynast = {
-			house = { save_scope_as = new_house }
-			save_scope_as = new_house_head
-			if = {
-				limit = { has_trait = bastard }
+		if = {
+			limit = { dynast = { has_trait = bastard } }
+			dynast = {
 				remove_trait = bastard
 				add_trait = bastard_founder
-			}
-			if = {
-				limit = { NOT = { has_variable = block_dynamic_dynasty_naming } }
-				save_best_location_for_house_name_effect = yes
-				if = {
-					limit = {
-						culture = { culture_uses_barony_dynasty_names_trigger = yes }
-					}
-					scope:new_house = { set_house_name = cadet_name_style_barony_dynasty }
-				}
-				else_if = {
-					limit = {
-						culture = { culture_uses_japanese_dynasty_names_trigger = yes }
-					}
-					if = {
-						limit = {
-							NOT = { exists = var:new_japanese_house_name }
-						}
-						setup_japan_house_name_scopes_effect = yes
-					}
-					random_list = {
-						1 = {
-							trigger = { exists = scope:domicile_barony }
-							scope:new_dynasty = { set_dynasty_name = japanese_house_domicile_barony }
-							scope:new_house = { set_house_name = japanese_house_domicile_barony }
-						}
-						1 = {
-							trigger = { exists = scope:domicile_county }
-							scope:new_dynasty = { set_dynasty_name = japanese_house_domicile_county }
-							scope:new_house = { set_house_name = japanese_house_domicile_county }
-						}
-						1 = {
-							trigger = { exists = scope:random_barony }
-							scope:new_house = { set_house_name = japanese_house_random_barony }
-							scope:new_dynasty = { set_dynasty_name = japanese_house_random_barony }
-						}
-					}
-				}
 			}
 		}
 	}

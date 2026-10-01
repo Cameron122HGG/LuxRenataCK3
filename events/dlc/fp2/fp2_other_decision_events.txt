@@ -320,8 +320,8 @@ fp2_other_decisions.0001 = {
 			100 = {
 				trigger = {
 					# can replace the court chaplain
-					rite = {
-						rite_has_parameter = clerical_appointment_fixed
+					faith = {
+						has_doctrine_parameter = clerical_appointment_fixed
 					}
 				}
 
@@ -620,8 +620,10 @@ fp2_other_decisions.0700 = {
 	lower_right_portrait = {
 		trigger = {
 			exists = faith.religious_head
-			rite = rite:mozarabic_church
-			faith.religious_head != root
+			faith = {
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+				religious_head != root
+			}
 		}
 		character = faith.religious_head
 	}
@@ -642,11 +644,10 @@ fp2_other_decisions.0700 = {
 			religion = {
 				every_faith = {
 					limit = {
-						portrait_religious_faith_or_foundational_trigger = { FAITH = root.faith }
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
 					}
 					every_faith_ruler = {
 						limit = {
-							rite = rite:mozarabic_church
 							primary_title.tier >= tier_county
 							exists = capital_county
 							capital_county.title_province = { geographical_region = world_europe_west_iberia }
@@ -657,7 +658,7 @@ fp2_other_decisions.0700 = {
 				every_faith = {
 					limit = {
 						NOT = {
-							portrait_religious_faith_or_foundational_trigger = { FAITH = root.faith }
+							portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
 						}
 					}
 					every_faith_ruler = {
@@ -666,7 +667,7 @@ fp2_other_decisions.0700 = {
 							primary_title.tier >= tier_county
 							faith = {
 								OR = {
-									portrait_religious_faith_or_foundational_trigger = { FAITH = root.faith }
+									portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
 									portrait_religious_faith_or_foundational_trigger = { FAITH = faith:catholic }
 								}
 							}
@@ -767,7 +768,7 @@ fp2_other_decisions.0700 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = medium_stress_impact_gain
 			greedy = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
@@ -839,7 +840,11 @@ scripted_trigger fp2_council_toledo_successful_regional_trigger = {
 	any_in_list = {
 		list = council_toledo_guest_list
 		count > council_toledo_success_guest_value
-		NOT = { rite = rite:mozarabic_church }
+		faith = {
+			NOT = {
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+			}
+		}
 	}
 }
 
@@ -848,7 +853,11 @@ scripted_trigger fp2_council_toledo_failure_regional_trigger = {
 	any_in_list = {
 		list = council_toledo_guest_list
 		count <= council_toledo_success_guest_value
-		NOT = { rite = rite:mozarabic_church }
+		faith = {
+			NOT = {
+				portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+			}
+		}
 	}
 }
 
@@ -924,7 +933,11 @@ fp2_other_decisions.0701 = {
 					any_in_list = {
 						list = council_toledo_guest_list
 						count < council_toledo_success_guest_value
-						NOT = { rite = rite:mozarabic_church }
+						faith = {
+							NOT = {
+								portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+							}
+						}
 					}
 				}
 				desc = fp2_other_decisions.0701.failure
@@ -1130,12 +1143,16 @@ scripted_effect fp2_council_toledo_debate_bishop_effect = {
 		list = council_toledo_guest_list
 		limit = {
 			this != scope:council_priest
-			trigger_if = {
-				limit = { scope:mozarabic = flag:yes }
-				rite = rite:mozarabic_church
-			}
-			trigger_else = {
-				NOT = { rite = rite:mozarabic_church }
+			faith = {
+				trigger_if = {
+					limit = { scope:mozarabic = flag:yes }
+					portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+				}
+				trigger_else = {
+					NOT = {
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+					}
+				}
 			}
 		}
 		weight = {
@@ -1157,8 +1174,7 @@ scripted_effect fp2_council_toledo_debate_bishop_effect = {
 			location = root.capital_province
 			gender_female_chance = root_faith_dominant_gender_female_chance 
 			trait = zealous 
-			faith = faith:christian_faith 
-			rite = rite:mozarabic_church
+			faith = faith:mozarabic_church 
 			culture = root.culture 
 			learning = {
 				min_template_high_skill
@@ -1187,12 +1203,20 @@ scripted_effect fp2_council_toledo_debate_bishop_effect = {
 				this != scope:debate_bishop
 				trigger_if = {
 					limit = {
-						scope:debate_bishop = { rite = rite:mozarabic_church }
+						scope:debate_bishop.faith = {
+							portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+						}
 					}
-					NOT = { rite = rite:mozarabic_church }
+					NOT = {
+						faith = {
+							portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+						}
+					}
 				}
 				trigger_else = {
-					rite = rite:mozarabic_church
+					faith = {
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+					}
 				}
 			}			
 		}
@@ -1227,7 +1251,9 @@ scripted_effect fp2_council_opinion_mozarabic_effect = {
 					this = scope:counter_bishop
 				}
 				liege = root
-				rite = rite:mozarabic_church
+				faith = {
+					portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+				}
 			}
 			add_opinion = {
 				target = root
@@ -1243,7 +1269,9 @@ scripted_effect fp2_council_opinion_mozarabic_effect = {
 					this = scope:counter_bishop
 					liege = root
 				}
-				rite = rite:mozarabic_church
+				faith = {
+					portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+				}
 			}
 			custom = fp2_council_opinion_mozarabic_effect_tt
 			add_opinion = {
@@ -1260,7 +1288,11 @@ scripted_effect fp2_council_opinion_other_effect = {
 		limit = {
 			any_in_list = {
 				list = council_toledo_guest_list
-				NOT = { rite = rite:mozarabic_church }
+				faith = {
+					NOT = {
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+					}
+				}
 			}
 		}
 		hidden_effect = {
@@ -1272,7 +1304,11 @@ scripted_effect fp2_council_opinion_other_effect = {
 						this = scope:counter_bishop
 					}
 					liege = root
-					NOT = { rite = rite:mozarabic_church }
+					faith = {
+						NOT = {
+							portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+						}
+					}
 				}
 				add_opinion = {
 					target = root
@@ -1288,7 +1324,11 @@ scripted_effect fp2_council_opinion_other_effect = {
 						this = scope:counter_bishop
 						liege = root
 					}
-					NOT = { rite = rite:mozarabic_church }
+					faith = {
+						NOT = {
+							portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+						}
+					}
 				}
 				custom = fp2_council_opinion_other_effect_tt
 				add_opinion = {
@@ -1400,7 +1440,7 @@ fp2_other_decisions.0702 = {
 		first_valid = {
 		    triggered_desc = {
 		        trigger = {
-		        	rite = { rite_has_doctrine = doctrine_theocracy_lay_clergy }
+		        	faith = { has_doctrine = doctrine_theocracy_lay_clergy }
 		        }
 		        desc = fp2_other_decisions.0702.present
 		    }   
@@ -1428,7 +1468,7 @@ fp2_other_decisions.0702 = {
 				10 = { # Conversion
 					trigger = {
 						NOT = {
-							rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
+							faith = { has_doctrine = doctrine_pluralism_pluralistic }
 						}
 						root = {
 							any_realm_county = {
@@ -1459,7 +1499,7 @@ fp2_other_decisions.0702 = {
 				10 = { # Tolerance
 					trigger = {
 						NOT = {
-							rite = { rite_has_doctrine = doctrine_pluralism_fundamentalist }
+							faith = { has_doctrine = doctrine_pluralism_fundamentalist }
 						}
 					}
 					fp2_council_toledo_debate_bishop_effect = { MOZARABIC = yes }
@@ -1579,7 +1619,7 @@ fp2_other_decisions.0702 = {
 							faith = {
 								religion = root.faith.religion
 								NOT = {
-									portrait_religious_faith_or_foundational_trigger = { FAITH = root.faith }
+									portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
 								}
 								NOT = { exists = religious_head }
 							}
@@ -1591,7 +1631,7 @@ fp2_other_decisions.0702 = {
 							faith = {
 								religion = root.faith.religion
 								NOT = {
-									portrait_religious_faith_or_foundational_trigger = { FAITH = root.faith }
+									portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
 								}
 								NOT = { exists = religious_head }
 							}
@@ -1656,7 +1696,7 @@ fp2_other_decisions.0702 = {
 				fp2_council_opinion_mozarabic_effect = { VALUE = 10 }
 				fp2_council_opinion_other_effect = { VALUE = 5 }
 				fp2_council_strife_catalyst_effect = yes
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					cynical = minor_stress_impact_gain
 				}
 			}
@@ -1664,7 +1704,7 @@ fp2_other_decisions.0702 = {
 				fp2_council_modifier_effect = { MODIFIER = fp2_council_reform_modifier }
 				fp2_council_opinion_mozarabic_effect = { VALUE = 10 }
 				fp2_council_opinion_other_effect = { VALUE = -10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					zealous = minor_stress_impact_gain
 				}
 			}
@@ -1686,7 +1726,7 @@ fp2_other_decisions.0702 = {
 				}
 				custom_tooltip = fp2_council_culture_tt
 				fp2_council_peace_catalyst_effect = yes
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					arrogant = minor_stress_impact_gain
 				}
 			}
@@ -1694,7 +1734,7 @@ fp2_other_decisions.0702 = {
 				fp2_council_modifier_effect = { MODIFIER = fp2_council_rights_modifier }
 				fp2_council_opinion_mozarabic_effect = { VALUE = 10 }
 				fp2_council_opinion_other_effect = { VALUE = 5 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					greedy = minor_stress_impact_gain
 					cynical = minor_stress_impact_gain
 				}
@@ -1707,7 +1747,7 @@ fp2_other_decisions.0702 = {
 				fp2_council_modifier_effect = { MODIFIER = fp2_council_hof_modifier }
 				fp2_council_opinion_mozarabic_effect = { VALUE = 10 }
 				fp2_council_opinion_other_effect = { VALUE = -10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					humble = minor_stress_impact_gain
 				}
 			}
@@ -1719,7 +1759,7 @@ fp2_other_decisions.0702 = {
 				fp2_council_modifier_effect = { MODIFIER = fp2_council_pope_modifier }
 				fp2_council_opinion_mozarabic_effect = { VALUE = -10 }
 				fp2_council_opinion_other_effect = { VALUE = 10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					arrogant = minor_stress_impact_gain
 				}
 			}
@@ -1728,7 +1768,7 @@ fp2_other_decisions.0702 = {
 				fp2_council_modifier_effect = { MODIFIER = fp2_council_heresy_modifier }
 				fp2_council_opinion_mozarabic_effect = { VALUE = 10 }
 				fp2_council_opinion_other_effect = { VALUE = 10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					cynical = minor_stress_impact_gain
 				}
 			}
@@ -1812,14 +1852,14 @@ fp2_other_decisions.0702 = {
 				fp2_council_opinion_mozarabic_effect = { VALUE = -10 }
 				fp2_council_opinion_other_effect = { VALUE = -5 }
 				fp2_council_peace_catalyst_effect = yes
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					zealous = minor_stress_impact_gain
 				}
 			}
 			2 = { # Reform
 				fp2_council_opinion_mozarabic_effect = { VALUE = -10 }
 				fp2_council_opinion_other_effect = { VALUE = 10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					cynical = minor_stress_impact_gain
 				}
 			}
@@ -1827,14 +1867,14 @@ fp2_other_decisions.0702 = {
 				fp2_council_opinion_mozarabic_effect = { VALUE = -10 }
 				fp2_council_opinion_other_effect = { VALUE = -10 }
 				fp2_council_strife_catalyst_effect = yes
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					humble = minor_stress_impact_gain
 				}
 			}
 			4 = { # Clergy Rights
 				fp2_council_opinion_mozarabic_effect = { VALUE = -10 }
 				fp2_council_opinion_other_effect = { VALUE = -5 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					zealous = minor_stress_impact_gain
 					generous = minor_stress_impact_gain
 				}
@@ -1842,26 +1882,26 @@ fp2_other_decisions.0702 = {
 			5 = { # New HoF
 				fp2_council_opinion_mozarabic_effect = { VALUE = -10 }
 				fp2_council_opinion_other_effect = { VALUE = 10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					arrogant = minor_stress_impact_gain
 				}
 			}
 			6 = { # Closer to Pope
 				fp2_council_opinion_mozarabic_effect = { VALUE = 10 }
 				fp2_council_opinion_other_effect = { VALUE = -10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					humble = minor_stress_impact_gain
 				}
 			}
 			7 = { # Target Heresy
 				fp2_council_opinion_mozarabic_effect = { VALUE = -10 }
 				fp2_council_opinion_other_effect = { VALUE = -10 }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					zealous = minor_stress_impact_gain
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			just = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -2199,13 +2239,13 @@ fp2_other_decisions.1000 = {
 
 	immediate = {
 		save_scope_as = iberian_footholder
-		every_sub_realm_kingdom = {
+		every_held_title = {
 			limit = {
 				# Any de jure kingdom of Iberia is completely controlled
 				fp2_struggle_secure_iberian_foothold_iberian_kingdom_trigger = yes
 				# That kingdom is mostly my faith
 				fp2_struggle_secure_iberian_foothold_faith_trigger = yes
-				title_held_years >= fp2_struggle_secure_iberian_foothold_years_value
+				scope:iberian_kingdom_temp = { title_held_years >= fp2_struggle_secure_iberian_foothold_years_value }
 			}
 			add_to_list = iberian_footholder_list
 		}
@@ -2215,7 +2255,9 @@ fp2_other_decisions.1000 = {
 					any_in_list = {
 						list = iberian_footholder_list
 						# Borders held lands in a non-Iberian kingdom you hold
-						fp2_struggle_secure_iberian_foothold_neighbor_with_outsider_kingdom_trigger = yes
+						any_de_jure_county = {
+							any_title_to_title_neighboring_and_across_water_county = { fp2_struggle_secure_iberian_foothold_outsider_kingdom_trigger = yes }
+						}
 						NOT = { is_in_list = iberian_footholder_transfer_list }
 					}
 				}
@@ -2223,12 +2265,14 @@ fp2_other_decisions.1000 = {
 					list = iberian_footholder_list
 					limit = {
 						# Borders held lands in a non-Iberian kingdom you hold
-						fp2_struggle_secure_iberian_foothold_neighbor_with_outsider_kingdom_trigger = yes
+						any_de_jure_county = {
+							any_title_to_title_neighboring_and_across_water_county = { fp2_struggle_secure_iberian_foothold_outsider_kingdom_trigger = yes }
+						}
 						NOT = { is_in_list = iberian_footholder_transfer_list }
 					}
 					random_de_jure_county = {
 						limit = {
-							fp2_struggle_secure_iberian_foothold_neighbor_with_outsider_kingdom_trigger = yes
+							any_title_to_title_neighboring_and_across_water_county = { fp2_struggle_secure_iberian_foothold_outsider_kingdom_trigger = yes }
 						}
 						random_title_to_title_neighboring_and_across_water_county = {
 							limit = { fp2_struggle_secure_iberian_foothold_outsider_kingdom_trigger = yes }
@@ -2241,16 +2285,16 @@ fp2_other_decisions.1000 = {
 				}
 			}
 		}
-	}
-
-	option = {
-		name = fp2_other_decisions.1000.a
 		show_as_tooltip = {
 			every_in_list = {
 				list = iberian_footholder_transfer_list
 				set_de_jure_liege_title = scope:transfer_empire
 			}
 		}
+	}
+
+	option = {
+		name = fp2_other_decisions.1000.a
 	}
 
 	after = {
@@ -2439,7 +2483,9 @@ fp2_other_decisions.1101 = {
 			}
 			triggered_desc = {
 				trigger = {
-					rite = rite:mozarabic_church
+					faith = {
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+					}
 				}
 				desc = fp2_other_decisions.1101.mozarab
 			}
@@ -2495,7 +2541,9 @@ fp2_other_decisions.1101 = {
 					limit = { exists = scope:de_jure_anger_2 }
 					this != scope:de_jure_anger_2
 				}
-				rite = rite:mozarabic_church
+				faith = {
+					portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+				}
 			}
 			text = fp2_other_decisions.1101.b
 		}
@@ -2509,7 +2557,11 @@ fp2_other_decisions.1101 = {
 					limit = { exists = scope:de_jure_anger_2 }
 					this != scope:de_jure_anger_2
 				}
-				NOT = { rite = rite:mozarabic_church }
+				faith = {
+					NOT = {
+						portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+					}
+				}
 			}
 			text = fp2_other_decisions.1101.c
 		}

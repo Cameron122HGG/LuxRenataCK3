@@ -1,47 +1,30 @@
 ﻿# The optional scripted base component of an artifact containing triggers and effects that cannot be read during artifact creation.
 # Determines for example if a given character can wield an artifact or get its full benefits.
+# Root scope is character for all triggers, but the artifact can be accessed via scope:artifact
 
 example_template = {
 
-	# Can this character equip this artifact?
-	# Root scope: character
-	# scope:artifact = the artifact.
+	# can this character equip this artifact?
 	can_equip = {
 		always = yes
 	}
 
-	# Can this character benefit from the full modifiers of the artifact?
-	# Root scope: character
-	# scope:artifact = the artifact.
+	# can this character benefit from the full modifiers of the artifact?
 	can_benefit = {
 		is_christian_trigger = yes
 	}
-
-	# Can this character reforge this artifact (turn this artifact into another)
-	# Root scope: character
-	# scope:artifact = the artifact.
+	
+	# can this character reforge this artifact (turn this artifact into another)
 	can_reforge = {
 		is_christian_trigger = yes
 	}
 
-	# Can this character repair this artifact (restore its durability)
-	# Root scope: character
-	# scope:artifact = the artifact.
+	# can this character repair this artifact (restore its durability)
 	can_repair = {
 		always = no
 	}
 
-	# Is this artifact a holy relic for a faith?
-	# Relics can be enshrined into holy sites
-	#
-	# Root scope: faith to enshrine for
-	# scope:artifact = the artifact
-	is_holy_relic = {
-		always = no
-	}
-
-	# If a given character does not pass the "can_benefit" trigger then this modifier will be applied instead.
-	# (only when equipped to a character)
+	# if a given character does not pass the "can_benefit" trigger then this modifier will be applied instead.
 	fallback = {
 		monthly_prestige = 0.3
 	}

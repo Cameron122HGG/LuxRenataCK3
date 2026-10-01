@@ -537,6 +537,21 @@ set_adventure_location_effect = {
 						}
 					}
 					10 = {
+						# Burma
+						trigger = {
+							trigger_if = {
+								limit = { exists = location }
+								adventurer_potential_destination_distance_check = {
+									REGION = world_burma
+								}
+							}
+						}
+						set_variable = {
+							name = adventure_destination
+							value = flag:burma
+						}
+					}
+					10 = {
 						# Tibet
 						trigger = {
 							trigger_if = {
@@ -614,7 +629,7 @@ set_adventure_location_effect = {
 							value = flag:japan
 						}
 					}
-					2 = {
+					5 = {
 						# East Asia - Sakhalin-Hokkaido
 						trigger = {
 							trigger_if = {
@@ -862,6 +877,12 @@ get_adventure_inspiration_start_location = {
 						title_province = { save_scope_as = location }
 					}
 				}
+				flag:burma = { # Burma
+					random_county_in_region = {
+						region = world_burma
+						title_province = { save_scope_as = location }
+					}
+				}
 				flag:tibet = { # Tibet
 					random_county_in_region = {
 						region = world_tibet
@@ -927,18 +948,6 @@ get_adventure_inspiration_start_location = {
 	}
 }
 
-save_adventurer_location_effect = {
-	if = {
-		limit = {
-			exists = scope:adventurer
-			NOT = { exists = scope:location }
-		}
-		scope:adventurer.location = {
-			save_temporary_scope_as = location
-		}
-	}
-}
-
 inspiration_adventure_create_artifact_effect = {
 	$OWNER$ = { save_scope_as = owner } #Will always exist!
 	$CREATOR$ = { save_scope_as = adventurer } #Will always exist in an adventure inspiration!
@@ -971,7 +980,6 @@ inspiration_adventure_create_artifact_effect = {
 				template = local_artisan_template
 				culture = scope:location.culture
 				faith = scope:location.faith
-				rite = scope:location.rite
 				gender = scope:adventurer
 				dynasty = none
 				save_scope_as = artifact_origin #Fictional maker of artifact
@@ -1029,10 +1037,10 @@ inspiration_adventure_create_artifact_effect = {
 												}
 											}
 											10 = {
-												create_artifact_pedestal_crucifix_effect = { OWNER = root CREATOR = root }
+												create_artifact_pedestal_crucifix_effect = { OWNER = root }
 											}
 											10 = {
-												create_artifact_pedestal_cross_effect = { OWNER = root CREATOR = root }
+												create_artifact_pedestal_cross_effect = { OWNER = root }
 											}
 										}
 									}
@@ -1059,6 +1067,7 @@ inspiration_adventure_create_artifact_effect = {
 													religion = religion:buddhism_religion
 													geographical_region = world_india
 													geographical_region = world_tibet
+													geographical_region = world_burma
 													geographical_region = world_himalaya
 													geographical_region = world_asia_china
 													geographical_region = world_asia_japan
@@ -1581,8 +1590,8 @@ inspiration_adventure_create_artifact_effect = {
 									add = 5
 								}
 								trigger = {
-									current_year >= 1097
-									character:107590 ?= { is_alive = no } #El Cid is not around
+									current_year >= 6097
+									character:1820000 ?= { is_alive = no } #El Cid is not around
 									NOT = {
 										any_artifact = {
 											has_variable = sword_cid
@@ -1738,7 +1747,7 @@ inspiration_adventure_create_artifact_effect = {
 								trigger = {
 									NOT = {
 										any_artifact = {
-											has_variable = charlamagne_throne
+											has_variable = charlemagne_throne
 										}
 									}
 									scope:location ?= {
@@ -2664,7 +2673,7 @@ inspiration_adventure_create_artifact_effect = {
 									add = 5
 								}
 								trigger = {
-									current_date > 1080.1.1
+									current_date > 6080.1.1
 									any_artifact = {
 										count < 1
 										has_variable = szczerbiec
@@ -2709,7 +2718,7 @@ inspiration_adventure_create_artifact_effect = {
 									add = 5
 								}
 								trigger = {
-									current_date > 1120.1.1
+									current_date > 6120.1.1
 									any_artifact = {
 										count < 1
 										has_variable = legbiter
@@ -2732,7 +2741,7 @@ inspiration_adventure_create_artifact_effect = {
 									add = 5
 								}
 								trigger = {
-									current_date > 920.1.1
+									current_date > 5920.1.1
 									any_artifact = {
 										count < 1
 										has_variable = quernbiter
@@ -2767,7 +2776,7 @@ inspiration_adventure_create_artifact_effect = {
 									add = 5
 								}
 								trigger = {
-									current_date > 920.1.1
+									current_date > 5920.1.1
 									any_artifact = {
 										count < 1
 										has_variable = dragvandil
@@ -2790,6 +2799,7 @@ inspiration_adventure_create_artifact_effect = {
 									scope:location ?= {
 										OR = {
 											geographical_region = world_india
+											geographical_region = world_burma
 											geographical_region = world_tibet
 											geographical_region = world_asia_china
 											geographical_region = world_asia_japan
@@ -2822,6 +2832,7 @@ inspiration_adventure_create_artifact_effect = {
 									scope:location ?= {
 										OR = {
 											geographical_region = world_india
+											geographical_region = world_burma
 											geographical_region = world_tibet
 											geographical_region = world_asia_china
 											geographical_region = world_asia_japan
@@ -3048,7 +3059,7 @@ inspiration_adventure_create_artifact_effect = {
 									scope:location ?= {
 										geographical_region = world_asia_southeast
 									}
-									current_date >= 1080.1.1
+									current_date >= 6080.1.1
 								}
 								create_artifact_statue_viet_green_amitabha_buddha_effect = { OWNER = root }
 							}
@@ -3113,7 +3124,7 @@ inspiration_adventure_create_artifact_effect = {
 								}
 								trigger = {
 									has_tgp_dlc_trigger = yes
-									current_date > 1150.1.1 #Needs to be long past creation date for this to make sense
+									current_date > 6150.1.1 #Needs to be long past creation date for this to make sense
 									any_artifact = {
 										count < 1
 										has_variable = military_classics

@@ -37,7 +37,7 @@ scripted_trigger varangian_0001_available_varangian_trigger = {
 	religion = religion:germanic_religion
 	NOR = {
 		faith = {
-			has_doctrine_parameter = pacifist
+			has_doctrine_parameter = pacifist_opinion_active
 		}
 		has_trait = craven
 		has_truce = title:e_byzantium.holder
@@ -53,7 +53,7 @@ varangian.0001 = {
 		religion = religion:germanic_religion
 		NOR = {
 			faith = {
-				has_doctrine_parameter = pacifist
+				has_doctrine_parameter = pacifist_opinion_active
 			}
 			has_character_flag = had_recent_varangian_sendoff
 		}
@@ -519,11 +519,23 @@ scripted_trigger varangian_2002_varangian_lover_trigger = {
 	has_character_flag = is_currently_varangian
 	is_ai = yes
 	is_adult = yes
-	might_cheat_on_every_partner_trigger = yes
+	save_temporary_scope_as = potential_cheater
+	OR = {
+		is_married = no
+		any_spouse = {
+			count = all
+			save_temporary_scope_as = partner
+			scope:potential_cheater = { might_cheat_on_partner_trigger = { PARTNER = scope:partner } }
+		}
+	}
 	is_attracted_to_gender_of = root
-	can_set_relation_lover_trigger = { CHARACTER = root }
-	NOT = {
+	root = {
+		is_attracted_to_gender_of = prev
+	}
+	NOR = {
+		this = root
 		has_relation_rival = root
+		has_relation_lover = root
 	}
 	opinion = {
 		target = root
@@ -727,14 +739,14 @@ scripted_trigger varangian_2005_should_marry_this_character_matrilineally = {
 			}
 		}
 		AND = {
-			rite = {
-				rite_has_doctrine = doctrine_gender_female_dominated
+			faith = {
+				has_doctrine = doctrine_gender_female_dominated
 			}
 			$OTHER_CHARACTER$ = {
-				rite = {
+				faith = {
 					OR = {
-						rite_has_doctrine = doctrine_gender_female_dominated
-						rite_has_doctrine = doctrine_gender_equal
+						has_doctrine = doctrine_gender_female_dominated
+						has_doctrine = doctrine_gender_equal
 					}
 				}
 			}
@@ -860,11 +872,23 @@ varangian.2008 = {
 scripted_trigger varangian_2011_local_lover_trigger = {
 	is_ai = yes
 	is_adult = yes
-	might_cheat_on_every_partner_trigger = yes
 	is_attracted_to_gender_of = root
-	can_set_relation_lover_trigger = { CHARACTER = root }
-	NOT = {
+	root = {
+		is_attracted_to_gender_of = prev
+	}
+	save_temporary_scope_as = potential_cheater
+	OR = {
+		is_married = no
+		any_spouse = {
+			count = all
+			save_temporary_scope_as = partner
+			scope:potential_cheater = { might_cheat_on_partner_trigger = { PARTNER = scope:partner } }
+		}
+	}
+	NOR = {
+		this = root
 		has_relation_rival = root
+		has_relation_lover = root
 	}
 	opinion = {
 		target = root
@@ -942,7 +966,6 @@ varangian.2011 = {
 					gender_female_chance = root_attraction_based_female_chance
 					employer = root.host
 					faith = root.host.faith
-					rite = root.host.rite
 					culture = root.host.culture
 
 					after_creation = {
@@ -966,7 +989,6 @@ varangian.2011 = {
 					gender_female_chance = root_attraction_based_female_chance
 					employer = root.host
 					faith = root.host.faith
-					rite = root.host.rite
 					culture = root.host.culture
 					dynasty = generate
 
@@ -991,7 +1013,6 @@ varangian.2011 = {
 					gender_female_chance = root_attraction_based_female_chance
 					employer = root.host
 					faith = root.host.faith
-					rite = root.host.rite
 					culture = root.host.culture
 
 					after_creation = {
@@ -1015,7 +1036,6 @@ varangian.2011 = {
 					gender_female_chance = root_attraction_based_female_chance
 					employer = root.host
 					faith = root.host.faith
-					rite = root.host.rite
 					culture = root.host.culture
 					dynasty = generate
 

@@ -1,6 +1,6 @@
 ﻿ep3_yearly_events_admin = {
 	trigger = {
-		government_has_mechanic = administrative
+		government_allows = administrative
 	}
 
 	random_events = {
@@ -205,7 +205,7 @@ ep3_restored_rome_on_action = {
 		100 = ep3_roman_restoration.0300 # Your inefficient governor messed up, causing mass loss in popular opinion. Can you fix it?
 		100 = ep3_roman_restoration.0500 # Every 10-30 years, a random kingdom will raid you
 		#100 = ep3_roman_restoration.0510 # Special Bubonic Plague Spawns
-		20 = ep3_roman_restoration.0520 # Mongol Invasion Spawns
+		#20 = ep3_roman_restoration.0520 # Mongol Invasion Spawns
 	}
 }
 
@@ -215,8 +215,8 @@ on_liege_government_change = {
 	effect = { # Using an effect instead of a trigger here in case we want to use this outside of EP3
 		if = {
 			limit = {
-				government_has_mechanic = administrative
-				liege = { NOT = { government_has_mechanic = administrative } }
+				government_has_flag = government_is_administrative
+				liege = { NOT = { government_allows = administrative } }
 			}
 			# Save scopes for later use
 			liege = {

@@ -230,7 +230,6 @@ debate_disburse_activity_ai_guest_rewards = {
     if = {
         limit = {
             has_activity_intent = debate_increase_movement_power_intent
-            exists = top_participant_group:dynastic_cycle
         }
         top_participant_group:dynastic_cycle ?= { 
             save_scope_as = my_movement
@@ -430,7 +429,7 @@ debate_host_rewards_effect = {
             limit = {
                 variable_list_size = {
                     name = debate_disciples
-                    value >= 1
+                    value = 1
                 }
                 num_of_relation_disciple >= 1
             }
@@ -444,14 +443,14 @@ debate_host_rewards_effect = {
             limit = {
                 variable_list_size = {
                     name = debate_disciples
-                    value >= 2
+                    value = 2
                 }
                 num_of_relation_disciple >= 2
             }
             ordered_in_list = {
                 variable = debate_disciples
                 order_by = learning
-                position = 1
+                position = 0
                 save_scope_as = disciple_2
             }
         }
@@ -459,7 +458,7 @@ debate_host_rewards_effect = {
             limit = {
                 variable_list_size = {
                     name = debate_disciples
-                    value >= 3
+                    value = 3
                 }
                 num_of_relation_disciple >= 3
             }
@@ -563,7 +562,6 @@ debate_disburse_activity_host_rewards = {
                 scope:host = { debate_host_rewards_effect = yes }
             }
         }
-        pam_vows_of_poverty_host_completion_piety_effect = yes
     }
     else = {
         show_as_tooltip = { debate_host_rewards_effect = yes }

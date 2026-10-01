@@ -13,7 +13,7 @@ form_the_greatest_khan_empire_effect = {
 				save_scope_as = title_change
 				add_claim_on_loss = no
 			}
-
+	
 			title:e_mongol_empire = {
 				change_title_holder = {
 					holder = scope:gok
@@ -22,7 +22,7 @@ form_the_greatest_khan_empire_effect = {
 				save_scope_as = gok_title
 			}
 			resolve_title_and_vassal_change = scope:title_change
-
+	
 			assert_if = {
 				limit = { NOT = { exists = title:e_mongol_empire } }
 				text = "Mongol Empire title was not created!"
@@ -56,14 +56,14 @@ form_the_greatest_khan_empire_effect = {
 					save_scope_as = gok_title
 				}
 			}
-
+			
 			scope:gok_title = {
 				set_color_from_title = root.capital_county
 				set_definitive_form = yes
 				set_can_be_named_after_dynasty = no
 				set_can_use_nomadic_naming = no
 			}
-
+			
 			create_title_and_vassal_change = {
 				type = created
 				save_scope_as = change
@@ -92,7 +92,7 @@ form_the_greatest_khan_empire_effect = {
 				text = "Greatest of Khan's title was not created!"
 			}
 		}
-
+		
 		if = {
 			limit = { NOT = { has_realm_law = single_heir_succession_kurultai_law } }
 			add_realm_law_skip_effects = single_heir_succession_kurultai_law
@@ -128,8 +128,8 @@ form_the_greatest_khan_empire_effect = {
 			}
 		}
 	}
-
-
+	
+	
 	spawn_gok_troops_effect = yes
 
 	set_global_variable = {
@@ -301,7 +301,7 @@ spawn_gok_troops_effect = {
 						has_cultural_parameter = unlock_maa_maturkan_warriors
 					}
 				}
-
+				
 			}
 			spawn_army = {
 				uses_supply = no
@@ -1067,7 +1067,7 @@ mpo_find_powerful_opponent_for_gurkhan_effect = {
 					target = root.capital_county
 					value <= squared_distance_almost_massive
 				}
-
+				
 				mpo_gok_coalition_member_trigger = yes
 			}
 			add_to_list = potential_gok_opponents
@@ -1113,7 +1113,7 @@ mpo_find_powerful_opponent_for_gurkhan_effect = {
 						target = root.capital_county
 						value <= squared_distance_massive
 					}
-
+					
 					mpo_gok_coalition_member_trigger = yes
 				}
 				add_to_list = potential_gok_opponents
@@ -1150,7 +1150,7 @@ mpo_find_powerful_opponent_for_gurkhan_effect = {
 			}
 			order_by = current_military_strength
 			add_to_list = anti_gok_coalition_members
-			save_scope_as = gok_opponent
+			save_scope_as = gok_opponent 
 		}
 	}
 	else = {
@@ -1163,7 +1163,7 @@ mpo_find_powerful_opponent_for_gurkhan_effect = {
 			}
 			order_by = sub_realm_size
 			add_to_list = anti_gok_coalition_members
-			save_scope_as = gok_opponent
+			save_scope_as = gok_opponent 
 		}
 	}
 }
@@ -1199,7 +1199,7 @@ mpo_gok_offer_submission_effect = {
 					government_has_flag = government_is_herder
 				}
 			}
-			if = {
+			if = {	
 				limit = {
 					scope:send_tribute = yes
 				}
@@ -1208,7 +1208,7 @@ mpo_gok_offer_submission_effect = {
 					gold = monumental_gold_value
 				}
 			}
-			else_if = {
+			else_if = {	
 				limit = {
 					NOT = { scope:low_obligations = yes }
 				}
@@ -1386,7 +1386,7 @@ mpo_gok_offer_submission_effect = {
 			}
 		}
 	}
-
+	
 	create_title_and_vassal_change = {
 		type = swear_fealty
 		save_scope_as = change
@@ -1412,8 +1412,8 @@ mpo_gok_offer_submission_effect = {
 			limit = {
 				#Actor is still nomadic or pluralist and thus doesn't care about religion
 				scope:actor = {
-					rite = {
-						rite_has_doctrine = doctrine_pluralism_pluralistic
+					faith = {
+						has_doctrine = doctrine_pluralism_pluralistic
 					}
 				}
 				OR = {
@@ -1531,7 +1531,7 @@ mpo_gok_offer_submission_refusal_effect = {
 	}
 	custom_tooltip = gok_on_victory_tt
 	show_as_tooltip = {
-		rightfully_imprison_character_less_verbose_effect = {
+		rightfully_imprison_character_less_verbose_effect = { 
 			TARGET = scope:recipient
 			IMPRISONER = scope:actor
 		}
@@ -1572,7 +1572,7 @@ mpo_gok_offer_submission_refusal_effect = {
 	else = {
 		custom_tooltip = gok_cb_event_troops_tt
 	}
-
+	
 	custom_tooltip = gok_offer_submission_acceptance_bonus_tt
 	scope:recipient.primary_title = {
 		set_variable = {
@@ -1605,11 +1605,19 @@ gok_spawn_subjugated_siege_army_effect = {
 				OR = {
 					$CHARACTER$.culture = {
 						has_innovation = innovation_gunpowder
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 					$CHARACTER$.capital_county.culture ?= {
 						has_innovation = innovation_gunpowder
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 				}
 			}
@@ -1651,7 +1659,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -1691,7 +1699,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -1741,7 +1749,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -1781,7 +1789,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -1821,7 +1829,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -1861,7 +1869,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -1926,7 +1934,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -1966,7 +1974,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2016,7 +2024,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2056,7 +2064,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2096,7 +2104,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -2136,7 +2144,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -2157,11 +2165,19 @@ gok_spawn_subjugated_siege_army_effect = {
 				OR = {
 					$CHARACTER$.culture = {
 						has_innovation = innovation_trebuchet
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 					$CHARACTER$.capital_county.culture ?= {
 						has_innovation = innovation_trebuchet
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 				}
 			}
@@ -2203,7 +2219,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2243,7 +2259,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2293,7 +2309,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2333,7 +2349,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2373,7 +2389,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -2413,7 +2429,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -2478,7 +2494,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2518,7 +2534,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2568,7 +2584,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2608,7 +2624,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2648,7 +2664,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -2688,7 +2704,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -2709,11 +2725,19 @@ gok_spawn_subjugated_siege_army_effect = {
 				OR = {
 					$CHARACTER$.culture = {
 						has_innovation = innovation_mangonel
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 					$CHARACTER$.capital_county.culture ?= {
 						has_innovation = innovation_mangonel
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 				}
 			}
@@ -2755,7 +2779,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2795,7 +2819,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2845,7 +2869,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2885,7 +2909,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -2925,7 +2949,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -2965,7 +2989,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -3030,7 +3054,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3070,7 +3094,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3120,7 +3144,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3160,7 +3184,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3200,7 +3224,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -3240,7 +3264,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -3260,10 +3284,18 @@ gok_spawn_subjugated_siege_army_effect = {
 			limit = {
 				OR = {
 					$CHARACTER$.culture = {
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 					$CHARACTER$.capital_county.culture ?= {
-						culture_uses_eastern_siege_weapons_trigger = yes
+						OR = {
+							has_cultural_pillar = heritage_chinese
+							has_cultural_pillar = heritage_korean
+							has_cultural_pillar = heritage_japonic
+						}
 					}
 				}
 			}
@@ -3305,7 +3337,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3345,7 +3377,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3395,7 +3427,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3435,7 +3467,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3475,7 +3507,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -3515,7 +3547,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -3569,7 +3601,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = armored_footmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3609,7 +3641,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = pikemen_unit
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3659,7 +3691,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = crossbowmen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3699,7 +3731,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_horsemen
 							stacks = gok_subjugated_army_maa_value_very_small
@@ -3739,7 +3771,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = bowmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -3779,7 +3811,7 @@ gok_spawn_subjugated_siege_army_effect = {
 						name = gok_subjugated_army_name_subject_troops
 						inheritable = yes
 						uses_supply = no
-
+						
 						men_at_arms = {
 							type = light_footmen
 							stacks = gok_subjugated_army_maa_value_small
@@ -3836,7 +3868,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = paiks
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -3864,7 +3896,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = sahel_horsemen
 						stacks = gok_subjugated_army_maa_value_large
@@ -3892,7 +3924,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = war_elephant
 						stacks = gok_subjugated_army_maa_value_very_small
@@ -3906,12 +3938,12 @@ gok_spawn_subjugated_quality_army_effect = {
 				trigger = {
 					scope:army_giver = {
 						OR = {
-							culture = {
-								has_innovation = innovation_elephantry
+							culture = { 
+								has_innovation = innovation_elephantry 
 								has_innovation = innovation_advanced_bowmaking
 							}
 							capital_county.culture = {
-								has_innovation = innovation_elephantry
+								has_innovation = innovation_elephantry 
 								has_innovation = innovation_advanced_bowmaking
 							}
 						}
@@ -3922,7 +3954,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = ballista_elephant
 						stacks = gok_subjugated_army_maa_value_very_small
@@ -3951,7 +3983,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = abudrar
 						stacks = gok_subjugated_army_maa_value_large
@@ -3980,7 +4012,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = ayyar
 						stacks = gok_subjugated_army_maa_value_large
@@ -4012,7 +4044,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 
@@ -4020,7 +4052,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_noble_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = druzhina
 						stacks = gok_subjugated_army_maa_value_medium
@@ -4049,7 +4081,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = chasseur
 						stacks = gok_subjugated_army_maa_value_large
@@ -4078,7 +4110,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = guinea_warrior
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4107,7 +4139,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = khandayat
 						stacks = gok_subjugated_army_maa_value_large
@@ -4136,7 +4168,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = garudas
 						stacks = gok_subjugated_army_maa_value_medium
@@ -4165,7 +4197,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = mountaineer
 						stacks = gok_subjugated_army_maa_value_large
@@ -4194,7 +4226,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = mulaththamun
 						stacks = gok_subjugated_army_maa_value_large
@@ -4223,7 +4255,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = archers_of_the_nile
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4252,7 +4284,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = palace_guards
 						stacks = gok_subjugated_army_maa_value_large
@@ -4281,7 +4313,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = sarawit
 						stacks = gok_subjugated_army_maa_value_large
@@ -4310,7 +4342,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = shomer
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4339,7 +4371,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = zbrojnosh
 						stacks = gok_subjugated_army_maa_value_large
@@ -4368,7 +4400,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = bondi
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4397,7 +4429,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = vigmen
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4426,7 +4458,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = tarkhan
 						stacks = gok_subjugated_army_maa_value_small
@@ -4455,7 +4487,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = tawashi
 						stacks = gok_subjugated_army_maa_value_large
@@ -4484,7 +4516,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = zupin_warrior
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4513,7 +4545,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = shenbigong
 						stacks = gok_subjugated_army_maa_value_large
@@ -4542,7 +4574,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = praetorian
 						stacks = gok_subjugated_army_maa_value_small
@@ -4571,7 +4603,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = guanch_vaulter
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4604,7 +4636,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 
@@ -4612,7 +4644,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = bush_hunter
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4644,7 +4676,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 
@@ -4652,7 +4684,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = horn_warrior
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4684,7 +4716,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 
@@ -4692,7 +4724,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = metsanvartija
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4758,7 +4790,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_greek_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = cataphract
 						stacks = gok_subjugated_army_maa_value_large
@@ -4819,7 +4851,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_greek_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = ballistrai
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -4880,7 +4912,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_greek_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = skoutatoi
 						stacks = gok_subjugated_army_maa_value_large
@@ -4944,7 +4976,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_greek_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = akritai
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -5006,7 +5038,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_noble_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = ayrudzi
 						stacks = gok_subjugated_army_maa_value_large
@@ -5068,7 +5100,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_noble_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = monaspa
 						stacks = gok_subjugated_army_maa_value_large
@@ -5102,7 +5134,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = cataphract_archers
 						stacks = gok_subjugated_army_maa_value_small
@@ -5164,7 +5196,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = hussar
 						stacks = gok_subjugated_army_maa_value_medium
@@ -5195,7 +5227,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = varangian_veterans
 						stacks = gok_subjugated_army_maa_value_medium
@@ -5294,7 +5326,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = horse_archers
 						stacks = gok_subjugated_army_maa_value_large
@@ -5352,7 +5384,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = crossbowmen
 						stacks = gok_subjugated_army_maa_value_large
@@ -5417,7 +5449,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = conrois
 						stacks = gok_subjugated_army_maa_value_large
@@ -5463,7 +5495,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = longbowmen
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -5509,7 +5541,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = picchieri
 						stacks = gok_subjugated_army_maa_value_large
@@ -5555,7 +5587,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = goedendag
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -5601,7 +5633,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = caballero
 						stacks = gok_subjugated_army_maa_value_large
@@ -5647,7 +5679,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = hobelar
 						stacks = gok_subjugated_army_maa_value_large
@@ -5693,7 +5725,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = schiltron
 						stacks = gok_subjugated_army_maa_value_medium
@@ -5742,7 +5774,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_noble_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = gendarme
 						stacks = gok_subjugated_army_maa_value_small
@@ -5788,7 +5820,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_crusaders_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = landsknecht
 						stacks = gok_subjugated_army_maa_value_large
@@ -5834,7 +5866,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_noble_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = huscarl
 						stacks = gok_subjugated_army_maa_value_medium
@@ -5895,7 +5927,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = camel_rider
 						stacks = gok_subjugated_army_maa_value_large
@@ -5973,14 +6005,14 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 				spawn_army = {
 					name = gok_noble_army_name
 					inheritable = yes
 					uses_supply = no
-
+					
 					men_at_arms = {
 						type = armored_horsemen
 						stacks = gok_subjugated_army_maa_value_small
@@ -6051,7 +6083,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					inheritable = yes
 					uses_supply = no
-
+					
 					men_at_arms = {
 						type = armored_footmen
 						stacks = gok_subjugated_army_maa_value_large
@@ -6115,7 +6147,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					inheritable = yes
 					uses_supply = no
-
+					
 					men_at_arms = {
 						type = pikemen_unit
 						stacks = gok_subjugated_army_maa_value_large
@@ -6179,7 +6211,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					inheritable = yes
 					uses_supply = no
-
+					
 					men_at_arms = {
 						type = bowmen
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -6236,7 +6268,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					inheritable = yes
 					uses_supply = no
-
+					
 					men_at_arms = {
 						type = light_horsemen
 						stacks = gok_subjugated_army_maa_value_large
@@ -6293,7 +6325,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					inheritable = yes
 					uses_supply = no
-
+					
 					men_at_arms = {
 						type = light_footmen
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -6315,7 +6347,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = steppe_raiders
 						stacks = gok_subjugated_army_maa_value_large
@@ -6340,7 +6372,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = heavy_horse_archers
 						stacks = gok_subjugated_army_maa_value_medium
@@ -6363,7 +6395,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = mpo_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = nomad_lancers
 						stacks = gok_subjugated_army_maa_value_small
@@ -6384,7 +6416,7 @@ gok_spawn_subjugated_quality_army_effect = {
 								has_cultural_parameter = unlock_maa_mangudai
 							}
 						}
-
+						
 					}
 				}
 				if = {
@@ -6395,7 +6427,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 
@@ -6403,7 +6435,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = mangudai
 						stacks = gok_subjugated_army_maa_value_large
@@ -6424,7 +6456,7 @@ gok_spawn_subjugated_quality_army_effect = {
 								has_cultural_parameter = unlock_maa_maturkan_warriors
 							}
 						}
-
+						
 					}
 				}
 				if = {
@@ -6435,7 +6467,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 
@@ -6443,7 +6475,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = maturkan_warriors
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -6464,7 +6496,7 @@ gok_spawn_subjugated_quality_army_effect = {
 								has_cultural_parameter = unlock_emishi_horse_archers_units
 							}
 						}
-
+						
 					}
 				}
 				if = {
@@ -6475,7 +6507,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					}
 					scope:army_giver.culture = { save_scope_as = army_culture }
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 
@@ -6483,7 +6515,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = greek_anarchy_war_nomad_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = emishi_horse_archers
 						stacks = gok_subjugated_army_maa_value_large
@@ -6505,7 +6537,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_noble_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = japanese_horse_archers
 						stacks = gok_subjugated_army_maa_value_medium
@@ -6525,7 +6557,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = warrior_monks
 						stacks = gok_subjugated_army_maa_value_large
@@ -6555,14 +6587,14 @@ gok_spawn_subjugated_quality_army_effect = {
 						save_scope_as = army_culture
 					}
 				}
-				else = {
+				else = {	
 					scope:army_giver.capital_county.culture = { save_scope_as = army_culture }
 				}
 				spawn_army = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = fire_lancers
 						stacks = gok_subjugated_army_maa_value_medium
@@ -6585,7 +6617,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = gakgung_archers
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -6606,7 +6638,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = pesilat_warriors
 						stacks = gok_subjugated_army_maa_value_very_large
@@ -6631,7 +6663,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_noble_army_name
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = samurai
 						stacks = gok_subjugated_army_maa_value_medium
@@ -6647,7 +6679,7 @@ gok_spawn_subjugated_quality_army_effect = {
 						valid_for_maa_trigger = { PARAMETER = unlock_zhanmadao }
 						OR = {
 							vassal_contract_has_flag = celestial_province_military
-							vassal_contract_has_flag = celestial_province_protectorate
+							#vassal_contract_has_flag = celestial_province_celestial
 						}
 						NOT = {
 							culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban }
@@ -6660,7 +6692,7 @@ gok_spawn_subjugated_quality_army_effect = {
 							valid_for_maa_trigger = { PARAMETER = unlock_zhanmadao }
 							OR = {
 								vassal_contract_has_flag = celestial_province_military
-								vassal_contract_has_flag = celestial_province_protectorate
+								#vassal_contract_has_flag = celestial_province_celestial
 							}
 							NOT = {
 								culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban }
@@ -6671,14 +6703,14 @@ gok_spawn_subjugated_quality_army_effect = {
 						save_scope_as = army_culture
 					}
 				}
-				else = {
+				else = {	
 					culture = { save_scope_as = army_culture }
 				}
 				spawn_army = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = zhanmadao_infantry
 						stacks = gok_subjugated_army_maa_value_medium
@@ -6712,14 +6744,14 @@ gok_spawn_subjugated_quality_army_effect = {
 						save_scope_as = army_culture
 					}
 				}
-				else = {
+				else = {	
 					culture = { save_scope_as = army_culture }
 				}
 				spawn_army = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = tiefutu
 						stacks = gok_subjugated_army_maa_value_small
@@ -6751,14 +6783,14 @@ gok_spawn_subjugated_quality_army_effect = {
 						save_scope_as = army_culture
 					}
 				}
-				else = {
+				else = {	
 					culture = { save_scope_as = army_culture }
 				}
 				spawn_army = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = burenjia
 						stacks = gok_subjugated_army_maa_value_medium
@@ -6820,7 +6852,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = rocket_carts
 						stacks = gok_subjugated_army_maa_value_large
@@ -6866,7 +6898,7 @@ gok_spawn_subjugated_quality_army_effect = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = shenbigong
 						stacks = gok_subjugated_army_maa_value_large
@@ -6898,14 +6930,14 @@ gok_spawn_subjugated_quality_army_effect = {
 						save_scope_as = army_culture
 					}
 				}
-				else = {
+				else = {	
 					culture = { save_scope_as = army_culture }
 				}
 				spawn_army = {
 					name = gok_subjugated_army_name_subject_troops
 					uses_supply = no
 					inheritable = yes
-
+					
 					men_at_arms = {
 						type = mubarizun
 						stacks = gok_subjugated_army_maa_value_medium
@@ -7036,7 +7068,7 @@ gok_realm_devastation_effect = {
 						remove_holding = yes
 						add_to_list = destroyed_holdings
 					}
-
+					
 				}
 			}
 
@@ -7047,7 +7079,7 @@ gok_realm_devastation_effect = {
 			every_in_list = {
 				list = devastation_area
 				save_scope_as = county
-
+				
 				change_county_control = massive_county_control_loss
 				holder = {
 					send_interface_message = {
@@ -7087,10 +7119,10 @@ gok_realm_devastation_effect = {
 								destroy_random_building_effect = yes
 							}
 						}
-
+						
 					}
 				}
-
+				
 				hidden_effect = {
 					mpo_gok_civilian_slaughter_totalling_effect = yes
 				}
@@ -7394,7 +7426,7 @@ mpo_gok_civilian_slaughter_totalling_effect = {
 }
 
 gok_retribution_cleanup_effect = {
-	if = {
+	if = {	
 		limit = {
 			exists = scope:khans_retribution_target
 		}
@@ -7515,7 +7547,7 @@ gok_world_conquest_generic_rewards_effect = {
 			limit = {
 				OR = {
 					faith = faith:nestorian
-					faith.religion = faith:manichaean_faith.religion
+					faith.religion = faith:manichean.religion
 				}
 				OR = {
 					has_nickname = nick_xormuzta
@@ -7546,7 +7578,7 @@ gok_world_conquest_generic_rewards_effect = {
 						geographical_region = world_steppe_central
 					}
 				}
-				current_date >= 1250
+				current_date >= 6250
 				OR = {
 					has_nickname = nick_cihangir
 					primary_title = {
@@ -7686,7 +7718,7 @@ gok_world_conquest_generic_rewards_effect = {
 			set_can_use_nomadic_naming = no
 			set_definitive_form = yes
 		}
-
+		
 		create_title_and_vassal_change = {
 			type = created
 			save_scope_as = change
@@ -7707,7 +7739,7 @@ gok_world_conquest_generic_rewards_effect = {
 			value = global_var:gok_empire_crumble_date
 		}
 	}
-
+		
 	#Give the GoK hegemony all of the steppe as de jure
 	hidden_effect = {
 		situation:the_great_steppe ?= {
@@ -7738,7 +7770,7 @@ gok_world_conquest_generic_rewards_effect = {
 			set_de_jure_liege_title = scope:gok_hegemony
 		}
 	}
-
+	
 	if = {
 		limit = {
 			exists = dynasty
@@ -7763,7 +7795,7 @@ gok_world_conquest_generic_rewards_effect = {
 			text = gain_5th_lvl_education_martial_tt
 			add_trait = education_martial_5
 		}
-
+		
 	}
 	else_if = {
 		limit = {
@@ -7886,7 +7918,6 @@ gok_upgrade_realm_and_government_effect = {
 						has_holding_type = herder_holding
 					}
 				}
-				holding_pre_feudalize_effect = yes
 				set_holding_type = castle_holding
 				add_building = castle_02
 				if = {
@@ -7981,7 +8012,6 @@ gok_upgrade_realm_and_government_effect = {
 						has_holding_type = herder_holding
 					}
 				}
-				holding_pre_feudalize_effect = yes
 				set_holding_type = castle_holding
 			}
 		}
@@ -8006,7 +8036,6 @@ gok_upgrade_realm_and_government_effect = {
 						has_holding_type = herder_holding
 					}
 				}
-				holding_pre_feudalize_effect = yes
 				set_holding_type = castle_holding
 				#holder is a high lord, upgrade their castle a bit
 				if = {
@@ -8073,7 +8102,7 @@ gok_final_decision_list_setup = {
 		}
 		add_to_list = switching_vassals
 	}
-	save_scope_value_as = {
+	save_scope_value_as = {	
 		name = switching_vassals_value
 		value = "list_size(switching_vassals)"
 	}
@@ -8115,11 +8144,11 @@ gok_final_decision_list_setup = {
 			add_to_list = city_state_vassals
 		}
 	}
-	save_scope_value_as = {
+	save_scope_value_as = {	
 		name = sedentary_to_nomad_vassals_value
 		value = "list_size(sedentary_to_nomad_vassals)"
 	}
-	save_scope_value_as = {
+	save_scope_value_as = {	
 		name = city_state_vassals_value
 		value = "list_size(city_state_vassals)"
 	}
@@ -8148,7 +8177,7 @@ gok_final_decision_list_setup = {
 		}
 		add_to_list = burned_to_nomadism
 	}
-	save_scope_value_as = {
+	save_scope_value_as = {	
 		name = burned_to_nomadism_value
 		value = "list_size(burned_to_nomadism)"
 	}
@@ -8199,8 +8228,8 @@ gok_war_target_evaluation_and_declaration_effect = {
 								}
 							}
 						}
-						current_year < 1178
-						current_year >= 1279 # Roughly when the mongols should fracture historically
+						current_year < 6178
+						current_year >= 6279 # Roughly when the mongols should fracture historically
 						scope:mongol_emperor = {
 							completely_controls_region = special_mongol_empire_golden_horde_region # Controls all of Russia and the Steppe
 						}
@@ -8306,7 +8335,7 @@ gok_war_target_evaluation_and_declaration_effect = {
 								# An extra check to make sure we haven't snuck any Mongol territory in
 								NOT = { this = scope:mongol_emperor }
 								NOT = { top_liege = scope:mongol_emperor }
-
+		
 								# Standard conditions
 								NOT = { is_at_war_with = scope:mongol_emperor }
 								NOT = {
@@ -8344,7 +8373,7 @@ gok_war_target_evaluation_and_declaration_effect = {
 						}
 					}
 				}
-			}
+			}	
 			else = {
 				scope:next_invasion_target = {
 					save_scope_as = recipient
@@ -8485,7 +8514,7 @@ mpo_gok_onslaught_admin_vassal_reorganization = {
 			is_landed = yes
 			#This should be duke or count based on gov type
 			highest_held_title_tier >= main_administrative_tier
-			government_has_mechanic = administrative
+			government_allows = administrative
 		}
 		add_to_list = protected_admin_vassals
 	}
@@ -8494,7 +8523,7 @@ mpo_gok_onslaught_admin_vassal_reorganization = {
 		limit = {
 			is_landed = yes
 			highest_held_title_tier < main_administrative_tier
-			government_has_mechanic = administrative
+			government_allows = administrative
 			highest_held_title_tier > tier_barony
 			NOT = {
 				any_liege_or_above = {
@@ -8512,7 +8541,7 @@ mpo_gok_onslaught_admin_vassal_reorganization = {
 				liege = scope:defender
 				liege = {
 					NOT = {
-						government_has_mechanic = administrative
+						government_allows = administrative
 					}
 				}
 			}
@@ -8667,7 +8696,7 @@ mpo_gok_onslaught_admin_vassal_reorganization = {
 	}
 }
 
-gok_government_change_story_end_effect = {
+gok_government_change_story_end_effect = {			
 	if = {
 		limit = {
 			any_owned_story = {

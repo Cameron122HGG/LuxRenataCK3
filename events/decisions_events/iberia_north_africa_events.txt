@@ -536,6 +536,556 @@ iberia_north_africa.9101 = { #by James Beaumont
 }
 
 ##################################################
+# Loyalty to St. Peter's Throne
+# by Ewan Cowhig Croft
+# 0101 - 0110
+##################################################
+
+#	Mozarabic Christianity reaffirms its place amongst the ecumenical churches.
+iberia_north_africa.0101 = {
+	type = character_event
+	title = iberia_north_africa.0101.t
+	desc = iberia_north_africa.0101.desc
+	theme = faith
+	left_portrait = {
+		character = scope:religious_leader
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:pope
+		animation = flirtation
+	}
+
+	immediate = { play_music_cue = "mx_cue_faith_conversion" }
+
+	# One people, one faith: swap Rite for Communal Identity.
+	option = {
+		name = iberia_north_africa.0101.a
+		flavor = iberia_north_africa.0101.a.tt
+
+		# Apply the effects in the after block to keep future notifications from erroring.
+		show_as_tooltip = { mozarabic_bind_the_faith_to_rome_decision_righteous_path_scripted_effect = yes }
+		# Flag our choice.
+		save_scope_value_as = {
+			name = mozarabic_choice
+			value = flag:righteous
+		}
+
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			cynical = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_sociability = 1
+				ai_zeal = 0.5
+			}
+		}
+	}
+	
+	# We cannot be afraid to seize power in order to defend our own: swap Rite for Pursuit of Power.
+	option = {
+		name = iberia_north_africa.0101.b
+		flavor = iberia_north_africa.0101.b.tt
+
+		# Apply the effects in the after block to keep future notifications from erroring.
+		show_as_tooltip = { mozarabic_bind_the_faith_to_rome_decision_fundamentalist_path_scripted_effect = yes }
+		# Flag our choice.
+		save_scope_value_as = {
+			name = mozarabic_choice
+			value = flag:fundamentalist
+		}
+
+		stress_impact = {
+			compassionate = medium_stress_impact_loss
+			craven = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 1
+				ai_compassion = -1
+			}
+		}
+	}
+	
+	# The GetHolyBooks will still need interpretation: swap Rite for Religious Law.
+	option = {
+		name = iberia_north_africa.0101.c
+		flavor = iberia_north_africa.0101.c.tt
+
+		# Apply the effects in the after block to keep future notifications from erroring.
+		show_as_tooltip = { mozarabic_bind_the_faith_to_rome_decision_pluralist_path_scripted_effect = yes }
+		# Flag our choice.
+		save_scope_value_as = {
+			name = mozarabic_choice
+			value = flag:pluralist
+		}
+
+		stress_impact = {
+			lazy = medium_stress_impact_loss
+			arbitrary = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 1
+				ai_energy = 0.5
+			}
+		}
+	}
+
+	after = {
+		# Now take care of notification events for players.
+		every_player = {
+			limit = {
+				this != scope:religious_leader
+				OR = {
+					faith = faith:mozarabic_church
+					any_neighboring_and_across_water_top_liege_realm_owner = { this = root.top_liege }
+				}
+			}
+			trigger_event = iberia_north_africa.0102
+		}
+		# And finally, actually apply the effects.
+		if = {
+			limit = {
+				exists = scope:mozarabic_choice
+				scope:mozarabic_choice = flag:fundamentalist
+			}
+			mozarabic_bind_the_faith_to_rome_decision_fundamentalist_path_scripted_effect = yes
+		}
+		if = {
+			limit = {
+				exists = scope:mozarabic_choice
+				scope:mozarabic_choice = flag:righteous
+			}
+			mozarabic_bind_the_faith_to_rome_decision_righteous_path_scripted_effect = yes
+		}
+		if = {
+			limit = {
+				exists = scope:mozarabic_choice
+				scope:mozarabic_choice = flag:pluralist
+			}
+			mozarabic_bind_the_faith_to_rome_decision_pluralist_path_scripted_effect = yes
+		}
+	}
+}
+
+#	Notification event for relevant players.
+iberia_north_africa.0102 = {
+	type = character_event
+	title = iberia_north_africa.0102.t
+	desc = {
+		desc = iberia_north_africa.0102.desc.intro
+		# Fundamentalist
+		triggered_desc = {
+			trigger = { scope:mozarabic_choice = flag:fundamentalist }
+			desc = iberia_north_africa.0102.desc.fundamentalist
+		}
+		# Righteous
+		triggered_desc = {
+			trigger = { scope:mozarabic_choice = flag:righteous }
+			desc = iberia_north_africa.0102.desc.righteous
+		}
+		# Pluralist
+		triggered_desc = {
+			trigger = { scope:mozarabic_choice = flag:pluralist }
+			desc = iberia_north_africa.0102.desc.pluralist
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = scope:religious_leader
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:pope
+		animation = flirtation
+	}
+
+	immediate = { play_music_cue = "mx_cue_faith_conversion" }
+
+	# Fundamentalist path.
+	option = {
+		# We're using a broken-out block because the auto-magical first_valid name stuff was borking.
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { faith = faith:mozarabic_church }
+						desc = iberia_north_africa.0102.a.same_faith
+					}
+					triggered_desc = {
+						trigger = { religion = religion:christianity_religion }
+						desc = iberia_north_africa.0102.a.same_religion
+					}
+					desc = iberia_north_africa.0102.a.misc
+				}
+			}
+		}
+		trigger = { scope:mozarabic_choice = flag:fundamentalist }
+
+		show_as_tooltip = {
+			scope:religious_leader = { mozarabic_bind_the_faith_to_rome_decision_fundamentalist_path_scripted_effect = yes }
+		}
+
+		# No stress impact for a notification event.
+		ai_chance = {
+			# AI chance isn't relevant for a notification event.
+			base = 100
+		}
+	}
+	
+	# Righteous path.
+	option = {
+		# We're using a broken-out block because the auto-magical first_valid name stuff was borking.
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { faith = faith:mozarabic_church }
+						desc = iberia_north_africa.0102.b.same_faith
+					}
+					triggered_desc = {
+						trigger = { religion = religion:christianity_religion }
+						desc = iberia_north_africa.0102.b.same_religion
+					}
+					desc = iberia_north_africa.0102.b.misc
+				}
+			}
+		}
+		trigger = { scope:mozarabic_choice = flag:righteous }
+
+		show_as_tooltip = {
+			scope:religious_leader = { mozarabic_bind_the_faith_to_rome_decision_righteous_path_scripted_effect = yes }
+		}
+
+		# No stress impact for a notification event.
+		ai_chance = {
+			# AI chance isn't relevant for a notification event.
+			base = 100
+		}
+	}
+	
+	# Pluralist path.
+	option = {
+		# We're using a broken-out block because the auto-magical first_valid name stuff was borking.
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { faith = faith:mozarabic_church }
+						desc = iberia_north_africa.0102.c.same_faith
+					}
+					triggered_desc = {
+						trigger = { religion = religion:christianity_religion }
+						desc = iberia_north_africa.0102.c.same_religion
+					}
+					desc = iberia_north_africa.0102.c.misc
+				}
+			}
+		}
+		trigger = { scope:mozarabic_choice = flag:pluralist }
+
+		show_as_tooltip = {
+			scope:religious_leader = { mozarabic_bind_the_faith_to_rome_decision_pluralist_path_scripted_effect = yes }
+		}
+
+		# No stress impact for a notification event.
+		ai_chance = {
+			# AI chance isn't relevant for a notification event.
+			base = 100
+		}
+	}
+}
+
+##################################################
+# An Iberian Rite
+# by Ewan Cowhig Croft
+# 0111 - 0120
+##################################################
+
+#	Mozarabic Christianity breaks away from Rome's strictures.
+iberia_north_africa.0111 = {
+	type = character_event
+	title = iberia_north_africa.0111.t
+	desc = iberia_north_africa.0111.desc
+	theme = faith
+	left_portrait = {
+		character = scope:religious_leader
+		animation = personality_vengeful
+	}
+	right_portrait = {
+		character = scope:pope
+		animation = fear
+	}
+
+	immediate = { play_music_cue = "mx_cue_faith_conversion" }
+
+	# Jesus taught peace, and we shall follow: swap Rite for Pacifism.
+	option = {
+		name = iberia_north_africa.0111.a
+		flavor = iberia_north_africa.0111.a.tt
+
+		# Apply the effects in the after block to keep future notifications from erroring.
+		show_as_tooltip = { mozarabic_break_with_rome_decision_righteous_path_scripted_effect = yes }
+		# Flag our choice.
+		save_scope_value_as = {
+			name = mozarabic_choice
+			value = flag:righteous
+		}
+
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			cynical = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_sociability = 1
+				ai_zeal = 0.5
+			}
+		}
+	}
+	
+	# Even without Rome, we know the value of defending our own: swap Rite for Armed Pilgrimages.
+	option = {
+		name = iberia_north_africa.0111.b
+		flavor = iberia_north_africa.0111.b.tt
+
+		# Apply the effects in the after block to keep future notifications from erroring.
+		show_as_tooltip = { mozarabic_break_with_rome_decision_fundamentalist_path_scripted_effect = yes }
+		# Flag our choice.
+		save_scope_value_as = {
+			name = mozarabic_choice
+			value = flag:fundamentalist
+		}
+
+		stress_impact = {
+			compassionate = medium_stress_impact_loss
+			craven = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 1
+				ai_compassion = -1
+			}
+		}
+	}
+	
+	# Is Islam not a religion of the Book too?: swap Rite for Islamic Syncretism.
+	option = {
+		name = iberia_north_africa.0111.c
+		flavor = iberia_north_africa.0111.c.tt
+
+		# Apply the effects in the after block to keep future notifications from erroring.
+		show_as_tooltip = { mozarabic_break_with_rome_decision_pluralist_path_scripted_effect = yes }
+		# Flag our choice.
+		save_scope_value_as = {
+			name = mozarabic_choice
+			value = flag:pluralist
+		}
+
+		stress_impact = {
+			lazy = medium_stress_impact_loss
+			arbitrary = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 1
+				ai_energy = 0.5
+			}
+		}
+	}
+
+	after = {
+		mozarabic_break_with_rome_decision_hof_and_ecumenism_processing_scripted_effect = yes
+		# Now take care of notification events for players.
+		every_player = {
+			limit = {
+				this != scope:religious_leader
+				OR = {
+					faith = faith:mozarabic_church
+					any_neighboring_and_across_water_top_liege_realm_owner = { this = root.top_liege }
+				}
+			}
+			trigger_event = iberia_north_africa.0112
+		}
+		# And finally, actually apply the effects.
+		if = {
+			limit = {
+				exists = scope:mozarabic_choice
+				scope:mozarabic_choice = flag:fundamentalist
+			}
+			mozarabic_break_with_rome_decision_fundamentalist_path_scripted_effect = yes
+		}
+		if = {
+			limit = {
+				exists = scope:mozarabic_choice
+				scope:mozarabic_choice = flag:righteous
+			}
+			mozarabic_break_with_rome_decision_righteous_path_scripted_effect = yes
+		}
+		if = {
+			limit = {
+				exists = scope:mozarabic_choice
+				scope:mozarabic_choice = flag:pluralist
+			}
+			mozarabic_break_with_rome_decision_pluralist_path_scripted_effect = yes
+		}		
+	}
+}
+
+#	Notification event for relevant players.
+iberia_north_africa.0112 = {
+	type = character_event
+	title = iberia_north_africa.0112.t
+	desc = {
+		desc = iberia_north_africa.0112.desc.intro
+		# Fundamentalist
+		triggered_desc = {
+			trigger = { scope:mozarabic_choice = flag:fundamentalist }
+			desc = iberia_north_africa.0112.desc.fundamentalist
+		}
+		# Righteous
+		triggered_desc = {
+			trigger = { scope:mozarabic_choice = flag:righteous }
+			desc = iberia_north_africa.0112.desc.righteous
+		}
+		# Pluralist
+		triggered_desc = {
+			trigger = { scope:mozarabic_choice = flag:pluralist }
+			desc = iberia_north_africa.0112.desc.pluralist
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = scope:religious_leader
+		animation = personality_vengeful
+	}
+	right_portrait = {
+		character = scope:pope
+		animation = fear
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_faith_conversion"
+	}
+
+	# Fundamentalist path.
+	option = {
+		# We're using a broken-out block because the auto-magical first_valid name stuff was borking.
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { faith = faith:mozarabic_church }
+						desc = iberia_north_africa.0112.a.same_faith
+					}
+					triggered_desc = {
+						trigger = { religion = religion:christianity_religion }
+						desc = iberia_north_africa.0112.a.same_religion
+					}
+					desc = iberia_north_africa.0112.a.misc
+				}
+			}
+		}
+		trigger = { scope:mozarabic_choice = flag:fundamentalist }
+
+		show_as_tooltip = {
+			scope:religious_leader = { mozarabic_break_with_rome_decision_fundamentalist_path_scripted_effect = yes }
+		}
+
+		# No stress impact for a notification event.
+		ai_chance = {
+			# AI chance isn't relevant for a notification event.
+			base = 100
+		}
+	}
+	
+	# Righteous path.
+	option = {
+		# We're using a broken-out block because the auto-magical first_valid name stuff was borking.
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { faith = faith:mozarabic_church }
+						desc = iberia_north_africa.0112.b.same_faith
+					}
+					triggered_desc = {
+						trigger = { religion = religion:christianity_religion }
+						desc = iberia_north_africa.0112.b.same_religion
+					}
+					desc = iberia_north_africa.0112.b.misc
+				}
+			}
+		}
+		trigger = { scope:mozarabic_choice = flag:righteous }
+
+		show_as_tooltip = {
+			scope:religious_leader = { mozarabic_break_with_rome_decision_righteous_path_scripted_effect = yes }
+		}
+
+		# No stress impact for a notification event.
+		ai_chance = {
+			# AI chance isn't relevant for a notification event.
+			base = 100
+		}
+	}
+	
+	# Pluralist path.
+	option = {
+		# We're using a broken-out block because the auto-magical first_valid name stuff was borking.
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = {
+							faith = {
+								OR = {
+									this = faith:mozarabic_church
+									has_doctrine_parameter = islamic_syncretic_actor_opinion_active
+								}
+							}
+						}
+						desc = iberia_north_africa.0112.c.same_faith
+					}
+					triggered_desc = {
+						trigger = { religion = religion:christianity_religion }
+						desc = iberia_north_africa.0112.c.same_religion
+					}
+					triggered_desc = {
+						trigger = { religion = religion:islam_religion }
+						desc = iberia_north_africa.0112.c.same_religion
+					}
+					desc = iberia_north_africa.0112.c.misc
+				}
+			}
+		}
+		trigger = { scope:mozarabic_choice = flag:pluralist }
+
+		show_as_tooltip = {
+			scope:religious_leader = { mozarabic_break_with_rome_decision_pluralist_path_scripted_effect = yes }
+		}
+
+		# No stress impact for a notification event.
+		ai_chance = {
+			# AI chance isn't relevant for a notification event.
+			base = 100
+		}
+	}
+
+	after = {
+		show_as_tooltip = { mozarabic_break_with_rome_decision_hof_and_ecumenism_processing_scripted_effect = yes }
+	}
+}
+
+##################################################
 # A Return to the Countryside
 # ^Geddit GEDDIT [not-actually-particularly-clever chortling]
 # by Ewan Cowhig Croft
@@ -624,10 +1174,10 @@ iberia_north_africa.0121 = {
 		# Flag our choice.
 		save_scope_value_as = {
 			name = basque_choice
-			value = flag:fundamentalist
+			value = flag:righteous
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = major_stress_impact_gain
 			wrathful = miniscule_stress_impact_loss
 			calm = minor_stress_impact_gain
@@ -650,7 +1200,7 @@ iberia_north_africa.0121 = {
 		trigger = {
 			OR = {
 				is_ai = no
-				rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
+				faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
 				AND = {
 					OR = {
 						has_trait = stubborn
@@ -668,10 +1218,10 @@ iberia_north_africa.0121 = {
 		# Flag our choice.
 		save_scope_value_as = {
 			name = basque_choice
-			value = flag:righteous
+			value = flag:fundamentalist
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = major_stress_impact_gain
 			# I mean, you *know* this one is gonna come back to bite you, hard.
 			craven = major_stress_impact_gain
@@ -694,7 +1244,7 @@ iberia_north_africa.0121 = {
 			OR = {
 				is_ai = no
 				faith = {
-					has_doctrine_parameter = islamic_syncretic_actor
+					has_doctrine_parameter = islamic_syncretic_actor_opinion_active
 					religion = religion:islam_religion
 				}
 			}
@@ -712,11 +1262,11 @@ iberia_north_africa.0121 = {
 		if = {
 			limit = {
 				faith = {
-					has_doctrine_parameter = islamic_syncretic_actor
+					has_doctrine_parameter = islamic_syncretic_actor_opinion_active
 					religion = religion:islam_religion
 				}
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = major_stress_impact_gain
 				zealous = medium_stress_impact_loss
 				fickle = minor_stress_impact_gain
@@ -725,7 +1275,7 @@ iberia_north_africa.0121 = {
 		}
 		# But everyone else doesn't.
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = major_stress_impact_gain
 				fickle = minor_stress_impact_gain
 				drunkard = major_stress_impact_gain
@@ -753,7 +1303,7 @@ iberia_north_africa.0121 = {
 			value = flag:unchanged
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			lazy = minor_stress_impact_loss
 			arbitrary = major_stress_impact_gain
 		}
@@ -767,6 +1317,10 @@ iberia_north_africa.0121 = {
 	}
 
 	after = {
+		legend_seed_great_deed_faith_effect = {
+			OLD_FAITH = scope:old_faith
+			ANTAGONIST = scope:scandalised_cleric
+		}
 		# Now take care of notification events for players.
 		every_player = {
 			limit = {
@@ -785,14 +1339,14 @@ iberia_north_africa.0121 = {
 		if = {
 			limit = {
 				exists = scope:basque_choice
-				scope:basque_choice = flag:righteous
+				scope:basque_choice = flag:fundamentalist
 			}
 			favour_the_countryside_basques_decision_righteous_path_scripted_effect = yes
 		}
 		else_if = {
 			limit = {
 				exists = scope:basque_choice
-				scope:basque_choice = flag:fundamentalist
+				scope:basque_choice = flag:righteous
 			}
 			favour_the_countryside_basques_decision_fundamentalist_path_scripted_effect = yes
 		}
@@ -809,10 +1363,6 @@ iberia_north_africa.0121 = {
 				scope:basque_choice = flag:unchanged
 			}
 			favour_the_countryside_basques_decision_default_path_scripted_effect = yes
-		}
-		legend_seed_great_deed_faith_effect = {
-			OLD_FAITH = scope:old_faith
-			ANTAGONIST = scope:scandalised_cleric
 		}
 	}
 }
@@ -958,7 +1508,7 @@ iberia_north_africa.0122 = {
 		show_as_tooltip = {
 			scope:religious_leader = {
 				favour_the_countryside_basques_decision_generic_effects_scripted_effect = yes
-				favour_the_countryside_basques_decision_fundamentalist_path_scripted_effect = yes
+				favour_the_countryside_basques_decision_righteous_path_scripted_effect = yes
 			}
 		}
 
@@ -985,7 +1535,7 @@ iberia_north_africa.0122 = {
 					}
 					triggered_desc = {
 						trigger = {
-							rite = { rite_has_parameter = believes_in_harmony_with_nature_invisible }
+							faith = { has_doctrine_parameter = believes_in_harmony_with_nature_invisible }
 						}
 						desc = iberia_north_africa.0122.c.believes_in_harmony_with_nature
 					}
@@ -998,7 +1548,7 @@ iberia_north_africa.0122 = {
 		show_as_tooltip = {
 			scope:religious_leader = {
 				favour_the_countryside_basques_decision_generic_effects_scripted_effect = yes
-				favour_the_countryside_basques_decision_righteous_path_scripted_effect = yes
+				favour_the_countryside_basques_decision_fundamentalist_path_scripted_effect = yes
 			}
 		}
 
@@ -1029,7 +1579,7 @@ iberia_north_africa.0122 = {
 					}
 					triggered_desc = {
 						trigger = {
-							faith = { has_doctrine_parameter = islamic_syncretic_actor }
+							faith = { has_doctrine_parameter = islamic_syncretic_actor_opinion_active }
 						}
 						desc = iberia_north_africa.0122.d.syncretised_with_islam
 					}
@@ -1069,7 +1619,7 @@ iberia_north_africa.0122 = {
 					}
 					triggered_desc = {
 						trigger = {
-							faith = { has_doctrine_parameter = christian_syncretic_actor }
+							faith = { has_doctrine_parameter = christian_syncretic_actor_opinion_active }
 						}
 						desc = iberia_north_africa.0122.e.syncretised_with_christianity
 					}
@@ -1262,7 +1812,7 @@ scripted_effect calculate_controlled_aragonese_duchies_effect = {
 scripted_effect convert_aragonese_counties_to_aragonese_effect = {
 	# Several counties within d_aragon will convert.
 	while = {
-		custom_tooltip = form_the_kingdom_of_aragon_decision.tt.x_random_counties_in_d_aragon
+		custom = form_the_kingdom_of_aragon_decision.tt.x_random_counties_in_d_aragon
 		count = 3
 		title:d_aragon = {
 			random_in_de_jure_hierarchy = {
@@ -1497,7 +2047,7 @@ iberia_north_africa.2001 = { # Jewish translator of old books (reward: skill boo
 			location = root.capital_province
 			gender_female_chance = root_faith_dominant_gender_female_chance
 			culture = root.culture
-			faith = faith:rabbinic_faith
+			faith = faith:rabbinism
 			random_traits = yes
 			trait = education_learning_2
 			learning = { 6 12 }
@@ -1710,9 +2260,9 @@ iberia_north_africa.2002 = { # Cataract surgery event (reward: free doctor)
 			location = root.capital_province
 			gender_female_chance = root_faith_dominant_gender_female_chance
 			culture = root.culture
-			faith = faith:rabbinic_faith
+			faith = faith:rabbinism
 			random_traits = yes
-			trait = erudite
+			trait = scholar
 			trait = lifestyle_physician
 			learning = { 8 12 }
 		
@@ -1855,7 +2405,7 @@ iberia_north_africa.2002 = { # Cataract surgery event (reward: free doctor)
 		trigger = {
 			OR = {
 				has_trait = theologian
-				has_trait = erudite
+				has_trait = scholar
 			}
 		}
 
@@ -1993,9 +2543,9 @@ iberia_north_africa.2003 = { # Two scholars are fighting over misc stuff (reward
 			location = root.capital_province
 			gender_female_chance = root_faith_dominant_gender_female_chance
 			culture = root.culture
-			faith = faith:rabbinic_faith
+			faith = faith:rabbinism
 			random_traits = yes
-			trait = erudite
+			trait = scholar
 			trait = diplomatic_court_1
 			learning = { 8 14 }
 		
@@ -2069,7 +2619,6 @@ iberia_north_africa.2003 = { # Two scholars are fighting over misc stuff (reward
 				has_trait = order_member
 				has_trait = faith_warrior
 				has_trait = saint
-				has_trait = herald
 				has_trait = irritable
 				has_trait = bossy
 				has_trait = august
@@ -2190,7 +2739,6 @@ iberia_north_africa.2011 = { # Holy Warrior
 					gender_female_chance = root_faith_dominant_gender_female_chance
 					culture = root.culture
 					faith = root.faith
-					rite = root.rite
 					random_traits = yes
 					trait = holy_warrior
 					trait = pilgrim
@@ -2218,14 +2766,13 @@ iberia_north_africa.2011 = { # Holy Warrior
 					save_scope_as = generated_actor
 				}
 			}
-			30 = { # Missguided former Military Order captain
+			30 = { # Missguided former holy order captain
 				create_character = {
 					age = { 27 46 }
 					location = scope:pilgrim_spawn_location
 					gender_female_chance = root_faith_dominant_gender_female_chance
 					culture = root.culture
 					faith = root.faith
-					rite = root.rite
 					random_traits = yes
 					trait = warlike_court_2
 					trait = holy_warrior
@@ -2254,7 +2801,7 @@ iberia_north_africa.2011 = { # Holy Warrior
 							5 = { add_trait = kinslayer_1 }
 							5 = { 
 								if = {
-									limit = { faith = { faith_has_sacraments_trigger = yes } }
+									limit = { faith = { has_doctrine = tenet_communion } }
 									add_trait = excommunicated 
 									random_list = {
 										70 = { add_trait = depressed_1 } # This is the worst thing that can happen to a holy warrior after all
@@ -2362,7 +2909,6 @@ iberia_north_africa.2012 = { # Broke student (theology or architecture)
 					gender_female_chance = root_faith_dominant_gender_female_chance
 					culture = root.culture
 					faith = root.faith
-					rite = root.rite
 					random_traits = yes
 					trait = theologian
 					trait = improvident
@@ -2393,7 +2939,6 @@ iberia_north_africa.2012 = { # Broke student (theology or architecture)
 					gender_female_chance = root_faith_dominant_gender_female_chance
 					culture = root.culture
 					faith = root.faith
-					rite = root.rite
 					random_traits = yes
 					trait = architect
 					trait = contrite
@@ -2696,6 +3241,7 @@ iberia_north_africa.2101 = {
 	title = iberia_north_africa.2100.t
 	desc = iberia_north_africa.2101.desc
 	theme = realm
+	theme = diplomacy
 	left_portrait = {
 		character = scope:founder
 		animation = personality_bold

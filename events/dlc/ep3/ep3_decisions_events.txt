@@ -1,4 +1,7 @@
-﻿###################################################
+﻿#LUX RENATA GOVERNMENT WORK#
+#THIS MEANS THIS IS PART OF THE GOV WORK FLOW#
+
+###################################################
 ##	EP3 Decision Events
 ##
 ##	0001 - 0006 	Triumph Decision
@@ -30,7 +33,9 @@ scripted_trigger ep3_decisions_event_valid_prisoner_trigger = {
 	exists = scope:triumph_enemy_defeated
 	OR = {
 		# they are vassals or knights of the defeated
-		any_liege_or_above = { this = scope:triumph_enemy_defeated }
+		liege = scope:triumph_enemy_defeated
+		liege.liege = scope:triumph_enemy_defeated
+		liege.liege.liege = scope:triumph_enemy_defeated
 		# they are the defeated (e.g. pretender or previous liege)
 		this = scope:triumph_enemy_defeated
 		# they participated recently in a rebellion war vs you
@@ -84,7 +89,6 @@ scripted_trigger ep3_decisions_event_valid_hostage_trigger = {
 ep3_decisions_event.0001 = {
 	type = character_event
 	window = fullscreen_event
-	queue_icon = "gfx/interface/icons/splash_icons/splash_byzantine.dds"
 	title = ep3_decisions_event.0001.t
 	desc = {
 		desc = ep3_decisions_event.0001.intro
@@ -365,7 +369,7 @@ ep3_decisions_event.0002 = {
 		change_influence = major_influence_gain
 		add_legitimacy = minor_legitimacy_gain
 		trigger_event = ep3_decisions_event.0007
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = major_stress_impact_gain
 			generous = medium_stress_impact_loss
 		}
@@ -419,7 +423,7 @@ ep3_decisions_event.0002 = {
 			}
 		}
 		trigger_event = ep3_decisions_event.0007
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_gain
 			generous = medium_stress_impact_loss
 			zealous = medium_stress_impact_loss
@@ -439,7 +443,7 @@ ep3_decisions_event.0002 = {
 	option = {
 		name = ep3_decisions_event.0002.c
 		flavor = ep3_decisions_event.0002.c.tt
-		trigger = {
+		trigger = { 
 			NOT = { exists = scope:triumph_enemy_defeated }
 		}
 		# This is a correspective of option B, but all the money must come from your own pockets
@@ -447,7 +451,7 @@ ep3_decisions_event.0002 = {
 		change_influence = major_influence_gain
 		add_legitimacy = minor_legitimacy_gain
 		trigger_event = ep3_decisions_event.0007
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = major_stress_impact_gain
 			generous = medium_stress_impact_loss
 			gregarious = medium_stress_impact_loss
@@ -536,7 +540,7 @@ ep3_decisions_event.0003 = {
 	}
 
 	immediate = {
-
+		
 	}
 
 	#Option C: hostage
@@ -634,7 +638,7 @@ ep3_decisions_event.0003 = {
 		}
 		faith = {
 			change_fervor = {
-				value = trivial_fervor_gain
+				value = 1
 				desc = fervor_gain_triumph_of_god
 			}
 		}
@@ -863,7 +867,7 @@ ep3_decisions_event.0004 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			callous = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
 			vengeful = major_stress_impact_gain
@@ -1000,6 +1004,7 @@ ep3_decisions_event.0005 = {
 			ai_value_modifier = {
 				ai_boldness = 0.5
 				ai_energy = 0.5
+				ai_boldness = 0.5
 			}
 		}
 	}
@@ -1172,10 +1177,10 @@ ep3_decisions_event.0006 = {
 	}
 
 	trigger = {
-		has_variable = {
-			name = triumph_promised_prosperity
-			name = triumph_promised_victories
-			name = triumph_promised_stability
+		OR = {
+			has_character_flag = triumph_promised_prosperity
+			has_character_flag = triumph_promised_victories
+			has_character_flag = triumph_promised_stability
 		}
 	}
 
@@ -1280,7 +1285,6 @@ ep3_decisions_event.0006 = {
 ep3_decisions_event.0007 = {
 	type = character_event
 	window = fullscreen_event
-	queue_icon = "gfx/interface/icons/splash_icons/splash_byzantine.dds"
 	title = ep3_decisions_event.0007.t
 	desc = {
 		desc = ep3_decisions_event.0007.desc
@@ -1300,7 +1304,7 @@ ep3_decisions_event.0007 = {
 		change_influence = major_influence_gain
 	}
 
-	option = {
+	option = { 
 		name = ep3_decisions_event.0007.a
 		custom_tooltip = ep3_decisions_event.0007.a.tt
 	}
@@ -1346,7 +1350,7 @@ ep3_decisions_event.1000 = {
 		}
 	}
 	theme = administrative
-
+	
 	left_portrait = {
 		character = scope:mediocre_charioteer
 		animation = happiness
@@ -1379,7 +1383,6 @@ ep3_decisions_event.1000 = {
 				age = { 16 30 }
 				culture = root.location.culture
 				faith = root.location.faith
-				rite = root.location.rite
 				random_traits_list = {
 					count = 1
 					education_martial_1 = {}
@@ -1428,7 +1431,6 @@ ep3_decisions_event.1000 = {
 				age = { 16 30 }
 				culture = root.location.culture
 				faith = root.location.faith
-				rite = root.location.rite
 				random_traits_list = {
 					count = 1
 					education_martial_1 = {}
@@ -1518,7 +1520,7 @@ ep3_decisions_event.1000 = {
 
 	}
 
-	option = {
+	option = { 
 		name = ep3_decisions_event.1000.a
 		custom_tooltip = ep3_decisions_event.1000.a.aptitude
 		pay_treasury_or_gold = {
@@ -1589,7 +1591,7 @@ ep3_decisions_event.1000 = {
 			}
 		}
 	}
-
+	
 	option = {
 		name = ep3_decisions_event.1000.c
 		custom_tooltip = ep3_decisions_event.1000.c.aptitude
@@ -1654,7 +1656,7 @@ ep3_decisions_event.1010 = {
 	title = ep3_decisions_event.1010.t
 	desc = ep3_decisions_event.1010.desc
 	theme = administrative
-
+	
 	left_portrait = {
 		character = scope:mediocre_bookmaker
 		animation = happiness
@@ -1686,7 +1688,6 @@ ep3_decisions_event.1010 = {
 				age = { 16 30 }
 				culture = root.location.culture
 				faith = root.location.faith
-				rite = root.location.rite
 				random_traits_list = {
 					count = 1
 					education_stewardship_1 = {}
@@ -1723,7 +1724,6 @@ ep3_decisions_event.1010 = {
 				age = { 16 30 }
 				culture = root.location.culture
 				faith = root.location.faith
-				rite = root.location.rite
 				random_traits_list = {
 					count = 1
 					education_stewardship_1 = {}
@@ -1740,7 +1740,7 @@ ep3_decisions_event.1010 = {
 		}
 	}
 
-	option = {
+	option = { 
 		name = ep3_decisions_event.1010.a
 		custom_tooltip = ep3_decisions_event.1010.a.aptitude
 		pay_treasury_or_gold = {
@@ -1793,8 +1793,8 @@ scripted_trigger admin_confirmation_valid_trigger = { # Confirmation is still va
 	is_alive = yes
 	is_imprisoned = no
 	var:confirmation_liege_scope ?= {
-		is_alive = yes
-		is_imprisoned = no
+		is_alive = yes 
+		is_imprisoned = no 
 	}
 	liege ?= var:confirmation_liege_scope
 }
@@ -1814,7 +1814,7 @@ scripted_effect admin_confirmation_clear_variable_effect = {
 	current_travel_plan ?= {
 		if = {
 			limit = { is_paused = yes }
-			resume_travel_plan = yes
+			resume_travel_plan = yes 
 		}
 	}
 	# Vassal
@@ -1875,13 +1875,13 @@ ep3_decisions_event.2001 = {
 			limit = {
 				NOT = { has_relation_rival = scope:confirmation_vassal }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				arrogant = medium_stress_impact_gain
 				just = medium_stress_impact_gain
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = { base = medium_stress_impact_loss }
+			stress_impact = { base = medium_stress_impact_loss }
 		}
 		ai_chance = {
 			base = -4
@@ -2059,9 +2059,9 @@ ep3_decisions_event.2010 = {
 			#State faith, but not emperor's faith
 			triggered_desc = {
 				trigger = {
-					rite != scope:confirmation_vassal.capital_county.rite
-					primary_title.state_rite = {
-						this = scope:confirmation_vassal.capital_county.rite
+					faith != scope:confirmation_vassal.capital_county.faith
+					primary_title.state_faith = {
+						this = scope:confirmation_vassal.capital_county.faith
 					}
 				}
 				desc = ep3_decisions_event.2010.desc_state_faith
@@ -2177,7 +2177,7 @@ ep3_decisions_event.2010 = {
 				}
 				desc = ep3_decisions_event.2010.desc_generic_outro
 			}
-
+			
 		}
 	}
 	theme = emperor
@@ -2244,10 +2244,10 @@ ep3_decisions_event.2011 = {
 			triggered_desc = {
 				trigger = {
 					scope:confirmation_liege = {
-						rite = {
+						faith = {
 							NOR = {
-								this = scope:confirmation_liege.primary_title.state_rite
-								this = scope:confirmation_liege.capital_county.rite
+								this = scope:confirmation_liege.primary_title.state_faith
+								this = scope:confirmation_liege.capital_county.faith
 							}
 						}
 					}
@@ -2311,7 +2311,7 @@ ep3_decisions_event.2011 = {
 									trait = governor
 									value >= 75
 								}
-
+								
 							}
 							legitimacy_level >= 4
 						}
@@ -2509,7 +2509,7 @@ ep3_decisions_event.2080 = {
 			triggered_desc = {
 				trigger = {
 					OR = {
-						NOT = { government_has_mechanic = administrative }
+						NOT = { government_allows = administrative }
 						primary_title.tier = scope:confirmation_liege.primary_title.tier
 					}
 				}
@@ -2558,8 +2558,8 @@ ep3_decisions_event.2080 = {
 					liege = scope:confirmation_liege
 				}
 				AND = { # Of the Emperor
-					top_liege ?= { highest_held_title_tier >= tier_empire }
-					government_has_mechanic = administrative
+					top_liege ?= { highest_held_title_tier = tier_empire }
+					government_allows = administrative
 					liege ?= top_liege
 				}
 			}
@@ -2639,7 +2639,7 @@ ep3_decisions_event.2090 = {
 			limit = {
 				scope:confirmation_liege = {
 					OR = {
-						is_alive = no
+						is_alive = no 
 						is_imprisoned = yes
 						is_travelling = yes
 					}
@@ -2647,7 +2647,7 @@ ep3_decisions_event.2090 = {
 			}
 			send_interface_toast = {
 				title = admin_confirmation_costs_refunded
-				left_icon = root
+				left_icon = root 
 				if = { # Remove variable preventing you
 					limit = { has_variable = confirmation_grace }
 					remove_variable = confirmation_grace
@@ -2677,7 +2677,7 @@ ep3_decisions_event.3000 = {
 	opening = ep3_decisions_event.3001.opening
 	desc = ep3_decisions_event.3000.desc
 	sender = top_liege
-
+	
 	immediate = {
 		show_as_tooltip = {
 			every_sub_realm_county = {
@@ -2691,7 +2691,7 @@ ep3_decisions_event.3000 = {
 		}
 	}
 
-	option = {
+	option = { 
 		name = ep3_decisions_event.3000.a
 		# Big influence gain
 		change_influence = massive_influence_gain
@@ -2714,21 +2714,10 @@ ep3_decisions_event.3000 = {
 ep3_decisions_event.3001 = {
 	type = character_event
 	title = ep3_decisions_event.3001.t
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					culture = { any_parent_culture_or_above = { this = culture:greek } }
-					highest_held_title_tier >= tier_empire
-				}
-				desc = ep3_decisions_event.3001.desc
-			}
-			desc = ep3_decisions_event.3001.not_admin_desc
-		}
-	}
+	desc = ep3_decisions_event.3001.desc
 	theme = emperor
 	override_background = { reference = council_chamber }
-
+	
 	left_portrait = {
 		character = root
 		animation = personality_honorable
@@ -2794,7 +2783,7 @@ ep3_decisions_event.3001 = {
 		}
 		else_if = {
 			limit = {
-				any_councillor = { }
+				any_councillor = { } 
 			}
 			random_councillor = {
 				save_scope_as = interlocutor
@@ -2809,19 +2798,22 @@ ep3_decisions_event.3001 = {
 
 		# Create the tooltip showing that all the modifiers have been removed
 		show_as_tooltip = {
-			every_county_in_region = {
+			custom_tooltip = {
+				text = every_county_in_greece_tt
+				every_county_in_region = {
 					region = greek_backwater_modifier_region
-				limit = {
-					holder = {
-						OR = {
-							this = root
-							any_liege_or_above = {
+					limit = {
+						holder = {
+							OR = {
 								this = root
+								any_liege_or_above = {
+									this = root
+								}
 							}
 						}
 					}
+					remove_county_modifier = backwater_county_modifier
 				}
-				remove_county_modifier = backwater_county_modifier
 			}
 		}
 	}
@@ -2829,7 +2821,7 @@ ep3_decisions_event.3001 = {
 	option = { # Celebrate the Empire's wealth and abundance
 		name = ep3_decisions_event.3001.a
 		add_legitimacy = minor_legitimacy_gain
-		change_influence = major_influence_gain
+		change_influence = major_influence_gain 
 	}
 }
 
@@ -2845,7 +2837,7 @@ ep3_decisions_event.3100 = {
 	desc = ep3_decisions_event.3100.desc
 	theme = war
 	override_background = { reference = docks }
-
+	
 	left_portrait = {
 		character = root
 		animation = debating
@@ -2871,7 +2863,7 @@ ep3_decisions_event.3100 = {
 		}
 		else_if = {
 			limit = {
-				any_councillor = { }
+				any_councillor = { } 
 			}
 			random_councillor = {
 				save_scope_as = aide
@@ -2935,8 +2927,8 @@ ep3_decisions_event.3100 = {
 		custom_tooltip = defensive_fire_dromons_custom_desc
 		custom_tooltip = defensive_fire_dromons_buildings_desc
 		change_influence = major_influence_loss
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			compassionate = medium_stress_impact_gain
 			calm = miniscule_stress_impact_gain
 			content = miniscule_stress_impact_gain
@@ -2982,8 +2974,8 @@ ep3_decisions_event.3100 = {
 		custom_tooltip = defensive_fire_dromons_custom_desc
 		custom_tooltip = defensive_fire_dromons_buildings_desc
 		remove_treasury_or_gold = major_gold_value_static_max
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			compassionate = medium_stress_impact_gain
 			paranoid = minor_stress_impact_gain
 			calm = miniscule_stress_impact_gain
@@ -3010,7 +3002,7 @@ ep3_decisions_event.3100 = {
 	option = { #Actually... never mind
 		name = ep3_decisions_event.3100.c
 		remove_decision_cooldown = prepare_greek_fire_dromons_decision
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_gain
 			callous = miniscule_stress_impact_gain
 			ambitious = miniscule_stress_impact_gain
@@ -3051,7 +3043,7 @@ ep3_decisions_event.3100 = {
 #	lower_left_portrait = scope:pf_3.house_head
 #	lower_center_portrait = scope:pf_4.house_head
 #	lower_right_portrait = scope:pf_5.house_head
-#
+#	
 #	immediate = {
 #		every_powerful_family = {
 #			limit = { NOT = { root.house ?= this } }
@@ -3117,7 +3109,7 @@ ep3_decisions_event.3100 = {
 #		if = {
 #			limit = { scope:pf_1.house_head = { is_ai = yes } }
 #			trigger_event = {
-#				id = ep3_decisions_event.3201
+#				id = ep3_decisions_event.3201 
 #				days = 5
 #			}
 #		}
@@ -3150,7 +3142,7 @@ ep3_decisions_event.3100 = {
 #		if = {
 #			limit = { scope:pf_2.house_head = { is_ai = yes } }
 #			trigger_event = {
-#				id = ep3_decisions_event.3201
+#				id = ep3_decisions_event.3201 
 #				days = 5
 #			}
 #		}
@@ -3171,7 +3163,7 @@ ep3_decisions_event.3100 = {
 #			}
 #		}
 #	}
-#
+#	
 #	option = {
 #		name = ep3_decisions_event.3200.c
 #		trigger = { exists = scope:pf_3 }
@@ -3183,7 +3175,7 @@ ep3_decisions_event.3100 = {
 #		if = {
 #			limit = { scope:pf_3.house_head = { is_ai = yes } }
 #			trigger_event = {
-#				id = ep3_decisions_event.3201
+#				id = ep3_decisions_event.3201 
 #				days = 5
 #			}
 #		}
@@ -3204,7 +3196,7 @@ ep3_decisions_event.3100 = {
 #			}
 #		}
 #	}
-#
+#	
 #	option = {
 #		name = ep3_decisions_event.3200.d
 #		trigger = { exists = scope:pf_4 }
@@ -3216,7 +3208,7 @@ ep3_decisions_event.3100 = {
 #		if = {
 #			limit = { scope:pf_4.house_head = { is_ai = yes } }
 #			trigger_event = {
-#				id = ep3_decisions_event.3201
+#				id = ep3_decisions_event.3201 
 #				days = 5
 #			}
 #		}
@@ -3237,7 +3229,7 @@ ep3_decisions_event.3100 = {
 #			}
 #		}
 #	}
-#
+#	
 #	option = {
 #		name = ep3_decisions_event.3200.e
 #		trigger = { exists = scope:pf_5 }
@@ -3249,7 +3241,7 @@ ep3_decisions_event.3100 = {
 #		if = {
 #			limit = { scope:pf_5.house_head = { is_ai = yes } }
 #			trigger_event = {
-#				id = ep3_decisions_event.3201
+#				id = ep3_decisions_event.3201 
 #				days = 5
 #			}
 #		}
@@ -3297,7 +3289,7 @@ ep3_decisions_event.3201 = {
 		}
 		animation = war_over_tie
 	}
-
+	
 	trigger = {
 		scope:imprisoned_house_head = {
 			is_alive = yes
@@ -3322,7 +3314,7 @@ ep3_decisions_event.3201 = {
 				type = liege_favour_strong_hook
 			}
 		}
-
+		
 		scope:imprisoned_house_head = {
 			if = {
 				limit = {
@@ -3331,10 +3323,10 @@ ep3_decisions_event.3201 = {
 						has_trait = vengeful
 						has_trait = wrathful
 						has_trait = ambitious
-
+						
 						# And not already be loyal
 						has_trait = loyal
-
+						
 						# And not be a rival
 						NOT = { has_relation_rival = root }
 					}
@@ -3431,7 +3423,7 @@ ep3_decisions_event.4000 = {
 
 	immediate = {
 		play_sound_effect = "event:/DLC/EP3/SFX/Stingers/Byzantine_Flavor/ep3_mx_sting_byzantineflavor_hold_triumph"
-		retake_eastern_provinces_decision_effect = yes
+		LR_restore_eastern_hegemony_decision_effect = yes
 		create_character_memory = {
 			type = byz_theodosian_border_memory
 		}
@@ -3563,7 +3555,7 @@ scripted_trigger ask_help_valid_for_crusades_trigger = {
 		exists = var:variable_ghw_unlocked
 		NOT = { exists = var:variable_first_ghw_cooldown }
 	}
-	scope:pope = {
+	scope:pope = { 
 		is_imprisoned = no
 		faith = {
 			has_doctrine_parameter = great_holy_wars_active
@@ -3925,7 +3917,7 @@ scripted_effect ask_help_crusade_setup_effect = {
 	#If no Claimant or Title Holder is available to be the Papal choice and the Crusade has not proceeded far enough to have a favoritebeneficiary, select a fallback Recipient so that the CB's tooltip does not appear incomplete.
 	if = { #Random Courtier in the Pope's court.
 		limit = {
-			NOT = { exists = scope:the_faith.great_holy_war.ghw_title_recipient }
+			NOT = { exists = faith.great_holy_war.ghw_title_recipient }
 			exists = scope:ghw_sponsor
 			exists = scope:the_faith.great_holy_war
 			scope:ghw_sponsor = {
@@ -3944,7 +3936,7 @@ scripted_effect ask_help_crusade_setup_effect = {
 		scope:ghw_sponsor = {
 			random_courtier = {
 				alternative_limit = {
-					scope:the_faith = { main_rite = { rite_has_doctrine = doctrine_gender_male_dominated } }
+					scope:the_faith = { has_doctrine = doctrine_gender_male_dominated }
 					is_male = yes
 					is_adult = yes
 					is_ai = yes
@@ -3956,7 +3948,7 @@ scripted_effect ask_help_crusade_setup_effect = {
 					faith = scope:the_faith
 				}
 				alternative_limit = {
-					scope:the_faith = { main_rite = { rite_has_doctrine = doctrine_gender_female_dominated } }
+					scope:the_faith = { has_doctrine = doctrine_gender_female_dominated }
 					is_female = yes
 					is_adult = yes
 					is_ai = yes
@@ -3984,7 +3976,7 @@ scripted_effect ask_help_crusade_setup_effect = {
 	}
 	else_if = { #Else Generate a fallback recipient.
 		limit = {
-			NOT = { exists = scope:the_faith.great_holy_war.ghw_title_recipient }
+			NOT = { exists = faith.great_holy_war.ghw_title_recipient }
 		}
 		create_character = {
 			location = scope:ghw_sponsor.capital_province
@@ -3995,13 +3987,13 @@ scripted_effect ask_help_crusade_setup_effect = {
 			gender_female_chance = {
 				if = {
 					limit = {
-						scope:the_faith = { main_rite = { rite_has_doctrine = doctrine_gender_male_dominated } }
+						scope:the_faith = { has_doctrine = doctrine_gender_male_dominated }
 					}
 					add = 0
 				}
 				else_if = {
 					limit = {
-						scope:the_faith = { main_rite = { rite_has_doctrine = doctrine_gender_female_dominated } }
+						scope:the_faith = { has_doctrine = doctrine_gender_female_dominated }
 					}
 					add = 100
 				}
@@ -4061,7 +4053,7 @@ scripted_effect ask_help_crusade_setup_effect = {
 	}
 	every_faith_holy_order = {
 		trigger_event = {
-			#Military Orders always join
+			#Holy orders always join
 			id = great_holy_war.0090
 			days = { 30 60 }
 		}
@@ -4090,7 +4082,7 @@ scripted_effect ask_help_crusade_setup_effect = {
 		faith = {
 			every_faith_holy_order = {
 				trigger_event = {
-					# Military Orders always join
+					# Holy orders always join
 					id = great_holy_war.0091
 					days = { 30 60 }
 				}
@@ -4255,7 +4247,7 @@ ep3_decisions_event.4020 = {
 	desc = ep3_decisions_event.4020.desc
 	theme = emperor
 	override_background = { reference = ep3_hagia_sophia }
-
+	
 	left_portrait = {
 		character = root
 		animation = prayer
@@ -4301,7 +4293,7 @@ ep3_decisions_event.4020 = {
 			}
 			random_list = {
 				25 = {
-					trigger = { NOT = { root.rite = { rite_has_parameter = clergy_must_be_female } } }
+					trigger = { NOT = { root.faith = { has_doctrine_parameter = clergy_must_be_female } } }
 					create_character = {
 						location = root.location
 						name = "Kyrillos"
@@ -4311,7 +4303,7 @@ ep3_decisions_event.4020 = {
 					}
 				}
 				25 = {
-					trigger = { NOT = { root.rite = { rite_has_parameter = clergy_must_be_female } } }
+					trigger = { NOT = { root.faith = { has_doctrine_parameter = clergy_must_be_female } } }
 					create_character = {
 						location = root.location
 						name = "Methodios"
@@ -4321,7 +4313,7 @@ ep3_decisions_event.4020 = {
 					}
 				}
 				25 = {
-					trigger = { NOT = { root.rite = { rite_has_parameter = clergy_must_be_female } } }
+					trigger = { NOT = { root.faith = { has_doctrine_parameter = clergy_must_be_female } } }
 					create_character = {
 						location = root.location
 						name = "Konstantinos"
@@ -4331,7 +4323,7 @@ ep3_decisions_event.4020 = {
 					}
 				}
 				25 = {
-					trigger = { NOT = { root.rite = { rite_has_parameter = clergy_must_be_female } } }
+					trigger = { NOT = { root.faith = { has_doctrine_parameter = clergy_must_be_female } } }
 					create_character = {
 						location = root.location
 						name = "Michael"
@@ -4341,7 +4333,7 @@ ep3_decisions_event.4020 = {
 					}
 				}
 				25 = {
-					trigger = { NOT = { root.rite = { rite_has_parameter = clergy_must_be_male } } }
+					trigger = { NOT = { root.faith = { has_doctrine_parameter = clergy_must_be_male } } }
 					create_character = {
 						location = root.location
 						template = ep3_evangelizer_template
@@ -4417,7 +4409,7 @@ ep3_decisions_event.4022 = {
 	title = ep3_decisions_event.4020.t
 	desc = ep3_decisions_event.4022.desc
 	theme = emperor
-
+	
 	trigger = {
 		scope:evangelizer = { is_alive = yes }
 	}
@@ -4441,7 +4433,7 @@ ep3_decisions_event.4022 = {
 		}
 		set_character_faith_with_conversion = scope:evangelizer.faith
 		if = {
-			limit = {
+			limit = { 
 				scope:evangelizer.faith = { has_doctrine = doctrine_monotheist }
 			}
 			custom_description_no_bullet = { text = mandala_monotheist_warning_tt }
@@ -4470,7 +4462,7 @@ ep3_decisions_event.4022 = {
 				participants = { missionary = scope:evangelizer pagan = scope:pagan }
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = major_stress_impact_gain
 			content = major_stress_impact_gain
 			craven = medium_stress_impact_gain
@@ -4501,7 +4493,7 @@ ep3_decisions_event.4022 = {
 		scope:title_to_convert = {
 			set_variable = do_not_disturb_preachers
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			calm = major_stress_impact_gain
 			gregarious = medium_stress_impact_gain
@@ -4554,7 +4546,7 @@ ep3_decisions_event.4023 = {
 	title = ep3_decisions_event.4023.t
 	desc = ep3_decisions_event.4023.desc
 	theme = emperor
-
+	
 	trigger = {
 		scope:evangelizer = { is_alive = yes }
 	}
@@ -5034,7 +5026,7 @@ ep3_decisions_event.4050 = {
 		}
 		animation = war_over_tie
 	}
-
+	
 	right_portrait = {
 		character = scope:head_of_faith
 		triggered_animation = {
@@ -5065,12 +5057,12 @@ ep3_decisions_event.4050 = {
 			years = 15
 		}
 	}
-
+	
 	option = {
 		name = ep3_decisions_event.4050.b
 		add_legitimacy = major_legitimacy_gain
 	}
-
+	
 	option = {
 		name = ep3_decisions_event.4050.c
 		trigger = {
@@ -5173,7 +5165,6 @@ ep3_decisions_event.4060 = {
 
 	immediate = {
 		show_as_tooltip = {
-<<<<<<< HEAD
 			switch = {
 				trigger = has_government
 			 	japan_administrative_government = { change_government = japan_administrative_government }
@@ -5186,9 +5177,6 @@ ep3_decisions_event.4060 = {
 				gaul_administrative_government = { change_government = gaul_administrative_government }
 			 	fallback = { change_government = administrative_government }
 			}
-=======
-			change_government = government_type
->>>>>>> Lux-Renata-main
 			if = {
 				limit = {
 					NOT = { has_character_flag = latin_emp_force_admin_flag }
@@ -5204,7 +5192,6 @@ ep3_decisions_event.4060 = {
 			# Adopting vassal tooltip
 			every_powerful_vassal = {
 				limit = { has_same_government = root }
-<<<<<<< HEAD
 				switch = {
 					trigger = has_government
 				 	japan_administrative_government = { change_government = japan_administrative_government }
@@ -5217,20 +5204,17 @@ ep3_decisions_event.4060 = {
 					gaul_administrative_government = { change_government = gaul_administrative_government }				
 				 	fallback = { change_government = administrative_government }
 				}
-=======
-				change_government = government_type
->>>>>>> Lux-Renata-main
 			}
 		}
 		hidden_effect = {
 			ordered_vassal = {
 				limit = {
 					NOR = {
-						government_has_flag = government_is_theocracy
+						government_has_flag = government_is_theocracy 
 						government_has_flag = government_is_republic
 						government_has_flag = government_is_landless_adventurer
 						government_has_flag = government_is_tribal
-						government_has_mechanic = administrative
+						government_has_flag = government_is_administrative
 					}
 					primary_title = {
 						target_is_de_jure_liege_or_above = scope:administrative_liege.primary_title #We only auto convert de jure vassals
@@ -5242,16 +5226,16 @@ ep3_decisions_event.4060 = {
 			ordered_vassal = {
 				limit = {
 					NOR = {
-						government_has_flag = government_is_theocracy
+						government_has_flag = government_is_theocracy 
 						government_has_flag = government_is_republic
 						government_has_flag = government_is_landless_adventurer
 						government_has_flag = government_is_tribal
-						government_has_mechanic = administrative
+						government_has_flag = government_is_administrative
 						primary_title = {
 							target_is_de_jure_liege_or_above = scope:administrative_liege.primary_title #We only auto convert de jure vassals
 						}
 					}
-					rite = scope:administrative_liege.rite #The future state rite
+					faith = scope:administrative_liege.faith #The future state faith
 				}
 				order_by = sub_realm_size
 				position = 0
@@ -5260,15 +5244,15 @@ ep3_decisions_event.4060 = {
 			ordered_vassal = {
 				limit = {
 					NOR = {
-						government_has_flag = government_is_theocracy
+						government_has_flag = government_is_theocracy 
 						government_has_flag = government_is_republic
 						government_has_flag = government_is_landless_adventurer
 						government_has_flag = government_is_tribal
-						government_has_mechanic = administrative
+						government_has_flag = government_is_administrative
 						primary_title = {
 							target_is_de_jure_liege_or_above = scope:administrative_liege.primary_title #We only auto convert de jure vassals
 						}
-						rite = scope:administrative_liege.rite #The future state rite
+						faith = scope:administrative_liege.faith #The future state faith
 					}
 				}
 				order_by = sub_realm_size
@@ -5332,25 +5316,25 @@ ep3_decisions_event.4065 = {
 					limit = {
 						tgp_mongol_vassal_will_become_admin = yes #We still don't want mayors and bishops
 						is_ai = yes
-					}
+					}	
 					change_to_administrative_effect = yes
 					every_vassal = { #Everyone below also converts (Could be Counts, could be Barons)
 						limit = {
 							tgp_mongol_vassal_will_become_admin = yes #We still don't want mayors and bishops
 							is_ai = yes
-						}
+						}	
 						change_to_administrative_effect = yes
 						every_vassal = { #Everyone below also converts (could be Barons)
 							limit = {
 								tgp_mongol_vassal_will_become_admin = yes #We still don't want mayors and bishops
 								is_ai = yes
-							}
+							}	
 							change_to_administrative_effect = yes
 							every_vassal = { #Everyone below also converts (could be Barons)
 								limit = {
 									tgp_mongol_vassal_will_become_admin = yes #We still don't want mayors and bishops
 									is_ai = yes
-								}
+								}	
 								change_to_administrative_effect = yes
 							}
 						}
@@ -5365,25 +5349,25 @@ ep3_decisions_event.4065 = {
 					limit = {
 						ep3_vassal_will_become_admin = yes #We still don't want mayors and bishops
 						is_ai = yes
-					}
+					}	
 					change_to_administrative_effect = yes
 					every_vassal = { #Everyone below also converts (Could be Counts, could be Barons)
 						limit = {
 							ep3_vassal_will_become_admin = yes #We still don't want mayors and bishops
 							is_ai = yes
-						}
+						}	
 						change_to_administrative_effect = yes
 						every_vassal = { #Everyone below also converts (could be Barons)
 							limit = {
 								ep3_vassal_will_become_admin = yes #We still don't want mayors and bishops
 								is_ai = yes
-							}
+							}	
 							change_to_administrative_effect = yes
 							every_vassal = { #Everyone below also converts (could be Barons)
 								limit = {
 									ep3_vassal_will_become_admin = yes #We still don't want mayors and bishops
 									is_ai = yes
-								}
+								}	
 								change_to_administrative_effect = yes
 							}
 						}
@@ -5435,8 +5419,12 @@ ep3_decisions_event.4070 = {
 		animation = personality_bold
 	}
 	immediate = {
-		show_as_tooltip = {
-			assign_feudal_governments_effect = yes
+		show_as_tooltip = { 
+			if = {
+				limit = { ep3_is_clan_inclined_trigger = yes }
+				change_government = iqta_government 
+			}
+			else = { change_government = western_feudal_government }
 		}
 	}
 	option = {
@@ -5454,8 +5442,12 @@ ep3_decisions_event.4075 = {
 		animation = personality_rational
 	}
 	immediate = {
-		show_as_tooltip = {
-			assign_feudal_governments_effect = yes
+		show_as_tooltip = { 
+			if = {
+				limit = { ep3_is_clan_inclined_trigger = yes }
+				change_government = iqta_government 
+			}
+			else = { change_government = western_feudal_government }
 		}
 	}
 	#You are now a king! ... or duke. Or count?
@@ -5705,7 +5697,7 @@ ep3_decisions_event.7000 = {
 					}
 					else_if = {
 						limit = {
-							NOT = { has_trait = ill }
+							NOT = { has_trait = ill } 
 							location = {
 								OR = {
 									terrain = floodplains
@@ -6069,58 +6061,58 @@ ep3_decisions_event.7000 = {
 }
 
 # Found Salon
-ep3_decisions_event.4080 = {
-	type = character_event
-	title = ep3_decisions_event.4080.t
-	desc = {
-		desc = ep3_decisions_event.4080.desc.intro
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					root = character:andalusian_0003
-				}
-				desc = ep3_decisions_event.4080.wallada
-			}
-			desc = ep3_decisions_event.4080.heir
-		}
-		desc = ep3_decisions_event.4080.desc.outro
-	}
-	theme = violet_poet
-	override_background = { reference = courtyard }
+#ep3_decisions_event.4080 = {
+#	type = character_event
+#	title = ep3_decisions_event.4080.t
+#	desc = {
+#		desc = ep3_decisions_event.4080.desc.intro
+#		first_valid = {
+#			triggered_desc = {
+#				trigger = {
+#					root = character:andalusian_0003
+#				}
+#				desc = ep3_decisions_event.4080.wallada
+#			}
+#			desc = ep3_decisions_event.4080.heir
+#		}
+#		desc = ep3_decisions_event.4080.desc.outro
+#	}
+#	theme = violet_poet
+#	override_background = { reference = courtyard }
+#
+#	left_portrait = {
+#		character = root
+#		animation = personality_honorable
+#	}
+#
+#	immediate = {
+#		location = {
+#			save_scope_as = location
+#		}
+#	}
 
-	left_portrait = {
-		character = root
-		animation = personality_honorable
-	}
-
-	immediate = {
-		location = {
-			save_scope_as = location
-		}
-	}
-
-	option = {
-		name = ep3_decisions_event.4080.a
-		if = {
-			limit = {
-				exists = dynasty
-			}
-			dynasty = {
-				add_dynasty_prestige = medium_dynasty_prestige_gain
-			}
-		}
-		add_prestige = major_prestige_gain
-		scope:location = {
-			add_province_modifier = {
-				modifier = ep3_poets_salon_modifier
-				years = 250
-			}
-		}
-		add_character_modifier = {
-			modifier = ep3_founded_salon_modifier
-		}
-	}
-}
+#	option = {
+#		name = ep3_decisions_event.4080.a
+#		if = {
+#			limit = {
+#				exists = dynasty
+#			}
+#			dynasty = {
+#				add_dynasty_prestige = medium_dynasty_prestige_gain
+#			}
+#		}
+#		add_prestige = major_prestige_gain
+#		scope:location = {
+#			add_province_modifier = {
+#				modifier = ep3_poets_salon_modifier
+#				years = 250
+#			}
+#		}
+#		add_character_modifier = {
+#			modifier = ep3_founded_salon_modifier
+#		}
+#	}
+#}
 
 #########################################################
 ### Renounce Governorship
@@ -6144,11 +6136,11 @@ ep3_decisions_event.4090 = {
 		animation = scheme
 	}
 	lower_left_portrait = scope:new_governor
-
+	
 	immediate = {
 		liege = { save_scope_as = liege } #For loc
 	}
-
+	
 	option = {
 		name = ep3_decisions_event.4090.a
 		name = {
@@ -6157,7 +6149,7 @@ ep3_decisions_event.4090 = {
 			}
 			text = ep3_decisions_event.4090.a_merit
 		}
-
+		
 		if = {
 			limit = {
 				involved_activity ?= {
@@ -6263,7 +6255,7 @@ ep3_decisions_event.5001 = {
 		reference = legend_glow
 	}
 	override_background = { reference = ce1_legendary_spring }
-
+	
 	immediate = {
 		dummy_opposite_gender_effect = { TARGET = root }
 		hidden_effect_new_object = {
@@ -6318,27 +6310,26 @@ ep3_decisions_event.5001 = {
 				order_by = sum_of_all_skills_value
 				save_scope_as = adoring_fan
 			}
-		}
+		}		
 		else = {
 			create_character = {
 				location = root.location
 				template = ep3_common_fan_character
 				gender_female_chance = root_faith_dominant_gender_adjusted_female_chance
 				faith = root.capital_county.faith
-				rite = root.capital_county.rite
 				culture = root.capital_county.culture
 				save_scope_as = adoring_fan
 			}
 		}
 	}
-
+	
 	option = { # Are you into protecting peasants
 		name = ep3_decisions_event.5001.a
 		add_character_modifier = { # Permanent
 			modifier = ep3_valiant_knight_modifier
 		}
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			seducer = major_stress_impact_gain
 			rakish = major_stress_impact_gain
 			lustful = medium_stress_impact_gain
@@ -6357,15 +6348,15 @@ ep3_decisions_event.5001 = {
 			}
 		}
 	}
-
+	
 	option = { #...or are you into saving ladies
 		name = ep3_decisions_event.5001.b
 		custom_tooltip = ep3_courteous_knight_var_tt
 		add_character_modifier = { # Permanent
 			modifier = ep3_courteous_knight_modifier
 		}
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			celibate = major_stress_impact_gain
 			chaste = medium_stress_impact_gain
 			just = medium_stress_impact_gain
@@ -6384,16 +6375,16 @@ ep3_decisions_event.5001 = {
 			}
 		}
 	}
-
+	
 	after = {
 		disburse_knight_errant_decision_rewards_effect = yes
 		trigger_event = { # We give you a Legendary Sighting - also added to the regular event triggers so if it doesn't trigger here it will eventually
 			id = hunt.2510
-			days = { 30 90 }
+			days = { 30 90 } 
 		}
 		trigger_event = { # Someone from your family may take an interest in you - also added to the laamp on_action, so if it doesn't trigger here it will eventually
 			id = ep3_decisions_event.5002
-			days = { 30 90 }
+			days = { 30 90 } 
 		}
 	}
 }
@@ -6437,7 +6428,7 @@ ep3_decisions_event.5002 = {
 		character = scope:my_rival
 		animation = disapproval
 	}
-
+	
 	trigger = {
 		is_available = yes
 		is_landed = no
@@ -6446,7 +6437,7 @@ ep3_decisions_event.5002 = {
 		}
 		NOT = { has_variable = had_ep3_decisions_event_5002 }
 	}
-
+	
 	immediate = {
 		set_variable = had_ep3_decisions_event_5002
 		# We try to find someone that doesn't like you
@@ -6460,7 +6451,7 @@ ep3_decisions_event.5002 = {
 					add = 50
 					has_relation_rival = root
 				}
-				modifier = {
+				modifier = { 
 					add = 25
 					has_relation_potential_rival = root
 				}
@@ -6471,7 +6462,7 @@ ep3_decisions_event.5002 = {
 						value <= -25
 					}
 				}
-				modifier = {
+				modifier = { 
 					add = 25
 					is_landed = yes
 				}
@@ -6479,7 +6470,7 @@ ep3_decisions_event.5002 = {
 			save_scope_as = my_rival
 		}
 	}
-
+	
 	option = { # You got a point
 		name = ep3_decisions_event.5002.a
 		custom_tooltip = {
@@ -6493,7 +6484,7 @@ ep3_decisions_event.5002 = {
 				opinion = 15
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = major_stress_impact_gain
 			wrathful = major_stress_impact_gain
 		}
@@ -6507,7 +6498,7 @@ ep3_decisions_event.5002 = {
 			}
 		}
 	}
-
+	
 	option = { # Screw you
 		name = ep3_decisions_event.5002.b
 		if = {
@@ -6523,7 +6514,7 @@ ep3_decisions_event.5002 = {
 			modifier = ep3_black_sheep
 			years = 10
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = major_stress_impact_loss
 			wrathful = major_stress_impact_loss
 			calm = medium_stress_impact_gain
@@ -6625,7 +6616,7 @@ ep3_decisions_event.5010 = {
 	title = ep3_decisions_event.5010.t
 	desc = ep3_decisions_event.5010.desc
 	theme = administrative
-
+	
 	left_portrait = {
 		character = scope:mediocre_eunuch
 		animation = happiness
@@ -6657,7 +6648,6 @@ ep3_decisions_event.5010 = {
 				age = { 16 65 }
 				culture = root.location.culture
 				faith = root.location.faith
-				rite = root.location.rite
 				random_traits_list = {
 					count = 1
 					education_diplomacy_1 = {}
@@ -6704,7 +6694,6 @@ ep3_decisions_event.5010 = {
 				age = { 16 65 }
 				culture = root.culture
 				faith = root.faith
-				rite = root.rite
 				random_traits_list = {
 					count = 1
 					education_diplomacy_3 = {}
@@ -6731,7 +6720,7 @@ ep3_decisions_event.5010 = {
 		}
 	}
 
-	option = {
+	option = { 
 		name = ep3_decisions_event.5010.a
 		pay_treasury_or_gold = {
 			target = scope:mediocre_eunuch
@@ -6770,7 +6759,7 @@ ep3_decisions_event.5020 = {
 		}
 	}
 	theme = faith
-
+	
 	left_portrait = {
 		character = root
 		animation = scheme
@@ -6781,15 +6770,15 @@ ep3_decisions_event.5020 = {
 			every_realm_county = {
 				limit = {
 					OR = {
-						rite = {
-							rite_is_interesting_heresy_to_state_rite_trigger = yes
+						faith = {
+							faith_is_interesting_heresy_to_state_faith_trigger = yes
 						}
 						any_neighboring_county = {
 							holder.top_liege ?= {
 								this != root.top_liege
 							}
-							rite = {
-								rite_is_interesting_heresy_to_state_rite_trigger = yes
+							faith = {
+								faith_is_interesting_heresy_to_state_faith_trigger = yes
 							}
 						}
 					}
@@ -6799,21 +6788,21 @@ ep3_decisions_event.5020 = {
 						holder.top_liege ?= {
 							this != root.top_liege
 						}
-						rite = {
-							rite_is_interesting_heresy_to_state_rite_trigger = yes
+						faith = {
+							faith_is_interesting_heresy_to_state_faith_trigger = yes
 						}
 					}
-					rite = {
+					faith = {
 						add_to_list = available_heresies
 					}
 				}
 				if = {
 					limit = {
-						rite = {
-							rite_is_interesting_heresy_to_state_rite_trigger = yes
+						faith = {
+							faith_is_interesting_heresy_to_state_faith_trigger = yes
 						}
 					}
-					rite = {
+					faith = {
 						add_to_list = available_heresies
 					}
 				}
@@ -6821,14 +6810,14 @@ ep3_decisions_event.5020 = {
 		}
 		ordered_in_list = {
 			list = available_heresies
-			order_by = num_rite_county_followers
+			order_by = num_county_followers
 			position = 0
 			save_scope_as = heresy_1
 		}
 		ordered_in_list = {
 			list = available_heresies
 			limit = { this != scope:heresy_1 }
-			order_by = num_rite_county_followers
+			order_by = num_county_followers
 			position = 0
 			save_scope_as = heresy_2
 		}
@@ -6838,40 +6827,30 @@ ep3_decisions_event.5020 = {
 				this != scope:heresy_1
 				this != scope:heresy_2
 			}
-			order_by = num_rite_county_followers
+			order_by = num_county_followers
 			position = 0
 			save_scope_as = heresy_3
 		}
 	}
 
-	option = {
+	option = { 
 		name = ep3_decisions_event.5020.a
-		set_character_rite_with_conversion = scope:heresy_1
+		set_character_faith_with_conversion = scope:heresy_1
 		if = {
-			limit = {
-				scope:heresy_1 = { rite_has_doctrine = doctrine_monotheist }
+			limit = { 
+				scope:heresy_1 = { has_doctrine = doctrine_monotheist }
 			}
 			custom_description_no_bullet = { text = mandala_monotheist_warning_tt }
 		}
 		add_heresiarch_trait_effect = yes
 		# Otherwise the conversion event will remove the trait
-		add_character_flag = {
-			flag = converted_by_heresy_decision
-			years = 10
-		}
-		# TIT-56457: block the Adopt State Faith decision for a while so embracing cannot be undone for free
-		hidden_effect = {
-			add_character_flag = {
-				flag = embraced_heresy_recently
-				years = 10
-			}
-		}
+		add_character_flag = converted_by_heresy_decision
 		scope:heresy_1 = { save_scope_as = heresy }
 		custom_tooltip = unlocks_demand_state_faith_decision
 		top_liege ?= {
 			every_vassal = {
 				limit = {
-					rite = scope:heresy_1
+					faith = scope:heresy_1
 				}
 				root = {
 					if = {
@@ -6901,32 +6880,22 @@ ep3_decisions_event.5020 = {
 		trigger = {
 			exists = scope:heresy_2
 		}
-		set_character_rite_with_conversion = scope:heresy_2
+		set_character_faith_with_conversion = scope:heresy_2
 		if = {
-			limit = {
-				scope:heresy_2 = { rite_has_doctrine = doctrine_monotheist }
+			limit = { 
+				scope:heresy_2 = { has_doctrine = doctrine_monotheist }
 			}
 			custom_description_no_bullet = { text = mandala_monotheist_warning_tt }
 		}
 		add_heresiarch_trait_effect = yes
 		# Otherwise the conversion event will remove the trait
-		add_character_flag = {
-			flag = converted_by_heresy_decision
-			years = 10
-		}
-		# TIT-56457: block the Adopt State Faith decision for a while so embracing cannot be undone for free
-		hidden_effect = {
-			add_character_flag = {
-				flag = embraced_heresy_recently
-				years = 10
-			}
-		}
+		add_character_flag = converted_by_heresy_decision
 		scope:heresy_2 = { save_scope_as = heresy }
 		custom_tooltip = unlocks_demand_state_faith_decision
 		top_liege ?= {
 			every_vassal = {
 				limit = {
-					rite = scope:heresy_2
+					faith = scope:heresy_2
 				}
 				root = {
 					if = {
@@ -6956,32 +6925,22 @@ ep3_decisions_event.5020 = {
 		trigger = {
 			exists = scope:heresy_3
 		}
-		set_character_rite_with_conversion = scope:heresy_3
+		set_character_faith_with_conversion = scope:heresy_3
 		if = {
-			limit = {
-				scope:heresy_3 = { rite_has_doctrine = doctrine_monotheist }
+			limit = { 
+				scope:heresy_3 = { has_doctrine = doctrine_monotheist }
 			}
 			custom_description_no_bullet = { text = mandala_monotheist_warning_tt }
 		}
 		add_heresiarch_trait_effect = yes
 		# Otherwise the conversion event will remove the trait
-		add_character_flag = {
-			flag = converted_by_heresy_decision
-			years = 10
-		}
-		# TIT-56457: block the Adopt State Faith decision for a while so embracing cannot be undone for free
-		hidden_effect = {
-			add_character_flag = {
-				flag = embraced_heresy_recently
-				years = 10
-			}
-		}
+		add_character_flag = converted_by_heresy_decision
 		scope:heresy_3 = { save_scope_as = heresy }
 		custom_tooltip = unlocks_demand_state_faith_decision
 		top_liege ?= {
 			every_vassal = {
 				limit = {
-					rite = scope:heresy_3
+					faith = scope:heresy_3
 				}
 				root = {
 					if = {
@@ -7029,7 +6988,7 @@ ep3_decisions_event.5021 = {
 	title = ep3_decisions_event.5021.t
 	desc = ep3_decisions_event.5021.desc
 	theme = faith
-
+	
 	left_portrait = {
 		character = root
 		animation = shock
@@ -7048,10 +7007,7 @@ ep3_decisions_event.5021 = {
 				title = ep3_decisions_event.5021.a.tt
 				left_icon = root
 				root = {
-					primary_title = {
-						set_state_rite = scope:heresy
-						pam_tenet_popularity_boost_rite_effect = { RITE = state_rite }
-					}
+					primary_title = { set_state_faith = scope:heresy }
 					add_opinion = {
 						target = scope:heretic
 						modifier = forced_state_heresy_opinion
@@ -7083,7 +7039,7 @@ ep3_decisions_event.5021 = {
 				scope:heretic = {
 					domicile ?= {
 						has_domicile_parameter = more_successful_heresies
-						domicile_location.county.rite = scope:heretic.rite
+						location.county.faith = scope:heretic.faith
 					}
 				}
 				add = 25
@@ -7100,14 +7056,11 @@ ep3_decisions_event.5021 = {
 				title = ep3_decisions_event.5021.a.tt
 				left_icon = root
 				root = {
-					primary_title = {
-						set_state_rite = scope:heresy
-						pam_tenet_popularity_boost_rite_effect = { RITE = state_rite }
-					}
-					set_character_rite_with_conversion = scope:heresy
+					primary_title = { set_state_faith = scope:heresy }
+					set_character_faith_with_conversion = scope:heresy
 					if = {
-						limit = {
-							scope:heresy = { rite_has_doctrine = doctrine_monotheist }
+						limit = { 
+							scope:heresy = { has_doctrine = doctrine_monotheist }
 						}
 						custom_description_no_bullet = { text = mandala_monotheist_warning_tt }
 					}
@@ -7146,7 +7099,7 @@ ep3_decisions_event.5021 = {
 				scope:heretic = {
 					domicile ?= {
 						has_domicile_parameter = more_successful_heresies
-						domicile_location.county.rite = scope:heretic.rite
+						location.county.faith = scope:heretic.faith
 					}
 				}
 				add = 15
@@ -7271,7 +7224,7 @@ ep3_decisions_event.6001 = {
 		animation = admiration
 	}
 	lower_right_portrait = scope:liege
-
+	
 	immediate = {
 		location.county = { save_scope_as = county }
 		save_scope_as = laamp
@@ -7308,7 +7261,7 @@ ep3_decisions_event.6001 = {
 			}
 		}
 	}
-
+	
 	option = { # Go to war NOW
 		name = ep3_decisions_event.6001.a
 		set_variable = separatist_uprising_decision_var
@@ -7325,7 +7278,7 @@ ep3_decisions_event.6001 = {
 			name = culture_separatists
 			levies = {
 				value = 500
-				multiply = {
+				multiply = { 
 					value = scope:liege.primary_title.tier
 				}
 			}
@@ -7337,7 +7290,7 @@ ep3_decisions_event.6001 = {
 			name = culture_separatists
 			levies = {
 				value = 500
-				multiply = {
+				multiply = { 
 					value = scope:liege.primary_title.tier
 				}
 			}
@@ -7381,7 +7334,7 @@ ep3_decisions_event.6001 = {
 			claimant = root
 			target_title = location.duchy
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			calm = major_stress_impact_gain
 			craven = major_stress_impact_gain
 		}
@@ -7412,14 +7365,14 @@ ep3_decisions_event.6001 = {
 			}
 		}
 	}
-
+	
 	option = { # Just the claim pls
 		name = ep3_decisions_event.6001.b
 		set_variable = separatist_uprising_decision_var
 		add_gold = major_gold_value
 		add_pressed_claim = location.duchy
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			celibate = major_stress_impact_gain
 			chaste = medium_stress_impact_gain
 			just = medium_stress_impact_gain
@@ -7437,7 +7390,7 @@ ep3_decisions_event.6001 = {
 			}
 		}
 	}
-
+	
 	option = { # Pacifist route
 		name = ep3_decisions_event.6001.c
 		show_as_unavailable = { always = yes } # We let you know that this route exists
@@ -7535,8 +7488,8 @@ ep3_decisions_event.6001 = {
 						base = 1
 						modifier = {
 							add = 100
-							NOR = {
-								holder.primary_title = this
+							NOR = { 
+								holder.primary_title = this 
 								holder.capital_county = this
 							}
 						}
@@ -7622,7 +7575,7 @@ ep3_decisions_event.6001 = {
 					liege = root
 					change = scope:heir_change2
 				}
-				resolve_title_and_vassal_change = scope:heir_change2
+				resolve_title_and_vassal_change = scope:heir_change2	
 			}
 			every_courtier = {
 				set_variable = {
@@ -7632,10 +7585,7 @@ ep3_decisions_event.6001 = {
 				add_trait = adventurer_follower
 			}
 		}
-		if = {
-			limit = { exists = scope:kingdom_title }
-			add_pressed_claim = scope:kingdom_title
-		}
+		add_pressed_claim = scope:kingdom_title
 		# Messages for nearby players
 		create_landed_ruler_message_effect = {
 			LANDED = root
@@ -7643,7 +7593,7 @@ ep3_decisions_event.6001 = {
 			FLAVOR_TITLE = scope:new_primary_title
 			REASON = flag:culture_champion
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			celibate = major_stress_impact_gain
 			chaste = medium_stress_impact_gain
 			just = medium_stress_impact_gain
@@ -7666,7 +7616,7 @@ ep3_decisions_event.6001 = {
 			}
 		}
 	}
-
+	
 	option = { # Let me think about it
 		name = ep3_decisions_event.6001.d
 		hidden_effect = {
@@ -7704,7 +7654,7 @@ ep3_decisions_event.6002 = {
 		animation = celebrate_sword
 	}
 	lower_right_portrait = scope:defender
-
+	
 	option = { # Wahoo
 		name = ep3_decisions_event.6002.a
 		if = {
@@ -7721,7 +7671,7 @@ ep3_decisions_event.6002 = {
 			limit = { has_character_modifier = ep3_master_todor_modifier }
 			remove_character_modifier = ep3_master_todor_modifier
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = medium_stress_impact_loss
 			ambitious = medium_stress_impact_loss
 		}
@@ -7755,7 +7705,7 @@ ep3_decisions_event.9001 = {
 				trigger = {
 					location = {
 						#only ice-fish if water is frozen
-							has_province_modifier = winter_harsh_modifier
+							has_province_modifier = winter_harsh_modifier 
 
 					}
 				}
@@ -7771,7 +7721,7 @@ ep3_decisions_event.9001 = {
 		trigger = {
 			exists = scope:rain_day
 		}
-  		reference = rain
+  		reference = rain	
 	}
 
 	left_portrait = {
@@ -7801,7 +7751,7 @@ ep3_decisions_event.9001 = {
 	option = { # Fish alone
 		name = ep3_decisions_event.9001.a
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			reclusive = minor_stress_impact_loss
 		}
 
@@ -7819,7 +7769,7 @@ ep3_decisions_event.9001 = {
 			 exists = scope:potential_friend
 		}
 		name = ep3_decisions_event.9001.b
-
+		
 		scope:potential_friend = {
 				add_opinion = {
 					target = root
@@ -7827,7 +7777,7 @@ ep3_decisions_event.9001 = {
 					opinion = 10
 				}
 			}
-
+		
 		ai_chance = {
 			base = 1
 		}
@@ -7861,7 +7811,7 @@ ep3_decisions_event.9001 = {
 		remove_short_term_gold = minor_gold_value
 
 		custom_tooltip = ep3_decisions_event.9001.c.tt
-
+		
 		ai_chance = {
 			base = 1
 		}
@@ -7870,7 +7820,7 @@ ep3_decisions_event.9001 = {
 	}
 }
 
-ep3_decisions_event.9010 = { # Fish Alone
+ep3_decisions_event.9010 = { # Fish Alone 
 	type = character_event
 	title = ep3_decisions_event.9010.t
 	desc = {
@@ -7883,7 +7833,7 @@ ep3_decisions_event.9010 = { # Fish Alone
 		trigger = {
 			exists = scope:rain_day
 		}
-  		reference = rain
+  		reference = rain	
 	}
 
 	left_portrait = {
@@ -7922,7 +7872,7 @@ ep3_decisions_event.9010 = { # Fish Alone
 					type = event_toast_effect_good
 					title = ep3_decisions_event.9030.a.fish
 					left_icon = root
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						base = miniscule_stress_impact_loss
 						ambitious = medium_stress_impact_loss
 					}
@@ -7944,14 +7894,14 @@ ep3_decisions_event.9010 = { # Fish Alone
 			}
 		}
 		name = ep3_decisions_event.9010.b
-
+			
 		random_list = {
 			99 = { #nothing happens
 				send_interface_toast = {
 					type = event_toast_effect_neutral
 					title = ep3_decisions_event.9010.b.nothing
 					left_icon = root
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						base = medium_stress_impact_loss
 						calm = medium_stress_impact_loss
 					}
@@ -7962,11 +7912,11 @@ ep3_decisions_event.9010 = { # Fish Alone
 					type = event_toast_effect_good
 					title = ep3_decisions_event.9010.b.trait
 					left_icon = root
-					add_trait = calm
-					stress_and_fulfillment_impact = {
+					add_trait = calm 
+					stress_impact = {
 						base = medium_stress_impact_loss
 						calm = medium_stress_impact_loss
-					}
+					}	
 				}
 			}
 		}
@@ -7990,7 +7940,7 @@ ep3_decisions_event.9020 = { # Fish With Your potential_friend
 		trigger = {
 			exists = scope:rain_day
 		}
-  		reference = rain
+  		reference = rain	
 	}
 
 	left_portrait = {
@@ -8008,7 +7958,7 @@ ep3_decisions_event.9020 = { # Fish With Your potential_friend
 
 		progress_towards_friend_effect = {
 			CHARACTER = scope:potential_friend
-			OPINION = default_friend_opinion
+			OPINION = yes
 			REASON = friend_fishing_trip
 		}
 
@@ -8028,14 +7978,14 @@ ep3_decisions_event.9020 = { # Fish With Your potential_friend
 					title = ep3_decisions_event.9030.a.fish
 					left_icon = root
 					right_icon = scope:potential_friend
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						base = miniscule_stress_impact_loss
 						ambitious = major_stress_impact_loss
 					}
 					domicile = {
 						change_provisions = miniscule_provisions_value
 					}
-				}
+				}		
 			}
 		}
 
@@ -8075,14 +8025,14 @@ ep3_decisions_event.9020 = { # Fish With Your potential_friend
 					title = ep3_decisions_event.9030.a.fish
 					left_icon = root
 					right_icon = scope:potential_friend
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						base = miniscule_stress_impact_loss
 						ambitious = major_stress_impact_loss
 					}
 					domicile = {
 						change_provisions = miniscule_provisions_value
-					}
-				}
+					}	
+				}			
 			}
 		}
 
@@ -8112,7 +8062,7 @@ ep3_decisions_event.9030 = { # Fish On A Boat, your potential friend will join y
 		trigger = {
 			exists = scope:rain_day
 		}
-  		reference = rain
+  		reference = rain	
 	}
 
 	left_portrait = {
@@ -8158,13 +8108,13 @@ ep3_decisions_event.9030 = { # Fish On A Boat, your potential friend will join y
 					title = ep3_decisions_event.9030.a.fish
 					left_icon = root
 					right_icon = scope:potential_friend
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						base = minor_stress_impact_loss
 						ambitious = major_stress_impact_loss
 					}
 					domicile = {
 						change_provisions = minor_provisions_value
-					}
+					}				
 				}
 			}
 		}
@@ -8179,10 +8129,10 @@ ep3_decisions_event.9030 = { # Fish On A Boat, your potential friend will join y
 		trigger = {
 			exists = scope:potential_friend
 		}
-
+		
 		progress_towards_friend_effect = {
 			CHARACTER = scope:potential_friend
-			OPINION = default_friend_opinion
+			OPINION = yes
 			REASON = friend_fishing_trip
 		}
 
@@ -8204,8 +8154,8 @@ ep3_decisions_event.9030 = { # Fish On A Boat, your potential friend will join y
 					add_stress = minor_stress_impact_loss
 					domicile = {
 						change_provisions = minor_provisions_value
-					}
-				}
+					}		
+				}		
 			}
 		}
 

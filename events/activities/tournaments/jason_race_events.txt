@@ -113,10 +113,10 @@ jason_race_events.1 = {
 					AND = {
 						county_control >= 80
 						county_opinion >= 0
-						rite = {
+						faith = {
 							OR = {
-								rite_has_tenet = tenet_dharmic_pacifism
-								rite_has_tenet = tenet_pacifism
+								has_doctrine = tenet_dharmic_pacifism
+								has_doctrine = tenet_pacifism
 							}
 						}
 					}
@@ -197,10 +197,6 @@ jason_race_events.1 = {
 					add = 20
 					highest_held_title_tier = tier_empire
 				}
-				modifier = {
-					add = 30
-					highest_held_title_tier = tier_hegemony
-				}
 				desc = jason_race_events.1.a.tt.win
 				send_interface_toast = {
 					title = jason_race_events.1.a.tt.win
@@ -244,7 +240,7 @@ jason_race_events.1 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			wrathful = massive_stress_gain
 			vengeful = major_stress_gain
 			craven = major_stress_gain
@@ -307,10 +303,6 @@ jason_race_events.1 = {
 			modifier = {
 				add = 50
 				highest_held_title_tier = tier_empire
-			}
-			modifier = {
-				add = 100
-				highest_held_title_tier = tier_hegemony
 			}
 			modifier = {
 				add = 75
@@ -491,7 +483,7 @@ jason_race_events.1 = {
 					has_relation_nemesis = root
 				}
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				fickle = medium_stress_loss
 				base = medium_stress_gain
 				compassionate = major_stress_gain
@@ -503,7 +495,7 @@ jason_race_events.1 = {
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				compassionate = major_stress_gain
 				forgiving = medium_stress_gain
 				patient = minor_stress_gain
@@ -628,7 +620,7 @@ jason_race_events.1 = {
 					has_relation_nemesis = root
 				}
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = medium_stress_loss
 				vengeful = minor_stress_loss
 				compassionate = major_stress_gain
@@ -641,7 +633,7 @@ jason_race_events.1 = {
 			limit = {
 				scope:host = { has_relation_friend = root }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = massive_stress_gain
 				compassionate = massive_stress_gain
 				loyal = major_stress_gain
@@ -650,7 +642,7 @@ jason_race_events.1 = {
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				compassionate = major_stress_gain
 				just = major_stress_gain
 				craven = minor_stress_gain
@@ -734,11 +726,11 @@ jason_race_events.1 = {
 				}
 				modifier = {
 					add = 5
-					location.county.rite = { rite_has_tenet = tenet_dharmic_pacifism }
+					location.county.faith = { has_doctrine = tenet_dharmic_pacifism }
 				}
 				modifier = {
 					add = 5
-					location.county.rite = { rite_has_tenet = tenet_pacifism }
+					location.county.faith = { has_doctrine = tenet_pacifism }
 				}
 				desc = jason_race_events.1.d.tt.win
 				send_interface_toast = {
@@ -784,7 +776,7 @@ jason_race_events.1 = {
 				}
 				modifier = {
 					add = 5
-					location.county.rite = { rite_has_tenet = tenet_warmonger }
+					location.county.faith = { has_doctrine = tenet_warmonger }
 				}
 				desc = jason_race_events.1.d.tt.lose
 				send_interface_toast = {
@@ -798,7 +790,7 @@ jason_race_events.1 = {
 			limit = {
 				scope:host = { has_relation_friend = root }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = minor_stress_gain
 				brave = major_stress_gain
 				loyal = medium_stress_gain
@@ -808,7 +800,7 @@ jason_race_events.1 = {
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				brave = major_stress_gain
 				loyal = medium_stress_gain
 				wrathful = medium_stress_gain
@@ -872,7 +864,7 @@ jason_race_events.2 = {
 
 		#Standard checks.
 		exists = var:contest_aptitude
-		exists = var:horse_race_jockey
+		root.var:horse_race_jockey ?= { exists = yes}
 		scope:activity = {
 			any_guest_subset_current_phase = {
 				name = qualified
@@ -969,7 +961,7 @@ jason_race_events.2 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_loss
 			greedy = minor_stress_gain
 			content = minor_stress_gain
@@ -988,8 +980,7 @@ jason_race_events.2 = {
 			}
 			modifier = {
 				add = 100
-				has_trait = brave
-
+				has_trait = brave
 			}
 			modifier = {
 				add = 100
@@ -1031,7 +1022,7 @@ jason_race_events.2 = {
 			years = 25
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			impatient = minor_stress_loss
 			content = medium_stress_gain
 			patient = medium_stress_gain
@@ -1050,13 +1041,11 @@ jason_race_events.2 = {
 			}
 			modifier = {
 				add = -50
-				has_trait = greedy
-
+				has_trait = greedy
 			}
 			modifier = {
 				add = 75
-				has_trait = impatient
-
+				has_trait = impatient
 			}
 			modifier = {
 				factor = 0
@@ -1075,7 +1064,7 @@ jason_race_events.2 = {
 		
 		add_prestige = minor_prestige_gain
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = minor_stress_loss
 			humble = major_stress_gain
 			shy = minor_stress_gain
@@ -1087,8 +1076,7 @@ jason_race_events.2 = {
 			
 			modifier = {
 				factor = 0
-				has_trait = humble
-
+				has_trait = humble
 			}
 			modifier = {
 				add = -75

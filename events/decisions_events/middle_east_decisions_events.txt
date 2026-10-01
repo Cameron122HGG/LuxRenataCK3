@@ -55,10 +55,10 @@ middle_east_decisions.0001 = {
 			}
 			#Saving the title scope for loc purposes
 			title:e_outremer = { save_scope_as = outremer_title }
-			faith:sunni.religion = {
+			faith:ashari.religion = {
 				every_faith = {
 					change_fervor = {
-						value = severe_fervor_loss
+						value = -30
 						desc = fervor_gain_formed_outremer
 					}
 				}
@@ -70,6 +70,7 @@ middle_east_decisions.0001 = {
 						tier = tier_kingdom
 					}
 					set_de_jure_liege_title = title:e_outremer
+
 				}
 			}
 			every_held_title = { # And any other held Kingdom.
@@ -150,7 +151,7 @@ middle_east_decisions.0001 = {
 			}
 			every_vassal = { # Muslims abandon Faith.
 				limit = {
-					faith.religion = faith:sunni.religion
+					faith.religion = faith:ashari.religion
 					NOT = { has_trait = zealous }
 				}
 				random = {
@@ -198,7 +199,7 @@ middle_east_decisions.0002 = {
 			# Muslim reaction.
 			triggered_desc = {
 				trigger = {
-					faith.religion = faith:sunni.religion
+					faith.religion = faith:ashari.religion
 				}
 				desc = middle_east_decisions.0002.desc.muslims
 			}
@@ -207,7 +208,7 @@ middle_east_decisions.0002 = {
 				trigger = {
 					NOR = {
 						faith.religion = faith:catholic.religion
-						faith.religion = faith:sunni.religion
+						faith.religion = faith:ashari.religion
 					}
 				}
 				desc = middle_east_decisions.0002.desc.others
@@ -241,13 +242,13 @@ middle_east_decisions.0002 = {
 	option = {
 		name = middle_east_decisions.0002.b
 		trigger = {
-			faith.religion = faith:sunni.religion
+			faith.religion = faith:ashari.religion
 		}
 		add_opinion = {
 			target = scope:scoped_ruler
 			modifier = destroyed_papacy_opinion
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			zealous = minor_stress_impact_gain
 		}
 	}
@@ -256,7 +257,7 @@ middle_east_decisions.0002 = {
 		trigger = {
 			NOR = {
 				faith.religion = faith:catholic.religion
-				faith.religion = faith:sunni.religion
+				faith.religion = faith:ashari.religion
 			}
 		}
 	}
@@ -286,7 +287,7 @@ middle_east_decisions.0003 = {
 		every_player = {
 			limit = {
 				this != root
-				faith.religion = faith:sunni.religion
+				faith.religion = faith:ashari.religion
 			}
 			trigger_event = middle_east_decisions.0004 # Notification.
 		}
@@ -302,15 +303,15 @@ middle_east_decisions.0004 = {
 			# Sunni Reaction
 			triggered_desc = {
 				trigger = {
-					root.faith = faith:sunni
+					root.faith = faith:ashari
 				}
-				desc = middle_east_decisions.0004.desc.sunni
+				desc = middle_east_decisions.0004.desc.ashari
 			}
 			#Every other Muslim
 			triggered_desc = {
 				trigger = {
 					NOT = {
-						root.faith = faith:sunni
+						root.faith = faith:ashari
 					}
 
 				}
@@ -346,14 +347,14 @@ middle_east_decisions.0004 = {
 	option = {
 		name = middle_east_decisions.0004.a
 		trigger = {
-			root.faith = faith:sunni
+			root.faith = faith:ashari
 		}
 	}
 	option = {
 		name = middle_east_decisions.0004.b
 		trigger = {
 			NOT = {
-				root.faith = faith:sunni
+				root.faith = faith:ashari
 			}
 		}
 	}
@@ -400,7 +401,7 @@ middle_east_decisions.0005 = {
 		title:k_israel = { save_scope_as = israel_title }
 		faith = {
 			change_fervor = {
-				value = medium_fervor_gain
+				value = 25
 				desc = fervor_gain_israel_recreated
 			}
 		}
@@ -521,17 +522,19 @@ middle_east_decisions.0007 = {
 		save_scope_as = portrait_ruler
 		if = {
 			limit = {
-				faith = { has_doctrine = special_doctrine_prophecy_of_malachi }
+				faith = { has_doctrine = special_doctrine_not_allowed_to_hof }
 			}
 			faith = {
-				remove_doctrine = special_doctrine_prophecy_of_malachi
+				remove_doctrine = special_doctrine_not_allowed_to_hof
 			}
 		}
 		if = { # Check if Temporal first.
 			limit = {
-				OR = {
-					rite = { rite_has_parameter = lay_clergy }
-					faith = { has_doctrine = doctrine_temporal_head }
+				faith = {
+					OR = {
+						has_doctrine_parameter = lay_clergy
+						has_doctrine = doctrine_temporal_head
+					}
 				}
 			}
 			if = {
@@ -626,7 +629,7 @@ middle_east_decisions.0007 = {
 		add_piety = major_piety_gain
 		faith = {
 			change_fervor = {
-				value = massive_fervor_gain
+				value = 100
 				desc = fervor_gain_priesthood_recreated
 			}
 		}
@@ -842,7 +845,7 @@ middle_east_decisions.0009 = {
 		add_piety = major_piety_gain
 		faith = {
 			change_fervor = {
-				value = significant_fervor_gain
+				value = 10
 				desc = fervor_gain_priesthood_recreated
 			}
 		}
@@ -913,7 +916,7 @@ middle_east_decisions.0010 = {
 			# Muslim Reaction
 			triggered_desc = {
 				trigger = {
-					root.faith.religion = faith:sunni.religion
+					root.faith.religion = faith:ashari.religion
 				}
 				desc = middle_east_decisions.0010.desc.muslims
 			}
@@ -922,7 +925,7 @@ middle_east_decisions.0010 = {
 				trigger = {
 					NOR = {
 						root.faith.religion = scope:scoped_ruler.faith.religion
-						root.faith.religion = faith:sunni.religion
+						root.faith.religion = faith:ashari.religion
 					}
 				}
 				desc = middle_east_decisions.0010.desc.others
@@ -966,7 +969,7 @@ middle_east_decisions.0010 = {
 		trigger = {
 			NOR = {
 				root.faith.religion = scope:scoped_ruler.faith.religion
-				root.faith.religion = faith:sunni.religion
+				root.faith.religion = faith:ashari.religion
 			}
 		}
 	}
@@ -1110,7 +1113,7 @@ middle_east_decisions.0013 = {
 			# Muslim Reaction
 			triggered_desc = {
 				trigger = {
-					root.faith.religion = faith:sunni.religion
+					root.faith.religion = faith:ashari.religion
 				}
 				desc = middle_east_decisions.0013.desc.muslims
 			}
@@ -1119,7 +1122,7 @@ middle_east_decisions.0013 = {
 				trigger = {
 					NOR = {
 						root.faith.religion = scope:scoped_ruler.faith.religion
-						root.faith.religion = faith:sunni.religion
+						root.faith.religion = faith:ashari.religion
 					}
 				}
 				desc = middle_east_decisions.0013.desc.others
@@ -1147,7 +1150,7 @@ middle_east_decisions.0013 = {
 			play_music_cue = "mx_cue_combat_2"
 		}
 		show_as_tooltip = {
-			faith:sunni.religion = {
+			faith:ashari.religion = {
 				every_faith = {
 					limit = {
 						any_independent_ruler = {
@@ -1162,7 +1165,7 @@ middle_east_decisions.0013 = {
 						}
 					}
 					change_fervor = {
-						value = substantial_fervor_loss
+						value = -15
 						desc = fervor_loss_saoshyant
 					}
 				}
@@ -1187,7 +1190,7 @@ middle_east_decisions.0013 = {
 		trigger = {
 			NOR = {
 				root.faith.religion = scope:scoped_ruler.faith.religion
-				root.faith.religion = faith:sunni.religion
+				root.faith.religion = faith:ashari.religion
 			}
 		}
 	}
@@ -1196,170 +1199,6 @@ middle_east_decisions.0013 = {
 ##################################################
 # Create Sultanate of Rum
 ##################################################
-
-middle_east_decisions.0014 = {
-	type = character_event
-	title = middle_east_decisions.0014.t
-	desc = middle_east_decisions.0014.desc
-	theme = realm
-	left_portrait = {
-		character = root
-		animation = personality_greedy
-	}
-	right_portrait = {
-		character = scope:roman_emperor
-		animation = disbelief
-	}
-	lower_left_portrait = scope:former_liege
-
-	immediate = {
-		play_music_cue = "mx_cue_positive_effect"
-		save_scope_as = scoped_ruler
-		if = {
-			limit = { top_liege != this }
-			liege = { save_scope_as = former_liege }
-		}
-		if = {
-			limit = { exists = title:e_byzantium.holder }
-			title:e_byzantium.holder = { save_scope_as = roman_emperor }
-		}
-		else_if = {
-			limit = { exists = title:h_roman_empire.holder }
-			title:h_roman_empire.holder = { save_scope_as = roman_emperor }
-		}
-		else_if = {
-			limit = { exists = title:h_eastern_roman_empire.holder }
-			title:h_eastern_roman_empire.holder = { save_scope_as = roman_emperor }
-		}
-
-		legend_seed_new_title_effect = yes
-		# De jure shifts.
-
-		# k_anatolia: d_cilicia d_cibyrrhaeot d_anatolia d_cappadocia
-		# k_pontus: d_paphlagonia d_armeniac d_sebasteia d_charsianon d_chaldia
-		# k_armenia: d_greater_armenia d_vaspurakan d_mesopotamia d_edessa
-		hidden_effect = {
-			title:d_cilicia = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_cibyrrhaeot = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_anatolia = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_cappadocia = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_paphlagonia = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_armeniac = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_sebasteia = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_charsianon = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			title:d_chaldia = {
-				set_de_jure_liege_title = title:k_rum
-			}
-			every_held_title = { # Should shift all dejure of all Duchies owned at the time.
-				title_tier = duchy
-				set_de_jure_liege_title = title:k_rum
-			}
-		}
-	}
-
-	option = {
-		name = middle_east_decisions.0014.a
-		create_rum_scripted_effect = yes
-		# Send narrative fluff to other players (if any).
-		every_player = {
-			limit = {
-				this != root
-				OR = {
-					top_liege = scope:former_liege
-					is_roman_emperor_trigger = yes
-				}
-			}
-			trigger_event = middle_east_decisions.0015
-		}
-	}
-}
-
-middle_east_decisions.0015 = {
-	type = character_event
-	title = middle_east_decisions.0014.t
-	desc = {
-		first_valid = {
-			# Liege's reaction.
-			triggered_desc = {
-				trigger = {
-					this = scope:former_liege
-				}
-				desc = middle_east_decisions.0015.desc.liege
-			}
-			triggered_desc = {
-				trigger = {
-					is_roman_emperor_trigger = yes
-				}
-				desc = middle_east_decisions.0015.desc.romans
-			}
-			# Everybody else's.
-			triggered_desc = {
-				trigger = {
-					this != scope:former_liege
-				}
-				desc = middle_east_decisions.0015.desc.others
-			}
-		}
-	}
-	theme = realm
-	left_portrait = {
-		character = scope:scoped_ruler
-		animation = personality_greedy
-	}
-	right_portrait = {
-		character = scope:former_liege
-		animation = shock
-	}
-
-	immediate = {
-		if = {
-			limit = {
-				this = scope:former_liege
-			}
-			show_as_tooltip = {
-				add_prestige = major_prestige_loss
-				add_unpressed_claim = title:k_rum #Give chance to retaliate
-				add_opinion = {
-					target = scope:scoped_ruler
-					modifier = pretender_opinion
-				}
-			}
-		}
-	}
-
-	option = {
-		name = middle_east_decisions.0015.a
-		trigger = {
-			OR = {
-				this = scope:former_liege
-				is_roman_emperor_trigger = yes
-			}
-		}
-	}
-	option = {
-		name = middle_east_decisions.0015.b
-		trigger = {
-			this != scope:former_liege
-		}
-	}
-}
-
 ################
 # Revive the Armenian Empire
 # by Ewan Cowhig Croft
@@ -1411,16 +1250,16 @@ middle_east_decisions.1002 = {
 		if = {
 			limit = {
 				OR = {
-					rite = rite:armenian_rite
+					faith = faith:armenian_apostolic
 					culture = culture:armenian
 				}
-				NOT = { highest_held_title_tier >= tier_empire }
+				NOT = { highest_held_title_tier = tier_empire }
 			}
 			play_music_cue = "mx_cue_epic_sacral_moment"
 		}
 		#Empires get rivalry music.
 		if = {
-			limit = { highest_held_title_tier >= tier_empire }
+			limit = { highest_held_title_tier = tier_empire }
 			play_music_cue = "mx_cue_combat_2"
 		}
 	}
@@ -1428,9 +1267,9 @@ middle_east_decisions.1002 = {
 	option = {
 		name = { #Empires are less than impressed.
 			trigger = {
-				highest_held_title_tier >= tier_empire
+				highest_held_title_tier = tier_empire
 				NOR = {
-					rite = rite:armenian_rite
+					faith = faith:armenian_apostolic
 					culture = culture:armenian
 				}
 			}
@@ -1439,19 +1278,19 @@ middle_east_decisions.1002 = {
 		name = { #Armenians by faith or by culture are pretty happy.
 			trigger = {
 				OR = {
-					rite = rite:armenian_rite
+					faith = faith:armenian_apostolic
 					culture = culture:armenian
 				}
-				NOT = { highest_held_title_tier >= tier_empire }
+				NOT = { highest_held_title_tier = tier_empire }
 			}
 			text = middle_east_decisions.1002.b
 		}
 		name = { #No one else thinks it'll last much longer than the last one.
 			trigger = {
 				NOR = {
-					rite = rite:armenian_rite
+					faith = faith:armenian_apostolic
 					culture = culture:armenian
-					highest_held_title_tier >= tier_empire
+					highest_held_title_tier = tier_empire
 				}
 			}
 			text = middle_east_decisions.1002.c

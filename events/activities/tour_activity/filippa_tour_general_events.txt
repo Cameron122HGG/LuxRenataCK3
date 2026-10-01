@@ -99,6 +99,7 @@ scripted_trigger tour_general_lowborn_pool_character_trigger = {
 scripted_trigger tour_general_is_available_councillor_with_secret_trigger = {
 	is_available_travelling_adult = yes
 	any_secret = {
+		exists = this
 		NOT = { is_known_by = root }
 	}
 	root = {
@@ -537,7 +538,7 @@ tour_general.1003 = {
 		#Witches probably don't want to give up their familiar
 		if = {
 			limit = { is_witch_trigger = yes }
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = medium_stress_impact_gain
 				compassionate = major_stress_impact_gain
 				loyal = medium_stress_impact_loss
@@ -551,14 +552,14 @@ tour_general.1003 = {
 					has_trait = callous
 				}
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				compassionate = major_stress_impact_gain
 				loyal = medium_stress_impact_loss
 				disloyal = minor_stress_impact_gain
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = minor_stress_impact_gain
 				compassionate = major_stress_impact_gain
 				loyal = medium_stress_impact_loss
@@ -620,14 +621,14 @@ tour_general.1003 = {
 		#Harmony with living creatures?
 		if = {
 			limit = { is_witch_trigger = yes }
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = minor_stress_impact_gain
 				compassionate = medium_stress_impact_gain
 				sadistic = medium_stress_impact_loss
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				compassionate = medium_stress_impact_gain
 				sadistic = medium_stress_impact_loss
 			}
@@ -695,7 +696,7 @@ tour_general.1003 = {
 				value = flag:declined
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain
 		}
@@ -1054,7 +1055,7 @@ tour_general.2000 = {
 				}
     		}
     	}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 			craven = minor_stress_impact_gain
 			ambitious = minor_stress_impact_loss
@@ -1087,7 +1088,7 @@ tour_general.2000 = {
 			target = scope:2000_secret_holder
 			type = suspicious_activity_hook
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_loss
 			ambitious = minor_stress_impact_gain
 			brave = minor_stress_impact_gain
@@ -1181,8 +1182,8 @@ tour_general.2001 = {
 		triggered_animation = {
 			trigger = {
 				scope:2001_precarious_entourage_character = { has_trait = hashishiyah }
-				rite = {
-					trait_is_sin_rite = hashishiyah
+				faith = {
+					trait_is_sin = hashishiyah
 				}
 				has_trait = zealous
 			}
@@ -1399,14 +1400,14 @@ tour_general.2001 = {
 			}
 			if = {
 				limit = {
-					rite = { trait_is_sin_rite = hashishiyah }
+					faith = { trait_is_sin = hashishiyah }
 				}
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					zealous = minor_stress_impact_gain
 				}
 			}
 			else = {
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					arrogant = minor_stress_impact_gain
 				}
 			}
@@ -1486,7 +1487,7 @@ tour_general.2001 = {
 					}
 				}
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				arrogant = minor_stress_impact_gain
 				compassionate = minor_stress_impact_loss
 			}
@@ -1553,10 +1554,10 @@ tour_general.2001 = {
 			#OR you both get knocked out
 			30 = {
 				desc = tour_general.2001.b_spaceout.desc
-				#If we're a erudite and/or whole of body, less chance for us to get knocked out
+				#If we're a scholar and/or whole of body, less chance for us to get knocked out
 				modifier = {
 					OR = {
-						has_trait = erudite
+						has_trait = scholar
 						has_trait = whole_of_body
 					}
 					add = -10
@@ -1578,9 +1579,9 @@ tour_general.2001 = {
 		}
 		if = {
 			limit = {
-				rite = { trait_is_sin_rite = hashishiyah }
+				faith = { trait_is_sin = hashishiyah }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = minor_stress_impact_gain
 				zealous = minor_stress_impact_gain
 				#Traits who don't care negate this
@@ -1590,7 +1591,7 @@ tour_general.2001 = {
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				temperate = minor_stress_impact_gain
 			}
 		}
@@ -1609,7 +1610,7 @@ tour_general.2001 = {
 	#Or walk away
 	option = { 
 		name = tour_general.2001.c
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_loss
 			ambitious = minor_stress_impact_gain
 		}
@@ -1872,7 +1873,7 @@ tour_general.3003 = {
 		scope:stop_host_scope = {
 			trigger_event = tour_general.1003
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 			sadistic = medium_stress_impact_loss
@@ -1916,7 +1917,7 @@ tour_general.3003 = {
 			text = tour_general.3003.b_cynical
 		}
 		name = tour_general.3003.b
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_gain
 			paranoid = minor_stress_impact_gain
 		}
@@ -2202,7 +2203,7 @@ tour_general.4000 = {
 				
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = medium_stress_impact_gain
 			humble = minor_stress_impact_gain
 			shy = medium_stress_impact_loss
@@ -2254,7 +2255,7 @@ tour_general.4000 = {
 				years = 10
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			humble = medium_stress_impact_gain
 			gregarious = minor_stress_impact_gain
@@ -2321,7 +2322,7 @@ tour_general.4000 = {
 	#... no, let's not
 	option = { 
 		name = tour_general.4000.c
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = minor_stress_impact_gain
 			cynical = minor_stress_impact_gain
 			calm = minor_stress_impact_loss
@@ -2361,7 +2362,7 @@ tour_general.4000 = {
 }
 
 scripted_effect 4001_search_stress_effect = {
-	stress_and_fulfillment_impact = {
+	stress_impact = {
 		honest = minor_stress_impact_gain
 		craven = minor_stress_impact_gain
 		paranoid = medium_stress_impact_gain
@@ -2529,6 +2530,7 @@ tour_general.4001 = {
 			#Against AI vassals
 			is_ai = yes
 			any_secret = {
+				exists = this
 				NOT = { is_known_by = root }
 				OR = {
 					secret_type = secret_deviant
@@ -2665,9 +2667,9 @@ tour_general.4001 = {
 	option = { 
 		name = tour_general.4001.a
 		trigger = {
-			has_variable = {
-				name = room_bedchamber
-				name = room_faux_bedchamber
+			OR = {
+				has_character_flag = room_bedchamber
+				has_character_flag = room_faux_bedchamber
 			}
 		}
 		custom_tooltip = tour_general.4001.a.tt
@@ -2710,9 +2712,9 @@ tour_general.4001 = {
 	option = { 
 		name = tour_general.4001.b
 		trigger = {
-			has_variable = {
-				name = room_council_chamber
-				name = room_faux_council_chamber
+			OR = {
+				has_character_flag = room_council_chamber
+				has_character_flag = room_faux_council_chamber
 			}
 		}
 		custom_tooltip = tour_general.4001.b.tt
@@ -2755,9 +2757,9 @@ tour_general.4001 = {
 	option = { 
 		name = tour_general.4001.c
 		trigger = {
-			has_variable = {
-				name = room_shrine
-				name = room_faux_shrine
+			OR = {
+				has_character_flag = room_shrine
+				has_character_flag = room_faux_shrine
 			}
 		}
 		custom_tooltip = tour_general.4001.c.tt
@@ -2799,9 +2801,9 @@ tour_general.4001 = {
 	option = { 
 		name = tour_general.4001.d
 		trigger = {
-			has_variable = {
-				name = room_kitchen
-				name = room_faux_kitchen
+			OR = {
+				has_character_flag = room_kitchen
+				has_character_flag = room_faux_kitchen
 			}
 		}
 		custom_tooltip = tour_general.4001.d.tt
@@ -2842,7 +2844,7 @@ tour_general.4001 = {
 	#... no
 	option = { 
 		name = tour_general.4001.e
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_loss
 			ambitious = minor_stress_impact_gain
 			brave = minor_stress_impact_gain
@@ -3487,7 +3489,7 @@ tour_general.4004 = {
 			REASON = lover_distracting_sex
 			OPINION = default_lover_opinion
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			chaste = medium_stress_impact_gain
 			celibate = major_stress_impact_gain
 		}
@@ -3612,7 +3614,6 @@ tour_general.4006 = {
     			template = servant_character
     			culture = scope:stop_host_scope.culture
     			faith = scope:stop_host_scope.faith
-    			rite = scope:stop_host_scope.rite
     			trait = drunkard
     			location = root.location
     			save_scope_as = servant_character
@@ -3685,7 +3686,7 @@ tour_general.4006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_gain
 			craven = minor_stress_impact_loss
 		}
@@ -3740,10 +3741,10 @@ tour_general.4006 = {
 			#OR they get knocked out
 			30 = {
 				desc = tour_general.4006.b_passout.desc
-				#If we're a erudite and/or whole of body, less chance for them to get knocked out
+				#If we're a scholar and/or whole of body, less chance for them to get knocked out
 				modifier = {
 					OR = {
-						has_trait = erudite
+						has_trait = scholar
 						has_trait = drunkard
 						has_trait = whole_of_body
 					}
@@ -3769,7 +3770,7 @@ tour_general.4006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			temperate = minor_stress_impact_gain
 		}
@@ -4074,7 +4075,7 @@ tour_general.4007 = {
 			limit = { has_character_flag = 4007_highest_prowess }
 			4007_intrigue_or_prowess_skill_duel_effect = { SKILL = prowess }
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 			craven = minor_stress_impact_gain
 			paranoid = medium_stress_impact_gain
@@ -4102,7 +4103,7 @@ tour_general.4007 = {
 			target = scope:4007_secret_holder
 			type = suspicious_activity_hook
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_gain
 			brave = minor_stress_impact_gain
 			deceitful = minor_stress_impact_gain

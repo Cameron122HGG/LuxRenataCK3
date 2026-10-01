@@ -170,7 +170,7 @@ title_event.0014 = {
 			OPINION = default_rival_opinion
 		}
 
-		stress_and_fulfillment_impact = { forgiving  = minor_stress_impact_gain }
+		stress_impact = { forgiving  = minor_stress_impact_gain }
 		ai_chance = {
 			# No fine tweaking needed for the AI chance on a notification event.
 			base = 100
@@ -189,7 +189,7 @@ title_event.0014 = {
 			OPINION = default_friend_opinion
 		}
 
-		stress_and_fulfillment_impact = { vengeful = minor_stress_impact_gain }
+		stress_impact = { vengeful = minor_stress_impact_gain }
 		ai_chance = {
 			# No fine tweaking needed for the AI chance on a notification event.
 			base = 100
@@ -240,7 +240,7 @@ title_event.0015 = {
 				OPINION = default_rival_opinion
 			}
 		}
-		stress_and_fulfillment_impact = { forgiving  = minor_stress_impact_gain }
+		stress_impact = { forgiving  = minor_stress_impact_gain }
 		ai_chance = {
 			# No fine tweaking needed for the AI chance on a notification event.
 			base = 100
@@ -259,74 +259,13 @@ title_event.0015 = {
 				OPINION = default_friend_opinion
 			}
 		}
-		stress_and_fulfillment_impact = { vengeful = minor_stress_impact_gain }
+		stress_impact = { vengeful = minor_stress_impact_gain }
 		ai_chance = {
 			# No fine tweaking needed for the AI chance on a notification event.
 			base = 100
 		}
 	}
 }
-
-#	Rename/recolor the Empire of Britannia based on which culture forms it.
-title_event.0021 = {
-	hidden = yes
-
-	trigger = {
-		scope:title = title:e_britannia
-		scope:transfer_type = flag:created
-	}
-
-	immediate = {
-		culture = {
-			switch = {
-				trigger = has_name_list
-				name_list_irish = {
-					title:e_britannia = {
-						set_title_name = cn_eire_mhor
-						set_title_color = { 6 127 2 }
-					}
-				}
-				name_list_scottish = {
-					title:e_britannia = {
-						set_title_name = cn_albion
-						set_title_color = { 230 140 0 }
-					}
-				}
-				name_list_gaelic = {
-					title:e_britannia = {
-						set_title_name = cn_alba_mhor
-						set_title_color = { 20 120 120 }
-					}
-				}
-				name_list_welsh = {
-					title:e_britannia = {
-						set_title_name = cn_prydain
-						set_title_color = { 135 25 3 }
-					}
-				}
-				name_list_cornish = {
-					title:e_britannia = {
-						set_title_name = cn_breteni
-						set_title_color = { 204 153 10 }
-					}
-				}
-				name_list_pictish = {
-					title:e_britannia = {
-						set_title_name = cn_pictavia
-						set_title_color = { 0 95 184 }
-					}
-				}
-				fallback = {
-					title:e_britannia = {
-						reset_title_name = yes
-						set_title_color = { 172 22 22 }
-					}
-				}
-			}
-		}
-	}
-}
-
 
 # Ascended Throne memory maintenance
 title_event.9900 = {
@@ -474,9 +413,13 @@ title_event.9900 = {
 						}
 					}	
 				}
-				#Otherwise go feudals
+				#Otherwise go vanilla
 				else = {
-					assign_feudal_governments_effect = yes
+					if = {
+						limit = { ep3_is_clan_inclined_trigger = yes }
+						change_government = iqta_government
+					}
+					else = { change_government = western_feudal_government }
 				}
 			}
 			#Otherwise we have city_construction_is_castle
@@ -490,9 +433,13 @@ title_event.9900 = {
 					}
 					capital_province = { set_holding_type = castle_holding }				
 				}
-				#Otherwise go feudals
+				#Otherwise go vanilla
 				else = {
-					assign_feudal_governments_effect = yes
+					if = {
+						limit = { ep3_is_clan_inclined_trigger = yes }
+						change_government = iqta_government
+					}
+					else = { change_government = western_feudal_government }
 				}
 			}
 			remove_variable = city_construction_is_temple_citadel

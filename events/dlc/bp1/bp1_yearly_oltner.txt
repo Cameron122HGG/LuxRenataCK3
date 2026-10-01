@@ -4,22 +4,17 @@ scripted_trigger appropriate_family_memory = {
 	has_memory_category = family
 	has_memory_category = positive
 	any_memory_participant = {
-		appropriate_family_memory_participant = yes
-	}
-}
-
-scripted_trigger appropriate_family_memory_participant = {
-	house ?= root.house
-	this != root
-	NOT = {
-		has_relation_rival = root
-	}
-	trigger_if = {
-		limit = {
-			is_alive = no
-			exists = killer
+		house ?= root.house
+		NOT = {
+			has_relation_rival = root
 		}
-		killer != root
+		trigger_if = {
+			limit = {
+				is_alive = no
+				exists = killer
+			}
+			killer != root
+		}
 	}
 }
 
@@ -119,7 +114,17 @@ bp1_yearly.4000 = {
 			save_scope_as = family_memory
 			random_memory_participant = {
 				limit = {
-					appropriate_family_memory_participant = yes
+					house ?= root.house
+					NOT = {
+						has_relation_rival = root
+					}
+					trigger_if = {
+						limit = {
+							is_alive = no
+							exists = killer
+						}
+						killer != root
+					}
 				}
 				save_scope_as = family_memory_participant
 			}
@@ -132,8 +137,8 @@ bp1_yearly.4000 = {
 		trigger = {
 			has_trait = family_first
 		}
-		dynasty ?= { add_dynasty_prestige = minor_dynasty_prestige_gain }
-		stress_and_fulfillment_impact = {
+		dynasty = { add_dynasty_prestige = minor_dynasty_prestige_gain }
+		stress_impact = {
 			base = minor_stress_impact_loss
 			#honest = minor_stress_impact_gain
 			#compassionate = minor_stress_impact_gain
@@ -150,7 +155,7 @@ bp1_yearly.4000 = {
 				is_alive = no
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -165,7 +170,7 @@ bp1_yearly.4000 = {
 				is_alive = yes
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_loss
 		}
 		ai_chance = {
@@ -219,7 +224,7 @@ bp1_yearly.4000 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = major_stress_impact_gain
 			cynical = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
@@ -262,7 +267,7 @@ bp1_yearly.4000 = {
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_loss
 			greedy = major_stress_impact_gain
 			arrogant = minor_stress_impact_gain
@@ -514,10 +519,10 @@ scripted_trigger appropriate_guardian_child_trigger = {
 	OR = {
 		AND = {
 			OR = {
-				root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+				root.faith = { has_doctrine = doctrine_gender_male_dominated }
 				NOR = {
-					root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-					root.rite = { rite_has_doctrine = doctrine_gender_female_dominated }
+					root.faith = { has_doctrine = doctrine_gender_male_dominated }
+					root.faith = { has_doctrine = doctrine_gender_female_dominated }
 				}
 			}
 			appropriate_mother = yes
@@ -529,10 +534,10 @@ scripted_trigger appropriate_guardian_child_trigger = {
 		}
 		AND = {
 			OR = {
-				root.rite = { rite_has_doctrine = doctrine_gender_female_dominated }
+				root.faith = { has_doctrine = doctrine_gender_female_dominated }
 				NOR = {
-					root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-					root.rite = { rite_has_doctrine = doctrine_gender_female_dominated }
+					root.faith = { has_doctrine = doctrine_gender_male_dominated }
+					root.faith = { has_doctrine = doctrine_gender_female_dominated }
 				}
 			}
 			appropriate_father = yes
@@ -698,10 +703,10 @@ bp1_yearly.4010 = {
 			if = {
 				limit = {
 					OR = {
-						root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
+						root.faith = { has_doctrine = doctrine_gender_male_dominated }
 						NOR = {
-							root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-							root.rite = { rite_has_doctrine = doctrine_gender_female_dominated }
+							root.faith = { has_doctrine = doctrine_gender_male_dominated }
+							root.faith = { has_doctrine = doctrine_gender_female_dominated }
 						}
 					}
 					appropriate_mother = yes
@@ -883,7 +888,7 @@ bp1_yearly.4010 = {
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = medium_stress_impact_gain
 			stubborn = medium_stress_impact_gain
 			paranoid = medium_stress_impact_gain
@@ -919,7 +924,7 @@ bp1_yearly.4010 = {
 				opinion = -25
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			trusting = massive_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 			fickle = medium_stress_impact_gain
@@ -1108,7 +1113,7 @@ bp1_yearly.4020 = { # Friend commissions a piece of poetry commemorating one of 
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_gain
 			shy = minor_stress_impact_gain
 		}
@@ -1173,7 +1178,7 @@ bp1_yearly.4020 = { # Friend commissions a piece of poetry commemorating one of 
 		
 		custom_tooltip = bp1_yearly.4020.b_effect
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			forgiving = massive_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 		}
@@ -1204,8 +1209,7 @@ bp1_yearly.4020 = { # Friend commissions a piece of poetry commemorating one of 
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
-			humble = medium_stress_impact_loss
+		stress_impact = {
 			arrogant = massive_stress_impact_gain
 			cynical = medium_stress_impact_gain
 			ambitious = minor_stress_impact_gain
@@ -1384,7 +1388,6 @@ bp1_yearly.4030 = { # Rival nestles their way into marrying one of your vassals,
 		}
 		any_vassal = {
 			appopriate_vassal_trigger = yes
-			this != scope:rival_check
 		}
 	}
 	
@@ -1410,7 +1413,6 @@ bp1_yearly.4030 = { # Rival nestles their way into marrying one of your vassals,
 		random_vassal = {
 			limit = {
 				appopriate_vassal_trigger = yes
-				this != scope:rival_check
 			}
 			weight = {
 				base = 1
@@ -1534,7 +1536,7 @@ bp1_yearly.4030 = { # Rival nestles their way into marrying one of your vassals,
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = medium_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 			content = minor_stress_impact_gain
@@ -1610,7 +1612,7 @@ bp1_yearly.4030 = { # Rival nestles their way into marrying one of your vassals,
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			cynical = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
 			content = minor_stress_impact_gain
@@ -1685,7 +1687,7 @@ bp1_yearly.4030 = { # Rival nestles their way into marrying one of your vassals,
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = medium_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 			shy = minor_stress_impact_gain
@@ -1706,7 +1708,7 @@ bp1_yearly.4030 = { # Rival nestles their way into marrying one of your vassals,
 	option = {
 		name = bp1_yearly.4030.d
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = medium_stress_impact_gain
 			wrathful = medium_stress_impact_gain
 			vengeful = medium_stress_impact_gain
@@ -2049,7 +2051,7 @@ bp1_yearly.4040 = { # Kindly grandmother won't stop feeding you snacks; suffer t
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_impact_loss
 			temperate = medium_stress_impact_gain
 		}
@@ -2086,7 +2088,7 @@ bp1_yearly.4040 = { # Kindly grandmother won't stop feeding you snacks; suffer t
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = medium_stress_impact_gain
 			trusting = medium_stress_impact_gain
 			gregarious = medium_stress_impact_gain
@@ -2142,7 +2144,7 @@ bp1_yearly.4040 = { # Kindly grandmother won't stop feeding you snacks; suffer t
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_loss
 			temperate = medium_stress_impact_gain
 		}
@@ -2186,7 +2188,7 @@ bp1_yearly.4040 = { # Kindly grandmother won't stop feeding you snacks; suffer t
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			comfort_eater = medium_stress_impact_gain
 			gluttonous = medium_stress_impact_gain
 			compassionate = minor_stress_impact_gain
@@ -2237,7 +2239,7 @@ bp1_yearly.4040 = { # Kindly grandmother won't stop feeding you snacks; suffer t
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = -1
 			temperate = medium_stress_impact_gain
 		}
@@ -2285,7 +2287,7 @@ bp1_yearly.4040 = { # Kindly grandmother won't stop feeding you snacks; suffer t
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			comfort_eater = medium_stress_impact_gain
 			gluttonous = medium_stress_impact_gain
 		}

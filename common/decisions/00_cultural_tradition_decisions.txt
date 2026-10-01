@@ -39,17 +39,18 @@ recruit_terrain_specialist_decision = {
 	decision_group_type = courtier
 
 	is_shown = {
+		is_landless_adventurer = no
 		# You can hire at least one type of terrain expert
 		OR = {
-			culture ?= {
+			culture = {
 				OR = {
+					has_cultural_parameter = can_recruit_winter_specialist
+					has_cultural_parameter = can_recruit_forest_specialist
 					has_cultural_parameter = can_recruit_mountain_specialist
-					has_cultural_parameter = can_recruit_open_specialist
 					has_cultural_parameter = can_recruit_dry_specialist
 					has_cultural_parameter = can_recruit_hill_specialist
 					has_cultural_parameter = can_recruit_jungle_specialist
-					has_cultural_parameter = can_recruit_forest_specialist
-					has_cultural_parameter = can_recruit_winter_specialist
+					has_cultural_parameter = can_recruit_open_specialist
 					root = {
 						has_trait = nomadic_philosophy
 					}
@@ -58,7 +59,6 @@ recruit_terrain_specialist_decision = {
 			has_title = title:e_minister_grand_marshal
 			has_title = title:e_minister_of_war
 		}
-		is_landless_adventurer = no
 	}
 
 	is_valid = {
@@ -148,15 +148,12 @@ recruit_terrain_specialist_decision = {
 		item = { # Winter Soldier
 			value = recruit_winter_specialist_decision
 			is_valid = {
-				custom_tooltip = {
-					text = recruit_winter_specialist_decision_valid_tt
-					OR = {
-						culture = {
-							has_cultural_parameter = can_recruit_winter_specialist
-						}
-						has_title = title:e_minister_grand_marshal
-						has_title = title:e_minister_of_war
+				OR = {
+					culture = {
+						has_cultural_parameter = can_recruit_winter_specialist
 					}
+					has_title = title:e_minister_grand_marshal
+					has_title = title:e_minister_of_war
 				}
 			}
 			current_description = recruit_winter_specialist_decision
@@ -190,15 +187,12 @@ recruit_terrain_specialist_decision = {
 		item = { # Forest Fighter
 			value = recruit_forest_specialist_decision
 			is_valid = {
-				custom_tooltip = {
-					text = recruit_forest_specialist_decision_valid_tt
-					OR = {
-						culture = {
-							has_cultural_parameter = can_recruit_forest_specialist
-						}
-						has_title = title:e_minister_grand_marshal
-						has_title = title:e_minister_of_war
+				OR = {
+					culture = {
+						has_cultural_parameter = can_recruit_forest_specialist
 					}
+					has_title = title:e_minister_grand_marshal
+					has_title = title:e_minister_of_war
 				}
 			}
 			current_description = recruit_forest_specialist_decision
@@ -232,15 +226,12 @@ recruit_terrain_specialist_decision = {
 		item = { # Rough Terrain Expert
 			value = recruit_mountain_specialist_decision
 			is_valid = {
-				custom_tooltip = {
-					text = recruit_mountain_specialist_decision_valid_tt
-					OR = {
-						culture = {
-							has_cultural_parameter = can_recruit_mountain_specialist
-						}
-						has_title = title:e_minister_grand_marshal
-						has_title = title:e_minister_of_war
+				OR = {
+					culture = {
+						has_cultural_parameter = can_recruit_mountain_specialist
 					}
+					has_title = title:e_minister_grand_marshal
+					has_title = title:e_minister_of_war
 				}
 			}
 			current_description = recruit_mountain_specialist_decision
@@ -274,15 +265,12 @@ recruit_terrain_specialist_decision = {
 		item = { # Desert Warrior
 			value = recruit_dry_specialist_decision
 			is_valid = {
-				custom_tooltip = {
-					text = recruit_dry_specialist_decision_valid_tt
-					OR = {
-						culture = {
-							has_cultural_parameter = can_recruit_dry_specialist
-						}
-						has_title = title:e_minister_grand_marshal
-						has_title = title:e_minister_of_war
+				OR = {
+					culture = {
+						has_cultural_parameter = can_recruit_dry_specialist
 					}
+					has_title = title:e_minister_grand_marshal
+					has_title = title:e_minister_of_war
 				}
 			}
 			current_description = recruit_dry_specialist_decision
@@ -316,15 +304,12 @@ recruit_terrain_specialist_decision = {
 		item = { # Rough Terrain Expert 
 			value = recruit_hill_specialist_decision
 			is_valid = {
-				custom_tooltip = {
-					text = recruit_hill_specialist_decision_valid_tt
-					OR = {
-						culture = {
-							has_cultural_parameter = can_recruit_hill_specialist
-						}
-						has_title = title:e_minister_grand_marshal
-						has_title = title:e_minister_of_war
+				OR = {
+					culture = {
+						has_cultural_parameter = can_recruit_hill_specialist
 					}
+					has_title = title:e_minister_grand_marshal
+					has_title = title:e_minister_of_war
 				}
 			}
 			current_description = recruit_hill_specialist_decision
@@ -358,15 +343,12 @@ recruit_terrain_specialist_decision = {
 		item = { # Jungle Stalker
 			value = recruit_jungle_specialist_decision
 			is_valid = {
-				custom_tooltip = {
-					text = recruit_jungle_specialist_decision_valid_tt
-					OR = {
-						culture = {
-							has_cultural_parameter = can_recruit_jungle_specialist
-						}
-						has_title = title:e_minister_grand_marshal
-						has_title = title:e_minister_of_war
+				OR = {
+					culture = {
+						has_cultural_parameter = can_recruit_jungle_specialist
 					}
+					has_title = title:e_minister_grand_marshal
+					has_title = title:e_minister_of_war
 				}
 			}
 			current_description = recruit_jungle_specialist_decision
@@ -400,16 +382,13 @@ recruit_terrain_specialist_decision = {
 		item = { # Open Terrain Expert
 			value = recruit_open_specialist_decision
 			is_valid = {
-				custom_tooltip = {
-					text = recruit_open_specialist_decision_valid_tt
-					OR = {
-						has_trait = nomadic_philosophy
-						culture = {
-							has_cultural_parameter = can_recruit_open_specialist
-						}
-						has_title = title:e_minister_grand_marshal
-						has_title = title:e_minister_of_war
+				OR = {
+					has_trait = nomadic_philosophy
+					culture = {
+						has_cultural_parameter = can_recruit_open_specialist
 					}
+					has_title = title:e_minister_grand_marshal
+					has_title = title:e_minister_of_war
 				}
 			}
 			current_description = recruit_open_specialist_decision
@@ -552,9 +531,9 @@ embrace_hebrew_language_decision = {
 	decision_group_type = major
 
 	is_shown = {
-		culture.culture_head ?= root
-		religion ?= religion:judaism_religion
+		culture.culture_head = root
 		NOT = { culture = { has_cultural_pillar = language_israelite } }
+		religion = religion:judaism_religion
 	}
 
 	is_valid_showing_failures_only = {
@@ -641,8 +620,8 @@ sacrifice_bear_decision = {
 	desc = sacrifice_bear_decision_desc
 
 	is_shown = {
-		rite ?= { rite_has_parameter = allows_bear_sacrifice }
 		is_landless_adventurer = no
+		faith = { has_doctrine_parameter = allows_bear_sacrifice }
 	}
 
 	is_valid_showing_failures_only = {

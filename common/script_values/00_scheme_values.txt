@@ -10,25 +10,25 @@ scheme_failed_outcome_setback_value = -7
 
 #Scheme progress changes, 10% of current phase duration max in days
 scheme_progress_gain = {
-	value = scheme_phase_duration
-	subtract = scheme_progress
+	value = scope:scheme.scheme_phase_duration
+	subtract = scope:scheme.scheme_progress
 	multiply = 0.1
 }
 scheme_progress_loss = {
-	value = scheme_phase_duration
-	subtract = scheme_progress
+	value = scope:scheme.scheme_phase_duration
+	subtract = scope:scheme.scheme_progress
 	multiply = -0.1
 }
 scheme_progress_33 = {
-	value = scheme_phase_duration
+	value = scope:scheme.scheme_phase_duration
 	multiply = 0.33
 }
 scheme_progress_50 = {
-	value = scheme_phase_duration
+	value = scope:scheme.scheme_phase_duration
 	multiply = 0.5
 }
 scheme_progress_66 = {
-	value = scheme_phase_duration
+	value = scope:scheme.scheme_phase_duration
 	multiply = 0.66
 }
 # Secrecy changes
@@ -613,23 +613,10 @@ secrecy_base_value = {
 				}
 			}
 		}
-		scope:target = { save_temporary_scope_as = councillor_liege }
 		add = {
 			value = scope:target.cp:councillor_spymaster.spymaster_disrupt_schemes_total_modifier
 			multiply = -1
 			desc = secrecy.scheme_owner.spymaster.disrupt_schemes
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				scheme_target_character.host ?= scope:owner
-				scheme_target_title.holder ?= scope:owner
-			}
-		}
-		add = {
-			value = 20
-			desc = secrecy.own_court
 		}
 	}
 }
@@ -1008,7 +995,7 @@ agent_house_power_score_value = {
 	value = 0 
 	if = {
 		limit = { exists = house }
-		add = house.house_power
+		add = house.house_power_score
 	}
 	multiply = agent_house_power_score_mult
 	ceiling = yes 
@@ -1494,7 +1481,10 @@ agent_lookout_contribution_value = {
 	if = {
 		limit = {
 			culture = { has_cultural_parameter = eunuch_powerful_scheme_agents }
-			is_eunuch_trigger = yes
+			OR = {
+				has_trait = eunuch_1
+				has_trait = beardless_eunuch
+			}
 		}
 		add = {
 			value = agent_trait_bonus_t3_value
@@ -2481,7 +2471,7 @@ base_odds_prediction_guts_value = {
 	if = {
 		limit = {
 			scope:temp_target = {
-				is_landed_or_landless_administrative_or_theocratic = no
+				is_landed_or_landless_administrative = no
 			}
 			scope:owner = {
 				exists = scope:temp_target.liege.cp:councillor_spymaster
@@ -2496,7 +2486,7 @@ base_odds_prediction_guts_value = {
 	if = {
 		limit = {
 			scope:temp_target = {
-				is_landed_or_landless_administrative_or_theocratic = no
+				is_landed_or_landless_administrative = no
 			}
 			scope:owner = {
 				exists = scope:temp_target.host.cp:councillor_spymaster
@@ -2790,14 +2780,30 @@ hostile_scheme_base_odds_prediction_guts_value = {
 	if = {
 		limit = {
 			exists = scope:temp_target.primary_title
-			scope:temp_target.primary_title.tier >= tier_duchy
+			scope:temp_target.primary_title.tier = tier_empire
 		}
 		add = {
-			value = {
-				value = scope:temp_target.primary_title.tier
-				subtract = 1
-				multiply = -10
-			}
+			value = -40
+			desc = scheme_odds.target.tier
+		}
+	}
+	else_if = {
+		limit = {
+			exists = scope:temp_target.primary_title
+			scope:temp_target.primary_title.tier = tier_kingdom
+		}
+		add = {
+			value = -30
+			desc = scheme_odds.target.tier
+		}
+	}
+	else_if = {
+		limit = {
+			exists = scope:temp_target.primary_title
+			scope:temp_target.primary_title.tier = tier_duchy
+		}
+		add = {
+			value = -20
 			desc = scheme_odds.target.tier
 		}
 	}
@@ -2863,7 +2869,7 @@ hostile_scheme_base_odds_prediction_guts_value = {
 	if = {
 		limit = {
 			scope:temp_target = {
-				is_landed_or_landless_administrative_or_theocratic = no
+				is_landed_or_landless_administrative = no
 			}
 			scope:owner = {
 				exists = scope:temp_target.liege.cp:councillor_spymaster
@@ -2878,7 +2884,7 @@ hostile_scheme_base_odds_prediction_guts_value = {
 	if = {
 		limit = {
 			scope:temp_target = {
-				is_landed_or_landless_administrative_or_theocratic = no
+				is_landed_or_landless_administrative = no
 			}
 			scope:owner = {
 				exists = scope:temp_target.host.cp:councillor_spymaster
@@ -3133,10 +3139,23 @@ odds_skill_contribution_diplomacy_value = {
 		value = scope:owner.diplomacy
 		desc = scheme_odds.diplomacy.owner
 	}
-	scope:temp_target ?= {
+	scope:target ?= {
 		add = {
-			value = diplomacy
+			value = scope:target.diplomacy
 			desc = scheme_odds.diplomacy.target
+			multiply = -0.5
+		}
+	}
+}
+odds_skill_contribution_diplomacy_title_value = {
+	add = {
+		value = scope:owner.diplomacy
+		desc = scheme_odds.diplomacy.owner
+	}
+	scope:target.holder ?= {
+		add = {
+			value = scope:target.holder.diplomacy
+			desc = scheme_odds.diplomacy.target_holder
 			multiply = -0.5
 		}
 	}
@@ -3146,9 +3165,9 @@ odds_skill_contribution_martial_value = {
 		value = scope:owner.martial
 		desc = scheme_odds.martial.owner
 	}
-	scope:temp_target ?= {
+	scope:target ?= {
 		add = {
-			value = martial
+			value = scope:target.martial
 			desc = scheme_odds.martial.target
 			multiply = -0.5
 		}
@@ -3159,9 +3178,9 @@ odds_skill_contribution_stewardship_value = {
 		value = scope:owner.stewardship
 		desc = scheme_odds.stewardship.owner
 	}
-	scope:temp_target ?= {
+	scope:target ?= {
 		add = {
-			value = stewardship
+			value = scope:target.stewardship
 			desc = scheme_odds.stewardship.target
 			multiply = -0.5
 		}
@@ -3172,37 +3191,23 @@ odds_skill_contribution_intrigue_value = {
 		value = scope:owner.intrigue
 		desc = scheme_odds.intrigue.owner
 	}
-	scope:temp_target ?= {
+	scope:target ?= {
 		add = {
-			value = intrigue
+			value = scope:target.intrigue
 			desc = scheme_odds.intrigue.target
 			multiply = -0.5
 		}
 	}
 }
-odds_skill_contribution_learning_value = {
+odds_skill_contribution_intrigue_title_value = {
 	add = {
-		value = scope:owner.learning
-		desc = scheme_odds.learning.owner
+		value = scope:owner.intrigue
+		desc = scheme_odds.intrigue.owner
 	}
-	
-	scope:temp_target ?= {
+	scope:target.holder ?= {
 		add = {
-			value = learning
-			desc = scheme_odds.learning.target
-			multiply = -0.5
-		}
-	}
-}
-odds_skill_contribution_prowess_value = {
-	add = {
-		value = scope:owner.prowess
-		desc = scheme_odds.prowess.owner
-	}
-	scope:temp_target ?= {
-		add = {
-			value = prowess
-			desc = scheme_odds.prowess.target
+			value = scope:target.holder.intrigue
+			desc = scheme_odds.intrigue.target_holder
 			multiply = -0.5
 		}
 	}
@@ -3222,6 +3227,49 @@ odds_variables_contribution_murder = {
 		add = {
 			value = 15
 			desc = "ACHMACH_MURDER_BONUS"
+		}
+	}
+}
+
+odds_skill_contribution_learning_value = {
+	add = {
+		value = scope:owner.learning
+		desc = scheme_odds.learning.owner
+	}
+	
+	scope:target ?= {
+		add = {
+			value = scope:target.learning
+			desc = scheme_odds.learning.target
+			multiply = -0.5
+		}
+	}
+}
+odds_skill_contribution_prowess_value = {
+	add = {
+		value = scope:owner.prowess
+		desc = scheme_odds.prowess.owner
+	}
+	scope:target ?= {
+		add = {
+			value = scope:target.prowess
+			desc = scheme_odds.prowess.target
+			multiply = -0.5
+		}
+	}
+}
+
+odds_skill_contribution_learning_target_is_title_value = {
+	add = {
+		value = scope:owner.learning
+		desc = scheme_odds.learning.owner
+	}
+	
+	scope:target ?= {
+		add = {
+			value = scope:target.holder.learning
+			desc = scheme_odds.learning.target
+			multiply = -0.5
 		}
 	}
 }
@@ -3459,8 +3507,8 @@ odds_seize_realm_scheme_misc_value = {
 				scope:owner = {
 					has_character_modifier = tournament_tailor_mixup_scheme_modifier
 					exists = var:tailor_mixup_house
-					exists = scope:target.house
-					var:tailor_mixup_house = scope:target.house
+					exists = scope:target.holder.house
+					var:tailor_mixup_house = scope:target.holder.house
 				}
 			}
 			add = 8
@@ -3627,7 +3675,7 @@ odds_seduce_scheme_misc_value = {
 					is_married = yes
 					NOT = { is_consort_of = scope:owner }
 					ai_honor >= high_positive_ai_value
-					trait_is_shunned_or_criminal_in_rite_trigger = { TRAIT = trait:adulterer RITE = scope:target.rite GENDER_CHARACTER = scope:target }
+					trait_is_shunned_or_criminal_in_faith_trigger = { TRAIT = trait:adulterer FAITH = scope:target.faith GENDER_CHARACTER = scope:target }
 				}
 			}
 			add = -50
@@ -3673,7 +3721,7 @@ odds_seduce_scheme_misc_value = {
 		if = {
 			limit = {
 				scope:target = {
-					relation_with_character_is_incestuous_in_my_or_lieges_rite_trigger = { CHARACTER = scope:owner }
+					relation_with_character_is_incestuous_in_my_or_lieges_faith_trigger = { CHARACTER = scope:owner }
 				}
 				scope:owner = { # The Subtle Desire Perk nullifies 	this
 					NOT = { has_perk = subtle_desire_perk }
@@ -4169,13 +4217,11 @@ odds_subsume_province_scheme_misc_value = {
 			add = -12
 		}
 	}
+	
 }
 
+# same as odds_raid_estate_scheme_misc_value but target is a title
 odds_dispute_border_scheme_misc_value = {
-	value = odds_raid_estate_scheme_misc_value
-}
-
-odds_raid_estate_scheme_misc_value = {
 	add = {
 		value = 0
 		desc = scheme_odds.misc_modifiers
@@ -4184,12 +4230,12 @@ odds_raid_estate_scheme_misc_value = {
 			multiply = 2
 		}
 		add = {
-			value = scope:temp_target.influence_level
+			value = scope:target.holder.influence_level
 			multiply = -4
 		}
 		if = {
 			limit = {
-				scope:temp_target.house = scope:owner.top_liege.house
+				scope:target.holder.house = scope:owner.top_liege.house
 			}
 			add = -12
 		}
@@ -4204,7 +4250,7 @@ odds_raid_estate_scheme_misc_value = {
 		}
 		if = {
 			limit = {
-				scope:temp_target.house = {
+				scope:target.holder.house = {
 					is_powerful_family = yes
 					is_dominant_family = no
 				}
@@ -4213,7 +4259,7 @@ odds_raid_estate_scheme_misc_value = {
 		}
 		if = {
 			limit = {
-				scope:temp_target.domicile ?= {
+				scope:target.holder.domicile ?= {
 					OR = {
 						has_domicile_building_or_higher = barracks_01
 						has_domicile_building_or_higher = guardhouse_01
@@ -4226,7 +4272,73 @@ odds_raid_estate_scheme_misc_value = {
 		}
 		if = {
 			limit = {
-				scope:temp_target.domicile ?= {
+				scope:target.holder.domicile ?= {
+					OR = {
+						has_domicile_building_or_higher = barracks_03
+						has_domicile_building_or_higher = guardhouse_03
+						has_domicile_building_or_higher = watchtower_03
+						has_domicile_building_or_higher = estate_main_04
+					}
+				}
+			}
+			add = -12
+		}
+	}
+}
+
+# same as odds_dispute_border_scheme_misc_value but target is a character
+odds_raid_estate_scheme_misc_value = {
+	add = {
+		value = 0
+		desc = scheme_odds.misc_modifiers
+		add = {
+			value = scope:owner.influence_level
+			multiply = 2
+		}
+		add = {
+			value = scope:target.influence_level
+			multiply = -4
+		}
+		if = {
+			limit = {
+				scope:target.house = scope:owner.top_liege.house
+			}
+			add = -12
+		}
+		if = {
+			limit = {
+				scope:owner.house = {
+					is_powerful_family = yes
+					is_dominant_family = no
+				}
+			}
+			add = 8
+		}
+		if = {
+			limit = {
+				scope:target.house = {
+					is_powerful_family = yes
+					is_dominant_family = no
+				}
+			}
+			add = -16
+		}
+		if = {
+			limit = {
+				scope:target.holder.domicile ?= {
+					OR = {
+						has_domicile_building_or_higher = barracks_01
+						has_domicile_building_or_higher = guardhouse_01
+						has_domicile_building_or_higher = watchtower_01
+						has_domicile_building_or_higher = estate_main_02
+					}
+				}
+			}
+			add = -4
+		}
+		if = {
+			limit = {
+				scope:target.holder.domicile ?= {
 					OR = {
 						has_domicile_building_or_higher = barracks_03
 						has_domicile_building_or_higher = guardhouse_03
@@ -4726,7 +4838,7 @@ odds_romance_scheme_misc_value = {
 		if = {
 			limit = {
 				scope:target = {
-					relation_with_character_is_incestuous_in_my_or_lieges_rite_trigger = { CHARACTER = scope:owner }
+					relation_with_character_is_incestuous_in_my_or_lieges_faith_trigger = { CHARACTER = scope:owner }
 				}
 				scope:owner = { # The Subtle Desire Perk nullifies 	this
 					NOT = { has_perk = subtle_desire_perk }
@@ -4851,10 +4963,10 @@ odds_convert_to_witchcraft_misc_value = {
 			limit = {
 				scope:target = {
 					has_trait = zealous
-					rite = {
-						NOR = {
-							trait_is_virtue_rite = witch
-							rite_has_parameter = witchcraft_accepted
+					NOR = {
+						faith = {
+							trait_is_virtue = witch
+							has_doctrine_parameter = witchcraft_accepted
 						}
 					}
 				}
@@ -4866,10 +4978,10 @@ odds_convert_to_witchcraft_misc_value = {
 			limit = {
 				scope:target = {
 					has_trait = devoted
-					rite = {
-						NOR = {
-							trait_is_virtue_rite = witch
-							rite_has_parameter = witchcraft_accepted
+					NOR = {
+						faith = {
+							trait_is_virtue = witch
+							has_doctrine_parameter = witchcraft_accepted
 						}
 					}
 				}
@@ -4881,10 +4993,10 @@ odds_convert_to_witchcraft_misc_value = {
 			limit = {
 				scope:target = {
 					has_trait = order_member
-					rite = {
-						NOR = {
-							trait_is_virtue_rite = witch
-							rite_has_parameter = witchcraft_accepted
+					NOR = {
+						faith = {
+							trait_is_virtue = witch
+							has_doctrine_parameter = witchcraft_accepted
 						}
 					}
 				}
@@ -4935,7 +5047,7 @@ odds_convert_to_witchcraft_misc_value = {
 				scope:target = {
 					has_trait = cynical
 					NOT = {
-						rite = { trait_is_virtue_rite = witch }
+						faith = { trait_is_virtue = witch }
 					}
 				}
 			}
@@ -5444,7 +5556,7 @@ odds_mandala_target_suzerain_serenity_aspect_value = {
 odds_mandala_target_suzerain_destruction_aspect_value = {
 	add = {
 		value = 0
-		desc = scheme_odds.target.suzerain.martial_aspect
+		desc = scheme_odds.target.suzerain.destruction_aspect
 		if = {
 			limit = {
 				scope:target = {
@@ -5633,8 +5745,8 @@ odds_coup_ceremonial_liege_scheme_misc_value = {
 				scope:owner = {
 					has_character_modifier = tournament_tailor_mixup_scheme_modifier
 					exists = var:tailor_mixup_house
-					exists = scope:target.house
-					var:tailor_mixup_house = scope:target.house
+					exists = scope:target.holder.house
+					var:tailor_mixup_house = scope:target.holder.house
 				}
 			}
 			add = 8

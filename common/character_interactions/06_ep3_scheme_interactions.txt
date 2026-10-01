@@ -25,36 +25,17 @@ start_slander_interaction = {
 		empire = 12
 		hegemony = 0
 	}
-
-	is_available = {
-		government_has_mechanic = administrative
-		is_adult = yes
-		trigger_if = {
-			limit = { is_ai = yes }
-			ai_honor <= 20
-			OR = {
-				primary_title.tier >= tier_duchy
-				is_landless_administrative = yes
-			}
-			OR = { # So that the cycle doesn't get nuked by having too many landless families
-				is_landed = yes
-				NOT = { government_allows = merit }
-			}
-			NOR = {
-				has_trait = honest
-				any_scheme = {
-					is_scheme_category = political
-				}
-			}
-		}
-		is_imprisoned = no
-	}
-
+	
 	is_shown = {
+		scope:actor = {
+			is_adult = yes
+			is_imprisoned = no
+			government_allows = administrative
+		}
 		scope:recipient = {
 			this != scope:actor
-			government_has_mechanic = administrative
-			top_liege ?= scope:actor.top_liege
+			government_allows = administrative
+			top_liege = scope:actor.top_liege
 
 			# don't show on the huangdi
 			OR = {
@@ -121,19 +102,6 @@ start_slander_interaction = {
 		flag = agent_focus_secrecy
 		current_description = start_slander_interaction.tt.agent_focus_secrecy
 	}
-	on_send = {
-		scope:actor = {
-			if = {
-				limit = {
-					OR = {
-						has_character_modifier = pam_granted_indulgences_modifier
-						has_character_modifier = pam_granted_indulgences_modifier_small
-					}
-				}
-				change_spiritual_fulfillment = medium_spiritual_fulfillment_loss
-			}
-		}
-	}
 
 	on_accept = {
 		scope:actor = {
@@ -141,7 +109,7 @@ start_slander_interaction = {
 				type = event_toast_effect_neutral
 				title = start_slander_notification
 
-				left_icon = scope:actor
+				left_icon = scope:actor					
 				right_icon = scope:recipient
 
 				# Success.
@@ -227,7 +195,7 @@ start_slander_interaction = {
 					}
 				}
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				compassionate = minor_stress_impact_gain
 				honest = minor_stress_impact_gain
 				just = minor_stress_impact_gain
@@ -236,6 +204,27 @@ start_slander_interaction = {
 		scope:recipient = { custom_tooltip = slander_modifier_tt }
 	}
 
+	ai_potential = {
+		ai_honor <= 20
+		OR = {
+			primary_title.tier >= tier_duchy
+			AND = {
+				this = house.house_head
+				is_landless_administrative = yes
+			}
+		}
+		NOR = {
+			has_trait = honest
+			any_scheme = {
+				is_scheme_category = hostile
+			}
+		}
+		OR = { # So that the cycle doesn't get nuked by having too many landless families
+			NOT = { government_allows = merit }
+			is_landed = yes
+		}
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -297,7 +286,7 @@ start_slander_interaction = {
 			add = -25
 			has_any_mild_good_relationship_with_character_trigger = { CHARACTER = scope:recipient }
 		}
-
+		
 		#Personality
 		modifier = {
 			has_trait = compassionate
@@ -315,7 +304,7 @@ start_slander_interaction = {
 			has_trait = deceitful
 			factor = 2
 		}
-
+		
 		modifier = {
 			factor = 0
 			OR = {
@@ -334,7 +323,7 @@ start_slander_interaction = {
 			}
 			factor = 2
 		}
-
+		
 		# Avoid fellow movement members if possible
 		modifier = {
 			factor = {
@@ -347,14 +336,6 @@ start_slander_interaction = {
 				}
 			}
 			is_in_same_movement_as = { TARGET = scope:recipient }
-		}
-		#Promised to abstain from sin
-		modifier = {
-			OR = {
-				has_character_modifier = pam_granted_indulgences_modifier
-				has_character_modifier = pam_granted_indulgences_modifier_small
-			}
-			factor = 0.1
 		}
 	}
 }
@@ -381,47 +362,34 @@ start_promote_interaction = {
 	}
 	ai_targets = {
 		ai_recipients = children
-		max = 5
+		max = 10
 	}
 	ai_targets = {
 		ai_recipients = family
-		max = 5
+		max = 10
 	}
 	ai_targets = {
 		ai_recipients = dynasty
-		max = 5
+		max = 10
 	}
 	ai_frequency_by_tier = {
 		barony = 0
-		county = 300
-		duchy = 300
+		county = 180
+		duchy = 60
 		kingdom = 60
 		empire = 60
 		hegemony = 60
 	}
-
-	is_available = {
-		government_has_mechanic = administrative
-		is_adult = yes
-		trigger_if = {
-			limit = { is_ai = yes }
-			OR = {
-				primary_title.tier >= tier_duchy
-				is_landless_administrative = yes
-			}
-			NOT = {
-				any_scheme = {
-					is_scheme_category = political
-				}
-			}
-		}
-		is_imprisoned = no
-	}
-
+	
 	is_shown = {
+		scope:actor = {
+			is_adult = yes
+			is_imprisoned = no
+			government_allows = administrative
+		}
 		scope:recipient = {
-			government_has_mechanic = administrative
-			top_liege ?= scope:actor.top_liege
+			government_allows = administrative
+			top_liege = scope:actor.top_liege
 
 			# don't show on the huangdi
 			OR = {
@@ -482,7 +450,7 @@ start_promote_interaction = {
 				type = event_toast_effect_neutral
 				title = start_promote_notification
 
-				left_icon = scope:actor
+				left_icon = scope:actor					
 				right_icon = scope:recipient
 
 				# Success.
@@ -549,6 +517,21 @@ start_promote_interaction = {
 		}
 	}
 
+	ai_potential = {
+		OR = {
+			primary_title.tier >= tier_duchy
+			AND = {
+				this = house.house_head
+				is_landless_administrative = yes
+			}
+		}
+		NOT = {
+			any_scheme = {
+				is_scheme_category = hostile
+			}
+		}
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -687,7 +670,7 @@ start_generate_claim_interaction = {
 		scope:actor = {
 			any_character_active_contract = {
 				task_contract_type = laamp_help_fabricate_claim_contract
-				var:task_contract_target ?= scope:recipient
+				var:task_contract_target = scope:recipient
 			}
 		}
 		scope:recipient != scope:actor
@@ -757,7 +740,7 @@ start_generate_claim_interaction = {
 				type = event_toast_effect_neutral
 				title = start_generate_claim_notification
 
-				left_icon = scope:actor
+				left_icon = scope:actor					
 				right_icon = scope:recipient
 
 				if = {
@@ -1016,31 +999,15 @@ start_challenge_status_interaction = {
 		empire = 12
 		hegemony = 0
 	}
-
-	is_available = {
-		government_has_mechanic = administrative
-		trigger_if = {
-			limit = { is_ai = yes }
-			government_has_mechanic = administrative
-			ai_honor <= 20
-			OR = { # So that the cycle doesn't get nuked by having too many landless families
-				is_landed = yes
-				NOT = { government_allows = merit }
-			}
-			NOR = {
-				has_trait = honest
-				any_scheme = {
-					is_scheme_category = political
-				}
-			}
-		}
-	}
-
+	
 	is_shown = {
+		scope:actor = {
+			government_allows = administrative
+		}
 		scope:recipient != scope:actor
 		scope:recipient = {
-			government_has_mechanic = administrative
-			top_liege ?= scope:actor.top_liege
+			government_allows = administrative
+			top_liege = scope:actor.top_liege
 		}
 	}
 
@@ -1176,6 +1143,21 @@ start_challenge_status_interaction = {
 		}
 	}
 
+	ai_potential = {
+		ai_honor <= 20
+		NOR = {
+			has_trait = honest
+			any_scheme = {
+				is_scheme_category = political
+			}
+		}
+		government_allows = administrative
+		OR = { # So that the cycle doesn't get nuked by having too many landless families
+			NOT = { government_allows = merit }
+			is_landed = yes
+		}
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -1245,7 +1227,7 @@ start_challenge_status_interaction = {
 				has_any_best_good_relationship_with_character_trigger = { CHARACTER = scope:recipient }
 			}
 		}
-
+		
 		#Personality
 		modifier = {
 			has_trait = vengeful
@@ -1282,7 +1264,7 @@ start_challenge_status_interaction = {
 			}
 			factor = 2
 		}
-
+		
 		# Avoid fellow movement members if possible
 		modifier = {
 			factor = {
@@ -1324,22 +1306,19 @@ start_expand_power_base_interaction = {
 	ai_targets = {
 		ai_recipients = self
 	}
-
-	is_available = {
-		government_has_mechanic = administrative
-		is_adult = yes
-		house.house_head ?= {
-			any_held_title = {
-				is_noble_family_title = yes
-			}
-		}
-		is_imprisoned = no
-		exists = house.house_head
-	}
-
+	
 	is_shown = {
 		scope:actor = {
+			is_adult = yes
+			is_imprisoned = no
+			government_allows = administrative
 			this = scope:recipient
+			exists = house.house_head
+			house.house_head = {
+				any_held_title = {
+					is_noble_family_title = yes
+				}
+			}
 		}
 	}
 
@@ -1437,7 +1416,7 @@ start_expand_power_base_interaction = {
 			custom_tooltip = expand_power_base_effect_tt
 		}
 	}
-
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -1491,30 +1470,15 @@ start_depose_interaction = {
 		empire = 60
 		hegemony = 0
 	}
-
-	is_available = {
-		government_has_mechanic = administrative
-		trigger_if = {
-			limit = { is_ai = yes }
-			OR = {
-				primary_title.tier >= tier_duchy
-				is_landless_administrative = yes
-			}
-			NOT = {
-				any_scheme = {
-					is_scheme_category = political
-				}
-			}
-		}
-	}
-
+	
 	is_shown = {
+		scope:actor = { government_allows = administrative }
 		scope:recipient = {
-			government_has_mechanic = administrative
+			government_allows = administrative
 			primary_title.tier >= tier_empire # Target has to be the emperor
 			this = top_liege
 			this != scope:actor
-			top_liege.primary_title ?= scope:actor.top_liege.primary_title # This hides the tooltip
+			top_liege.primary_title = scope:actor.top_liege.primary_title # This hides the tooltip
 		}
 	}
 
@@ -1534,7 +1498,7 @@ start_depose_interaction = {
 				# Must be the house head
 				house.house_head = scope:actor
 			}
-			# Must not be from the same House as the Emperor
+			# Must not be from the same House as the Emperor 
 			house != scope:actor.top_liege.house
 			# If you are a part of the Dynastic Cycle, we had additional requirements
 			trigger_if = {
@@ -1587,19 +1551,6 @@ start_depose_interaction = {
 		flag = agent_focus_secrecy
 		current_description = start_depose_interaction.tt.agent_focus_secrecy
 	}
-	on_send = {
-		scope:actor = {
-			if = {
-				limit = {
-					OR = {
-						has_character_modifier = pam_granted_indulgences_modifier
-						has_character_modifier = pam_granted_indulgences_modifier_small
-					}
-				}
-				change_spiritual_fulfillment = medium_spiritual_fulfillment_loss
-			}
-		}
-	}
 
 	on_accept = {
 		scope:actor = {
@@ -1607,7 +1558,7 @@ start_depose_interaction = {
 				type = event_toast_effect_neutral
 				title = start_depose_notification
 
-				left_icon = scope:actor
+				left_icon = scope:actor					
 				right_icon = scope:recipient
 
 				# Success.
@@ -1681,7 +1632,7 @@ start_depose_interaction = {
 			# Scheme bonuses from being the emperor/dominant family/powerful family
 			ep3_actor_scheme_modifier_effect = yes
 
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				compassionate = minor_stress_impact_gain
 				honest = minor_stress_impact_gain
 				just = minor_stress_impact_gain
@@ -1690,6 +1641,21 @@ start_depose_interaction = {
 		}
 	}
 
+	ai_potential = {
+		OR = {
+			primary_title.tier >= tier_duchy
+			AND = {
+				this = house.house_head
+				is_landless_administrative = yes
+			}
+		}
+		NOT = {
+			any_scheme = {
+				is_scheme_category = hostile
+			}
+		}
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -1776,7 +1742,7 @@ start_depose_interaction = {
 			}
 			factor = 0
 		}
-
+		
 		# Only depose if you dislike the target
 		modifier = {
 			opinion = { target = scope:recipient value > -30 }
@@ -1787,14 +1753,6 @@ start_depose_interaction = {
 		modifier = {
 			add = -70
 			scope:target.dynasty ?= { has_dynasty_perk = ep3_administrative_legacy_5 }
-		}
-		#Promised to abstain from sin
-		modifier = {
-			OR = {
-				has_character_modifier = pam_granted_indulgences_modifier
-				has_character_modifier = pam_granted_indulgences_modifier_small
-			}
-			factor = 0.1
 		}
 	}
 }
@@ -1822,21 +1780,17 @@ start_foster_legitimacy_interaction = {
 		county = 120
 		duchy = 60
 		kingdom = 60
-		empire = 60
+		empire = 0
 		hegemony = 0
 	}
-
-	is_available = {
-		government_has_mechanic = administrative
-		is_adult = yes
-		trigger_if = {
-			limit = { is_ai = yes }
-			is_governor = yes
-		}
-		is_imprisoned = no
-	}
-
+	
 	is_shown = {
+		scope:actor = {
+			is_adult = yes
+			is_imprisoned = no
+			government_allows = administrative
+		}
+
 		scope:recipient != scope:actor
 
 		scope:recipient = {
@@ -1844,23 +1798,11 @@ start_foster_legitimacy_interaction = {
 			has_legitimacy = yes
 			is_adult = yes
 			# Admin type governments have this available - Except for celestial
-			government_has_mechanic = administrative
+			government_allows = administrative
 			NOT = { government_has_flag = government_is_celestial }
 		}
-		scope:actor = {
-			trigger_if = {
-				limit = { is_ai = yes }
-				opinion = {
-					target = scope:recipient
-					value > 0
-				}
-				scope:recipient = {
-					NOT = { meets_legitimacy_expectation_of = scope:actor }
-				}
-			}
-		}
 	}
-	
+
 	is_valid_showing_failures_only = {
 		scope:actor = {
 			can_start_scheme = {
@@ -1890,7 +1832,7 @@ start_foster_legitimacy_interaction = {
 				type = event_toast_effect_neutral
 				title = start_foster_legitimacy_notification
 
-				left_icon = scope:actor
+				left_icon = scope:actor					
 				right_icon = scope:recipient
 
 				begin_scheme_basic_effect = {
@@ -1912,6 +1854,21 @@ start_foster_legitimacy_interaction = {
 		}
 	}
 
+	ai_potential = {
+		is_governor = yes
+		trigger_if = {
+			limit = { exists = scope:recipient }
+			opinion = {
+				target = scope:recipient
+				value > 0
+			}
+		}
+		# Only try to foster legitimacy if they don't meet your expectations
+		scope:recipient ?= {
+			NOT = { meets_legitimacy_expectation_of = scope:actor }
+		}
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -1928,12 +1885,12 @@ start_foster_legitimacy_interaction = {
 			has_lifestyle = diplomacy_lifestyle
 			add = 15
 		}
-
+		
 		modifier = {
 			has_trait = loyal
 			add = 15
 		}
-
+		
 		modifier = {
 			has_trait = disloyal
 			add = -25
@@ -1950,7 +1907,7 @@ start_foster_legitimacy_interaction = {
 			has_any_good_relationship_with_character_trigger = { CHARACTER = scope:recipient }
 			add = 25
 		}
-
+		
 		modifier = {
 			house = scope:recipient.house
 			has_any_good_relationship_with_character_trigger = { CHARACTER = scope:recipient }
@@ -1998,21 +1955,17 @@ start_damage_legitimacy_interaction = {
 		county = 120
 		duchy = 60
 		kingdom = 60
-		empire = 60
+		empire = 0
 		hegemony = 0
 	}
-
-	is_available = {
-		government_has_mechanic = administrative
-		is_adult = yes
-		trigger_if = {
-			limit = { is_ai = yes }
-			is_governor = yes
-		}
-		is_imprisoned = no
-	}
-
+	
 	is_shown = {
+		scope:actor = {
+			is_adult = yes
+			is_imprisoned = no
+			government_allows = administrative
+		}
+
 		scope:recipient != scope:actor
 
 		scope:recipient = {
@@ -2020,7 +1973,7 @@ start_damage_legitimacy_interaction = {
 			has_legitimacy = yes
 			is_adult = yes
 			# Admin type governments have this available - Except for celestial
-			government_has_mechanic = administrative
+			government_allows = administrative
 			NOT = { government_has_flag = government_is_celestial }
 		}
 	}
@@ -2047,19 +2000,6 @@ start_damage_legitimacy_interaction = {
 			desc = scheme_interaction_tt_damage_legitimacy_approved
 		}
 	}
-	on_send = {
-		scope:actor = {
-			if = {
-				limit = {
-					OR = {
-						has_character_modifier = pam_granted_indulgences_modifier
-						has_character_modifier = pam_granted_indulgences_modifier_small
-					}
-				}
-				change_spiritual_fulfillment = medium_spiritual_fulfillment_loss
-			}
-		}
-	}
 
 	on_accept = {
 		scope:actor = {
@@ -2067,7 +2007,7 @@ start_damage_legitimacy_interaction = {
 				type = event_toast_effect_neutral
 				title = start_damage_legitimacy_notification
 
-				left_icon = scope:actor
+				left_icon = scope:actor					
 				right_icon = scope:recipient
 
 				begin_scheme_basic_effect = {
@@ -2083,7 +2023,7 @@ start_damage_legitimacy_interaction = {
 
 			custom_tooltip = damage_legitimacy_negative_outcome_tt
 
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				loyal = major_stress_impact_gain
 				honest = medium_stress_impact_gain
 			}
@@ -2093,6 +2033,10 @@ start_damage_legitimacy_interaction = {
 		}
 	}
 
+	ai_potential = {
+		is_governor = yes
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -2103,17 +2047,17 @@ start_damage_legitimacy_interaction = {
 			has_lifestyle = intrigue_lifestyle
 			add = 15
 		}
-
+		
 		modifier = {
 			has_trait = disloyal
 			add = 15
 		}
-
+		
 		modifier = {
 			has_trait = deceitful
 			add = 15
 		}
-
+		
 		modifier = {
 			has_trait = loyal
 			add = -25
@@ -2123,18 +2067,18 @@ start_damage_legitimacy_interaction = {
 			has_trait = honest
 			add = -15
 		}
-
+		
 		# Relationships
 		modifier = {
 			add = -25
 			has_any_moderate_good_relationship_with_character_trigger = { CHARACTER = scope:recipient }
 		}
-
+		
 		modifier = {
 			add = -50
 			has_any_best_good_relationship_with_character_trigger = { CHARACTER = scope:recipient }
 		}
-
+		
 		modifier = {
 			add = 25
 			has_any_mild_bad_relationship_with_character_trigger = { CHARACTER = scope:recipient }
@@ -2149,14 +2093,6 @@ start_damage_legitimacy_interaction = {
 			add = 75
 			has_any_worst_bad_relationship_with_character_trigger = { CHARACTER = scope:recipient }
 		}
-		#Promised to abstain from sin
-		modifier = {
-			OR = {
-				has_character_modifier = pam_granted_indulgences_modifier
-				has_character_modifier = pam_granted_indulgences_modifier_small
-			}
-			factor = 0.1
-		}
 	}
 }
 
@@ -2164,10 +2100,10 @@ start_damage_legitimacy_interaction = {
 start_dispute_border_interaction = {
 	icon = icon_dispute_border
 	interface_priority = 75
-	category = interaction_category_vassal
-	send_name = START_SCHEME
+	category = interaction_category_vassal 
+	send_name = START_SCHEME 
 	scheme = dispute_border
-	ignores_pending_interaction_block = yes
+	ignores_pending_interaction_block = yes 
 	ai_targets = { ai_recipients = peer_vassals }
 	ai_frequency_by_tier = {
 		barony = 0
@@ -2184,8 +2120,7 @@ start_dispute_border_interaction = {
 	cooldown_against_recipient = { years = 5 }
 
 	target_type = title
-	target_source = recipient
-	target_filter = realm_counties
+	target_filter = recipient_realm_titles
 
 	can_be_picked_title = {
 		scope:target = {
@@ -2196,23 +2131,19 @@ start_dispute_border_interaction = {
 		}
 	}
 
-	is_available = {
-		government_has_flag = government_is_administrative
-		is_governor = yes
-		trigger_if = {
-			limit = { is_ai = yes }
-			NOT = {
-				any_scheme = { is_scheme_category = political }
+	is_shown = {
+		scope:actor = {
+			is_governor = yes
+			NOR = {
+				government_has_flag = government_is_celestial # Celestial governors do not have access to this
+				government_has_flag = government_is_japan_administrative # Celestial governors do not have access to this
+				main_administrative_tier = tier_county
 			}
 		}
-		main_administrative_tier != tier_county
-	}
-
-	is_shown = {
 		scope:recipient = {
 			this != scope:actor
 			is_alive = yes
-			top_liege ?= scope:actor.top_liege
+			top_liege = scope:actor.top_liege
 			is_governor_or_admin_count = yes
 			in_diplomatic_range = scope:actor
 		}
@@ -2304,32 +2235,19 @@ start_dispute_border_interaction = {
 		flag = agent_focus_speed
 		current_description = start_dispute_border_interaction.tt.agent_focus_speed
 	}
-	on_send = {
-		scope:actor = {
-			if = {
-				limit = {
-					OR = {
-						has_character_modifier = pam_granted_indulgences_modifier
-						has_character_modifier = pam_granted_indulgences_modifier_small
-					}
-				}
-				change_spiritual_fulfillment = minor_spiritual_fulfillment_loss
-			}
-		}
-	}
 
 	on_accept = {
 		scope:actor = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = start_dispute_border_notification
-				left_icon = scope:recipient
+				left_icon = scope:recipient					
 				right_icon = scope:target
 				scope:recipient = {
 					send_interface_toast = {
 						type = event_toast_effect_bad
 						title = start_dispute_border_notification
-						left_icon = scope:actor
+						left_icon = scope:actor					
 						right_icon = scope:target
 						scope:actor = {
 							# Success.
@@ -2393,7 +2311,7 @@ start_dispute_border_interaction = {
 				custom_tooltip = boundary_dispute_outcome_vassal_tt
 			}
 
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				content = medium_stress_impact_gain
 			}
 		}
@@ -2421,6 +2339,13 @@ start_dispute_border_interaction = {
 		}
 	}
 
+	ai_potential = {
+		NOT = {
+			any_scheme = { is_scheme_category = political }
+		}
+		is_governor = yes
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -2472,14 +2397,6 @@ start_dispute_border_interaction = {
 			add = -50
 			scope:recipient.house ?= scope:actor.house
 		}
-		#Promised to abstain from sin
-		modifier = {
-			OR = {
-				has_character_modifier = pam_granted_indulgences_modifier
-				has_character_modifier = pam_granted_indulgences_modifier_small
-			}
-			factor = 0.1
-		}
 	}
 }
 
@@ -2489,9 +2406,9 @@ start_subsume_province_interaction = {
 	common_interaction = yes
 	interface_priority = 50
 	category = interaction_category_vassal
-	send_name = START_SCHEME
+	send_name = START_SCHEME 
 	scheme = subsume_province
-	ignores_pending_interaction_block = yes
+	ignores_pending_interaction_block = yes 
 	ai_targets = { ai_recipients = peer_vassals }
 	ai_frequency_by_tier = {
 		barony = 0
@@ -2503,6 +2420,7 @@ start_subsume_province_interaction = {
 	}
 
 	filter_tags = { admin_governor }
+
 
 	cooldown = { years = 5 }
 
@@ -2527,26 +2445,18 @@ start_subsume_province_interaction = {
 
 	desc = start_subsume_province_interaction_desc
 
-	is_available = {
-		government_has_flag = government_is_administrative
-		is_governor = yes
-		trigger_if = {
-			limit = { is_ai = yes }
-			NOT = {
-				any_scheme = { is_scheme_category = political }
-			}
-		}
-	}
-
 	is_shown = {
+		scope:actor = { is_governor = yes }
 		scope:recipient = {
 			is_alive = yes
-			top_liege ?= scope:actor.top_liege
+			top_liege = scope:actor.top_liege
 			is_governor = yes
-			government_has_flag = government_is_administrative
-			NOR = {
-				this = scope:actor
-				scope:actor.house ?= scope:recipient.house
+			NOR = { 
+				this = scope:actor 
+				scope:actor.house = scope:recipient.house
+				government_has_flag = government_is_celestial # Celestial governors do not have access to this
+				government_has_flag = government_is_meritocratic
+				government_has_flag = government_is_japan_administrative
 			}
 			in_diplomatic_range = scope:actor
 		}
@@ -2644,32 +2554,19 @@ start_subsume_province_interaction = {
 		flag = agent_focus_speed
 		current_description = start_subsume_province_interaction.tt.agent_focus_speed
 	}
-	on_send = {
-		scope:actor = {
-			if = {
-				limit = {
-					OR = {
-						has_character_modifier = pam_granted_indulgences_modifier
-						has_character_modifier = pam_granted_indulgences_modifier_small
-					}
-				}
-				change_spiritual_fulfillment = minor_spiritual_fulfillment_loss
-			}
-		}
-	}
 
 	on_accept = {
 		scope:actor = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = start_subsume_province_notification
-				left_icon = scope:recipient
+				left_icon = scope:recipient					
 				right_icon = scope:target
 				scope:recipient = {
 					send_interface_toast = {
 						type = event_toast_effect_bad
 						title = start_subsume_province_notification
-						left_icon = scope:actor
+						left_icon = scope:actor					
 						right_icon = scope:target
 						scope:actor = {
 							# Success.
@@ -2722,7 +2619,7 @@ start_subsume_province_interaction = {
 			# Scheme bonuses from being the emperor/dominant family/powerful family
 			ep3_actor_scheme_modifier_effect = yes
 			custom_tooltip = subsume_province_scheme_success_outcome_tt
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				content = medium_stress_impact_gain
 			}
 		}
@@ -2737,6 +2634,13 @@ start_subsume_province_interaction = {
 		}
 	}
 
+	ai_potential = {
+		NOT = {
+			any_scheme = { is_scheme_category = political }
+		}
+		is_governor = yes
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -2789,14 +2693,6 @@ start_subsume_province_interaction = {
 			add = -50
 			scope:recipient.house ?= scope:actor.house
 		}
-		#Promised to abstain from sin
-		modifier = {
-			OR = {
-				has_character_modifier = pam_granted_indulgences_modifier
-				has_character_modifier = pam_granted_indulgences_modifier_small
-			}
-			factor = 0.1
-		}
 	}
 }
 
@@ -2806,7 +2702,7 @@ start_found_despotate_interaction = {
 	interface_priority = 60
 	common_interaction = yes
 	category = interaction_category_friendly
-	send_name = START_SCHEME
+	send_name = START_SCHEME 
 	scheme = found_despotate
 	ignores_pending_interaction_block = yes
 	ai_frequency_by_tier = {
@@ -2854,19 +2750,19 @@ start_found_despotate_interaction = {
 			scope:recipient.top_liege = { completely_controls = scope:target }
 		}
 	}
-
+	
 	has_valid_target_showing_failures_only = {
 		scope:target ?= {
 			tier = tier_kingdom
 		}
 	}
-
+	
 	# We do this via redirects because recipient_de_jure_titles did not turn up for work today.
 	redirect = {
 		scope:actor = {
 			top_liege ?= { save_scope_as = secondary_recipient }
 			if = {
-				limit = {
+				limit = { 
 					exists = primary_title.kingdom
 					primary_title.tier = tier_duchy
 				}
@@ -2877,19 +2773,11 @@ start_found_despotate_interaction = {
 
 	cooldown = { years = 5 }
 
-	is_available = {
-		trigger_if = {
-			limit = { is_ai = yes }
-			has_trait = ambitious
-			NOT = {
-				any_scheme = { is_scheme_category = political }
-			}
-		}
-		is_governor = yes
-		government_is_japanese_trigger = no
-	}
-
 	is_shown = {
+		scope:actor = {
+			is_governor = yes
+			NOT = { government_is_japanese_trigger = yes }
+		}
 		scope:recipient = scope:actor
 	}
 
@@ -2917,7 +2805,7 @@ start_found_despotate_interaction = {
 						is_landless_type_title = no
 					}
 				}
-
+				
 			}
 		}
 		scope:actor = {
@@ -3008,32 +2896,19 @@ start_found_despotate_interaction = {
 		flag = agent_focus_speed
 		current_description = start_found_despotate_interaction.tt.agent_focus_speed
 	}
-	on_send = {
-		scope:actor = {
-			if = {
-				limit = {
-					OR = {
-						has_character_modifier = pam_granted_indulgences_modifier
-						has_character_modifier = pam_granted_indulgences_modifier_small
-					}
-				}
-				change_spiritual_fulfillment = minor_spiritual_fulfillment_loss
-			}
-		}
-	}
 
 	on_accept = {
 		scope:actor = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = start_found_despotate_notification
-				left_icon = scope:recipient
+				left_icon = scope:recipient					
 				right_icon = scope:target
 				scope:recipient = {
 					send_interface_toast = {
 						type = event_toast_effect_bad
 						title = start_found_despotate_notification
-						left_icon = scope:actor
+						left_icon = scope:actor					
 						right_icon = scope:target
 						scope:actor = {
 							# Success.
@@ -3078,25 +2953,26 @@ start_found_despotate_interaction = {
 
 			custom_tooltip = found_despotate_success_tt
 
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				content = minor_stress_impact_gain
 				humble = minor_stress_impact_gain
 			}
 		}
 	}
 
+	ai_potential = {
+		has_trait = ambitious
+		is_governor = yes
+		NOR = {
+			has_trait = content
+			any_scheme = { is_scheme_category = political }
+		}
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
 		base = 15
-		#Promised to abstain from sin
-		modifier = {
-			OR = {
-				has_character_modifier = pam_granted_indulgences_modifier
-				has_character_modifier = pam_granted_indulgences_modifier_small
-			}
-			factor = 0.1
-		}
 	}
 }
 
@@ -3105,7 +2981,7 @@ start_raid_estate_interaction = {
 	icon = icon_raid_estate
 	interface_priority = 90
 	category = interaction_category_hostile
-	send_name = START_SCHEME
+	send_name = START_SCHEME 
 	scheme = raid_estate
 	ignores_pending_interaction_block = yes
 	ai_frequency_by_tier = {
@@ -3147,25 +3023,28 @@ start_raid_estate_interaction = {
 		}
 	}
 
-	is_available = {
-		domicile ?= {
-			domicile_is_estate_trigger = yes
-		}
-		trigger_if = {
-			limit = { is_ai = yes }
-			NOT = {
-				any_scheme = { is_hostile = yes }
+	is_shown = {
+		scope:actor = {
+			domicile ?= {
+				OR = {
+					is_domicile_type = estate
+					is_domicile_type = east_asian_estate
+					is_domicile_type = japanese_manor
+					is_domicile_type = gallic_manor
+				}
 			}
 		}
-	}
-
-	is_shown = {
 		scope:recipient.house.house_head ?= {
 			domicile ?= {
-				domicile_is_estate_trigger = yes
+				OR = {
+					is_domicile_type = estate
+					is_domicile_type = east_asian_estate
+					is_domicile_type = japanese_manor
+					is_domicile_type = gallic_manor
+				}
 			}
 			is_independent_ruler = no
-			top_liege ?= scope:actor.top_liege
+			top_liege = scope:actor.top_liege
 			house != scope:actor.house
 		}
 	}
@@ -3187,6 +3066,28 @@ start_raid_estate_interaction = {
 		}
 		scope:recipient.house.house_head ?= {
 			shared_raid_estate_participant_valid_trigger = yes
+			domicile ?= {
+				trigger_if = {
+					limit = { is_domicile_type = japanese_manor }
+					custom_tooltip = {
+						text = raid_estate_japanese_manor_tt
+						is_domicile_type = japanese_manor
+					}
+				}
+				trigger_else_if = {
+					limit = { is_domicile_type = east_asian_estate }
+					custom_tooltip = {
+						text = raid_estate_estate_tt
+						is_domicile_type = east_asian_estate
+					}
+				}
+				trigger_else = {
+					custom_tooltip = {
+						text = raid_estate_estate_tt
+						is_domicile_type = estate
+					}
+				}
+			}
 		}
 		trigger_if = {
 			limit = { scope:actor = { has_variable = no_scheming_allowed_var } }
@@ -3232,22 +3133,9 @@ start_raid_estate_interaction = {
 		flag = agent_focus_secrecy
 		current_description = start_raid_estate_interaction.tt.agent_focus_secrecy
 	}
-	on_send = {
-		scope:actor = {
-			if = {
-				limit = {
-					OR = {
-						has_character_modifier = pam_granted_indulgences_modifier
-						has_character_modifier = pam_granted_indulgences_modifier_small
-					}
-				}
-				change_spiritual_fulfillment = major_spiritual_fulfillment_loss
-			}
-		}
-	}
 
 	on_accept = {
-		scope:recipient = {
+		scope:recipient = { 
 			custom_tooltip = raid_estate_kill_maim_imprison_house_members_tt
 			custom_tooltip = raid_estate_destroy_buildings_tt
 			if = {
@@ -3266,7 +3154,7 @@ start_raid_estate_interaction = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = start_raid_estate_notification
-				left_icon = scope:recipient
+				left_icon = scope:recipient					
 				right_icon = scope:target_title
 				# Success.
 				if = {
@@ -3360,14 +3248,9 @@ start_raid_estate_interaction = {
 					}
 				}
 			}
-			# Only get stressed/SP penalties if you don't have the parameter
-			if = {
-				limit = {
-					NOT = { sp_hostile_schemes_except_murder_no_stress_or_fulfillment_trigger = yes }
-				}
-				stress_and_fulfillment_impact = {
-					content = medium_stress_impact_gain
-				}
+			# Stress
+			stress_impact = {
+				content = medium_stress_impact_gain
 			}
 			if = {
 				limit = { has_relation_nemesis = scope:recipient }
@@ -3380,6 +3263,13 @@ start_raid_estate_interaction = {
 		}
 	}
 
+	ai_potential = {
+		NOT = {
+			any_scheme = { is_hostile = yes }
+		}
+		any_held_title = { is_noble_family_title = yes }
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -3431,15 +3321,7 @@ start_raid_estate_interaction = {
 			opinion_target = scope:recipient
 			multiplier = -0.25
 		}
-		#Promised to abstain from sin
-		modifier = {
-			OR = {
-				has_character_modifier = pam_granted_indulgences_modifier
-				has_character_modifier = pam_granted_indulgences_modifier_small
-			}
-			factor = 0.1
-		}
-
+		
 		# Avoid fellow movement members if possible (assuming they aren't rivals)
 		modifier = {
 			factor = {
@@ -3463,7 +3345,7 @@ start_teach_governor_interaction = {
 	interface_priority = 20
 	category = interaction_category_vassal
 	filter_tags = { admin_governor }
-	send_name = START_SCHEME
+	send_name = START_SCHEME 
 	scheme = teach_governor
 	ai_targets = {
 		ai_recipients = peer_vassals
@@ -3489,25 +3371,18 @@ start_teach_governor_interaction = {
 
 	cooldown_against_recipient = { years = 15 }
 
-	is_available = {
-		government_has_mechanic = administrative
-		domicile ?= { has_domicile_parameter = estate_unlock_teach_governor_interaction }
-		trigger_if = {
-			limit = { is_ai = yes }
-			is_governor = yes
-			NOR = {
-				has_trait = lazy
-				scheme_generic_ai_blocker_trigger = yes
-			}
-		}
-	}
-
 	is_shown = {
+		scope:actor = { government_allows = administrative }
 		scope:recipient != scope:actor
 		scope:recipient = {
 			is_alive = yes
-			top_liege ?= scope:actor.top_liege
+			top_liege = scope:actor.top_liege
 			in_diplomatic_range = scope:actor
+		}
+
+		scope:actor = {
+			exists = domicile
+			domicile = { has_domicile_parameter = estate_unlock_teach_governor_interaction }
 		}
 	}
 
@@ -3551,7 +3426,7 @@ start_teach_governor_interaction = {
 	on_accept = {
 		scope:actor = {
 			custom_tooltip = teach_governor_actor_reward_tt
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				humble = minor_stress_impact_gain
 				lazy = medium_stress_impact_gain
 			}
@@ -3561,13 +3436,13 @@ start_teach_governor_interaction = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = start_teach_governor_notification
-				left_icon = scope:recipient
+				left_icon = scope:recipient					
 				right_icon = scope:recipient.primary_title
 				scope:recipient = {
 					send_interface_toast = {
 						type = event_toast_effect_bad
 						title = start_teach_governor_notification
-						left_icon = scope:actor
+						left_icon = scope:actor					
 						right_icon = scope:actor.primary_title
 						scope:actor = {
 							begin_scheme_basic_effect = {
@@ -3608,6 +3483,14 @@ start_teach_governor_interaction = {
 			}
 			else = { trigger_event = scheme_critical_moments.8046 }
 		}
+	}
+
+	ai_potential = {
+		NOR = {
+			has_trait = lazy
+			scheme_generic_ai_blocker_trigger = yes
+		}
+		is_governor = yes
 	}
 
 	ai_accept = {
@@ -3694,7 +3577,7 @@ start_teach_governor_interaction = {
 			has_relation_best_friend = scope:actor
 			add = 30
 		}
-		modifier = { # Rival
+		modifier = { # Rival 
 			desc = offer_vassalization_interaction_aibehavior_rival_tt
 			has_relation_rival = scope:actor
 			NOT = { has_relation_nemesis = scope:actor }
@@ -3840,7 +3723,7 @@ start_teach_governor_interaction = {
 
 			add = -50
 		}
-
+		
 		modifier = {
 			add = 10
 			scope:actor = {
@@ -3885,24 +3768,7 @@ start_ingratiate_family_interaction = {
 		empire = 0
 		hegemony = 0
 	}
-
-	is_available = {
-		any_held_title = { is_noble_family_title = yes }
-		trigger_if = {
-			limit = { is_ai = yes }
-			NOT = {
-				any_scheme = { is_scheme_category = political }
-			}
-		}
-		house.house_head ?= this
-		
-		is_available_quick = {
-			alive = yes
-			imprisoned = no
-			incapable = no
-		}
-	}
-
+	
 	is_shown = {
 		scope:actor = {
 			can_start_scheme = {
@@ -3910,16 +3776,21 @@ start_ingratiate_family_interaction = {
 				target_character = scope:recipient
 			}
 		}
+		scope:actor = {
+			is_adult = yes
+			is_imprisoned = no
+			is_incapable = no
+			any_held_title = { is_noble_family_title = yes }
+			house.house_head ?= this
+		}
 		scope:recipient = {
-			is_available_quick = {
-				alive = yes
-				imprisoned = no
-				incapable = no
-			}
+			is_adult = yes
+			is_imprisoned = no
+			is_incapable = no
 			any_held_title = { is_noble_family_title = yes }
 			house.house_head ?= this
 			house != scope:actor.house
-			top_liege ?= scope:actor.top_liege
+			top_liege = scope:actor.top_liege
 		}
 	}
 
@@ -3931,7 +3802,7 @@ start_ingratiate_family_interaction = {
 			}
 		}
 	}
-
+ 	
  	desc = start_ingratiate_family_interaction_desc
 
 	on_accept = {
@@ -3956,13 +3827,13 @@ start_ingratiate_family_interaction = {
 					}
 				}
 				show_as_tooltip = {
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						arrogant = minor_stress_impact_gain
 						shy = minor_stress_impact_gain
 					}
 				}
 			}
-
+			
 			if = { # I am the emperor
 				limit = { scope:actor.highest_held_title_tier >= tier_empire }
 				custom_tooltip = {
@@ -4082,13 +3953,13 @@ start_ingratiate_family_interaction = {
 								scheme_target_character	= scope:recipient
 							}
 							add_scheme_modifier = { type = admin_target_powerful_family_scheme_modifier }
-						}
+						}	
 					}
 				}
 			}
 
 			custom_tooltip = ingratiate_family_success_actor_tt
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				arrogant = minor_stress_impact_gain
 				shy = minor_stress_impact_gain
 			}
@@ -4098,6 +3969,14 @@ start_ingratiate_family_interaction = {
 		}
 	}
 
+	ai_potential = {
+		NOT = {
+			any_scheme = {
+				is_scheme_category = hostile
+			}
+		}
+	}
+	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -4201,7 +4080,7 @@ start_ingratiate_family_interaction = {
 			add = 100
 			has_any_best_good_relationship_with_character_trigger = { CHARACTER = scope:recipient }
 		}
-
+		
 		# Prefer to get closer to your fellow movement members
 		modifier = {
 			factor = {

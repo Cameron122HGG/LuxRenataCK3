@@ -1,5 +1,6 @@
 ﻿activity_adult_education = {
 	is_shown = {
+		has_bp2_dlc_trigger = yes
 		highest_held_title_tier > tier_barony
 		is_playable_character = yes
 		trigger_if = {
@@ -7,8 +8,10 @@
 				is_ai = yes
 			}
 			is_adult = yes
+			is_at_war = no
 			ai_should_focus_on_building_in_their_capital = no
-			treasury_or_gold >= adult_education_activity_cost
+			gold >= adult_education_activity_cost
+			NOT = { has_variable = conqueror }
 			trigger_if = { # Throttle Counts
 				limit = {
 					highest_held_title_tier = tier_county
@@ -16,8 +19,15 @@
 				ai_energy >= 100
 			}
 		}
-		ai_activity_war_check = yes
-		ai_activity_coronation_check = yes
+		#Every other activity must be blocked until an uncrowned AI crowns themselves
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			NOT = {
+				has_realm_law = uncrowned
+			}
+		}
 	}
 
 	can_start_showing_failures_only = {
@@ -64,25 +74,50 @@
 
 	is_valid = {
 		scope:host = {
-			is_physically_able_adult = yes
+			#Getting imprisoned will invalidate
+			is_imprisoned = no
 			#Getting unlanded will invalidate
 			is_playable_character = yes 
+			#Becoming incapable will invalidate
+			NOT = { is_incapable = yes }
 		}
 	}
 
 	on_invalidated = {
-		# Host is imprisoned
+		# Host becomes unlanded
 		if = {
+			limit = {
+				scope:host = { is_playable_character = no }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			every_attending_character = {
+				trigger_event = activity_system.0320
+			}
+		}
+		# Host becomes incapable
+		else_if = {
+			limit = {
+				scope:host = { is_incapable = yes }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			scope:host = {
+				trigger_event = activity_system.0330
+			}
+			every_attending_character = {
+				limit = { this != scope:host }
+				trigger_event = activity_system.0331
+			}
+		}
+		# Host is imprisoned
+		else_if = {
 			limit = {
 				scope:host = { is_imprisoned = yes } 
 			}
 			scope:host = { trigger_event = bp2_adult_education.0005 }
-		}
-		else = {
-			invalidation_imprisoned_effect = yes
-			invalidation_incapable_effect = yes
-			invalidation_unlanded_non_nf_effect = yes
-			invalidation_host_isolated_effect = yes
 		}
 		if = {
 			limit = {
@@ -91,11 +126,11 @@
 			scope:activity = {
 				every_attending_character = {
 					limit = {
-						has_variable = {
-							name = teacher_1
-							name = teacher_2
-							name = student_1
-							name = student_2
+						OR = {
+							has_character_flag = teacher_1
+							has_character_flag = teacher_2
+							has_character_flag = student_1
+							has_character_flag = student_2
 						}
 					}
 					if = {
@@ -122,11 +157,11 @@
 			scope:activity = {
 				every_attending_character = {
 					limit = {
-						has_variable = {
-							name = teacher_1
-							name = teacher_2
-							name = student_1
-							name = student_2
+						OR = {
+							has_character_flag = teacher_1
+							has_character_flag = teacher_2
+							has_character_flag = student_1
+							has_character_flag = student_2
 						}
 					}
 					if = {
@@ -176,22 +211,12 @@
 	is_location_valid = {
 		custom_tooltip = {
 			text = activity_education_no_culture_center
-			is_higher_studies_location = yes
-		}
-		custom_tooltip = {
-			text = activity_education_no_cathedral_school
-			#If you are of the same rite as an ecclesiastical domicile holder and in their archdiocese the domicle is in, and it has the domicile parameter domicile_building_is_university then you can attend it as a university
-			trigger_if = {
-				limit = {
-					any_province_domicile = {
-						has_domicile_parameter = domicile_building_is_university
-					}
-				}
-				has_domicile_building_cathedral_school = {
-					LOCATION = root
-					CHARACTER = scope:host
-				}	
+			OR = {
+				is_higher_studies_location = yes
+				county = { has_county_modifier = academy_of_athens_modifier }
 			}
+			has_special_building_slot = yes
+			is_higher_studies_location = yes
 		}
 		#You only get to visit any particular university once in your life
 		custom_tooltip = { 
@@ -245,15 +270,6 @@
 			}
 			desc = adult_education_has_religious_center_desc
 		}
-		#Is it a Cathedral School in a domicile?
-		triggered_desc = {
-			trigger = {
-				any_province_domicile = {
-					has_domicile_parameter = domicile_building_is_university
-				}
-			}
-			desc = adult_education_has_domicile_building_is_university_desc
-		}
 		#Is it the capital of h_china?
 		triggered_desc = {
 			trigger = {
@@ -286,6 +302,12 @@
 				county = { has_county_modifier = pandidakterion_university_modifier }
 			}
 			desc = adult_education_has_pandidakterion_desc
+		}
+		triggered_desc = {
+			trigger = {
+				county = { has_county_modifier = academy_of_athens_modifier }
+			}
+			desc = adult_education_has_academy_of_athens_desc
 		}
 		# Will it yield Confucian Education XP?
 		triggered_desc = {
@@ -337,6 +359,12 @@
 		if = {
 			limit = {
 				county ?= { has_county_modifier = pandidakterion_university_modifier }
+			}
+			add = 100
+		}
+		if = {
+			limit = {
+				county ?= { has_county_modifier = academy_of_athens_modifier }
 			}
 			add = 100
 		}
@@ -531,10 +559,10 @@
 			}
 		}
 		if = {
-			limit = { has_trait = erudite }
+			limit = { has_trait = scholar }
 			add = {
 				value = 50
-				desc = erudite
+				desc = scholar
 			}
 		}
 		if = {
@@ -758,28 +786,6 @@
             	desc = "Pious Builder"
             }
         }
-		# HoF
-		if = {
-			limit = {
-				any_held_title = { is_head_of_faith = yes }
-				faith = { has_doctrine = doctrine_spiritual_head }
-				trigger_if = { # Unless you are in the SO phase
-					limit = {
-						any_character_situation = {
-							situation_type = the_christian_church
-						}
-					}
-					situation:the_christian_church = {
-						NOT = { situation_current_phase = saeculum_obscurum }
-					}
-				}
-			}
-			add = {
-				value = -50
-				desc = "Spiritual HoF"
-			}
-		}
-		add = activity_general_ai_will_do_value
 	}
 
 	ai_check_interval_by_tier = {
@@ -903,50 +909,22 @@
 	max_route_deviation_mult = 3.0
 
 	cost = {
-		treasury = {
-			if = {
-				limit = {
-					has_treasury = yes
-				}
-				add = {
-					value = root.adult_education_activity_cost
-					desc = pilgrimage_base_cost
-				}
-				add = {
-					value = root.adult_education_activity_cost
-					multiply = activity_cost_scale_by_era
-					subtract = root.adult_education_activity_cost
-					desc = activity_cost_scale_by_era_desc
-				}
-				if = {
-					limit = {
-						has_title = title:e_minister_of_revenue
-					}
-					multiply = 0.85
-				}
-			}
-		}
 		gold = {
+			add = {
+				value = root.adult_education_activity_cost
+				desc = pilgrimage_base_cost
+			}
+			add = {
+				value = root.adult_education_activity_cost
+				multiply = activity_cost_scale_by_era
+				subtract = root.adult_education_activity_cost
+				desc = activity_cost_scale_by_era_desc
+			}
 			if = {
 				limit = {
-					has_treasury = no
+					has_title = title:e_minister_of_revenue
 				}
-				add = {
-					value = root.adult_education_activity_cost
-					desc = pilgrimage_base_cost
-				}
-				add = {
-					value = root.adult_education_activity_cost
-					multiply = activity_cost_scale_by_era
-					subtract = root.adult_education_activity_cost
-					desc = activity_cost_scale_by_era_desc
-				}
-				if = {
-					limit = {
-						has_title = title:e_minister_of_revenue
-					}
-					multiply = 0.85
-				}
+				multiply = 0.85
 			}
 		}
 		piety = {
@@ -981,7 +959,7 @@
 	}
 
 	ui_predicted_cost = {
-		treasury_or_gold = {
+		gold = {
 			add = { # Base Cost, scaled by era
 				value = adult_education_activity_cost
 				multiply = activity_cost_scale_by_era
@@ -1029,66 +1007,34 @@
 		adult_education_option_books = {
 			adult_education_books_bad = {
 				is_shown = { has_dlc_feature = advanced_activities }
-				default = {
-					has_personal_tenet_flag = tenet_vows_of_poverty_humble_host
+
+				is_valid = {
+					
 				}
 
 				cost = {
-					treasury = {
-						if = {
-							limit = {
-								has_treasury = yes
-							}
-							add = {
+					gold = {
+						value = 0
+						add = {
+							desc = adult_education_books_bad
+							subtract = {
+								value = minor_gold_value_static_max
 								desc = adult_education_books_bad
-								subtract = {
-									value = minor_gold_value_static_max
-									desc = adult_education_books_bad
-								}
-								subtract = {
-									value = minor_gold_value_static_max
-									multiply = activity_cost_scale_by_era
-									subtract = minor_gold_value_static_max
-									desc = activity_cost_scale_by_era_desc 
-								}
 							}
-							if = {
-								limit = {
-									has_perk = journey_planner_perk
-								}
-								multiply = {
-									value = voyager_journey_planner_value
-									desc = journey_planner_perk_name
-								}
+							subtract = {
+								value = minor_gold_value_static_max
+								multiply = activity_cost_scale_by_era
+								subtract = minor_gold_value_static_max
+								desc = activity_cost_scale_by_era_desc 
 							}
 						}
-					}
-					gold = {
 						if = {
 							limit = {
-								has_treasury = no
+								has_perk = journey_planner_perk
 							}
-							add = {
-								desc = adult_education_books_bad
-								subtract = {
-									value = minor_gold_value_static_max
-									desc = adult_education_books_bad
-								}
-								subtract = {
-									value = minor_gold_value_static_max
-									multiply = activity_cost_scale_by_era
-									subtract = minor_gold_value_static_max
-									desc = activity_cost_scale_by_era_desc 
-								}
-							}
-							if = {
-								limit = {
-									has_perk = journey_planner_perk
-								}
-								multiply = {
-									value = voyager_journey_planner_value
-									desc = journey_planner_perk_name
-								}
+							multiply = {
+								value = voyager_journey_planner_value
+								desc = journey_planner_perk_name
 							}
 						}
 					}
@@ -1124,77 +1070,32 @@
 			}
 
 			adult_education_books_normal = {
-				is_valid = {
-					trigger_if = {
-						limit = { has_dlc_feature = advanced_activities }
-						pam_vows_of_poverty_premium_activity_option_valid_trigger = yes
-					}
-				}
-				default = {
-					OR = {
-						NOT = { has_personal_tenet_flag = tenet_vows_of_poverty_humble_host }
-						NOT = { has_dlc_feature = advanced_activities }
-					}
-				}
+				default = yes
 
 				cost = {
-					treasury = {
-						if = {
-							limit = {
-								has_treasury = yes
+					gold = {
+						value = 0
+						add = {
+							desc = adult_education_books_normal
+							add = {
+								value = medium_gold_value_static_max
+								desc = adult_education_books_normal
+								min = 150
 							}
 							add = {
-								desc = adult_education_books_normal
-								add = {
-									value = medium_gold_value_static_max
-									desc = adult_education_books_normal
-									min = 150
-								}
-								add = {
-									value = medium_gold_value_static_max
-									multiply = activity_cost_scale_by_era
-									subtract = medium_gold_value_static_max
-									desc = activity_cost_scale_by_era_desc 
-								}
-							}
-							if = {
-								limit = {
-									has_perk = journey_planner_perk
-								}
-								multiply = {
-									value = voyager_journey_planner_value
-									desc = journey_planner_perk_name
-								}
+								value = medium_gold_value_static_max
+								multiply = activity_cost_scale_by_era
+								subtract = medium_gold_value_static_max
+								desc = activity_cost_scale_by_era_desc 
 							}
 						}
-					}
-					gold = {
 						if = {
 							limit = {
-								has_treasury = no
+								has_perk = journey_planner_perk
 							}
-							add = {
-								desc = adult_education_books_normal
-								add = {
-									value = medium_gold_value_static_max
-									desc = adult_education_books_normal
-									min = 150
-								}
-								add = {
-									value = medium_gold_value_static_max
-									multiply = activity_cost_scale_by_era
-									subtract = medium_gold_value_static_max
-									desc = activity_cost_scale_by_era_desc 
-								}
-							}
-							if = {
-								limit = {
-									has_perk = journey_planner_perk
-								}
-								multiply = {
-									value = voyager_journey_planner_value
-									desc = journey_planner_perk_name
-								}
+							multiply = {
+								value = voyager_journey_planner_value
+								desc = journey_planner_perk_name
 							}
 						}
 					}
@@ -1210,67 +1111,33 @@
 				is_shown = { has_dlc_feature = advanced_activities }
 
 				is_valid = {
-					pam_vows_of_poverty_premium_activity_option_valid_trigger = yes
+					
 				}
 
 				cost = {
-					treasury = {
-						if = {
-							limit = {
-								has_treasury = yes
+					gold = {
+						value = 0
+						add = {
+							desc = adult_education_books_good
+							add = {
+								value = major_gold_value_static_max
+								desc = adult_education_books_good
+								min = 300
 							}
 							add = {
-								desc = adult_education_books_good
-								add = {
-									value = major_gold_value_static_max
-									desc = adult_education_books_good
-									min = 300
-								}
-								add = {
-									value = major_gold_value_static_max
-									multiply = activity_cost_scale_by_era
-									subtract = major_gold_value_static_max
-									desc = activity_cost_scale_by_era_desc 
-								}
-							}
-							if = {
-								limit = {
-									has_perk = journey_planner_perk
-								}
-								multiply = {
-									value = voyager_journey_planner_value
-									desc = journey_planner_perk_name
-								}
+								value = major_gold_value_static_max
+								multiply = activity_cost_scale_by_era
+								subtract = major_gold_value_static_max
+								desc = activity_cost_scale_by_era_desc 
 							}
 						}
-					}
-					gold = {
 						if = {
 							limit = {
-								has_treasury = no
+								has_perk = journey_planner_perk
 							}
-							add = {
-								desc = adult_education_books_good
-								add = {
-									value = major_gold_value_static_max
-									desc = adult_education_books_good
-									min = 300
-								}
-								add = {
-									value = major_gold_value_static_max
-									multiply = activity_cost_scale_by_era
-									subtract = major_gold_value_static_max
-									desc = activity_cost_scale_by_era_desc 
-								}
-							}
-							if = {
-								limit = {
-									has_perk = journey_planner_perk
-								}
-								multiply = {
-									value = voyager_journey_planner_value
-									desc = journey_planner_perk_name
-								}
+							multiply = {
+								value = voyager_journey_planner_value
+								desc = journey_planner_perk_name
 							}
 						}
 					}
@@ -1372,12 +1239,9 @@
 						}
 					}
 					#Resolve how how successful we were so we can bake that into the total reward
-					resolve_adult_education_success_reward_effect = yes
-					pam_tenet_scholasticism_university_bonus_effect = yes
-					# Apply completion rewards/log before showing the conclusion activity screen
-					adult_education_completed_log_entry_effect = yes
+					resolve_adult_education_success_reward_effect = yes 
 					#Conclusion event
-					trigger_event = bp2_adult_education.0009
+					trigger_event = bp2_adult_education.0009			
 				}
 			}
 		}
@@ -1855,6 +1719,13 @@
 				}
 				activity_special_type_progression_major = yes
 			}
+			if = {
+				limit = {
+					activity_location.county = { has_county_modifier = academy_of_athens_modifier }
+					scope:host.top_liege = scope:activity.activity_location.county.holder.top_liege
+				}
+				activity_special_type_progression_major = yes
+			}
 			if = { # TGP: If you educate yourself at the capital while it is improved, you get a starting success bonus
 				limit = {
 					activity_location.county = { has_county_modifier = tgp_strengthen_capital_modifier }
@@ -1896,12 +1767,11 @@
 				scope:activity = {
 					every_attending_character = {
 						limit = {
-							has_variable = {
-								name = student_1
-								name = student_2
+							OR = {
+								has_character_flag = student_1
+								has_character_flag = student_2
 							}
 							has_character_flag = generated_character_uni
-							is_ruler = no
 						}
 						silent_disappearance_effect = yes
 					}
@@ -1929,8 +1799,6 @@
 	###################
 	# GRAPHICS
 	###################
-
-	header_background = "gfx/interface/illustrations/activity_header_backgrounds/activity_adult_education.dds"
 
 	# Travel
 	background = { # Bridge

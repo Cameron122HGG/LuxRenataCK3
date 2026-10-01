@@ -49,9 +49,9 @@ marriage_effect.0001 = {
 		is_female = yes
 		OR = {
 			AND = {
-				has_variable = {
-					name = unmarried_bastard_pregnancy
-					name = bastard_pregnancy
+				OR = {
+					has_character_flag = unmarried_bastard_pregnancy
+					has_character_flag = bastard_pregnancy
 				}
 				pregnancy_real_father = { this = scope:spouse }
 			}
@@ -74,9 +74,9 @@ marriage_effect.0001 = {
 					is_female = yes
 					OR = {
 						AND = {
-							has_variable = {
-								name = unmarried_bastard_pregnancy
-								name = bastard_pregnancy
+							OR = {
+								has_character_flag = unmarried_bastard_pregnancy
+								has_character_flag = bastard_pregnancy
 							}
 							pregnancy_real_father = { this = root }
 						}
@@ -254,7 +254,7 @@ marriage_effect.0001 = {
 	option = {
 		name = marriage_effect.0001.a
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_loss
 		}
 
@@ -306,9 +306,9 @@ marriage_effect.0002 = {
 						pregnancy_real_father = {
 							this = scope:new_spouse
 						}
-						has_variable = {
-							name = pregnancy_real_father_knows
-							name = pregnancy_real_father_of_bastard_is_known_flag
+						OR = {
+							has_character_flag = pregnancy_real_father_knows
+							has_character_flag = pregnancy_real_father_of_bastard_is_known_flag
 						}
 					}
 			    }
@@ -382,9 +382,9 @@ marriage_effect.0002 = {
 					pregnancy_real_father = {
 						this = scope:new_spouse
 					}
-					has_none_of_variables = {
-						name = pregnancy_real_father_knows
-						name = pregnancy_real_father_of_bastard_is_known_flag
+					NOR = {
+						has_character_flag = pregnancy_real_father_knows
+						has_character_flag = pregnancy_real_father_of_bastard_is_known_flag
 					}
 				}
 			}
@@ -403,7 +403,7 @@ marriage_effect.0002 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_loss
 		}
 	}
@@ -505,9 +505,9 @@ marriage_effect.0011 = {
 		is_female = yes
 		OR = {
 			AND = {
-				has_variable = {
-					name = unmarried_bastard_pregnancy
-					name = bastard_pregnancy
+				OR = {
+					has_character_flag = unmarried_bastard_pregnancy
+					has_character_flag = bastard_pregnancy
 				}
 				pregnancy_real_father = { this = scope:consort }
 			}
@@ -676,7 +676,7 @@ marriage_effect.0011 = {
 	option = {
 		name = marriage_effect.0001.a
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_loss
 		}
 
@@ -726,9 +726,9 @@ marriage_effect.0012 = {
 						pregnancy_real_father = {
 							this = scope:new_spouse
 						}
-						has_variable = {
-							name = pregnancy_real_father_knows
-							name = pregnancy_real_father_of_bastard_is_known_flag
+						OR = {
+							has_character_flag = pregnancy_real_father_knows
+							has_character_flag = pregnancy_real_father_of_bastard_is_known_flag
 						}
 					}
 				}
@@ -802,9 +802,9 @@ marriage_effect.0012 = {
 					pregnancy_real_father = {
 						this = scope:new_spouse
 					}
-					has_none_of_variables = {
-						name = pregnancy_real_father_knows
-						name = pregnancy_real_father_of_bastard_is_known_flag
+					NOR = {
+						has_character_flag = pregnancy_real_father_knows
+						has_character_flag = pregnancy_real_father_of_bastard_is_known_flag
 					}
 				}
 			}
@@ -823,7 +823,7 @@ marriage_effect.0012 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_loss
 		}
 	}
@@ -967,8 +967,8 @@ marriage_effect.2001 = {
 			}
 			triggered_desc = {
 				trigger = {
-					rite = {
-						rite_has_parameter = divine_marriage_piety_gain_active
+					faith = {
+						has_doctrine_parameter = divine_marriage_piety_gain_active
 					}
 					scope:new_spouse = {
 						is_close_family_of = root
@@ -1013,11 +1013,11 @@ marriage_effect.2001 = {
 		is_ruler = yes
 
 		# Is not a LAAMP
-		is_landed_or_landless_administrative_or_theocratic = yes
+		is_landed_or_landless_administrative = yes
 
 		# Only monogamous faiths care enough about a single marriage for the event.
-		rite = {
-			rite_has_parameter = marriage_event
+		faith = {
+			has_doctrine_parameter = marriage_event
 		}
 
 		# Only a character's first spouse counts.
@@ -1055,8 +1055,7 @@ marriage_effect.2001 = {
 
 	option = {
 		name = marriage_effect.2001.a
-		# The wedding levy is a personal windfall, so it goes into the ruler's own purse even for ecclesiastics
-		add_gold = major_gold_value
+		add_treasury_or_gold = major_treasury_or_gold_value
 	}
 
 	option = {
@@ -1067,8 +1066,8 @@ marriage_effect.2001 = {
 	after = {
 		if = {
 			limit = {
-				rite = {
-					rite_has_parameter = divine_marriage_piety_gain_active
+				faith = {
+					has_doctrine_parameter = divine_marriage_piety_gain_active
 				}
 				scope:new_spouse = {
 					is_close_family_of = root

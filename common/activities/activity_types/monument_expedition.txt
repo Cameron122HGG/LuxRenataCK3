@@ -1,16 +1,18 @@
 ﻿activity_journey = {
 	is_shown = {
-		OR = {
-			AND = {
-				has_bp3_dlc_trigger = yes
-				has_perk = journey_perk
-			}
-			has_personal_tenet_flag = tenet_pursuit_of_knowledge_monument_expedition
-		}
+		has_bp3_dlc_trigger = yes
 		highest_held_title_tier >= tier_county
 		is_adult = yes
-		ai_activity_war_check = yes
-		ai_activity_coronation_check = yes
+		has_perk = journey_perk
+		#Every other activity must be blocked until an uncrowned AI crowns themselves
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			NOT = {
+				has_realm_law = uncrowned
+			}
+		}
 	}
 
 	can_always_plan = no
@@ -18,11 +20,14 @@
 	can_start_showing_failures_only = {
 		NOT = { is_activity_type_on_cooldown = activity_journey }
 		is_available = yes
+		age >= 16
 	}
 
 	is_valid = {
 		scope:host = {
-			is_physically_able = yes
+			is_alive = yes
+			is_imprisoned = no
+			NOT = { is_incapable = yes }
 		}
 	}
 
@@ -76,15 +81,11 @@
 	on_invalidated = {
 		invalidation_imprisoned_effect = yes
 		invalidation_incapable_effect = yes
-		invalidation_host_isolated_effect = yes
 		invalidation_unlanded_effect = yes
 	}
 
 	on_complete = {
-		if = {
-			limit = { this = scope:host }
-			pam_vows_of_poverty_host_completion_piety_effect = yes
-		}
+
 	}
 
 	on_host_death = {
@@ -436,9 +437,6 @@
 				}
 			}
 			journey_skilled_scribes = {
-				is_valid = {
-					pam_vows_of_poverty_premium_activity_option_valid_trigger = yes
-				}
 
 				cost = {
 					gold = {
@@ -518,8 +516,6 @@
 			}
 			add = -125
 		}
-
-		add = activity_general_ai_will_do_value
 	}
 
 	ai_check_interval = 36
@@ -635,8 +631,6 @@
 	###################
 	# GRAPHICS
 	###################
-
-	header_background = "gfx/interface/illustrations/activity_header_backgrounds/activity_journey.dds"
 
 	# Travel
 	background = { # Bridge
@@ -1069,58 +1063,22 @@
 		environment = "environment_indian_holy_site"
 		ambience = "event:/SFX/Events/Backgrounds/deciduous_forest_day"
 	}
-	background = { #Western Gothic
+	background = {
 		trigger = {
 			scope:activity ?= {
 				activity_location = {
 					OR = {
 						has_building_or_higher = holy_site_cologne_cathedral_01
+						has_building_or_higher = holy_site_canterbury_cathedral_01
 						has_building_or_higher = holy_site_canterbury_cathedral_02
 						has_building_or_higher = holy_site_canterbury_cathedral_03
 						has_building_or_higher = notre_dame_01
-						has_building_or_higher = lund_cathedral_01
-						has_building_or_higher = pam_palais_de_papes_01
-						has_building_or_higher = pam_reims_cathedral_01
-						has_building_or_higher = mont_st_michel_03
-						has_building_or_higher = mont_st_michel_04
-					}
-				}
-			}
-		}
-		texture = "gfx/interface/illustrations/event_scenes/ep2_wedding_ceremony_western.dds"
-		environment = "environment_western_wedding"
-		ambience = "event:/DLC/EP2/SFX/Events/Grand_Activities/Weddings/ep2_event_grand_wedding"
-	}
-	background = { #Western, mediterranean-looking
-		trigger = {
-			scope:activity ?= {
-				activity_location = {
-					OR = {
-						has_building_or_higher = holy_site_basilica_santiago_01
-						has_building_or_higher = duomo_florence_01
-						has_building_or_higher = duomo_florence_02
-						has_building_or_higher = duomo_florence_03
-						has_building_or_higher = duomo_florence_04
-						has_building_or_higher = pam_lateran_basilica_01
-						has_building_or_higher = holy_site_st_peters_basilica_01
-						has_building_or_higher = mont_st_michel_01
-						has_building_or_higher = mont_st_michel_02
-					}
-				}
-			}
-		}
-		texture = "gfx/interface/illustrations/event_scenes/pam_romanesque_church_exterior.dds"
-		environment = "environment_pam_romanesque_church_exterior"
-		ambience = "event:/DLC/CE3/SFX/Events/romanesque_church_exterior" #AUDIO CE3
-	}
-	background = { #Western Romanesque church
-		trigger = {
-			scope:activity ?= {
-				activity_location = {
-					OR = {
-						has_building_or_higher = holy_site_canterbury_cathedral_01
 						has_building_or_higher = temple_of_uppsala_02
+						has_building_or_higher = lund_cathedral_01
+						has_building_or_higher = holy_site_basilica_santiago_01
+						has_building_or_higher = cluny_abbey_01
 						has_building_or_higher = wawel_cathedral_01
+						has_building_or_higher = duomo_florence_01
 					}
 				}
 			}
@@ -1128,21 +1086,6 @@
 		texture = "gfx/interface/illustrations/event_scenes/ep2_holysite_western.dds"
 		environment = "environment_western_holy_site"
 		ambience = "event:/SFX/Events/Backgrounds/temple_christian"
-	}
-	background = {  #Pre-Romanesque Western
-		trigger = {
-			scope:activity ?= {
-				activity_location = {
-					OR = {
-						has_building_or_higher = pam_abbey_of_st_gall_01
-						has_building_or_higher = cluny_abbey_01
-					}
-				}
-			}
-		}
-		texture = "gfx/interface/illustrations/event_scenes/pam_pre-romanesque_church_exterior.dds"
-		environment = "environment_pam_preromanesque_church_exterior"
-		ambience = "event:/DLC/CE3/SFX/Events/pre-romanesque_church_exterior" #AUDIO CE3
 	}
 	background = {
 		trigger = {
@@ -1271,7 +1214,7 @@
 		}
 		texture = "gfx/interface/illustrations/event_scenes/fp4_legendary_oasis.dds"
 		environment = "environment_ce1_legendary_oasis"
-		ambience = "event:/SFX/Events/Backgrounds/FP4/fp4_magic_spring"
+		ambience = "event:/DLC/FP4/MUSIC/Stingers/mx_stinger_legends_lvl_03"
 	}
 
 	# Nordic
@@ -1297,8 +1240,9 @@
 						culture = { has_graphical_steppe_culture_group_trigger = yes }
 					}
 					OR = {
-						government_has_flag = government_is_in_steppe
+						government_has_flag = government_is_nomadic
 						government_has_flag = government_is_tribal
+						government_has_flag = government_is_herder
 					}
 				}
 			}

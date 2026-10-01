@@ -29,12 +29,11 @@
 
 #Sets potential friend + opinion or upgrades potential friend to full friend
 progress_towards_friend_effect = {
-	$CHARACTER$ = { save_scope_as = target_char }
 	#If potential friend, set friend!
 	if = {
 		limit = {
-			has_relation_potential_friend = scope:target_char
-			can_set_relation_friend_trigger = { CHARACTER = scope:target_char }
+			has_relation_potential_friend = $CHARACTER$
+			can_set_relation_friend_trigger = { CHARACTER = $CHARACTER$ }
 		}
 		if = {
 			limit = {
@@ -43,23 +42,23 @@ progress_towards_friend_effect = {
 			}
 			set_relation_friend = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 				involved_character = scope:relationship_reason_involved_character 
 				province = scope:relationship_reason_province 
 			}
 			if = {
 				limit = {
-					involved_activity ?= {
+					this.involved_activity ?= {
 						has_activity_type = activity_playdate
 					}
 				}
-				involved_activity = {
+				this.involved_activity ?= {
 					add_activity_log_entry = {
 						key = activity_generic_friend_log
 						tags = { good }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -70,7 +69,7 @@ progress_towards_friend_effect = {
 			}
 			set_relation_friend = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 				province = scope:relationship_reason_province 
 			}
 			if = {
@@ -85,7 +84,7 @@ progress_towards_friend_effect = {
 						tags = { good }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -96,7 +95,7 @@ progress_towards_friend_effect = {
 			}
 			set_relation_friend = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 				involved_character = scope:relationship_reason_involved_character 
 			}
 			if = {
@@ -111,7 +110,7 @@ progress_towards_friend_effect = {
 						tags = { good }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -119,7 +118,7 @@ progress_towards_friend_effect = {
 		else = {
 			set_relation_friend = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 			}
 			if = {
 				limit = {
@@ -133,7 +132,7 @@ progress_towards_friend_effect = {
 						tags = { good }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -143,13 +142,13 @@ progress_towards_friend_effect = {
 			limit = {
 				exists = involved_activity
 				has_activity_intent = befriend_attendee_intent
-				intent_target ?= scope:target_char
+				intent_target ?= $CHARACTER$
 				intent_target.involved_activity ?= this.involved_activity
 			}	
 			save_scope_as = intent_completer
 			send_interface_toast = {
 				title = activity_intent_complete_toast
-				left_icon = scope:target_char 
+				left_icon = $CHARACTER$ 
 				complete_activity_intent = yes
 			}
 		}
@@ -159,13 +158,13 @@ progress_towards_friend_effect = {
 		# ... set potential relation if we're not already friends!
 		if = {
 			limit = {
-				can_set_relation_potential_friend_trigger = { CHARACTER = scope:target_char }
+				can_set_relation_potential_friend_trigger = { CHARACTER = $CHARACTER$ }
 				trigger_if = {
 					limit = {
 						is_ai = yes
-						scope:target_char = { is_ai = yes }
+						$CHARACTER$ = { is_ai = yes }
 					}
-					scope:target_char = {
+					$CHARACTER$ = {
 						opinion = {
 							target = prev
 							value >= -25
@@ -176,7 +175,7 @@ progress_towards_friend_effect = {
 					always = yes
 				}
 			}
-			set_relation_potential_friend = scope:target_char
+			set_relation_potential_friend = $CHARACTER$
 		}
 
 		# ... add opinion if we should!
@@ -185,19 +184,18 @@ progress_towards_friend_effect = {
 			value = $OPINION$
 		}
 		if = {
-			limit = { scope:friend_opinion != 0 }
-			if = {
-				limit = { scope:target_char = { is_ai = yes } }
-				reverse_add_opinion = {
-					target = scope:target_char
+			limit = { NOT = { scope:friend_opinion = 0 } }
+			reverse_add_opinion = {
+				target = $CHARACTER$
+				modifier = friendliness_opinion
+				opinion = scope:friend_opinion
+			}
+			hidden_effect = {
+				add_opinion = {
+					target = $CHARACTER$
 					modifier = friendliness_opinion
 					opinion = scope:friend_opinion
 				}
-			}
-			add_opinion = {
-				target = scope:target_char
-				modifier = friendliness_opinion
-				opinion = scope:friend_opinion
 			}
 		}
 	}
@@ -205,29 +203,30 @@ progress_towards_friend_effect = {
 
 #Sets potential rival + opinion or upgrades potential rival to full rival
 progress_towards_rival_effect = {
-	$CHARACTER$ = { save_scope_as = target_char }
 	# Do we merit an actual rivalry?
 	if = {
 		limit = {
 			# We don't care between low-tier chars.
-			scope:target_char = { highest_held_title_tier > tier_barony }
+			NOT = {
+				$CHARACTER$ = { highest_held_title_tier <= tier_barony }
+			}
 			# Are they low-tier themselves or more than two tiers below the target?
 			OR = {
 				highest_held_title_tier <= tier_barony
 				highest_held_title_tier <= {
-					value = scope:target_char.highest_held_title_tier
+					value = $CHARACTER$.highest_held_title_tier
 					subtract = 3
 				}
 			}
 			# If they are then they must...
 			NOR = {
 				# ... be related to the target...
-				is_close_or_extended_family_of = scope:target_char
-				is_consort_of = scope:target_char
+				is_close_or_extended_family_of = $CHARACTER$
+				is_consort_of = $CHARACTER$
 				# ... or be heir to someone within social spitting distance of the target.
 				any_heir_title = {
 					tier >= {
-						value = scope:target_char.highest_held_title_tier
+						value = $CHARACTER$.highest_held_title_tier
 						# So if they're feuding with an emperor, then they must be heir to at least a duchy.
 						subtract = 2
 					}
@@ -237,7 +236,7 @@ progress_towards_rival_effect = {
 		# Now, set grudge if we could already set it.
 		if = {
 			limit = {
-				NOT = { has_relation_grudge = scope:target_char }
+				NOT = { has_relation_grudge = $CHARACTER$ }
 			}
 			if = {
 				limit = {
@@ -246,7 +245,7 @@ progress_towards_rival_effect = {
 				}
 				set_relation_grudge = {
 					reason = $REASON$
-					target = scope:target_char
+					target = $CHARACTER$
 					involved_character = scope:relationship_reason_involved_character
 					province = scope:relationship_reason_province
 				}
@@ -257,7 +256,7 @@ progress_towards_rival_effect = {
 				}
 				set_relation_grudge = {
 					reason = $REASON$
-					target = scope:target_char
+					target = $CHARACTER$
 					province = scope:relationship_reason_province
 				}
 			}
@@ -267,21 +266,21 @@ progress_towards_rival_effect = {
 				}
 				set_relation_grudge = {
 					reason = $REASON$
-					target = scope:target_char
+					target = $CHARACTER$
 					involved_character = scope:relationship_reason_involved_character
 				}
 			}
 			else = {
 				set_relation_grudge = {
 					reason = $REASON$
-					target = scope:target_char
+					target = $CHARACTER$
 				}
 			}
 		}
 		# Otherwise, increment raw opinion.
 		else = {
 			add_opinion = {
-				target = scope:target_char
+				target = $CHARACTER$
 				modifier = grudge_opinion
 				opinion = -20
 			}
@@ -290,8 +289,8 @@ progress_towards_rival_effect = {
 	#If potential rival, set rival!
 	else_if = {
 		limit = {
-			has_relation_potential_rival = scope:target_char
-			can_set_relation_rival_trigger = { CHARACTER = scope:target_char }
+			has_relation_potential_rival = $CHARACTER$
+			can_set_relation_rival_trigger = { CHARACTER = $CHARACTER$ }
 		}
 		if = {
 			limit = {
@@ -300,7 +299,7 @@ progress_towards_rival_effect = {
 			}
 			set_relation_rival = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 				involved_character = scope:relationship_reason_involved_character 
 				province = scope:relationship_reason_province 
 			}
@@ -316,7 +315,7 @@ progress_towards_rival_effect = {
 						tags = { bad }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -327,7 +326,7 @@ progress_towards_rival_effect = {
 			}
 			set_relation_rival = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 				province = scope:relationship_reason_province 
 			}
 			if = {
@@ -342,7 +341,7 @@ progress_towards_rival_effect = {
 						tags = { bad }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -353,7 +352,7 @@ progress_towards_rival_effect = {
 			}
 			set_relation_rival = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 				involved_character = scope:relationship_reason_involved_character 
 			}
 			if = {
@@ -368,7 +367,7 @@ progress_towards_rival_effect = {
 						tags = { bad }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -376,7 +375,7 @@ progress_towards_rival_effect = {
 		else = {
 			set_relation_rival = { 
 				reason = $REASON$ 
-				target = scope:target_char 
+				target = $CHARACTER$ 
 			}
 			if = {
 				limit = {
@@ -390,7 +389,7 @@ progress_towards_rival_effect = {
 						tags = { bad }
 						score = 10
 						character = prev
-						target = scope:target_char
+						target = $CHARACTER$
 					}
 				}
 			}
@@ -400,8 +399,8 @@ progress_towards_rival_effect = {
 	else = {
 		# ... set potential relation if we're not already rivals!
 		if = {
-			limit = { can_set_relation_potential_rival_trigger = { CHARACTER = scope:target_char } }
-			set_relation_potential_rival = scope:target_char
+			limit = { can_set_relation_potential_rival_trigger = { CHARACTER = $CHARACTER$ } }
+			set_relation_potential_rival = $CHARACTER$
 		}
 		
 		# ... add opinion if we should!
@@ -413,16 +412,16 @@ progress_towards_rival_effect = {
 			limit = { NOT = { scope:rival_opinion = 0 } }
 			if = {
 				limit = {
-					scope:target_char = { is_ai = yes }
+					$CHARACTER$ = { is_ai = yes }
 				}
 				reverse_add_opinion = {
-					target = scope:target_char
+					target = $CHARACTER$
 					modifier = hate_opinion
 					opinion = scope:rival_opinion
 				}
 			}
 			add_opinion = {
-				target = scope:target_char
+				target = $CHARACTER$
 				modifier = hate_opinion
 				opinion = scope:rival_opinion
 			}

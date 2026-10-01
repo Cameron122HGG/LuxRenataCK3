@@ -37,7 +37,11 @@ spawn_celestial_governance_contract_on_action = {
 
 spawn_celestial_civic_governance_contract_on_action = {
 	trigger = {
-		vassal_contract_has_flag = province_civilian
+		OR = { # Must have a civilian administration
+			vassal_contract_has_flag = celestial_province_metropolitan
+			vassal_contract_has_flag = celestial_province_standard
+			vassal_contract_has_flag = celestial_province_industrial
+		}
 	}
 	
 	# Select a random eligible contract to create
@@ -783,7 +787,7 @@ ep3_public_land = {
 			any_county_province = {
 				any_province_domicile = {
 					owner = scope:governor
-					domicile_is_estate_trigger = yes
+					is_domicile_type = estate
 				}
 			}
 		}
@@ -798,7 +802,7 @@ ep3_public_land = {
 			any_sub_realm_county = {
 				any_county_province = {
 					any_province_domicile = {
-						domicile_is_estate_trigger = yes
+						is_domicile_type = estate
 						owner = {
 							this != scope:governor
 							is_ai = yes
@@ -816,7 +820,7 @@ ep3_public_land = {
 			limit = {
 				any_county_province = {
 					any_province_domicile = {
-						domicile_is_estate_trigger = yes
+						is_domicile_type = estate
 						owner = {
 							this != scope:governor
 							is_ai = yes
@@ -828,7 +832,7 @@ ep3_public_land = {
 			random_county_province = {
 				limit = {
 					any_province_domicile = {
-						domicile_is_estate_trigger = yes
+						is_domicile_type = estate
 						owner = {
 							this != scope:governor
 							is_ai = yes
@@ -842,7 +846,7 @@ ep3_public_land = {
 			scope:target_province ?= {
 				random_province_domicile = {
 					limit = {
-						domicile_is_estate_trigger = yes
+						is_domicile_type = estate
 						owner = {
 							this != scope:governor
 							is_ai = yes
@@ -950,8 +954,12 @@ ep3_mad_prophet = {
 ep3_titles_sale = {
 	trigger = {
 		NOT = { has_character_flag = task_contract_cooldown_titles_sale }
-		faith = { NOT = { has_doctrine = doctrine_temporal_head } }
-		rite = { NOT = { rite_has_doctrine = doctrine_theocracy_lay_clergy } }
+		faith = {
+			NOR = {
+				has_doctrine = doctrine_theocracy_lay_clergy
+				has_doctrine = doctrine_temporal_head
+			}
+		}
 	}
 	
 	effect = {

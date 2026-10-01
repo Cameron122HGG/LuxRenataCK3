@@ -23,22 +23,18 @@ on_player_select_destiny_setup = {
 			value = flag:hard_difficulty_destiny_character
 		}
 
-		root.dynasty ?= {
+		root.dynasty = {
 			every_dynasty_member = {
 				limit = {
 					is_alive = yes
 					NOR = {
-						is_incapable = yes
+						has_trait = incapable
 						health <= 2.5
 						is_hostage = yes
 						this = root
 						this = scope:heir
 						government_has_flag = government_is_republic
-					}
-					# Theocratic governments are only playable with PAM
-					trigger_if = {
-						limit = { has_pam_dlc_trigger = no }
-						NOT = { government_has_flag = government_is_theocracy }
+						government_has_flag = government_is_theocracy
 					}
 					trigger_if = {
 						limit = {
@@ -65,17 +61,11 @@ on_player_select_destiny_setup = {
 			limit = {
 				any_relation = {
 					type = favorite_child
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					NOR = {
 						has_trait = incapable
 						government_has_flag = government_is_republic
-					}
-					trigger_if = {
-						limit = { has_pam_dlc_trigger = no }
-						NOT = { government_has_flag = government_is_theocracy }
+						government_has_flag = government_is_theocracy
 					}
 					highest_held_title_tier >= tier_county
 					primary_title = {
@@ -93,20 +83,14 @@ on_player_select_destiny_setup = {
 			limit = {
 				any_in_list = {
 					list = destiny_candidates
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 150
 				}
 			}
 			ordered_in_list = {
 				list = destiny_candidates
 				limit = {
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 150
 				}
 				order_by = {
@@ -120,20 +104,14 @@ on_player_select_destiny_setup = {
 			limit = {
 				any_in_list = {
 					list = destiny_candidates
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 500
 				}
 			}
 			ordered_in_list = {
 				list = destiny_candidates
 				limit = {
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 500
 				}
 				order_by = {
@@ -176,10 +154,7 @@ on_player_select_destiny_setup = {
 				}
 				any_in_list = {
 					list = destiny_candidates
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					is_adult = yes
 					character_difficulty_value <= 300
 					character_difficulty_value > 150
@@ -192,10 +167,7 @@ on_player_select_destiny_setup = {
 			ordered_in_list = {
 				list = destiny_candidates
 				limit = {
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					is_adult = yes
 					character_difficulty_value <= 300
 					character_difficulty_value > 150
@@ -218,10 +190,7 @@ on_player_select_destiny_setup = {
 				}
 				any_in_list = {
 					list = destiny_candidates
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 300
 					character_difficulty_value > 150
 					NAND = {
@@ -233,10 +202,7 @@ on_player_select_destiny_setup = {
 			ordered_in_list = {
 				list = destiny_candidates
 				limit = {
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 300
 					character_difficulty_value > 150
 					NAND = {
@@ -255,10 +221,7 @@ on_player_select_destiny_setup = {
 			limit = {
 				any_in_list = {
 					list = destiny_candidates
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					is_adult = yes
 					character_difficulty_value <= 300
 					NAND = {
@@ -270,10 +233,7 @@ on_player_select_destiny_setup = {
 			ordered_in_list = {
 				list = destiny_candidates
 				limit = {
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					is_adult = yes
 					character_difficulty_value <= 300
 					NAND = {
@@ -292,10 +252,7 @@ on_player_select_destiny_setup = {
 			limit = {
 				any_in_list = {
 					list = destiny_candidates
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 300
 					NAND = {
 						exists = scope:interesting_destiny_character
@@ -306,10 +263,7 @@ on_player_select_destiny_setup = {
 			ordered_in_list = {
 				list = destiny_candidates
 				limit = {
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 300
 					NAND = {
 						exists = scope:interesting_destiny_character
@@ -328,10 +282,7 @@ on_player_select_destiny_setup = {
 				any_in_list = {
 					list = destiny_candidates
 					is_adult = yes
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 500
 					NAND = {
 						exists = scope:interesting_destiny_character
@@ -343,10 +294,7 @@ on_player_select_destiny_setup = {
 				list = destiny_candidates
 				limit = {
 					is_adult = yes
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 300
 					NAND = {
 						exists = scope:interesting_destiny_character
@@ -364,10 +312,7 @@ on_player_select_destiny_setup = {
 			limit = {
 				any_in_list = {
 					list = destiny_candidates
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 500
 					NAND = {
 						exists = scope:interesting_destiny_character
@@ -378,10 +323,7 @@ on_player_select_destiny_setup = {
 			ordered_in_list = {
 				list = destiny_candidates
 				limit = {
-					OR = {
-						is_landed = yes
-						pam_landless_playable_cleric_trigger = yes
-					}
+					is_landed = yes
 					character_difficulty_value <= 500
 					NAND = {
 						exists = scope:interesting_destiny_character
@@ -409,14 +351,10 @@ on_player_select_destiny_setup = {
 								is_adult = yes
 							}
 							government_has_flag = government_is_landless_adventurer
-							pam_landless_playable_cleric_trigger = yes
 						}
 					}
 					trigger_else = {
-						OR = {
-							is_landed = yes
-							pam_landless_playable_cleric_trigger = yes
-						}
+						is_landed = yes
 					}
 					character_difficulty_value <= 500
 					NAND = {
@@ -478,14 +416,10 @@ on_player_select_destiny_setup = {
 								is_adult = yes
 							}
 							government_has_flag = government_is_landless_adventurer
-							pam_landless_playable_cleric_trigger = yes
 						}
 					}
 					trigger_else = {
-						OR = {
-							is_landed = yes
-							pam_landless_playable_cleric_trigger = yes
-						}
+						is_landed = yes
 					}
 					character_difficulty_value <= 500
 					NOR = {
@@ -497,68 +431,6 @@ on_player_select_destiny_setup = {
 							exists = scope:favorite_destiny_character
 							this = scope:favorite_destiny_character
 						}
-					}
-				}
-				order_by = {
-					value = 1
-					add = destiny_score_interest
-				}
-				save_scope_as = hard_difficulty_destiny_character
-			}
-		}
-
-		# If every choice above is a cleric, the third option becomes the most interesting secular candidate
-		if = {
-			limit = {
-				has_pam_dlc_trigger = yes
-				scope:predecessor = { pam_government_is_religious_playable_trigger = yes }
-				NOR = {
-					scope:interesting_destiny_character ?= { pam_government_is_religious_playable_trigger = no }
-					scope:favorite_destiny_character ?= { pam_government_is_religious_playable_trigger = no }
-					scope:hard_difficulty_destiny_character ?= { pam_government_is_religious_playable_trigger = no }
-				}
-				any_in_list = {
-					list = destiny_candidates
-					pam_government_is_religious_playable_trigger = no
-					character_difficulty_value <= 500
-					trigger_if = {
-						limit = {
-							has_dlc_feature = roads_to_power
-						}
-						OR = {
-							is_landed = yes
-							AND = {
-								is_ruler = no
-								is_adult = yes
-							}
-							government_has_flag = government_is_landless_adventurer
-						}
-					}
-					trigger_else = {
-						is_landed = yes
-					}
-				}
-			}
-			ordered_in_list = {
-				list = destiny_candidates
-				limit = {
-					pam_government_is_religious_playable_trigger = no
-					character_difficulty_value <= 500
-					trigger_if = {
-						limit = {
-							has_dlc_feature = roads_to_power
-						}
-						OR = {
-							is_landed = yes
-							AND = {
-								is_ruler = no
-								is_adult = yes
-							}
-							government_has_flag = government_is_landless_adventurer
-						}
-					}
-					trigger_else = {
-						is_landed = yes
 					}
 				}
 				order_by = {
@@ -621,7 +493,6 @@ on_player_select_destiny_setup = {
 								is_adult = yes
 							}
 							government_has_flag = government_is_landless_adventurer
-							pam_landless_playable_cleric_trigger = yes
 						}
 					}
 					weight = {
@@ -642,10 +513,7 @@ on_player_select_destiny_setup = {
 					list = destiny_candidates
 					limit = {
 						character_difficulty_value <= 500
-						OR = {
-							is_landed = yes
-							pam_landless_playable_cleric_trigger = yes
-						}
+						is_landed = yes
 					}
 					weight = {
 						base = 300
@@ -679,7 +547,6 @@ on_player_select_destiny_setup = {
 								is_adult = yes
 							}
 							government_has_flag = government_is_landless_adventurer
-							pam_landless_playable_cleric_trigger = yes
 						}
 						OR = {
 							is_child_of = root
@@ -705,10 +572,7 @@ on_player_select_destiny_setup = {
 					list = destiny_candidates
 					limit = {
 						character_difficulty_value <= 500
-						OR = {
-							is_landed = yes
-							pam_landless_playable_cleric_trigger = yes
-						}
+						is_landed = yes
 						OR = {
 							is_child_of = root
 							is_grandchild_of = root
@@ -747,7 +611,6 @@ on_player_select_destiny_setup = {
 								is_adult = yes
 							}
 							government_has_flag = government_is_landless_adventurer
-							pam_landless_playable_cleric_trigger = yes
 						}
 						is_close_family_of = root
 					}
@@ -769,10 +632,7 @@ on_player_select_destiny_setup = {
 					list = destiny_candidates
 					limit = {
 						character_difficulty_value <= 500
-						OR = {
-							is_landed = yes
-							pam_landless_playable_cleric_trigger = yes
-						}
+						is_landed = yes
 						is_close_family_of = root
 					}
 					weight = {
@@ -807,7 +667,6 @@ on_player_select_destiny_setup = {
 								is_adult = yes
 							}
 							government_has_flag = government_is_landless_adventurer
-							pam_landless_playable_cleric_trigger = yes
 						}
 						is_close_or_extended_family_of = root
 					}
@@ -829,10 +688,7 @@ on_player_select_destiny_setup = {
 					list = destiny_candidates
 					limit = {
 						character_difficulty_value <= 500
-						OR = {
-							is_landed = yes
-							pam_landless_playable_cleric_trigger = yes
-						}
+						is_landed = yes
 						is_close_or_extended_family_of = root
 					}
 					weight = {
@@ -964,7 +820,7 @@ on_player_select_destiny_confirmed = {
 		if = {
 			limit = {
 				is_landed = yes
-				highest_held_title_tier >= tier_empire
+				highest_held_title_tier = tier_empire
 			}
 			add_achievement_global_variable_effect = {
 				VARIABLE = rags_to_riches_to_rags_to_riches_first_empire
@@ -975,7 +831,7 @@ on_player_select_destiny_confirmed = {
 			limit = {
 				is_ai = no
 				is_landed = yes
-				highest_held_title_tier >= tier_empire
+				highest_held_title_tier = tier_empire
 				exists = global_var:rags_to_riches_to_rags_to_riches_adventurer
 			}
 			add_achievement_global_variable_effect = {

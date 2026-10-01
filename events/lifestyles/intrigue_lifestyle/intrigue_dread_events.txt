@@ -104,7 +104,7 @@ intrigue_dread_special.1101 = {
 			id = intrigue_dread_special.1102
 			days = { 6 12 }
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -126,7 +126,7 @@ intrigue_dread_special.1101 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			diligent = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -144,7 +144,7 @@ intrigue_dread_special.1101 = {
 	option = { #No. This is beneath me.
 		name = intrigue_dread_special.1101.c
 		add_prestige = medium_prestige_gain
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
 			arrogant = minor_stress_impact_loss
@@ -228,7 +228,7 @@ intrigue_dread_special.1102 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			lazy = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -288,7 +288,7 @@ intrigue_dread_special.1102 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -312,7 +312,7 @@ intrigue_dread_special.1102 = {
 				add = 1
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_impact_gain
 			impatient = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
@@ -393,7 +393,7 @@ intrigue_dread_special.1103 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -447,7 +447,7 @@ intrigue_dread_special.1103 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			impatient = minor_stress_impact_gain
 			wrathful = minor_stress_impact_gain
 		}
@@ -471,7 +471,7 @@ intrigue_dread_special.1103 = {
 				add = 1
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 		}
@@ -603,7 +603,7 @@ intrigue_dread_special.1199 = {
 		add_intrigue_lifestyle_xp = medium_lifestyle_xp
 		add_dread = minor_dread_gain
 		trigger_event = intrigue_dread_special.1197
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
 			patient = minor_stress_impact_gain
@@ -621,7 +621,7 @@ intrigue_dread_special.1199 = {
 				years = 5
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_gain
 			callous = minor_stress_impact_gain
 			paranoid = minor_stress_impact_gain
@@ -679,7 +679,7 @@ intrigue_dread_special.1198 = {
 
 	option = {
 		name = intrigue_dread_special.1198.a
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = medium_stress_impact_loss
 		}
 	}
@@ -869,7 +869,7 @@ intrigue_dread_special.1301 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			vengeful = minor_stress_impact_gain
 			paranoid = minor_stress_impact_gain
 			sadistic = minor_stress_impact_gain
@@ -902,7 +902,7 @@ intrigue_dread_special.1301 = {
 				target = root
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			just = minor_stress_impact_gain
 			temperate = minor_stress_impact_gain
@@ -976,7 +976,6 @@ intrigue_dread.1501 = {
 				employer = root
 				gender_female_chance = root_attraction_based_female_chance
 				faith = root.faith
-				rite = root.rite
 				culture = root.culture
 				save_scope_as = cannibal_cook
 				after_creation = {
@@ -1055,7 +1054,7 @@ intrigue_dread.1501 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			trusting = minor_stress_impact_gain
 			content = minor_stress_impact_gain
 		}
@@ -1082,7 +1081,7 @@ intrigue_dread.1501 = {
 				silent_disappearance_ai_effect = yes
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			paranoid = medium_stress_impact_gain
 			trusting = medium_stress_impact_loss
 		}
@@ -1100,25 +1099,22 @@ intrigue_dread.1501 = {
 
 	after = {
 		hidden_effect = {
-			scope:cannibal_cook ?= {
-				if = {
-					limit = { is_alive = yes }
-					if = { # To make sure the cook can get the secret
-						limit = {
-							has_trait = cannibal
-						}
-						remove_trait = cannibal
+			scope:cannibal_cook = {
+				if = { # To make sure the cook can get the secret
+					limit = {
+						has_trait = cannibal
 					}
-					if = {
-						limit = {
-							NOT = {
-								any_secret = {
-									type = secret_cannibal
-								}
+					remove_trait = cannibal
+				}
+				if = {
+					limit = {
+						NOT = {
+							any_secret = {
+								type = secret_cannibal
 							}
 						}
-						give_cannibal_secret_or_trait_effect = yes
 					}
+					give_cannibal_secret_or_trait_effect = yes
 				}
 			}
 		}
@@ -1199,7 +1195,7 @@ intrigue_dread.1502 = {
 			modifier = ate_good_meal
 			days = 365
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = major_stress_gain
 			trusting = minor_stress_impact_gain
 			content = minor_stress_impact_gain
@@ -1353,7 +1349,7 @@ intrigue_dread.1801 = {
 			modifier = intrigue_poison_experimentation_modifier
 			days = 3650
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -1408,7 +1404,7 @@ intrigue_dread.1801 = {
 			modifier = respect_opinion
 			opinion = -15
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = major_stress_impact_gain
 		}
 		ai_chance = {
@@ -1865,7 +1861,7 @@ intrigue_dread.4001 = {
 		# Terminates the event chain for now, but gives this a higher chance to re-appear later.
 		add_character_flag = intrigue_dread_4001_delayed
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			impatient = minor_stress_impact_gain
 		}
 	}
@@ -1912,7 +1908,7 @@ intrigue_dread.4002 = {
 			flag = completed_event_intrigue_dread_4001
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = massive_stress_impact_gain
 			deceitful = medium_stress_impact_gain
 			shy = medium_stress_impact_gain
@@ -1946,7 +1942,7 @@ intrigue_dread.4002 = {
 			flag = completed_event_intrigue_dread_4001
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = massive_stress_impact_gain
 			gregarious = medium_stress_impact_gain
 			impatient = minor_stress_impact_gain
@@ -2017,7 +2013,7 @@ intrigue_dread.4002 = {
 			add_character_flag = intrigue_dread_4001_was_victim_flag
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			impatient = minor_stress_impact_gain
 		}
 	}
@@ -2238,7 +2234,7 @@ intrigue_dread.4004 = {
 			target = scope:victim
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			forgiving = minor_stress_impact_gain
 			just = minor_stress_impact_gain
@@ -2395,7 +2391,7 @@ intrigue_dread.4005 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			just = minor_stress_impact_gain
 			forgiving = minor_stress_impact_gain
@@ -2442,7 +2438,7 @@ intrigue_dread.4006 = {
 
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			just = minor_stress_impact_gain
 			forgiving = minor_stress_impact_gain
@@ -2474,7 +2470,7 @@ intrigue_dread.4006 = {
 		}
 
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			just = minor_stress_impact_gain
 			forgiving = minor_stress_impact_gain
@@ -2900,7 +2896,7 @@ intrigue_dread.4100 = {
 	lower_right_portrait = scope:scoped_chancellor
 
 	trigger = {
-		is_landed_or_landless_administrative_or_theocratic = yes
+		is_landed_or_landless_administrative = yes
 		is_available = yes
 		NOT = { has_character_flag = had_event_intrigue_dread_4100 }
 		any_vassal = {
@@ -3085,7 +3081,7 @@ intrigue_dread.4100 = {
 				change_county_control = medium_county_control_gain
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 			just = minor_stress_impact_gain
 		}
@@ -3110,7 +3106,7 @@ intrigue_dread.4100 = {
 				opinion = -30
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 			just = minor_stress_impact_gain
 		}
@@ -3163,13 +3159,13 @@ intrigue_dread.4100 = {
 				hidden_effect = {
 					scope:petitioner_1 = {
 						add_prestige = major_prestige_loss
-						stress_and_fulfillment_impact = {
+						stress_impact = {
 							base = minor_stress_impact_gain
 						}
 					}
 					scope:petitioner_2 = {
 						add_prestige = major_prestige_loss
-						stress_and_fulfillment_impact = {
+						stress_impact = {
 							base = minor_stress_impact_gain
 						}
 					}
@@ -3202,13 +3198,13 @@ intrigue_dread.4100 = {
 						opinion = low_negative_opinion
 					}
 					add_intrigue_lifestyle_xp = minor_lifestyle_xp
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						base = minor_stress_impact_gain
 					}
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			diligent = minor_stress_impact_gain
 			generous = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
@@ -3267,7 +3263,7 @@ intrigue_dread.4100 = {
 			}
 		}
 		trigger_event = intrigue_dread.4102 # Decide whom to support.
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_gain
 			diligent = minor_stress_impact_loss
 			compassionate = minor_stress_impact_loss
@@ -3312,7 +3308,7 @@ intrigue_dread.4100 = {
 				change_county_control = minor_county_control_loss
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_impact_loss
 		}
 	}
@@ -3546,7 +3542,7 @@ intrigue_dread.4200 = {
 	}
 
 	trigger = {
-		is_landed_or_landless_administrative_or_theocratic = yes
+		is_landed_or_landless_administrative = yes
 		is_available = yes
 		trigger_if = {
 			limit = {
@@ -3695,7 +3691,7 @@ intrigue_dread.4200 = {
 		}
 		add_intrigue_lifestyle_xp = medium_lifestyle_xp
 		trigger_event = { id = intrigue_dread.4201 days = 10 }
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
 			just = medium_stress_impact_gain
@@ -3719,7 +3715,7 @@ intrigue_dread.4200 = {
 		add_dread = medium_dread_gain
 		add_intrigue_lifestyle_xp = minor_lifestyle_xp
 		trigger_event = { id = intrigue_dread.4201 days = 10 }
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
 			just = medium_stress_impact_gain
@@ -3752,7 +3748,7 @@ intrigue_dread.4200 = {
 		add_legitimacy = miniscule_legitimacy_loss
 		add_intrigue_lifestyle_xp = medium_lifestyle_xp
 		trigger_event = { id = intrigue_dread.4201 days = 10 }
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
 			just = medium_stress_impact_gain
@@ -3783,7 +3779,7 @@ intrigue_dread.4200 = {
 		add_legitimacy = minor_legitimacy_loss
 		add_intrigue_lifestyle_xp = major_lifestyle_xp
 		trigger_event = { id = intrigue_dread.4201 days = 10 }
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
 			just = medium_stress_impact_gain
@@ -3795,7 +3791,7 @@ intrigue_dread.4200 = {
 	option = { # Cancel the idea
 		name = intrigue_dread.4200.e
 		add_piety = minor_piety_gain
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = medium_stress_impact_gain
 		}
 	}
@@ -4030,7 +4026,7 @@ intrigue_dread.2001 = {
 			modifier = scared_opinion
 			opinion = -50
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			deceitful = medium_stress_impact_gain
 			paranoid = major_stress_impact_gain
 			compassionate = medium_stress_impact_gain
@@ -4107,7 +4103,7 @@ intrigue_dread.2001 = {
 					}
 					else_if = {
 						limit = {
-							can_set_relation_lover_trigger = { CHARACTER = scope:loved_one }
+							NOT = { any_relation = { type = lover this = scope:loved_one } }
 						}
 						set_relation_lover = { reason = lover_dreadful_for_me target = scope:loved_one }
 					}
@@ -4176,7 +4172,7 @@ intrigue_dread.2001 = {
 			}
 		}
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = medium_stress_impact_gain
 			callous = medium_stress_impact_gain
 			deceitful = medium_stress_impact_gain
@@ -4279,7 +4275,7 @@ intrigue_dread.2001 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			content = medium_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 		}
@@ -4594,7 +4590,7 @@ intrigue_dread.2001 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = medium_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 		}
@@ -4694,7 +4690,7 @@ intrigue_dread.2001 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_gain
 			vengeful = medium_stress_impact_gain
 		}
@@ -4798,7 +4794,7 @@ intrigue_dread.2001 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			calm = major_stress_impact_gain
 			just = medium_stress_impact_gain
 			content = medium_stress_impact_gain
@@ -4862,7 +4858,7 @@ intrigue_dread.2001 = {
 			set_relation_potential_rival = scope:family_member
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = medium_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 			trusting = medium_stress_impact_gain
@@ -4912,7 +4908,7 @@ intrigue_dread.2201 = {
 	}
 	
 	trigger = {
-		is_landed_or_landless_administrative_or_theocratic = yes
+		is_landed_or_landless_administrative = yes
 		is_available_healthy_adult = yes
 		any_councillor = {
 			has_dread_level_towards = {
@@ -5047,7 +5043,7 @@ intrigue_dread.2201 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			just = medium_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 		}
@@ -5147,7 +5143,7 @@ intrigue_dread.2201 = {
 		}
 		
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			patient = medium_stress_impact_gain
 			content = medium_stress_impact_gain
 			lazy = major_stress_impact_gain
@@ -5332,7 +5328,7 @@ intrigue_dread.2201 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			content = medium_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 		}
@@ -5510,7 +5506,7 @@ intrigue_dread.2301 = {
 			MURDERER = root
 			EXPOSER = root
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			calm = major_stress_impact_gain
 			patient = major_stress_impact_gain
@@ -5545,7 +5541,7 @@ intrigue_dread.2301 = {
    			IMPRISONER = root
    		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_gain
 			just = medium_stress_impact_gain
 		}
@@ -5573,7 +5569,7 @@ intrigue_dread.2301 = {
 			days = 3650
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_gain
 			sadistic = medium_stress_impact_gain
 			arrogant = medium_stress_impact_gain
@@ -5620,7 +5616,7 @@ intrigue_dread.2301 = {
 			REASON = death_mysterious
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 			just = major_stress_impact_gain
 			forgiving = major_stress_impact_gain
@@ -5662,7 +5658,7 @@ intrigue_dread.2401 = {
 	}
 	
 	trigger = {
-		is_landed_or_landless_administrative_or_theocratic = yes
+		is_landed_or_landless_administrative = yes
 		trigger_if = {
 			limit = {
 				NOT = { has_focus = intrigue_intimidation_focus }
@@ -5751,7 +5747,7 @@ intrigue_dread.2401 = {
 				}
 			}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			content = medium_stress_impact_gain
 			compassionate = medium_stress_impact_gain
 			forgiving = medium_stress_impact_gain
@@ -5829,7 +5825,7 @@ intrigue_dread.2401 = {
 				}
 			}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arbitrary = medium_stress_impact_gain
 			lazy = medium_stress_impact_gain
 		}
@@ -5879,7 +5875,7 @@ intrigue_dread.2401 = {
 				days = 3650
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = medium_stress_impact_gain
 			just = medium_stress_impact_gain
 		}
@@ -5918,7 +5914,7 @@ intrigue_dread.2401 = {
 				days = 3650
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			vengeful = medium_stress_impact_gain
 			sadistic = medium_stress_impact_gain
 			diligent = medium_stress_impact_gain

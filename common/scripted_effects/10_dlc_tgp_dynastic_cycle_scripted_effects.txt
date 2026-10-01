@@ -120,7 +120,7 @@ tgp_claim_mandate_of_heaven_effect = {
 		# Become celestial
 		if = {
 			limit = {
-				NOT = { government_has_flag = government_is_celestial }
+				NOT = { has_government = celestial_government }
 			}
 			tgp_domicile_conversion_when_changing_government_type = {
 				NEW_DOMICILE_TYPE = east_asian_estate
@@ -197,7 +197,6 @@ tgp_claim_mandate_of_heaven_effect = {
 					template = tgp_minister_administrator_template
 					employer = scope:new_son_of_heaven
 					faith = scope:new_son_of_heaven.faith
-					rite = scope:new_son_of_heaven.rite
 					culture = scope:new_son_of_heaven.culture
 					save_scope_as = mandate_new_administrator_temp
 				}
@@ -209,7 +208,6 @@ tgp_claim_mandate_of_heaven_effect = {
 					template = tgp_minister_diplomat_template
 					employer = scope:new_son_of_heaven
 					faith = scope:new_son_of_heaven.faith
-					rite = scope:new_son_of_heaven.rite
 					culture = scope:new_son_of_heaven.culture
 					save_scope_as = mandate_new_diplomat_temp
 				}
@@ -221,7 +219,6 @@ tgp_claim_mandate_of_heaven_effect = {
 					template = tgp_minister_scholar_template
 					employer = scope:new_son_of_heaven
 					faith = scope:new_son_of_heaven.faith
-					rite = scope:new_son_of_heaven.rite
 					culture = scope:new_son_of_heaven.culture
 					save_scope_as = mandate_new_scholar_temp
 				}
@@ -233,7 +230,6 @@ tgp_claim_mandate_of_heaven_effect = {
 					template = tgp_minister_scholar_template
 					employer = scope:new_son_of_heaven
 					faith = scope:new_son_of_heaven.faith
-					rite = scope:new_son_of_heaven.rite
 					culture = scope:new_son_of_heaven.culture
 					save_scope_as = mandate_new_scholar_temp
 				}
@@ -245,7 +241,6 @@ tgp_claim_mandate_of_heaven_effect = {
 					template = tgp_minister_commander_template
 					employer = scope:new_son_of_heaven
 					faith = scope:new_son_of_heaven.faith
-					rite = scope:new_son_of_heaven.rite
 					culture = scope:new_son_of_heaven.culture
 					save_scope_as = mandate_new_commander_temp
 				}
@@ -323,6 +318,11 @@ tgp_claim_mandate_of_heaven_effect = {
 					target_is_de_jure_liege_or_above = title:h_china
 				}
 				NOT = {	government_has_flag = cannot_be_vassal_or_liege }
+				NOT = { 
+					primary_title = {
+						tier = tier_empire
+					}
+				}
 				OR = {
 					government_has_flag = government_is_celestial
 					culture = {
@@ -378,6 +378,16 @@ tgp_claim_mandate_of_heaven_effect = {
 		}
 		# Make sure ministers are assigned correctly
 		fill_the_ministry_effect = yes
+		if = {
+			limit = {
+				primary_title = {
+					has_custom_title_name = yes
+				}
+			}
+			trigger_event = {
+					id = tgp_dynastic_cycle.9002
+			}
+		}
 	}
 	situation:dynastic_cycle = {
 		if = {
@@ -468,6 +478,7 @@ tgp_chaos_shattering_effect = {
 					}
 				}
 			}
+			tgp_fire_china_realm_name_event_for_vassals_effect = yes
 			every_held_title = {
 				limit = {
 					tier > tier_duchy
@@ -476,7 +487,6 @@ tgp_chaos_shattering_effect = {
 					destroy_title = prev
 				}
 			}
-			tgp_fire_china_realm_name_event_for_vassals_effect = yes
 		}
 		every_in_list = {
 			list = former_vassals
@@ -737,22 +747,18 @@ tgp_treasury_raided_effect = {
 				}
 			}
 		}
-		# Only raiders get loot, and a besieger still empties the vault and costs the holder legitimacy
-		if = {
-			limit = { is_raid_army = yes }
-			add_loot = treasury_raided_loot_value
-		}
+		add_loot = treasury_raided_loot_value
 		title:h_china.holder = {
 			remove_treasury = treasury_raided_loot_value
 			add_legitimacy_effect = { LEGITIMACY = medium_legitimacy_loss }
 		}
-		situation:dynastic_cycle ?= {
-			if = {
-				limit = {
+		if = {
+			limit = {
+				situation:dynastic_cycle ?= {
 					situation_top_has_catalyst = catalyst_imperial_treasury_raided
 				}
-				trigger_situation_catalyst = catalyst_imperial_treasury_raided
 			}
+			trigger_situation_catalyst = catalyst_imperial_treasury_raided
 		}
 	}
 }
@@ -1079,6 +1085,10 @@ tgp_assign_china_realm_name_options_effect = {
 		}
 		0 = { # Han 汉
 			modifier = {
+				add = 10000
+				has_title = title:e_shu_han
+			}
+			modifier = {
 				add = 100
 				OR = {
 					capital_province ?= { geographical_region = tgp_han_region }
@@ -1087,8 +1097,11 @@ tgp_assign_china_realm_name_options_effect = {
 			}
 			modifier = {
 				factor = 0
-				OR = {
+				AND = {
 					is_title_localization_key_used = dynn_title_han
+					NOT = {
+						has_title = title:e_shu_han
+					}
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_han }
 				}
 			}
@@ -1390,6 +1403,10 @@ tgp_assign_china_realm_name_options_effect = {
 		}
 		0 = { # Min 闽
 			modifier = {
+				add = 10000
+				has_title = title:e_great_min
+			}
+			modifier = {
 				add = 100
 				OR = {
 					capital_province ?= { geographical_region = tgp_min_region }
@@ -1398,8 +1415,11 @@ tgp_assign_china_realm_name_options_effect = {
 			}
 			modifier = {
 				factor = 0
-				OR = {
+				AND = {
 					is_title_localization_key_used = dynn_title_min
+					NOT = {
+						has_title = title:e_great_min
+					}
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_min }
 				}
 			}
@@ -1491,6 +1511,10 @@ tgp_assign_china_realm_name_options_effect = {
 			add_to_variable_list = { name = realm_title_names target = flag:dynn_title_qian }
 		}
 		0 = { # Qin 秦
+			modifier = {
+				add = 10000
+				has_title = title:e_heavenly_qin
+			}
 			modifier = { # Roman daqin!
 				add = 1000
 				culture = {
@@ -1511,6 +1535,7 @@ tgp_assign_china_realm_name_options_effect = {
 				factor = 0
 				OR = {
 					is_title_localization_key_used = dynn_title_qin
+					has_title = title:e_heavenly_qin
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_qin }
 				}
 			}
@@ -1586,6 +1611,10 @@ tgp_assign_china_realm_name_options_effect = {
 		}
 		0 = { # Song 宋
 			modifier = {
+				add = 10000
+				has_title = title:e_great_song
+			}
+			modifier = {
 				add = 100
 				OR = {
 					capital_province ?= { geographical_region = tgp_song_region }
@@ -1596,6 +1625,7 @@ tgp_assign_china_realm_name_options_effect = {
 				factor = 0
 				OR = {
 					is_title_localization_key_used = dynn_title_song
+					has_title = title:e_great_song
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_song }
 				}
 			}
@@ -1637,6 +1667,10 @@ tgp_assign_china_realm_name_options_effect = {
 		}
 		0 = { # Tang 唐
 			modifier = {
+				add = 10000
+				has_title = title:e_great_tang
+			}
+			modifier = {
 				add = 100
 				OR = {
 					capital_province ?= { geographical_region = tgp_tang_region }
@@ -1645,8 +1679,11 @@ tgp_assign_china_realm_name_options_effect = {
 			}
 			modifier = {
 				factor = 0
-				OR = {
+				AND = {
 					is_title_localization_key_used = dynn_title_tang
+					NOT = {
+						has_title = title:e_great_tang
+					}
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_tang }
 				}
 			}
@@ -1705,6 +1742,10 @@ tgp_assign_china_realm_name_options_effect = {
 		}
 		0 = { # Wu 吴
 			modifier = {
+				add = 10000
+				has_title = title:e_great_wu
+			}
+			modifier = {
 				add = 100
 				OR = {
 					capital_province ?= { geographical_region = tgp_wu_region }
@@ -1724,8 +1765,11 @@ tgp_assign_china_realm_name_options_effect = {
 			}
 			modifier = {
 				factor = 0
-				OR = {
+				AND = {
 					is_title_localization_key_used = dynn_title_wu
+					NOT = {
+						has_title = title:e_great_wu
+					}
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_wu }
 				}
 			}
@@ -1835,6 +1879,10 @@ tgp_assign_china_realm_name_options_effect = {
 		}
 		0 = { # Yan 燕
 			modifier = {
+				add = 10000
+				has_title = title:e_great_yan
+			}
+			modifier = {
 				add = 100
 				OR = {
 					capital_province ?= { geographical_region = tgp_yan_region }
@@ -1843,8 +1891,11 @@ tgp_assign_china_realm_name_options_effect = {
 			}
 			modifier = {
 				factor = 0
-				OR = {
+				AND = {
 					is_title_localization_key_used = dynn_title_yan
+					NOT = {
+						has_title = title:e_great_yan
+					}
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_yan }
 				}
 			}
@@ -2053,6 +2104,10 @@ tgp_assign_china_realm_name_options_effect = {
 		}
 		0 = { # Zhou 周
 			modifier = {
+				add = 10000
+				has_title = title:e_wu_zhou
+			}
+			modifier = {
 				add = 100
 				OR = {
 					capital_province ?= { geographical_region = tgp_zhou_region }
@@ -2061,8 +2116,11 @@ tgp_assign_china_realm_name_options_effect = {
 			}
 			modifier = {
 				factor = 0
-				OR = {
+				AND = {
 					is_title_localization_key_used = dynn_title_zhou
+					NOT = {
+						has_title = title:e_wu_zhou
+					}
 					is_target_in_variable_list = { name = realm_title_names target = flag:dynn_title_zhou }
 				}
 			}
@@ -2433,7 +2491,7 @@ tgp_dynastic_cycle_record_history_phase_change_effect = {
 }
 
 tgp_dynastic_cycle_add_to_movement_effect = {
-	$CHAR$ = { save_scope_as = other_ruler }
+	$CHAR$ = { save_temporary_scope_as = other_ruler }
 	custom_tooltip = tgp_movement_events_0010_add_to_movement_effect_tt
 	if = {
 		limit = {

@@ -12,11 +12,16 @@ tradition_ep3_indomitable_azatani = {
 	layers = {
 		0 = martial
 		1 = mena
-		4 = indomitable_azatani.dds
+		4 = indomitable_azatani.dds 
 	}
 
 	is_shown = {
-		culture_is_or_has_ancestor_trigger = { CULTURE = culture:armenian }
+		OR = {
+			this = culture:armenian
+			any_parent_culture_or_above = {
+				this = culture:armenian
+			}
+		}
 		# DLC check.
 		has_ep3_dlc_trigger = yes
 		NOT = {
@@ -35,7 +40,7 @@ tradition_ep3_indomitable_azatani = {
 			NOT = { has_cultural_tradition = tradition_horse_breeder } #To prevent stacking after hybridization
 		}
 	}
-
+	
 	parameters = {
 		unlock_maa_ayrudzi = yes
 		house_hostility_more_common = yes
@@ -48,7 +53,7 @@ tradition_ep3_indomitable_azatani = {
 		light_cavalry_damage_mult = 0.2
 		heavy_cavalry_damage_mult = 0.2
 	}
-
+	
 	cost = {
 		prestige = {
 			add = {
@@ -103,11 +108,11 @@ tradition_ep3_indomitable_azatani = {
 					desc = inspired_by_culture_desc
 				}
 			}
-
+			
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
-
+	
 	ai_will_do = {
 		value = 200
 		if = {
@@ -136,11 +141,16 @@ tradition_ep3_audacious_cadets = {
 	layers = {
 		0 = martial
 		1 = western
-		4 = audacious_cadets.dds
+		4 = audacious_cadets.dds 
 	}
 
 	is_shown = {
-		culture_is_or_has_ancestor_trigger = { CULTURE = culture:norman }
+		OR = {
+			this = culture:norman
+			any_parent_culture_or_above = {
+				this = culture:norman
+			}
+		}
 		# DLC check.
 		has_ep3_dlc_trigger = yes
 		NOT = {
@@ -159,7 +169,7 @@ tradition_ep3_audacious_cadets = {
 			NOT = { has_cultural_tradition = tradition_swords_for_hire } #To prevent stacking after hybridization
 		}
 	}
-
+	
 	parameters = {
 		unlock_maa_conrois = yes
 		unlock_voluntary_laampdom = yes
@@ -181,7 +191,7 @@ tradition_ep3_audacious_cadets = {
 		character_travel_speed_mult = 0.1
 		character_travel_safety_mult = 0.1
 	}
-
+	
 	cost = {
 		prestige = {
 			add = {
@@ -226,11 +236,11 @@ tradition_ep3_audacious_cadets = {
 					desc = inspired_by_culture_desc
 				}
 			}
-
+			
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
-
+	
 	ai_will_do = {
 		value = 200
 		if = {
@@ -258,12 +268,15 @@ tradition_ep3_imperial_tagmata = {
 	layers = {
 		0 = martial
 		1 = mediterranean
-		4 = imperial_tagmata.dds
+		4 = imperial_tagmata.dds 
 	}
 
 	is_shown = {
 		OR = {
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:greek }
+			this = culture:greek
+			any_parent_culture_or_above = {
+				this = culture:greek
+			}
 			has_cultural_pillar = heritage_byzantine
 		}
 		# DLC check.
@@ -274,7 +287,7 @@ tradition_ep3_imperial_tagmata = {
 	}
 	can_pick = {
 	}
-
+	
 	parameters = {
 		unlock_maa_cataphract = yes
 		unlock_maa_akritai = yes
@@ -292,7 +305,7 @@ tradition_ep3_imperial_tagmata = {
 		knight_effectiveness_mult = -0.25
 		men_at_arms_title_limit = 1
 	}
-
+	
 	cost = {
 		prestige = {
 			add = {
@@ -341,17 +354,17 @@ tradition_ep3_imperial_tagmata = {
 					desc = inspired_by_culture_desc
 				}
 			}
-
+			
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
-
+	
 	ai_will_do = {
 		value = 400
 		if = {
 			limit = { # Admin should be more into this
 				scope:character = {
-					government_has_mechanic = administrative
+					government_allows = administrative
 				}
 			}
 			multiply = 2
@@ -378,7 +391,10 @@ tradition_ep3_roman_ceremonies = {
 
 	is_shown = {
 		OR = {
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:greek }
+			this = culture:greek
+			any_parent_culture_or_above = {
+				this = culture:greek
+			}
 			has_cultural_pillar = heritage_byzantine
 			scope:character = {
 				is_roman_emperor_trigger = yes
@@ -392,12 +408,12 @@ tradition_ep3_roman_ceremonies = {
 	}
 	can_pick = {
 	}
-
+	
 	parameters = {
 		can_adopt_administrative_government_as_kingdom_tier = yes
 		holds_triumphs = yes
 		hosts_chariot_races = yes
-		children_can_be_born_in_the_purple = yes
+		#children_can_be_born_in_the_purple = yes
 		# We use the co-emperors parameter for most things...
 		unlock_co_emperors = yes
 		# ... which means the junior emperor parameter is _mostly_ just here for the loc.
@@ -407,7 +423,7 @@ tradition_ep3_roman_ceremonies = {
 	county_modifier = {
 		county_opinion_add = -10
 	}
-
+	
 	cost = {
 		prestige = {
 			add = {
@@ -454,17 +470,17 @@ tradition_ep3_roman_ceremonies = {
 					desc = inspired_by_culture_desc
 				}
 			}
-
+			
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
-
+	
 	ai_will_do = {
 		value = 200
 		if = {
 			limit = { # Admin should be more into this
 				scope:character = {
-					government_has_mechanic = administrative
+					government_allows = administrative
 				}
 			}
 			multiply = 2

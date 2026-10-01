@@ -71,9 +71,13 @@
 	}
 	valid_agent = { 
 		is_valid_agent_standard_trigger = yes
-		title_scheme_valid_agent_trigger = yes
+		#Erm, don't scheme against your own province
+		trigger_if = {
+			limit = { scope:target.holder != scope:owner }
+			NOT = { this = scope:target.holder }
+		}
 	}
-	agent_groups_owner_perspective = { scripted_relations peer_vassals vassals family puppets }
+	agent_groups_owner_perspective = { scripted_relations peer_vassals vassals family }
 
 	odds_prediction = {
 		add = base_odds_prediction_target_is_char_value
@@ -93,7 +97,16 @@
 		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
 
 		#Negative
-		mandala_scheme_base_chance_modifier = yes
+		modifier = {
+			scope:owner = { has_character_modifier = disbelieved_mandala_modifier }
+			desc = is_disbelieved_mandala
+			add = -10
+		}
+		modifier = {
+			scope:owner = { has_character_modifier = political_schemes_distracted_modifier }
+			desc = political_schemes_distracted_modifier
+			add = -10
+		}
 
 		# Countermeasures.
 		apply_political_scheme_success_chance_adjustments_modifier = yes

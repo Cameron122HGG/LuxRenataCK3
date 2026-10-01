@@ -14,10 +14,264 @@
 				desc = sum_of_skills_desc
 			}
 
-			add = appointment_score_base
-			add = appointment_score_non_military
-			add = appointment_score_non_merit
-			add = appointment_score_governor
+			# Traits
+			if = {
+				limit = {
+					OR = {
+						has_trait = blind
+						has_trait = incapable
+						has_trait = infirm
+					}
+				}
+				subtract = {
+					value = 50
+					desc = negative_trait_succession
+				}
+			}
+			if = {
+				limit = { has_trait = disinherited }
+				subtract = {
+					value = 200
+					desc = trait_disinherited
+				}
+			}
+			if = {
+				limit = { has_trait = gallivanter }
+				subtract = {
+					value = 200
+					desc = trait_gallivanter
+				}
+			}
+			# CRIMINAL
+			if = {
+				limit = {
+					has_trait = deviant
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:deviant FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "deviant_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = incestuous
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:incestuous FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "incestuous_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = sodomite
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:sodomite FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "sodomite_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = cannibal
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:cannibal FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "cannibal_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = kinslayer_1
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:kinslayer_1 FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "kinslayer_1_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = kinslayer_2
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:kinslayer_2 FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "kinslayer_2_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = kinslayer_3
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:kinslayer_3 FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "kinslayer_3_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = witch
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:witch FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "witch_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = adulterer
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:adulterer FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "adulterer_and_criminal_desc"
+				}
+			}
+			if = {
+				limit = {
+					has_trait = fornicator
+					exists = top_liege.primary_title.state_faith
+					trait_is_criminal_in_faith_trigger = { TRAIT = trait:fornicator FAITH = top_liege.primary_title.state_faith GENDER_CHARACTER = root }
+				}
+				add = {
+					value = -30
+					desc = "fornicator_and_criminal_desc"
+				}
+			}
+
+			# COUNCIL POSITIONS
+			if = {
+				limit = {
+					scope:title.holder ?= {
+						any_councillor ?= { this = root }
+					}
+				}
+				add = {
+					value = 20
+					desc = councillor_position_governor_desc
+				}
+			}
+			# COURT POSITIONS
+			if = {
+				limit = {
+					scope:title.holder ?= {
+						any_court_position_holder ?= {
+							this = root
+						}
+					}
+				}
+				add = {
+					value = 10
+					desc = court_position_succession_governor_desc
+				}
+			}
+
+			# FAITH HOSTILITY
+			if = {
+				limit = {
+					scope:title.holder.primary_title.state_faith ?= {
+						faith_hostility_level = {
+							target = root.faith
+							value = faith_astray_level
+						}
+					}
+				} #Change to faith acceptance
+				subtract = {
+					value = 10
+					desc = astray_faith_succession_desc
+				}
+			}
+			if = {
+				limit = {
+					scope:title.holder.primary_title.state_faith ?= {
+						faith_hostility_level = {
+							target = root.faith
+							value = faith_hostile_level
+						}
+					}
+				} #Change to faith acceptance
+				subtract = {
+					value = 25
+					desc = hostile_faith_succession_desc
+				}
+			}
+			if = {
+				limit = {
+					scope:title.holder.primary_title.state_faith ?= {
+						faith_hostility_level = {
+							target = root.faith
+							value >= faith_evil_level
+						}
+					}
+				} #Change to faith acceptance
+				subtract = {
+					value = 50
+					desc = evil_faith_sucession_desc
+				}
+			}
+
+			# CLAIMS
+			if = {
+				limit = { has_strong_claim_on = scope:title }
+				add = {
+					value = 25
+					desc = title_claim_desc
+				}
+			}
+			else_if = {
+				limit = { has_weak_claim_on = scope:title }
+				add = {
+					value = 15
+					desc = title_weak_claim_desc
+				}
+			}
+
+			# POPULAR OPINION
+			if = {
+				limit = { is_landed = yes }
+				add = {
+					value = {
+						value = capital_county.county_holder_opinion
+						multiply = 0.25
+					}
+					desc = county_holder_opinion_desc
+				}
+			}
+
+			# PERKS
+			if = {
+				limit = { has_perk = ducal_conquest_perk }
+				add = {
+					value = 30
+					desc = ducal_conquest_perk_name_desc
+				}
+			}
+
+			# LOWBORN? EW no
+			if = {
+				limit = {
+					is_lowborn = yes
+				}
+				subtract = {
+					value = 25
+					desc = lowborn_desc_succession
+				}
+			}
 
 			# INFLUENCE LEVEL
 			if = {

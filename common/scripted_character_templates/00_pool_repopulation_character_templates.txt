@@ -40,7 +40,6 @@ pool_repopulate_prowess = {
 	gender_female_chance = root_soldier_female_chance
 	culture = root.culture
 	faith = root.faith
-	rite = root.rite
 	prowess = {
 		min_guest_template_skill max_guest_template_skill
 	}
@@ -204,7 +203,6 @@ pool_repopulate_diplomacy = {
 	random_traits = yes
 	culture = root.culture
 	faith = root.faith
-	rite = root.rite
 	diplomacy = {
 		min_guest_template_skill max_guest_template_skill
 	}
@@ -302,7 +300,6 @@ pool_repopulate_martial = {
 	random_traits = yes
 	culture = root.culture
 	faith = root.faith
-	rite = root.rite
 	martial = {
 		min_guest_template_skill max_guest_template_skill
 	}
@@ -475,7 +472,6 @@ pool_repopulate_stewardship = {
 	random_traits = yes
 	culture = root.culture
 	faith = root.faith
-	rite = root.rite
 	stewardship = {
 		min_guest_template_skill max_guest_template_skill
 	}
@@ -548,7 +544,6 @@ pool_repopulate_intrigue = {
 	gender_female_chance = 50 #No gender blocks for spymaster
 	culture = root.culture
 	faith = root.faith
-	rite = root.rite
 	intrigue = {
 		min_guest_template_skill max_guest_template_skill
 	}
@@ -625,7 +620,6 @@ pool_repopulate_learning = {
 	random_traits = yes
 	culture = root.culture
 	faith = root.faith
-	rite = root.rite
 	learning = {
 		min_guest_template_skill max_guest_template_skill
 	}
@@ -637,7 +631,7 @@ pool_repopulate_learning = {
 	}
 	random_traits_list = {
 		count = { 0 1 }
-		erudite = {}
+		scholar = {}
 		theologian = {}
 		whole_of_body = {}
 		lifestyle_physician = {}
@@ -680,7 +674,7 @@ pool_repopulate_learning = {
 		if = {
 			limit = {
 				faith = {
-					faith_has_monasticism_trigger = yes
+					has_doctrine = tenet_monasticism
 				}
 			}
 			random_list = {
@@ -728,7 +722,6 @@ pool_repopulate_spouse = {
 	random_traits = yes
 	culture = root.culture
 	faith = root.faith
-	rite = root.rite
 	random_traits_list = {
 		education_diplomacy_1 = { weight = { base = 35 } }
 		education_diplomacy_2 = { weight = { base = 35 } }
@@ -813,7 +806,7 @@ pool_repopulate_spouse = {
 		strategist = {}
 		architect = {}
 		schemer = {}
-		erudite = {}
+		scholar = {}
 		whole_of_body = {}
 		fecund = {}
 		intellect_good_1 = {}
@@ -871,7 +864,6 @@ pool_repopulate_local_flavor = {
 	gender_female_chance = root_faith_dominant_gender_adjusted_female_chance #because council gender is doctrine dependent
 	random_traits = yes
 	faith = root.faith
-	rite = root.rite
 	
 	random_culture = {
 		culture:ashkenazi = {
@@ -1062,6 +1054,7 @@ pool_repopulate_local_flavor = {
 						geographical_region = world_steppe_east
 						geographical_region = world_steppe_tarim
 						geographical_region = world_tibet
+						geographical_region = world_burma
 						geographical_region = world_asia_north_east
 						geographical_region = world_asia_china
 						geographical_region = world_asia_korea
@@ -1165,7 +1158,7 @@ pool_repopulate_local_flavor = {
 		education_diplomacy_4 = { weight = { base = 20 } }
 	}
 	random_traits_list = {
-		erudite = {}
+		scholar = {}
 		theologian = {}
 		lifestyle_physician = {}
 		lifestyle_mystic = {}
@@ -1208,8 +1201,7 @@ pool_repopulate_local_flavor = {
 			add_character_flag = ai_will_not_convert
 			random_list = {
 				10 = {
-					set_character_faith = faith:rabbinic_faith
-					set_character_rite = rite:rabbinism
+					set_character_faith = faith:rabbinism
 				}
 				2 = {
 					trigger = {
@@ -1226,8 +1218,7 @@ pool_repopulate_local_flavor = {
 					trigger = {
 						has_trait = lifestyle_mystic
 					}
-					set_character_faith = faith:rabbinic_faith
-					set_character_rite = rite:merkabah
+					set_character_faith = faith:jud_sabaoth
 				}
 				20 = {
 					trigger = {
@@ -1301,16 +1292,13 @@ pool_repopulate_local_flavor = {
 			}
 			random_list = {
 				10 = {
-					set_character_faith = faith:jain_faith
-					set_character_rite = rite:digambara
+					set_character_faith = faith:digambara
 				}
 				10 = {
-					set_character_faith = faith:jain_faith
-					set_character_rite = rite:svetambara
+					set_character_faith = faith:svetambara
 				}
 				20 = {
-					set_character_faith = faith:jain_faith
-					set_character_rite = rite:yapaniya
+					set_character_faith = faith:yapaniya
 				}
 				35 = {
 					trigger = {
@@ -1322,11 +1310,10 @@ pool_repopulate_local_flavor = {
 					trigger = {
 						culture = culture:burmese
 					}
-				set_character_faith = faith:theravada_faith
-				set_character_rite = rite:theravada
-			}
-			5 = {
-				set_character_faith = faith:nestorian
+					set_character_faith = faith:ari
+				}
+				5 = {
+					set_character_faith = faith:nestorian
 				}
 				25 = {
 					trigger = {
@@ -1349,12 +1336,10 @@ pool_repopulate_local_flavor = {
 			}
 			random_list = {
 				10 = {
-					set_character_faith = faith:kharijite
-					set_character_rite = rite:ibadi
+					set_character_faith = faith:ibadi
 				}
 				10 = {
-					set_character_faith = faith:kharijite
-					set_character_rite = rite:sufri
+					set_character_faith = faith:sufri
 				}
 			}
 		}
@@ -1362,8 +1347,7 @@ pool_repopulate_local_flavor = {
 			limit = {
 				culture = culture:kurdish
 			}
-			set_character_faith = faith:yazidi_faith
-			set_character_rite = rite:yazidi
+			set_character_faith = faith:yazidi
 		}
 		else_if = {
 			limit = {
@@ -1372,7 +1356,7 @@ pool_repopulate_local_flavor = {
 					culture = culture:somali
 				}
 			}
-			set_character_faith = faith:sunni
+			set_character_faith = faith:ashari
 			if = {
 				limit = {
 					root.capital_county.faith = {
@@ -1400,31 +1384,13 @@ pool_repopulate_local_flavor = {
 			}
 			random_list = {
 				15 = {
-					set_character_faith = faith:vajrayana_faith
-					set_character_rite = rite:vajrayana
+					set_character_faith = faith:vajrayana
 				}
 				10 = {
 					set_character_faith = faith:tengri_pagan
 				}
 				5 = {
-					trigger = {
-						OR = {
-							game_start_date >= 1178.10.1
-							exists = global_var:quanzhen_rite_created
-						}
-					}
-					set_character_faith = faith:shangqing_faith
-					set_character_rite = rite:quanzhen
-				}
-				5 = {
-					trigger = {
-						NOR = {
-							game_start_date >= 1178.10.1
-							exists = global_var:quanzhen_rite_created
-						}
-					}
-					set_character_faith = faith:shangqing_faith
-					set_character_rite = rite:shangqing
+					set_character_faith = faith:quanzhen
 				}
 			}
 		}
@@ -1434,8 +1400,7 @@ pool_repopulate_local_flavor = {
 			}
 			random_list = {
 				50 = {
-					set_character_faith = faith:shangqing_faith
-					set_character_rite = rite:shangqing
+					set_character_faith = faith:shangqing
 					random_list = {
 						50 = {}
 						50 = {
@@ -1444,8 +1409,7 @@ pool_repopulate_local_flavor = {
 					}
 				}
 				15 = {
-					set_character_faith = faith:mahayana_faith
-					set_character_rite = rite:dhyana
+					set_character_faith = faith:mahayana
 				}
 				5 = {
 					set_character_faith = faith:zhengyi
@@ -1496,12 +1460,10 @@ pool_repopulate_local_flavor = {
 			}
 			random_list = {
 				10 = {
-					set_character_faith = faith:bon_faith
-					set_character_rite = rite:bon
+					set_character_faith = faith:bon
 				}
 				10 = {
-					set_character_faith = faith:bon_faith
-					set_character_rite = rite:old_bon
+					set_character_faith = faith:old_bon
 				}
 			}
 		}
@@ -1558,15 +1520,15 @@ pool_repopulate_local_flavor = {
 				450 = {
 					trigger = {
 						NOT = {
-							trait_is_criminal_in_rite_trigger = { TRAIT = trait:witch RITE = this.rite GENDER_CHARACTER = this }
+							trait_is_criminal_in_faith_trigger = { TRAIT = trait:witch FAITH = this.faith GENDER_CHARACTER = this }
 						}
 					}
 					add_trait = witch
 				}
 				150 = {
 					trigger = {
-						rite = {
-							rite_has_tenet = tenet_warmonger
+						faith = {
+							has_doctrine = tenet_warmonger
 						}
 						OR = {
 							culture = { has_cultural_pillar = heritage_north_germanic }
@@ -1646,7 +1608,7 @@ pool_repopulate_local_flavor = {
 			remove_trait = diplomat
 			remove_trait = administrator
 			remove_trait = architect
-			remove_trait = erudite
+			remove_trait = scholar
 			add_martial_skill = 4
 			add_prowess_skill = 6
 			random_list = {
@@ -1708,7 +1670,7 @@ pool_repopulate_local_flavor = {
 					remove_trait = diplomat
 					remove_trait = administrator
 					remove_trait = architect
-					remove_trait = erudite
+					remove_trait = scholar
 					add_martial_skill = 4
 					add_prowess_skill = 6
 					random_list = {

@@ -457,21 +457,8 @@ ep3_contract_event.0001 = {
 	#take the contract and start the travel with domicile
 	option = {
 		name = ep3_contract_event.0001.with_domicile
-
-		trigger = {
-			custom_tooltip = {
-				text = can_move_domicile_camp_exile.tt
-				NOT = {
-					is_laamp_exiled_from_province_trigger = {
-						PROVINCE = scope:task_contract_destination
-						LAAMP = root
-					}
-				}
-			}
-		}
-		show_as_unavailable = { always = yes }
 		scope:task_contract = {
-			switch = {
+			 switch = {
 				trigger = has_task_contract_type
 				#escorting a VIP
 				laamp_transport_vip = {
@@ -645,13 +632,6 @@ ep3_contract_event.0002 = {
 			}
 		}
 		every_courtier_or_guest = {
-			limit = {
-				is_travelling = no
-				is_in_army = no
-			}
-			add_to_list = task_contract_companions
-		}
-		every_prisoner = {
 			limit = {
 				is_travelling = no
 			}
@@ -1026,7 +1006,6 @@ ep3_contract_event.0006 = {
 					location = scope:task_contract_destination
 					culture = scope:task_contract_destination.county.culture
 					faith = scope:task_contract_destination.county.faith
-					rite = scope:task_contract_destination.county.rite
 					#Set up the scope
 					save_scope_as = local_1
 				}
@@ -1063,7 +1042,6 @@ ep3_contract_event.0006 = {
 					location = scope:task_contract_destination
 					culture = scope:task_contract_destination.county.culture
 					faith = scope:task_contract_destination.county.faith
-					rite = scope:task_contract_destination.county.rite
 					#Set up the scope
 					save_scope_as = local_1
 				}
@@ -1095,7 +1073,6 @@ ep3_contract_event.0006 = {
 					location = scope:task_contract_destination
 					culture = scope:task_contract_destination.county.culture
 					faith = scope:task_contract_destination.county.faith
-					rite = scope:task_contract_destination.county.rite
 					#Set up the scope
 					save_scope_as = local_1
 				}
@@ -1123,7 +1100,6 @@ ep3_contract_event.0006 = {
 					location = scope:task_contract_destination
 					culture = scope:task_contract_destination.county.culture
 					faith = scope:task_contract_destination.county.faith
-					rite = scope:task_contract_destination.county.rite
 					#Set up the scope
 					save_scope_as = local_2
 				}
@@ -1210,7 +1186,7 @@ ep3_contract_event.0006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			deceitful = minor_stress_impact_loss
 		}
@@ -1283,7 +1259,7 @@ ep3_contract_event.0006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			cynical = minor_stress_impact_gain
 			zealous = minor_stress_impact_loss
 		}
@@ -1345,7 +1321,7 @@ ep3_contract_event.0006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			generous = minor_stress_impact_gain
 			greedy = minor_stress_impact_loss
 		}
@@ -1436,7 +1412,7 @@ ep3_contract_event.0006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_gain
 			generous = minor_stress_impact_loss
 		}
@@ -1504,7 +1480,7 @@ ep3_contract_event.0006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			wrathful = minor_stress_impact_loss
 		}
@@ -1566,7 +1542,7 @@ ep3_contract_event.0006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			impatient = minor_stress_impact_gain
 			patient = minor_stress_impact_loss
 			stubborn = minor_stress_impact_loss
@@ -1629,7 +1605,7 @@ ep3_contract_event.0006 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			impatient = minor_stress_impact_gain
 			patient = minor_stress_impact_loss
 			stubborn = minor_stress_impact_loss
@@ -1664,15 +1640,15 @@ scripted_effect change_treasure_type = {
 		}
 		else_if = {
 			limit = {
-				has_variable = {
-					name = ascalon
-					name = staff_kakusandha
-					name = zomorrodnegar
-					name = aruval
-					name = sword_cid
-					name = sword_of_muhammad
-					name = mmaagha_kamalu
-					name = sword_attila
+				OR = {
+					has_variable = ascalon
+					has_variable = staff_kakusandha
+					has_variable = zomorrodnegar
+					has_variable = aruval
+					has_variable = sword_cid
+					has_variable = sword_of_muhammad
+					has_variable = mmaagha_kamalu
+					has_variable = sword_attila
 				}
 			}
 			reforge_artifact = { type = regalia }
@@ -1914,7 +1890,7 @@ ep3_contract_event.0007 = {
 		add_courtier = scope:local_1
 		add_courtier = scope:local_2
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_gain
 			compassionate = minor_stress_impact_loss
 		}
@@ -1939,7 +1915,7 @@ ep3_contract_event.0007 = {
 		add_courtier = scope:local_1
 		add_courtier = scope:local_2
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_gain
 			compassionate = minor_stress_impact_loss
 		}
@@ -1963,7 +1939,7 @@ ep3_contract_event.0007 = {
 			set_owner = scope:local_1
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			content = minor_stress_impact_gain
 			greedy = minor_stress_impact_loss
 		}
@@ -1995,7 +1971,7 @@ ep3_contract_event.0007 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			content = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 			greedy = minor_stress_impact_loss
@@ -2078,7 +2054,7 @@ ep3_contract_event.0008 = {
 				save_scope_as = commander
 			}
 		}
-		scope:commander ?= {
+		scope:commander = {
 			add_character_flag = need_military_outfit
 		}
 	}
@@ -2118,7 +2094,7 @@ ep3_contract_event.0008 = {
 		}
 	}
 	after = {
-		scope:commander ?= {
+		scope:commander = {
 			remove_character_flag = need_military_outfit
 		}
 	}
@@ -2923,26 +2899,6 @@ ep3_contract_event.0012 = {
 			#Mysterious
 			custom_tooltip = treasure_map_disappeared.tt
 		}
-		# Remove from the war if contract involves a war
-		if = {
-			limit = {
-				OR = {
-					var:invalidated_task_contract_type = flag:laamp_join_war_contract
-					var:invalidated_task_contract_type = flag:laamp_raid_contract
-					var:invalidated_task_contract_type = flag:laamp_help_claimant_contract
-				}
-			}
-			scope:task_contract_war ?= {
-				remove_participant = root
-			}
-		}
-		# Save task contract as it is used by task_contract_invalidated_gold_gain_value
-		random_character_active_contract = {
-			limit = {
-				task_contract_employer = scope:task_contract_employer
-			}
-			save_temporary_scope_as = task_contract
-		}
 		#stuff that would be nice to see in tooltip, but is already executed in on_invalidation
 		show_as_tooltip = {
 			if = {
@@ -3532,17 +3488,6 @@ scripted_trigger 0040_traveling_towards_treasure_with_domicile_trigger = {
 	}
 }
 
-scripted_trigger 0040_traveling_towards_treasure_without_domicile_trigger = {
-	has_variable = ep3_laamp_decision_1000_is_excavating
-	current_travel_plan ?= {
-		is_travel_with_domicile = no
-		OR = {
-			next_destination_province = scope:task_contract_destination
-			final_destination_province = scope:task_contract_destination
-		}
-	}
-}
-
 #Your Treasure Map broke!
 ep3_contract_event.0040 = {
 	type = character_event
@@ -3561,7 +3506,7 @@ ep3_contract_event.0040 = {
 		}
 		scope:task_contract = {
 			task_contract_employer = { save_scope_as = task_contract_employer }
-			var:contract_treasure_location = { save_scope_as = task_contract_destination }
+			var:contract_treasure_location = { save_scope_as = treasure_map_contract_destination }
 		}
 		#Remove treasure map
 		destroy_artifact = scope:decayed_artifact
@@ -3578,7 +3523,7 @@ ep3_contract_event.0040 = {
 		name = ep3_contract_event.0040.a
 		#Haven't paid up?
 		if = {
-			limit = { 0040_traveling_towards_treasure_without_domicile_trigger = yes }
+			limit = { 0040_traveling_towards_treasure_with_domicile_trigger = no }
 			#Then back home we go
 			return_home = yes
 		}
@@ -3603,7 +3548,6 @@ ep3_contract_event.0040 = {
 			base = 2
 		}
 	}
-	after = { remove_variable ?= ep3_laamp_decision_1000_is_excavating }
 }
 
 #Employer died or became incapable while in your camp
@@ -3704,11 +3648,6 @@ ep3_contract_event.0041 = {
 					desc = ep3_contract_event.0041.a.flavor_incapable
 				}
 			}
-		}trigger = {
-			OR = {
-				0040_traveling_towards_treasure_with_domicile_trigger = yes
-				0040_traveling_towards_treasure_without_domicile_trigger = yes
-			}
 		}
 		#No point in traveling without the map
 		return_home = yes
@@ -3782,7 +3721,7 @@ ep3_contract_event.0043 = {
 		scope:task_contract.task_contract_employer = { save_scope_as = task_contract_employer }
 		show_as_tooltip = { add_courtier = scope:task_contract_employer }
 		scope:task_contract_employer = {
-			add_opinion = {
+			reverse_add_opinion = {
 		 		target = root
 		 		modifier = grateful_opinion
 		 		opinion = 25
@@ -4013,7 +3952,6 @@ ep3_contract_event.0045 = {
 							dynasty = none
 							culture = root.location.culture
 							faith = root.location.faith
-							rite = root.location.rite
 							save_scope_as = 0045_smith
 						}
 					}
@@ -4139,7 +4077,7 @@ ep3_contract_event.0045 = {
 					}
 				}
 				else = {
-					stress_and_fulfillment_impact = { 
+					stress_impact = { 
 						base = medium_stress_impact_loss
 						zealous = minor_stress_impact_loss
 					}
@@ -4237,7 +4175,7 @@ ep3_contract_event.0045 = {
 		#Trigger the concluding event
 		trigger_event = ep3_contract_event.0050
 		#You're doing the right thing
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_loss
 			honest = medium_stress_impact_loss
 			greedy = minor_stress_impact_gain
@@ -4314,9 +4252,9 @@ ep3_contract_event.0045 = {
 				}
 				else_if = {
 					limit = { 
-						has_variable = {
-							name = iron_crown
-							name = crown_of_justinian
+						OR = {
+							has_variable = iron_crown
+							has_variable = crown_of_justinian
 						}
 					}
 					reforge_artifact = { type = helmet }			
@@ -4370,7 +4308,7 @@ ep3_contract_event.0045 = {
 				XP_MIN = gallowsbait_xp_major_gain
 				XP_MAX = gallowsbait_xp_massive_gain
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = major_stress_impact_gain
 				honest = minor_stress_impact_gain
 				greedy = minor_stress_impact_loss
@@ -4392,7 +4330,7 @@ ep3_contract_event.0045 = {
 				XP_MIN = gallowsbait_xp_minor_gain
 				XP_MAX = gallowsbait_xp_major_gain
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = medium_stress_impact_gain
 				honest = minor_stress_impact_gain
 				greedy = minor_stress_impact_loss
@@ -4408,7 +4346,7 @@ ep3_contract_event.0045 = {
 				XP_MIN = gallowsbait_xp_minor_gain
 				XP_MAX = gallowsbait_xp_minor_gain
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = minor_stress_impact_gain
 				honest = minor_stress_impact_gain
 				greedy = minor_stress_impact_loss
@@ -4505,7 +4443,7 @@ ep3_contract_event.0050 = {
 			add_character_modifier = { modifier = divine_springs_modifier }
 		}
 		#Ya did the right thing, son
-		stress_and_fulfillment_impact = { honest = minor_stress_impact_loss }
+		stress_impact = { honest = minor_stress_impact_loss }
 		ai_chance = {
 			base = 10
 		}
@@ -4900,33 +4838,28 @@ ep3_contract_event.0080 = {
 	option = {
 		name = ep3_contract_event.0080.a
 		custom_tooltip = ep3_contract_event.0080.open_start_generate_claim_interaction
+		open_interaction_window = {
+			interaction = start_generate_claim_interaction
+			actor = root
+			recipient = scope:task_contract_target
+		}	
 		if = {
-			limit = { exists = scope:task_contract_target }
-			if = {
-				limit = {
-					is_ai = yes
-				}
-				begin_contract_scheme_with_agents_effect = {
-					SCHEME_TYPE = generate_claim
-					TARGET_TYPE = target_title
-					TARGET_SCOPE = scope:task_contract_target
-					TASK_CONTRACT = scope:task_contract
-					# Success.
-					AGENT_1 = agent_scribe
-					AGENT_2 = agent_diplomat
-					# Speed.
-					AGENT_3 = agent_justiciar
-					AGENT_4 = agent_socialite
-					# Secrecy.
-					AGENT_5 = agent_decoy
-				}
+			limit = {
+				is_ai = yes
 			}
-			else = {
-				open_interaction_window = {
-					interaction = start_generate_claim_interaction
-					actor = root
-					recipient = scope:task_contract_target
-				}
+			begin_contract_scheme_with_agents_effect = {
+				SCHEME_TYPE = generate_claim
+				TARGET_TYPE = target_title
+				TARGET_SCOPE = scope:task_contract_target
+				TASK_CONTRACT = scope:task_contract
+				# Success.
+				AGENT_1 = agent_scribe
+				AGENT_2 = agent_diplomat
+				# Speed.
+				AGENT_3 = agent_justiciar
+				AGENT_4 = agent_socialite
+				# Secrecy.
+				AGENT_5 = agent_decoy
 			}
 		}
 		ai_chance = {
@@ -5133,7 +5066,7 @@ ep3_contract_event.0083 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			callous = minor_stress_impact_loss
 			just = minor_stress_impact_loss
 			vengeful = minor_stress_impact_loss
@@ -5190,7 +5123,7 @@ ep3_contract_event.0083 = {
 				}	
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			wrathful = minor_stress_impact_loss
 			craven = minor_stress_impact_gain
 		}
@@ -5251,7 +5184,7 @@ ep3_contract_event.0083 = {
 				}	
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
@@ -5333,7 +5266,7 @@ ep3_contract_event.0083 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_loss
 			just = minor_stress_impact_gain
 			zealous = minor_stress_impact_gain
@@ -5481,7 +5414,7 @@ ep3_contract_event.0084 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_loss
 			impatient = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
@@ -5545,7 +5478,7 @@ ep3_contract_event.0084 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
@@ -5696,7 +5629,7 @@ ep3_contract_event.0085 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			compassionate = minor_stress_impact_loss
@@ -5725,7 +5658,7 @@ ep3_contract_event.0085 = {
 		scope:task_contract = {
 			complete_task_contract = success_standard
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 			sadistic = major_stress_impact_loss
@@ -5785,7 +5718,7 @@ ep3_contract_event.0085 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			compassionate = minor_stress_impact_loss
@@ -5844,7 +5777,7 @@ ep3_contract_event.0085 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_loss
 			zealous = minor_stress_impact_gain
 			shy = minor_stress_impact_gain
@@ -5901,7 +5834,12 @@ ep3_contract_event.0090 = {
 
 	option = {
 		name = ep3_contract_event.0090.a
-		custom_tooltip = ep3_contract_event.0090.opens_task_contract_train_knight_interaction	
+		custom_tooltip = ep3_contract_event.0090.opens_task_contract_train_knight_interaction
+		open_interaction_window = {
+			interaction = task_contract_train_knight_interaction
+			actor = root
+			recipient = scope:task_contract_employer
+		}	
 		if = {
 			limit = {
 				is_ai = yes
@@ -5911,13 +5849,6 @@ ep3_contract_event.0090 = {
 				actor = root
 				recipient = scope:task_contract_employer
 				execute_threshold = decline
-			}
-		}
-		else = {
-			open_interaction_window = {
-				interaction = task_contract_train_knight_interaction
-				actor = root
-				recipient = scope:task_contract_employer
 			}
 		}
 		#AI should always try to complete the contract
@@ -6271,7 +6202,7 @@ ep3_contract_event.0091 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			impatient = minor_stress_impact_loss
 			just = minor_stress_impact_gain
 			honest = minor_stress_impact_gain
@@ -6333,7 +6264,7 @@ ep3_contract_event.0091 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_impact_loss
 			craven = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -6407,7 +6338,7 @@ ep3_contract_event.0091 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain
 			humble = minor_stress_impact_loss
@@ -6498,7 +6429,7 @@ ep3_contract_event.0091 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = minor_stress_impact_loss
 			ambitious = minor_stress_impact_loss
 			humble = minor_stress_impact_gain
@@ -6739,7 +6670,7 @@ ep3_contract_event.0092 = {
 			}
 			trigger_event = ep3_contract_event.0093
 		}
-		#otherwise, trigger a travel plan
+		#otherwise, tirgger a travel plan
 		else = {
 			custom_tooltip = ep3_contract_event.0092.a_tt
 			start_travel_plan = {
@@ -6949,7 +6880,6 @@ ep3_contract_event.0093 = {
 				template = peasant_character
 				gender_female_chance = 50
 				faith = scope:corrupt_province.county.faith
-				rite = scope:corrupt_province.county.rite
 				culture = scope:corrupt_province.county.culture
 				save_scope_as = corrupt_province_peasant
 			}
@@ -6967,344 +6897,6 @@ ep3_contract_event.0093 = {
 				NOT = { exists = scope:corruption_reason }
 			}
 			set_corruption_reason_effect = yes
-		}
-	}
-
-	# do the taxes
-	option = {
-		name = ep3_contract_event.0093.taxes
-		trigger = {
-			scope:corruption_reason = flag:taxes
-		}
-		reason = increase_control_taxes
-		duel = {
-			skill = stewardship
-			value = high_skill_rating
-			25 = {
-				desc = ep3_contract_event.0093.taxes_win
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = 3.5
-				}
-				add_gold = medium_gold_value
-				scope:corrupt_province.county = {
-					add_county_modifier = {
-						modifier = marshal_task_increase_control_increased_opinion_modifier
-						years = 5
-					}
-				}
-			}
-			25 = {
-				desc = ep3_contract_event.0093.taxes_lose
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = -3.5
-					min = 5
-				}
-				pay_short_term_gold = {
-						target = scope:corrupt_province.province_owner
-						gold = root.medium_gold_value
-					}
-				domicile = {
-					change_provisions = {
-						integer_range = {
-							min = minor_provisions_value
-							max = medium_provisions_value
-						}
-						multiply = -1
-					}
-				}
-				scope:corrupt_province.county = {
-					add_county_modifier = {
-						modifier = marshal_task_military_presence_modifier
-						years = 5
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				scope:task_contract.var:num_of_corrupt_counties = 1
-				scope:task_contract.var:control = 0
-				scope:task_contract.var:support = 0
-			}
-			custom_tooltip = ep3_contract_event.0094_success
-			scope:task_contract = {
-				complete_task_contract = success_critical
-			}
-		}
-		ep3_increase_peasant_control_effect = yes
-		stress_and_fulfillment_impact = {
-			compassionate = minor_stress_impact_loss
-			calm = minor_stress_impact_loss
-			just = minor_stress_impact_loss
-			diligent = minor_stress_impact_loss
-			impatient = minor_stress_impact_gain
-			wrathful = minor_stress_impact_gain
-			lazy = minor_stress_impact_gain
-		}
-		#AI should always try to complete the contract
-		ai_chance = {
-			base = 20
-			modifier = {
-				highest_skill_including_prowess = stewardship
-				add = 100
-			}
-		}
-	}
-
-	# fight the bandits
-	option = {
-		name = ep3_contract_event.0093.bandits
-		trigger = {
-			scope:corruption_reason = flag:bandits
-		}
-		reason = increase_control_bandits
-		duel = {
-			skill = prowess
-			value = high_skill_rating
-			25 = {
-				desc = ep3_contract_event.0093.bandits_win
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = 3.5
-				}
-				if = {
-					limit = { has_trait = lifestyle_blademaster }
-					add_trait_xp = {
-						trait = lifestyle_blademaster
-						value = 10
-					}
-				}
-				else = { add_trait = lifestyle_blademaster }
-				scope:corrupt_province.county = {
-					add_county_modifier = {
-						modifier = marshal_task_increase_control_increased_opinion_modifier
-						years = 5
-					}
-				}
-			}
-			25 = {
-				desc = ep3_contract_event.0093.bandits_lose
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = -3.5
-					min = 5
-				}
-				scope:corrupt_province.county = {
-					add_county_modifier = {
-						modifier = marshal_task_military_presence_modifier
-						years = 5
-					}
-				}
-				if = {
-					limit = {
-						any_maa_regiment = { }
-					}
-					random_maa_regiment = {
-						change_maa_troops_count = {
-							value = maa_current_troops_count
-							multiply = laamp_base_contract_schemes_1301_maa_damage_moderate_value
-						}
-					}
-				}
-				else_if = {
-					limit = {
-						any_courtier = {
-							is_adult = yes
-							NOR = {
-								is_close_family_of = root
-								is_spouse_of = root
-							}
-						}
-					}
-					ordered_courtier = {
-						order_by = martial
-						limit = {
-							is_adult = yes
-							NOR = {
-								is_close_family_of = root
-								is_spouse_of = root
-							}
-						}
-						scope:corrupt_province.province_owner = {
-							add_courtier = prev
-						}
-					}
-				}
-				else = {
-					pay_short_term_gold = {
-						target = scope:corrupt_province.province_owner
-						gold = root.minor_gold_value
-					}
-					domicile = {
-						change_provisions = {
-							integer_range = {
-								min = miniscule_provisions_value
-								max = minor_provisions_value
-							}
-							multiply = -1
-						}
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				scope:task_contract.var:num_of_corrupt_counties = 1
-				scope:task_contract.var:control = 0
-				scope:task_contract.var:support = 0
-			}
-			custom_tooltip = ep3_contract_event.0094_success
-			scope:task_contract = {
-				complete_task_contract = success_critical
-			}
-		}
-		ep3_increase_peasant_control_effect = yes
-		stress_and_fulfillment_impact = {
-			diligent = minor_stress_impact_loss
-			calm = minor_stress_impact_gain
-			just = minor_stress_impact_loss
-			impatient = minor_stress_impact_loss
-			wrathful = minor_stress_impact_loss
-		}
-		#AI should always try to complete the contract
-		ai_chance = {
-			base = 20
-			modifier = {
-				highest_skill_including_prowess = prowess
-				add = 100
-			}
-		}
-	}
-
-	# negotiate with the rioters
-	option = {
-		name = ep3_contract_event.0093.riots
-		trigger = {
-			scope:corruption_reason = flag:riots
-		}
-		reason = increase_control_riots
-		duel = {
-			skill = diplomacy
-			value = high_skill_rating
-			25 = {
-				desc = ep3_contract_event.0093.riots_win
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = 3.5
-				}
-				add_diplomacy_lifestyle_xp = medium_lifestyle_xp
-				scope:corrupt_province.county = {
-					add_county_modifier = {
-						modifier = marshal_task_increase_control_increased_opinion_modifier
-						years = 5
-					}
-				}
-			}
-			25 = {
-				desc = ep3_contract_event.0093.riots_lose
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = -3.5
-					min = 5
-				}
-				add_prestige = medium_prestige_loss
-				increase_wounds_no_death_effect = { REASON = beaten }
-				scope:corrupt_province.county = {
-					add_county_modifier = {
-						modifier = marshal_task_military_presence_modifier
-						years = 5
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				scope:task_contract.var:num_of_corrupt_counties = 1
-				scope:task_contract.var:control = 0
-				scope:task_contract.var:support = 0
-			}
-			custom_tooltip = ep3_contract_event.0094_success
-			scope:task_contract = {
-				complete_task_contract = success_critical
-			}
-		}
-		ep3_increase_peasant_control_effect = yes
-		stress_and_fulfillment_impact = {
-			calm = minor_stress_impact_loss
-			impatient = minor_stress_impact_gain
-			wrathful = minor_stress_impact_gain
-		}
-		#AI should always try to complete the contract
-		ai_chance = {
-			base = 20
-			modifier = {
-				highest_skill_including_prowess = diplomacy
-				add = 100
-			}
-		}
-	}
-
-	# manipulate the peasants
-	option = {
-		name = ep3_contract_event.0093.low_control
-		trigger = {
-			scope:corruption_reason = flag:low_control
-		}
-		reason = increase_control_low_control
-		duel = {
-			skill = intrigue
-			value = high_skill_rating
-			25 = {
-				desc = ep3_contract_event.0093.low_control_win
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = 3.5
-				}
-				add_intrigue_lifestyle_xp = medium_lifestyle_xp
-				scope:corrupt_province.county = {
-					add_county_modifier = {
-						modifier = marshal_task_increase_control_increased_opinion_modifier
-						years = 5
-					}
-				}
-			}
-			25 = {
-				desc = ep3_contract_event.0093.low_control_lose
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = -3.5
-					min = 5
-				}
-				add_prestige = medium_prestige_loss
-				increase_wounds_no_death_effect = { REASON = beaten }
-			}
-		}
-		if = {
-			limit = {
-				scope:task_contract.var:num_of_corrupt_counties = 1
-				scope:task_contract.var:control = 0
-				scope:task_contract.var:support = 0
-			}
-			custom_tooltip = ep3_contract_event.0094_success
-			scope:task_contract = {
-				complete_task_contract = success_critical
-			}
-		}
-		ep3_increase_peasant_control_effect = yes
-		stress_and_fulfillment_impact = {
-			compassionate = minor_stress_impact_gain
-			just = minor_stress_impact_gain
-			deceitful = minor_stress_impact_loss
-		}
-		#AI should always try to complete the contract
-		ai_chance = {
-			base = 20
-			modifier = {
-				highest_skill_including_prowess = intrigue
-				add = 100
-			}
 		}
 	}
 
@@ -7404,7 +6996,7 @@ ep3_contract_event.0093 = {
 			}
 		}
 		ep3_increase_peasant_control_effect = yes
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			calm = minor_stress_impact_gain
 			just = minor_stress_impact_gain
@@ -7455,7 +7047,7 @@ ep3_contract_event.0093 = {
 			}
 		}
 		ep3_increase_peasant_support_effect = yes
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = minor_stress_impact_loss
 			fickle = minor_stress_impact_loss
 			just = minor_stress_impact_loss
@@ -7723,7 +7315,7 @@ ep3_contract_event.0094 = {
 			}
 		}
 		trigger_event = ep3_contract_event.0095
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = major_stress_impact_gain
 			lazy = minor_stress_impact_loss
 		}
@@ -7752,7 +7344,7 @@ ep3_contract_event.0094 = {
 			}
 		}
 		return_home = yes
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_gain
 			lazy = minor_stress_impact_loss
 		}
@@ -7871,7 +7463,7 @@ ep3_contract_event.0095 = {
 			complete_task_contract = failure_standard
 		}
 		return_home = yes
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			craven = minor_stress_impact_gain
 			lazy = minor_stress_impact_gain
 			brave = minor_stress_impact_loss
@@ -7977,7 +7569,7 @@ ep3_contract_event.0095 = {
 			complete_task_contract = failure_standard
 		}
 		return_home = yes
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			craven = minor_stress_impact_loss
 			lazy = minor_stress_impact_loss
 			brave = minor_stress_impact_gain
@@ -8023,7 +7615,7 @@ ep3_contract_event.0095 = {
 			}
 		}
 		return_home = yes
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 			brave = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
@@ -8070,7 +7662,7 @@ ep3_contract_event.0100 = {
 
 	#start scheme to find secrets
 	option = {
-		name = ep3_contract_event.0100.a
+		name = ep3_contract_event.0030.b
 		begin_contract_scheme_with_agents_effect = {
 			SCHEME_TYPE = laamp_help_find_secrets_scheme
 			TARGET_TYPE = target_character
@@ -8132,7 +7724,6 @@ ep3_contract_event.0510 = {
 			template = generic_peasant_character
 			location = this.location
 			faith = location.faith
-			rite = location.rite
 			culture = location.culture
 			random_traits = yes
 			trait = peasant_leader
@@ -8194,7 +7785,7 @@ ep3_contract_event.0510 = {
 				trigger_event = ep3_contract_event.0520
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			compassionate = minor_stress_impact_loss
@@ -8268,7 +7859,7 @@ ep3_contract_event.0510 = {
 				trigger_event = ep3_contract_event.0520
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 			sadistic = major_stress_impact_loss
@@ -8327,7 +7918,7 @@ ep3_contract_event.0510 = {
 		}
 
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_loss
 			zealous = minor_stress_impact_loss
 			compassionate = minor_stress_impact_loss
@@ -8451,7 +8042,7 @@ ep3_contract_event.0520 = {
 			has_character_flag = contract_success_flag
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_loss
 		}
 		ai_chance = {
@@ -8468,7 +8059,7 @@ ep3_contract_event.0520 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_gain
 		}
 		ai_chance = {
@@ -8551,7 +8142,6 @@ ep3_contract_event.0550 = {
 				template = generic_peasant_character
 				location = this.location
 				faith = location.faith
-				rite = location.rite
 				culture = location.culture
 				random_traits = yes
 				save_scope_as = messenger
@@ -8567,7 +8157,7 @@ ep3_contract_event.0550 = {
 
 		trigger_event = ep3_contract_event.0555
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = miniscule_stress_impact_gain
 			deceitful = miniscule_stress_impact_loss
 			craven = miniscule_stress_impact_gain
@@ -8609,7 +8199,7 @@ ep3_contract_event.0555 = {
 			days = 1
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = miniscule_stress_impact_gain
 			deceitful = miniscule_stress_impact_loss
 			craven = miniscule_stress_impact_gain
@@ -8648,7 +8238,7 @@ ep3_contract_event.0560 = {
 		scope:task_contract_employer = {
 			random_sub_realm_barony = { #Save a place for the exile to go
 				limit = {
-					this != root.capital_province.barony
+					this != root.capital_province
 				}
 				save_scope_as = exile_barony
 			}
@@ -8723,7 +8313,7 @@ ep3_contract_event.0560 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = miniscule_stress_impact_loss
 			craven = minor_stress_impact_gain
 			impatient = miniscule_stress_impact_loss
@@ -8796,7 +8386,7 @@ ep3_contract_event.0560 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = minor_stress_impact_loss
 			compassionate = medium_stress_impact_gain
 			impatient = minor_stress_impact_gain
@@ -8883,7 +8473,7 @@ ep3_contract_event.0560 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_impact_gain
 			craven = miniscule_stress_impact_loss
 			deceitful = miniscule_stress_impact_loss
@@ -9000,7 +8590,7 @@ ep3_contract_event.0560 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_impact_gain
 			craven = miniscule_stress_impact_loss
 			sadistic = medium_stress_impact_gain
@@ -9072,9 +8662,9 @@ ep3_contract_event.0565 = {
 		character = root
 		triggered_animation = {
 			trigger = {
-				has_variable = {
-					name = contract_success_flag
-					name = contract_crit_success_flag
+				OR = {
+					has_character_flag = contract_success_flag
+					has_character_flag = contract_crit_success_flag
 				}
 			}
 			animation = steward
@@ -9084,9 +8674,9 @@ ep3_contract_event.0565 = {
 	}
 	right_portrait = {
 		trigger = {
-			has_variable = {
-				name = contract_success_flag
-				name = contract_crit_success_flag
+			OR = {
+				has_character_flag = contract_success_flag
+				has_character_flag = contract_crit_success_flag
 			}
 		}
 		character = scope:messenger
@@ -9127,7 +8717,6 @@ ep3_contract_event.0565 = {
 				template = generic_peasant_character
 				location = this.location
 				faith = location.faith
-				rite = location.rite
 				culture = location.culture
 				random_traits = yes
 				save_scope_as = messenger
@@ -9168,13 +8757,13 @@ ep3_contract_event.0565 = {
 		name = ep3_contract_event.0565.a
 
 		trigger = {
-			has_variable = {
-				name = contract_crit_success_flag
-				name = contract_success_flag
+			OR = {
+				has_character_flag = contract_crit_success_flag
+				has_character_flag = contract_success_flag
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_loss
 		}
 		ai_chance = {
@@ -9186,13 +8775,13 @@ ep3_contract_event.0565 = {
 		name = ep3_contract_event.0565.b
 
 		trigger = {
-			has_none_of_variables = {
-				name = contract_crit_success_flag
-				name = contract_success_flag
+			NOR = {
+				has_character_flag = contract_crit_success_flag
+				has_character_flag = contract_success_flag
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_gain
 		}
 		ai_chance = {
@@ -9236,7 +8825,6 @@ ep3_contract_event.0570 = {
 			template = mercenary
 			location = this.location
 			faith = location.faith
-			rite = location.rite
 			culture = location.culture
 			gender_female_chance = root_soldier_female_chance
 			random_traits = yes
@@ -9280,7 +8868,7 @@ ep3_contract_event.0570 = {
 			INVALIDATION_EVENT = single_combat.1006
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = minor_stress_impact_loss
 			craven = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
@@ -9346,7 +8934,7 @@ ep3_contract_event.0570 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			deceitful = miniscule_stress_impact_loss
 			honest = miniscule_stress_impact_gain
 		}
@@ -9405,7 +8993,7 @@ ep3_contract_event.0570 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			patient = minor_stress_impact_loss
 			impatient = medium_stress_impact_loss
 		}
@@ -9561,7 +9149,7 @@ ep3_contract_event.0575 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_loss
 		}
 		ai_chance = {
@@ -9687,7 +9275,6 @@ ep3_contract_event.0580 = {
 					employer = scope:task_contract_employer
 					template = pool_repopulate_stewardship
 					faith = scope:task_contract_employer.faith
-					rite = scope:task_contract_employer.rite
 					culture = scope:task_contract_employer.culture
 					save_scope_as = secret_haver
 				}
@@ -9746,7 +9333,7 @@ ep3_contract_event.0580 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			patient = miniscule_stress_impact_loss
 			impatient = minor_stress_impact_gain
 		}
@@ -9807,7 +9394,7 @@ ep3_contract_event.0580 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			deceitful = minor_stress_impact_loss
 			honest = medium_stress_impact_gain
 		}
@@ -9950,7 +9537,7 @@ ep3_contract_event.0580 = {
 			}		
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			brave = miniscule_stress_impact_loss
 			craven = miniscule_stress_impact_gain
 		}
@@ -10036,7 +9623,7 @@ ep3_contract_event.0581 = {
 			days = 1
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = miniscule_stress_impact_loss
 			deceitful = minor_stress_impact_gain
 		}
@@ -10073,7 +9660,7 @@ ep3_contract_event.0581 = {
 			complete_task_contract = failure_standard
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arbitrary = minor_stress_impact_loss
 			just = medium_stress_impact_gain
 		}
@@ -10204,7 +9791,7 @@ ep3_contract_event.0585 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_loss
 		}
 		ai_chance = {
@@ -10328,7 +9915,7 @@ ep3_contract_event.0590 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = miniscule_stress_impact_loss
 			compassionate = medium_stress_impact_gain
 		}
@@ -10404,7 +9991,7 @@ ep3_contract_event.0590 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = medium_stress_impact_gain
 			compassionate = miniscule_stress_impact_loss
 		}
@@ -10489,7 +10076,7 @@ ep3_contract_event.0590 = {
 			}
 		}		
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			sadistic = major_stress_impact_gain
 			callous = medium_stress_impact_gain
 			compassionate = medium_stress_impact_loss
@@ -10576,7 +10163,7 @@ ep3_contract_event.0591 = {
 				type = favor_hook
 			}
 			start_travel_plan = {
-				destination = scope:random_barony.title_province
+				destination = scope:random_barony
 			}
 		}
 
@@ -10618,7 +10205,7 @@ ep3_contract_event.0595 = {
 	option = {
 		name = ep3_contract_event.0595.a
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_gain
 		}
 		ai_chance = {

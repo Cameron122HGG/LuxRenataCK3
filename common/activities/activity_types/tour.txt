@@ -11,7 +11,15 @@
 		has_dlc_feature = tours_and_tournaments
 		has_dlc_feature = advanced_activities
 		NOT = { government_has_flag = government_is_administrative }
-		ai_activity_coronation_check = yes
+		#Every other activity must be blocked until an uncrowned AI crowns themselves
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			NOT = {
+				has_realm_law = uncrowned
+			}
+		}
 	}
 
 	can_start_showing_failures_only = {
@@ -33,13 +41,12 @@
 	is_valid = {
 		scope:host = {
 			is_landed = yes
-			is_physically_able = yes
+			NOT = { is_incapable = yes }
 			is_in_civil_war = no
 		}
 	}
 
 	on_invalidated = {
-		# use list so can't simply use scripted effects here
 		# Host becomes unlanded
 		if = {
 			limit = {
@@ -53,7 +60,7 @@
 				trigger_event = activity_system.0320
 			}
 		}
-		else_if = {
+		if = {
 			limit = {
 				scope:host = { is_incapable = yes }
 			}
@@ -66,19 +73,6 @@
 			every_in_list = {
 				variable = tour_vassals_to_visit
 				trigger_event = activity_system.0331
-			}
-		}
-		else_if = {
-			limit = {
-				scope:host = { is_imprisoned = yes }
-			}
-			scope:activity = {
-				activity_type = { save_scope_as = activity_type }
-			}
-			scope:host = { trigger_event = activity_system.0550 }
-			every_in_list = {
-				variable = tour_vassals_to_visit
-				trigger_event = activity_system.0551
 			}
 		}
 		# Clean up character flag preventing visited vassals from starting other activities
@@ -250,7 +244,30 @@
 			desc = "I have a lot of money"
 			add = 10
 		}
-		add = activity_general_ai_will_do_value
+		# Plague
+		if = {
+        	limit = {
+        	    any_sub_realm_county = {
+        	        has_province_with_epidemic = { intensity < apocalyptic }
+        	    }
+        	    would_follow_social_distancing_value >= -1
+        	}
+        	add = {
+        	    value = -60
+        	    desc = "Plague in Realm"
+        	}
+    	}
+    	if = {
+    	    limit = {
+    	        any_sub_realm_county = {
+    	            has_province_with_epidemic = { intensity = apocalyptic }
+    	        }
+    	    }
+    	    add = {
+    	        value = -200
+    	        desc = "Apocalyptic Plague in Realm"
+    	    }
+    	}
     	if = {
     		limit = {
     			government_has_flag = government_is_celestial
@@ -538,10 +555,7 @@
 			value = 0
 			if = {
 				limit = {
-					OR = {
-						has_treasury = no
-						government_has_flag = government_is_theocracy
-					}
+					has_treasury = no
 				}
 				add = {
 					add = {
@@ -576,7 +590,6 @@
 			if = {
 				limit = {
 					has_treasury = yes
-					NOT = { government_has_flag = government_is_theocracy }
 				}
 				add = {
 					add = {
@@ -618,10 +631,7 @@
 			value = 0
 			if = {
 				limit = {
-					OR = {
-						has_treasury = no
-						government_has_flag = government_is_theocracy
-					}
+					has_treasury = no
 				}
 				# Base Cost
 				add = {
@@ -662,7 +672,7 @@
 
 				# Tour Stops 
 				if = {
-					limit = { primary_title.tier >= tier_empire }
+					limit = { primary_title.tier = tier_empire }
 					add = {
 						value = 114 # derived from testing 
 						multiply = activity_cost_scale_by_era
@@ -712,7 +722,6 @@
 			if = {
 				limit = {
 					has_treasury = yes
-					NOT = { government_has_flag = government_is_theocracy }
 				}
 				# Base Cost
 				add = {
@@ -753,7 +762,7 @@
 
 				# Tour Stops 
 				if = {
-					limit = { primary_title.tier >= tier_empire }
+					limit = { primary_title.tier = tier_empire }
 					add = {
 						value = 114 # derived from testing 
 						multiply = activity_cost_scale_by_era
@@ -984,18 +993,12 @@
 		}
 		tour_entourage = {
 			tour_entourage_small = {
-				default = {
-					has_personal_tenet_flag = tenet_vows_of_poverty_humble_host
-				}
 				cost = {
 					gold = {
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_entourage_small
@@ -1031,7 +1034,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_entourage_small
@@ -1120,9 +1122,7 @@
 				}
 			}
 			tour_entourage_normal = {
-				default = {
-					NOT = { has_personal_tenet_flag = tenet_vows_of_poverty_humble_host }
-				}
+				default = yes
 				travel_entourage_selection = {
 					weight = tour_entourage_weight_value
 					max = 10
@@ -1135,7 +1135,6 @@
 					}
 				}
 				is_valid = {
-					pam_vows_of_poverty_premium_activity_option_valid_trigger = yes
 					custom_tooltip = {
 						text = more_than_5_courtiers
 						any_courtier_or_guest = { count > 5 }
@@ -1151,10 +1150,7 @@
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_entourage_normal
@@ -1190,7 +1186,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_entourage_normal
@@ -1292,10 +1287,7 @@
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_entourage_grand
@@ -1331,7 +1323,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_entourage_grand
@@ -1381,18 +1372,12 @@
 		}
 		tour_luxuries = {
 			tour_luxuries_bad = {
-				default = {
-					has_personal_tenet_flag = tenet_vows_of_poverty_humble_host
-				}
 				cost = {
 					gold = {
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_luxuries_bad
@@ -1428,7 +1413,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_luxuries_bad
@@ -1511,21 +1495,13 @@
 				}
 			}
 			tour_luxuries_normal = {
-				is_valid = {
-					pam_vows_of_poverty_premium_activity_option_valid_trigger = yes
-				}
-				default = {
-					NOT = { has_personal_tenet_flag = tenet_vows_of_poverty_humble_host }
-				}
+				default = yes
 				cost = {
 					gold = {
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_luxuries_normal
@@ -1561,7 +1537,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_luxuries_normal
@@ -1617,7 +1592,6 @@
 			}
 			tour_luxuries_good = {
 				is_valid = {
-					pam_vows_of_poverty_premium_activity_option_valid_trigger = yes
 					custom_tooltip = {
 						text = government_is_tribal_tt
 						NOT = { government_has_flag = government_is_tribal }
@@ -1664,10 +1638,7 @@
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_luxuries_good
@@ -1703,7 +1674,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_luxuries_good
@@ -1776,10 +1746,7 @@
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_furniture_normal
@@ -1815,7 +1782,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_furniture_normal
@@ -1864,7 +1830,6 @@
 			}
 			tour_furniture_good = {
 				is_valid = {
-					pam_vows_of_poverty_premium_activity_option_valid_trigger = yes
 					custom_tooltip = {
 						text = government_is_tribal_tt
 						NOT = { government_has_flag = government_is_tribal }
@@ -1901,10 +1866,7 @@
 						value = 0
 						if = {
 							limit = {
-								OR = {
-									has_treasury = no
-									government_has_flag = government_is_theocracy
-								}
+								has_treasury = no
 							}
 							add = {
 								desc = tour_furniture_good
@@ -1940,7 +1902,6 @@
 						if = {
 							limit = {
 								has_treasury = yes
-								NOT = { government_has_flag = government_is_theocracy }
 							}
 							add = {
 								desc = tour_furniture_good
@@ -2108,10 +2069,7 @@
 					value = 0
 					if = {
 						limit = {
-							OR = {
-								has_treasury = no
-								government_has_flag = government_is_theocracy
-							}
+							has_treasury = no
 						}
 						add = {
 							value = tour_stop_value
@@ -2129,7 +2087,6 @@
 					if = {
 						limit = {
 							has_treasury = yes
-							NOT = { government_has_flag = government_is_theocracy }
 						}
 						add = {
 							value = tour_stop_value
@@ -2370,10 +2327,7 @@
 					value = 0
 					if = {
 						limit = {
-							OR = {
-								has_treasury = no
-								government_has_flag = government_is_theocracy
-							}
+							has_treasury = no
 						}
 						add = {
 							value = tour_stop_value
@@ -2391,7 +2345,6 @@
 					if = {
 						limit = {
 							has_treasury = yes
-							NOT = { government_has_flag = government_is_theocracy }
 						}
 						add = {
 							value = tour_stop_value
@@ -2612,10 +2565,7 @@
 					value = 0
 					if = {
 						limit = {
-							OR = {
-								has_treasury = no
-								government_has_flag = government_is_theocracy
-							}
+							has_treasury = no
 						}
 						add = {
 							value = tour_stop_value
@@ -2633,7 +2583,6 @@
 					if = {
 						limit = {
 							has_treasury = yes
-							NOT = { government_has_flag = government_is_theocracy }
 						}
 						add = {
 							value = tour_stop_value
@@ -2720,7 +2669,7 @@
 					}
 					tour_progress_effect = yes
 				}
-				scope:host.location.county ?= { #remember in events that this is a county scope
+				scope:host.location.county = { #remember in events that this is a county scope
 					save_scope_as = cultural_festival_scope
 				}
 				tour_monthly_pulse_effect = {
@@ -2828,8 +2777,6 @@
 			liege_visited_benevolence liege_local_benevolence increased_control
 			
 			liege_local_tax levied_tax local_mayor_tax tax_rich_local church_tax local_baron_tax
-
-			apa_passive_religious_learning_host apa_passive_religious_learning_guest
 		}
 		chance_of_no_event = 5
 	}
@@ -3466,12 +3413,6 @@
 	}
 	
 	map_entity = "building_western_feast_01_entity"
-
-	###################
-	# GRAPHICS
-	###################
-
-	header_background = "gfx/interface/illustrations/activity_header_backgrounds/activity_tour.dds"
 
 	# Travel
 	background = { # Bridge

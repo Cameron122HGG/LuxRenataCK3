@@ -15,7 +15,7 @@ tradition_byzantine_succession = {
 		OR = {
 			has_cultural_pillar = heritage_byzantine
 			scope:character = {
-				is_roman_emperor_trigger = yes
+				has_title = title:e_byzantium
 			}
 		}
 		#replaced by new Byzantine traditions
@@ -24,7 +24,7 @@ tradition_byzantine_succession = {
 	can_pick = {
 		has_cultural_pillar = heritage_byzantine
 		scope:character = {
-			is_roman_emperor_trigger = yes
+			has_title = title:e_byzantium
 		}
 		custom_tooltip = {
 			text = cannot_have_tradition_court_eunuchs
@@ -777,11 +777,27 @@ tradition_visigothic_codes = {
 
 	is_shown = {
 		OR = {
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:visigothic }
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:daju }
+			this = culture:visigothic
+			this = culture:basque
+			any_parent_culture_or_above = {
+				OR = {
+					this = culture:visigothic
+					this = culture:basque
+				}
+			}
 		}
 	}
 	can_pick = {
+		OR = {
+			this = culture:visigothic
+			this = culture:basque
+			any_parent_culture_or_above = {
+				OR = {
+					this = culture:visigothic
+					this = culture:basque
+				}
+			}
+		}
 		scope:character = {
 			has_religion = religion:christianity_religion #The Visigothic code is strongly associated with Christian canon law.
 		}
@@ -992,7 +1008,10 @@ tradition_desert_nomads = {
 
 	is_shown = {
 		OR = {
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:bedouin }
+			this = culture:bedouin
+			any_parent_culture_or_above = {
+				this = culture:bedouin
+			}
 			any_parent_culture = {
 				has_cultural_tradition = tradition_desert_nomads
 			}
@@ -1274,8 +1293,8 @@ tradition_steppe_tolerance = {
 	}
 
 	character_modifier = { # easier to self-convert and create or reform faith
-		rite_creation_piety_cost_mult = -0.1
-		faith_conversion_piety_cost_mult = -0.3
+		faith_creation_piety_cost_mult = -0.2
+		faith_conversion_piety_cost_mult = -0.2
 		different_faith_opinion = 10
 		different_faith_county_opinion_mult = -0.25 # reduced penalty for different faiths (note this appears confusing in the UI right now)
 	}
@@ -1349,9 +1368,19 @@ tradition_nubian_warrior_queens = {
 
 	is_shown = {
 		NOT = { has_game_rule = inversed_gender_equality }
-		OR = {
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:nubian }
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:daju }
+		any_parent_culture_or_above = {
+			OR = {
+				this = culture:nubian
+				this = culture:daju
+			}
+		}
+	}
+	can_pick = {
+		any_parent_culture_or_above = {
+			OR = {
+				this = culture:nubian
+				this = culture:daju
+			}
 		}
 	}
 
@@ -1441,9 +1470,19 @@ tradition_nubian_warrior_kings = {
 
 	is_shown = {
 		has_game_rule = inversed_gender_equality
-		OR = {
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:nubian }
-			culture_is_or_has_ancestor_trigger = { CULTURE = culture:daju }
+		any_parent_culture_or_above = {
+			OR = {
+				this = culture:nubian
+				this = culture:daju
+			}
+		}
+	}
+	can_pick = {
+		any_parent_culture_or_above = {
+			OR = {
+				this = culture:nubian
+				this = culture:daju
+			}
 		}
 	}
 

@@ -37,7 +37,6 @@ convert_to_administrative_from_feudalism_effect = {
 				value = flag:japan_administrative
 			}
 		}
-<<<<<<< HEAD
 		flag:roman_administrative = { # Classical Administrative
 			save_scope_value_as = {
 				name = has_selected_a_government
@@ -63,8 +62,6 @@ convert_to_administrative_from_feudalism_effect = {
 			}
 		}
 
-=======
->>>>>>> Lux-Renata-main
 	}
 
 	change_to_administrative_effect = yes
@@ -200,7 +197,7 @@ convert_to_administrative_from_feudalism_effect = {
 			limit = {
 				highest_held_title_tier >= tier_duchy
 				house.house_head ?= this
-				government_allows = noble_families
+				government_has_flag = government_is_administrative
 				NOT = {
 					any_held_title = { is_noble_family_title = yes }
 				}
@@ -237,7 +234,7 @@ convert_to_administrative_from_feudalism_game_start_effect = {
 		# Because we run this twice, since folks can change in the lobby.
 		if = {
 			limit = {
-				NOT = { government_has_mechanic = administrative }
+				NOT = { government_has_flag = government_is_administrative }
 			}
 			change_government = administrative_government
 			create_noble_family_effect = { GOVERNMENT_GIVER = this }
@@ -327,7 +324,7 @@ apply_historic_administrative_game_rule_effect = {
 		}
 		if = {
 			limit = {
-				game_start_date = 1178.10.1
+				game_start_date = 6178.10.1
 				has_game_rule = historicity_extra_admin_persia_historic_1178
 			}
 			title:k_persia.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
@@ -348,57 +345,25 @@ apply_historic_administrative_game_rule_effect = {
 		}
 	}
 	# Maghreb.
-	if = {
-		limit = {
-			NOT = { has_game_rule = historicity_extra_admin_maghreb_gameplay_not_administrative }
-			exists = title:k_maghreb
-		}
-		if = {
-			limit = {
-				game_start_date >= 1066.9.15
-				has_game_rule = historicity_extra_admin_maghreb_historic_post_1066
-			}
-			title:k_maghreb.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
-		}
-		else_if = {
-			limit = { has_game_rule = historicity_extra_admin_maghreb_alt_historic_always }
-			title:k_maghreb.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
-		}
-	}
+
 	# Tamilakam/the Cholas.
-	if = {
-		limit = {
-			NOT = { has_game_rule = historicity_extra_admin_tamilakam_gameplay_not_administrative }
-			exists = title:k_tamilakam
-		}
-		if = {
-			limit = {
-				game_start_date = 1066.9.15
-				has_game_rule = historicity_extra_admin_tamilakam_historic_1066
-			}
-			title:k_tamilakam.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
-		}
-		else_if = {
-			limit = { has_game_rule = historicity_extra_admin_tamilakam_alt_historic_always }
-			title:k_tamilakam.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
-		}
-	}
+
 	# The Carolingians.
 	if = {
 		limit = {
 			NOT = { has_game_rule = historicity_extra_admin_carolingians_gameplay_not_administrative }
-			game_start_date = 867.1.1
+			game_start_date = 5867.1.1
 			exists = title:k_france
 			exists = title:k_lotharingia
 			exists = title:k_east_francia
-			exists = title:k_italy
+			exists = title:k_lombardy
 		}
 		if = {
 			limit = { has_game_rule = historicity_extra_admin_carolingians_alt_historic_all_administrative }
 			title:k_france.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
 			title:k_lotharingia.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
 			title:k_east_francia.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
-			title:k_italy.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+			title:k_lombardy.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
 		}
 		if = {
 			limit = { has_game_rule = historicity_extra_admin_carolingians_alt_historic_west_francia_administrative }
@@ -414,7 +379,7 @@ apply_historic_administrative_game_rule_effect = {
 		}
 		if = {
 			limit = { has_game_rule = historicity_extra_admin_carolingians_alt_historic_italy_administrative }
-			title:k_italy.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+			title:k_lombardy.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
 		}
 	}
 }
@@ -456,7 +421,7 @@ convert_to_feudalism_from_administrative_effect = {
 	#Then change government
 	if = {
 		limit = { ep3_is_clan_inclined_trigger = yes }
-		change_government = clan_government
+		change_government = iqta_government
 
 		#Duchies automatically transfer, need to poke the kingdoms
 		if = {
@@ -478,12 +443,12 @@ convert_to_feudalism_from_administrative_effect = {
 						government_has_flag = government_is_theocracy
 					}
 				}
-				hidden_effect = { change_government = clan_government }
+				hidden_effect = { change_government = iqta_government }
 			}
 		}
 	}
 	else = {
-		change_government = feudal_government
+		change_government = western_feudal_government
 
 		#Duchies automatically transfer, need to poke the kingdoms
 		if = {
@@ -505,7 +470,7 @@ convert_to_feudalism_from_administrative_effect = {
 						government_has_flag = government_is_theocracy
 					}
 				}
-				hidden_effect = { change_government = feudal_government }
+				hidden_effect = { change_government = western_feudal_government }
 			}
 		}
 	}

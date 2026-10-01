@@ -114,42 +114,30 @@ challenge_to_trial_by_combat_interaction = {
 	greeting = negative
 	notification_text = REQUEST_TRIAL_BY_COMBAT_TEXT
 
-	is_available = {
-		trigger_if = {
-			limit = { is_ai = yes }
-			basic_can_have_trial_by_combat_trigger = yes
-			NOT = {
-				has_trait = craven
-			}
-			is_imprisoned = no
-			can_start_single_combat_trigger = yes
-		}
-	}
-
 	is_shown = {
-		# First, evaluate culture to trim down our potentials list.
-		can_have_trial_by_combat_trigger = yes
 		# Early out on whether you have the DLC or not.
 		has_fp1_dlc_trigger = yes
+		# First, evaluate culture to trim down our potentials list.
+		can_have_trial_by_combat_trigger = yes
 		# And obviously never against yourself.
-		# Then, look to see if scope:puppet_or_actor has good cause.
-		scope:puppet_or_actor ?= {
-			this != scope:recipient
+		scope:actor != scope:recipient
+		# Then, look to see if scope:actor has good cause.
+		scope:actor = {
 			# Check there are no lieges involved.
 			NOR = {
 				# Must not be in a position to imprison scope:recipient standardly.
 				target_is_liege_or_above = scope:recipient
 				# Can't be used against anyone who has authority over you.
-				scope:recipient = { target_is_liege_or_above = scope:puppet_or_actor }
+				scope:recipient = { target_is_liege_or_above = scope:actor }
 			}
-			# Scope:recipient cannot be a landless character in scope:puppet_or_actor's sub-realm.
+			# Scope:recipient cannot be a landless character in scope:actor's sub-realm.
 			scope:recipient = {
-				is_landed_or_landless_administrative_or_theocratic = yes
+				is_landed_or_landless_administrative = yes
 				NAND = {
 					court_owner ?= {
 						OR = {
-							this = scope:puppet_or_actor
-							any_liege_or_above = { this = scope:puppet_or_actor }
+							this = scope:actor
+							any_liege_or_above = { this = scope:actor }
 						}
 					}
 				}
@@ -167,7 +155,7 @@ challenge_to_trial_by_combat_interaction = {
 	}
 
 	can_send = {
-		scope:puppet_or_actor = {
+		scope:actor = {
 			custom_description = {
 				text = "character_interactions_hostile_actions_disabled_delay"
 				NOT = { has_character_flag = flag_hostile_actions_disabled_delay }
@@ -179,7 +167,7 @@ challenge_to_trial_by_combat_interaction = {
 	cooldown_against_recipient = { years = 10 }
 
 	on_send = {
-		scope:puppet_or_actor = {
+		scope:actor = {
 			add_character_flag = {
 				flag = flag_hostile_actions_disabled_delay
 				days = 10
@@ -204,11 +192,11 @@ challenge_to_trial_by_combat_interaction = {
 			# Inform both characters that scope:recipient will have a chance to choose a champion.
 			custom_tooltip = fp1_tbc_recipient_will_designate_champion
 		}
-		# Else we skip straight to scope:puppet_or_actor's setup event.
+		# Else we skip straight to scope:actor's setup event.
 		else = {
 			# Stopping only briefly to clarify that scope:recipient will be fighting the bout themselves.
 			scope:recipient = { save_scope_as = champion }
-			scope:puppet_or_actor = { trigger_event = fp1_tbc.0001 }
+			scope:actor = { trigger_event = fp1_tbc.0001 }
 		}
 		# Inform of the consequences.
 		## Death - one of you will die.
@@ -220,10 +208,10 @@ challenge_to_trial_by_combat_interaction = {
 						show_chance = no
 						desc = fp1_tbc_winner_actor
 						fp1_tbc_death_effect = {
-							TBC_VICTOR = scope:puppet_or_actor
+							TBC_VICTOR = scope:actor
 							TBC_LOSER = scope:recipient
 						}
-						scope:puppet_or_actor = {
+						scope:actor = {
 							add_kinslayer_trait_or_nothing_effect = { VICTIM = scope:recipient }
 						}
 					}
@@ -232,16 +220,16 @@ challenge_to_trial_by_combat_interaction = {
 						desc = fp1_tbc_winner_recipient
 						fp1_tbc_death_effect = {
 							TBC_VICTOR = scope:recipient
-							TBC_LOSER = scope:puppet_or_actor
+							TBC_LOSER = scope:actor
 						}
 						scope:recipient = {
-							add_kinslayer_trait_or_nothing_effect = { VICTIM = scope:puppet_or_actor }
+							add_kinslayer_trait_or_nothing_effect = { VICTIM = scope:actor }
 						}
 					}
 				}
 			}
 		}
-		## Gold - scope:recipient will have to pay gold, or scope:puppet_or_actor will take stress.
+		## Gold - scope:recipient will have to pay gold, or scope:actor will take stress.
 		if = {
 			limit = { always = scope:tbc_gold }
 			show_as_tooltip = {
@@ -250,7 +238,7 @@ challenge_to_trial_by_combat_interaction = {
 						show_chance = no
 						desc = fp1_tbc_winner_actor
 						fp1_tbc_gold_effect = {
-							TBC_VICTOR = scope:puppet_or_actor
+							TBC_VICTOR = scope:actor
 							TBC_LOSER = scope:recipient
 						}
 					}
@@ -258,14 +246,14 @@ challenge_to_trial_by_combat_interaction = {
 						show_chance = no
 						desc = fp1_tbc_winner_recipient
 						fp1_tbc_actor_defeated_effect = {
-							TBC_LOSER = scope:puppet_or_actor
+							TBC_LOSER = scope:actor
 							TBC_VICTOR = scope:recipient
 						}
 					}
 				}
 			}
 		}
-		## Hook - scope:recipient will concede a hook, or scope:puppet_or_actor will take stress.
+		## Hook - scope:recipient will concede a hook, or scope:actor will take stress.
 		if = {
 			limit = { always = scope:tbc_weak_hook }
 			show_as_tooltip = {
@@ -274,7 +262,7 @@ challenge_to_trial_by_combat_interaction = {
 						show_chance = no
 						desc = fp1_tbc_winner_actor
 						fp1_tbc_hook_effect = {
-							TBC_VICTOR = scope:puppet_or_actor
+							TBC_VICTOR = scope:actor
 							TBC_LOSER = scope:recipient
 						}
 					}
@@ -282,14 +270,14 @@ challenge_to_trial_by_combat_interaction = {
 						show_chance = no
 						desc = fp1_tbc_winner_recipient
 						fp1_tbc_actor_defeated_effect = {
-							TBC_LOSER = scope:puppet_or_actor
+							TBC_LOSER = scope:actor
 							TBC_VICTOR = scope:recipient
 						}
 					}
 				}
 			}
 		}
-		## Humiliation - scope:recipient will gain an immense amount of stress, or scope:puppet_or_actor will take some stress.
+		## Humiliation - scope:recipient will gain an immense amount of stress, or scope:actor will take some stress.
 		if = {
 			limit = { always = scope:tbc_humiliation }
 			show_as_tooltip = {
@@ -299,14 +287,14 @@ challenge_to_trial_by_combat_interaction = {
 						desc = fp1_tbc_winner_actor
 						fp1_tbc_humiliation_effect = {
 							TBC_LOSER = scope:recipient
-							TBC_VICTOR = scope:puppet_or_actor
+							TBC_VICTOR = scope:actor
 						}
 					}
 					50 = {
 						show_chance = no
 						desc = fp1_tbc_winner_recipient
 						fp1_tbc_actor_defeated_effect = {
-							TBC_LOSER = scope:puppet_or_actor
+							TBC_LOSER = scope:actor
 							TBC_VICTOR = scope:recipient
 						}
 					}
@@ -316,14 +304,14 @@ challenge_to_trial_by_combat_interaction = {
 		# Clear up hostile actions flag.
 		if = {
 			limit = {
-				scope:puppet_or_actor = { has_character_flag = flag_hostile_actions_disabled_delay }
+				scope:actor = { has_character_flag = flag_hostile_actions_disabled_delay }
 			}
-			scope:puppet_or_actor = { remove_character_flag = flag_hostile_actions_disabled_delay }
+			scope:actor = { remove_character_flag = flag_hostile_actions_disabled_delay }
 		}
 
 		# If we're a clan this interaction affects unity
 		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:puppet_or_actor
+			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
 			DESC = clan_unity_trial_by_combat.desc
@@ -335,7 +323,7 @@ challenge_to_trial_by_combat_interaction = {
 		# Scope:recipient loses some prestige.
 		scope:recipient = { add_prestige = medium_prestige_loss }
 		# Scope:actor decline processing.
-		scope:puppet_or_actor = {
+		scope:actor = {
 			# Inform them of the declination.
 			trigger_event = fp1_tbc.0031
 			# Cooldown is removed.
@@ -354,7 +342,7 @@ challenge_to_trial_by_combat_interaction = {
 	send_option = {
 		# Only tribals fight to the death.
 		is_shown = {
-			scope:puppet_or_actor ?= { government_has_flag = government_is_tribal }
+			scope:actor = { government_has_flag = government_is_tribal }
 			# And there's no real sense doing it if you can't fight your opponent directly.
 			scope:recipient = {
 				NOR = {
@@ -380,7 +368,7 @@ challenge_to_trial_by_combat_interaction = {
 		# Must not have a better hook.
 		is_shown = {
 			NOT = {
-				scope:puppet_or_actor ?= { has_strong_hook = scope:recipient }
+				scope:actor = { has_strong_hook = scope:recipient }
 			}
 		}
 		flag = tbc_weak_hook
@@ -404,7 +392,7 @@ challenge_to_trial_by_combat_interaction = {
 		# Fightan abilities of both sides.
 		modifier = {
 			add = {
-				value = scope:puppet_or_actor.prowess
+				value = scope:actor.prowess
 				multiply = -0.5
 			}
 			desc = TBC_PROWESS_ACTOR
@@ -419,7 +407,7 @@ challenge_to_trial_by_combat_interaction = {
 		# Who doesn't like punching a bastard?
 		opinion_modifier = {
 			who = scope:recipient
-			opinion_target = scope:puppet_or_actor
+			opinion_target = scope:actor
 			multiplier = -1
 			desc = AI_OPINION_REASON
 		}
@@ -603,7 +591,7 @@ challenge_to_trial_by_combat_interaction = {
 		## King -> Baron.
 		modifier = {
 			desc = AI_REFUSAL_RANK_DIFFERENCE
-			scope:puppet_or_actor = {
+			scope:actor = {
 				tier_difference = {
 					target = scope:recipient
 					value >= 4
@@ -614,7 +602,7 @@ challenge_to_trial_by_combat_interaction = {
 		## Duke -> Baron.
 		modifier = {
 			desc = AI_REFUSAL_RANK_DIFFERENCE
-			scope:puppet_or_actor = {
+			scope:actor = {
 				tier_difference = {
 					target = scope:recipient
 					value = 3
@@ -625,7 +613,7 @@ challenge_to_trial_by_combat_interaction = {
 		## Count -> Baron.
 		modifier = {
 			desc = AI_REFUSAL_RANK_DIFFERENCE
-			scope:puppet_or_actor = {
+			scope:actor = {
 				tier_difference = {
 					target = scope:recipient
 					value = 2
@@ -636,7 +624,7 @@ challenge_to_trial_by_combat_interaction = {
 		## King <- Baron.
 		modifier = {
 			desc = AI_REFUSAL_RANK_DIFFERENCE
-			scope:puppet_or_actor = {
+			scope:actor = {
 				tier_difference = {
 					target = scope:recipient
 					value = -2
@@ -647,7 +635,7 @@ challenge_to_trial_by_combat_interaction = {
 		## Duke <- Baron.
 		modifier = {
 			desc = AI_REFUSAL_RANK_DIFFERENCE
-			scope:puppet_or_actor = {
+			scope:actor = {
 				tier_difference = {
 					target = scope:recipient
 					value = -3
@@ -658,7 +646,7 @@ challenge_to_trial_by_combat_interaction = {
 		## Count <- Baron.
 		modifier = {
 			desc = AI_REFUSAL_RANK_DIFFERENCE
-			scope:puppet_or_actor = {
+			scope:actor = {
 				tier_difference = {
 					target = scope:recipient
 					value <= -4
@@ -671,8 +659,8 @@ challenge_to_trial_by_combat_interaction = {
 			desc = offer_vassalization_interaction_aibehavior_rival_tt
 			trigger = {
 				scope:recipient = {
-					has_relation_rival = scope:puppet_or_actor
-					NOT = { has_relation_nemesis = scope:puppet_or_actor }
+					has_relation_rival = scope:actor
+					NOT = { has_relation_nemesis = scope:actor }
 				}
 			}
 			add = 50
@@ -682,7 +670,7 @@ challenge_to_trial_by_combat_interaction = {
 			desc = offer_vassalization_interaction_aibehavior_nemesis_tt
 			trigger = {
 				scope:recipient = {
-					has_relation_nemesis = scope:puppet_or_actor
+					has_relation_nemesis = scope:actor
 				}
 			}
 			add = 100
@@ -690,6 +678,15 @@ challenge_to_trial_by_combat_interaction = {
 	}
 
 	# AI
+
+	ai_potential = {
+		basic_can_have_trial_by_combat_trigger = yes
+		NOT = {
+			has_trait = craven
+		}
+		is_imprisoned = no
+		can_start_single_combat_trigger = yes
+	}
 
 	ai_target_quick_trigger = {
 		adult = yes
@@ -722,7 +719,7 @@ challenge_to_trial_by_combat_interaction = {
 		# Factor for opinion.
 		modifier = {
 			add = 100
-			scope:puppet_or_actor = {
+			scope:actor = {
 				opinion = {
 					target = scope:recipient
 					value <= very_high_negative_opinion
@@ -731,7 +728,7 @@ challenge_to_trial_by_combat_interaction = {
 		}
 		modifier = {
 			add = 50
-			scope:puppet_or_actor = {
+			scope:actor = {
 				opinion = {
 					target = scope:recipient
 					value <= medium_negative_opinion
@@ -740,7 +737,7 @@ challenge_to_trial_by_combat_interaction = {
 		}
 		modifier = {
 			add = -50
-			scope:puppet_or_actor = {
+			scope:actor = {
 				opinion = {
 					target = scope:recipient
 					value >= medium_positive_opinion
@@ -749,7 +746,7 @@ challenge_to_trial_by_combat_interaction = {
 		}
 		modifier = {
 			add = -100
-			scope:puppet_or_actor = {
+			scope:actor = {
 				opinion = {
 					target = scope:recipient
 					value >= very_high_positive_opinion
@@ -758,16 +755,16 @@ challenge_to_trial_by_combat_interaction = {
 		}
 		# Don't challenge kinslayer-counting family, unless they're a rival or nemesis.
 		modifier = {
-			scope:puppet_or_actor = {
-				murdering_character_is_kinslaying_in_rite_trigger = {
+			scope:actor = {
+				murdering_character_is_kinslaying_in_faith_trigger = {
 					CHARACTER = scope:recipient
-					RITE = scope:puppet_or_actor.rite
+					FAITH = scope:actor.faith
 				}
 			}
 			scope:recipient = {
 				NOR = {
-					has_relation_rival = scope:puppet_or_actor
-					has_relation_nemesis = scope:puppet_or_actor
+					has_relation_rival = scope:actor
+					has_relation_nemesis = scope:actor
 				}
 			}
 			add = -1000
@@ -775,17 +772,17 @@ challenge_to_trial_by_combat_interaction = {
 		# Don't challenge your spouse, unless they're your rival or nemesis.
 		modifier = {
 			scope:recipient = {
-				is_spouse_of = scope:puppet_or_actor
+				is_spouse_of = scope:actor
 				NOR = {
-					has_relation_rival = scope:puppet_or_actor
-					has_relation_nemesis = scope:puppet_or_actor
+					has_relation_rival = scope:actor
+					has_relation_nemesis = scope:actor
 				}
 			}
 			add = -1000
 		}
 		# Don't challenge people hopelessly out of your league unless you're really, really not seeing things clearly.
 		modifier = {
-			scope:puppet_or_actor = {
+			scope:actor = {
 				prowess_diff = {
 					target = scope:recipient
 					value <= -15
@@ -823,31 +820,26 @@ designate_shieldmaiden_interaction = {
 		hegemony = 60
 	}
 
-	is_available = {
-		#Has access to the appropriate cultural parameter.
-		culture ?= { has_cultural_parameter = has_access_to_shieldmaidens }
-		trigger_if = {
-			limit = { is_ai = yes }
-			prestige > major_prestige_value
-		}
-		has_fp1_dlc_trigger = yes
-		is_physically_able_adult = yes
-		trigger_if = { # Determined by Cultural Pillars
-			limit = { has_dlc_feature = diverge_culture }
-			culture = {
-				NOT = { has_cultural_parameter = martial_custom_equal_combatant }
-			}
-		}
-		trigger_else = {
-			NOT = {
-				rite = { rite_has_doctrine = doctrine_gender_equal }
-			}
-		}
-	}
-
 	is_shown = {
+		scope:actor = {
+			has_fp1_dlc_trigger = yes
+			is_physically_able_adult = yes
+			#Has access to the appropriate cultural parameter.
+			culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+			trigger_if = { # Determined by Cultural Pillars
+				limit = { has_dlc_feature = diverge_culture }
+				culture = {
+					NOT = { has_cultural_parameter = martial_custom_equal_combatant }
+				}
+			}
+			trigger_else = {
+				NOT = {
+					faith = { has_doctrine = doctrine_gender_equal }
+				}
+			}
+		}
 		scope:recipient = {
-			is_incapable = no
+			NOT = { has_trait = incapable }
 			is_courtier_of = scope:actor
 			is_close_family_of = scope:actor
 			NOT = { has_trait = shieldmaiden }
@@ -856,11 +848,11 @@ designate_shieldmaiden_interaction = {
 				OR = {
 					AND = {
 						is_female = yes
-						culture ?= { has_cultural_parameter = martial_custom_male_only_combatant }
+						culture = { has_cultural_parameter = martial_custom_male_only_combatant }
 					}
 					AND = {
 						is_male = yes
-						culture ?= { has_cultural_parameter = martial_custom_female_only_combatant }
+						culture = { has_cultural_parameter = martial_custom_female_only_combatant }
 					}
 				}
 			}
@@ -868,11 +860,11 @@ designate_shieldmaiden_interaction = {
 				OR = { # Does not have the Royal Court and thus combatant is governed by faith
 					AND = {
 						is_female = yes
-						rite ?= { rite_has_parameter = combatant_must_be_male_if_no_roco }
+						faith = { has_doctrine_parameter = combatant_must_be_male_if_no_roco }
 					}
 					AND = {
 						is_male = yes
-						rite ?= { rite_has_parameter = combatant_must_be_female_if_no_roco }
+						faith = { has_doctrine_parameter = combatant_must_be_female_if_no_roco }
 					}
 				}
 			}
@@ -892,7 +884,7 @@ designate_shieldmaiden_interaction = {
 
 	on_accept = {
 		scope:actor = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				arrogant = medium_stress_impact_gain
 				paranoid = minor_stress_impact_gain
 			}
@@ -922,7 +914,7 @@ designate_shieldmaiden_interaction = {
 						scope:recipient = {
 							add_trait_force_tooltip = shieldmaiden
 						}
-						stress_and_fulfillment_impact = {
+						stress_impact = {
 							arrogant = medium_stress_impact_gain
 							paranoid = minor_stress_impact_gain
 						}
@@ -968,6 +960,14 @@ designate_shieldmaiden_interaction = {
 
 	cost = {
 		prestige = scope:actor.minor_prestige_value
+	}
+
+	ai_potential = {
+		#Has access to the appropriate cultural parameter.
+		culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+		prestige > major_prestige_value
+		has_fp1_dlc_trigger = yes
+		is_physically_able_adult = yes
 	}
 
 	auto_accept = no
@@ -1057,4 +1057,3 @@ designate_shieldmaiden_interaction = {
 		base = 100
 	}
 }
-

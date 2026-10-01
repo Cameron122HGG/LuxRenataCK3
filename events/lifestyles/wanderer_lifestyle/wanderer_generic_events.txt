@@ -179,7 +179,7 @@ wanderer_lifestyle_events.20 = { # Reminiscing about a previous journey
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			gregarious = minor_stress_impact_loss
 			deceitful = minor_stress_impact_loss
 		}
@@ -216,7 +216,7 @@ wanderer_lifestyle_events.20 = { # Reminiscing about a previous journey
 			value = scope:reminiscing_location
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_loss
 		}
 
@@ -259,7 +259,7 @@ wanderer_lifestyle_events.25 = { # Follow-up
 			}
 			add_wanderer_lifestyle_xp = 250
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_impact_loss
 		}
 	}
@@ -342,13 +342,13 @@ wanderer_lifestyle_events.30 = { # Dreams of Distant Lands
 	trigger = {
 		is_ai = no
 		has_lifestyle = wanderer_lifestyle
-		has_none_of_variables = {
-			name = dreams_of_distant_lands_europe
-			name = dreams_of_distant_lands_africa
-			name = dreams_of_distant_lands_middle_east
-			name = dreams_of_distant_lands_india
-			name = dreams_of_distant_lands_tibet
-			name = dreams_of_distant_lands_steppe
+		NOR = {
+			has_variable = dreams_of_distant_lands_europe
+			has_variable = dreams_of_distant_lands_africa
+			has_variable = dreams_of_distant_lands_middle_east
+			has_variable = dreams_of_distant_lands_india
+			has_variable = dreams_of_distant_lands_tibet
+			has_variable = dreams_of_distant_lands_steppe
 		}
 	}
 
@@ -383,7 +383,6 @@ wanderer_lifestyle_events.30 = { # Dreams of Distant Lands
 		create_character = {
 			template = merchant_template
 			faith = root.faith
-			rite = root.rite
 			culture = root.culture
 			gender = root
 			location = root.location
@@ -438,7 +437,7 @@ scripted_effect dreams_of_distant_lands_followup_reward_effect = {
 		}
 		add_wanderer_lifestyle_perk_points = 1
 	}
-	stress_and_fulfillment_impact = {
+	stress_impact = {
 		base = major_stress_impact_loss
 	}
 }
@@ -597,7 +596,7 @@ scripted_effect wanderer_lifestyle_events_40_successful_barter_effect = {
 		remove_short_term_gold = {
 			value = scope:supply_gold_cost_special
 		}	
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_loss
 		}
 	}
@@ -615,7 +614,7 @@ scripted_effect wanderer_lifestyle_events_40_failed_barter_effect = {
 				multiply = 1.35
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_gain
 			profligate = minor_stress_impact_loss # It's ok i love wasting money anyways
 		}
@@ -650,7 +649,6 @@ wanderer_lifestyle_events.40 = { # Miscommunication
 			location = root.domicile.domicile_location
 			culture = root.domicile.domicile_location.county.culture
 			faith = root.domicile.domicile_location.county.faith
-			rite = root.domicile.domicile_location.county.rite
 			save_scope_as = provisions_merchant
 		}
 		# Find the normal cost of the provisions, and add the merchants discount
@@ -800,7 +798,7 @@ wanderer_lifestyle_events.40 = { # Miscommunication
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = medium_stress_impact_gain
 			profligate = medium_stress_impact_loss # I love wasting money
 			generous = minor_stress_impact_loss
@@ -822,7 +820,7 @@ wanderer_lifestyle_events.40 = { # Miscommunication
 	option = { # Mom says we have food at home (fake news)
 		name = wanderer_lifestyle_events.40.meh
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_gain # Ok well we dont have food
 			lazy = minor_stress_impact_loss # Rather avoid the conflict
 			shy = minor_stress_impact_loss

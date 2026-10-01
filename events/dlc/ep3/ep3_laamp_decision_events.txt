@@ -171,7 +171,11 @@ scripted_trigger 1000_appropriate_visiting_partner_basic_trigger = {
 scripted_trigger 1000_is_a_nomadic_holding_trigger = {
 	scope:visiting_location = {
 		is_nomadic_location_trigger = yes
-		holding_is_tribal = yes
+		OR = {
+			has_holding_type = tribal_holding
+			has_holding_type = nomad_holding
+			has_holding_type = herder_holding
+		}
 	}
 }
 
@@ -183,21 +187,26 @@ scripted_trigger 1000_time_to_go_home_trigger = {
 	#Did we have, and are we done with the Church Holding option?
 	trigger_if = {
 		limit = { 
-			scope:visiting_location = { holding_is_church = yes }
+			scope:visiting_location = { 
+				OR = {
+					has_holding_type = church_holding
+					has_holding_type = temple_citadel_holding
+				}
+			}
 		}
 		exists = scope:laamp_decision_finished_church_option
 	}
 	#Did we have, and are we done with the Castle Holding option?
 	trigger_if = {
 		limit = { 
-			scope:visiting_location = { holding_is_castle = yes }
+			scope:visiting_location = { has_holding_type = castle_holding } 
 		}
 		exists = scope:laamp_decision_finished_castle_option
 	}
 	#Did we have, and are we done with the City Holding option?
 	trigger_if = {
 		limit = { 
-			scope:visiting_location = { holding_is_city = yes } 
+			scope:visiting_location = { has_holding_type = city_holding } 
 		}
 		exists = scope:laamp_decision_finished_craftsmen_option
 	}
@@ -231,10 +240,10 @@ scripted_trigger 1000_time_to_go_home_trigger = {
 
 #Don't sell levelling banners
 scripted_trigger 1000_is_unsellable_artifact_trigger = {
-	has_variable = {
-		name = banner_house
-		name = banner_dynasty
-		name = 1025_treasure_map
+	OR = {
+		has_variable = banner_house
+		has_variable = banner_dynasty
+		has_variable = 1025_treasure_map
 	}
 }
 
@@ -443,32 +452,49 @@ ep3_laamp_decision_event.1000 = {
 			random_valid = {
 				triggered_desc = { 
 					trigger = { 
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 					}
 					desc = ep3_laamp_decision_event.1000.desc_intro_tribal_holding_01
 				}
 				triggered_desc = { 
 					trigger = { 
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 					}
 					desc = ep3_laamp_decision_event.1000.desc_intro_tribal_holding_02
 				}
 			}
 			triggered_desc = { 
 				trigger = { 
-					scope:visiting_location = { holding_is_church = yes }
+					scope:visiting_location = { 
+						OR = {
+							has_holding_type = church_holding
+							has_holding_type = temple_citadel_holding
+						}
+					}
 				}
 				desc = ep3_laamp_decision_event.1000.desc_intro_church_holding
 			}
 			triggered_desc = { 
 				trigger = { 
-					scope:visiting_location = { holding_is_castle = yes }
+					scope:visiting_location = { has_holding_type = castle_holding } 
 				}
 				desc = ep3_laamp_decision_event.1000.desc_intro_castle_holding
 			}
 			triggered_desc = { 
 				trigger = { 
-					scope:visiting_location = { holding_is_city = yes } 
+					scope:visiting_location = { has_holding_type = city_holding } 
 				}
 				desc = ep3_laamp_decision_event.1000.desc_intro_city_holding
 			}	
@@ -502,9 +528,9 @@ ep3_laamp_decision_event.1000 = {
 						has_variable = return_from_location
 						NOT = { exists = scope:is_unique_location } #Block all RETURN outros for unique locations, they are handled in unique RETURN intro
 						middle_of_year_season_trigger = yes #Light out
-						has_none_of_variables = {
-							name = 1000_is_currently_raining
-							name = 1000_is_currently_snowing
+						NOR = {
+							has_variable = 1000_is_currently_raining
+							has_variable = 1000_is_currently_snowing
 						}
 						scope:visiting_location = { geographical_region = world_europe_north }
 					}
@@ -554,9 +580,9 @@ ep3_laamp_decision_event.1000 = {
 					trigger = { 
 						has_variable = return_from_location
 						NOT = { exists = scope:is_unique_location }
-						has_none_of_variables = {
-							name = 1000_is_currently_raining
-							name = 1000_is_currently_foggy
+						NOR = {
+							has_variable = 1000_is_currently_raining
+							has_variable = 1000_is_currently_foggy
 						}
 						scope:visiting_location = { geographical_region = world_europe_west_britannia }
 					}
@@ -827,7 +853,6 @@ ep3_laamp_decision_event.1000 = {
 						}
 						desc = ep3_laamp_decision_event.1000.desc_outro_regional_east_africa_returned_04
 					}
-					# TODO desc for new part of the map
 					#RETURN: Region - Generic
 					triggered_desc = {
 						trigger = { 
@@ -1007,21 +1032,26 @@ ep3_laamp_decision_event.1000 = {
 		#Church Holding
 		override_sound = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_church = yes }
+				scope:visiting_location = { 
+					OR = {
+						has_holding_type = church_holding
+						has_holding_type = temple_citadel_holding
+					}
+				}
 			}
 			reference = "event:/SFX/Events/Themes/sfx_event_theme_type_faith"
 		}
 		#Castle Holding
 		override_sound = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_castle = yes }
+				scope:visiting_location = { has_holding_type = castle_holding } 
 			}
 			reference = "event:/SFX/Events/Themes/sfx_event_theme_type_martial"
 		}
 		#City Holding
 		override_sound = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_city = yes } 
+				scope:visiting_location = { has_holding_type = city_holding } 
 			}
 			reference = "event:/SFX/Events/Themes/sfx_event_theme_type_stewardship"
 		}
@@ -1044,7 +1074,13 @@ ep3_laamp_decision_event.1000 = {
 		override_background = {
 			trigger = { 
 				1000_time_to_go_home_trigger = yes
-				scope:visiting_location = { holding_is_tribal = yes }
+				scope:visiting_location = {
+					OR = {
+						has_holding_type = tribal_holding
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+				}
 			}
 			reference = bp1_bonfire
 		}
@@ -1067,7 +1103,12 @@ ep3_laamp_decision_event.1000 = {
 		}
 		override_background = {
 			trigger = { 
-				scope:visiting_location = { holding_is_nomad = yes }
+				scope:visiting_location = {
+					OR = {
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+				}
 			}
 			reference = mpo_camp_steppe
 		}
@@ -1079,21 +1120,26 @@ ep3_laamp_decision_event.1000 = {
 		#Church Holding
 		override_background = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_church = yes }
+				scope:visiting_location = { 
+					OR = {
+						has_holding_type = church_holding
+						has_holding_type = temple_citadel_holding
+					}
+				}
 			}
 			reference = holy_site_generic
 		}
 		#Castle Holding
 		override_background = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_castle = yes }
+				scope:visiting_location = { has_holding_type = castle_holding } 
 			}
 			reference = courtyard_location 
 		}
 		#City Holding
 		override_background = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_city = yes } 
+				scope:visiting_location = { has_holding_type = city_holding } 
 			}
 			reference = ep3_city_gate
 		}
@@ -1176,7 +1222,7 @@ ep3_laamp_decision_event.1000 = {
 			}
 			location = {
 				random_neighboring_province = { 
-					limit = { exists = county }
+					limit = { is_location_valid_for_travel_event_on_land = yes }
 					save_scope_as = neighboring_county
 				}
 			}
@@ -1276,7 +1322,12 @@ ep3_laamp_decision_event.1000 = {
 			#Church Holding: Visit the local church grounds
 			if = {
 				limit = {
-					scope:visiting_location = { holding_is_church = yes }	
+					scope:visiting_location = { 
+						OR = {
+							has_holding_type = church_holding
+							has_holding_type = temple_citadel_holding
+						}
+					}	
 				}
 				add_to_variable_list = {
 					name = list_of_options
@@ -1286,7 +1337,7 @@ ep3_laamp_decision_event.1000 = {
 			#Castle Holding: Visit the local castle grounds
 			if = {
 				limit = {
-					scope:visiting_location = { holding_is_castle = yes }
+					scope:visiting_location = { has_holding_type = castle_holding }	
 				}
 				add_to_variable_list = {
 					name = list_of_options
@@ -1296,7 +1347,7 @@ ep3_laamp_decision_event.1000 = {
 			#City Holding: Visit the local fine craftsmen
 			if = {
 				limit = {
-					scope:visiting_location = { holding_is_city = yes }	
+					scope:visiting_location = { has_holding_type = city_holding }	
 				}
 				add_to_variable_list = {
 					name = list_of_options
@@ -1322,7 +1373,10 @@ ep3_laamp_decision_event.1000 = {
 								is_close_family_of = root
 								1000_has_illness_or_wound_to_treat_trigger = yes
 								scope:visiting_location = { 
-									holding_is_church = yes
+									OR = {
+										has_holding_type = church_holding
+										has_holding_type = temple_citadel_holding
+									}
 								}
 							}
 							modifier = {
@@ -1330,14 +1384,20 @@ ep3_laamp_decision_event.1000 = {
 								is_spouse_of = root
 								1000_has_illness_or_wound_to_treat_trigger = yes
 								scope:visiting_location = { 
-									holding_is_church = yes
+									OR = {
+										has_holding_type = church_holding
+										has_holding_type = temple_citadel_holding
+									}
 								}
 							}
 							modifier = {
 								add = 100
 								has_relation_lover = root
 								scope:visiting_location = { 
-									holding_is_church = yes
+									OR = {
+										has_holding_type = church_holding
+										has_holding_type = temple_citadel_holding
+									}
 								}
 							}
 							modifier = {
@@ -1570,7 +1630,7 @@ ep3_laamp_decision_event.1000 = {
 				limit = { 
 					NOT = { exists = scope:been_to_second }
 				}
-				always = yes
+				always = yes	
 			}
 			trigger_else_if = {
 				limit = { exists = scope:been_to_second }
@@ -1741,7 +1801,13 @@ ep3_laamp_decision_event.1001 = {
 			#FIRST TIME
 			triggered_desc = {
 				trigger = {
-					scope:visiting_location = { holding_is_tribal = yes }
+					scope:visiting_location = {
+						OR = {
+							has_holding_type = tribal_holding
+							has_holding_type = nomad_holding
+							has_holding_type = herder_holding
+						}
+					}
 					NOT = { exists = scope:been_to_second }
 				}
 				desc = ep3_laamp_decision_event.1001.desc_intro_nomads
@@ -1991,7 +2057,6 @@ ep3_laamp_decision_event.1001 = {
 					}
 					desc = ep3_laamp_decision_event.1000.desc_outro_regional_east_africa_returned_04
 				}
-				# TODO desc for new part of the map
 				#RETURN: Region - Generic
 				triggered_desc = {
 					trigger = { exists = scope:been_to_second }
@@ -2101,7 +2166,13 @@ ep3_laamp_decision_event.1001 = {
 		override_background = {
 			trigger = { 
 				1000_time_to_go_home_trigger = yes
-				scope:visiting_location = { holding_is_tribal = yes }
+				scope:visiting_location = {
+					OR = {
+						has_holding_type = tribal_holding
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+				}
 			}
 			reference = bp1_bonfire
 		}
@@ -2124,7 +2195,12 @@ ep3_laamp_decision_event.1001 = {
 		}
 		override_background = {
 			trigger = { 
-				scope:visiting_location = { holding_is_nomad = yes }
+				scope:visiting_location = {
+					OR = {
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+				}
 			}
 			reference = mpo_camp_steppe
 		}
@@ -2136,21 +2212,26 @@ ep3_laamp_decision_event.1001 = {
 		#Church Holding
 		override_background = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_church = yes }
+				scope:visiting_location = { 
+					OR = {
+						has_holding_type = church_holding
+						has_holding_type = temple_citadel_holding
+					}
+				}
 			}
 			reference = holy_site_generic
 		}
 		#Castle Holding
 		override_background = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_castle = yes }
+				scope:visiting_location = { has_holding_type = castle_holding } 
 			}
 			reference = courtyard_location 
 		}
 		#City Holding
 		override_background = { 
 			trigger = { 
-				scope:visiting_location = { holding_is_city = yes } 
+				scope:visiting_location = { has_holding_type = city_holding } 
 			}
 			reference = ep3_city_gate
 		}
@@ -2906,7 +2987,7 @@ ep3_laamp_decision_event.1010 = {
 			triggered_desc = { 
 				trigger = { 
 					NOT = { exists = scope:did_not_buy_supplies }
-					scope:visiting_location = { holding_is_city = yes }
+					scope:visiting_location = { has_holding_type = city_holding }
 				}
 				desc = ep3_laamp_decision_event.1010.desc_posh_stalls
 			}
@@ -3264,7 +3345,13 @@ ep3_laamp_decision_event.1010 = {
 	theme = stewardship
 	override_background = {
 		trigger = {
-			scope:visiting_location = { holding_is_tribal = yes }
+			scope:visiting_location = {
+				OR = {
+					has_holding_type = tribal_holding
+					has_holding_type = nomad_holding
+					has_holding_type = herder_holding
+				}
+			}
 		}
 		reference = army_camp
 	}
@@ -3461,7 +3548,6 @@ ep3_laamp_decision_event.1010 = {
 					dynasty = none
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_supply_merchant
 				}
 			}
@@ -3592,7 +3678,7 @@ ep3_laamp_decision_event.1010 = {
 							is_female = yes
 							root = {
 								OR = {
-									rite = { rite_has_parameter = male_dominated_law }
+									faith = { has_doctrine_parameter = male_dominated_law }
 									has_realm_law = male_only_law
 								}	
 							}
@@ -3602,7 +3688,7 @@ ep3_laamp_decision_event.1010 = {
 							is_male = yes
 							root = {
 								OR = {
-									rite = { rite_has_parameter = female_dominated_law }
+									faith = { has_doctrine_parameter = female_dominated_law }
 									has_realm_law = female_only_law
 								}	
 							}
@@ -3730,7 +3816,7 @@ ep3_laamp_decision_event.1010 = {
 				#Cheaper supplies in City Holding
 				if = {
 					limit = {
-						root.location = { holding_is_city = yes }
+						root.location = { has_holding_type = city_holding }
 					}
 					change_variable = {
 						name = supply_gold_cost
@@ -3867,7 +3953,7 @@ ep3_laamp_decision_event.1010 = {
 		#Get supplies
 		domicile ?= { change_provisions = max_provisions }
 		#Give appropriate amounts of stress
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			compassionate = major_stress_impact_gain
 		}
 		#Set correct variables and reroute us to main square
@@ -4027,7 +4113,7 @@ scripted_effect 1020_set_artifact_value_variables_effect = {
 			#Better buyers in City Holding
 			if = {
 				limit = {
-					scope:visiting_location = { holding_is_city = yes }
+					scope:visiting_location = { has_holding_type = city_holding }
 				}
 				multiply = { 1.15 1.25 }
 			}
@@ -4042,7 +4128,7 @@ scripted_effect 1020_set_artifact_value_variables_effect = {
 			#Better buyers in City Holding
 			if = {
 				limit = {
-					scope:visiting_location = { holding_is_city = yes }
+					scope:visiting_location = { has_holding_type = city_holding }
 				}
 				multiply = { 1.15 1.25 }
 			}
@@ -4058,7 +4144,7 @@ scripted_effect 1020_set_artifact_value_variables_effect = {
 			#Better buyers in City Holding
 			if = {
 				limit = {
-					scope:visiting_location = { holding_is_city = yes }
+					scope:visiting_location = { has_holding_type = city_holding }
 				}
 				multiply = { 1.15 1.25 }
 			}
@@ -4113,7 +4199,7 @@ ep3_laamp_decision_event.1020 = {
 			triggered_desc = { 
 				trigger = { 
 					NOT = { exists = scope:did_not_sell_artifact }
-					scope:visiting_location = { holding_is_city = yes }
+					scope:visiting_location = { has_holding_type = city_holding }
 				}
 				desc = ep3_laamp_decision_event.1020.desc_intro_posh_stalls
 			}
@@ -4416,7 +4502,6 @@ ep3_laamp_decision_event.1020 = {
 					dynasty = none
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_artifact_peddler
 				}
 			}
@@ -4636,7 +4721,7 @@ ep3_laamp_decision_event.1020 = {
 						limit = { has_lifestyle = stewardship_lifestyle }
 						add_stewardship_lifestyle_xp = medium_lifestyle_xp
 					}
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						greedy = minor_stress_impact_loss
 						ambitious = minor_stress_impact_loss
 					}
@@ -4673,7 +4758,7 @@ ep3_laamp_decision_event.1020 = {
 						limit = { exists = scope:1020_third_artifact_to_sell }
 						custom_tooltip = ep3_laamp_decision_event.1020.b.failure.third_artifact.tt
 					}
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						base = minor_stress_impact_gain
 						greedy = minor_stress_impact_gain
 					}
@@ -4717,7 +4802,7 @@ ep3_laamp_decision_event.1020 = {
 		}
 		#Set correct variables and reroute us to main square
 		1020_sold_artifact_effect = yes
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			ambitious = minor_stress_impact_gain
 			lazy = minor_stress_impact_loss
 		}
@@ -4995,7 +5080,7 @@ ep3_laamp_decision_event.1021 = {
 		}
 
 		#Stress
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_gain
 			greedy = minor_stress_impact_loss
 			callous = minor_stress_impact_loss
@@ -5319,6 +5404,13 @@ scripted_effect 1025_set_contract_location_effect = {
 				scope:visiting_location = { geographical_region = world_tibet }
 			}
 			1025_save_random_county_province_effect = { REGION = world_tibet }
+		}
+		# Burma
+		10 = {
+			trigger = {
+				scope:visiting_location = { geographical_region = world_burma }
+			}
+			1025_save_random_county_province_effect = { REGION = world_burma }
 		}
 		# Mainland SE Asia
 		10 = {
@@ -5793,12 +5885,17 @@ scripted_effect 1025_randomize_and_remember_contract_type_effect = {
 				add = 10
 			}
 			modifier = {
-				scope:visiting_location = { holding_is_church = yes }
+				scope:visiting_location = { 
+					OR = {
+						has_holding_type = church_holding
+						has_holding_type = temple_citadel_holding
+					}
+				}
 				add = 10
 			}
 			#You're... academic?
 			modifier = {
-				has_trait = erudite
+				has_trait = scholar
 				factor = 2
 			}
 			#Set the type
@@ -5836,7 +5933,12 @@ scripted_effect 1025_randomize_and_remember_contract_type_effect = {
 				}
 			}
 			modifier = {
-				scope:visiting_location = { holding_is_church = yes }
+				scope:visiting_location = { 
+					OR = {
+						has_holding_type = church_holding
+						has_holding_type = temple_citadel_holding
+					}
+				}
 				add = 10
 			}
 			#You're... schemer?
@@ -5918,7 +6020,6 @@ scripted_effect 1025_generate_employer_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				save_scope_as = 1025_$NUM$_contract_employer
 			}
 			scope:1025_$NUM$_contract_employer = {
@@ -6567,10 +6668,10 @@ scripted_effect 1025_translate_variable_into_flag_effect = {
 #This location has a saved contract variable
 scripted_trigger 1025_location_has_a_saved_contract_type_trigger = {
 	scope:visiting_location = {
-		has_variable = {
-			name = 1025_saved_first_contract_type
-			name = 1025_saved_second_contract_type
-			name = 1025_saved_third_contract_type
+		OR = { 
+			has_variable = 1025_saved_first_contract_type
+			has_variable = 1025_saved_second_contract_type
+			has_variable = 1025_saved_third_contract_type
 		}
 	}
 }
@@ -6635,98 +6736,93 @@ scripted_trigger 1025_region_has_suitable_employer_trigger = {
 
 #... well, can we?
 scripted_trigger 1025_can_create_legendary_contract_trigger = {
-	scope:visiting_location = {
-		switch = {
-			trigger = geographical_region
-			world_europe_north = {
-				any_county_in_region = {
-					region = world_europe_north
-					1025_region_has_suitable_employer_trigger = yes
-				}
+	OR = {
+		#North Europe
+		AND = {
+			scope:visiting_location = { geographical_region = world_europe_north }
+			any_county_in_region = {
+				region = world_europe_north
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_europe_west = {
-				any_county_in_region = {
-					region = world_europe_west
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#West Europe
+		AND = {
+			scope:visiting_location = { geographical_region = world_europe_west }
+			any_county_in_region = {
+				region = world_europe_west
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_europe_east = {
-				any_county_in_region = {
-					region = world_europe_east
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#East Europe
+		AND = {
+			scope:visiting_location = { geographical_region = world_europe_east }
+			any_county_in_region = {
+				region = world_europe_east
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_europe_south = {
-				any_county_in_region = {
-					region = world_europe_south
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#South Europe
+		AND = {
+			scope:visiting_location = { geographical_region = world_europe_south }
+			any_county_in_region = {
+				region = world_europe_south
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_middle_east = {
-				any_county_in_region = {
-					region = world_middle_east
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#Middle East
+		AND = {
+			scope:visiting_location = { geographical_region = world_middle_east }
+			any_county_in_region = {
+				region = world_middle_east
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_india = {
-				any_county_in_region = {
-					region = world_india
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#India
+		AND = {
+			scope:visiting_location = { geographical_region = world_india }
+			any_county_in_region = {
+				region = world_india
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_africa_north = {
-				any_county_in_region = {
-					region = world_africa_north
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#North Africa
+		AND = {
+			scope:visiting_location = { geographical_region = world_africa_north }
+			any_county_in_region = {
+				region = world_africa_north
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_africa_west = {
-				any_county_in_region = {
-					region = world_africa_west
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#West Africa
+		AND = {
+			scope:visiting_location = { geographical_region = world_africa_west }
+			any_county_in_region = {
+				region = world_africa_west
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_africa_east = {
-				any_county_in_region = {
-					region = world_africa_east
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#East Africa
+		AND = {
+			scope:visiting_location = { geographical_region = world_africa_east }
+			any_county_in_region = {
+				region = world_africa_east
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_steppe_west = {
-				any_county_in_region = {
-					region = world_steppe_west
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#West Steppe
+		AND = {
+			scope:visiting_location = { geographical_region = world_steppe_west }
+			any_county_in_region = {
+				region = world_steppe_west
+				1025_region_has_suitable_employer_trigger = yes
 			}
-			world_steppe_east = {
-				any_county_in_region = {
-					region = world_steppe_east
-					1025_region_has_suitable_employer_trigger = yes
-				}
-			}
-			world_tibet = {
-				any_county_in_region = {
-					region = world_tibet
-					1025_region_has_suitable_employer_trigger = yes
-				}
-			}
-			world_asia_east = {
-				any_county_in_region = {
-					region = world_asia_east
-					1025_region_has_suitable_employer_trigger = yes
-				}
-			}
-			world_asia_north_east = {
-				any_county_in_region = {
-					region = world_asia_north_east
-					1025_region_has_suitable_employer_trigger = yes
-				}
-			}
-			world_asia_southeast = {
-				any_county_in_region = {
-					region = world_asia_southeast
-					1025_region_has_suitable_employer_trigger = yes
-				}
+		}
+		#East Steppe
+		AND = {
+			scope:visiting_location = { geographical_region = world_steppe_east }
+			any_county_in_region = {
+				region = world_steppe_east
+				1025_region_has_suitable_employer_trigger = yes
 			}
 		}
 	}
@@ -6854,7 +6950,13 @@ ep3_laamp_decision_event.1025 = {
 			random_valid = {
 				triggered_desc = { 
 					trigger = {
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 						exists = scope:been_to_contract
 						scope:contract_loc_tracker ?= 0
 						OR = {
@@ -6867,7 +6969,13 @@ ep3_laamp_decision_event.1025 = {
 				}
 				triggered_desc = { 
 					trigger = {
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 						scope:contract_loc_tracker ?= 1
 						OR = {
 							scope:1025_first_contract ?= flag:legendary_contract
@@ -6908,7 +7016,13 @@ ep3_laamp_decision_event.1025 = {
 			random_valid = {
 				triggered_desc = { 
 					trigger = {
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 						exists = scope:been_to_contract
 						scope:contract_loc_tracker ?= 0
 					}
@@ -6916,7 +7030,13 @@ ep3_laamp_decision_event.1025 = {
 				}
 				triggered_desc = { 
 					trigger = {
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 						scope:contract_loc_tracker ?= 1 
 					}
 					desc = ep3_laamp_decision_event.1025.desc_tribal_returned_02
@@ -6939,7 +7059,13 @@ ep3_laamp_decision_event.1025 = {
 			#FIRST TIME: Tribal - Legendary contract - Reused Elder
 			triggered_desc = {
 				trigger = {
-					scope:visiting_location = { holding_is_tribal = yes }
+					scope:visiting_location = {
+						OR = {
+							has_holding_type = tribal_holding
+							has_holding_type = nomad_holding
+							has_holding_type = herder_holding
+						}
+					}
 					exists = scope:laamp_recurring_town_crier
 					NOR = { 
 						exists = scope:been_to_contract
@@ -6972,7 +7098,13 @@ ep3_laamp_decision_event.1025 = {
 			#FIRST TIME: Tribal - Legendary contract
 			triggered_desc = {
 				trigger = {
-					scope:visiting_location = { holding_is_tribal = yes }
+					scope:visiting_location = {
+						OR = {
+							has_holding_type = tribal_holding
+							has_holding_type = nomad_holding
+							has_holding_type = herder_holding
+						}
+					}
 					NOR = { 
 						exists = scope:been_to_contract
 						has_variable = 1025_has_contracted_recently
@@ -7003,7 +7135,13 @@ ep3_laamp_decision_event.1025 = {
 			#FIRST TIME: Tribal - No legendary contract - Reused Town Crier
 			triggered_desc = {
 				trigger = {
-					scope:visiting_location = { holding_is_tribal = yes }
+					scope:visiting_location = {
+						OR = {
+							has_holding_type = tribal_holding
+							has_holding_type = nomad_holding
+							has_holding_type = herder_holding
+						}
+					}
 					exists = scope:laamp_recurring_town_crier
 					NOR = { 
 						exists = scope:been_to_contract
@@ -7026,7 +7164,13 @@ ep3_laamp_decision_event.1025 = {
 			#FIRST TIME: Tribal - No legendary contract
 			triggered_desc = {
 				trigger = {
-					scope:visiting_location = { holding_is_tribal = yes }
+					scope:visiting_location = {
+						OR = {
+							has_holding_type = tribal_holding
+							has_holding_type = nomad_holding
+							has_holding_type = herder_holding
+						}
+					}
 					NOR = { 
 						exists = scope:been_to_contract
 						has_variable = 1025_has_contracted_recently
@@ -7177,7 +7321,13 @@ ep3_laamp_decision_event.1025 = {
 					#_Elder_
 					trigger_if = {
 						limit = { 
-							scope:visiting_location = { holding_is_tribal = yes }
+							scope:visiting_location = {
+								OR = {
+									has_holding_type = tribal_holding
+									has_holding_type = nomad_holding
+									has_holding_type = herder_holding
+								}
+							}
 						}
 						age >= 50
 					}
@@ -7200,7 +7350,13 @@ ep3_laamp_decision_event.1025 = {
 						#_Elder_
 						trigger_if = {
 							limit = { 
-								scope:visiting_location = { holding_is_tribal = yes }
+								scope:visiting_location = {
+									OR = {
+										has_holding_type = tribal_holding
+										has_holding_type = nomad_holding
+										has_holding_type = herder_holding
+									}
+								}
 							}
 							age >= 50
 						}
@@ -7216,7 +7372,13 @@ ep3_laamp_decision_event.1025 = {
 				#Create Elder to stuff in pool
 				if = {
 					limit = { 
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 					}
 					create_character = {
 						template = generic_peasant_character
@@ -7225,7 +7387,6 @@ ep3_laamp_decision_event.1025 = {
 						dynasty = none
 						culture = scope:visiting_location.culture
 						faith = scope:visiting_location.faith
-						rite = scope:visiting_location.rite
 						save_scope_as = laamp_town_crier
 					}
 				}
@@ -7237,7 +7398,6 @@ ep3_laamp_decision_event.1025 = {
 						dynasty = none
 						culture = scope:visiting_location.culture
 						faith = scope:visiting_location.faith
-						rite = scope:visiting_location.rite
 						save_scope_as = laamp_town_crier
 					}
 				}
@@ -8364,7 +8524,6 @@ ep3_laamp_decision_event.1030 = {
 								root = { is_attracted_to_gender_of = prev } #Prev is the spouse scope
 								#They might want to marry us
 								is_attracted_to_gender_of = root
-								is_old_character = no
 							}
 							save_scope_as = laamp_spouse_material
 						}
@@ -8383,8 +8542,6 @@ ep3_laamp_decision_event.1030 = {
 								dynasty = none
 								culture = scope:visiting_location.culture
 								faith = scope:visiting_location.faith
-								rite = scope:visiting_location.rite
-								age = { 18 40 }
 								diplomacy = { low_skill_rating high_skill_rating }
 								martial = { low_skill_rating high_skill_rating }
 								stewardship = { low_skill_rating high_skill_rating }
@@ -8403,8 +8560,6 @@ ep3_laamp_decision_event.1030 = {
 								gender = male
 								culture = scope:visiting_location.culture
 								faith = scope:visiting_location.faith
-								rite = scope:visiting_location.rite
-								age = { 18 40 }
 								diplomacy = { low_skill_rating high_skill_rating }
 								martial = { low_skill_rating high_skill_rating }
 								stewardship = { low_skill_rating high_skill_rating }
@@ -8422,8 +8577,6 @@ ep3_laamp_decision_event.1030 = {
 								gender = female
 								culture = scope:visiting_location.culture
 								faith = scope:visiting_location.faith
-								rite = scope:visiting_location.rite
-								age = { 18 40 }
 								diplomacy = { low_skill_rating high_skill_rating }
 								martial = { low_skill_rating high_skill_rating }
 								stewardship = { low_skill_rating high_skill_rating }
@@ -8557,7 +8710,13 @@ ep3_laamp_decision_event.1030 = {
 				25 = {
 					#More common in Tribal/No Settlement
 					modifier = { 
-						scope:visiting_location = { holding_is_tribal = yes }
+						scope:visiting_location = {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
 						factor = 2
 					}
 					#Has this person been our thief in the past 10 years?
@@ -8612,7 +8771,6 @@ ep3_laamp_decision_event.1030 = {
 							dynasty = none
 							culture = scope:visiting_location.culture
 							faith = scope:visiting_location.faith
-							rite = scope:visiting_location.rite
 							intrigue = { decent_skill_rating high_skill_rating }
 							save_scope_as = laamp_hooded_figure
 						}
@@ -9002,52 +9160,23 @@ scripted_effect 1031_been_to_effect = {
 		save_scope_as = been_to_$GUILD$
 	}
 	#Go back to the previous screen
-	# to prevent exiting the event chain prematurely and without cleanup
 	if = {
-		limit = {
-			OR = {
-				flag:$GUILD$ = flag:storyteller
-				flag:$GUILD$ = flag:recruit
-				flag:$GUILD$ = flag:spouse
-				flag:$GUILD$ = flag:hood
-			}
-		}
+		limit = { var:return_from_location ?= flag:tavern }
 		1031_return_to_tavern_effect = yes
 	}
 	#Go back to church grounds
-	else_if = {
-		limit = {
-			OR = {
-				flag:$GUILD$ = flag:healer
-				flag:$GUILD$ = flag:church
-				flag:$GUILD$ = flag:garden
-				flag:$GUILD$ = flag:physician
-			}
-		}
+	if = {
+		limit = { var:return_from_location ?= flag:church_grounds }
 		1041_return_to_church_grounds_effect = yes
 	}
 	#Go back to castle grounds
-	else_if = {
-		limit = {
-			OR = {
-				flag:$GUILD$ = flag:training
-				flag:$GUILD$ = flag:garrison
-				flag:$GUILD$ = flag:reinforcers
-				flag:$GUILD$ = flag:bodyguard
-			}
-		}
+	if = {
+		limit = { var:return_from_location ?= flag:castle_grounds }
 		1051_return_to_castle_effect = yes
 	}
 	#Go back to craftsmen district
-	else_if = {
-		limit = {
-			OR = {
-				flag:$GUILD$ = flag:weaponsmith
-				flag:$GUILD$ = flag:armorer
-				flag:$GUILD$ = flag:jeweler
-				flag:$GUILD$ = flag:quartermaster
-			}
-		}
+	if = {
+		limit = { var:return_from_location ?= flag:craftsmen }
 		1061_return_to_craftsmen_effect = yes
 	}
 }
@@ -9459,7 +9588,13 @@ ep3_laamp_decision_event.1031 = {
 	}
 	override_background = {
 		trigger = { 
-			scope:visiting_location = { holding_is_tribal = yes }
+			scope:visiting_location = {
+				OR = {
+					has_holding_type = tribal_holding
+					has_holding_type = nomad_holding
+					has_holding_type = herder_holding
+				}
+			} 
 		}
 		reference = bp1_kitchen_western
 	}
@@ -9594,7 +9729,6 @@ ep3_laamp_decision_event.1031 = {
 					trait = lifestyle_reveler
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_storyteller
 				}
 			}
@@ -9737,7 +9871,7 @@ ep3_laamp_decision_event.1031 = {
 				has_trait = zealous
 				NOT = { has_trait = eccentric }
 			}
-			stress_and_fulfillment_impact = { zealous = miniscule_stress_impact_gain }
+			stress_impact = { zealous = miniscule_stress_impact_gain }
 		}
 		#Set the variables and redirect us back to the tavern main room
 		1031_storied_effect = yes
@@ -9750,24 +9884,41 @@ ep3_laamp_decision_event.1031 = {
 			}
 		}
 	}
-	#Strong-arm the skill gain - the reward is guaranteed, so it gets its own option instead of hiding inside a conditional
+	#Learn revelry or strong-arm the skill gain
 	option = {
-		name = ep3_laamp_decision_event.1031.b_reveler
+		name = {
+			text = {
+				first_valid = {
+					#I know this one!
+					triggered_desc = {
+						trigger = { 1031_is_max_witty_trigger = yes }
+						desc = ep3_laamp_decision_event.1031.b_reveler
+					}
+					#Yeeh narration!
+					desc = ep3_laamp_decision_event.1031.b
+				}
+			}
+		}
 		trigger = {
-			1031_is_max_witty_trigger = yes
 			#Put a cooldown on strongarming it
-			custom_tooltip = {
-				text = ep3_laamp_decision_event.1031.b.cooldown.tt
-				NOT = { has_variable = 1031_has_reveled_recently }
+			trigger_if = {
+				limit = { 1031_is_max_witty_trigger = yes }
+				custom_tooltip = {
+					text = ep3_laamp_decision_event.1031.b.cooldown.tt
+					NOT = { has_variable = 1031_has_reveled_recently }
+				}
 			}
 			#If we're zealous, we also need to be eccentric
 			trigger_if = {
 				limit = { has_trait = zealous }
 				has_trait = eccentric
 			}
+			#Trigger for everyone else
+			trigger_else = {
+				always = yes
+			}
 		}
 		show_as_unavailable = {
-			1031_is_max_witty_trigger = yes
 			#Hide if what you're missing is a trait
 			trigger_if = {
 				limit = { 
@@ -9778,85 +9929,60 @@ ep3_laamp_decision_event.1031 = {
 			}
 			trigger_else = { always = yes }	
 		}
-		send_interface_toast = {
-			type = event_toast_effect_good
-			title = ep3_laamp_decision_event.1031.a_success.t
-			left_icon = root
+		#Strongarm it
+		if = {
+			limit = { 1031_is_max_witty_trigger = yes }
 			1031_actual_skill_increase_effect = yes
+			#Set the cooldown on the action
+			set_variable = {
+				name = 1031_has_reveled_recently
+				months = visit_settlement_small_cooldown_days
+			}
+			stress_impact = {
+				base = medium_stress_impact_gain
+				ambitious = minor_stress_impact_loss
+			}
 		}
-		#Set the cooldown on the action
-		set_variable = {
-			name = 1031_has_reveled_recently
-			months = visit_settlement_small_cooldown_days
-		}
-		stress_and_fulfillment_impact = {
-			base = medium_stress_impact_gain
-			ambitious = minor_stress_impact_loss
+		#Otherwise learn something
+		else = { 
+			#Pay up
+			pay_short_term_gold = {
+				target = scope:laamp_storyteller
+				gold = minor_gold_laamps_value
+			}
+			#Gain trait
+			if = {
+				limit = {
+					NOT = { has_trait = tourney_participant }
+				}
+				add_trait = tourney_participant
+				add_trait_xp = {
+					trait = tourney_participant
+					track = wit
+					value = scope:storyteller_xp
+				}
+			}
+			#Or be educated
+			else = {
+				add_trait_xp = {
+					trait = tourney_participant
+					track = wit
+					value = scope:storyteller_xp
+				}
+			}
 		}
 		#Set the variables and redirect us back to the tavern main room
 		1031_storied_effect = yes
 		ai_chance = {
 			base = 100
 			modifier = {
-				stress_level > 1
+				1031_is_max_witty_trigger = no
+				short_term_gold < laamp_ai_spending_pants_value
 				factor = 0
 			}
-		}
-	}
-	#Learn revelry
-	option = {
-		name = ep3_laamp_decision_event.1031.b
-		trigger = {
-			1031_is_max_witty_trigger = no
-			#If we're zealous, we also need to be eccentric
-			trigger_if = {
-				limit = { has_trait = zealous }
-				has_trait = eccentric
-			}
-		}
-		show_as_unavailable = {
-			1031_is_max_witty_trigger = no
-			#Hide if what you're missing is a trait
-			trigger_if = {
-				limit = { 
-					has_trait = zealous
-					NOT = { has_trait = eccentric }
-				}
-				always = no
-			}
-			trigger_else = { always = yes }	
-		}
-		#Pay up
-		pay_short_term_gold = {
-			target = scope:laamp_storyteller
-			gold = minor_gold_laamps_value
-		}
-		#Gain trait
-		if = {
-			limit = {
-				NOT = { has_trait = tourney_participant }
-			}
-			add_trait = tourney_participant
-			add_trait_xp = {
-				trait = tourney_participant
-				track = wit
-				value = scope:storyteller_xp
-			}
-		}
-		#Or be educated
-		else = {
-			add_trait_xp = {
-				trait = tourney_participant
-				track = wit
-				value = scope:storyteller_xp
-			}
-		}
-		#Set the variables and redirect us back to the tavern main room
-		1031_storied_effect = yes
-		ai_chance = {
-			base = 100
 			modifier = {
-				short_term_gold < laamp_ai_spending_pants_value
+				1031_is_max_witty_trigger = yes
+				stress_level > 1
 				factor = 0
 			}
 		}
@@ -9890,14 +10016,14 @@ ep3_laamp_decision_event.1031 = {
 			add_piety = minor_piety_gain
 		}
 		#Took my mind off of things
-		stress_and_fulfillment_impact = { 
+		stress_impact = { 
 			base = miniscule_stress_impact_loss
 			zealous = minor_stress_impact_loss
 		}
 		#Set the cooldown on the action
 		set_variable = {
 			name = 1031_has_relaxed_recently
-			days = visit_settlement_minimum_cooldown_days
+			months = visit_settlement_minimum_cooldown_days
 		}
 		#Set the variables and redirect us back to the tavern main room
 		1031_storied_effect = yes
@@ -9949,7 +10075,6 @@ scripted_effect 1033_generate_character_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				diplomacy = { decent_skill_rating high_skill_rating }
 				save_scope_as = 1033_new_character
 			}
@@ -9958,7 +10083,13 @@ scripted_effect 1033_generate_character_effect = {
 		10 = {
 			#Some variation
 			modifier = {
-				scope:visiting_location = { holding_is_tribal = yes }
+				scope:visiting_location = {
+					OR = {
+						has_holding_type = tribal_holding
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+				}
 				factor = 2
 			}
 			create_character = {
@@ -9967,7 +10098,6 @@ scripted_effect 1033_generate_character_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				diplomacy = { decent_skill_rating high_skill_rating }
 				save_scope_as = 1033_new_character
 			}
@@ -9984,7 +10114,6 @@ scripted_effect 1033_generate_character_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				martial = { decent_skill_rating high_skill_rating }
 				save_scope_as = 1033_new_character
 			}
@@ -9992,7 +10121,7 @@ scripted_effect 1033_generate_character_effect = {
 		#Stewardship
 		10 = {
 			modifier = {
-				scope:visiting_location = { holding_is_city = yes }
+				scope:visiting_location = { has_holding_type = city_holding }
 				factor = 2
 			}
 			create_character = {
@@ -10001,7 +10130,6 @@ scripted_effect 1033_generate_character_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				stewardship = { decent_skill_rating high_skill_rating }
 				save_scope_as = 1033_new_character
 			}
@@ -10009,7 +10137,13 @@ scripted_effect 1033_generate_character_effect = {
 		#Intrigue
 		10 = {
 			modifier = {
-				scope:visiting_location = { holding_is_tribal = yes }
+				scope:visiting_location = {
+					OR = {
+						has_holding_type = tribal_holding
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+				}
 				factor = 2
 			}
 			create_character = {
@@ -10018,7 +10152,6 @@ scripted_effect 1033_generate_character_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				intrigue = { decent_skill_rating high_skill_rating }
 				save_scope_as = 1033_new_character
 			}
@@ -10026,8 +10159,11 @@ scripted_effect 1033_generate_character_effect = {
 		#Learning
 		10 = {
 			modifier = {
-				scope:visiting_location = {
-					holding_is_church = yes
+				scope:visiting_location = { 
+					OR = {
+						has_holding_type = church_holding
+						has_holding_type = temple_citadel_holding
+					}
 				}
 				factor = 2
 			}
@@ -10037,7 +10173,6 @@ scripted_effect 1033_generate_character_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				learning = { decent_skill_rating high_skill_rating }
 				save_scope_as = 1033_new_character
 			}
@@ -10045,7 +10180,13 @@ scripted_effect 1033_generate_character_effect = {
 		#... witch
 		5 = {
 			modifier = {
-				scope:visiting_location = { holding_is_tribal = yes }
+				scope:visiting_location = {
+					OR = {
+						has_holding_type = tribal_holding
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+				}
 				factor = 2
 			}
 			create_character = {
@@ -10054,7 +10195,6 @@ scripted_effect 1033_generate_character_effect = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				learning = { decent_skill_rating high_skill_rating }
 				save_scope_as = 1033_new_character
 			}
@@ -10184,7 +10324,13 @@ scripted_effect 1033_set_cost_effect = {
             #Cheaper out in the wilds
             if = {
                 limit = { 
-                    scope:visiting_location = { holding_is_tribal = yes }
+                    scope:visiting_location = {
+						OR = {
+							has_holding_type = tribal_holding
+							has_holding_type = nomad_holding
+							has_holding_type = herder_holding
+						}
+					}
                 }
                 multiply = 0.6
             }
@@ -10548,7 +10694,7 @@ ep3_laamp_decision_event.1033 = {
 					weight = {
 						base = 1
 						modifier = {
-							any_secret = {}
+							any_secret = { exists = this }
 							factor = 2
 						}
 					}
@@ -10566,7 +10712,6 @@ ep3_laamp_decision_event.1033 = {
 						dynasty = none
 						culture = scope:visiting_location.culture
 						faith = scope:visiting_location.faith
-						rite = scope:visiting_location.rite
 						save_scope_as = laamp_generic_jane
 					}
 					#... you didn't think it would be _that_ easy, right?
@@ -10581,10 +10726,9 @@ ep3_laamp_decision_event.1033 = {
 							    		#Create a victim to kill
 								    	create_character = {
 											template = generic_peasant_character
-											culture = scope:visiting_location.culture
-											faith = scope:visiting_location.faith
-											rite = scope:visiting_location.rite
-											location = scope:visiting_location
+											culture = scope:visiting_location.location.county.culture
+											faith = scope:visiting_location.location.county.faith
+											location = scope:visiting_location.location
 											after_creation = { set_to_lowborn = yes }
 											save_scope_as = 1030_previous_victim
 										}
@@ -10922,7 +11066,13 @@ ep3_laamp_decision_event.1035 = {
 	}
 	override_background = {
 		trigger = { 
-			scope:visiting_location = { holding_is_tribal = yes }
+			scope:visiting_location = {
+				OR = {
+					has_holding_type = tribal_holding
+					has_holding_type = nomad_holding
+					has_holding_type = herder_holding
+				}
+			} 
 		}
 		reference = tavern
 	}
@@ -11173,7 +11323,7 @@ ep3_laamp_decision_event.1035 = {
 		#Cooldown for the action
 		set_variable = {
 			name = 1035_spouse_unwinded_recently
-			days = visit_settlement_minimum_cooldown_days
+			months = visit_settlement_minimum_cooldown_days
 		}
 		#Set the variables and redirect us back to the tavern main room
 		1035_spoused_effect = yes
@@ -11949,7 +12099,6 @@ ep3_laamp_decision_event.1037 = {
 				dynasty = none
 				culture = scope:visiting_location.culture
 				faith = scope:visiting_location.faith
-				rite = scope:visiting_location.rite
 				after_creation = { set_to_lowborn = yes }
 				save_scope_as = 1037_local_ruffian
 			}
@@ -12002,7 +12151,13 @@ ep3_laamp_decision_event.1037 = {
 					#Go outside of the city to drink, eh
 					if = {
 						limit = {
-							scope:visiting_location = { holding_is_tribal = yes }
+							scope:visiting_location = {
+								OR = {
+									has_holding_type = tribal_holding
+									has_holding_type = nomad_holding
+									has_holding_type = herder_holding
+								}
+							}
 						}
 						multiply = 0.5
 					}
@@ -12020,7 +12175,7 @@ ep3_laamp_decision_event.1037 = {
 		#Woo rewards
 		1037_noble_reward_effect = yes
 		#Quite the molah
-		stress_and_fulfillment_impact = { greedy = minor_stress_impact_gain }
+		stress_impact = { greedy = minor_stress_impact_gain }
 		#Set the variables and redirect us back to the tavern main room
 		1037_hooded_effect = yes
 	}
@@ -12121,7 +12276,7 @@ ep3_laamp_decision_event.1037 = {
 		#Woo rewards
 		1037_noble_reward_effect = yes
 		#I just don't like being criminal, OK?
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 		}	
 		#Set the variables and redirect us back to the tavern main room
@@ -12357,7 +12512,7 @@ ep3_laamp_decision_event.1037 = {
 		#Some Intrigue lifestyle gain, coming up
 		add_intrigue_lifestyle_xp = medium_lifestyle_xp
 		#Stressful for honest characters 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			honest = minor_stress_impact_gain
 		}
 		#Set the variables and redirect us back to the tavern main room
@@ -12897,7 +13052,6 @@ ep3_laamp_decision_event.1040 = {
 							dynasty = none
 							culture = scope:visiting_location.culture
 							faith = scope:visiting_location.faith
-							rite = scope:visiting_location.rite
 							learning = { decent_skill_rating high_skill_rating }
 							save_scope_as = laamp_physician_recruit
 						}
@@ -13158,27 +13312,15 @@ scripted_effect 1041_chance_to_buff_item_rarity_effect = {
 	random_list = {
 		20 = {
 			trigger = {
-				scope:laamp_healer_character ?= $VENDOR$
+				exists = scope:laamp_healer_character
+				$VENDOR$ = scope:laamp_healer_character
 			}
 			set_artifact_rarity_famed = yes
 		}
-		20 = {
-			trigger = {
-				trigger_if = {
-					limit = {
-						OR = {
-							scope:laamp_weaponsmith_craftsman ?= $VENDOR$
-							scope:laamp_armorer_craftsman ?= $VENDOR$
-						}
-					}
-					$VENDOR$.weapon_inspiration_average_skill_value >= medium_inspiration_skill
-				}
-				trigger_else = {
-					$VENDOR$.artisan_inspiration_average_skill_value >= medium_inspiration_skill
-				}
-			}
+		40 = {
 			modifier = {
-				scope:laamp_jeweler_craftsman ?= $VENDOR$
+				exists = scope:laamp_jeweler_craftsman
+				$VENDOR$ = scope:laamp_jeweler_craftsman
 				factor = 2
 			}
 			set_artifact_rarity_masterwork = yes
@@ -13240,9 +13382,9 @@ scripted_effect 1041_set_item_value_effect = {
 	#Accessory cost
 	if = {
 		limit = { 
-			has_variable = {
-				name = 1041_laamp_decision_health_artifact
-				name = 1065_laamp_decision_accessory
+			OR = {
+				has_variable = 1041_laamp_decision_health_artifact
+				has_variable = 1065_laamp_decision_accessory 
 			}
 		}
 		if = {
@@ -13770,7 +13912,6 @@ ep3_laamp_decision_event.1041 = {
 					dynasty = none
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_healer_character
 				}
 			}
@@ -14280,11 +14421,7 @@ ep3_laamp_decision_event.1043 = {
 					trait = devoted
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_clergy_character
-					after_creation = {
-						remove_character_flag = peasant_outfit
-					}
 				}
 			}
 			#Remember the clerger
@@ -14458,7 +14595,7 @@ ep3_laamp_decision_event.1043 = {
 				}
 			}
 		}	
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			greedy = minor_stress_impact_gain
 			zealous = minor_stress_impact_loss
 			generous = minor_stress_impact_loss
@@ -14487,12 +14624,6 @@ ep3_laamp_decision_event.1043 = {
 				has_character_modifier = laamp_decision_church_blessing_stress_gain_modifier
 				piety_level < low_piety_level
 			}
-			faith = {
-				faith_hostility_level = {
-					target = scope:visiting_location.faith
-					value <= faith_astray_level
-				}
-			}
 		}
 		show_as_unavailable = { always = yes }
 		reason = piety
@@ -14503,9 +14634,6 @@ ep3_laamp_decision_event.1043 = {
 		}
 		#Set the variables and redirect us back to the Church Grounds
 		1043_churched_effect = yes
-		stress_and_fulfillment_impact = {
-			zealous = minor_stress_impact_loss
-		}
 		ai_chance = {
 			base = 200
 			modifier = {
@@ -14713,7 +14841,7 @@ ep3_laamp_decision_event.1043 = {
 		#Super-stressful for honest characters and zealous characters, IF you share faith
 		if = {
 			limit = { scope:visiting_location.county.faith = root.faith }
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				honest = major_stress_impact_gain
 				zealous = major_stress_impact_gain
 				deceitful = minor_stress_impact_loss
@@ -14721,7 +14849,7 @@ ep3_laamp_decision_event.1043 = {
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				honest = major_stress_impact_gain
 				deceitful = minor_stress_impact_loss
 			}
@@ -14843,9 +14971,6 @@ ep3_laamp_decision_event.1044 = {
 			modifier = laamp_decision_church_blessing_stress_gain_modifier
 			years = 5
 		}	
-		stress_and_fulfillment_impact = {
-			zealous = miniscule_stress_impact_loss
-		}
 		ai_chance = {
 			base = 100
 			modifier = {
@@ -15083,14 +15208,14 @@ ep3_laamp_decision_event.1045 = {
 				}
 				custom_description_no_bullet = { text = mandala_monotheist_warning_tt }
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = minor_stress_impact_loss
 				zealous = major_stress_impact_gain
 			}
 		}
 		#Contemplate faith
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = medium_stress_impact_loss
 				content = minor_stress_impact_loss
 				zealous = medium_stress_impact_loss
@@ -15176,11 +15301,11 @@ ep3_laamp_decision_event.1045 = {
 		#Probably holy somewhere
 		if = {
 			limit = {
-				rite = {
+				faith = {
 					OR = {
-						rite_has_tenet = tenet_sanctity_of_nature
-						trait_is_virtue_rite = lifestyle_gardener
-						trait_is_virtue_rite = lifestyle_herbalist
+						has_doctrine = tenet_sanctity_of_nature
+						trait_is_virtue = lifestyle_gardener
+						trait_is_virtue = lifestyle_herbalist					
 					}
 				}
 			}
@@ -15228,18 +15353,18 @@ ep3_laamp_decision_event.1045 = {
 		#Probably holy to some?
 		if = {
 			limit = {
-				rite = { rite_has_tenet = tenet_carnal_exaltation }
+				faith = { has_doctrine = tenet_carnal_exaltation }
 			}
 			add_piety = medium_piety_gain
 		}
 		#Or not
 		else_if = {
 			limit = {
-				rite = {
+				faith = {
 					OR = {
-						trait_is_sin_rite = lustful
-						trait_is_sin_rite = rakish
-						trait_is_sin_rite = seducer
+						trait_is_sin = lustful
+						trait_is_sin = rakish
+						trait_is_sin = seducer
 					}
 				}
 			}
@@ -15251,7 +15376,7 @@ ep3_laamp_decision_event.1045 = {
 			days = visit_settlement_minimum_cooldown_days
 		}
 		#Stress loss with some factors
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = medium_stress_impact_loss
 			rakish = medium_stress_impact_loss
 			seducer = minor_stress_impact_loss
@@ -15460,7 +15585,7 @@ ep3_laamp_decision_event.1047 = {
 				}
 				modifier = {
 					OR = {
-						has_trait = erudite
+						has_trait = scholar
 						has_trait = whole_of_body
 						has_trait = crusader_king
 					}
@@ -15922,7 +16047,6 @@ ep3_laamp_decision_event.1050 = {
 							dynasty = none
 							culture = scope:visiting_location.culture
 							faith = scope:visiting_location.faith
-							rite = scope:visiting_location.rite
 							prowess = { decent_skill_rating high_skill_rating }
 							save_scope_as = laamp_bodyguard_recruit
 						}
@@ -16272,7 +16396,7 @@ scripted_effect 1051_actual_training_effect = {
 				#Gain martial lifestyle xp
 				add_martial_lifestyle_xp = medium_lifestyle_xp
 				#... and some stress relief?
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					base = medium_stress_impact_loss
 				}
 			}
@@ -16510,7 +16634,6 @@ ep3_laamp_decision_event.1051 = {
 					gender_female_chance = root_soldier_female_chance
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_disgruntled_moa
 				}
 			}
@@ -16894,7 +17017,6 @@ ep3_laamp_decision_event.1053 = {
 					gender_female_chance = root_soldier_female_chance
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_plain_guard
 				}
 			}
@@ -16904,7 +17026,7 @@ ep3_laamp_decision_event.1053 = {
 			random_pool_character = {
 				province = scope:visiting_location
 				limit = { 1053_random_martial_character_trigger = yes }
-				save_scope_as = laamp_talented_guard
+				save_scope_as = laamp_plain_guard
 			}
 			#Otherwise create a suiting talented guard
 			if = {
@@ -16919,7 +17041,6 @@ ep3_laamp_decision_event.1053 = {
 					gender_female_chance = root_soldier_female_chance
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_talented_guard
 				}
 			}
@@ -17035,7 +17156,7 @@ ep3_laamp_decision_event.1053 = {
 				}
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = minor_stress_impact_loss
 			arbitrary = minor_stress_impact_loss
 			improvident = minor_stress_impact_loss
@@ -17314,7 +17435,7 @@ ep3_laamp_decision_event.1055 = {
 			#Otherwise create a spokesperson
 			if = {
 				limit = {
-					NOT = { exists = scope:laamp_maa_reinforcer }
+					NOT = { exists = scope:laamp_plain_guard }
 				}
 				#Create spokesperson to stuff in pool
 				create_character = {
@@ -17324,7 +17445,6 @@ ep3_laamp_decision_event.1055 = {
 					gender_female_chance = root_soldier_female_chance
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_maa_reinforcer
 				}
 			}
@@ -17390,13 +17510,7 @@ ep3_laamp_decision_event.1055 = {
 	option = {
 		name = ep3_laamp_decision_event.1055.b
 		trigger = { 
-			piety_level >= low_piety_level
-			faith = {
-				faith_hostility_level = {
-					target = scope:visiting_location.faith
-					value <= faith_astray_level
-				}
-			}
+			piety_level >= low_piety_level 
 		}
 		show_as_unavailable = { always = yes }
 		flavor = ep3_laamp_decision_event.1055.b.flavor
@@ -18122,7 +18236,6 @@ ep3_laamp_decision_event.1060 = {
 					dynasty = none
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_weaponsmith_craftsman
 				}
 			}
@@ -18186,7 +18299,6 @@ ep3_laamp_decision_event.1060 = {
 					dynasty = none
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_armorer_craftsman
 				}
 			}
@@ -18250,7 +18362,6 @@ ep3_laamp_decision_event.1060 = {
 					dynasty = none
 					culture = scope:visiting_location.culture
 					faith = scope:visiting_location.faith
-					rite = scope:visiting_location.rite
 					save_scope_as = laamp_jeweler_craftsman
 				}
 			}
@@ -18327,7 +18438,6 @@ ep3_laamp_decision_event.1060 = {
 							dynasty = none
 							culture = scope:visiting_location.culture
 							faith = scope:visiting_location.faith
-							rite = scope:visiting_location.rite
 							stewardship = { decent_skill_rating high_skill_rating }
 							save_scope_as = laamp_quartermaster_recruit
 						}
@@ -19559,7 +19669,7 @@ ep3_laamp_decision_event.1065 = {
 							NOT = { exists = scope:1065_first_accessory }
 						}
 						#Set rarity, maybe
-						1041_chance_to_buff_item_rarity_effect = { VENDOR = scope:laamp_jeweler_craftsman }
+						1041_chance_to_buff_item_rarity_effect = { VENDOR = scope:laamp_armorer_craftsman }
 						#Generate accessory
 						random_list = {
 							50 = {
@@ -19595,7 +19705,7 @@ ep3_laamp_decision_event.1065 = {
 							NOT = { exists = scope:1065_second_accessory }
 						}
 						#Set rarity, maybe
-						1041_chance_to_buff_item_rarity_effect = { VENDOR = scope:laamp_jeweler_craftsman }
+						1041_chance_to_buff_item_rarity_effect = { VENDOR = scope:laamp_armorer_craftsman }
 						#Generate accessory
 						random_list = {
 							50 = {
@@ -19625,7 +19735,7 @@ ep3_laamp_decision_event.1065 = {
 							NOT = { exists = scope:1065_third_accessory }
 						}
 						#Set rarity, maybe
-						1041_chance_to_buff_item_rarity_effect = { VENDOR = scope:laamp_jeweler_craftsman }
+						1041_chance_to_buff_item_rarity_effect = { VENDOR = scope:laamp_armorer_craftsman }
 						#Generate accessory
 						random_list = {
 							#Don't need two rings etc
@@ -20188,9 +20298,6 @@ ep3_laamp_decision_event.1101 = {
 	option = {
 		name = ep3_laamp_decision_event.1101.a
 		custom_tooltip = ep3_laamp_decision_event.1101.a.desc
-		stress_and_fulfillment_impact = {
-			zealous = miniscule_stress_impact_loss
-		}
 	}
 }
 
@@ -20237,9 +20344,6 @@ ep3_laamp_decision_event.1102 = {
 		set_variable = {
 			name = num_counties_converted
 			value = 0
-		}
-		stress_and_fulfillment_impact = {
-			zealous = minor_stress_impact_loss
 		}
 
 		ai_chance = {
@@ -20345,6 +20449,14 @@ ep3_laamp_decision_event.1103 = {
 						subtract = location.county.county_opinion
 					}
 				}
+				modifier = {
+					factor = 0.75
+					location.county.faith.religion = root.religion
+				}
+				modifier = {
+					factor = 0.75
+					knows_language_of_culture = location.county.culture
+				}
 				send_interface_toast = {
 					type = event_toast_effect_good
 					title = ep3_laamp_decision_event.1103.a.success
@@ -20353,7 +20465,7 @@ ep3_laamp_decision_event.1103 = {
 					location.county = {
 						set_county_faith = root.faith
 					}
-					ep3_hasan_advance_radicalism = yes
+					#ep3_hasan_advance_radicalism = yes
 				}
 			}
 			50 = {
@@ -20365,16 +20477,8 @@ ep3_laamp_decision_event.1103 = {
 				modifier = {
 					add = location.county.development_level
 				}
-				modifier = {
-					factor = 0.75
-					location.county.faith.religion = root.religion
-				}
-				modifier = {
-					factor = 0.75
-					knows_language_of_culture = location.county.culture
-				}
 				send_interface_toast = {
-					type = event_toast_effect_bad
+					type = event_toast_effect_good
 					title = ep3_laamp_decision_event.1103.a.failure
 					left_icon = root
 					right_icon = location.county
@@ -20389,15 +20493,10 @@ ep3_laamp_decision_event.1103 = {
 			min = 20
 		}
 
-		if = {
-			limit = {
-				location.county.holder.faith != root.faith
-			}
-			reverse_add_opinion = {
-				modifier = vengeful_opinion
-				opinion = -75
-				target = location.county.holder
-			}
+		reverse_add_opinion = {
+			modifier = vengeful_opinion
+			opinion = -75
+			target = location.county.holder
 		}
 
 		ai_chance = {
@@ -20410,10 +20509,10 @@ ep3_laamp_decision_event.1103 = {
 
 	option = {
 		trigger = {
-			root.rite = {
+			root.faith = {
 				NOR = {
-					rite_has_tenet = tenet_dharmic_pacifism
-					rite_has_tenet = tenet_pacifism
+					has_doctrine = tenet_dharmic_pacifism
+					has_doctrine = tenet_pacifism
 				}
 			}
 
@@ -20450,8 +20549,8 @@ ep3_laamp_decision_event.1103 = {
 				}
 				modifier = {
 					factor = 1.2
-					root.rite = {
-						rite_has_tenet = tenet_armed_pilgrimages
+					root.faith = {
+						has_doctrine = tenet_armed_pilgrimages
 					}
 				}
 				send_interface_toast = {
@@ -20462,7 +20561,7 @@ ep3_laamp_decision_event.1103 = {
 					location.county = {
 						set_county_faith = root.faith
 					}
-					ep3_hasan_advance_radicalism = yes
+					#ep3_hasan_advance_radicalism = yes
 				}
 			}
 			50 = {
@@ -20633,10 +20732,7 @@ ep3_laamp_decision_event.1104 = {
 		}
 		name = ep3_laamp_decision_event.1104.a
 		add_piety = omega_piety_gain
-		add_trait = herald
-		stress_and_fulfillment_impact = {
-			zealous = medium_stress_impact_loss
-		}
+		add_trait = saint
 	}
 
 	option = {
@@ -20647,7 +20743,6 @@ ep3_laamp_decision_event.1104 = {
 
 		add_stress = monumental_stress_gain
 		add_piety_level = -5
-		change_spiritual_fulfillment = medium_spiritual_fulfillment_loss
 		if = {
 			limit = {
 				has_nickname = nick_the_missionary
@@ -21084,7 +21179,7 @@ ep3_laamp_decision_event.1133 = { #get a mill
 		add_character_flag = laamp_city_builder_mill
 		show_as_tooltip = {
 			scope:city_location = {
-				add_building = watermills_02
+				add_building = watermills_01
 			}
 		}
 		remove_short_term_gold = 80
@@ -21328,6 +21423,7 @@ ep3_laamp_decision_event.1135 = { #argue for more favorable land assigment from 
 			base = 0
 		}
 	}
+	
 }
 
 ep3_laamp_decision_event.1136 = { #utilize connections, get merchant building
@@ -21336,7 +21432,7 @@ ep3_laamp_decision_event.1136 = { #utilize connections, get merchant building
 	window = visit_settlement_window
 	desc = ep3_laamp_decision_event.1136.desc
 
-	orphan = yes  # for balance reasons
+	orphan = yes
 
 	theme = stewardship
 
@@ -21365,13 +21461,13 @@ ep3_laamp_decision_event.1136 = { #utilize connections, get merchant building
 			limit = { has_variable = city_construction_is_temple_citadel }
 			add_character_flag = laamp_city_builder_spice_plantation
 			scope:city_location = {
-				show_as_tooltip = { add_building = spice_plantation_02 }
+				show_as_tooltip = { add_building = spice_plantation_01 }
 			}
 		}
 		else = {
 			add_character_flag = laamp_city_builder_workshops
 			scope:city_location = {
-				show_as_tooltip = { add_building = workshops_02 }
+				show_as_tooltip = { add_building = workshops_01 }
 			}
 		}
 		add_prestige = -400
@@ -21449,13 +21545,13 @@ ep3_laamp_decision_event.1137 = { #utilize connections, get prayer hall
 			limit = { has_variable = city_construction_is_temple_citadel }
 			add_character_flag = laamp_city_builder_vihara_halls
 			scope:city_location = {
-				show_as_tooltip = { add_building = vihara_halls_02 }
+				show_as_tooltip = { add_building = vihara_halls_01 }
 			}
 		}
 		else = {
 			add_character_flag = laamp_city_builder_prayer_hall
 			scope:city_location = {
-				show_as_tooltip = { add_building = monastic_schools_02 }
+				show_as_tooltip = { add_building = monastic_schools_01 }
 			}
 		}
 		add_piety = -400
@@ -21752,14 +21848,14 @@ ep3_laamp_decision_event.1201 = {
 				text = ep3_laamp_decision_event.1201.tt.your_dog_lost
 				1201_prune_dog_stories_effect = yes
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = massive_stress_gain
 				sadistic = minor_stress_impact_loss
 				compassionate = minor_stress_impact_gain
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = major_stress_gain
 				sadistic = minor_stress_impact_loss
 				compassionate = minor_stress_impact_gain
@@ -21795,7 +21891,7 @@ ep3_laamp_decision_event.1201 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = { callous = massive_stress_impact_loss }
+		stress_impact = { callous = massive_stress_impact_loss }
 		# If the AI is callous, they should always take this.
 		ai_chance = { base = 1000 }
 	}
@@ -21971,14 +22067,14 @@ ep3_laamp_decision_event.1202 = {
 				text = ep3_laamp_decision_event.1202.tt.your_cat_lost
 				1202_prune_cat_stories_effect = yes
 			}
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = massive_stress_gain
 				sadistic = minor_stress_impact_loss
 				compassionate = minor_stress_impact_gain
 			}
 		}
 		else = {
-			stress_and_fulfillment_impact = {
+			stress_impact = {
 				base = major_stress_gain
 				sadistic = minor_stress_impact_loss
 				compassionate = minor_stress_impact_gain
@@ -22015,7 +22111,7 @@ ep3_laamp_decision_event.1202 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = { callous = massive_stress_impact_loss }
+		stress_impact = { callous = massive_stress_impact_loss }
 		# If the AI is callous, they should always take this.
 		ai_chance = { base = 1000 }
 	}
@@ -22117,7 +22213,7 @@ ep3_laamp_decision_event.1203 = {
 			}
 		}
 
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = major_stress_gain
 			sadistic = minor_stress_impact_loss
 			compassionate = minor_stress_impact_gain
@@ -22132,7 +22228,7 @@ ep3_laamp_decision_event.1203 = {
 		trigger = { has_trait = callous }
 		trait = callous
 
-		stress_and_fulfillment_impact = { callous = massive_stress_impact_loss }
+		stress_impact = { callous = massive_stress_impact_loss }
 		# If the AI is callous, they should always take this.
 		ai_chance = { base = 1000 }
 	}
@@ -22178,7 +22274,7 @@ ep3_laamp_decision_event.1204 = {
 	option = {
 		name = ep3_laamp_decision_event.1204.a
 		
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = major_stress_gain
 			sadistic = minor_stress_impact_loss
 			compassionate = minor_stress_impact_gain
@@ -22193,7 +22289,7 @@ ep3_laamp_decision_event.1204 = {
 		trigger = { has_trait = callous }
 		trait = callous
 
-		stress_and_fulfillment_impact = { callous = massive_stress_impact_loss }
+		stress_impact = { callous = massive_stress_impact_loss }
 		# If the AI is callous, they should always take this.
 		ai_chance = { base = 1000 }
 	}
@@ -22295,7 +22391,6 @@ ep3_laamp_decision_event.1300 = {
 					employer = root
 					culture = root.culture
 					faith = root.faith
-					rite = root.rite
 					age = root.age
 					gender_female_chance = root_soldier_female_chance
 					after_creation = { add_to_list = created_chars_list }
@@ -22308,7 +22403,6 @@ ep3_laamp_decision_event.1300 = {
 					employer = root
 					culture = root.culture
 					faith = root.faith
-					rite = root.rite
 					gender_female_chance = root_soldier_female_chance
 					after_creation = { add_to_list = created_chars_list }
 				}

@@ -82,12 +82,14 @@ marshal_task.0301 = {
 		animation = ecstasy
 	}
 	right_portrait = {
-		character = scope:councillor
+		character = cp:councillor_marshal
 		animation = personality_rational
 	}
 
 	trigger = {
 		is_ai = no
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		NOT = {
 			has_variable = had_new_commander_event
 		}
@@ -139,7 +141,6 @@ marshal_task.0301 = {
 				location = scope:target_location
 				template = new_warrior_character
 				faith = scope:origin.faith
-				rite = scope:origin.rite
 				culture = scope:origin.culture
 				save_scope_as = commander
 			}
@@ -176,17 +177,17 @@ marshal_task.0301 = {
 # by Petter Vilberg
 scripted_trigger marshal_task_0302_commander_trigger = {
 	number_of_commander_traits < commander_trait_limit
-	NOT = { scope:councillor ?= this }
+	NOT = { this = root.cp:councillor_marshal }
 	NOT = { has_variable = commander_trait_being_taught }
-	NOT = { has_character_flag = will_learn_ct }
-	NOT = { has_character_flag = being_taught_commander_trait }
 }
 
 marshal_task.0302 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
 			
 			martial > mediocre_skill_rating
 		}
@@ -207,7 +208,7 @@ marshal_task.0302 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 			save_scope_as = teacher
 		}
@@ -365,13 +366,15 @@ marshal_task.0303 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
 			
 			martial > mediocre_skill_rating
 		}
 		any_knight = {
 			can_be_trained_as_knight_now_light_trigger = yes
-			NOT = { scope:councillor ?= this }
+			NOT = { this = root.cp:councillor_marshal }
 		}
 	}
 
@@ -386,13 +389,13 @@ marshal_task.0303 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		every_knight = {
 			limit = {
 				can_be_trained_as_knight_now_light_trigger = yes
-				NOT = { scope:councillor ?= this }
+				NOT = { this = root.cp:councillor_marshal }
 			}
 			add_to_temporary_list = possible_knight
 		}
@@ -576,12 +579,14 @@ marshal_task.0304 = {
 		animation = marshal_random_weapon
 	}
 	right_portrait = {
-		character = scope:councillor
+		character = cp:councillor_marshal
 		animation = interested_left
 	}
 	lower_left_portrait = scope:advocate_of_nepotism
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		NOT = {
 			has_variable = had_new_commander_event
 		}
@@ -781,7 +786,7 @@ marshal_task.0304 = {
 				ai_honor = -0.25
 			}
 		}
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			arrogant = minor_stress_impact_gain
 			paranoid = minor_stress_impact_gain
 		}
@@ -930,7 +935,7 @@ marshal_task.0306 = {
 
 	option = {
 		name = marshal_task.0306.a
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			shy = medium_stress_impact_gain
 		}
 		scope:advocate_of_nepotism = {
@@ -993,10 +998,12 @@ marshal_task.1001 = {
 	hidden = yes
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		NOT = {
 			has_character_modifier = marshal_task_levy_desertions_modifier
 		}
-		scope:councillor = {
+		cp:councillor_marshal = {
 			martial < high_skill_rating
 		}
 	}
@@ -1012,7 +1019,7 @@ marshal_task.1001 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1057,12 +1064,14 @@ marshal_task.1002 = {
 	hidden = yes
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		any_sub_realm_county ?= {
 			NOT = {
 				has_county_modifier = marshal_task_unused_farmland_modifier
 			}
 		}
-		scope:councillor = {
+		cp:councillor_marshal = {
 			martial < high_skill_rating
 		}
 	}
@@ -1078,7 +1087,7 @@ marshal_task.1002 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1135,6 +1144,8 @@ marshal_task.1003 = {
 	hidden = yes
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		any_sub_realm_county ?= {
 			marshal_task_1003_county_trigger = yes
 			NOR = {
@@ -1142,7 +1153,7 @@ marshal_task.1003 = {
 				title_province = { has_holding_type = herder_holding }
 			}
 		}
-		scope:councillor = {
+		cp:councillor_marshal = {
 			martial < high_skill_rating
 		}
 	}
@@ -1158,7 +1169,7 @@ marshal_task.1003 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1243,10 +1254,12 @@ marshal_task.1101 = {
 	hidden = yes
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		any_sub_realm_county ?= {
 			marshal_task_1101_county_trigger = yes
 		}
-		scope:councillor = {
+		cp:councillor_marshal = {
 			
 			martial > mediocre_skill_rating
 		}
@@ -1263,7 +1276,7 @@ marshal_task.1101 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1316,10 +1329,12 @@ marshal_task.1102 = {
 	hidden = yes
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		any_sub_realm_county ?= {
 			marshal_task_1102_county_trigger = yes
 		}
-		scope:councillor = {
+		cp:councillor_marshal = {
 			
 			martial > mediocre_skill_rating
 		}
@@ -1336,7 +1351,7 @@ marshal_task.1102 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1391,6 +1406,8 @@ marshal_task.1103 = {
 	cooldown = { months = 12 }
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		any_active_accolade = {
 			accolade_parameter = accolade_organize_army_bonus
 		}
@@ -1453,7 +1470,7 @@ marshal_task.1103 = {
 #Commander is Wounded
 # by Petter Vilberg
 scripted_trigger marshal_task_2001_commander_trigger = {
-	NOT = { scope:councillor ?= this }
+	NOT = { this = root.cp:councillor_marshal }
 	NOT = { has_trait = wounded }
 }
 
@@ -1461,7 +1478,9 @@ marshal_task.2001 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
 			martial < high_skill_rating
 		}
 		any_knight = {
@@ -1481,7 +1500,7 @@ marshal_task.2001 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1548,7 +1567,7 @@ scripted_trigger marshal_task_2002_commander_trigger = {
 		is_landed = no
 		highest_held_title_tier = tier_barony
 	}
-	NOT = { scope:councillor ?= this }
+	NOT = { this = root.cp:councillor_marshal }
 	NOR = {
 		has_trait = wounded
 		has_trait = maimed
@@ -1559,7 +1578,9 @@ marshal_task.2002 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
 			martial < high_skill_rating
 		}
 		any_knight = {
@@ -1579,7 +1600,7 @@ marshal_task.2002 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1725,7 +1746,7 @@ scripted_trigger marshal_task_2003_commander_trigger = {
 		is_landed = no
 		highest_held_title_tier = tier_barony
 	}
-	NOT = { scope:councillor ?= this }
+	NOT = { this = root.cp:councillor_marshal }
 	NOT = { has_trait = wounded }
 }
 
@@ -1737,7 +1758,7 @@ marshal_task.2003 = {
 		desc = marshal_task.2003.ending
 	}
 	left_portrait = {
-		character = scope:councillor
+		character = cp:councillor_marshal
 		animation = shock
 	}
 	right_portrait = {
@@ -1747,7 +1768,9 @@ marshal_task.2003 = {
 	theme = martial
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
 			martial < high_skill_rating
 		}
 		any_knight = {
@@ -1767,7 +1790,7 @@ marshal_task.2003 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1817,49 +1840,44 @@ marshal_task.2003 = {
 
 scripted_trigger marshal_task_2101_teacher_trigger = {
 	number_of_commander_traits > 0
-	can_be_commander_now_trigger = { ARMY_OWNER = root }
-	is_available_ai_adult = yes
-	NOT = { scope:councillor ?= this }
+	NOT = { this = root.cp:councillor_marshal }
 	NOT = { has_variable = commander_trait_being_taught }
 }
 
 scripted_trigger marshal_task_2101_commander_trigger = {
 	number_of_commander_traits < commander_trait_limit
-	NOT = { scope:councillor ?= this }
+	NOT = { this = root.cp:councillor_marshal }
 	NOT = { has_variable = commander_trait_being_taught }
 	character_has_commander_trait_scope_does_not = scope:teacher
-	NOT = { has_character_flag = will_learn_ct }
-	NOT = { has_character_flag = being_taught_commander_trait }
 }
 
 marshal_task.2101 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
+			
 			martial > mediocre_skill_rating
 		}
 
 		#First, add every potential commander to a trigger list
-		any_courtier = {
-			count = all
-			can_be_commander_now_trigger = { ARMY_OWNER = root }
+		any_knight = {
+			can_be_trained_as_knight_now_light_trigger = yes
+			marshal_task_2101_teacher_trigger = yes
+			count >= 2
 			add_to_temporary_list = possible_commanders
 		}
-		any_vassal = {
-			count = all
-			can_be_commander_now_trigger = { ARMY_OWNER = root }
- 			add_to_temporary_list = possible_commanders
- 		}
+
+		#Find two candidates
 		any_in_list = {
 			list = possible_commanders
-			marshal_task_2101_teacher_trigger = yes
 			save_temporary_scope_as = teacher
 		}
 		any_in_list = {
 			list = possible_commanders
-			this != scope:teacher
-			marshal_task_2101_commander_trigger = yes
+			marshal_task_2101_commander_trigger = yes #This should ensure there is another possible candidate that is not also the teacher
 		}
 	}
 
@@ -1874,7 +1892,7 @@ marshal_task.2101 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -1884,15 +1902,9 @@ marshal_task.2101 = {
 		}
 
 		#Build a list of possible characters involved
-		every_courtier = {
+		every_knight = {
 			limit = {
-				can_be_commander_now_trigger = { ARMY_OWNER = root }
-			}
-			add_to_list = possible_commanders
-		}
-		every_vassal = {
-			limit = {
-				can_be_commander_now_trigger = { ARMY_OWNER = root }
+				can_be_trained_as_knight_now_light_trigger = yes
 			}
 			add_to_list = possible_commanders
 		}
@@ -1916,7 +1928,6 @@ marshal_task.2101 = {
 		random_in_list = {
 			list = possible_commanders
 			limit = {
-				this != scope:teacher
 				marshal_task_2101_commander_trigger = yes
 			}
 			save_scope_as = commander
@@ -1977,7 +1988,10 @@ marshal_task.2102 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
+			
 			martial > mediocre_skill_rating
 		}
 
@@ -1988,7 +2002,7 @@ marshal_task.2102 = {
 
 		any_in_list = {
 			list = possible_commanders
-			NOT = { scope:councillor ?= this }
+			NOT = { this = root.cp:councillor_marshal }
 		}
 	}
 
@@ -2003,7 +2017,7 @@ marshal_task.2102 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -2024,7 +2038,7 @@ marshal_task.2102 = {
 		random_in_list = {
 			list = possible_knights
 			limit = {
-				NOT = { scope:councillor ?= this }
+				NOT = { this = root.cp:councillor_marshal }
 			}
 			save_scope_as = commander
 		}
@@ -2076,6 +2090,8 @@ marshal_task.2103 = {
 	cooldown = { months = 12 }
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		# check acclaimed knight is good to go
 		any_knight = {
 			marshal_task_2103_accolade_trigger = yes
@@ -2496,7 +2512,7 @@ marshal_task.3003 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -2796,7 +2812,7 @@ marshal_task.3103 = {
 # Knight is Wounded
 # by Claudia Baldassi
 scripted_trigger marshal_task_4001_knight_trigger = {
-	NOT = { scope:councillor ?= this }
+	NOT = { this = root.cp:councillor_marshal }
 	NOT = { has_trait = wounded }
 }
 
@@ -2804,7 +2820,9 @@ marshal_task.4001 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
 			martial < high_skill_rating
 		}
 		any_knight = {
@@ -2825,7 +2843,7 @@ marshal_task.4001 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -2887,6 +2905,8 @@ marshal_task.4002 = {
 	hidden = yes
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		scope:councillor ?= {
 			martial < high_skill_rating
 		}
@@ -2903,7 +2923,7 @@ marshal_task.4002 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -2953,7 +2973,9 @@ marshal_task.4101 = {
 	hidden = yes
 
 	trigger = {
-		scope:councillor = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
+		cp:councillor_marshal = {
 			
 			martial > mediocre_skill_rating
 		}
@@ -2965,7 +2987,7 @@ marshal_task.4101 = {
 
 		any_in_list = {
 			list = possible_commanders
-			NOT = { scope:councillor ?= this }
+			NOT = { this = root.cp:councillor_marshal }
 		}
 	}
 
@@ -2980,7 +3002,7 @@ marshal_task.4101 = {
 	}
 
 	immediate = {
-		scope:councillor = {
+		cp:councillor_marshal = {
 			save_scope_as = active_councillor
 		}
 		set_variable = {
@@ -3001,7 +3023,7 @@ marshal_task.4101 = {
 		random_in_list = {
 			list = possible_knights
 			limit = {
-				NOT = { scope:councillor ?= this }
+				NOT = { this = root.cp:councillor_marshal }
 			}
 			save_scope_as = commander
 		}
@@ -3067,6 +3089,8 @@ marshal_task.4102 = {
 	sender = scope:councillor
 
 	trigger = {
+		exists = cp:councillor_marshal
+		scope:councillor = cp:councillor_marshal
 		any_targeting_scheme = {
 			marshal_task_4102_scheme_trigger = yes
 		}

@@ -41,18 +41,14 @@ ep3_admin_events.0001 = {
 		animation = chancellor
 	}
 	lower_right_portrait = scope:liege
-
+	
 	trigger = {
 		is_landed = yes
-		NAND = {
-			government_is_japanese_trigger = yes
-			liege = { government_is_japanese_trigger = yes }
-		}
 	}
 
 	immediate = {
 		liege = {
-			save_scope_as = liege
+			save_scope_as = liege 
 			switch = {
 				trigger = government_has_flag
 				government_is_tribal = {
@@ -99,7 +95,6 @@ ep3_admin_events.0001 = {
 					location = root.capital_province
 					template = diplomacy_foreign_affairs_focus_friend_template
 					faith = scope:liege.capital_county.faith
-					rite = scope:liege.capital_county.rite
 					culture = scope:liege.capital_county.culture
 					save_scope_as = scribe
 				}
@@ -108,25 +103,25 @@ ep3_admin_events.0001 = {
 		scope:scribe = {
 			assign_quirk_effect = yes
 		}
-
+		
 		admin_change_government_effect = yes
 	}
 
 	option = { # I love change
 		name = ep3_admin_events.0001.a
-
+		
 		add_character_modifier = {
 			modifier = ep3_admin_change_love
 			years = 15
 		}
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			lazy = medium_stress_impact_loss
 			craven = medium_stress_impact_gain
 			stubborn = medium_stress_impact_gain
 			paranoid = medium_stress_impact_gain
 			diligent = medium_stress_impact_gain
-		}
+		}		
 		ai_chance = {
 			base = 100
 			modifier = {
@@ -144,22 +139,22 @@ ep3_admin_events.0001 = {
 			}
 		}
 	}
-
+	
 	option = { # I hate this
 		name = ep3_admin_events.0001.b
-
+		
 		add_character_modifier = {
 			modifier = ep3_admin_change_hate
 			years = 15
 		}
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			diligent = medium_stress_impact_loss
 			brave = medium_stress_impact_gain
 			lazy = medium_stress_impact_gain
 			trusting = medium_stress_impact_gain
 			fickle = medium_stress_impact_gain
-		}
+		}		
 		ai_chance = {
 			base = 100
 			modifier = {
@@ -177,10 +172,10 @@ ep3_admin_events.0001 = {
 			}
 		}
 	}
-
+	
 	option = { # I don't care
 		name = ep3_admin_events.0001.c
-
+		
 		ai_chance = {
 			base = 200
 		}
@@ -318,8 +313,8 @@ ep3_admin_events.0002 = {
 			modifier = tgp_diligent_governor_modifier
 			years = 3
 		}
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			lazy = medium_stress_impact_gain
 			diligent = miniscule_stress_impact_loss
 		}
@@ -342,13 +337,13 @@ ep3_admin_events.0002 = {
 		flavor = inspections_give_merit_tt
 		custom_tooltip = ep3_admin_events.0002.tt
 		custom_tooltip = ep3_admin_events.0002.tt_inspection
-
+		
 		add_character_flag = free_inspection
-
-		stress_and_fulfillment_impact = {
+		
+		stress_impact = {
 			lazy = medium_stress_impact_gain
 			diligent = miniscule_stress_impact_loss
-		}
+		}		
 		ai_chance = {
 			base = 0
 		}
@@ -357,11 +352,11 @@ ep3_admin_events.0002 = {
 	option = {
 		name = ep3_admin_events.0002.a
 		custom_tooltip = ep3_admin_events.0002.tt
-		stress_and_fulfillment_impact = {
+		stress_impact = {
 			base = miniscule_stress_impact_loss
 		}
 	}
-
+	
 	after = {
 		if = {
 			limit = {
@@ -379,7 +374,7 @@ ep3_admin_events.0003 = {
 	hidden = yes
 
 	trigger = {
-		government_has_mechanic = administrative
+		government_allows = administrative
 	}
 
 	immediate = {
@@ -462,12 +457,6 @@ ep3_admin_events.0004 = {
 		animation = worry
 	}
 
-	trigger = {
-		NOT = {
-			top_liege = { government_allows = noble_families }
-		}
-	}
-
 	immediate = {
 		if = { # Destroy your noble family title if you have one
 			limit = {
@@ -508,7 +497,7 @@ ep3_admin_events.0004 = {
 			}
 		}
 	}
-
+	
 	option = {
 		name = {
 			trigger = {
@@ -604,12 +593,11 @@ ep3_admin_events.0005 = {
 				location = root.capital_province
 				template = diplomacy_foreign_affairs_focus_friend_template
 				faith = root.capital_county.faith
-				rite = root.capital_county.rite
 				culture = root.capital_county.culture
 				save_scope_as = messenger
 			}
 		}
-
+		
 		# Show this to make it clear to the player that you became independent
 		show_as_tooltip = {
 			create_title_and_vassal_change = {
@@ -631,7 +619,7 @@ ep3_admin_events.0005 = {
 			admin_change_government_effect = yes
 		}
 	}
-
+	
 	option = {
 		name = ep3_admin_events.0005.a
 		# We handle everything in the immediate
@@ -645,7 +633,7 @@ ep3_admin_events.0010 = {
 
 	immediate = {
 		save_scope_as = legitimacy_gainer
-
+		
 		# We first send the notification of the legitimacy being granted
 		house = {
 			every_house_member = {
@@ -661,10 +649,10 @@ ep3_admin_events.0010 = {
 				}
 			}
 		}
-
+		
 		# Then we add the actual legitimacy
 		add_legitimacy = house.var:ep3_legacy_legitimacy_counter
-
+		
 		# Finally, let's reset the counter according to building level
 		house = {
 			if = {

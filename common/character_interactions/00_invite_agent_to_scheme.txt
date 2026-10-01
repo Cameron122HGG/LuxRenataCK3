@@ -34,7 +34,7 @@ invite_agent_to_scheme_interaction = {
 				force_add_to_agent_slot = {
 					agent_slot = scope:agent_slot
 					years = 5
-				}
+				}	
 			}
 			else = { add_to_agent_slot = scope:agent_slot }
 		}
@@ -80,7 +80,7 @@ invite_agent_to_scheme_interaction = {
 					gold = bribe_value
 					target = scope:recipient
 				}
-				stress_and_fulfillment_impact = { greedy = minor_stress_impact_gain }
+				stress_impact = { greedy = minor_stress_impact_gain }
 			}
 			# Big Bribe
 			if = {
@@ -89,7 +89,7 @@ invite_agent_to_scheme_interaction = {
 					gold = greater_bribe_value
 					target = scope:recipient
 				}
-				stress_and_fulfillment_impact = { greedy = medium_stress_impact_gain }
+				stress_impact = { greedy = medium_stress_impact_gain }
 			}
 			# Treasury Bribe
 			if = {
@@ -110,7 +110,7 @@ invite_agent_to_scheme_interaction = {
 			# Offer Hook
 			if = {
 				limit = { always = scope:offer_hook }
-				stress_and_fulfillment_impact = {
+				stress_impact = {
 					base = minor_stress_impact_gain
 					paranoid = major_stress_impact_gain
 				}
@@ -124,7 +124,7 @@ invite_agent_to_scheme_interaction = {
 			# Offer Strong Hook
 			if = {
 				limit = { always = scope:offer_hook_strong }
-				stress_and_fulfillment_impact = { base = major_stress_impact_gain }
+				stress_impact = { base = major_stress_impact_gain }
 				scope:recipient = {
 					add_hook = {
 						type = strong_favor_hook
@@ -294,7 +294,7 @@ invite_agent_to_scheme_interaction = {
 						modifier = forced_me_to_help_crimes_opinion
 						opinion = -20
 					}
-					stress_and_fulfillment_impact = {
+					stress_impact = {
 						just = minor_stress_impact_gain
 						compassionate = miniscule_stress_impact_gain
 					}
@@ -307,7 +307,7 @@ invite_agent_to_scheme_interaction = {
 						modifier = forced_me_to_work_opinion
 						opinion = -10
 					}
-					stress_and_fulfillment_impact = { lazy = miniscule_stress_impact_gain }
+					stress_impact = { lazy = miniscule_stress_impact_gain }
 				}
 			}
 		}
@@ -317,7 +317,7 @@ invite_agent_to_scheme_interaction = {
 		base = 0
 		scheme_modifier = {
 			object = scope:scheme
-			target = scope:recipient
+			target = scope:recipient			
 		}
 		# You should not add modifiers here! If you want to add modifiers, they should be added to either:
 		## - ai_agent_join_chance_hostile_general_suite_modifier
@@ -374,7 +374,7 @@ invite_agent_to_scheme_interaction = {
 		}
 		trigger_else = { always = no }
 	}
-
+	
 	options_heading = invite_agent_to_scheme_interaction.t.options_header
 	# Everyone
 	## Spend opportunities.
@@ -433,7 +433,7 @@ invite_agent_to_scheme_interaction = {
 				scope:scheme = { is_scheme_category = contract }
 				scope:recipient = { is_courtier_of = scope:actor }
 			}
-			scope:actor = {
+			scope:actor = { 
 				government_has_flag = government_is_mandala
 				house = { has_house_head_parameter = unlock_force_agent_using_piety }
 				is_house_head = yes
@@ -449,7 +449,7 @@ invite_agent_to_scheme_interaction = {
 				text = not_two_overrides
 				trigger_if = {
 					limit = { scope:hook = yes }
-					NOT = {
+					NOT = { 
 						scope:actor = { has_strong_hook = scope:recipient }
 					}
 				}
@@ -652,7 +652,7 @@ invite_agent_to_scheme_interaction = {
 						scope:actor = { has_strong_hook = scope:recipient }
 					}
 					scope:mandala_trickster = no
-				}
+				}	
 			}
 			would_agent_accept_petty_bribes_against_target_trigger = yes
 		}
@@ -687,14 +687,14 @@ invite_agent_to_scheme_interaction = {
 		flag = influence
 		is_shown = {
 			scope:actor.top_liege ?= scope:recipient.top_liege
-			scope:actor = { government_has_flag = government_has_influence }
+			scope:actor = { government_allows = administrative }
 			scope:recipient = {
 				OR = {
-					government_has_flag = government_has_influence
-					host = { government_has_flag = government_has_influence }
+					government_allows = administrative
+					host = { government_allows = administrative }
 					AND = {
 						highest_held_title_tier = tier_barony
-						liege = { government_has_flag = government_has_influence }
+						liege = { government_allows = administrative }
 					}
 				}
 			}
@@ -870,7 +870,7 @@ invite_agent_to_scheme_interaction = {
 		flag = piety
 		is_shown = {
 			trigger_if = { #Mandala override
-				limit = {
+				limit = { 
 					scope:actor = { government_has_flag = government_is_mandala }
 				}
 				scope:actor = {
@@ -910,8 +910,8 @@ invite_agent_to_scheme_interaction = {
 		is_valid = {
 			scope:actor.piety >= piety_bribe_value
 			trigger_if = { #Mandala override
-				limit = {
-					scope:actor = {
+				limit = { 
+					scope:actor = { 
 						NOT = { government_has_flag = government_is_mandala }
 					}
 				}
