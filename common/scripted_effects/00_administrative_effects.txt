@@ -122,25 +122,18 @@ change_to_administrative_effect = {
 			}
 			save_scope_as = new_admin
 		}
-		# If we are greek, let's ensure we become administrative
 		if = {
 			limit = {
-				NOT = { exists = scope:has_selected_a_government }
-				scope:governor_liege = {
-					this = scope:governor # not vassal of some other admin liege
-					culture = {
-						OR = {
-							this = culture:greek
-							any_parent_culture_or_above = { this = culture:greek }
-						}
-					}
+				NAND = {
+					government_has_flag = government_is_gaul_feudal
+					scope:governor_liege = { government_has_flag = government_is_gaul_administrative }
 				}
 			}
-			save_scope_value_as = {
-				name = has_selected_a_government
-				value = flag:administrative
-			}
+			save_scope_as = new_admin
 		}
+		# If we are greek, let's ensure we become administrative
+		#Hell Nah
+
 		# Change government
 		# We first check if you have a selected government, then if you are independent, then what your liege has
 		if = { # Ritsuryo
@@ -168,6 +161,32 @@ change_to_administrative_effect = {
 				NEW_GOVERNMENT_TYPE = japan_administrative_government
 			}
 			change_government = japan_administrative_government
+		}
+		if = { # Palatine
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = scope:has_selected_a_government
+					}
+					scope:has_selected_a_government = flag:gaul_administrative
+				}
+				trigger_else_if = {
+					limit = {
+						top_liege = this
+					}
+					has_tgp_dlc_trigger = yes
+					LR_tgp_can_become_gaul_administrative_trigger = yes
+				}
+				trigger_else = {
+					scope:governor_liege = { government_has_flag = government_is_gaul_administrative }
+				}
+			}
+			change_to_administrative_holding_effect = yes
+			tgp_domicile_conversion_when_changing_government_type = {
+				NEW_DOMICILE_TYPE = gallic_manor
+				NEW_GOVERNMENT_TYPE = gaul_administrative_government
+			}
+			change_government = gaul_administrative_government
 		}
 		else_if = { # Celestial
 			limit = {
@@ -248,6 +267,84 @@ change_to_administrative_effect = {
 				NEW_GOVERNMENT_TYPE = meritocratic_government
 			}
 			change_government = meritocratic_government
+		}
+		else_if = { ##Roman Admin
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = scope:has_selected_a_government
+					}
+					scope:has_selected_a_government = flag:roman_administrative
+				}
+				trigger_else_if = {
+					limit = {
+						scope:governor_liege ?= this
+					}
+					has_ep3_dlc_trigger = yes
+					should_become_roman_admin_trigger = yes
+				}
+				trigger_else = {
+					scope:governor_liege = { government_has_flag = government_is_roman_administrative }
+				}
+			}
+			change_to_administrative_holding_effect = yes
+			tgp_domicile_conversion_when_changing_government_type = {
+				NEW_DOMICILE_TYPE = classical_group_estate
+				NEW_GOVERNMENT_TYPE = roman_administrative_government
+			}
+			change_government = roman_administrative_government
+		}
+		else_if = { ##Diadochi Admin
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = scope:has_selected_a_government
+					}
+					scope:has_selected_a_government = flag:alexandrian_administrative
+				}
+				trigger_else_if = {
+					limit = {
+						scope:governor_liege ?= this
+					}
+					has_ep3_dlc_trigger = yes
+					should_become_alexandrian_admin_trigger = yes
+				}
+				trigger_else = {
+					scope:governor_liege = { government_has_flag = government_is_alexandrian_administrative }
+				}
+			}
+			change_to_administrative_holding_effect = yes
+			tgp_domicile_conversion_when_changing_government_type = {
+				NEW_DOMICILE_TYPE = classical_group_estate
+				NEW_GOVERNMENT_TYPE = alexandrian_administrative_government
+			}
+			change_government = alexandrian_administrative_government
+		}
+		else_if = { ##Western Admin
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = scope:has_selected_a_government
+					}
+					scope:has_selected_a_government = flag:western_administrative
+				}
+				trigger_else_if = {
+					limit = {
+						scope:governor_liege ?= this
+					}
+					has_ep3_dlc_trigger = yes
+					should_become_western_admin_trigger = yes
+				}
+				trigger_else = {
+					scope:governor_liege = { government_has_flag = government_is_western_administrative }
+				}
+			}
+			change_to_administrative_holding_effect = yes
+			tgp_domicile_conversion_when_changing_government_type = {
+				NEW_DOMICILE_TYPE = western_group_estate
+				NEW_GOVERNMENT_TYPE = western_administrative_government
+			}
+			change_government = western_administrative_government
 		}
 		else = { # Administrative
 			add_character_flag = new_government_is_byz_admin
