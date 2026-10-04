@@ -990,9 +990,33 @@ is_appointment_valid_trigger = {
 	$TOP_LIEGE$ = { save_temporary_scope_as = top_liege_temp }
 	custom_tooltip = { # Capital should be never a valid appointment (go for higher title instead
 		text = not_top_liege_capital_county_tt
-		NOT = { scope:title_temp ?= scope:candidate_temp.top_liege.capital_county }
+		trigger_if = { # Candidates outside a landed realm have no capital county to clash with
+			limit = { exists = scope:candidate_temp.top_liege.capital_county }
+			NOT = { scope:title_temp ?= scope:candidate_temp.top_liege.capital_county }
+		}
 	}
 	scope:candidate_temp = {
+		trigger_if = {
+			limit = {
+				scope:top_liege_temp = { tgp_realm_has_ceremonial_liege_trigger = yes }
+				tgp_is_in_ceremonial_house_trigger = yes
+			}
+			trigger_if = {
+				limit = {
+					scope:title_temp ?= { has_variable = administrative_ui_special_title }
+				}
+				custom_tooltip = {
+					text = ceremonial_liege_only_heir_can_be_ruler_trigger
+					tgp_is_ceremonial_liege_or_direct_heir_trigger = yes
+				}
+			}
+			trigger_else = {
+				custom_tooltip = {
+					text = ceremonial_liege_cannot_be_governor_trigger
+					tgp_is_ceremonial_liege_trigger = no
+				}
+			}
+		}
 		trigger_if = {
 			limit = { exists = scope:title_temp }
 			custom_tooltip = { # Has relevant law
@@ -1003,6 +1027,10 @@ is_appointment_valid_trigger = {
 						holder ?= { has_realm_law_flag = appointment_type_succession }
 					}
 				}
+			}
+			custom_tooltip = {
+				text = follows_other_title_appointment_tt
+				$TITLE$.tier = $TITLE$.holder.primary_title.tier
 			}
 			trigger_if = {
 				limit = {
@@ -1067,6 +1095,14 @@ is_appointment_valid_trigger = {
 	}
 }
 
+domicile_is_estate_trigger = {
+	OR = {
+		is_domicile_type = estate
+		is_domicile_type = east_asian_estate
+		is_domicile_type = japanese_manor
+	}
+}
+
 ep3_adventurer_ai_logic_valid_trigger = {
 	is_alive = yes
 	is_ai = yes
@@ -1077,8 +1113,8 @@ ep3_adventurer_ai_logic_valid_trigger = {
 ep3_laamp_diplo_range_trigger = {
 	custom_description = {
 		text = ep3_laamp_diplo_range_trigger_tt
-		subject = scope:actor
-		object = scope:recipient
+		subject = $LAAMP$
+		object = $TARGET$
 		trigger_if = {
 			limit = { exists = $LAAMP$.domicile.domicile_location }
 			trigger_if = {
@@ -1262,13 +1298,13 @@ ep3_restored_rome_hard_mode_trigger = {
 	}
 }
 
-faith_is_interesting_heresy_to_state_faith_trigger = {
-	religion = root.top_liege.primary_title.state_faith.religion
-	this != root.top_liege.primary_title.state_faith
-	num_county_followers >= 3
+rite_is_interesting_heresy_to_state_rite_trigger = {
+	faith.religion = root.top_liege.primary_title.state_rite.faith.religion
+	this != root.top_liege.primary_title.state_rite
+	num_rite_county_followers >= 3
 	save_temporary_scope_as = temp_heresy
-	root.top_liege.primary_title.state_faith = {
-		faith_hostility_level = {
+	root.top_liege.primary_title.state_rite = {
+		rite_hostility_level = {
 			target = scope:temp_heresy
 			value >= faith_hostile_level
 		}
@@ -1619,7 +1655,6 @@ ep3_adventurer_ai_valid_contract_trigger = {
 			can_create_task_contract = { type_name = laamp_join_faction_contract employer = $EMPLOYER$ }
 			can_create_task_contract = { type_name = laamp_help_faith_conversion_contract employer = $EMPLOYER$ }
 			can_create_task_contract = { type_name = laamp_fight_faith_conversion_contract employer = $EMPLOYER$ }
-			can_create_task_contract = { type_name = laamp_help_find_secrets_contract employer = $EMPLOYER$ }
 			can_create_task_contract = { type_name = laamp_help_fabricate_claim_contract employer = $EMPLOYER$ }
 			can_create_task_contract = { type_name = laamp_help_increase_control_contract employer = $EMPLOYER$ }
 			can_create_task_contract = { type_name = laamp_help_find_secrets_contract employer = $EMPLOYER$ }

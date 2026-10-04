@@ -69,46 +69,8 @@ change_to_administrative_effect = {
 			OR = {
 				NOT = { government_has_mechanic = administrative }
 				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_japan_administrative }
-					NOT = { government_has_flag = government_is_japan_administrative }
-				}
-				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_meritocratic }
-					NOT = { government_has_flag = government_is_meritocratic }
-				}
-				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_celestial }
-					NOT = { government_has_flag = government_is_celestial }
-				}
-				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_steppe_admin }
-					NOT = { government_has_flag = government_is_steppe_admin }
-				}
-				NOT = { government_has_mechanic = administrative }
-				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_roman_administrative }
-					NOT = { government_has_flag = government_is_roman_administrative }
-				}
-				
-				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_gaul_administrative }
-					NOT = { government_has_flag = government_is_gaul_administrative }
-				}
-				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_alexandrian_administrative }
-					NOT = { government_has_flag = government_is_alexandrian_administrative }
-				}
-				AND = {
-					government_has_mechanic = administrative
-					scope:governor_liege = { government_has_flag = government_is_western_administrative }
-					NOT = { government_has_flag = government_is_western_administrative }
+					scope:governor_liege = { government_has_mechanic = administrative }
+					government_type != scope:governor_liege.government_type
 				}
 			}
 		}
@@ -122,6 +84,7 @@ change_to_administrative_effect = {
 			}
 			save_scope_as = new_admin
 		}
+		# If we are greek, let's ensure we become administrative
 		if = {
 			limit = {
 				NAND = {

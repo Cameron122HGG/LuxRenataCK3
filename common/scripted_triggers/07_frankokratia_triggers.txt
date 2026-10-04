@@ -8,58 +8,59 @@ ep3_frankokratia_ghw_trigger = {
 	NOT = { exists = title:e_latin_empire.holder }
 	#Byzantine emperor is Christian, but not Catholic
 	title:e_byzantium.holder.faith = {
-		NOT = { this = faith:catholic }
 		religion = religion:christianity_religion
+	}
+	title:e_byzantium.holder.rite = {
+		rite_has_doctrine = special_doctrine_is_eastern_christian_faith
 	}
 	trigger_if = {
 		limit = {
 			title:e_byzantium.holder = {
-				government_has_flag = government_is_administrative
+				government_has_mechanic = administrative
 			}
 		}
-		#Byzantine state faith is not Catholic
+		#Byzantine state rite is still Eastern Christian (not Latin)
 		title:e_byzantium.holder.primary_title = {
-			state_faith = {
-				NOT = { this = faith:catholic }
-				religion = religion:christianity_religion
+			state_rite = {
+				rite_has_doctrine = special_doctrine_is_eastern_christian_faith
 			}
 		}
 	}
 	
-	#trigger_if = {
-	#	limit = {
-	#		has_game_rule = historicity_frankokratia_default
-	#	}
-	#	OR = {
-	#		exists = global_var:cath_crusade_1
-	#		current_date >= 6178.1.1
-	#	}
-	#}
-	#trigger_else_if = {
-	#	limit = {
-	#		has_game_rule = historicity_frankokratia_blocked
-	#	}
-	#	always = no
-	#}
-	#trigger_else_if = {
-	#	limit = {
-	#		has_game_rule = historicity_frankokratia_fourth_crusade
-	#	}
-	#	OR = {
-	#		AND = {
-	#			current_date < 6178.1.1
-	#			exists = global_var:cath_crusade_1
-	#			global_var:cath_crusade_1 >= 3
-	#		}
-	#		AND = {
-	#			current_date >= 6178.1.1
-	#			exists = global_var:cath_crusade_1
-	#		}
-	#	}
-	#}
-	#trigger_else = {
+	trigger_if = {
+		limit = {
+			has_game_rule = historicity_frankokratia_default
+		}
+		OR = {
+			exists = global_var:cath_crusade_1
+			current_date >= 1178.1.1
+		}
+	}
+	trigger_else_if = {
+		limit = {
+			has_game_rule = historicity_frankokratia_blocked
+		}
+		always = no
+	}
+	trigger_else_if = {
+		limit = {
+			has_game_rule = historicity_frankokratia_fourth_crusade
+		}
+		OR = {
+			AND = {
+				current_date < 1178.1.1
+				exists = global_var:cath_crusade_1
+				global_var:cath_crusade_1 >= 3
+			}
+			AND = {
+				current_date >= 1178.1.1
+				exists = global_var:cath_crusade_1
+			}
+		}
+	}
+	trigger_else = {
 		#historicity_frankokratia_high game rule has no start date-based restrictions
-	#}
+	}
 	
 	#Byz emperor or By capital is some kind of Greek
 	OR = {
@@ -85,7 +86,7 @@ ep3_frankokratia_ghw_trigger = {
 	#Looser requirements if we really want it to happen
 	trigger_if = {
 		limit = {
-			current_date >= 6200.1.1
+			current_date >= 1200.1.1
 			#Latin empire hasn't been made before
 			NOT = {
 				has_global_variable = frankokratia_occurred
@@ -130,13 +131,18 @@ ep3_frankokratia_ghw_trigger = {
 ep3_frankokratia_transiting_relative_trigger = {
 	OR = {
 		is_ruler = no
+		# Prefer char_temp; root is a faith in great_holy_war.0001, so do not evaluate root.highest_held_title_tier there.
 		AND = {
-			exists = scope:char_temp
-			highest_held_title_tier <= scope:char_temp.highest_held_title_tier
-		}
-		AND = {
-			exists = root
-			highest_held_title_tier <= root.highest_held_title_tier
+			trigger_if = {
+				limit = {
+					exists = scope:char_temp
+				}
+				highest_held_title_tier <= scope:char_temp.highest_held_title_tier
+			}
+			trigger_else = {
+				exists = root
+				highest_held_title_tier <= root.highest_held_title_tier
+			}
 		}
 		highest_held_title_tier < tier_county
 		NOT = {
@@ -293,7 +299,7 @@ ep3_frankokratia_claimant_trigger = {
 		has_claim_on = title:e_byzantium
 		AND = {
 			title:e_byzantium.holder.capital_county = title:c_byzantion
-			has_claim_on = title:k_byzantium
+			has_claim_on = title:k_thessalonika
 		}
 		AND = {
 			title:e_byzantium.holder.capital_county = title:c_byzantion
@@ -426,7 +432,7 @@ ep3_frankokratia_financier_exists_trigger = {
 				ep3_frankokratia_financier_sub_trigger = yes
 			}
 		}
-		title:e_spqr = {
+		title:e_italy = {
 			any_in_de_jure_hierarchy = {
 				count >= 1
 				holder ?= {
@@ -474,7 +480,7 @@ ep3_frankokratia_financier_exists_trigger = {
 				}
 			}
 		}
-		title:e_spqr = {
+		title:e_italy = {
 			any_in_de_jure_hierarchy = {
 				count >= 1
 				holder ?= {
@@ -577,8 +583,8 @@ ep3_frankokratia_beneficiary_trigger = {
 		has_trait = incapable
 		has_trait = devoted
 		AND = {
-			scope:frankokratia_crusader.faith = {
-				has_doctrine = doctrine_theocracy_temporal
+			scope:frankokratia_crusader.rite = {
+				rite_has_doctrine = doctrine_theocracy_temporal
 			}
 			has_council_position = councillor_court_chaplain
 		}
@@ -677,6 +683,7 @@ ep3_frankokratia_notification_recipient_trigger = {
 		#Most affected Christians
 		faith = faith:catholic
 		faith = faith:orthodox
+		faith = faith:miaphysitism
 		faith = faith:armenian_apostolic
 		#Target faith of crusade
 		faith = scope:defender.faith
@@ -699,7 +706,7 @@ ep3_frankokratia_notification_recipient_trigger = {
 ep3_orthodox_faith_trigger = {
 	OR = {
 		faith = faith:orthodox
-		faith = faith:coptic
+		faith = faith:miaphysitism
 		faith = faith:armenian_apostolic
 		faith = faith:iconoclast
 		faith = faith:bogomilist

@@ -85,7 +85,9 @@ administrative_tier_allows_independence = {
 		limit = {
 			administrative_counts_can_be_independent = yes
 		}
-		highest_held_title_tier >= tier_county
+		any_held_county = {
+			is_noble_family_title = no
+		}
 	}
 	trigger_else = { # Administrative/default
 		highest_held_title_tier >= tier_kingdom
@@ -106,30 +108,28 @@ tgp_examination_should_spend_treasury_trigger = {
 
 # Trigger to enable ministry features in script - Made into a scripted trigger for ease of changing it if needed
 tgp_has_access_to_ministry_trigger = {
-	OR = {
-		AND = {
-			has_title = title:h_china
-			government_has_flag = government_is_celestial
-		}
-		AND = {
-			OR = {
-				has_title = title:h_western_roman_empire
-				has_title = title:h_eastern_roman_empire
-				has_title = title:h_roman_empire
-			}
-			government_has_flag = government_is_roman_autocratic
-		}
-	}
-}
-
-# Alias kept so the renamed council-position files keep working.
-basileus_has_ministry_access = {
-	tgp_has_access_to_ministry_trigger = yes
+	has_title = title:h_china
+	government_has_flag = government_is_celestial
+	government_has_flag = government_uses_ministry_budget
 }
 
 tgp_is_any_minister = {
 	liege ?= { tgp_has_access_to_ministry_trigger = yes }
 	tgp_has_minister_title = yes
+}
+
+tgp_primary_title_is_ministry = {
+	OR = {
+		primary_title ?= title:e_minister_chancellor
+		primary_title ?= title:e_minister_censor
+		primary_title ?= title:e_minister_grand_marshal
+		primary_title ?= title:e_minister_of_personnel
+		primary_title ?= title:e_minister_of_revenue
+		primary_title ?= title:e_minister_of_rites
+		primary_title ?= title:e_minister_of_war
+		primary_title ?= title:e_minister_of_justice
+		primary_title ?= title:e_minister_of_works
+	}
 }
 
 tgp_has_minister_title = {
@@ -143,27 +143,6 @@ tgp_has_minister_title = {
 		has_title = title:e_minister_of_war
 		has_title = title:e_minister_of_justice
 		has_title = title:e_minister_of_works
-
-		has_title = title:e_minister_chancellor_ERE
-		has_title = title:e_minister_censor_ERE
-		has_title = title:e_minister_magister_militum_ERE
-		has_title = title:e_minister_of_personnel_ERE
-		has_title = title:e_minister_of_revenue_ERE
-		has_title = title:e_minister_of_rites_ERE
-		has_title = title:e_minister_of_war_ERE
-		has_title = title:e_minister_of_justice_ERE
-		has_title = title:e_minister_of_works_ERE
-		
-		has_title = title:e_praetorian_prefect_oriens
-		has_title = title:e_praetorian_prefect_illyricum
-		has_title = title:e_praetorian_prefect_gallia
-		has_title = title:e_praetorian_prefect_italia
-		has_title = title:e_praetorian_prefect_hispania
-		has_title = title:e_praetorian_prefect_macedonia
-		has_title = title:e_praetorian_prefect_aegyptus
-		has_title = title:e_praetorian_prefect_africa
-		has_title = title:e_praetorian_prefect_illyricum
-
 	}
 }
 
@@ -177,26 +156,6 @@ tgp_has_civilian_minister_title = {
 		has_title = title:e_minister_of_war
 		has_title = title:e_minister_of_justice
 		has_title = title:e_minister_of_works
-
-		has_title = title:e_minister_chancellor_ERE
-		has_title = title:e_minister_censor_ERE
-		#has_title = title:e_minister_magister_militum_ERE
-		has_title = title:e_minister_of_personnel_ERE
-		has_title = title:e_minister_of_revenue_ERE
-		has_title = title:e_minister_of_rites_ERE
-		has_title = title:e_minister_of_war_ERE
-		has_title = title:e_minister_of_justice_ERE
-		has_title = title:e_minister_of_works_ERE
-		
-		has_title = title:e_praetorian_prefect_oriens
-		has_title = title:e_praetorian_prefect_illyricum
-		has_title = title:e_praetorian_prefect_gallia
-		has_title = title:e_praetorian_prefect_italia
-		has_title = title:e_praetorian_prefect_hispania
-		has_title = title:e_praetorian_prefect_macedonia
-		has_title = title:e_praetorian_prefect_aegyptus
-		has_title = title:e_praetorian_prefect_africa
-		has_title = title:e_praetorian_prefect_illyricum
 	}
 }
 
@@ -210,26 +169,6 @@ tgp_is_civilian_minister_title = {
 		this = title:e_minister_of_war
 		this = title:e_minister_of_justice
 		this = title:e_minister_of_works
-
-		this = title:e_minister_chancellor_ERE
-		this = title:e_minister_censor_ERE
-		#this = title:e_minister_magister_militum_ERE
-		this = title:e_minister_of_personnel_ERE
-		this = title:e_minister_of_revenue_ERE
-		this = title:e_minister_of_rites_ERE
-		this = title:e_minister_of_war_ERE
-		this = title:e_minister_of_justice_ERE
-		this = title:e_minister_of_works_ERE
-		
-		this = title:e_praetorian_prefect_oriens
-		this = title:e_praetorian_prefect_illyricum
-		this = title:e_praetorian_prefect_gallia
-		this = title:e_praetorian_prefect_italia
-		this = title:e_praetorian_prefect_hispania
-		this = title:e_praetorian_prefect_macedonia
-		this = title:e_praetorian_prefect_aegyptus
-		this = title:e_praetorian_prefect_africa
-		this = title:e_praetorian_prefect_illyricum
 	}
 }
 
@@ -244,26 +183,6 @@ tgp_is_minister_title = {
 		this = title:e_minister_of_war
 		this = title:e_minister_of_justice
 		this = title:e_minister_of_works
-
-		this = title:e_minister_chancellor_ERE
-		this = title:e_minister_censor_ERE
-		#this = title:e_minister_magister_militum_ERE
-		this = title:e_minister_of_personnel_ERE
-		this = title:e_minister_of_revenue_ERE
-		this = title:e_minister_of_rites_ERE
-		this = title:e_minister_of_war_ERE
-		this = title:e_minister_of_justice_ERE
-		this = title:e_minister_of_works_ERE
-
-		this = title:e_praetorian_prefect_oriens
-		this = title:e_praetorian_prefect_illyricum
-		this = title:e_praetorian_prefect_gallia
-		this = title:e_praetorian_prefect_italia
-		this = title:e_praetorian_prefect_hispania
-		this = title:e_praetorian_prefect_macedonia
-		this = title:e_praetorian_prefect_aegyptus
-		this = title:e_praetorian_prefect_africa
-		this = title:e_praetorian_prefect_illyricum
 	}
 }
 
@@ -273,7 +192,6 @@ tgp_can_be_a_minister_trigger = {
 	OR = {
 		is_ruler = no
 		government_has_flag = government_is_celestial
-		government_has_flag = government_is_roman_autocratic
 	}
 	# Gender is based on laws of the liege
 	OR = {
@@ -316,12 +234,12 @@ tgp_can_be_a_minister_trigger = {
 
 tgp_can_be_grand_marshal_trigger = {
 	can_be_councillor_basics_trigger = yes
-	# Has to be celestial/admin or a non-ruler (see note on tgp_can_be_a_minister_trigger).
+	# Has to be celestial or a non-ruler
 	OR = {
 		is_ruler = no
 		government_has_flag = government_is_celestial
-		government_has_flag = government_is_roman_autocratic
 	}
+	# Has to be able to lead armies
 	can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = $COURT_OWNER$ }
 }
 
@@ -424,16 +342,6 @@ tgp_celestial_military_governor_can_join_war_trigger = {
 		vassal_contract_has_flag = celestial_military_appointment
 		vassal_contract_has_flag = meritocratic_military_appointment
 		has_title = title:e_minister_grand_marshal
-		AND = {
-			is_landed = yes
-			government_has_flag = government_is_roman_autocratic
-			highest_held_title_tier >= tier_duchy
-			OR = {
-				vassal_contract_has_flag = admin_theme_military
-				vassal_contract_has_flag = admin_theme_frontier
-				vassal_contract_has_flag = admin_theme_naval
-			}
-		}
 	}
 	NOR = {
 		scope:joining_governor = $TARGET_GOVERNOR$
@@ -464,10 +372,7 @@ should_be_mandala_tributary_trigger = {
 		AND = {
 			$SUZERAIN$ = { has_government = mandala_government }
 			$TRIBUTARY$ = {
-				OR = {
-					has_government = tribal_government
-					has_government = wanua_government
-				}
+				government_has_flag = government_is_tribal
 			}
 		}
 	}
@@ -671,7 +576,7 @@ tgp_should_become_meritocratic_trigger = {
 				is_independent_ruler = yes
 				liege = {
 					NOT = {
-						government_has_flag = government_is_administrative
+						government_has_mechanic = administrative
 					}
 				}
 			}
@@ -679,7 +584,6 @@ tgp_should_become_meritocratic_trigger = {
 				OR = {
 					geographical_region = world_asia
 					geographical_region = world_tibet
-					geographical_region = world_burma
 					geographical_region = world_steppe_east
 				}
 			}
@@ -727,6 +631,15 @@ tgp_can_become_celestial_trigger = {
 	}
 }
 
+tgp_can_become_japanese_feudal_trigger = {
+	has_tgp_dlc_trigger = yes
+	OR = {
+		top_liege = { government_is_japanese_trigger = yes } # Soryo not created outside Ritsuryo/Soryo Realms
+		domicile ?= { is_domicile_type = japanese_manor } # Vassalized Ritsuryo/Soryo stay Soryo
+		has_character_flag = can_become_japanese_feudal
+	}
+}
+
 tgp_mongol_vassal_will_become_admin = {
 	highest_held_title_tier > tier_barony
 	primary_title = {
@@ -745,12 +658,7 @@ tgp_mongol_vassal_will_become_admin = {
 		#An admin type
 		has_trait = governor
 		faith.religion = religion:confucianism_religion
-		culture = {
-			has_cultural_pillar = heritage_chinese
-		}
-		culture = {
-			has_cultural_pillar = heritage_korean
-		}
+		culture_is_historically_admin_trigger = yes
 		#Nomad type
 		government_has_flag = government_is_nomadic
 		has_trait = nomadic_philosophy
@@ -807,12 +715,36 @@ tgp_is_chinese_style_emperor_trigger = {
 	government_allows = merit
 }
 
+culture_use_chinese_character_trigger = {
+	OR = {
+		culture_use_standard_chinese_character_trigger = yes
+		culture_use_variant_chinese_character_trigger = yes
+	}
+}
+culture_use_standard_chinese_character_trigger = {
+	OR = {
+		has_cultural_pillar = language_chinese
+		has_cultural_pillar = language_korean
+		has_cultural_pillar = language_japonic
+		has_cultural_pillar = language_vietnamese
+	}
+}
+culture_use_variant_chinese_character_trigger = {
+	OR = {
+		has_cultural_pillar = language_khitan
+		has_cultural_pillar = language_tungusic  # all 3 cultures using this has different chinese character variant
+		has_cultural_tradition = tradition_sinophilic # assume they have do same thing
+	}
+}
+
 is_valid_for_east_asian_events_trigger = {
 	culture = {
 		OR = {
 			has_cultural_pillar = heritage_japonic
 			has_cultural_pillar = heritage_chinese
 			has_cultural_pillar = heritage_korean
+			has_cultural_pillar = heritage_buyeo
+			has_cultural_pillar = heritage_viet
 		}
 	}
 }
@@ -837,10 +769,7 @@ shared_raid_estate_participant_valid_trigger = {
 		any_held_title = { is_noble_family_title = yes }
 		house.house_head ?= this
 	}
-	OR = {
-		government_has_mechanic = administrative
-		government_is_japanese_trigger = yes
-	}
+	government_allows = noble_families
 	tgp_is_ceremonial_liege_trigger = no
 }
 
@@ -1082,6 +1011,7 @@ is_merit_based_official = {
 				}
 			}
 		}
+		tgp_is_ceremonial_regent_trigger = yes
 	}
 }
 
@@ -1116,13 +1046,7 @@ tgp_is_ceremonial_petition_valid_trigger = {
 }
 
 take_vows_available_trigger = {
-	OR = {
-		faith = { has_doctrine_parameter = take_vows_active }
-		AND = {
-			religion:buddhism_religion ?= religion
-			faith = { has_doctrine = special_doctrine_immaterial_harmony }
-		}
-	}
+	rite = { rite_has_parameter = take_vows_active }
 }
 
 tgp_use_chinese_naming_trigger = {
@@ -1243,5 +1167,22 @@ farm_estates_3_4_trigger = {
 				building_requirement_castle_city_church = { LEVEL = 02 }
 			}
 		}
+	}
+}
+
+culture_uses_eastern_siege_weapons_trigger = {
+	OR = {
+		has_cultural_pillar = heritage_chinese
+		has_cultural_pillar = heritage_korean
+		has_cultural_pillar = heritage_japonic
+		has_cultural_pillar = heritage_buyeo
+		has_cultural_pillar = heritage_viet
+	}
+}
+
+tgp_cranial_trophies_collection_trigger = {
+	OR = {
+		rite = { rite_has_parameter = killing_bestows_heads }
+		has_personal_tenet_flag = killing_bestows_heads
 	}
 }

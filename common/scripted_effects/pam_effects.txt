@@ -7287,6 +7287,10 @@ pam_apply_great_schism_creation_effect = {
 				main = no
 			}
 		}
+		struggle:iberian_struggle ?= {
+			set_faith_as_involved = rite:mozarabic_church.faith
+			set_faith_as_uninvolved = faith:christian_faith
+		}
 	}
 	show_as_tooltip = {
 		faith:catholic = { set_religious_head_title = title:k_papal_state }
@@ -11829,6 +11833,26 @@ pam_convert_court_to_rite_effect = {
 			NOT = { has_character_flag = ai_will_not_convert }
 		}
 		set_character_rite = $RITE$
+	}
+}
+
+# PAM - Faith counterpart of pam_convert_court_to_rite_effect: converts a ruler's court still on $OLD_FAITH$ to $FAITH$
+pam_convert_court_to_faith_effect = {
+	every_courtier_or_guest = {
+		limit = {
+			is_physically_able_ai = yes
+			faith = $OLD_FAITH$
+			NOT = { has_character_flag = ai_will_not_convert }
+		}
+		set_character_faith = $FAITH$
+	}
+	every_courtier_away = {
+		limit = {
+			is_physically_able_ai = yes
+			faith = $OLD_FAITH$
+			NOT = { has_character_flag = ai_will_not_convert }
+		}
+		set_character_faith = $FAITH$
 	}
 }
 

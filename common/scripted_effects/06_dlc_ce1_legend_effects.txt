@@ -30,8 +30,8 @@ grab_appropriate_chronicler_effect = {
 						has_cultural_tradition = tradition_chanson_de_geste 
 					}
 				}
-				faith = {
-					trait_is_virtue = lifestyle_poet
+				rite = {
+					trait_is_virtue_rite = lifestyle_poet
 				}
 			}
 			any_court_position_holder = {
@@ -709,8 +709,8 @@ grab_mythical_founder_effect = {
 				10 = { # Emperor Constantine
 					trigger = {
 						OR = {
-							root.primary_title = title:c_byzantion
-							root.primary_title = title:e_byzantium
+							root.capital_county = title:c_byzantion
+							root = { is_roman_emperor_primary_title_trigger = yes }
 						}
 					}
 					set_variable = { name = mythical_ancestor_var value = flag:constantine }
@@ -718,8 +718,8 @@ grab_mythical_founder_effect = {
 				10 = { # Emperor Justinian
 					trigger = {
 						OR = {
-							root.primary_title = title:c_byzantion
-							root.primary_title = title:e_byzantium
+							root.capital_county = title:c_byzantion
+							root = { is_roman_emperor_primary_title_trigger = yes }
 						}
 					}
 					set_variable = { name = mythical_ancestor_var value = flag:justinian }
@@ -918,6 +918,7 @@ change_legend_quality_effect = {
 				add = $VALUE$
 			}
 		}
+		custom_tooltip = maximum_legend_quality_discount_reach_tt
 		set_variable = {
 			name = legend_quality_progress
 			value = 100
@@ -932,6 +933,7 @@ change_legend_quality_effect = {
 				add = $VALUE$
 			}
 		}
+		custom_tooltip = minimum_legend_quality_discount_reach_tt
 		set_variable = {
 			name = legend_quality_progress
 			value = 0
@@ -1085,14 +1087,14 @@ legend_ending_rewards_mythical_heroic_effect = {
 
 legend_ending_rewards_mythical_holy_effect = {
 	add_legitimacy = massive_legitimacy_gain
-	# Chance to become a Saint
+	# Chance to become a Herald
 	if = {
 		limit = {
 			dynasty ?= {
 				ce1_heroic_track_perks >= 3
 			}
 		}
-		add_trait = saint
+		add_trait = herald
 		if = {
 			limit = { NOT = { has_global_variable = num_of_saints_var } }
 			set_global_variable = {
@@ -1649,7 +1651,7 @@ get_appropriate_exotic_location = {
 				religion = religion:christianity_religion
 				NOT = {
 					any_character_to_title_neighboring_and_across_water_county = {
-						holder = { faith = faith:coptic }
+						holder = { faith = faith:miaphysitism }
 					}
 				}
 				NOT = { # Prester John isn't exciting if Egypt is Christian
@@ -1683,14 +1685,14 @@ get_appropriate_exotic_location = {
 							OR = {
 								geographical_region = world_india
 								geographical_region = world_tibet
-								geographical_region = world_burma
+								geographical_region = world_asia_southeast_mainland
 								geographical_region = world_asia_china
 							}
 						}
 					}
 					culture = { culture_overlaps_geographical_region = world_india }
 					culture = { culture_overlaps_geographical_region = world_tibet }
-					culture = { culture_overlaps_geographical_region = world_burma }
+					culture = { culture_overlaps_geographical_region = world_asia_southeast_mainland }
 					culture = { culture_overlaps_geographical_region = world_asia_china }
 				}
 			}
@@ -2350,12 +2352,12 @@ give_legendary_building_location_standard_effect = {
 				has_trait_xp = {
 					trait = lifestyle_hunter
 					track = hunter
-					value >= 62
+					value >= 50
 				}
 				has_trait_xp = {
 					trait = lifestyle_hunter
 					track = falconer
-					value >= 62
+					value >= 50
 				}
 				culture ?= {
 					has_cultural_parameter = always_unlock_legendary_hunting_lodge
@@ -2453,12 +2455,15 @@ legend_seed_great_deed_dynasty_effect = {
 legend_seed_great_deed_region_effect = {
 	if = {
 		limit = { has_dlc_feature = legends }
+		$REGION$ = {
+			save_scope_as = legend_region
+		}
 		create_legend_seed = {
 			type = heroic
 			quality = famed
 			chronicle = great_deed_region
 			properties = {
-				legend_region = $REGION$
+				legend_region = scope:legend_region
 				founder = root
 			}
 		}
@@ -2979,7 +2984,6 @@ create_swan_knight_legend_seed_effect = {
 			location = {
 				OR = {
 					geographical_region = world_india
-					geographical_region = world_burma
 					geographical_region = ghw_region_caucasus
 					geographical_region = world_asia_china
 					geographical_region = world_asia_japan
