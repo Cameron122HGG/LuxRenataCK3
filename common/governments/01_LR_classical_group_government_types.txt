@@ -425,34 +425,43 @@ roman_autocratic_government = { # regional roman empires
 	realm_mask_scale = { 0.92 0.92 }
 }
 
-decayed_principate_government = {
+decayed_principate_government = { # regional roman empires
 	government_rules = {
 		create_cadet_branches = yes
 		rulers_should_have_dynasty = yes
 		dynasty_named_realms = no
-		administrative = yes
 		landless_playable = yes
 		legitimacy = yes
-		state_faith = yes
 		use_as_base_on_landed = yes
 		use_as_base_on_rank_up = yes
+		allow_as_base_for_baronies = no
 		inherit_from_dynastic_government = no
+		sticky_government = yes
+		house_aspirations = yes
+		noble_families = yes
+
+		merit = yes # Meritocracy!
+		treasury = yes
+		treasury_vassal_development = yes
+		replace_gold_cost_by_treasury = yes
+		deny_powerful_vassal = yes
+		disable_regnal_numbers = yes
+		allow_accolades = yes
 	}
 
+	royal_court = any
+	blocked_subject_courts = { meritocratic_government celestial_government japan_administrative_government administrative_government steppe_admin_government }
+	mechanic_type = administrative
 	domicile_type = classical_group_estate
-	royal_court = top_liege
-	main_administrative_tier = county
+	main_administrative_tier = duchy
 	min_appointment_tier = county
 	minimum_provincial_maa_tier = duchy
 
-
-	fallback = 7
-
 	primary_holding = castle_holding
-	valid_holdings = { city_holding }
+	valid_holdings = { city_holding temple_citadel_holding tribal_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 
-	vassal_contract_group = decayed_principate_vassal
+	vassal_contract_group = meritocratic_vassal
 
 	character_modifier = {
 		levy_size = -0.5
@@ -463,22 +472,81 @@ decayed_principate_government = {
 		men_at_arms_cap = -2
 		men_at_arms_limit = -2
 		knight_limit = -5
-		vassal_limit = 100
+		vassal_limit = 20
+		accolades = -1
+		title_creation_cost_mult = -0.5
+		character_max_merit_level_add = 2
+		mercenary_hire_cost_mult = 2
+
+		# Vassals get Treasury income that is this percentage less than their taxes to their liege
+		monthly_treasury_from_liege_mult = -0.4
 	}
 
-	 #Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
+	top_liege_character_modifier = {
+		# 95% of vassal income goes to the treasury
+		monthly_treasury_from_vassals = 0.95
+	}
+
+	ai_ruler_desired_kingdom_titles = {
+		value = -1 # Keep all
+		if = {
+			limit = {
+				highest_held_title_tier >= tier_empire
+			}
+			add = 2 # Is 1 == keep one kingdom only!
+		}
+	}
+	ai_ruler_desired_empire_titles = {
+		value = -1 # Keep all
+		if = {
+			limit = {
+				highest_held_title_tier = tier_hegemony
+			}
+			add = 1 # Is 0 == Don't keep any Empires - they should all be 'great circuits'
+		}
+	}
+
+	can_get_government = {
+		has_tgp_dlc_trigger = yes
+	}
+
+	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
 	flags = {
-		government_is_classical_group
-		government_is_principate
-		government_is_roman_government
+		government_is_meritocratic
+		# These flags only exist for loc and in-game descriptions
+		government_has_merit
+		government_has_influence
+		government_has_treasury
+		government_has_title_men_at_arms
+		government_has_powerful_families
 		government_has_county_tier_noble_families
+		government_has_east_asian_estate
 		government_is_settled
 		government_uses_domicile_but_not_adventurer
 		government_uses_domain_limit
 		government_uses_admin_province_obligations
+		government_uses_merit_family_aspirations
+		has_special_house_aspirations
+		government_uses_meritocratic_bureaucracy
+		government_uses_salary_budget
+		government_uses_military_budget
+		
+		government_is_roman_autocratic
+		government_is_roman_government
+		government_is_classical_group
 	}
-	mechanic_type = administrative
-	is_mechanic_type_default = no
 
-	color = { 199 0 57 }
+	ai = {
+		use_legends = yes
+	}
+
+	currency_levels_cap = {
+		merit = 5
+	}
+
+	possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }
+
+	color = { 155 28 85 }
+	realm_mask_offset = { 0.0 0.12 }
+	realm_mask_scale = { 0.92 0.92 }
 }
