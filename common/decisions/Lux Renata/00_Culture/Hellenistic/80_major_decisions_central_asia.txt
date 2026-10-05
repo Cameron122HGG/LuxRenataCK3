@@ -36,9 +36,8 @@ establish_yamagate_in_samarkand_decision = {
 	}
 
 	is_shown = {
-		is_ruler = yes
+		faith ?= faith:manichaean_faith
 		is_playable_character = yes
-		faith = faith:manichean
 		NOT = {
 			has_title = title:d_manichean
 		}
@@ -50,23 +49,22 @@ establish_yamagate_in_samarkand_decision = {
 			}
 			AND = {
 				exists = title:d_manichean.holder
-				title:d_manichean.holder = {
-					NOT = { 	
-						has_opinion_modifier = { #Not accepting it if you conquered it yourself.
-							target = root
-							modifier = declared_war
-						}
-					}
-					NOT = { 	
+				title:d_manichean.holder ?= {
+					NOR = {
 						has_opinion_modifier = { #Not accepting it if you conquered it yourself.
 							target = root
 							modifier = revoked_title
+						}
+						has_opinion_modifier = { #Not accepting it if you conquered it yourself.
+							target = root
+							modifier = declared_war
 						}
 					}
 				}
 			}
 		}
 		NOT = { has_character_flag = flag_already_given_samarkand_once }
+		is_ruler = yes
 	}
 
 	is_valid_showing_failures_only = {
@@ -82,7 +80,7 @@ establish_yamagate_in_samarkand_decision = {
 		custom_tooltip = {
 			text = samarkand_held_by_you_or_vassal_tt
 			OR = {
-				title:c_samarkand.holder = { 	
+				title:c_samarkand.holder = {
 					any_liege_or_above = { this = root }
 				}
 				title:c_samarkand.holder = { this = root }
@@ -129,9 +127,9 @@ establish_yamagate_in_samarkand_decision = {
 			}
 		}
 	}
-	
+
 	ai_potential = {
-		faith = faith:manichean
+		faith = faith:manichaean_faith
 	}
 
 	ai_will_do = { #Do it always, for coherence.
@@ -174,14 +172,14 @@ break_with_the_old_ways_decision = {
 	}
 
 	is_shown = {
-		is_ruler = yes
+		faith ?= faith:kabarism
 		is_playable_character = yes
-		faith = faith:kabarism
 		NOT = {
 			faith:kabarism = {
 				has_variable = old_ways_been_broken
 			}
 		}
+		is_ruler = yes
 	}
 
 	is_valid_showing_failures_only = {
@@ -207,7 +205,7 @@ break_with_the_old_ways_decision = {
 		decision_to_second_step_button = "CHOOSE_REFORMATION_TYPE"
 		show_from_start = yes
 
-		item = { # Pluralist
+		item = { # Coexistence
 			value = bwow_no_changes
 			current_description = bwow_no_changes_desc
 			localization = bwow_no_changes
@@ -263,7 +261,12 @@ break_with_the_old_ways_decision = {
 	effect = {
 		trigger_event = religious_decision.0501
 		show_as_tooltip = {
-			root.faith = { remove_doctrine = unreformed_faith_doctrine }
+			if = {
+				limit = {
+					scope:bwow_no_changes = yes
+				}
+				root.faith = { remove_doctrine = unreformed_faith_doctrine }
+			}
 			if = {
 				limit = {
 					scope:bwow_chosen_people = yes
@@ -289,7 +292,7 @@ break_with_the_old_ways_decision = {
 			}
 		}
 	}
-	
+
 	ai_potential = {
 		faith = faith:kabarism
 	}
