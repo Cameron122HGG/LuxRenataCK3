@@ -1,4 +1,6 @@
-﻿gaul_install_bloc_member_cb = {
+﻿
+# War to install Bloc member -- Bloc Expansion
+gaul_install_bloc_member_cb = {
 	icon = bloc
 	group = subjugation
 	combine_into_one = yes
@@ -14,18 +16,18 @@
 	allowed_for_character = {
 		has_tgp_dlc_trigger = yes
 		is_landed = yes
-		highest_held_title_tier >= tier_duchy
-		tgp_manorial_or_bushido_trigger = yes # manorial
+		highest_held_title_tier >= tier_county
+		tgp_soryo_or_bushido_trigger = yes # Soryo
 		exists = house.house_confederation # In a Bloc
 	}
 
 	# scope:defender
 	allowed_against_character = {
 		is_landed = yes
-		highest_held_title_tier >= tier_duchy
+		highest_held_title_tier >= tier_county
 		top_liege = scope:attacker.top_liege # Same realm
 		NOT = { this = scope:attacker.top_liege } # Not top liege
-		government_is_gallic_trigger = yes # manorial or palatine
+		government_is_gallic_trigger = yes # Soryo or Ritsuryo
 		trigger_if = { # Not in same Bloc
 			limit = { exists = house.house_confederation }
 			house.house_confederation != scope:attacker.house.house_confederation
@@ -35,7 +37,7 @@
 	valid_to_start = {
 		scope:target ?= { is_landless_type_title = no }
 	}
-	
+
 	mutually_exclusive_titles = { always = yes }
 
 	cost = {
@@ -50,7 +52,7 @@
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { tgp_manorial_or_bushido_trigger = no }
+			scope:attacker = { tgp_soryo_or_bushido_trigger = no }
 			scope:defender.house.house_confederation ?= scope:attacker.house.house_confederation # Same bloc already
 			NOT = { exists = scope:attacker.house.house_confederation } # Bloc destroyed
 		}
@@ -63,23 +65,23 @@
 	on_declaration = {
 		on_declared_war = yes
 		if = {
-			limit = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
+			limit = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
 			scope:attacker = {
 				# Message for attacker
 				send_interface_toast = {
 					type = event_war_bad
-					title = LR_tgp_gaul_manorial_war_is_crime_title
+					title = tgp_gaul_soryo_war_is_crime_title
 					left_icon = scope:defender
 					right_icon = top_liege
 					top_liege = {
 						send_interface_toast = {
 							type = event_war_bad
-							title = LR_tgp_gaul_manorial_war_is_crime_sacral_king_gaul_title
+							title = tgp_gaul_soryo_war_is_crime_kampaku_title
 							left_icon = scope:attacker
 							right_icon = scope:defender
 							add_opinion = {
 								target = scope:attacker
-								modifier = admin_manorial_conquest_crime
+								modifier = admin_soryo_conquest_crime
 							}
 						}
 					}
@@ -92,8 +94,8 @@
 		desc = {
 			desc = gaul_install_bloc_member_cb_victory_desc
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
@@ -117,7 +119,7 @@
 				}
 			}
 		}
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -125,31 +127,22 @@
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
 
 		scope:attacker = {
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
-		scope:attacker = { 
+		scope:attacker = {
 			trigger_event = {
-				id = LR_tgp_gaul_general.8800 
-				days = 1 
+				id = tgp_gaul_general.8800
+				days = 1
 			}
 		}
 
@@ -182,16 +175,16 @@
 		desc = {
 			desc = gaul_install_bloc_member_cb_white_peace_desc
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_white_peace = {
-		scope:attacker = { 
+		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -208,7 +201,7 @@
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -224,43 +217,34 @@
 		desc = {
 			desc = gaul_install_bloc_member_cb_defeat_desc
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
 
 		scope:attacker = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
 		}
 
@@ -304,12 +288,12 @@
 
 	max_attacker_score_from_battles = 100
 	max_defender_score_from_battles = 100
-	
+
 	max_defender_score_from_occupation = 100
 	max_attacker_score_from_occupation = 100
 
 	max_ai_diplo_distance_to_title = 500
-	
+
 	ai_score = {
 		value = gaul_install_bloc_member_ai_score_value
 	}
@@ -321,7 +305,7 @@
 }
 
 # War for landless feudal to take land
-gaul_manorial_conquest_county_landless_cb = {
+gaul_soryo_conquest_county_landless_cb = {
 	icon = soryo
 	group = conquest
 	combine_into_one = yes
@@ -340,7 +324,7 @@ gaul_manorial_conquest_county_landless_cb = {
 		has_tgp_dlc_trigger = yes
 		is_landed = no
 		government_is_gallic_trigger = yes
-		tgp_manorial_or_bushido_trigger = yes
+		tgp_soryo_or_bushido_trigger = yes
 	}
 
 	# scope:defender
@@ -384,29 +368,29 @@ gaul_manorial_conquest_county_landless_cb = {
 	}
 
 	on_invalidated_desc = {
-		desc = gaul_manorial_conquest_cb_ended_invalid.desc
+		desc = gaul_soryo_conquest_cb_ended_invalid.desc
 	}
 
 	on_declaration = {
 		on_declared_war = yes
 		if = {
-			limit = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
+			limit = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
 			scope:attacker = {
 				# Message for attacker
 				send_interface_toast = {
 					type = event_war_bad
-					title = LR_tgp_gaul_manorial_war_is_crime_title
+					title = tgp_gaul_soryo_war_is_crime_title
 					left_icon = scope:defender
 					right_icon = top_liege
 					top_liege = {
 						send_interface_toast = {
 							type = event_war_bad
-							title = LR_tgp_gaul_manorial_war_is_crime_sacral_king_gaul_title
+							title = tgp_gaul_soryo_war_is_crime_kampaku_title
 							left_icon = scope:attacker
 							right_icon = scope:defender
 							add_opinion = {
 								target = scope:attacker
-								modifier = admin_manorial_conquest_crime
+								modifier = admin_soryo_conquest_crime
 							}
 						}
 					}
@@ -425,15 +409,15 @@ gaul_manorial_conquest_county_landless_cb = {
 				desc = county_conquest_cb_victory_desc
 			}
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_victory = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -441,24 +425,15 @@ gaul_manorial_conquest_county_landless_cb = {
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
 
 		scope:attacker = {
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
@@ -487,7 +462,7 @@ gaul_manorial_conquest_county_landless_cb = {
 			list = target_titles
 			scope:attacker = { add_prestige_experience = minor_prestige_value }
 		}
-			
+
 
 		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
@@ -515,16 +490,16 @@ gaul_manorial_conquest_county_landless_cb = {
 				desc = county_conquest_cb_white_peace_desc
 			}
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_white_peace = {
-		scope:attacker = { 
+		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -541,7 +516,7 @@ gaul_manorial_conquest_county_landless_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -563,43 +538,34 @@ gaul_manorial_conquest_county_landless_cb = {
 				desc = county_conquest_cb_defeat_desc
 			}
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
 
 		scope:attacker = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
 		}
 
@@ -635,15 +601,15 @@ gaul_manorial_conquest_county_landless_cb = {
 	use_de_jure_wargoal_only = yes
 
 	attacker_wargoal_percentage = 0.8
-	
+
 	max_attacker_score_from_battles = 75
 
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 
-	war_name = "GAUL_MANORIAL_CONQUEST_LANDLESS_WAR_NAME"
-	war_name_base = "GAUL_MANORIAL_CONQUEST_LANDLESS_WAR_NAME_BASE"
-	cb_name = "GAUL_MANORIAL_CONQUEST_LANDLESS_COUNTY_CB_NAME"
+	war_name = "GAUL_SORYO_CONQUEST_LANDLESS_WAR_NAME"
+	war_name_base = "GAUL_SORYO_CONQUEST_LANDLESS_WAR_NAME_BASE"
+	cb_name = "GAUL_SORYO_CONQUEST_LANDLESS_COUNTY_CB_NAME"
 
 	ai_score_mult = {
 		value = 1
@@ -658,7 +624,7 @@ gaul_manorial_conquest_county_landless_cb = {
 }
 
 # War for feudal to take land
-gaul_manorial_conquest_county_cb = {
+gaul_soryo_conquest_county_cb = {
 	icon = soryo
 	group = conquest
 	combine_into_one = yes
@@ -669,15 +635,15 @@ gaul_manorial_conquest_county_cb = {
 	target_titles = neighbor_land_or_water
 	target_title_tier = county
 	ignore_effect = change_title_holder
-	
+
 	mutually_exclusive_titles = { always = yes }
 
 	# scope:attacker
 	allowed_for_character = {
 		has_tgp_dlc_trigger = yes
 		is_landed = yes
-		# Attacker must be gallic Feudal, or have the Bushido tradition
-		tgp_manorial_or_bushido_trigger = yes
+		# Attacker must be Japanese Feudal, or have the Bushido tradition
+		tgp_soryo_or_bushido_trigger = yes
 	}
 
 	# scope:defender
@@ -703,7 +669,7 @@ gaul_manorial_conquest_county_cb = {
 	should_invalidate = {
 		OR = {
 			NOT = {
-				scope:attacker = { tgp_manorial_or_bushido_trigger = yes }
+				scope:attacker = { tgp_soryo_or_bushido_trigger = yes }
 			}
 			scope:defender = {
 				top_liege != scope:attacker.top_liege
@@ -712,29 +678,29 @@ gaul_manorial_conquest_county_cb = {
 	}
 
 	on_invalidated_desc = {
-		desc = gaul_manorial_conquest_cb_ended_invalid.desc
+		desc = gaul_soryo_conquest_cb_ended_invalid.desc
 	}
 
 	on_declaration = {
 		on_declared_war = yes
 		if = {
-			limit = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
+			limit = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
 			scope:attacker = {
 				# Message for attacker
 				send_interface_toast = {
 					type = event_war_bad
-					title = LR_tgp_gaul_manorial_war_is_crime_title
+					title = tgp_gaul_soryo_war_is_crime_title
 					left_icon = scope:defender
 					right_icon = top_liege
 					top_liege = {
 						send_interface_toast = {
 							type = event_war_bad
-							title = LR_tgp_gaul_manorial_war_is_crime_sacral_king_gaul_title
+							title = tgp_gaul_soryo_war_is_crime_kampaku_title
 							left_icon = scope:attacker
 							right_icon = scope:defender
 							add_opinion = {
 								target = scope:attacker
-								modifier = admin_manorial_conquest_crime
+								modifier = admin_soryo_conquest_crime
 							}
 						}
 					}
@@ -753,15 +719,15 @@ gaul_manorial_conquest_county_cb = {
 				desc = county_conquest_cb_victory_desc
 			}
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_victory = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -769,24 +735,15 @@ gaul_manorial_conquest_county_cb = {
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
 
 		scope:attacker = {
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
@@ -815,7 +772,7 @@ gaul_manorial_conquest_county_cb = {
 			list = target_titles
 			scope:attacker = { add_prestige_experience = minor_prestige_value }
 		}
-			
+
 
 		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
@@ -843,16 +800,16 @@ gaul_manorial_conquest_county_cb = {
 				desc = county_conquest_cb_white_peace_desc
 			}
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_white_peace = {
-		scope:attacker = { 
+		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -869,7 +826,7 @@ gaul_manorial_conquest_county_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -891,43 +848,34 @@ gaul_manorial_conquest_county_cb = {
 				desc = county_conquest_cb_defeat_desc
 			}
 			triggered_desc = {
-				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
-				desc = gaul_manorial_conquest_cb_admin_warning
+				trigger = { tgp_gaul_internal_soryo_war_is_crime_trigger = yes }
+				desc = gaul_soryo_conquest_cb_admin_warning
 			}
 		}
 	}
 
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
 
 		scope:attacker = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
 		}
 
@@ -956,9 +904,9 @@ gaul_manorial_conquest_county_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_MANORIAL_CONQUEST_WAR_NAME"
-	war_name_base = "GAUL_MANORIAL_CONQUEST_WAR_NAME_BASE"
-	cb_name = "GAUL_MANORIAL_CONQUEST_COUNTY_CB_NAME"
+	war_name = "GAUL_SORYO_CONQUEST_WAR_NAME"
+	war_name_base = "GAUL_SORYO_CONQUEST_WAR_NAME_BASE"
+	cb_name = "GAUL_SORYO_CONQUEST_COUNTY_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
@@ -971,7 +919,7 @@ gaul_manorial_conquest_county_cb = {
 
 	max_attacker_score_from_battles = 200
 	max_defender_score_from_battles = 200
-	
+
 	max_defender_score_from_occupation = 50
 	max_attacker_score_from_occupation = 50
 
@@ -994,7 +942,7 @@ gaul_demand_administrative_cb = {
 	# scope:attacker
 	allowed_for_character = {
 		government_has_flag = government_is_gaul_administrative
-		top_liege = { government_has_flag = government_is_gaul_administrative } # Cannot enforce admin in a manorial realm
+		top_liege = { government_has_flag = government_is_gaul_administrative } # Cannot enforce admin in a Soryo realm
 		tgp_is_ceremonial_liege_trigger = no
 	}
 
@@ -1074,7 +1022,7 @@ gaul_demand_administrative_cb = {
 
 	on_victory = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -1082,7 +1030,7 @@ gaul_demand_administrative_cb = {
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
 
 		# Appreciation for re-integration
-		scope:attacker = { 
+		scope:attacker = {
 			if = {
 				limit = { is_independent_ruler = no }
 				reverse_add_opinion = {
@@ -1121,7 +1069,7 @@ gaul_demand_administrative_cb = {
 			if = {
 				limit = { is_independent_ruler = no }
 				if = {
-					limit = { government_has_mechanic = administrative }
+					limit = { government_has_flag = government_has_influence }
 					change_influence = gaul_demand_administrative_war_influence_value
 				}
 				else = { add_prestige_experience = gaul_demand_administrative_war_prestige_value }
@@ -1157,9 +1105,9 @@ gaul_demand_administrative_cb = {
 	}
 
 	on_white_peace = {
-		scope:attacker = { 
+		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -1176,7 +1124,7 @@ gaul_demand_administrative_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -1200,11 +1148,11 @@ gaul_demand_administrative_cb = {
 
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
@@ -1265,12 +1213,12 @@ gaul_demand_administrative_cb = {
 
 	max_attacker_score_from_battles = 200
 	max_defender_score_from_battles = 200
-	
+
 	max_defender_score_from_occupation = 50
 	max_attacker_score_from_occupation = 50
 
 	max_ai_diplo_distance_to_title = 500
-	
+
 	ai_score = {
 		value = gaul_demand_administrative_ai_score_value
 	}
@@ -1281,9 +1229,9 @@ gaul_demand_administrative_cb = {
 	}
 }
 
-# War to conquer gaul
-gaul_sacral_expansion_cb = {
-	icon = ritsuryo
+# War to conquer Japan
+gaul_imperial_expansion_cb = {
+	icon = ritsuryo_government
 	group = conquest
 	combine_into_one = yes
 	ai_only_against_neighbors = yes
@@ -1293,7 +1241,7 @@ gaul_sacral_expansion_cb = {
 	target_titles = all
 	target_title_tier = county
 	ignore_effect = change_title_holder
-	
+
 	mutually_exclusive_titles = { always = yes }
 
 	cost = {
@@ -1308,25 +1256,25 @@ gaul_sacral_expansion_cb = {
 
 	# root = scope:attacker
 	allowed_for_character = {
-		gaul_sacral_expansion_cb_allowed_for_character_trigger = yes
+		gaul_imperial_expansion_cb_allowed_for_character_trigger = yes
 	}
 
 	# root = scope:attacker
 	allowed_for_character_display_regardless = {
 		# Required Policy
-		top_liege = { has_realm_law = sacral_expansion_law }
+		top_liege = { has_realm_law = imperial_expansion_law }
 	}
 
 	# root = scope:defender, scope:attacker
 	allowed_against_character = {
-		gaul_sacral_expansion_cb_allowed_against_character_trigger = yes
+		gaul_imperial_expansion_cb_allowed_against_character_trigger = yes
 	}
 
 	# root = scope:defender, scope:attacker
 	allowed_against_character_display_regardless = {
 		# Must be neighbours, but we want to show casus belli in list regardless
 		custom_tooltip = {
-			text = gaul_sacral_expansion_cb_neighbour_tt
+			text = gaul_imperial_expansion_cb_neighbour_tt
 			any_sub_realm_county = {
 				any_title_to_title_neighboring_and_across_water_county = { holder.top_liege = scope:attacker.top_liege }
 			}
@@ -1336,14 +1284,15 @@ gaul_sacral_expansion_cb = {
 	# root = scope:attacker, scope:defender, scope:target
 	valid_to_start_display_regardless = {
 		custom_tooltip = {
-			text = LR_tgp_gaul_pacification_war_valid_empire_tt
-			NOT = { scope:target.empire ?= title:e_sacral_kingdom_gaul }
+			text = tgp_gaul_pacification_war_valid_empire_tt
+			NOT = { scope:target.empire ?= title:e_gaul }
 		}
 		custom_tooltip = {
-			text = LR_tgp_gaul_pacification_war_valid_region_tt
+			text = tgp_gaul_pacification_war_valid_region_tt
 			scope:target.title_province ?= {
 				OR = {
-					geographical_region = LR_world_europe_gaul
+					geographical_region = world_asia_gaul
+					geographical_region = world_asia_sakhalin_hokkaido
 				}
 			}
 		}
@@ -1357,8 +1306,8 @@ gaul_sacral_expansion_cb = {
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { gaul_sacral_expansion_cb_allowed_for_character_trigger = no }
-			scope:defender = { gaul_sacral_expansion_cb_allowed_against_character_trigger = no }
+			scope:attacker = { gaul_imperial_expansion_cb_allowed_for_character_trigger = no }
+			scope:defender = { gaul_imperial_expansion_cb_allowed_against_character_trigger = no }
 		}
 	}
 
@@ -1366,11 +1315,11 @@ gaul_sacral_expansion_cb = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					scope:attacker = { gaul_sacral_expansion_cb_allowed_for_character_trigger = no }
+					scope:attacker = { gaul_imperial_expansion_cb_allowed_for_character_trigger = no }
 				}
-				desc = gaul_sacral_expansion_cb_ended_invalid.desc.attacker
+				desc = gaul_imperial_expansion_cb_ended_invalid.desc.attacker
 			}
-			desc = gaul_sacral_expansion_cb_ended_invalid.desc
+			desc = gaul_imperial_expansion_cb_ended_invalid.desc
 		}
 	}
 
@@ -1388,9 +1337,9 @@ gaul_sacral_expansion_cb = {
 							is_independent_ruler = yes
 						}
 					}
-					desc = gaul_sacral_expansion_cb_victory_desc_attacker
+					desc = gaul_imperial_expansion_cb_victory_desc_attacker
 				}
-				desc = gaul_sacral_expansion_cb_victory_desc
+				desc = gaul_imperial_expansion_cb_victory_desc
 			}
 			triggered_desc = {
 				trigger = {
@@ -1403,7 +1352,7 @@ gaul_sacral_expansion_cb = {
 
 	on_victory = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -1431,7 +1380,7 @@ gaul_sacral_expansion_cb = {
 		resolve_title_and_vassal_change = scope:change
 
 		# Appreciation for the Attacker, if relevant
-		scope:attacker = { 
+		scope:attacker = {
 			if = {
 				limit = { is_independent_ruler = no }
 				reverse_add_opinion = {
@@ -1446,10 +1395,10 @@ gaul_sacral_expansion_cb = {
 			if = {
 				limit = { is_independent_ruler = no }
 				if = {
-					limit = { government_has_mechanic = administrative }
-					change_influence = gaul_sacral_expansion_war_influence_value
+					limit = { government_has_flag = government_has_influence }
+					change_influence = gaul_imperial_expansion_war_influence_value
 				}
-				else = { add_prestige_experience = gaul_sacral_expansion_war_prestige_value }
+				else = { add_prestige_experience = gaul_imperial_expansion_war_prestige_value }
 			}
 			else = {
 				# Prestige Progress for the Attacker
@@ -1548,11 +1497,11 @@ gaul_sacral_expansion_cb = {
 
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
@@ -1598,9 +1547,9 @@ gaul_sacral_expansion_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_SACRAL_EXPANSION_WAR_NAME"
-	war_name_base = "GAUL_SACRAL_EXPANSION_WAR_NAME_BASE"
-	cb_name = "GAUL_SACRAL_EXPANSION_CB_NAME"
+	war_name = "GAUL_IMPERIAL_EXPANSION_WAR_NAME"
+	war_name_base = "GAUL_IMPERIAL_EXPANSION_WAR_NAME_BASE"
+	cb_name = "GAUL_IMPERIAL_EXPANSION_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
@@ -1613,14 +1562,14 @@ gaul_sacral_expansion_cb = {
 
 	max_attacker_score_from_battles = 200
 	max_defender_score_from_battles = 200
-	
+
 	max_defender_score_from_occupation = 50
 	max_attacker_score_from_occupation = 50
 
 	max_ai_diplo_distance_to_title = 500
-	
+
 	ai_score = {
-		value = gaul_sacral_expansion_ai_score_value
+		value = gaul_imperial_expansion_ai_score_value
 	}
 
 	ai_score_mult = {
@@ -1629,14 +1578,14 @@ gaul_sacral_expansion_cb = {
 	}
 }
 
-# War to reconquer gaul
-gaul_sacral_reconquest_cb = {
-	icon = ritsuryo
+# War to reconquer Japan
+gaul_imperial_reconquest_cb = {
+	icon = ritsuryo_government
 	group = de_jure
 
-	war_name = "GAUL_SACRAL_RECONQUEST_WAR_NAME"
-	war_name_base = "GAUL_SACRAL_RECONQUEST_WAR_NAME_BASE"
-	cb_name = "GAUL_SACRAL_RECONQUEST_CB_NAME"
+	war_name = "GAUL_IMPERIAL_RECONQUEST_WAR_NAME"
+	war_name_base = "GAUL_IMPERIAL_RECONQUEST_WAR_NAME_BASE"
+	cb_name = "GAUL_IMPERIAL_RECONQUEST_CB_NAME"
 	interface_priority = 80
 
 	combine_into_one = yes
@@ -1647,17 +1596,17 @@ gaul_sacral_reconquest_cb = {
 		prestige = {
 			scope:defender = {
 				every_sub_realm_county = {
-					limit = { empire = title:e_sacral_kingdom_gaul }
+					limit = { empire = title:e_gaul }
 					add = {
 						value = 50
-						desc = gaul_sacral_reconquest_cb_cost_tt
+						desc = gaul_imperial_reconquest_cb_cost_tt
 					}
 				}
 			}
 			multiply = common_cb_prestige_cost_multiplier
 		}
 	}
-   	
+
 	allow_hostages = no
 
 	target_titles = all
@@ -1668,7 +1617,7 @@ gaul_sacral_reconquest_cb = {
 
 	# root = scope:attacker
 	allowed_for_character = {
-		gaul_sacral_reconquest_cb_allowed_for_character_trigger = yes
+		gaul_imperial_reconquest_cb_allowed_for_character_trigger = yes
 	}
 
 	# root = scope:attacker
@@ -1678,28 +1627,28 @@ gaul_sacral_reconquest_cb = {
 
 	# root = scope:defender, scope:attacker
 	allowed_against_character = {
-		gaul_sacral_reconquest_cb_allowed_against_character_trigger = yes
+		gaul_imperial_reconquest_cb_allowed_against_character_trigger = yes
 	}
 
 	valid_to_start = {
 		scope:target = {
 			tier = tier_duchy
-			empire = title:e_sacral_kingdom_gaul
+			empire = title:e_gaul
 		}
 	}
 
 	# root = scope:attacker, scope:defender, scope:target
 	valid_to_start_display_regardless = {
 		custom_tooltip = {
-			text = LR_tgp_gaul_reconquest_war_valid_de_jure_tt
-			scope:target.empire ?= title:e_sacral_kingdom_gaul
+			text = tgp_gaul_reconquest_war_valid_de_jure_tt
+			scope:target.empire ?= title:e_gaul
 		}
 	}
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { gaul_sacral_reconquest_cb_allowed_for_character_trigger = no }
-			scope:defender = { gaul_sacral_reconquest_cb_allowed_against_character_trigger = no }
+			scope:attacker = { gaul_imperial_reconquest_cb_allowed_for_character_trigger = no }
+			scope:defender = { gaul_imperial_reconquest_cb_allowed_against_character_trigger = no }
 		}
 	}
 
@@ -1707,11 +1656,11 @@ gaul_sacral_reconquest_cb = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					scope:attacker = { gaul_sacral_reconquest_cb_allowed_for_character_trigger = no }
+					scope:attacker = { gaul_imperial_reconquest_cb_allowed_for_character_trigger = no }
 				}
-				desc = gaul_sacral_reconquest_cb_ended_invalid.desc.attacker
+				desc = gaul_imperial_reconquest_cb_ended_invalid.desc.attacker
 			}
-			desc = gaul_sacral_reconquest_cb_ended_invalid.desc
+			desc = gaul_imperial_reconquest_cb_ended_invalid.desc
 		}
 	}
 
@@ -1726,7 +1675,7 @@ gaul_sacral_reconquest_cb = {
 					trigger = { scope:attacker = { is_local_player = yes } }
 					desc = de_jure_cb_victory_desc_attacker
 				}
-				desc = gaul_sacral_reconquest_cb_victory_desc
+				desc = gaul_imperial_reconquest_cb_victory_desc
 			}
 			triggered_desc = {
 				trigger = {
@@ -1739,22 +1688,22 @@ gaul_sacral_reconquest_cb = {
 
 	on_victory = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
 		#EP2 Accolade glory gain from winning against higher ranked enemy
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
-		
+
 		# Influence/Prestige Progress reward for Attacker
 		scope:attacker = {
 			if = {
 				limit = { is_independent_ruler = no }
 				if = {
-					limit = { government_has_mechanic = administrative }
-					change_influence = gaul_sacral_reconquest_war_influence_value
+					limit = { government_has_flag = government_has_influence }
+					change_influence = gaul_imperial_reconquest_war_influence_value
 				}
-				else = { add_prestige_experience = gaul_sacral_reconquest_war_prestige_value }
+				else = { add_prestige_experience = gaul_imperial_reconquest_war_prestige_value }
 			}
 		}
 
@@ -1766,12 +1715,12 @@ gaul_sacral_reconquest_cb = {
 			save_scope_as = change
 			add_claim_on_loss = yes
 		}
-		
+
 		every_in_list = {
 			list = target_titles
 			save_temporary_scope_as = target
 		}
-		
+
 		setup_de_jure_cb = {
 			attacker = scope:attacker
 			defender = scope:defender
@@ -1848,16 +1797,16 @@ gaul_sacral_reconquest_cb = {
 
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
-	
+
 		scope:attacker = {
 			pay_short_term_gold_reparations_effect = {
 				GOLD_VALUE = 10
@@ -1888,14 +1837,14 @@ gaul_sacral_reconquest_cb = {
 	defender_allies_inherit = yes
 
 	attacker_wargoal_percentage = 0.8
-	
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 
 	max_ai_diplo_distance_to_title = 500
-	
+
 	ai_score = {
-		value = gaul_sacral_reconquest_ai_score_value
+		value = gaul_imperial_reconquest_ai_score_value
 	}
 
 	ai_score_mult = {
@@ -1904,8 +1853,8 @@ gaul_sacral_reconquest_cb = {
 	}
 }
 
-# War to reimpose palatine
-gaul_refused_palatine_cb = {
+# War to reimpose Ritsuryo
+gaul_refused_ritsuryo_cb = {
 	icon = dissolution_war
 	group = civil_war
 	ai_only_against_liege = yes
@@ -1967,7 +1916,7 @@ gaul_refused_palatine_cb = {
 						scope:defender.primary_title.tier <= scope:attacker.var:target_tier
 					}
 				}
-				desc = gaul_refused_palatine_cb_victory_desc_defender
+				desc = gaul_refused_ritsuryo_cb_victory_desc_defender
 			}
 			triggered_desc = {
 				trigger = {
@@ -1977,7 +1926,7 @@ gaul_refused_palatine_cb = {
 						scope:defender.primary_title.tier <= scope:attacker.var:target_tier
 					}
 				}
-				desc = gaul_refused_palatine_cb_victory_desc
+				desc = gaul_refused_ritsuryo_cb_victory_desc
 			}
 		}
 	}
@@ -1998,7 +1947,7 @@ gaul_refused_palatine_cb = {
 
 			add_prestige = -500
 
-			# gaul - liege is replaced by the attacker
+			# GAUL - liege is replaced by the attacker
 			create_title_and_vassal_change = {
 				type = conquest
 				save_scope_as = title_change
@@ -2046,9 +1995,9 @@ gaul_refused_palatine_cb = {
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:defender = { is_local_player = yes } }
-				desc = gaul_refused_palatine_cb_white_peace_desc_defender
+				desc = gaul_refused_ritsuryo_cb_white_peace_desc_defender
 			}
-			desc = gaul_refused_palatine_cb_white_peace_desc
+			desc = gaul_refused_ritsuryo_cb_white_peace_desc
 		}
 
 	}
@@ -2056,14 +2005,14 @@ gaul_refused_palatine_cb = {
 	on_white_peace = {
 		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
  				ambitious = medium_stress_impact_gain
  				arrogant = medium_stress_impact_gain
  			}
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
  				arrogant = medium_stress_impact_gain
  			}
 		}
@@ -2084,9 +2033,9 @@ gaul_refused_palatine_cb = {
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:defender = { is_local_player = yes } }
-				desc = gaul_refused_palatine_cb_defeat_desc_defender
+				desc = gaul_refused_ritsuryo_cb_defeat_desc_defender
 			}
-			desc = gaul_refused_palatine_cb_defeat_desc
+			desc = gaul_refused_ritsuryo_cb_defeat_desc
 		}
 
 	}
@@ -2121,7 +2070,7 @@ gaul_refused_palatine_cb = {
 				}
 			}
 		}
-		
+
 		on_lost_request_revolt_war = yes
 
 		#Mandalas gain or lose piety/devotion depending on Decree
@@ -2140,7 +2089,7 @@ gaul_refused_palatine_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_REFUSED_PALATINE_WAR_NAME"
+	war_name = "GAUL_REFUSED_RITSURYO_WAR_NAME"
 
 	interface_priority = 80
 
@@ -2150,7 +2099,7 @@ gaul_refused_palatine_cb = {
 
 	max_attacker_score_from_battles = 100
 	max_defender_score_from_battles = 50
-	
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 
@@ -2158,7 +2107,7 @@ gaul_refused_palatine_cb = {
 }
 
 # Eradicate Rival House
-gallic_eradicate_house_cb = {
+eradicate_house_cb = {
 	icon = execute
 	group = subjugation
 	combine_into_one = yes
@@ -2175,7 +2124,7 @@ gallic_eradicate_house_cb = {
 			}
 			house ?= {
 				any_house_relation = {
-					has_house_relation_level = feud 
+					has_house_relation_level = feud
 				}
 			}
 		}
@@ -2197,7 +2146,7 @@ gallic_eradicate_house_cb = {
 		is_landed = yes
 		#Can't be the attacker's top liege
 		NOR = {
-			is_vassal_or_below_of = scope:attacker 
+			is_vassal_or_below_of = scope:attacker
 			is_liege_or_above_of = scope:attacker
 		}
 	}
@@ -2224,7 +2173,7 @@ gallic_eradicate_house_cb = {
 	should_invalidate = {
 		#cancel if they become friendly
 		OR = {
-			NOT = { 
+			NOT = {
 				tgp_has_house_relation_level_trigger = {
 					HOUSE_1_MEMBER = scope:attacker
 					HOUSE_2_MEMBER = scope:defender
@@ -2259,9 +2208,9 @@ gallic_eradicate_house_cb = {
 				}
 			}
 		}
-		
+
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -2269,36 +2218,27 @@ gallic_eradicate_house_cb = {
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
 
 		scope:attacker = {
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 		#Show land transfer
 		show_as_tooltip = {
-			#loser/winner scopes are only being set here to correctly display the effects of LR_tgp_gaul_manorial_eradicate_cb_transfer_effect in the tooltip!
+			#loser/winner scopes are only being set here to correctly display the effects of tgp_gaul_soryo_eradicate_cb_transfer_effect in the tooltip!
 			scope:defender = {
 				save_scope_as = loser
 			}
 			scope:attacker = {
 				save_scope_as = winner
 			}
-			LR_tgp_gaul_manorial_eradicate_cb_transfer_effect = yes	
+			tgp_gaul_soryo_eradicate_cb_transfer_effect = yes
 		}
 		#show death
 		show_as_tooltip = {
@@ -2310,21 +2250,21 @@ gallic_eradicate_house_cb = {
 			}
 			scope:defender = {
 				every_courtier = {
-					custom = every_close_family_house_member_in_court_cb_win_desc 
+					custom = every_close_family_house_member_in_court_cb_win_desc
 					limit = {
 						house = scope:defender.house
 						NOT = {
 							scope:defender.primary_heir ?= this
-						} 
+						}
 					}
 					death = {
 						death_reason = death_eradicated
-						killer = scope:attacker 
+						killer = scope:attacker
 					}
 				}
 			}
 		}
-		
+
 		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
 			WINNER = scope:attacker
@@ -2342,7 +2282,7 @@ gallic_eradicate_house_cb = {
 
 		#Eradicate House follow up event
 		scope:defender = {
-			trigger_event = LR_tgp_gaul_general.9550
+			trigger_event = tgp_gaul_general.9550
 		}
 	}
 
@@ -2350,9 +2290,9 @@ gallic_eradicate_house_cb = {
 		desc = eradicate_house_cb_white_peace_desc
 	}
 	on_white_peace = {
-		scope:attacker = { 
+		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -2369,7 +2309,7 @@ gallic_eradicate_house_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -2387,50 +2327,41 @@ gallic_eradicate_house_cb = {
 
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
 
 		scope:attacker = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
 		}
 		#Show land transfer
 		show_as_tooltip = {
-			#loser/winner scopes are only being set here to correctly display the effects of LR_tgp_gaul_manorial_eradicate_cb_transfer_effect in the tooltip!
+			#loser/winner scopes are only being set here to correctly display the effects of tgp_gaul_soryo_eradicate_cb_transfer_effect in the tooltip!
 			scope:defender = {
 				save_scope_as = winner
 			}
 			scope:attacker = {
 				save_scope_as = loser
 			}
-			LR_tgp_gaul_manorial_eradicate_cb_transfer_effect = yes
+			tgp_gaul_soryo_eradicate_cb_transfer_effect = yes
 		}
 		#Show killing
 		show_as_tooltip = {
-			
+
 			scope:attacker = {
 				death = {
 					death_reason = death_eradicated
@@ -2439,16 +2370,16 @@ gallic_eradicate_house_cb = {
 			}
 			scope:attacker = {
 				every_courtier = {
-					custom = every_close_family_house_member_in_court_cb_lose_desc 
+					custom = every_close_family_house_member_in_court_cb_lose_desc
 					limit = {
 						house = scope:attacker.house
 						NOT = {
-							this = scope:attacker.primary_heir  
-						} 
+							this = scope:attacker.primary_heir
+						}
 					}
 					death = {
 						death_reason = death_eradicated
-						killer = scope:defender 
+						killer = scope:defender
 					}
 				}
 			}
@@ -2472,7 +2403,7 @@ gallic_eradicate_house_cb = {
 		laamp_as_mercenary_payout_tooltip_effect = yes
 		#Eradicate House follow up event
 		scope:attacker = {
-			trigger_event = LR_tgp_gaul_general.9550
+			trigger_event = tgp_gaul_general.9550
 		}
 	}
 
@@ -2497,7 +2428,7 @@ gallic_eradicate_house_cb = {
 
 	max_attacker_score_from_battles = 200
 	max_defender_score_from_battles = 200
-	
+
 	max_defender_score_from_occupation = 50
 	max_attacker_score_from_occupation = 50
 
@@ -2509,8 +2440,8 @@ gallic_eradicate_house_cb = {
 	}
 }
 
-# War to become manorial as sacral_majordomo
-gaul_establish_manorial_administration_cb = {
+# War to become Soryo as Kampaku
+gaul_establish_soryo_administration_cb = {
 	icon = soryo
 	group = subjugation
 	combine_into_one = yes
@@ -2528,11 +2459,11 @@ gaul_establish_manorial_administration_cb = {
 	}
 
 	on_invalidated_desc = {
-		desc = gaul_establish_manorial_administration_cb_ended_invalid.desc
+		desc = gaul_establish_soryo_administration_cb_ended_invalid.desc
 	}
 
 	on_victory_desc = {
-		desc = gaul_establish_manorial_administration_cb_victory_desc
+		desc = gaul_establish_soryo_administration_cb_victory_desc
 	}
 
 	on_victory = {
@@ -2541,9 +2472,9 @@ gaul_establish_manorial_administration_cb = {
 			save_scope_as = leader
 		}
 		scope:defender = {
-			save_scope_as = sacral_magister_militum
+			save_scope_as = daijo_daijin
 		}
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -2551,24 +2482,15 @@ gaul_establish_manorial_administration_cb = {
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
 
 		scope:attacker = {
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
@@ -2584,7 +2506,7 @@ gaul_establish_manorial_administration_cb = {
 			list = target_titles
 			scope:attacker = { add_prestige_experience = minor_prestige_value }
 		}
-			
+
 		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
 			WINNER = scope:attacker
@@ -2621,13 +2543,13 @@ gaul_establish_manorial_administration_cb = {
 	}
 
 	on_white_peace_desc = {
-		desc = gaul_establish_manorial_administration_cb_white_peace_desc
+		desc = gaul_establish_soryo_administration_cb_white_peace_desc
 	}
 
 	on_white_peace = {
-		scope:attacker = { 
+		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -2644,7 +2566,7 @@ gaul_establish_manorial_administration_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -2657,7 +2579,7 @@ gaul_establish_manorial_administration_cb = {
 	}
 
 	on_defeat_desc = {
-		desc = gaul_establish_manorial_administration_cb_defeat_desc
+		desc = gaul_establish_soryo_administration_cb_defeat_desc
 	}
 
 	on_defeat = {
@@ -2666,39 +2588,30 @@ gaul_establish_manorial_administration_cb = {
 			save_scope_as = leader
 		}
 		scope:defender = {
-			save_scope_as = sacral_magister_militum
-			show_as_tooltip = { gallic_establish_manorial_administration_reward_effect = yes }
-			trigger_event = LR_tgp_gaul_decision.9606
+			save_scope_as = daijo_daijin
+			show_as_tooltip = { gallic_establish_soryo_administration_reward_effect = yes }
+			trigger_event = tgp_gaul_decision.9606
 		}
 
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
 
 		scope:attacker = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
 		}
 
@@ -2743,9 +2656,9 @@ gaul_establish_manorial_administration_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_ESTABLISH_MANORIAL_ADMINISTRATION_WAR_NAME"
-	war_name_base = "GAUL_ESTABLISH_MANORIAL_ADMINISTRATION_WAR_NAME_BASE"
-	cb_name = "GAUL_ESTABLISH_MANORIAL_ADMINISTRATION_CB_NAME"
+	war_name = "GAUL_ESTABLISH_SORYO_ADMINISTRATION_WAR_NAME"
+	war_name_base = "GAUL_ESTABLISH_SORYO_ADMINISTRATION_WAR_NAME_BASE"
+	cb_name = "GAUL_ESTABLISH_SORYO_ADMINISTRATION_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
@@ -2758,7 +2671,7 @@ gaul_establish_manorial_administration_cb = {
 
 	max_attacker_score_from_battles = 200
 	max_defender_score_from_battles = 200
-	
+
 	max_defender_score_from_occupation = 50
 	max_attacker_score_from_occupation = 50
 }
@@ -2775,8 +2688,8 @@ gaul_bloc_war_cb = {
 	# scope:attacker
 	allowed_for_character = {
 		has_tgp_dlc_trigger = yes
-		# manorial Bloc leader checks
-		tgp_manorial_or_bushido_trigger = yes
+		# Soryo Bloc leader checks
+		tgp_soryo_or_bushido_trigger = yes
 		is_house_head = yes
 		house.house_confederation.leading_house ?= house
 		any_held_title = { is_noble_family_title = yes }
@@ -2791,7 +2704,7 @@ gaul_bloc_war_cb = {
 
 	# scope:defender
 	allowed_against_character = {
-		tgp_manorial_or_bushido_trigger = yes
+		tgp_soryo_or_bushido_trigger = yes
 		is_house_head = yes
 		house.house_confederation.leading_house ?= house
 		NOR = {
@@ -2813,10 +2726,10 @@ gaul_bloc_war_cb = {
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { tgp_manorial_or_bushido_trigger = no }
+			scope:attacker = { tgp_soryo_or_bushido_trigger = no }
 			scope:defender = {
 				OR = {
-					tgp_manorial_or_bushido_trigger = no
+					tgp_soryo_or_bushido_trigger = no
 					NOT = { exists = house.house_confederation } # Left bloc
 					house.house_confederation ?= scope:attacker.house.house_confederation # Same bloc
 					is_landed = no
@@ -2877,7 +2790,7 @@ gaul_bloc_war_cb = {
 		}
 
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Legitimacy
 		add_legitimacy_attacker_victory_effect = yes
 
@@ -2885,24 +2798,15 @@ gaul_bloc_war_cb = {
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
 
 		scope:attacker = {
-			switch = {
-				trigger = scope:defender.primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = scope:defender.tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
@@ -2933,9 +2837,9 @@ gaul_bloc_war_cb = {
 	}
 
 	on_white_peace = {
-		scope:attacker = { 
+		scope:attacker = {
 			show_pow_release_message_effect = yes
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				ambitious = medium_stress_impact_gain
 				arrogant = medium_stress_impact_gain
 			}
@@ -2952,7 +2856,7 @@ gaul_bloc_war_cb = {
 		}
 
 		scope:defender = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
@@ -3001,31 +2905,22 @@ gaul_bloc_war_cb = {
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		scope:defender = { 
+		scope:defender = {
 			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
 
 		scope:attacker = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_loss }
-				tier_duchy = { add_prestige = medium_prestige_loss }
-				tier_kingdom = { add_prestige = major_prestige_loss }
-				tier_empire = { add_prestige = massive_prestige_loss }
-				tier_hegemony = { add_prestige = monumental_prestige_loss }
+			add_prestige = {
+				value = 0
+				subtract = tier_scaled_prestige_value
 			}
 		}
 
 		scope:defender = {
-			switch = {
-				trigger = primary_title.tier
-				tier_county = { add_prestige = minor_prestige_gain }
-				tier_duchy = { add_prestige = medium_prestige_gain }
-				tier_kingdom = { add_prestige = major_prestige_gain }
-				tier_empire = { add_prestige = massive_prestige_gain }
-				tier_hegemony = { add_prestige = monumental_prestige_gain }
+			add_prestige = {
+				value = tier_scaled_prestige_value
 			}
 		}
 
@@ -3069,12 +2964,12 @@ gaul_bloc_war_cb = {
 
 	max_attacker_score_from_battles = 100
 	max_defender_score_from_battles = 100
-	
+
 	max_defender_score_from_occupation = 100
 	max_attacker_score_from_occupation = 100
 
 	max_ai_diplo_distance_to_title = 500
-	
+
 	ai_score = {
 		value = gaul_bloc_war_ai_score_value
 	}
