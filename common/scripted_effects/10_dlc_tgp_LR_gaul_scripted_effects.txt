@@ -103,7 +103,7 @@
 					NOR = { 
 						var:petition_liege_house_fief_allowed_flag ?= scope:new_head.top_liege
 						top_liege = {
-							government_has_flag = government_is_gaul_feudal
+							government_has_flag = government_is_sacral_feudal
 						}
 					}
 				}
@@ -510,7 +510,7 @@ become_sacral_dictator_reward_effect = {
 	every_vassal = {
 		custom = every_gaul_admin_vassal_custom_bullet
 		limit = {
-			government_has_flag = government_is_gaul_administrative
+			government_has_flag = government_is_sacral_administrative
 		}
 		show_as_tooltip = { change_government = sacral_feudal_government }
 	}
@@ -621,8 +621,8 @@ sacral_faction_demand_regent_transfer_effect = {
 	$NEW_REGENT$ = {
 		save_temporary_scope_as = new_regent_temp
 		if = {
-			limit = { government_has_flag = government_is_gaul_feudal }
-			save_temporary_scope_as = gaul_feudal
+			limit = { government_has_flag = government_is_sacral_feudal }
+			save_temporary_scope_as = sacral_feudal
 		}
 	}
 	# COUNTIES
@@ -671,8 +671,8 @@ sacral_faction_demand_regent_transfer_effect = {
 		# GOVERNMENT
 		if = {
 			limit = {
-				exists = scope:gaul_feudal
-				NOT = { government_has_flag = government_is_gaul_feudal }
+				exists = scope:sacral_feudal
+				NOT = { government_has_flag = government_is_sacral_feudal }
 			}
 			change_government = sacral_feudal_government
 		}
@@ -868,7 +868,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
 		scope:sacral_scion = {
 			if = {
 				limit = {
-					NOT = { government_has_flag = government_is_gaul_administrative }
+					NOT = { government_has_flag = government_is_sacral_administrative }
 				}
 				change_government = sacral_administrative_government
 			}
@@ -943,8 +943,8 @@ LR_tgp_restore_sacral_government_decision_effect = {
 	}
 	# Inform vassals and convert governments if relevant
 	every_vassal = {
-		custom = every_gaul_feudal_vassal_custom
-		limit = { government_has_flag = government_is_gaul_feudal }
+		custom = every_sacral_feudal_vassal_custom
+		limit = { government_has_flag = government_is_sacral_feudal }
 		add_opinion = {
 			target = scope:sacral_majordomo
 			modifier = restored_palatine_opinion
@@ -1111,8 +1111,8 @@ sacral_tgp_destroy_ceremonial_liege_title_effect = {
 LR_tgp_gaul_demand_administrative_refusal_effect = {
 	if = {
 		limit = {
-			scope:actor = { government_has_flag = government_is_gaul_administrative }
-			scope:recipient = { government_has_flag = government_is_gaul_feudal }
+			scope:actor = { government_has_flag = government_is_sacral_administrative }
+			scope:recipient = { government_has_flag = government_is_sacral_feudal }
 		}
 		scope:actor = {
 			start_war = {
@@ -1141,7 +1141,7 @@ tgp_restore_palatine_civil_war_effect = {
 		every_vassal = { #Vassals joining the rebel.
 			custom = vassals_joining_war_tt
 			limit = {
-				government_has_flag = government_is_gaul_feudal
+				government_has_flag = government_is_sacral_feudal
 				NOR = {
 					this = $REBEL$
 					is_ai = no

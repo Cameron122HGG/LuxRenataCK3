@@ -20,7 +20,7 @@ LR_tgp_is_gaul_sacral_majordomo_trigger = {
 LR_tgp_is_sacral_governor_trigger = {
 	custom_tooltip = {
 		text = LR_tgp_is_sacral_governor_trigger
-		government_has_flag = government_is_gaul_administrative
+		government_has_flag = government_is_sacral_administrative
 		is_landed = yes
 		is_ruler = yes
 		highest_held_title_tier >= tier_duchy
@@ -31,7 +31,7 @@ LR_tgp_is_sacral_governor_trigger = {
 LR_tgp_can_have_sacral_regency_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 	is_independent_ruler = yes
-	government_has_flag = government_is_gaul_administrative
+	government_has_flag = government_is_sacral_administrative
 	OR = {
 		has_title = title:k_sacral_king_gaul_throne
 		any_vassal_or_below = { has_title = title:k_sacral_king_gaul_throne }
@@ -254,7 +254,7 @@ LR_tgp_gaul_ceremonial_title_revoke_restriction_trigger = {
 
 can_have_sacral_appointment_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
-	government_has_flag = government_is_gaul_administrative
+	government_has_flag = government_is_sacral_administrative
 	is_independent_ruler = no
 	NOT = { has_title = title:k_sacral_king_gaul_throne }
 }
@@ -349,9 +349,9 @@ gaul_house_name_trigger = {
 
 LR_tgp_gaul_internal_manorial_war_is_crime_trigger = {
 	scope:defender = {
-		government_has_flag = government_is_gaul_administrative
+		government_has_flag = government_is_sacral_administrative
 		top_liege = {
-			government_has_flag = government_is_gaul_administrative
+			government_has_flag = government_is_sacral_administrative
 			this = scope:attacker.top_liege
 		}
 	}
@@ -368,8 +368,8 @@ gaul_sacral_expansion_cb_allowed_for_character_trigger = {
 
 government_is_sacral_trigger = {
 	OR = {
-		government_has_flag = government_is_gaul_administrative
-		government_has_flag = government_is_gaul_feudal
+		government_has_flag = government_is_sacral_administrative
+		government_has_flag = government_is_sacral_feudal
 	}
 }
 
@@ -557,7 +557,7 @@ sacral_policy_faction_can_create_trigger = {
 
 LR_tgp_gaul_palatine_bloc_house_head_trigger = {
 	top_liege = root.top_liege
-	government_has_flag = government_is_gaul_administrative
+	government_has_flag = government_is_sacral_administrative
 }
 
 LR_tgp_gaul_house_bloc_interaction_valid_trigger = {
@@ -606,11 +606,11 @@ LR_tgp_gaul_should_join_house_bloc_trigger = {
 	# Government TODO_CD_TGP disabled for now
 	#trigger_if = {
 	#	limit = {
-	#		$BLOC$.leading_house.house_head ?= { government_has_flag = government_is_gaul_administrative }
+	#		$BLOC$.leading_house.house_head ?= { government_has_flag = government_is_sacral_administrative }
 	#	}
-	#	government_has_flag = government_is_gaul_administrative
+	#	government_has_flag = government_is_sacral_administrative
 	#}
-	#trigger_else = { government_has_flag = government_is_gaul_feudal }
+	#trigger_else = { government_has_flag = government_is_sacral_feudal }
 }
 
 LR_tgp_gaul_house_bloc_inviter_or_leader_trigger = {
@@ -634,7 +634,7 @@ LR_tgp_roman_or_frank_trigger = {
 	custom_tooltip = {
 		text = soryo_or_bushido_trigger
 		OR = {
-			government_has_flag = government_is_gaul_feudal
+			government_has_flag = government_is_sacral_feudal
 			culture = { has_cultural_tradition = lux_tradition_tgp_sacred_chivalry }
 		}
 	}
@@ -700,15 +700,15 @@ gaul_government_gaul_duchy_restriction_trigger = {
 	trigger_if = {
 		limit = {
 			OR = {
-				government_has_flag = government_is_gaul_administrative
+				government_has_flag = government_is_sacral_administrative
 				AND = { # Manorial can create Kingdoms if they're already a King
-					government_has_flag = government_is_gaul_feudal
+					government_has_flag = government_is_sacral_feudal
 					primary_title.tier = tier_county
 				}
 			}
 			NAND = {
 				is_independent_ruler = yes
-				government_has_flag = government_is_gaul_feudal
+				government_has_flag = government_is_sacral_feudal
 			}
 		}
 		custom_tooltip = {
@@ -722,7 +722,7 @@ gaul_castle_construction_trigger = {
 	trigger_if = {
 		limit = {
 			county.holder ?= {
-				government_has_flag = government_is_gaul_administrative
+				government_has_flag = government_is_sacral_administrative
 				realm_law_use_sacral_policy_trigger = yes
 			}
 		}
@@ -749,7 +749,7 @@ has_sacral_house_aspiration_trigger = {
 }
 
 tgp_manorial_or_bushido_trigger = {
-	government_has_flag = government_is_gaul_feudal
+	government_has_flag = government_is_sacral_feudal
 }
 
 LR_tgp_can_become_sacral_feudal_trigger = {

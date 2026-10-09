@@ -941,15 +941,15 @@ gaul_demand_administrative_cb = {
 
 	# scope:attacker
 	allowed_for_character = {
-		government_has_flag = government_is_gaul_administrative
-		top_liege = { government_has_flag = government_is_gaul_administrative } # Cannot enforce admin in a Soryo realm
+		government_has_flag = government_is_sacral_administrative
+		top_liege = { government_has_flag = government_is_sacral_administrative } # Cannot enforce admin in a Soryo realm
 		tgp_is_ceremonial_liege_trigger = no
 	}
 
 	# scope:defender
 	allowed_against_character = {
 		is_landed = yes
-		government_has_flag = government_is_gaul_feudal
+		government_has_flag = government_is_sacral_feudal
 		top_liege = scope:attacker.top_liege
 		NOT = { is_liege_or_above_of = scope:attacker }
 	}
@@ -972,13 +972,13 @@ gaul_demand_administrative_cb = {
 		OR = {
 			NOT = {
 				scope:attacker = {
-					government_has_flag = government_is_gaul_administrative
+					government_has_flag = government_is_sacral_administrative
 					tgp_is_ceremonial_liege_trigger = no
 				}
 			}
 			NOT = {
 				scope:defender = {
-					government_has_flag = government_is_gaul_feudal
+					government_has_flag = government_is_sacral_feudal
 					top_liege = scope:attacker.top_liege
 					NOT = { is_liege_or_above_of = scope:attacker }
 				}
@@ -993,7 +993,7 @@ gaul_demand_administrative_cb = {
 				trigger = {
 					NOT = {
 						scope:attacker = {
-							government_has_flag = government_is_gaul_administrative
+							government_has_flag = government_is_sacral_administrative
 							tgp_is_ceremonial_liege_trigger = no
 						}
 					}
@@ -1861,7 +1861,7 @@ gaul_refused_palatine_cb = {
 	allowed_for_character = {
 		scope:attacker = {
 			liege = scope:defender
-			NOT = { government_has_flag = government_is_gaul_administrative }
+			NOT = { government_has_flag = government_is_sacral_administrative }
 		}
 	}
 
@@ -2454,7 +2454,7 @@ gaul_establish_manorial_administration_cb = {
 	}
 
 	should_invalidate = {
-		scope:defender = { government_has_flag = government_is_gaul_feudal }
+		scope:defender = { government_has_flag = government_is_sacral_feudal }
 	}
 
 	on_invalidated_desc = {
