@@ -1,0 +1,190 @@
+﻿######################
+### PASSIVE RITE LEARNING ACTIVITY PULSE ACTIONS
+######################
+
+apa_passive_religious_learning_host = {
+	icon = learning
+
+	is_valid = {
+		is_current_phase_active = yes
+		scope:host = {
+			is_physically_able_adult = yes
+			has_contagious_deadly_disease_trigger = no
+		}
+		any_attending_character = {
+			this != scope:host
+			is_valid_passive_learning_source_at_activity_for_learner_trigger = { LEARNER = scope:host }
+		}
+	}
+
+	weight = {
+		value = 1
+		if = {
+			limit = {
+				scope:activity = {
+					OR = {
+						has_activity_type = activity_feast
+						has_activity_type = activity_wedding
+					}
+				}
+			}
+			multiply = 1.5
+		}
+	}
+
+	effect = {
+		scope:host = { save_scope_as = passive_learn_learner }
+		scope:host = { save_scope_as = second }
+		scope:activity = {
+			random_attending_character = {
+				limit = {
+					this != scope:passive_learn_learner
+					is_valid_passive_learning_source_at_activity_for_learner_trigger = { LEARNER = scope:passive_learn_learner }
+				}
+				save_scope_as = passive_learn_source
+				save_scope_as = first
+			}
+		}
+		custom_tooltip = apa_passive_religious_learning_host_tt
+		hidden_effect = {
+			passive_rite_learning_activity_apply_effect = yes
+		}
+	}
+}
+
+apa_passive_religious_learning_guest = {
+	icon = learning
+
+	is_valid = {
+		is_current_phase_active = yes
+		NOT = { scope:activity = { has_activity_type = activity_pilgrimage } }
+		any_attending_character = {
+			is_ai = no
+			this != scope:host
+			is_physically_able_adult = yes
+			has_contagious_deadly_disease_trigger = no
+			save_temporary_scope_as = potential_learner
+			scope:activity = {
+				any_attending_character = {
+					this != scope:potential_learner
+					is_valid_passive_learning_source_at_activity_for_learner_trigger = { LEARNER = scope:potential_learner }
+				}
+			}
+		}
+	}
+
+	weight = {
+		value = 1
+		if = {
+			limit = {
+				scope:activity = {
+					OR = {
+						has_activity_type = activity_feast
+						has_activity_type = activity_wedding
+					}
+				}
+			}
+			multiply = 1.5
+		}
+	}
+
+	effect = {
+		random_attending_character = {
+			limit = {
+				is_ai = no
+				this != scope:host
+				is_physically_able_adult = yes
+				has_contagious_deadly_disease_trigger = no
+				save_temporary_scope_as = potential_learner
+				scope:activity = {
+					any_attending_character = {
+						this != scope:potential_learner
+						is_valid_passive_learning_source_at_activity_for_learner_trigger = { LEARNER = scope:potential_learner }
+					}
+				}
+			}
+			save_scope_as = passive_learn_learner
+			save_scope_as = second
+		}
+		scope:activity = {
+			random_attending_character = {
+				limit = {
+					this != scope:passive_learn_learner
+					is_valid_passive_learning_source_at_activity_for_learner_trigger = { LEARNER = scope:passive_learn_learner }
+				}
+				save_scope_as = passive_learn_source
+				save_scope_as = first
+			}
+		}
+		custom_tooltip = apa_passive_religious_learning_guest_tt
+		hidden_effect = {
+			passive_rite_learning_activity_apply_effect = yes
+		}
+	}
+}
+
+# Pick up a tenet or doctrine from a foreign-faith local
+apa_passive_religious_learning_pilgrimage_pool = {
+	icon = learning
+
+	is_valid = {
+		is_current_phase_active = yes
+		scope:host = {
+			is_available_travelling_adult = yes
+		}
+		exists = scope:province
+		any_pool_character = {
+			province = scope:province
+			is_valid_passive_learning_source_for_learner_trigger = { LEARNER = scope:host }
+		}
+	}
+
+	weight = {
+		value = 2.5
+	}
+
+	effect = {
+		scope:host = { save_scope_as = passive_learn_learner }
+		scope:host = { save_scope_as = second }
+		random_pool_character = {
+			province = scope:province
+			limit = {
+				is_valid_passive_learning_source_for_learner_trigger = { LEARNER = scope:passive_learn_learner }
+			}
+			save_scope_as = passive_learn_source
+			save_scope_as = first
+		}
+		custom_tooltip = apa_passive_religious_learning_pilgrimage_pool_tt
+		hidden_effect = {
+			passive_rite_learning_pilgrimage_pool_apply_effect = yes
+		}
+	}
+}
+
+# Pick up a tenet or doctrine from the rite dominant at the location
+apa_passive_religious_learning_pilgrimage_rite = {
+	icon = learning
+
+	is_valid = {
+		is_current_phase_active = yes
+		scope:host = {
+			is_available_travelling_adult = yes
+		}
+		scope:province.rite ?= {
+			is_valid_passive_learning_rite_for_learner_trigger = { LEARNER = scope:host }
+		}
+	}
+
+	weight = {
+		value = 2.5
+	}
+
+	effect = {
+		scope:host = { save_scope_as = passive_learn_learner }
+		scope:province.rite ?= { save_scope_as = passive_learn_rite }
+		custom_tooltip = apa_passive_religious_learning_pilgrimage_rite_tt
+		hidden_effect = {
+			passive_rite_learning_pilgrimage_rite_apply_effect = yes
+		}
+	}
+}

@@ -1,0 +1,114 @@
+﻿# Spread the Word - preach your personal tenet to the guests of an activity
+
+spread_personal_tenet_intent = {
+	icon = pious_intent
+
+	is_shown = {
+		has_dlc_feature = advanced_activities
+		has_pam_dlc_trigger = yes
+		is_adult = yes
+		has_perk = zealous_proselytizer_perk
+		is_christian_trigger = yes
+		any_personal_tenet = { always = yes }
+		NOT = { scope:special_option ?= flag:hunt_type_legendary }
+		OR = {
+			this = root.involved_activity.activity_host
+			is_clergy = yes
+			is_ai = no
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = spread_personal_tenet_intent_not_valid_desc
+			any_personal_tenet = { always = yes }
+		}
+	}
+
+	on_invalidated = {
+		trigger_event = activity_system.0090
+	}
+
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				is_clergy = yes
+				ai_zeal >= 25
+			}
+			add = 25
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = zealous
+					has_trait = theologian
+					has_trait = lifestyle_scholar
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = cynical
+					has_trait = shy
+				}
+			}
+			subtract = 100
+		}
+	}
+
+	scripted_animation = {
+		animation = preaching
+	}
+}
+
+# Praise the Gods - seek religious insight through communal feast rites
+praise_the_gods_intent = {
+	icon = pious_intent
+
+	is_shown = {
+		has_dlc_feature = advanced_activities
+		is_adult = yes
+		has_personal_tenet_flag = tenet_ritual_celebrations_praise_the_gods
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = praise_the_gods_intent_not_valid_desc
+			has_personal_tenet_flag = tenet_ritual_celebrations_praise_the_gods
+		}
+	}
+
+	on_invalidated = {
+		trigger_event = activity_system.0090
+	}
+
+	ai_will_do = {
+		value = 25
+		if = {
+			limit = {
+				OR = {
+					has_trait = zealous
+					has_trait = theologian
+					has_trait = lifestyle_scholar
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = cynical
+					has_trait = shy
+				}
+			}
+			subtract = 25
+		}
+	}
+
+	scripted_animation = {
+		animation = prayer_standing
+	}
+}

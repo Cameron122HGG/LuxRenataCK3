@@ -1,0 +1,150 @@
+﻿######################
+### SPREAD THE WORD ACTIVITY PULSE ACTIONS
+######################
+
+apa_pam_spread_tenet_host = {
+	icon = learning
+
+	is_valid = {
+		is_current_phase_active = yes
+		scope:host = {
+			is_available_travelling_adult = yes
+			has_activity_intent = spread_personal_tenet_intent
+		}
+		any_attending_character = {
+			pam_spread_tenet_apa_listener_trigger = { PREACHER = scope:host }
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {
+		scope:host = { save_scope_as = first }
+		random_attending_character = {
+			limit = {
+				pam_spread_tenet_apa_listener_trigger = { PREACHER = scope:first }
+			}
+			save_scope_as = second
+		}
+		scope:first = {
+			faith.main_rite = { save_temporary_scope_as = pam_spread_apa_rite }
+			random_personal_tenet = {
+				limit = {
+					save_temporary_scope_as = pam_spread_apa_tenet
+					scope:pam_spread_apa_rite = {
+						NOT = {
+							has_tenet_status = {
+								tenet = scope:pam_spread_apa_tenet
+								status = prohibited
+							}
+						}
+					}
+					scope:second = {
+						pam_spread_tenet_listener_trigger = {
+							PREACHER = scope:first
+							TENET = scope:pam_spread_apa_tenet
+						}
+					}
+				}
+				save_scope_as = pam_spread_apa_spread_tenet
+			}
+		}
+		add_activity_log_entry = {
+			key = apa_pam_spread_tenet_host
+			tags = { pulse_action }
+			character = scope:first
+			scope:second = {
+				pam_replace_personal_tenet_effect = { TENET = scope:pam_spread_apa_spread_tenet }
+			}
+			scope:first = {
+				pam_spread_tenet_flat_popularity_once_effect = { TENET = scope:pam_spread_apa_spread_tenet }
+				change_spiritual_fulfillment = miniscule_spiritual_fulfillment_value
+			}
+		}
+	}
+}
+
+apa_pam_spread_tenet_guest = {
+	icon = learning
+
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			this != scope:host
+			is_ai = no
+			is_available_travelling_adult = yes
+			has_activity_intent = spread_personal_tenet_intent
+			save_temporary_scope_as = pam_spread_apa_preacher
+			scope:activity = {
+				any_attending_character = {
+					pam_spread_tenet_apa_listener_trigger = { PREACHER = scope:pam_spread_apa_preacher }
+				}
+			}
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {
+		random_attending_character = {
+			limit = {
+				this != scope:host
+				is_ai = no
+				is_available_travelling_adult = yes
+				has_activity_intent = spread_personal_tenet_intent
+				save_temporary_scope_as = pam_spread_apa_preacher
+				scope:activity = {
+					any_attending_character = {
+						pam_spread_tenet_apa_listener_trigger = { PREACHER = scope:pam_spread_apa_preacher }
+					}
+				}
+			}
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+				pam_spread_tenet_apa_listener_trigger = { PREACHER = scope:first }
+			}
+			save_scope_as = second
+		}
+		scope:first = {
+			faith.main_rite = { save_temporary_scope_as = pam_spread_apa_rite }
+			random_personal_tenet = {
+				limit = {
+					save_temporary_scope_as = pam_spread_apa_tenet
+					scope:pam_spread_apa_rite = {
+						NOT = {
+							has_tenet_status = {
+								tenet = scope:pam_spread_apa_tenet
+								status = prohibited
+							}
+						}
+					}
+					scope:second = {
+						pam_spread_tenet_listener_trigger = {
+							PREACHER = scope:first
+							TENET = scope:pam_spread_apa_tenet
+						}
+					}
+				}
+				save_scope_as = pam_spread_apa_spread_tenet
+			}
+		}
+		add_activity_log_entry = {
+			key = apa_pam_spread_tenet_guest
+			tags = { pulse_action }
+			character = scope:first
+			scope:second = {
+				pam_replace_personal_tenet_effect = { TENET = scope:pam_spread_apa_spread_tenet }
+			}
+			scope:first = {
+				pam_spread_tenet_flat_popularity_once_effect = { TENET = scope:pam_spread_apa_spread_tenet }
+				change_spiritual_fulfillment = miniscule_spiritual_fulfillment_value
+			}
+		}
+	}
+}

@@ -1,0 +1,72 @@
+﻿############################################
+# Extracted saint relics - artifact template
+# pam_saint_relic_template
+############################################
+
+# var:pam_saint_relic_saint is set at extraction
+pam_saint_relic_template = {
+	can_equip = {
+		always = yes
+	}
+
+	can_benefit = {
+		# One readable line; the has_variable guard stays inside so the raw variable check isn't shown.
+		custom_description = {
+			text = pam_saint_relic_benefit_faith_tt
+			# subject exposes the buried saint to the loc as CHARACTER.
+			subject = scope:artifact.var:pam_saint_relic_saint
+			scope:artifact = { has_variable = pam_saint_relic_saint }
+			faith.religion = scope:artifact.var:pam_saint_relic_saint.religion
+		}
+	}
+
+	is_holy_relic = {
+		custom_description = {
+			subject = scope:artifact.var:pam_saint_relic_saint
+			text = pam_saint_relic_benefit_faith_tt
+
+			scope:artifact = { has_variable = pam_saint_relic_saint	}
+			religion = scope:artifact.var:pam_saint_relic_saint.religion
+		}
+	}
+
+	fallback = {
+		court_grandeur_baseline_add = 3
+	}
+
+	unique = yes
+}
+
+############################################
+# Holy Myron ampulla - artifact template
+# pam_holy_myron_template
+############################################
+
+# Charges come from var:pam_holy_myron_charges, and the last charge destroys the vessel
+pam_holy_myron_template = {
+	can_equip = {
+		always = yes
+	}
+
+	can_benefit = {
+		is_christian_trigger = yes
+	}
+
+	can_reforge = {
+		always = no
+	}
+
+	can_repair = {
+		always = no
+	}
+
+	fallback = {
+		monthly_prestige = 0.1
+	}
+
+	ai_score = {
+		value = 100
+	}
+
+	unique = yes
+}

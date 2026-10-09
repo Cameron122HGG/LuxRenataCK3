@@ -1,0 +1,89 @@
+﻿suggestion_sanctify_artifact = {
+	weight = {
+		base = 0
+
+		modifier = {
+			add = 0.5
+			piety_level >= 2
+			short_term_gold >= major_gold_value
+			any_character_artifact = {
+				rarity_level >= masterwork
+				NOT = { is_sanctified_for_faith = root.faith }
+			}
+			OR = {
+				exists = faith.religious_head
+				cp:councillor_court_chaplain ?= {
+					this != root
+					faith = root.faith
+				}
+			}
+		}
+
+		modifier = {
+			add = 0.5
+			piety_level >= 4
+		}
+	}
+
+	check_create_suggestion = {
+		if = {
+			limit = {
+				exists = faith.religious_head
+				faith.religious_head ?= { this != root }
+			}
+			try_create_suggestion = {
+				suggestion_type = suggestion_sanctify_artifact
+				actor = root
+				recipient = faith.religious_head
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { exists = faith.religious_head }
+				cp:councillor_court_chaplain ?= {
+					this != root
+					faith = root.faith
+				}
+			}
+			try_create_suggestion = {
+				suggestion_type = suggestion_sanctify_artifact
+				actor = root
+				recipient = cp:councillor_court_chaplain
+			}
+		}
+	}
+
+	effect = {
+		open_interaction_window = {
+			interaction = sanctify_artifact_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+
+	score = {
+		base = 50
+
+		modifier = {
+			add = 25
+			scope:actor.piety_level >= 4
+		}
+	}
+
+	is_valid = {
+		scope:actor = {
+			is_alive = yes
+			faith = scope:recipient.faith
+			piety_level >= 2
+			any_character_artifact = {
+				NOT = { is_sanctified_for_faith = scope:actor.faith }
+				sanctify_artifact_is_eligible_trigger = {
+					RITE = scope:actor.rite
+				}
+			}
+		}
+		scope:recipient = {
+			is_alive = yes
+		}
+	}
+}

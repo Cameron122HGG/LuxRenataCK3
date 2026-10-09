@@ -1,0 +1,46 @@
+﻿######################
+### MENDICANT PREACHERS PERSONAL TENET PULSE ACTIONS
+######################
+
+apa_pam_mendicant_preachers_conversion = {
+	icon = piety
+
+	is_valid = {
+		is_current_phase_active = yes
+		scope:host = {
+			has_personal_tenet_flag = tenet_mendicant_preachers_activity_guest_conversion
+		}
+		any_attending_character = {
+			pam_mendicant_preachers_apa_convert_trigger = { PREACHER = scope:host }
+		}
+	}
+
+	weight = {
+		value = 0.1
+	}
+
+	effect = {
+		scope:host = { save_scope_as = first }
+		random_attending_character = {
+			limit = {
+				pam_mendicant_preachers_apa_convert_trigger = { PREACHER = scope:first }
+			}
+			save_scope_as = second
+		}
+
+		add_activity_log_entry = {
+			key = apa_pam_mendicant_preachers_conversion
+			tags = { pulse_action }
+			character = scope:first
+			target = scope:second
+
+			scope:second = {
+				set_character_faith_with_conversion = scope:first.faith
+			}
+			scope:first = {
+				add_piety = medium_piety_gain
+				change_spiritual_fulfillment = minor_spiritual_fulfillment_value
+			}
+		}
+	}
+}

@@ -1,0 +1,47 @@
+# Inventory slot types
+
+slot_type_key = {
+
+	# Slot flag
+	# several slot types can share the same flag - like several pedestal slots, or trinkets
+	# Not required if `allow_any_type_or_category = yes`
+	#
+	type = helmet
+
+	# Allow any type of artifact or artifact category to potentially be equipped in slot.
+	# (only the 'can_equip' and 'can_enshrine_holy_site' triggers will be relevant)
+	allow_any_type_or_category = yes
+
+	# Slot category
+	# Supported values: inventory, court
+	#
+	category = inventory
+
+	# Slot icon key
+	# Only needed when icon name should be different from current slot_type_key
+	#
+	icon = fancy_trinket
+
+	# Holy-site flag
+	# If enabled this slot lives in a holy-site inventory (rather than a character's).
+	#
+	holy_site = no
+
+	# Slot availability trigger
+	# Can be empty - meaning slot always available
+	# Checked when equipping the artifact, and on a monthly basis to remove unavailable artifacts
+	# Root: character
+	#
+	available = {
+		trigger = yes
+	}
+
+	# Holy-site availability trigger
+	# Optional. Same idea as `available`, but evaluated in HOLY_SITE scope. Used
+	# only by slots flagged `holy_site = yes`.
+	# Root: holy_site
+	#
+	available_holy_site = {
+		trigger = yes
+	}
+}

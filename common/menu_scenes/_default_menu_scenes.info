@@ -1,0 +1,38 @@
+﻿# Defines the character portraits, animations, and background shown on the main
+# menu (frontend) scene. The highest-priority entry whose dlc_feature is active
+# is chosen; a fallback entry (no dlc_feature, priority 0) is used otherwise.
+# General fallbacks: the DEFAULT_MAIN/HEIR/SECONDARY_BOOKMARK_CHARACTER in 00_graphics.txt
+# and the other defines for DEFAULT (animations, background)
+# 
+# Database folder: common/menu_scenes
+# 
+# == Structure ==
+# 
+# The key is used together with the "main"/"heir"/"secondary" slots to look up
+# the bookmark portraits, so it must be unique per entry.
+example_scene = {
+
+	# Optional. DLC feature flag that must be active for this scene to be
+	# selected. Omit it for the fallback scene.
+	dlc_feature = all_under_heaven
+
+	# Bookmark portrait shown in the main (center) slot.
+	main = bookmark_china_867_gao_pian
+	# Optional. Portrait animation played for the main character.
+	animation_main = "personality_honorable"
+
+	# Bookmark portrait shown in the heir (right) slot.
+	heir = bookmark_china_1066_qin_guan
+	animation_heir = "personality_forgiving"
+
+	# Bookmark portrait shown in the secondary (left) slot.
+	secondary = bookmark_china_1178_zhu_xi
+	animation_secondary = "minister_works"
+
+	# Background texture for the scene, relative to gfx/interface/illustrations.
+	background = "main_menu/tgp_frontend_celestial.dds"
+
+	# Optional. Higher-priority scenes win when several are valid. Defaults to
+	# 0; keep the fallback scene at priority 0.
+	priority = 10
+}

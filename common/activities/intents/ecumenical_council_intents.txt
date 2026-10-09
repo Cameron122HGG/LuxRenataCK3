@@ -1,0 +1,279 @@
+﻿# Piety
+spiritual_intent_host = {
+	icon = spiritual_intent
+
+	auto_complete = yes
+
+	is_shown = {
+		#Default Ecumenical Council host intent
+	}
+
+	on_invalidated = {
+		trigger_event = activity_system.0090
+	}
+
+	ai_will_do = {
+		value = 1
+		add = {
+			value = piety_level
+			multiply = 10
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = zealous
+					has_trait = calm
+					has_trait = patient
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = cynical
+					has_trait = impatient
+					has_trait = arrogant
+				}
+			}
+			subtract = 100
+		}
+	}
+
+	scripted_animation = {
+		animation = prayer_standing
+	}
+}
+
+spiritual_intent = {
+	icon = spiritual_intent
+
+	auto_complete = yes
+
+	is_shown = {
+		#Default Ecumenical Council intent
+	}
+
+	on_invalidated = {
+		trigger_event = activity_system.0090
+	}
+
+	ai_will_do = {
+		value = 1
+		add = {
+			value = piety_level
+			multiply = 10
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = zealous
+					has_trait = calm
+					has_trait = patient
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = cynical
+					has_trait = impatient
+					has_trait = arrogant
+				}
+			}
+			subtract = 100
+		}
+	}
+
+	scripted_animation = {
+		animation = prayer_standing
+	}
+}
+
+# Fervor
+fervor_intent = {
+	icon = fervor_intent
+
+	auto_complete = yes
+
+	is_shown = {
+		# Always
+	}
+
+	on_invalidated = {
+		trigger_event = activity_system.0090
+	}
+
+	ai_will_do = {
+		value = 0
+		add = ai_boldness
+		if = {
+			limit = {
+				OR = {
+					has_trait = crusader_king
+					has_trait = holy_warrior
+					has_personal_tenet = tenet_miles_christi
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = temperate
+					has_trait = compassionate
+					has_trait = calm
+				}
+			}
+			subtract = 100
+		}
+	}
+
+	scripted_animation = {
+		animation = preaching
+	}
+}
+
+# Increases your Appointment score
+clerical_appointment_intent = { 
+	icon = clerical_appointment_intent
+
+	is_shown = {
+		any_pretender_title = {
+			holder ?= {
+				government_has_flag = government_is_ecclesiastical
+			}
+			place_in_line_of_succession = {
+				target = root
+				value <= 4
+			}
+			# Archbishoprics cannot be sidegraded onto another archbishopric.
+			trigger_if = {
+				limit = { has_clerical_region = yes }
+				root = {
+					any_held_title = {
+						count = all
+						has_clerical_region = no
+					}
+				}
+			}
+		}
+	}
+
+	on_invalidated = {
+		trigger_event = activity_system.0090
+	}
+
+	ai_will_do = {
+		value = 1
+		add = intrigue
+		if = {
+			limit = {
+				OR = {
+					has_trait = ambitious
+					has_trait = greedy
+					has_trait = callous
+					has_trait = deceitful
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = just
+					has_trait = humble
+					has_trait = honest
+				}
+			}
+			subtract = 100
+		}
+	}
+
+	scripted_animation = {
+		animation = scheme
+	}
+}
+
+# Alliance Intent
+alliance_intent = {
+	icon = alliance_intent
+	
+	is_shown = {
+		is_clergy = no
+	}
+	
+	on_invalidated = {
+		trigger_event = activity_system.0090
+	}
+
+	ai_targets = {
+		ai_recipients = liege
+		ai_recipients = head_of_faith
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		max = 5
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 5
+	}
+	ai_targets = {
+		ai_recipients = activity_guests
+		max = 5
+	}
+
+	is_target_valid = {
+		scope:target ?= {
+			is_ai = yes
+			is_playable_character = yes
+			is_clergy = no
+			NOT = { is_allied_to = root }
+		}
+	}
+
+	on_target_invalidated = {
+		trigger_event = activity_system.0091
+	}
+
+	ai_will_do = {
+		value = 1
+		add = {
+			value = root.diplomacy
+			multiply = 3
+		}
+		if = {
+			limit = {
+				OR = {
+					has_lifestyle = diplomacy_lifestyle
+					has_trait = ambitious
+					has_trait = diplomat
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = paranoid
+					has_trait = shy
+				}
+			}
+			subtract = 100
+		}
+	}
+
+	ai_target_score = {
+		value = 1
+		if = {
+			limit = { has_relation_rival = scope:target }
+			add = -1000
+		}
+	}
+
+	scripted_animation = {
+		animation = chancellor
+	}
+}
