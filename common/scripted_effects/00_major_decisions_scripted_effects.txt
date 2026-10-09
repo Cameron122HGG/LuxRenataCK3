@@ -479,7 +479,7 @@ split_byzantine_empire_effect = {
 						title:k_syria ?= this
 						title:k_jerusalem ?= this
 						title:k_cyprus ?= this
-						title:k_jazira ?= this
+						title:k_nineveh ?= this
 						title:k_mesopotamia ?= this
 						title:k_arabia ?= this
 						title:k_yemen ?= this
@@ -605,7 +605,7 @@ split_byzantine_empire_effect = {
 						OR = {
 							title:k_syria ?= this
 							title:k_jerusalem ?= this
-							title:k_jazira ?= this
+							title:k_nineveh ?= this
 							title:k_mesopotamia ?= this
 							title:k_arabia ?= this
 							title:k_yemen ?= this
@@ -1073,7 +1073,7 @@ restore_papacy_scripted_effect = {
 			change = scope:change
 		}
 	}
-	title:d_spoleto = {
+	title:d_valeria = {
 		change_title_holder = {
 			holder = scope:new_pope
 			change = scope:change
@@ -1304,7 +1304,7 @@ form_austria_scripted_effect = {
 			NOR = {
 				title:d_slavonia.de_jure_liege = scope:previous_kingdom
 				title:d_croatia.de_jure_liege = scope:previous_kingdom
-				title:d_friuli.de_jure_liege = scope:previous_kingdom
+				title:d_histria.de_jure_liege = scope:previous_kingdom
 			}
 			#Check d_carinthia separately, since before the effect is run (i.e., in the decision tooltip) its liege will still be scope:previous_kingdom.
 			completely_controls = title:d_carinthia
@@ -1333,7 +1333,7 @@ form_austria_scripted_effect = {
 			#Cannot border any other part of the former kingdom.
 			NOR = {
 				title:d_croatia.de_jure_liege = scope:previous_kingdom
-				title:d_friuli.de_jure_liege = scope:previous_kingdom
+				title:d_histria.de_jure_liege = scope:previous_kingdom
 			}
 			#Check d_krain separately, since before the effect is run (i.e., in the decision tooltip) its liege will still be scope:previous_kingdom.
 			completely_controls = title:d_carinthia
@@ -1474,7 +1474,7 @@ form_carolingian_empire_scripted_effect = {
 		title:k_east_francia = { set_de_jure_liege_title = title:e_france }
 		title:k_italy = { set_de_jure_liege_title = title:e_france }
 		title:k_navarra = { set_de_jure_liege_title = title:e_france }
-		title:k_aragon = { set_de_jure_liege_title = title:e_france }
+		title:k_visigoths = { set_de_jure_liege_title = title:e_france }
 		if = {
 			limit = {
 				OR = {
@@ -2022,7 +2022,7 @@ sicilian_parliament_kingdom_split_scripted_effect = { #If the decision is taken 
 	title:d_sicily = {
 		set_de_jure_liege_title = title:k_trinacria
 	}
-	title:d_benevento = {
+	title:d_samnium = {
 		set_de_jure_liege_title = title:k_naples
 	}
 	title:d_capua = {
@@ -2413,7 +2413,7 @@ restore_dumnonia_decision_scripted_effect = {
 		save_scope_as = title_change
 		add_claim_on_loss = no
 	}
-	title:k_cornwall = {
+	title:k_petty_dumnonia = {
 		change_title_holder = {
 			holder = root
 			change = scope:title_change
@@ -2422,20 +2422,20 @@ restore_dumnonia_decision_scripted_effect = {
 	resolve_title_and_vassal_change = scope:title_change
 
 	hidden_effect = {
-		title:d_somerset = { save_scope_as = cornwall_somerset }
+		title:d_belagrum = { save_scope_as = cornwall_somerset }
 		title:d_gloucester = { save_scope_as = cornwall_gloucester }
-		title:d_cornwall = { set_de_jure_liege_title = title:k_cornwall }
+		title:d_cornwall = { set_de_jure_liege_title = title:k_petty_dumnonia }
 		if = {	#If owned, annex Somerset/Wessex.
 			limit = {
-				title:d_somerset = { holder = root }
+				title:d_belagrum = { holder = root }
 			}
-			title:d_somerset = { set_de_jure_liege_title = title:k_cornwall }
+			title:d_belagrum = { set_de_jure_liege_title = title:k_petty_dumnonia }
 		}
 		if = {	#If owned, annex Gloucestershire/Hwicce.
 			limit = {
 				title:d_gloucester = { holder = root }
 			}
-			title:d_gloucester = { set_de_jure_liege_title = title:k_cornwall }
+			title:d_gloucester = { set_de_jure_liege_title = title:k_petty_dumnonia }
 		}
 	}
 	custom_tooltip = restore_dumnonia_decision_effects_de_jure_tt
@@ -2514,7 +2514,7 @@ revive_armenian_empire_decision_scripted_effect = {
 		title:k_armenia = { save_scope_as = armenian_armenia }
 		title:k_georgia = { save_scope_as = armenian_georgia }
 		title:k_daylam = { save_scope_as = armenian_daylam }
-		title:k_jazira = { save_scope_as = armenian_jazira }
+		title:k_nineveh = { save_scope_as = armenian_jazira }
 		title:k_syria = { save_scope_as = armenian_syria }
 		title:k_jerusalem = { save_scope_as = armenian_jerusalem }
 		title:k_anatolia = { save_scope_as = armenian_anatolia }
@@ -2661,19 +2661,19 @@ revive_armenian_empire_decision_scripted_effect = {
 		}
 		if = {	#If owned & de jure has not drifted, annex Jazira & exempt Diyarbakr from de jure flipping to Armenia.
 			limit = {
-				title:k_jazira = { holder = root  }
-				title:d_diyarbakr = {	target_is_de_jure_liege_or_above = title:k_jazira }
+				title:k_nineveh = { holder = root  }
+				title:d_diyarbakr = {	target_is_de_jure_liege_or_above = title:k_nineveh }
 			}
-			title:k_jazira = { set_de_jure_liege_title = title:e_armenia }
+			title:k_nineveh = { set_de_jure_liege_title = title:e_armenia }
 		}
 		else_if = {	#If owned & de jure has drifted, annex Jazira & flip Diyarbakr to Armenia.
 			limit = {
-				title:k_jazira = { holder = root  }
+				title:k_nineveh = { holder = root  }
 				NOT = {
-					title:d_diyarbakr = {	target_is_de_jure_liege_or_above = title:k_jazira }
+					title:d_diyarbakr = {	target_is_de_jure_liege_or_above = title:k_nineveh }
 				}
 			}
-			title:k_jazira = { set_de_jure_liege_title = title:e_armenia }
+			title:k_nineveh = { set_de_jure_liege_title = title:e_armenia }
 			title:d_diyarbakr = { set_de_jure_liege_title = title:k_armenia }
 		}
 		else = {
@@ -2721,20 +2721,20 @@ revive_armenian_empire_decision_scripted_effect = {
 		}
 		if = {	#If owned & Kurdistan is already part of Jazira, annex Jazira & exempt Kurdistan from de jure flipping to Armenia.
 			limit = {
-				title:k_jazira = { holder = root  }
-				title:d_kurdistan = { target_is_de_jure_liege_or_above = title:k_jazira }
+				title:k_nineveh = { holder = root  }
+				title:d_kurdistan = { target_is_de_jure_liege_or_above = title:k_nineveh }
 			}
-			title:k_jazira = { set_de_jure_liege_title = title:e_armenia }
+			title:k_nineveh = { set_de_jure_liege_title = title:e_armenia }
 		}
 		else_if = {	#If owned & Kurdistan is not part of Jazira, but Jazira is owned entirely, annex Jazira & flip Kurdistan to Jazira, because bordergore.
 			limit = {
-				title:k_jazira = { holder = root  }
+				title:k_nineveh = { holder = root  }
 				NOT = {
-					title:d_kurdistan = { target_is_de_jure_liege_or_above = title:k_jazira }
+					title:d_kurdistan = { target_is_de_jure_liege_or_above = title:k_nineveh }
 				}
 			}
-			title:k_jazira = { set_de_jure_liege_title = title:e_armenia }
-			title:d_kurdistan = { set_de_jure_liege_title = title:k_jazira }
+			title:k_nineveh = { set_de_jure_liege_title = title:e_armenia }
+			title:d_kurdistan = { set_de_jure_liege_title = title:k_nineveh }
 		}
 		else = {
 			title:d_kurdistan = { set_de_jure_liege_title = title:k_armenia }
