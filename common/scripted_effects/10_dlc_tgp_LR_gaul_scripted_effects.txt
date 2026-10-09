@@ -3,7 +3,7 @@
 	save_scope_as = new_head
 	# Dynasty
 	if = {
-		limit = { LR_tgp_gaul_cadet_creates_dynasty_trigger = yes }
+		limit = { LR_tgp_sacral_gaul_cadet_creates_dynasty_trigger = yes }
 		if = {
 			limit = { exists = var:new_sacral_house_name }
 			create_dynasty = {
@@ -84,7 +84,7 @@
 					target = root
 				}
 			}
-			trigger_event = LR_tgp_gaul_decision.9005
+			trigger_event = LR_tgp_sacral_gaul_decision.9005
 		}
 	}
 	# Crime to Regent
@@ -110,7 +110,7 @@
 			hidden_effect = {
 				send_interface_message = {
 					type = event_toast_effect_bad
-					title = LR_tgp_gaul_establish_house_fief_sacral_majordomo_toast
+					title = LR_tgp_sacral_gaul_establish_house_fief_sacral_majordomo_toast
 					left_icon = scope:new_head
 					right_icon = scope:new_head.primary_title
 					show_as_tooltip = {
@@ -163,7 +163,7 @@ sacral_set_house_effect = {
 	$NEW_HOUSE$ = { save_scope_as = new_house }
 	set_house = scope:new_house
 	custom_tooltip = {
-		text = LR_tgp_gaul_establish_house_fief_direct_descendents_effect
+		text = LR_tgp_sacral_gaul_establish_house_fief_direct_descendents_effect
 		if = {
 			limit = { exists = $NEW_HOUSE$ }
 			set_house_of_all_descendants_effect = {
@@ -582,7 +582,7 @@ restore_ceremonial_liege_faction_combined_effect = {
 	}
 	show_as_tooltip = { restore_ceremonial_liege_faction_reward_effect = yes }
 	# Event for Ceremonial Liege
-	scope:ceremonial_liege_temp = { trigger_event = LR_tgp_gaul_decision.9301 }
+	scope:ceremonial_liege_temp = { trigger_event = LR_tgp_sacral_gaul_decision.9301 }
 }
 
 restore_ceremonial_liege_faction_reward_effect = {
@@ -722,7 +722,7 @@ faction_demand_regent_transfer_effect = {
 	}
 }
 
-LR_tgp_gaul_schoolhouse_education_boost_effect = {
+LR_tgp_sacral_gaul_schoolhouse_education_boost_effect = {
 	save_scope_as = student
 	house.house_head.domicile ?= {
 		if = {
@@ -775,7 +775,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		}
 		else_if = {
 			limit = {
-				scope:last_sacral_king_gaul ?= { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
+				scope:last_sacral_king_gaul ?= { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 			}
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
@@ -786,7 +786,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		else_if = {
 			limit = {
 				scope:last_sacral_king_gaul ?= {
-					any_child = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
+					any_child = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
 			if = { # Avoid display of short tooltips after creation
@@ -795,7 +795,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 			}
 			scope:last_sacral_king_gaul = {
 				ordered_child = {
-					limit = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
+					limit = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
 					save_scope_as = scion
 				}
@@ -804,7 +804,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		else_if = {
 			limit = {
 				scope:last_sacral_king_gaul ?= {
-					any_close_family_member = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
+					any_close_family_member = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
 			if = { # Avoid display of short tooltips after creation
@@ -813,7 +813,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 			}
 			scope:last_sacral_king_gaul = {
 				ordered_close_family_member = {
-					limit = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
+					limit = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
 					save_scope_as = scion
 				}
@@ -869,7 +869,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 }
 
 LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
-	add_character_flag = LR_tgp_gaul_restore_sacral_monarchy_flag
+	add_character_flag = LR_tgp_sacral_gaul_restore_sacral_monarchy_flag
 	if = {
 		limit = { exists = scope:scion }
 		if = {
@@ -906,7 +906,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
 		}
 		resolve_title_and_vassal_change = scope:change
 	}
-	remove_character_flag = LR_tgp_gaul_restore_sacral_monarchy_flag
+	remove_character_flag = LR_tgp_sacral_gaul_restore_sacral_monarchy_flag
 	hidden_effect = {
 		scope:scion = {
 			if = {
@@ -975,7 +975,7 @@ LR_tgp_restore_sacral_government_decision_effect = {
 	sacral_clear_flavour_flags_effect = yes
 	save_scope_as = sacral_majordomo
 	save_scope_as = background_throne_room_scope
-	add_character_flag = LR_tgp_gaul_restore_sacral_government_flag
+	add_character_flag = LR_tgp_sacral_gaul_restore_sacral_government_flag
 	# Change government if relevant
 	change_government = sacral_administrative_government
 	if = {
@@ -995,7 +995,7 @@ LR_tgp_restore_sacral_government_decision_effect = {
 	}
 	if = {
 		limit = { NOT = { exists = scope:vassal } }
-		custom_tooltip = LR_tgp_gaul_restore_sacral_government_decision_civil_war_tt
+		custom_tooltip = LR_tgp_sacral_gaul_restore_sacral_government_decision_civil_war_tt
 	}
 	hidden_effect = {
 		ordered_powerful_vassal = {
@@ -1047,19 +1047,19 @@ LR_tgp_restore_sacral_government_decision_effect = {
 		}
 	}
 	custom_tooltip = {
-		text = LR_tgp_gaul_restore_sacral_government_decision_vassal_tt
+		text = LR_tgp_sacral_gaul_restore_sacral_government_decision_vassal_tt
 		every_vassal_or_below = {
 			limit = {
 				primary_title.tier >= tier_county
 				culture = { has_same_culture_heritage = scope:sacral_majordomo.culture }
 			}
 			trigger_event = {
-				id = LR_tgp_gaul_decision.9912
+				id = LR_tgp_sacral_gaul_decision.9912
 				delayed = yes
 			}
 		}
 	}
-	remove_character_flag = LR_tgp_gaul_restore_sacral_government_flag
+	remove_character_flag = LR_tgp_sacral_gaul_restore_sacral_government_flag
 }
 
 LR_tgp_destroy_ceremonial_throne_effect = {
@@ -1151,7 +1151,7 @@ LR_tgp_destroy_ceremonial_liege_title_effect = {
 	}
 }
 
-LR_tgp_gaul_demand_administrative_refusal_effect = {
+LR_tgp_sacral_gaul_demand_administrative_refusal_effect = {
 	if = {
 		limit = {
 			scope:actor = { government_has_flag = government_is_sacral_administrative }
@@ -1320,7 +1320,7 @@ LR_tgp_restore_palatine_civil_war_effect = {
 			}
 			$REBEL$ = { save_scope_as = recipient }
 			$LIEGE$ = { save_scope_as = actor }
-			trigger_event = LR_tgp_gaul_decision.9913
+			trigger_event = LR_tgp_sacral_gaul_decision.9913
 		}
 	}
 }
@@ -1521,7 +1521,7 @@ LR_tgp_liege_change_bloc_management_effect = {
 	}
 }
 
-LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
+LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_effect = {
 	save_scope_as = super_manorial
 	scope:super_manorial.primary_title.duchy ?= { save_scope_as = title_scope }
 	# Crime to sacral_majordomo
@@ -1532,13 +1532,13 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 		# Message for attacker
 		send_interface_toast = {
 			type = event_war_bad
-			title = LR_tgp_gaul_manorial_war_is_crime_title
+			title = LR_tgp_sacral_gaul_manorial_war_is_crime_title
 			left_icon = top_liege
 			right_icon = scope:title_scope
 			top_liege = {
 				send_interface_toast = {
 					type = event_war_bad
-					title = LR_tgp_gaul_manorial_war_is_crime_sacral_majordomo_title
+					title = LR_tgp_sacral_gaul_manorial_war_is_crime_sacral_majordomo_title
 					left_icon = scope:super_manorial
 					right_icon = scope:title_scope
 					add_opinion = {
@@ -1699,7 +1699,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 				limit = {
 					is_ai = no
 				}
-				trigger_event = LR_tgp_gaul_decision.9963
+				trigger_event = LR_tgp_sacral_gaul_decision.9963
 			}
 		}
 		if = {
@@ -1745,7 +1745,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 		custom_tooltip = super_manorial_potential_peaceful
 	}
 	else = {
-		scope:title_scope = { LR_tgp_gaul_assert_regional_dominance_war_outcome_effect = yes }
+		scope:title_scope = { LR_tgp_sacral_gaul_assert_regional_dominance_war_outcome_effect = yes }
 		add_dread = 15
 		add_legitimacy = 50
 		dynasty = { add_dynasty_prestige = 150 }
@@ -1753,7 +1753,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 	}
 }
 
-LR_tgp_gaul_assert_regional_dominance_war_outcome_effect = {
+LR_tgp_sacral_gaul_assert_regional_dominance_war_outcome_effect = {
 	create_title_and_vassal_change = {
 		type = created
 		save_scope_as = change
@@ -1814,7 +1814,7 @@ LR_tgp_set_minamoto_taira_dynasty_prestige_effect = {
 	}
 }
 
-LR_tgp_gaul_manorial_eradicate_cb_transfer_effect = {
+LR_tgp_sacral_gaul_manorial_eradicate_cb_transfer_effect = {
 	scope:loser = {
 		every_held_title = {
 			limit = {
@@ -2225,6 +2225,6 @@ LR_tgp_sacral_policy_event_effect = {
 	save_scope_as = liege
 	every_player = {
 		limit = { top_liege = scope:liege }
-		trigger_event = LR_tgp_gaul_general.9300
+		trigger_event = LR_tgp_sacral_gaul_general.9300
 	}
 }

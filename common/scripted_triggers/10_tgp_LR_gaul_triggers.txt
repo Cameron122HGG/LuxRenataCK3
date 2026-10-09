@@ -54,7 +54,7 @@ LR_can_keep_sacral_regency_succession_law_trigger = {
 	}
 }
 
-LR_tgp_gaul_any_descendants_are_governors = {
+LR_tgp_sacral_gaul_any_descendants_are_governors = {
 	# A direct descendant is currently a Governor
 	any_child = { # Children
 		OR = {
@@ -76,7 +76,7 @@ LR_tgp_gaul_any_descendants_are_governors = {
 	}
 }
 
-LR_tgp_gaul_any_liege_or_above_is_descendant = {
+LR_tgp_sacral_gaul_any_liege_or_above_is_descendant = {
 	any_liege_or_above = {
 		is_liege_or_above_of = root
 		OR = {
@@ -87,7 +87,7 @@ LR_tgp_gaul_any_liege_or_above_is_descendant = {
 	}
 }
 
-LR_tgp_gaul_is_a_previous_title_holder_trigger = {
+LR_tgp_sacral_gaul_is_a_previous_title_holder_trigger = {
 	save_temporary_scope_as = previous_holder_compare
 	$TITLE$ ?= {
 		# Easy out
@@ -104,7 +104,7 @@ LR_tgp_gaul_is_a_previous_title_holder_trigger = {
 
 # Filter out dynasties of Emperors further away from you
 # e.g. your father's brother's son
-LR_tgp_gaul_target_shares_nearest_related_title_holder_trigger = {
+LR_tgp_sacral_gaul_target_shares_nearest_related_title_holder_trigger = {
 	trigger_if = {
 		limit = {
 			any_parent = {
@@ -129,7 +129,7 @@ LR_tgp_gaul_target_shares_nearest_related_title_holder_trigger = {
 	trigger_else = { is_great_grandchild_of = $COMPARE$ }
 }
 
-LR_tgp_gaul_is_culture_or_descended_from_trigger = {
+LR_tgp_sacral_gaul_is_culture_or_descended_from_trigger = {
 	culture = {
 		OR = {
 			this = $CULTURE$
@@ -138,7 +138,7 @@ LR_tgp_gaul_is_culture_or_descended_from_trigger = {
 	}
 }
 
-LR_tgp_gaul_offensive_wars_ban_trigger = {
+LR_tgp_sacral_gaul_offensive_wars_ban_trigger = {
 	trigger_if = {
 		limit = {
 			exists = scope:defender.top_liege
@@ -156,7 +156,7 @@ LR_tgp_gaul_offensive_wars_ban_trigger = {
 	}
 }
 
-LR_tgp_gaul_is_ceremonial_liege_or_direct_heir_trigger = {
+LR_tgp_sacral_gaul_is_ceremonial_liege_or_direct_heir_trigger = {
 	save_temporary_scope_as = char_temp
 	top_liege.primary_title.var:administrative_ui_special_title ?= {
 		OR = {
@@ -174,7 +174,7 @@ LR_tgp_gaul_is_ceremonial_liege_or_direct_heir_trigger = {
 	}
 }
 
-LR_tgp_gaul_ceremonial_candidacy_restriction_trigger = {
+LR_tgp_sacral_gaul_ceremonial_candidacy_restriction_trigger = {
 	trigger_if = {
 		limit = {
 			exists = scope:target
@@ -224,7 +224,7 @@ LR_tgp_gaul_ceremonial_candidacy_restriction_trigger = {
 	}
 }
 
-LR_tgp_gaul_grant_titles_restriction_trigger = {
+LR_tgp_sacral_gaul_grant_titles_restriction_trigger = {
 	trigger_if = {
 		limit = {
 			$GRANTER$ ?= { tgp_realm_has_ceremonial_liege_trigger = yes }
@@ -237,7 +237,7 @@ LR_tgp_gaul_grant_titles_restriction_trigger = {
 	}
 }
 
-LR_tgp_gaul_ceremonial_title_revoke_restriction_trigger = {
+LR_tgp_sacral_gaul_ceremonial_title_revoke_restriction_trigger = {
 	trigger_if = {
 		limit = {
 			exists = scope:recipient.house
@@ -271,7 +271,7 @@ can_change_sacral_appointment_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 }
 
-LR_tgp_gaul_single_heir_succession_override_trigger = {
+LR_tgp_sacral_gaul_single_heir_succession_override_trigger = {
 	save_temporary_scope_as = holder_temp
 	OR = {
 		title:k_sacral_king_gaul_throne.holder ?= scope:holder_temp
@@ -347,7 +347,7 @@ gaul_house_name_trigger = {
 	}
 }
 
-LR_tgp_gaul_internal_manorial_war_is_crime_trigger = {
+LR_tgp_sacral_gaul_internal_manorial_war_is_crime_trigger = {
 	scope:defender = {
 		government_has_flag = government_is_sacral_administrative
 		top_liege = {
@@ -410,7 +410,7 @@ realm_law_use_sacral_policy_trigger = {
 	}
 }
 
-LR_tgp_gaul_defense_mobilization_valid_trigger = {
+LR_tgp_sacral_gaul_defense_mobilization_valid_trigger = {
 	custom_tooltip = {
 		text = defense_mobilization_law_valid_trigger
 		OR = {
@@ -445,7 +445,7 @@ LR_tgp_gaul_defense_mobilization_valid_trigger = {
 	}
 }
 
-LR_tgp_gaul_valid_restore_monarchy_scion_trigger = {
+LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = {
 	is_landed = no
 	can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:sacral_majordomo }
 	is_healthy = yes
@@ -466,14 +466,14 @@ LR_tgp_sacral_gaul_expansion_internal_peace_trigger = {
 	}
 }
 
-LR_tgp_gaul_install_regent_faction_target_valid_trigger = {
+LR_tgp_sacral_gaul_install_regent_faction_target_valid_trigger = {
 	is_independent_ruler = yes
 	tgp_realm_has_ceremonial_liege_trigger = yes
 }
 
-LR_tgp_gaul_install_regent_faction_can_create_trigger = {
+LR_tgp_sacral_gaul_install_regent_faction_can_create_trigger = {
 	has_tgp_dlc_trigger = yes
-	scope:target ?= { LR_tgp_gaul_install_regent_faction_target_valid_trigger = yes }
+	scope:target ?= { LR_tgp_sacral_gaul_install_regent_faction_target_valid_trigger = yes }
 	custom_tooltip = {
 		text = replace_ceremonial_regent_faction_admin_trigger
 		NOR = {
@@ -499,7 +499,7 @@ LR_tgp_gaul_install_regent_faction_can_create_trigger = {
 
 
 
-LR_tgp_gaul_restore_ceremonial_liege_faction_can_create_trigger = {
+LR_tgp_sacral_gaul_restore_ceremonial_liege_faction_can_create_trigger = {
 	tgp_realm_has_ceremonial_liege_trigger = yes
 	trigger_if = {
 		limit = { government_is_sacral_trigger = yes }
@@ -537,7 +537,7 @@ LR_tgp_gaul_restore_ceremonial_liege_faction_can_create_trigger = {
 	}
 }
 
-LR_tgp_gaul_ceremonial_claimant_faction_can_create_trigger = {
+LR_tgp_sacral_gaul_ceremonial_claimant_faction_can_create_trigger = {
 	scope:target ?= {
 		is_independent_ruler = yes
 		tgp_realm_has_ceremonial_liege_trigger = yes
@@ -555,19 +555,19 @@ sacral_policy_faction_can_create_trigger = {
 	japan_faction_cohesion_trigger = yes
 }
 
-LR_tgp_gaul_palatine_bloc_house_head_trigger = {
+LR_tgp_sacral_gaul_palatine_bloc_house_head_trigger = {
 	top_liege = root.top_liege
 	government_has_flag = government_is_sacral_administrative
 }
 
-LR_tgp_gaul_house_bloc_interaction_valid_trigger = {
+LR_tgp_sacral_gaul_house_bloc_interaction_valid_trigger = {
 	is_ruler = yes
 	tgp_uses_house_blocs_trigger = yes
 	highest_held_title_tier >= tier_county
 	top_liege = { tgp_uses_house_blocs_trigger = yes }
 }
 
-LR_tgp_gaul_house_bloc_interaction_valid_showing_failures_trigger = {
+LR_tgp_sacral_gaul_house_bloc_interaction_valid_showing_failures_trigger = {
 	custom_tooltip = {
 		text = tgp_house_bloc_house_head_tt
 		is_house_head = yes
@@ -575,7 +575,7 @@ LR_tgp_gaul_house_bloc_interaction_valid_showing_failures_trigger = {
 	}
 }
 
-LR_tgp_gaul_has_house_relation_level_trigger = {
+LR_tgp_sacral_gaul_has_house_relation_level_trigger = {
 	exists = $HOUSE_1_MEMBER$.house
 	exists = $HOUSE_2_MEMBER$.house
 	$HOUSE_1_MEMBER$.house != $HOUSE_2_MEMBER$.house
@@ -593,7 +593,7 @@ LR_tgp_gaul_has_house_relation_level_trigger = {
 #
 # root: possibly viable character
 #
-LR_tgp_gaul_should_join_house_bloc_trigger = {
+LR_tgp_sacral_gaul_should_join_house_bloc_trigger = {
 	# Not in a Bloc
 	NOT = { exists = confederation }
 	# Not vassal - TODO_CD_TGP
@@ -613,7 +613,7 @@ LR_tgp_gaul_should_join_house_bloc_trigger = {
 	#trigger_else = { government_has_flag = government_is_sacral_feudal }
 }
 
-LR_tgp_gaul_house_bloc_inviter_or_leader_trigger = {
+LR_tgp_sacral_gaul_house_bloc_inviter_or_leader_trigger = {
 	$JOINER$ = { save_temporary_scope_as = joiner_temp }
 	trigger_if = {
 		limit = { exists = $INVITER$.confederation.leading_house.house_head }
@@ -622,7 +622,7 @@ LR_tgp_gaul_house_bloc_inviter_or_leader_trigger = {
 	trigger_else = { $INVITER$ = { save_temporary_scope_as = inviter_temp } }
 }
 
-LR_tgp_gaul_cadet_creates_dynasty_trigger = {
+LR_tgp_sacral_gaul_cadet_creates_dynasty_trigger = {
 	NOR = {
 		this = dynasty.dynast
 		this = house.house_head
@@ -766,10 +766,10 @@ LR_tgp_can_become_sacral_administrative_trigger = {
 		top_liege = {
 			OR = {
 				government_is_sacral_trigger = yes
-				has_character_flag = LR_tgp_gaul_restore_sacral_government_flag
+				has_character_flag = LR_tgp_sacral_gaul_restore_sacral_government_flag
 			}
 		}
 		government_is_japanese_trigger = yes
-		has_character_flag = LR_tgp_gaul_restore_sacral_government_flag
+		has_character_flag = LR_tgp_sacral_gaul_restore_sacral_government_flag
 	}
 }

@@ -1,36 +1,36 @@
-﻿namespace = LR_tgp_gaul_general
+﻿namespace = LR_tgp_sacral_gaul_general
 
-#LR_tgp_gaul_general.9001 = {
+#LR_tgp_sacral_gaul_general.9001 = {
 #	type = character_event
-#	title = LR_tgp_gaul_general.9001.t
-#	desc = LR_tgp_gaul_general.9001.desc
+#	title = LR_tgp_sacral_gaul_general.9001.t
+#	desc = LR_tgp_sacral_gaul_general.9001.desc
 #	theme = realm
 #
 #	immediate = {
 #	}
 #
 #	option = {
-#		name = LR_tgp_gaul_general.9001.a
+#		name = LR_tgp_sacral_gaul_general.9001.a
 #	}
 #}
 #
-#LR_tgp_gaul_general.9010 = {
+#LR_tgp_sacral_gaul_general.9010 = {
 #	type = character_event
-#	title = LR_tgp_gaul_general.9010.t
-#	desc = LR_tgp_gaul_general.9010.desc
+#	title = LR_tgp_sacral_gaul_general.9010.t
+#	desc = LR_tgp_sacral_gaul_general.9010.desc
 #	theme = realm
 #
 #	immediate = {
 #	}
 #
 #	option = {
-#		name = LR_tgp_gaul_general.9010.a
+#		name = LR_tgp_sacral_gaul_general.9010.a
 #	}
 #}
 
 
 # INSTALL BLOC OUTCOME
-scripted_trigger LR_tgp_gaul_general_8800_trigger = {
+scripted_trigger LR_tgp_sacral_gaul_general_8800_trigger = {
 	is_adult = yes
 	is_ruler = no
 	is_clergy = no
@@ -66,7 +66,7 @@ scripted_trigger LR_tgp_gaul_general_8800_trigger = {
 	}
 }
 
-scripted_effect LR_tgp_gaul_general_8800_scope_effect = {
+scripted_effect LR_tgp_sacral_gaul_general_8800_scope_effect = {
 	if = {
 		limit = { exists = scope:$NAME$_2 }
 		save_scope_as = $NAME$_3
@@ -76,10 +76,10 @@ scripted_effect LR_tgp_gaul_general_8800_scope_effect = {
 		save_scope_as = $NAME$_2
 	}
 	else = { save_scope_as = $NAME$_1 }
-	LR_tgp_gaul_general_8800_portrait_effect = yes
+	LR_tgp_sacral_gaul_general_8800_portrait_effect = yes
 }
 
-scripted_effect LR_tgp_gaul_general_8800_portrait_effect = {
+scripted_effect LR_tgp_sacral_gaul_general_8800_portrait_effect = {
 	if = {
 		limit = { exists = scope:portrait_3 }
 		# early out
@@ -100,7 +100,7 @@ scripted_effect LR_tgp_gaul_general_8800_portrait_effect = {
 	}
 }
 
-scripted_effect LR_tgp_gaul_general_8800_grant_effect = {
+scripted_effect LR_tgp_sacral_gaul_general_8800_grant_effect = {
 	save_scope_as = recipient
 
 	create_title_and_vassal_change = {
@@ -161,9 +161,9 @@ scripted_effect LR_tgp_gaul_general_8800_grant_effect = {
 		if = {
 			limit = { is_house_head = no }
 			custom_tooltip = {
-				text = LR_tgp_gaul_general.8800.cadet_tt
+				text = LR_tgp_sacral_gaul_general.8800.cadet_tt
 				add_character_flag = found_cadet_branch
-				trigger_event = LR_tgp_gaul_decision.9001
+				trigger_event = LR_tgp_sacral_gaul_decision.9001
 			}
 		}
 		house = {
@@ -246,7 +246,7 @@ scripted_effect LR_tgp_gaul_general_8800_grant_effect = {
 		limit = {
 			NOT = { this = scope:recipient }
 		}
-		custom = LR_tgp_gaul_general_8800_custom
+		custom = LR_tgp_sacral_gaul_general_8800_custom
 		add_opinion = {
 			target = scope:recipient
 			modifier = annoyed_opinion
@@ -255,10 +255,10 @@ scripted_effect LR_tgp_gaul_general_8800_grant_effect = {
 	}
 }
 
-LR_tgp_gaul_general.8800 = {
+LR_tgp_sacral_gaul_general.8800 = {
 	type = character_event
-	title = LR_tgp_gaul_general.8800.t
-	desc = LR_tgp_gaul_general.8800.desc
+	title = LR_tgp_sacral_gaul_general.8800.t
+	desc = LR_tgp_sacral_gaul_general.8800.desc
 	theme = war
 	override_background = { reference = estate }
 	left_portrait = {
@@ -282,11 +282,11 @@ LR_tgp_gaul_general.8800 = {
 			}
 		}
 		every_child = {
-			limit = { LR_tgp_gaul_general_8800_trigger = yes }
+			limit = { LR_tgp_sacral_gaul_general_8800_trigger = yes }
 			add_to_list = potential_family
 		}
 		every_sibling = {
-			limit = { LR_tgp_gaul_general_8800_trigger = yes }
+			limit = { LR_tgp_sacral_gaul_general_8800_trigger = yes }
 			add_to_list = potential_family
 		}
 		every_close_or_extended_family_member = {
@@ -295,14 +295,14 @@ LR_tgp_gaul_general.8800 = {
 					is_uncle_or_aunt_of = root
 					is_nibling_of = root
 				}
-				LR_tgp_gaul_general_8800_trigger = yes
+				LR_tgp_sacral_gaul_general_8800_trigger = yes
 			}
 			add_to_list = potential_family
 		}
 		every_close_or_extended_family_member = {
 			limit = {
 				is_nibling_of = root
-				LR_tgp_gaul_general_8800_trigger = yes
+				LR_tgp_sacral_gaul_general_8800_trigger = yes
 			}
 			add_to_list = potential_family
 		}
@@ -310,7 +310,7 @@ LR_tgp_gaul_general.8800 = {
 			ordered_in_list = {
 				list = potential_family
 				order_by = "opinion(root)"
-				LR_tgp_gaul_general_8800_scope_effect = { NAME = family }
+				LR_tgp_sacral_gaul_general_8800_scope_effect = { NAME = family }
 			}
 		}
 		if = {
@@ -318,21 +318,21 @@ LR_tgp_gaul_general.8800 = {
 			every_councillor = {
 				limit = {
 					NOT = { is_in_list = potential_family }
-					LR_tgp_gaul_general_8800_trigger = yes
+					LR_tgp_sacral_gaul_general_8800_trigger = yes
 				}
 				add_to_list = potential_fallback
 			}
 			every_knight = {
 				limit = {
 					NOT = { is_in_list = potential_family }
-					LR_tgp_gaul_general_8800_trigger = yes
+					LR_tgp_sacral_gaul_general_8800_trigger = yes
 				}
 				add_to_list = potential_fallback
 			}
 			every_courtier = {
 				limit = {
 					NOT = { is_in_list = potential_family }
-					LR_tgp_gaul_general_8800_trigger = yes
+					LR_tgp_sacral_gaul_general_8800_trigger = yes
 				}
 				add_to_list = potential_fallback
 			}
@@ -343,10 +343,10 @@ LR_tgp_gaul_general.8800 = {
 						list = potential_fallback
 						limit = {
 							is_house_head = yes
-							LR_tgp_gaul_general_8800_trigger = yes
+							LR_tgp_sacral_gaul_general_8800_trigger = yes
 						}
 						alternative_limit = {
-							LR_tgp_gaul_general_8800_trigger = yes
+							LR_tgp_sacral_gaul_general_8800_trigger = yes
 						}
 						weight = {
 							base = 1
@@ -354,7 +354,7 @@ LR_tgp_gaul_general.8800 = {
 							modifier = { is_councillor = yes add = 50 }
 							modifier = { is_knight = yes add = 25 }
 						}
-						LR_tgp_gaul_general_8800_scope_effect = { NAME = fallback }
+						LR_tgp_sacral_gaul_general_8800_scope_effect = { NAME = fallback }
 					}
 				}
 				if = {
@@ -384,16 +384,16 @@ LR_tgp_gaul_general.8800 = {
 					random_pool_guest = {
 						limit = {
 							is_house_head = yes
-							LR_tgp_gaul_general_8800_trigger = yes
+							LR_tgp_sacral_gaul_general_8800_trigger = yes
 						}
 						alternative_limit = {
-							LR_tgp_gaul_general_8800_trigger = yes
+							LR_tgp_sacral_gaul_general_8800_trigger = yes
 						}
 						weight = {
 							base = 1
 							modifier = { add = "opinion(root)" }
 						}
-						LR_tgp_gaul_general_8800_scope_effect = { NAME = fallback }
+						LR_tgp_sacral_gaul_general_8800_scope_effect = { NAME = fallback }
 					}
 				}
 			}
@@ -403,9 +403,9 @@ LR_tgp_gaul_general.8800 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.8800.a
+		name = LR_tgp_sacral_gaul_general.8800.a
 		trigger = { exists = scope:family_1 }
-		scope:family_1 = { LR_tgp_gaul_general_8800_grant_effect = yes }
+		scope:family_1 = { LR_tgp_sacral_gaul_general_8800_grant_effect = yes }
 		ai_chance = {
 			base = 10
 			opinion_modifier = {
@@ -416,9 +416,9 @@ LR_tgp_gaul_general.8800 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.8800.b
+		name = LR_tgp_sacral_gaul_general.8800.b
 		trigger = { exists = scope:family_2 }
-		scope:family_2 = { LR_tgp_gaul_general_8800_grant_effect = yes }
+		scope:family_2 = { LR_tgp_sacral_gaul_general_8800_grant_effect = yes }
 		ai_chance = {
 			base = 10
 			opinion_modifier = {
@@ -429,9 +429,9 @@ LR_tgp_gaul_general.8800 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.8800.c
+		name = LR_tgp_sacral_gaul_general.8800.c
 		trigger = { exists = scope:family_3 }
-		scope:family_3 = { LR_tgp_gaul_general_8800_grant_effect = yes }
+		scope:family_3 = { LR_tgp_sacral_gaul_general_8800_grant_effect = yes }
 		ai_chance = {
 			base = 10
 			opinion_modifier = {
@@ -442,7 +442,7 @@ LR_tgp_gaul_general.8800 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.8800.e
+		name = LR_tgp_sacral_gaul_general.8800.e
 		trigger = {
 			exists = scope:fallback_1
 			calc_true_if = {
@@ -452,7 +452,7 @@ LR_tgp_gaul_general.8800 = {
 				exists = scope:family_3
 			}
 		}
-		scope:fallback_1 = { LR_tgp_gaul_general_8800_grant_effect = yes }
+		scope:fallback_1 = { LR_tgp_sacral_gaul_general_8800_grant_effect = yes }
 		ai_chance = {
 			base = 10
 			opinion_modifier = {
@@ -463,7 +463,7 @@ LR_tgp_gaul_general.8800 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.8800.f
+		name = LR_tgp_sacral_gaul_general.8800.f
 		trigger = {
 			exists = scope:fallback_2
 			calc_true_if = {
@@ -474,7 +474,7 @@ LR_tgp_gaul_general.8800 = {
 				exists = scope:fallback_1
 			}
 		}
-		scope:fallback_2 = { LR_tgp_gaul_general_8800_grant_effect = yes }
+		scope:fallback_2 = { LR_tgp_sacral_gaul_general_8800_grant_effect = yes }
 		ai_chance = {
 			base = 10
 			opinion_modifier = {
@@ -485,7 +485,7 @@ LR_tgp_gaul_general.8800 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.8800.g
+		name = LR_tgp_sacral_gaul_general.8800.g
 		trigger = {
 			exists = scope:fallback_3
 			calc_true_if = {
@@ -497,7 +497,7 @@ LR_tgp_gaul_general.8800 = {
 				exists = scope:fallback_2
 			}
 		}
-		scope:fallback_3 = { LR_tgp_gaul_general_8800_grant_effect = yes }
+		scope:fallback_3 = { LR_tgp_sacral_gaul_general_8800_grant_effect = yes }
 		ai_chance = {
 			base = 10
 			opinion_modifier = {
@@ -508,7 +508,7 @@ LR_tgp_gaul_general.8800 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.8800.h
+		name = LR_tgp_sacral_gaul_general.8800.h
 
 		create_title_and_vassal_change = {
 			type = conquest
@@ -530,7 +530,7 @@ LR_tgp_gaul_general.8800 = {
 		every_in_list = {
 			list = potential_list
 			limit = { is_ai = yes }
-			custom = LR_tgp_gaul_general_8800_custom
+			custom = LR_tgp_sacral_gaul_general_8800_custom
 			add_opinion = {
 				target = root
 				modifier = annoyed_opinion
@@ -569,30 +569,30 @@ scripted_effect tgp_new_ceremonial_liege_notification_effect = {
 	}
 }
 
-LR_tgp_gaul_general.9100 = {
+LR_tgp_sacral_gaul_general.9100 = {
 	type = character_event
-	title = LR_tgp_gaul_general.9100.t
+	title = LR_tgp_sacral_gaul_general.9100.t
 	desc = {
 		first_valid = {
     		triggered_desc = {
     		    trigger = { exists = scope:murder }
-    		    desc = LR_tgp_gaul_general.9100.desc_murdered
+    		    desc = LR_tgp_sacral_gaul_general.9100.desc_murdered
     		}
     		triggered_desc = {
     		    trigger = {
     				scope:previous_holder = { is_alive = no }
     		    }
-    		    desc = LR_tgp_gaul_general.9100.desc_dead
+    		    desc = LR_tgp_sacral_gaul_general.9100.desc_dead
     		}
     		triggered_desc = {
     		    trigger = {
     				scope:previous_holder = top_liege
     		    }
-    		    desc = LR_tgp_gaul_general.9100.desc_joko
+    		    desc = LR_tgp_sacral_gaul_general.9100.desc_joko
     		}
-    		desc = LR_tgp_gaul_general.9100.desc_alive
+    		desc = LR_tgp_sacral_gaul_general.9100.desc_alive
     	}
-    	desc = LR_tgp_gaul_general.9100.desc
+    	desc = LR_tgp_sacral_gaul_general.9100.desc
 	}
 	theme = crown
 	left_portrait = {
@@ -689,16 +689,16 @@ LR_tgp_gaul_general.9100 = {
 	}
 
 	option = {
-		name = LR_tgp_gaul_general.9100.a
+		name = LR_tgp_sacral_gaul_general.9100.a
 	}
 }
 
 ## BECOME CLOISTRED SACRAL KING DECISION FOR CEREMONIAL SACRAL KING REGENT
 
-LR_tgp_gaul_general.9120 = {
+LR_tgp_sacral_gaul_general.9120 = {
 	type = character_event
-	title = LR_tgp_gaul_general.9120.t
-	desc = LR_tgp_gaul_general.9120.desc
+	title = LR_tgp_sacral_gaul_general.9120.t
+	desc = LR_tgp_sacral_gaul_general.9120.desc
 	theme = crown
 	left_portrait = {
 		character = root
@@ -722,7 +722,7 @@ LR_tgp_gaul_general.9120 = {
 	}
 
 	on_trigger_fail = {
-		trigger_event = LR_tgp_gaul_general.9100
+		trigger_event = LR_tgp_sacral_gaul_general.9100
 	}
 
 	immediate = {
@@ -731,7 +731,7 @@ LR_tgp_gaul_general.9120 = {
 
 	# Become Cloistered Sacral King
 	option = {
-		name = LR_tgp_gaul_general.9120.a
+		name = LR_tgp_sacral_gaul_general.9120.a
 		sacral_clear_flavour_flags_effect = yes
 		add_character_flag = low_king_flag
 		change_influence = major_influence_gain
@@ -768,7 +768,7 @@ LR_tgp_gaul_general.9120 = {
 
 	#Option B
 	option = {
-		name = LR_tgp_gaul_general.9120.b
+		name = LR_tgp_sacral_gaul_general.9120.b
 		sacral_clear_flavour_flags_effect = yes
 		add_character_flag = ceremonial_liege_flag
 		add_prestige = major_prestige_loss
@@ -789,33 +789,33 @@ LR_tgp_gaul_general.9120 = {
 
 # GALLIC POLICY NOTIFICATION
 
-LR_tgp_gaul_general.9300 = {
+LR_tgp_sacral_gaul_general.9300 = {
 	type = character_event
 	title = {
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_defense_mobilization_law } }
-				desc = LR_tgp_gaul_general.9300.t.sacral_defense_mobilization_law
+				desc = LR_tgp_sacral_gaul_general.9300.t.sacral_defense_mobilization_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_disarmament_law } }
-				desc = LR_tgp_gaul_general.9300.t.sacral_disarmament_law
+				desc = LR_tgp_sacral_gaul_general.9300.t.sacral_disarmament_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_isolation_law } }
-				desc = LR_tgp_gaul_general.9300.t.sacral_isolation_law
+				desc = LR_tgp_sacral_gaul_general.9300.t.sacral_isolation_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_expansion_law } }
-				desc = LR_tgp_gaul_general.9300.t.sacral_expansion_law
+				desc = LR_tgp_sacral_gaul_general.9300.t.sacral_expansion_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_manor_reform_law } }
-				desc = LR_tgp_gaul_general.9300.t.sacral_manor_reform_law
+				desc = LR_tgp_sacral_gaul_general.9300.t.sacral_manor_reform_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_bandit_crackdown_law } }
-				desc = LR_tgp_gaul_general.9300.t.sacral_bandit_crackdown_law
+				desc = LR_tgp_sacral_gaul_general.9300.t.sacral_bandit_crackdown_law
 			}
 		}
 	}
@@ -826,53 +826,53 @@ LR_tgp_gaul_general.9300 = {
 					scope:liege ?= root
 					scope:ceremonial_liege != root
 				}
-				desc = LR_tgp_gaul_general.9300.restored_sacral_king
+				desc = LR_tgp_sacral_gaul_general.9300.restored_sacral_king
 			}
 			triggered_desc = {
 				trigger = {
 					scope:ceremonial_liege ?= root
 					scope:liege != root
 				}
-				desc = LR_tgp_gaul_general.9300.ceremonial_liege
+				desc = LR_tgp_sacral_gaul_general.9300.ceremonial_liege
 			}
 			triggered_desc = {
 				trigger = {
 					scope:ceremonial_liege ?= root
 					scope:liege = root
 				}
-				desc = LR_tgp_gaul_general.9300.restored_sacral_king
+				desc = LR_tgp_sacral_gaul_general.9300.restored_sacral_king
 			}
 			triggered_desc = {
 				trigger = { scope:ceremonial_liege != scope:liege }
-				desc = LR_tgp_gaul_general.9300.vassal_ceremonial
+				desc = LR_tgp_sacral_gaul_general.9300.vassal_ceremonial
 			}
-			desc = LR_tgp_gaul_general.9300.vassal
+			desc = LR_tgp_sacral_gaul_general.9300.vassal
 		}
-		desc = LR_tgp_gaul_general.9300.outro
+		desc = LR_tgp_sacral_gaul_general.9300.outro
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_defense_mobilization_law } }
-				desc = LR_tgp_gaul_general.9300.sacral_defense_mobilization_law
+				desc = LR_tgp_sacral_gaul_general.9300.sacral_defense_mobilization_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_disarmament_law } }
-				desc = LR_tgp_gaul_general.9300.sacral_disarmament_law
+				desc = LR_tgp_sacral_gaul_general.9300.sacral_disarmament_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_isolation_law } }
-				desc = LR_tgp_gaul_general.9300.sacral_isolation_law
+				desc = LR_tgp_sacral_gaul_general.9300.sacral_isolation_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_expansion_law } }
-				desc = LR_tgp_gaul_general.9300.sacral_expansion_law
+				desc = LR_tgp_sacral_gaul_general.9300.sacral_expansion_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = sacral_manor_reform_law } }
-				desc = LR_tgp_gaul_general.9300.sacral_manor_reform_law
+				desc = LR_tgp_sacral_gaul_general.9300.sacral_manor_reform_law
 			}
 			triggered_desc = {
 				trigger = { scope:liege = { has_realm_law = bandit_crackdown_law } }
-				desc = LR_tgp_gaul_general.9300.sacral_bandit_crackdown_law
+				desc = LR_tgp_sacral_gaul_general.9300.sacral_bandit_crackdown_law
 			}
 		}
 	}
@@ -913,10 +913,10 @@ LR_tgp_gaul_general.9300 = {
 				scope:liege = { has_realm_law = sacral_disarmament_law }
 				government_has_flag = government_is_sacral_feudal
 			}
-			text = LR_tgp_gaul_general.9300.a.disarmament_manorial
+			text = LR_tgp_sacral_gaul_general.9300.a.disarmament_manorial
 		}
 		name = {
-			text = LR_tgp_gaul_general.9300.a
+			text = LR_tgp_sacral_gaul_general.9300.a
 		}
 		scope:liege = {
 			show_as_tooltip = {
@@ -934,10 +934,10 @@ LR_tgp_gaul_general.9300 = {
 	}
 }
 
-#scripted stuff for Eradicate House cb post war events LR_tgp_gaul_general.9550
+#scripted stuff for Eradicate House cb post war events LR_tgp_sacral_gaul_general.9550
 
 #valid courtiers to kill
-scripted_trigger LR_tgp_gaul_manorial_eradicate_cb_valid_courtier = {
+scripted_trigger LR_tgp_sacral_gaul_manorial_eradicate_cb_valid_courtier = {
 	NOR = {
 		scope:loser_spouse ?= this
 		scope:loser_heir ?= this
@@ -945,7 +945,7 @@ scripted_trigger LR_tgp_gaul_manorial_eradicate_cb_valid_courtier = {
 	}
 }
 #valid house members to kill
-scripted_trigger LR_tgp_gaul_manorial_eradicate_cb_valid_family = {
+scripted_trigger LR_tgp_sacral_gaul_manorial_eradicate_cb_valid_family = {
 	NOT = {
 		scope:loser_heir ?= this
 	}
@@ -955,7 +955,7 @@ scripted_trigger LR_tgp_gaul_manorial_eradicate_cb_valid_family = {
 	}
 }
 #If loser isn't house head (i.e. has no manor), their heir becomes a landless adventurer. If not we move their manor to a friendly lord's land.
-scripted_effect LR_tgp_gaul_manorial_eradicate_cb_heir_go_to_savior = {
+scripted_effect LR_tgp_sacral_gaul_manorial_eradicate_cb_heir_go_to_savior = {
 	scope:loser_heir ?= {
 		if = {
 			limit = {
@@ -971,7 +971,7 @@ scripted_effect LR_tgp_gaul_manorial_eradicate_cb_heir_go_to_savior = {
 		}
 		else = {
 			custom_tooltip = {
-				text = LR_tgp_gaul_manorial_eradicate_cb_heir_move_manor_to_savior_tt
+				text = LR_tgp_sacral_gaul_manorial_eradicate_cb_heir_move_manor_to_savior_tt
 				scope:loser.domicile = {
 					move_domicile = scope:savior.capital_province
 				}
@@ -980,7 +980,7 @@ scripted_effect LR_tgp_gaul_manorial_eradicate_cb_heir_go_to_savior = {
 	}
 }
 #If loser successfully flees and isn't house head (i.e. has no manor), they becomes a landless adventurer. If not we move their manor to a friendly lord's land.
-scripted_effect LR_tgp_gaul_manorial_eradicate_cb_loser_go_to_savior = {
+scripted_effect LR_tgp_sacral_gaul_manorial_eradicate_cb_loser_go_to_savior = {
 	if = {
 		limit = {
 			NOT = {
@@ -998,7 +998,7 @@ scripted_effect LR_tgp_gaul_manorial_eradicate_cb_loser_go_to_savior = {
 			exists = scope:savior
 		}
 		custom_tooltip = {
-			text = LR_tgp_gaul_manorial_eradicate_cb_heir_move_to_savior_tt
+			text = LR_tgp_sacral_gaul_manorial_eradicate_cb_heir_move_to_savior_tt
 			scope:loser.domicile = {
 				move_domicile = scope:savior.capital_province
 			}
@@ -1006,7 +1006,7 @@ scripted_effect LR_tgp_gaul_manorial_eradicate_cb_loser_go_to_savior = {
 	}
 	else = {
 		custom_tooltip = {
-			text = LR_tgp_gaul_manorial_eradicate_cb_heir_move_to_cap_tt
+			text = LR_tgp_sacral_gaul_manorial_eradicate_cb_heir_move_to_cap_tt
 			scope:loser.domicile = {
 				move_domicile = scope:loser_heir.top_liege.capital_province
 			}
@@ -1014,7 +1014,7 @@ scripted_effect LR_tgp_gaul_manorial_eradicate_cb_loser_go_to_savior = {
 	}
 }
 #Loser kills loser's family to avoid dishonor
-scripted_effect LR_tgp_gaul_manorial_eradicate_cb_kill_family = {
+scripted_effect LR_tgp_sacral_gaul_manorial_eradicate_cb_kill_family = {
 	scope:loser = {
 		every_courtier = {
 			custom = every_close_family_house_member_in_court
@@ -1042,7 +1042,7 @@ scripted_effect LR_tgp_gaul_manorial_eradicate_cb_kill_family = {
 	}
 }
 #Winner kills loser's family
-scripted_effect LR_tgp_gaul_manorial_eradicate_cb_kill_house = {
+scripted_effect LR_tgp_sacral_gaul_manorial_eradicate_cb_kill_house = {
 	scope:loser = {
 		every_courtier = {
 			custom = every_house_member_in_court
@@ -1071,10 +1071,10 @@ scripted_effect LR_tgp_gaul_manorial_eradicate_cb_kill_house = {
 		}
 	}
 }
-#You lost Eradicate House cb war LR_tgp_gaul_general.9550
-LR_tgp_gaul_general.9550 = {
+#You lost Eradicate House cb war LR_tgp_sacral_gaul_general.9550
+LR_tgp_sacral_gaul_general.9550 = {
 	type = character_event
-	title = LR_tgp_gaul_general.9550.t
+	title = LR_tgp_sacral_gaul_general.9550.t
 	window = big_event_window
 	desc = {
 		first_valid = {
@@ -1083,12 +1083,12 @@ LR_tgp_gaul_general.9550 = {
 				trigger = {
 					scope:loser = scope:attacker
 				}
-				desc = LR_tgp_gaul_general.9550.desc.intro.a
+				desc = LR_tgp_sacral_gaul_general.9550.desc.intro.a
 			}
 			#You were attacked
-			desc = LR_tgp_gaul_general.9550.desc.intro.b
+			desc = LR_tgp_sacral_gaul_general.9550.desc.intro.b
 		}
-		desc = LR_tgp_gaul_general.9550.desc
+		desc = LR_tgp_sacral_gaul_general.9550.desc
 		first_valid = {
 			#You are alone
 			triggered_desc = {
@@ -1098,12 +1098,12 @@ LR_tgp_gaul_general.9550 = {
 						exists = scope:loser_heir
 					}
 				}
-				desc = LR_tgp_gaul_general.9550.desc.alone
+				desc = LR_tgp_sacral_gaul_general.9550.desc.alone
 			}
 			#you are with your family
-			desc = LR_tgp_gaul_general.9550.desc.fam
+			desc = LR_tgp_sacral_gaul_general.9550.desc.fam
 		}
-		desc = LR_tgp_gaul_general.9550.desc.end
+		desc = LR_tgp_sacral_gaul_general.9550.desc.end
 	}
 	theme = death
 	override_background = {
@@ -1172,7 +1172,7 @@ LR_tgp_gaul_general.9550 = {
 		#Find courtiers to kill
 		ordered_courtier = {
 			limit = {
-				LR_tgp_gaul_manorial_eradicate_cb_valid_courtier = yes
+				LR_tgp_sacral_gaul_manorial_eradicate_cb_valid_courtier = yes
 			}
 			#the more they like you the more it hurts
 			order_by = "opinion(root)"
@@ -1223,10 +1223,10 @@ LR_tgp_gaul_general.9550 = {
 								exists = scope:loser_heir
 							}
 						}
-						desc = LR_tgp_gaul_general.9550.a.alone
+						desc = LR_tgp_sacral_gaul_general.9550.a.alone
 					}
 					#if you have family
-					desc = LR_tgp_gaul_general.9550.a.fam
+					desc = LR_tgp_sacral_gaul_general.9550.a.fam
 				}
 			}
 		}
@@ -1240,16 +1240,16 @@ LR_tgp_gaul_general.9550 = {
 							exists = scope:loser_heir
 						}
 					}
-					desc = LR_tgp_gaul_general.9550.a.alone.flavor
+					desc = LR_tgp_sacral_gaul_general.9550.a.alone.flavor
 				}
 				#fam
-				desc = LR_tgp_gaul_general.9550.a.fam.flavor
+				desc = LR_tgp_sacral_gaul_general.9550.a.fam.flavor
 			}
 		}
 		#Heir sets up manor in land of savior
 		show_as_tooltip = {
-			LR_tgp_gaul_manorial_eradicate_cb_heir_go_to_savior = yes
-			LR_tgp_gaul_manorial_eradicate_cb_kill_family =  yes
+			LR_tgp_sacral_gaul_manorial_eradicate_cb_heir_go_to_savior = yes
+			LR_tgp_sacral_gaul_manorial_eradicate_cb_kill_family =  yes
 
 			#then kill yourself
 			death = {
@@ -1268,8 +1268,8 @@ LR_tgp_gaul_general.9550 = {
 	}
 	#2) attempt to flee (lose honor but maybe keep life)
 	option = {
-		name = LR_tgp_gaul_general.9550.b
-		flavor = LR_tgp_gaul_general.9550.b.flavor
+		name = LR_tgp_sacral_gaul_general.9550.b
+		flavor = LR_tgp_sacral_gaul_general.9550.b.flavor
 
 		duel = {
 			skill = intrigue
@@ -1291,12 +1291,12 @@ LR_tgp_gaul_general.9550 = {
 					add = 1.5
 					has_character_modifier = childhood_prison_escape
 				}
-				desc = LR_tgp_gaul_general.9550.b.success
+				desc = LR_tgp_sacral_gaul_general.9550.b.success
 				send_interface_toast = {
-					title = LR_tgp_gaul_general.9550.b.success
+					title = LR_tgp_sacral_gaul_general.9550.b.success
 					left_icon = scope:loser
 					right_icon = scope:winner
-					LR_tgp_gaul_manorial_eradicate_cb_loser_go_to_savior = yes
+					LR_tgp_sacral_gaul_manorial_eradicate_cb_loser_go_to_savior = yes
 				}
 				save_scope_as = flee_success
 			}
@@ -1321,16 +1321,16 @@ LR_tgp_gaul_general.9550 = {
 						has_trait = physique_bad_3
 					}
 				}
-				desc = LR_tgp_gaul_general.9550.b.failure
+				desc = LR_tgp_sacral_gaul_general.9550.b.failure
 				show_as_tooltip = {
 					death = {
 						death_reason = death_eradicated
 						killer = scope:winner
 					}
-					LR_tgp_gaul_manorial_eradicate_cb_kill_house = yes
+					LR_tgp_sacral_gaul_manorial_eradicate_cb_kill_house = yes
 				}
 				send_interface_toast = {
-					title = LR_tgp_gaul_general.9550.b.failure
+					title = LR_tgp_sacral_gaul_general.9550.b.failure
 					left_icon = scope:loser
 					right_icon = scope:winner
 				}
@@ -1350,7 +1350,7 @@ LR_tgp_gaul_general.9550 = {
 	}
 	#3) put yourself to the mercy of your captor (AI only option so you can execute them)
 	option = {
-		name = LR_tgp_gaul_general.9550.c
+		name = LR_tgp_sacral_gaul_general.9550.c
 		#only for AI
 		trigger = {
 			is_ai = yes
@@ -1365,15 +1365,15 @@ LR_tgp_gaul_general.9550 = {
 	}
 	after = {
 		scope:winner = {
-			trigger_event = LR_tgp_gaul_general.9551
+			trigger_event = LR_tgp_sacral_gaul_general.9551
 		}
 	}
 }
 #You won eradicate house cb war
-LR_tgp_gaul_general.9551 = {
+LR_tgp_sacral_gaul_general.9551 = {
 	type = character_event
 	window = big_event_window
-	title = LR_tgp_gaul_general.9551.t
+	title = LR_tgp_sacral_gaul_general.9551.t
 	desc = {
 		first_valid = {
 			#if you capture loser
@@ -1384,10 +1384,10 @@ LR_tgp_gaul_general.9551 = {
 						exists = scope:suicide
 					}
 				}
-				desc = LR_tgp_gaul_general.9551.desc.intro
+				desc = LR_tgp_sacral_gaul_general.9551.desc.intro
 			}
 			#intro for alt
-			desc =  LR_tgp_gaul_general.9551.desc.alt.intro
+			desc =  LR_tgp_sacral_gaul_general.9551.desc.alt.intro
 		}
 		first_valid = {
 			#if loser suicides
@@ -1395,14 +1395,14 @@ LR_tgp_gaul_general.9551 = {
 				trigger = {
 					exists = scope:suicide
 				}
-				desc = LR_tgp_gaul_general.9551.desc.alt.suicide
+				desc = LR_tgp_sacral_gaul_general.9551.desc.alt.suicide
 			}
 			#if loser escapes
 			triggered_desc = {
 				trigger = {
 					exists = scope:flee_success
 				}
-				desc = LR_tgp_gaul_general.9551.desc.alt.escape
+				desc = LR_tgp_sacral_gaul_general.9551.desc.alt.escape
 			}
 		}
 		#outro for alt
@@ -1413,7 +1413,7 @@ LR_tgp_gaul_general.9551 = {
 					exists = scope:suicide
 				}
 			}
-			desc = LR_tgp_gaul_general.9551.desc.alt.outro
+			desc = LR_tgp_sacral_gaul_general.9551.desc.alt.outro
 		}
 	}
 
@@ -1469,11 +1469,11 @@ LR_tgp_gaul_general.9551 = {
 		}
 		if = {
 			limit = { exists = scope:suicide }
-			LR_tgp_gaul_manorial_eradicate_cb_heir_go_to_savior = yes
-			LR_tgp_gaul_manorial_eradicate_cb_kill_family =  yes
+			LR_tgp_sacral_gaul_manorial_eradicate_cb_heir_go_to_savior = yes
+			LR_tgp_sacral_gaul_manorial_eradicate_cb_kill_family =  yes
 		}
 		#take land
-		LR_tgp_gaul_manorial_eradicate_cb_transfer_effect = yes
+		LR_tgp_sacral_gaul_manorial_eradicate_cb_transfer_effect = yes
 		if = {
 			limit = { exists = scope:suicide }
 			scope:loser = {
@@ -1524,7 +1524,7 @@ LR_tgp_gaul_general.9551 = {
 		scope:loser = {
 			ordered_courtier = {
 				limit = {
-					LR_tgp_gaul_manorial_eradicate_cb_valid_family = yes
+					LR_tgp_sacral_gaul_manorial_eradicate_cb_valid_family = yes
 				}
 				order_by = "opinion(scope:loser)"
 				max = 3
@@ -1560,8 +1560,8 @@ LR_tgp_gaul_general.9551 = {
 
 	#1) Execute loser and eradicate the house!
 	option = {
-		name = LR_tgp_gaul_general.9551.a
-		flavor = LR_tgp_gaul_general.9551.a.flavor
+		name = LR_tgp_sacral_gaul_general.9551.a
+		flavor = LR_tgp_sacral_gaul_general.9551.a.flavor
 		show_as_tooltip = {	
 			scope:loser = {
 				death = {
@@ -1571,7 +1571,7 @@ LR_tgp_gaul_general.9551 = {
 			}
 		}
 		#kill house
-		LR_tgp_gaul_manorial_eradicate_cb_kill_house = yes
+		LR_tgp_sacral_gaul_manorial_eradicate_cb_kill_house = yes
 		add_dread = medium_dread_gain
 		house = {
 			add_house_modifier = {
@@ -1595,7 +1595,7 @@ LR_tgp_gaul_general.9551 = {
 }
 
 # Event to force the historical birth of Sacral King Antoku for Genpei content
-LR_tgp_gaul_general.9910 = {
+LR_tgp_sacral_gaul_general.9910 = {
 	type = character_event
 	hidden = yes
 
@@ -1621,6 +1621,6 @@ LR_tgp_gaul_general.9910 = {
 			days = 82 # 6178.12.22
 		}
 		# Error suppression
-		show_as_tooltip = { trigger_event = LR_tgp_gaul_general.9910 }
+		show_as_tooltip = { trigger_event = LR_tgp_sacral_gaul_general.9910 }
 	}
 }

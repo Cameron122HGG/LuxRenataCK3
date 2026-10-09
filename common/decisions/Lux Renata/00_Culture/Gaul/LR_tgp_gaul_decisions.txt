@@ -1,10 +1,10 @@
 ﻿# Admin to Feudal
 ### Establish Sōryō Fief ###
-LR_tgp_gaul_establish_house_fief_decision = {
+LR_tgp_sacral_gaul_establish_house_fief_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_establish_house_fief_decision
-	desc = LR_tgp_gaul_establish_house_fief_decision_desc
-	selection_tooltip = LR_tgp_gaul_establish_house_fief_decision_tooltip
+	title = LR_tgp_sacral_gaul_establish_house_fief_decision
+	desc = LR_tgp_sacral_gaul_establish_house_fief_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_establish_house_fief_decision_tooltip
 	picture = { reference = "gfx/interface/illustrations/decisions/ep3_decision_estate.dds" }
 	sort_order = 80
 
@@ -39,7 +39,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 		trigger_if = {
 			limit = { is_ai = no } # AI are an exception as they can continue to play despite not being House Heads
 			custom_tooltip = {
-				text = LR_tgp_gaul_establish_house_fief_aspiration_trigger
+				text = LR_tgp_sacral_gaul_establish_house_fief_aspiration_trigger
 				house = {
 					NOR = {
 						has_house_aspiration_parameter = ceremony_cheaper_feasts
@@ -49,12 +49,12 @@ LR_tgp_gaul_establish_house_fief_decision = {
 			}
 			# Domicile in current Governorship
 			custom_tooltip = {
-				text = LR_tgp_gaul_establish_house_fief_domicile_in_governorship_trigger
+				text = LR_tgp_sacral_gaul_establish_house_fief_domicile_in_governorship_trigger
 				domicile.domicile_location.county.holder ?= this
 			}
 			# Domicile level
 			custom_tooltip = {
-				text = LR_tgp_gaul_establish_house_fief_domicile_building_trigger
+				text = LR_tgp_sacral_gaul_establish_house_fief_domicile_building_trigger
 				domicile ?= { has_domicile_parameter = unlocks_establish_fief_decision }
 			}
 		}
@@ -80,7 +80,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 		}
 		# No direct descendant is currently Regent or Governor
 		custom_tooltip = {
-			text = LR_tgp_gaul_establish_house_fief_direct_descendent_position_trigger
+			text = LR_tgp_sacral_gaul_establish_house_fief_direct_descendent_position_trigger
 			any_descendants_are_governors = no
 		}
 		# No direct descendant is liege or above
@@ -97,7 +97,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 				}
 			}
 			custom_tooltip = {
-				text = LR_tgp_gaul_establish_house_fief_centralization_trigger
+				text = LR_tgp_sacral_gaul_establish_house_fief_centralization_trigger
 				NOT = { has_realm_law = sacral_bureaucracy_3 }
 			}
 		}
@@ -119,7 +119,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 		highest_held_title_tier >= tier_county
 		# Domicile not in capital
 		custom_tooltip = {
-			text = LR_tgp_gaul_establish_house_fief_capital_domicile_trigger
+			text = LR_tgp_sacral_gaul_establish_house_fief_capital_domicile_trigger
 			NOT = { domicile.domicile_location.county ?= top_liege.capital_county }
 		}
 		# Is not Regent
@@ -139,15 +139,15 @@ LR_tgp_gaul_establish_house_fief_decision = {
 		show_as_tooltip = {
 			# Change Dynasty
 			if = {
-				limit = { LR_tgp_gaul_cadet_creates_dynasty_trigger = yes }
-				custom_tooltip = LR_tgp_gaul_establish_house_fief_found_house_effect
+				limit = { LR_tgp_sacral_gaul_cadet_creates_dynasty_trigger = yes }
+				custom_tooltip = LR_tgp_sacral_gaul_establish_house_fief_found_house_effect
 			}
 			else_if ={
 				limit = { is_house_head = no }
 				custom_tooltip = create_noble_family_tt
 			}
 			# Change from Palatine (Admin) to Soryo (Feudal)
-			custom_tooltip = LR_tgp_gaul_establish_house_fief_change_government_type_effect
+			custom_tooltip = LR_tgp_sacral_gaul_establish_house_fief_change_government_type_effect
 			# Crime to Kampaku
 			if = {
 				limit = {
@@ -160,7 +160,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 						}
 					}
 				}
-				custom_tooltip = LR_tgp_gaul_establish_house_fief_sacral_majordomo_crime_effect
+				custom_tooltip = LR_tgp_sacral_gaul_establish_house_fief_sacral_majordomo_crime_effect
 			}
 		}
 		hidden_effect = {
@@ -200,9 +200,9 @@ LR_tgp_gaul_establish_house_fief_decision = {
 				}
 			}
 			add_character_flag = establish_house_fief
-			trigger_event = LR_tgp_gaul_decision.9001
+			trigger_event = LR_tgp_sacral_gaul_decision.9001
 		}
-		else = { trigger_event = LR_tgp_gaul_decision.9002 }
+		else = { trigger_event = LR_tgp_sacral_gaul_decision.9002 }
 	}
 	
 	ai_check_interval_by_tier = {
@@ -410,11 +410,11 @@ LR_tgp_gaul_establish_house_fief_decision = {
 }
 
 ### Abandon the Bureaucracy ###
-LR_tgp_gaul_establish_manorial_manor_decision = {
+LR_tgp_sacral_gaul_establish_manorial_manor_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_establish_manorial_manor_decision
-	desc = LR_tgp_gaul_establish_manorial_manor_decision_desc
-	selection_tooltip = LR_tgp_gaul_establish_house_fief_decision_tooltip
+	title = LR_tgp_sacral_gaul_establish_manorial_manor_decision
+	desc = LR_tgp_sacral_gaul_establish_manorial_manor_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_establish_house_fief_decision_tooltip
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/ep3_decision_estate.dds"
 	}
@@ -446,13 +446,13 @@ LR_tgp_gaul_establish_manorial_manor_decision = {
 				any_held_title = { is_noble_family_title = yes }
 			}
 			custom_tooltip = {
-				text = LR_tgp_gaul_establish_house_fief_capital_domicile_trigger
+				text = LR_tgp_sacral_gaul_establish_house_fief_capital_domicile_trigger
 				NOT = { domicile.domicile_location.county ?= top_liege.capital_county }
 			}
 		}
 		# No direct descendant is currently Regent or Governor
 		custom_tooltip = {
-			text = LR_tgp_gaul_establish_house_fief_direct_descendent_position_trigger
+			text = LR_tgp_sacral_gaul_establish_house_fief_direct_descendent_position_trigger
 			any_descendants_are_governors = no
 		}
 		# No direct descendant is liege or above
@@ -462,7 +462,7 @@ LR_tgp_gaul_establish_manorial_manor_decision = {
 		}
 		# Domicile level
 		custom_tooltip = {
-			text = LR_tgp_gaul_establish_house_fief_domicile_building_trigger
+			text = LR_tgp_sacral_gaul_establish_house_fief_domicile_building_trigger
 			domicile ?= { has_domicile_parameter = unlocks_establish_fief_decision }
 		}
 		# Crown Authority
@@ -471,7 +471,7 @@ LR_tgp_gaul_establish_manorial_manor_decision = {
 				top_liege = { government_has_mechanic = administrative }
 			}
 			custom_tooltip = {
-				text = LR_tgp_gaul_establish_house_fief_centralization_trigger
+				text = LR_tgp_sacral_gaul_establish_house_fief_centralization_trigger
 				NOT = { has_realm_law = sacral_bureaucracy_3 }
 			}
 		}
@@ -499,7 +499,7 @@ LR_tgp_gaul_establish_manorial_manor_decision = {
 				limit = {
 					NOT = { dynasty.dynast ?= this }
 				}
-				custom_tooltip = LR_tgp_gaul_establish_house_fief_found_house_effect
+				custom_tooltip = LR_tgp_sacral_gaul_establish_house_fief_found_house_effect
 			}
 		}
 		# Fire relevant event
@@ -511,9 +511,9 @@ LR_tgp_gaul_establish_manorial_manor_decision = {
 				}
 			}
 			add_character_flag = establish_house_fief
-			trigger_event = LR_tgp_gaul_decision.9001
+			trigger_event = LR_tgp_sacral_gaul_decision.9001
 		}
-		else = { trigger_event = LR_tgp_gaul_decision.9002 }
+		else = { trigger_event = LR_tgp_sacral_gaul_decision.9002 }
 	}
 	
 	ai_check_interval_by_tier = {
@@ -554,11 +554,11 @@ LR_tgp_gaul_establish_manorial_manor_decision = {
 
 # Become Soryo as independent Ritsuryō
 ### Establish Sōryō Administration ###
-LR_tgp_gaul_establish_manorial_administration_decision = {
+LR_tgp_sacral_gaul_establish_manorial_administration_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_establish_manorial_administration_decision
-	desc = LR_tgp_gaul_establish_manorial_administration_decision_desc
-	selection_tooltip = LR_tgp_gaul_establish_manorial_administration_decision_tooltip
+	title = LR_tgp_sacral_gaul_establish_manorial_administration_decision
+	desc = LR_tgp_sacral_gaul_establish_manorial_administration_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_establish_manorial_administration_decision_tooltip
 	picture = { reference = "gfx/interface/illustrations/decisions/ep3_decision_estate.dds" }
 	sort_order = 80
 
@@ -625,7 +625,7 @@ LR_tgp_gaul_establish_manorial_administration_decision = {
 		custom_description_no_bullet = { text = if_you_win_effect }
 		show_as_tooltip = { sacral_establish_manorial_administration_reward_effect = yes }
 		trigger_event = {
-			id = LR_tgp_gaul_decision.9601
+			id = LR_tgp_sacral_gaul_decision.9601
 			delayed = yes
 		}
 	}
@@ -644,11 +644,11 @@ LR_tgp_gaul_establish_manorial_administration_decision = {
 
 # Become Shogun
 ### Formalize [ROOT.Char.GetHouse.GetNameNoTooltip] Shōgunate ###
-LR_tgp_gaul_become_sacral_dictator_decision = {
+LR_tgp_sacral_gaul_become_sacral_dictator_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_become_sacral_dictator_decision
-	desc = LR_tgp_gaul_become_sacral_dictator_decision_desc
-	selection_tooltip = LR_tgp_gaul_become_sacral_dictator_decision_tooltip
+	title = LR_tgp_sacral_gaul_become_sacral_dictator_decision
+	desc = LR_tgp_sacral_gaul_become_sacral_dictator_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_become_sacral_dictator_decision_tooltip
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
 	sort_order = 80
 
@@ -672,7 +672,7 @@ LR_tgp_gaul_become_sacral_dictator_decision = {
 	is_valid = {
 		# Is Regent
 		custom_tooltip = {
-			text = LR_tgp_gaul_become_sacral_dictator_decision_top_liege_trigger
+			text = LR_tgp_sacral_gaul_become_sacral_dictator_decision_top_liege_trigger
 			has_title = title:e_sacral_kingdom_gaul
 		}
 		prestige_level >= 4
@@ -680,7 +680,7 @@ LR_tgp_gaul_become_sacral_dictator_decision = {
 		is_independent_ruler = yes
 		has_government = sacral_feudal_government
 		custom_tooltip = {
-			text = LR_tgp_gaul_become_sacral_dictator_decision_centralization_trigger
+			text = LR_tgp_sacral_gaul_become_sacral_dictator_decision_centralization_trigger
 			OR = {
 				has_realm_law = sacral_bureaucracy_2
 				has_realm_law = sacral_bureaucracy_3
@@ -688,7 +688,7 @@ LR_tgp_gaul_become_sacral_dictator_decision = {
 		}
 		is_at_war = no
 		custom_tooltip = {
-			text = LR_tgp_gaul_become_sacral_dictator_decision_land_trigger
+			text = LR_tgp_sacral_gaul_become_sacral_dictator_decision_land_trigger
 			top_liege = {
 				completely_controls = title:d_orleans
 				completely_controls = title:d_valois
@@ -704,7 +704,7 @@ LR_tgp_gaul_become_sacral_dictator_decision = {
 	}
 
 	effect = {
-		trigger_event = LR_tgp_gaul_decision.9101
+		trigger_event = LR_tgp_sacral_gaul_decision.9101
 		show_as_tooltip = { become_sacral_dictator_reward_effect = yes }
 		if = {
 			limit = {
@@ -763,7 +763,7 @@ LR_tgp_sacral_king_gaul_restoration_decision = {
 		has_title = title:e_sacral_kingdom_gaul
 		tgp_has_ceremonial_liege_title_trigger = yes
 		custom_tooltip = {
-			text = LR_tgp_gaul_become_sacral_dictator_decision_centralization_trigger
+			text = LR_tgp_sacral_gaul_become_sacral_dictator_decision_centralization_trigger
 			OR = {
 				has_realm_law = sacral_bureaucracy_2
 				has_realm_law = sacral_bureaucracy_3
@@ -776,7 +776,7 @@ LR_tgp_sacral_king_gaul_restoration_decision = {
 			completely_controls = title:d_dauphine
 			completely_controls = title:d_toulouse
 		custom_tooltip = {
-			text = LR_tgp_gaul_no_other_powerful_forces_trigger
+			text = LR_tgp_sacral_gaul_no_other_powerful_forces_trigger
 			NOT = {
 				title:e_sacral_kingdom_gaul.holder = {
 					any_vassal = {
@@ -803,7 +803,7 @@ LR_tgp_sacral_king_gaul_restoration_decision = {
 				has_title = title:k_sacral_king_gaul_throne
 			}
 		}
-		trigger_event = LR_tgp_gaul_decision.9301
+		trigger_event = LR_tgp_sacral_gaul_decision.9301
 		show_as_tooltip = {
 			restore_ceremonial_liege_faction_reward_effect = yes
 		}
@@ -827,10 +827,10 @@ LR_tgp_sacral_king_gaul_restoration_decision = {
 
 #Become a Poet - Ceremony - House Aspiration
 ### Study Poetry ###
-LR_tgp_gaul_become_a_poet_decision = {
-	title = LR_tgp_gaul_become_a_poet_decision
-	desc = LR_tgp_gaul_become_a_poet_decision_desc
-	selection_tooltip = LR_tgp_gaul_become_a_poet_decision_tooltip
+LR_tgp_sacral_gaul_become_a_poet_decision = {
+	title = LR_tgp_sacral_gaul_become_a_poet_decision
+	desc = LR_tgp_sacral_gaul_become_a_poet_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_become_a_poet_decision_tooltip
 	picture = {
 		trigger = {
 			OR = {
@@ -869,12 +869,12 @@ LR_tgp_gaul_become_a_poet_decision = {
 	}
 
 	effect = {
-		custom_tooltip = LR_tgp_gaul_become_a_poet_decision_effects_tooltip_trait
-		custom_tooltip = LR_tgp_gaul_become_a_poet_decision_effects_tooltip_stress
+		custom_tooltip = LR_tgp_sacral_gaul_become_a_poet_decision_effects_tooltip_trait
+		custom_tooltip = LR_tgp_sacral_gaul_become_a_poet_decision_effects_tooltip_stress
 
 		hidden_effect = {
 			trigger_event = {
-				id = LR_tgp_gaul_decision.9401
+				id = LR_tgp_sacral_gaul_decision.9401
 				days = { 40 60 }
 			}
 		}
@@ -901,10 +901,10 @@ LR_tgp_gaul_become_a_poet_decision = {
 
 #Inspire the Troops - Strength - House Aspiration
 ### Inspire the Troops ###
-LR_tgp_gaul_train_with_troops_decision = {
-	title = LR_tgp_gaul_train_with_troops_decision
-	desc = LR_tgp_gaul_train_with_troops_decision_desc
-	selection_tooltip = LR_tgp_gaul_train_with_troops_decision_tooltip
+LR_tgp_sacral_gaul_train_with_troops_decision = {
+	title = LR_tgp_sacral_gaul_train_with_troops_decision
+	desc = LR_tgp_sacral_gaul_train_with_troops_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_train_with_troops_decision_tooltip
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
 	}
@@ -933,11 +933,11 @@ LR_tgp_gaul_train_with_troops_decision = {
 	effect = {
 		#Apply the Character Modifier
 		send_interface_toast = {
-			title = LR_tgp_gaul_train_with_troops_decision_effects_tooltip_modifier
+			title = LR_tgp_sacral_gaul_train_with_troops_decision_effects_tooltip_modifier
 			type = event_toast_effect_good
 			left_icon = root
 			add_character_modifier = {
-				modifier = LR_tgp_gaul_train_with_troops_modifier
+				modifier = LR_tgp_sacral_gaul_train_with_troops_modifier
 				years = 10
 			}
 		}
@@ -947,7 +947,7 @@ LR_tgp_gaul_train_with_troops_decision = {
 				number_of_commander_traits < 3
 			}
 			custom_tooltip = {
-				text = LR_tgp_gaul_train_with_troops_decision_effects_tooltip_trait
+				text = LR_tgp_sacral_gaul_train_with_troops_decision_effects_tooltip_trait
 				#The higher Martial, the better the odds of gaining a Commander Trait
 				random = {
 					chance = {
@@ -1004,10 +1004,10 @@ LR_tgp_gaul_train_with_troops_decision = {
 
 # Becoming a Buddhist monk near the end of your life (or when you become seriously ill)
 ### In Search of the Pure Land ###
-LR_tgp_gaul_become_a_monk_decision = {
-	title = LR_tgp_gaul_become_a_monk_decision
-	desc = LR_tgp_gaul_become_a_monk_decision_desc
-	selection_tooltip = LR_tgp_gaul_become_a_monk_decision_tooltip
+LR_tgp_sacral_gaul_become_a_monk_decision = {
+	title = LR_tgp_sacral_gaul_become_a_monk_decision
+	desc = LR_tgp_sacral_gaul_become_a_monk_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_become_a_monk_decision_tooltip
 	picture = {
 		reference = "gfx/interface/illustrations/event_scenes/tgp_temple_asia.dds"
 	}
@@ -1047,7 +1047,7 @@ LR_tgp_gaul_become_a_monk_decision = {
 		OR = {
 			age >= 60
 			custom_tooltip = {
-				text = LR_tgp_gaul_become_a_monk_decision_health_tt
+				text = LR_tgp_sacral_gaul_become_a_monk_decision_health_tt
 				health <= poor_health
 			}
 			has_contagious_deadly_disease_trigger = yes
@@ -1101,7 +1101,7 @@ LR_tgp_gaul_become_a_monk_decision = {
 			tgp_renounce_estate_effect = yes
 		}
 		trigger_event = {
-			id = LR_tgp_gaul_decision.9500
+			id = LR_tgp_sacral_gaul_decision.9500
 		}
 	}
 
@@ -1160,11 +1160,11 @@ LR_tgp_gaul_become_a_monk_decision = {
 
 # Restore Chrysanthemum Throne
 ### Restore a Yamato Ten'nō ###
-LR_tgp_gaul_restore_sacral_monarchy_decision = {
+LR_tgp_sacral_gaul_restore_sacral_monarchy_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_restore_sacral_monarchy_decision
-	desc = LR_tgp_gaul_restore_sacral_monarchy_decision_desc
-	selection_tooltip = LR_tgp_gaul_restore_sacral_monarchy_decision_tooltip
+	title = LR_tgp_sacral_gaul_restore_sacral_monarchy_decision
+	desc = LR_tgp_sacral_gaul_restore_sacral_monarchy_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_restore_sacral_monarchy_decision_tooltip
 	picture = { reference = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds" }
 	sort_order = 80
 
@@ -1190,7 +1190,7 @@ LR_tgp_gaul_restore_sacral_monarchy_decision = {
 		has_title = title:e_sacral_kingdom_gaul
 		completely_controls = title:c_ile_de_france # Kyoto
 		custom_tooltip = { # Chrysanthemum destroyed or no longer part of gaul
-			text = LR_tgp_gaul_restore_sacral_monarchy_decision_title_tt
+			text = LR_tgp_sacral_gaul_restore_sacral_monarchy_decision_title_tt
 			trigger_if = {
 				limit = { exists = title:k_sacral_king_gaul_throne.holder.top_liege }
 				NOT = { title:e_sacral_kingdom_gaul.holder ?= title:k_sacral_king_gaul_throne.holder.top_liege }
@@ -1205,7 +1205,7 @@ LR_tgp_gaul_restore_sacral_monarchy_decision = {
 
 	effect = {
 		LR_tgp_restore_sacral_monarchy_merovingian_decision_effect = yes
-		trigger_event = LR_tgp_gaul_decision.9901
+		trigger_event = LR_tgp_sacral_gaul_decision.9901
 	}
 	
 	ai_check_interval_by_tier = {
@@ -1222,11 +1222,11 @@ LR_tgp_gaul_restore_sacral_monarchy_decision = {
 
 # Restore Palatine
 ### Restore Ritsuryō Bureaucracy ###
-LR_tgp_gaul_restore_sacral_government_decision = {
+LR_tgp_sacral_gaul_restore_sacral_government_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_restore_sacral_government_decision
-	desc = LR_tgp_gaul_restore_sacral_government_decision_desc
-	selection_tooltip = LR_tgp_gaul_restore_sacral_government_decision_tooltip
+	title = LR_tgp_sacral_gaul_restore_sacral_government_decision
+	desc = LR_tgp_sacral_gaul_restore_sacral_government_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_restore_sacral_government_decision_tooltip
 	picture = { reference = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds" }
 	sort_order = 85
 
@@ -1274,7 +1274,7 @@ LR_tgp_gaul_restore_sacral_government_decision = {
 
 	effect = {
 		show_as_tooltip = { LR_tgp_restore_sacral_government_decision_effect = yes }
-		trigger_event = LR_tgp_gaul_decision.9911
+		trigger_event = LR_tgp_sacral_gaul_decision.9911
 	}
 	
 	ai_check_interval_by_tier = {
@@ -1291,9 +1291,9 @@ LR_tgp_gaul_restore_sacral_government_decision = {
 
 # Assert Regional Dominion (Become Soryo Duke i.e. SuperSoryoTM)
 ### Assert Regional Dominion ###
-LR_tgp_gaul_assert_regional_dominion_government_decision = {
+LR_tgp_sacral_gaul_assert_regional_dominion_government_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_assert_regional_dominion_government_decision
+	title = LR_tgp_sacral_gaul_assert_regional_dominion_government_decision
 
 	desc = {
 		first_valid = {
@@ -1301,12 +1301,12 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 				trigger = {
 					has_global_variable = sacral_dictatorship_established
 				}
-				desc = LR_tgp_gaul_assert_regional_dominion_government_decision_sacral_dictator_desc
+				desc = LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_sacral_dictator_desc
 			}
-			desc = LR_tgp_gaul_assert_regional_dominion_government_decision_desc
+			desc = LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_desc
 		}
 	}
-	selection_tooltip = LR_tgp_gaul_assert_regional_dominion_government_decision_tooltip
+	selection_tooltip = LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_tooltip
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
 
 	sort_order = 85
@@ -1330,13 +1330,13 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 		legitimacy_level >= 3
 		OR = {
 			custom_tooltip = {
-				text = LR_tgp_gaul_assert_regional_dominion_government_decision_trigger_01
+				text = LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_trigger_01
 				domicile ?= {
 					has_domicile_building_or_higher = sacral_manor_main_03
 				}
 			}
 			custom_tooltip = {
-				text = LR_tgp_gaul_assert_regional_dominion_government_decision_trigger_aspiration
+				text = LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_trigger_aspiration
 				house = {
 					AND = {
 						OR = {
@@ -1348,7 +1348,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 				}
 			}
 			custom_tooltip = {
-				text = LR_tgp_gaul_assert_regional_dominion_government_decision_trigger_bloc
+				text = LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_trigger_bloc
 				confederation ?= {
 					has_leading_house = yes
 					has_cohesion = yes
@@ -1377,7 +1377,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 					}
 				}
 				custom_tooltip = {
-					text = LR_tgp_gaul_establish_house_fief_aspiration_trigger
+					text = LR_tgp_sacral_gaul_establish_house_fief_aspiration_trigger
 					house = {
 						NOR = {
 							has_house_aspiration_parameter = ceremony_cheaper_feasts
@@ -1392,7 +1392,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 				}
 				# Domicile in current Governorship
 				custom_tooltip = {
-					text = LR_tgp_gaul_establish_house_fief_domicile_in_governorship_trigger
+					text = LR_tgp_sacral_gaul_establish_house_fief_domicile_in_governorship_trigger
 					domicile.domicile_location.county.holder ?= this
 				}
 			}
@@ -1431,8 +1431,8 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 	}
 
 	effect = {
-		show_as_tooltip = { LR_tgp_gaul_assert_regional_dominion_government_decision_effect = yes }
-		trigger_event = LR_tgp_gaul_decision.9960
+		show_as_tooltip = { LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_effect = yes }
+		trigger_event = LR_tgp_sacral_gaul_decision.9960
 	}
 	
 	ai_check_interval_by_tier = {
@@ -1453,9 +1453,9 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 ### Move dictatorship Court Decision ###
 move_sacral_dictatorship_court_decision = {
 	decision_group_type = major
-	title = LR_tgp_gaul_move_sacral_dictatorship_court_decision
-	desc = LR_tgp_gaul_move_sacral_dictatorship_court_decision_desc
-	selection_tooltip = LR_tgp_gaul_move_sacral_dictatorship_court_decision_tooltip
+	title = LR_tgp_sacral_gaul_move_sacral_dictatorship_court_decision
+	desc = LR_tgp_sacral_gaul_move_sacral_dictatorship_court_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_move_sacral_dictatorship_court_decision_tooltip
 	picture = { reference = "gfx/interface/illustrations/event_story/tgp_japanese_shogunate.dds" }
 
 	cost = {
