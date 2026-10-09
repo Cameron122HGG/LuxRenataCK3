@@ -1468,16 +1468,16 @@ move_sacral_dictatorship_court_decision = {
 	}
 
 	is_shown = {
-		has_tgp_dlc_trigger = yes
-		is_landed = yes
-		has_global_variable = sacral_dictatorship_established
-		NOT = { has_variable = moved_dictatorship_court }
+		has_global_variable = sacral_dictatorship
+		capital_county ?= title:c_lyon
 		domain_size > 1
-		capital_county = title:c_lyon
+		NOT = { has_variable = moved_sacral_dictatorship_court }
+		is_landed = yes
+		has_tgp_dlc_trigger = yes
 	}
 
 	is_valid = {
-		has_title = title:e_sacral_kingdom_gaul
+		has_title = title:e_japan
 	}
 
 	is_valid_showing_failures_only = {
@@ -1486,20 +1486,20 @@ move_sacral_dictatorship_court_decision = {
 
 	effect = {
 		set_realm_capital = scope:barony.county
-		title:e_sacral_kingdom_gaul = { set_capital_county = scope:barony.county }
+		title:e_japan = { set_capital_county = scope:barony.county }
 		scope:barony.county = {
 			change_development_level = medium_development_level_gain
 			add_county_modifier = {
-				modifier = LR_tgp_moved_sacral_dictator_court_modifier
+				modifier = tgp_moved_shogun_court_modifier
 				years = 25
 			}
 		}
-		set_variable = moved_dictatorship_court
+		set_variable = moved_sacral_dictatorship_court
 	}
 
 	widget = {
 		controller = create_holy_order
-        barony_valid = {
+        title_valid = {
             trigger_if = {
                 limit = { exists = this }
 				is_capital_barony = yes
@@ -1509,7 +1509,7 @@ move_sacral_dictatorship_court_decision = {
             }
 		}
 	}
-	
+
 	ai_potential = {
 		is_playable_character = yes
 		has_global_variable = sacral_dictatorship_established
