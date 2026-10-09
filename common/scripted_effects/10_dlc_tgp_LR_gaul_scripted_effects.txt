@@ -110,7 +110,7 @@
 			hidden_effect = {
 				send_interface_message = {
 					type = event_toast_effect_bad
-					title = LR_tgp_gaul_establish_house_fief_kampaku_toast
+					title = LR_tgp_gaul_establish_house_fief_sacral_majordomo_toast
 					left_icon = scope:new_head
 					right_icon = scope:new_head.primary_title
 					show_as_tooltip = {
@@ -527,27 +527,27 @@ sacral_become_shogun_reward_effect = {
 	dynasty = { add_dynasty_prestige = monumental_dynasty_prestige_gain }
 	culture = {
 		if = {
-			limit = { has_cultural_tradition = tradition_tgp_sacral_peace }
+			limit = { has_cultural_tradition = tradition_LR_tgp_sacral_peace }
 			custom_tooltip = {
-				text = tradition_tgp_bushido_tt
-				remove_culture_tradition = tradition_tgp_sacral_peace
-				add_culture_tradition = tradition_tgp_bushido
+				text = tradition_LR_tgp_bushido_tt
+				remove_culture_tradition = tradition_LR_tgp_sacral_peace
+				add_culture_tradition = tradition_LR_tgp_bushido
 			}
 		}
 		else = { custom_tooltip = unlocks_bushido_tradition_tooltip }
 	}
 	every_culture_global = {
 		limit = {
-			has_cultural_tradition = tradition_tgp_sacral_peace
+			has_cultural_tradition = tradition_LR_tgp_sacral_peace
 			OR = {
 				has_cultural_pillar = heritage_japonic
 				culture_head ?= { government_is_sacral_trigger = yes }
 			}
 		}
 		custom_tooltip = {
-			text = tradition_tgp_bushido_tt
-			remove_culture_tradition = tradition_tgp_sacral_peace
-			add_culture_tradition = tradition_tgp_bushido
+			text = tradition_LR_tgp_bushido_tt
+			remove_culture_tradition = tradition_LR_tgp_sacral_peace
+			add_culture_tradition = tradition_LR_tgp_bushido
 		}
 	}
 	every_vassal = {
@@ -2573,9 +2573,9 @@ LR_tgp_gaul_schoolhouse_education_boost_effect = {
 	}
 }
 
-tgp_restore_sacral_monarchy_decision_effect = {
-	save_scope_as = kampaku
-	tgp_restore_sacral_monarchy_yamato_scion_effect = yes
+LR_tgp_restore_sacral_monarchy_decision_effect = {
+	save_scope_as = sacral_majordomo
+	LR_tgp_restore_sacral_monarchy_yamato_scion_effect = yes
 	add_prestige = major_prestige_value
 	if = {
 		limit = { government_has_flag = government_has_influence }
@@ -2589,20 +2589,20 @@ tgp_restore_sacral_monarchy_decision_effect = {
 			target = scope:scion
 		}
 	}
-	else = { custom_tooltip = tgp_restore_sacral_monarchy_decision_hook_tt }
+	else = { custom_tooltip = LR_tgp_restore_sacral_monarchy_decision_hook_tt }
 }
 
-tgp_restore_sacral_monarchy_yamato_scion_effect = {
+LR_tgp_restore_sacral_monarchy_yamato_scion_effect = {
 	title:k_chrysanthemum_throne.previous_holder ?= { save_scope_as = last_tenno }
 	dynasty:sacral_yamato.dynasty_founder.house ?= {
 		save_scope_as = house_yamato
 		if = {
-			limit = { this = scope:kampaku.house }
+			limit = { this = scope:sacral_majordomo.house }
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
-				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_kampaku_tt
+				custom_tooltip = LR_tgp_restore_sacral_monarchy_yamato_scion_sacral_majordomo_tt
 			}
-			scope:kampaku = { save_scope_as = scion }
+			scope:sacral_majordomo = { save_scope_as = scion }
 		}
 		else_if = {
 			limit = {
@@ -2610,7 +2610,7 @@ tgp_restore_sacral_monarchy_yamato_scion_effect = {
 			}
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
-				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_last_tt
+				custom_tooltip = LR_tgp_restore_sacral_monarchy_yamato_scion_last_tt
 			}
 			scope:last_tenno = { save_scope_as = scion }
 		}
@@ -2622,7 +2622,7 @@ tgp_restore_sacral_monarchy_yamato_scion_effect = {
 			}
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
-				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_last_child_tt
+				custom_tooltip = LR_tgp_restore_sacral_monarchy_yamato_scion_last_child_tt
 			}
 			scope:last_tenno = {
 				ordered_child = {
@@ -2640,7 +2640,7 @@ tgp_restore_sacral_monarchy_yamato_scion_effect = {
 			}
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
-				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_last_close_family_tt
+				custom_tooltip = LR_tgp_restore_sacral_monarchy_yamato_scion_last_close_family_tt
 			}
 			scope:last_tenno = {
 				ordered_close_family_member = {
@@ -2660,7 +2660,7 @@ tgp_restore_sacral_monarchy_yamato_scion_effect = {
 			}
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
-				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_found_tt
+				custom_tooltip = LR_tgp_restore_sacral_monarchy_yamato_scion_found_tt
 			}
 			ordered_house_member = {
 				limit = {
@@ -2674,10 +2674,10 @@ tgp_restore_sacral_monarchy_yamato_scion_effect = {
 			}
 		}
 		else = {
-			tgp_restore_sacral_monarchy_yamato_creation_effect = yes
+			LR_tgp_restore_sacral_monarchy_yamato_creation_effect = yes
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
-				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_created_tt
+				custom_tooltip = LR_tgp_restore_sacral_monarchy_yamato_scion_created_tt
 			}
 		}
 		# Save children for portraits
@@ -2699,7 +2699,7 @@ tgp_restore_sacral_monarchy_yamato_scion_effect = {
 	}
 }
 
-tgp_restore_sacral_monarchy_yamato_restoration_effect = {
+LR_tgp_restore_sacral_monarchy_yamato_restoration_effect = {
 	add_character_flag = LR_tgp_gaul_restore_sacral_monarchy_flag
 	if = {
 		limit = { exists = scope:scion }
@@ -2725,12 +2725,12 @@ tgp_restore_sacral_monarchy_yamato_restoration_effect = {
 		}
 		if = {
 			limit = {
-				scope:scion.liege != scope:kampaku
-				scope:scion != scope:kampaku
+				scope:scion.liege != scope:sacral_majordomo
+				scope:scion != scope:sacral_majordomo
 			}
 			scope:scion ?= {
 				change_liege = {
-					liege = scope:kampaku
+					liege = scope:sacral_majordomo
 					change = scope:change
 				}
 			}
@@ -2750,10 +2750,10 @@ tgp_restore_sacral_monarchy_yamato_restoration_effect = {
 	}
 }
 
-tgp_restore_sacral_monarchy_yamato_creation_effect = {
+LR_tgp_restore_sacral_monarchy_yamato_creation_effect = {
 	create_character = {
 		template = LR_tgp_gaul_sacral_scion_template
-		location = scope:kampaku.capital_province
+		location = scope:sacral_majordomo.capital_province
 		age = { 16 38 }
 		save_scope_as = scion
 	}
@@ -2762,19 +2762,19 @@ tgp_restore_sacral_monarchy_yamato_creation_effect = {
 			limit = { is_female = yes }
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:kampaku.capital_province
+				location = scope:sacral_majordomo.capital_province
 				mother = scope:scion
 				age = { 11 12 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:kampaku.capital_province
+				location = scope:sacral_majordomo.capital_province
 				mother = scope:scion
 				age = { 7 8 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:kampaku.capital_province
+				location = scope:sacral_majordomo.capital_province
 				mother = scope:scion
 				age = { 3 4  }
 			}
@@ -2782,19 +2782,19 @@ tgp_restore_sacral_monarchy_yamato_creation_effect = {
 		else = {
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:kampaku.capital_province
+				location = scope:sacral_majordomo.capital_province
 				father = scope:scion
 				age = { 11 12 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:kampaku.capital_province
+				location = scope:sacral_majordomo.capital_province
 				father = scope:scion
 				age = { 7 8 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:kampaku.capital_province
+				location = scope:sacral_majordomo.capital_province
 				father = scope:scion
 				age = { 3 4 }
 			}
@@ -2802,9 +2802,9 @@ tgp_restore_sacral_monarchy_yamato_creation_effect = {
 	}
 }
 
-tgp_restore_sacral_government_decision_effect = {
+LR_tgp_restore_sacral_government_decision_effect = {
 	sacral_clear_flavour_flags_effect = yes
-	save_scope_as = kampaku
+	save_scope_as = sacral_majordomo
 	save_scope_as = background_throne_room_scope
 	add_character_flag = LR_tgp_gaul_restore_sacral_government_flag
 	# Change government if relevant
@@ -2820,7 +2820,7 @@ tgp_restore_sacral_government_decision_effect = {
 		custom = every_sacral_feudal_vassal_custom
 		limit = { government_has_flag = government_is_sacral_feudal }
 		add_opinion = {
-			target = scope:kampaku
+			target = scope:sacral_majordomo
 			modifier = restored_palatine_opinion
 		}
 	}
@@ -2834,15 +2834,15 @@ tgp_restore_sacral_government_decision_effect = {
 				is_ai = yes
 				NOR = {
 					government_has_mechanic = administrative
-					is_allied_to = scope:kampaku
+					is_allied_to = scope:sacral_majordomo
 				}
 				opinion = {
-					target = scope:kampaku
+					target = scope:sacral_majordomo
 					value < 25
 				}
 				save_temporary_scope_as = vassal_temp
 				NOT = {
-					scope:kampaku = { has_usable_hook = scope:vassal_temp }
+					scope:sacral_majordomo = { has_usable_hook = scope:vassal_temp }
 				}
 			}
 			order_by = military_power
@@ -2857,12 +2857,12 @@ tgp_restore_sacral_government_decision_effect = {
 					is_ai = yes
 					NOT = { government_has_mechanic = administrative }
 					opinion = {
-						target = scope:kampaku
+						target = scope:sacral_majordomo
 						value < 25
 					}
 					save_temporary_scope_as = vassal_temp
 					NOT = {
-						scope:kampaku = { has_usable_hook = scope:vassal_temp }
+						scope:sacral_majordomo = { has_usable_hook = scope:vassal_temp }
 					}
 				}
 				order_by = military_power
@@ -2871,9 +2871,9 @@ tgp_restore_sacral_government_decision_effect = {
 		}
 		if = {
 			limit = { exists = scope:rebel }
-			tgp_restore_palatine_civil_war_effect = {
+			LR_tgp_restore_palatine_civil_war_effect = {
 				REBEL = scope:rebel
-				LIEGE = scope:kampaku
+				LIEGE = scope:sacral_majordomo
 			}
 		}
 	}
@@ -2882,7 +2882,7 @@ tgp_restore_sacral_government_decision_effect = {
 		every_vassal_or_below = {
 			limit = {
 				primary_title.tier >= tier_county
-				culture = { has_same_culture_heritage = scope:kampaku.culture }
+				culture = { has_same_culture_heritage = scope:sacral_majordomo.culture }
 			}
 			trigger_event = {
 				id = LR_tgp_gaul_decision.9912
@@ -2893,7 +2893,7 @@ tgp_restore_sacral_government_decision_effect = {
 	remove_character_flag = LR_tgp_gaul_restore_sacral_government_flag
 }
 
-tgp_destroy_ceremonial_throne_effect = {
+LR_tgp_destroy_ceremonial_throne_effect = {
 	liege = { save_scope_as = liege }
 	save_scope_as = vassal
 	scope:vassal ?= {
@@ -2901,16 +2901,16 @@ tgp_destroy_ceremonial_throne_effect = {
 			limit = {
 				any_held_title = { exists = var:ceremonial_title }
 			}
-			tgp_destroy_ceremonial_liege_title_effect = yes
+			LR_tgp_destroy_ceremonial_liege_title_effect = yes
 		}
 		every_held_title = {
 			limit = { exists = var:administrative_ui_special_title }
-			holder ?= { tgp_destroy_ceremonial_liege_title_effect = yes }
+			holder ?= { LR_tgp_destroy_ceremonial_liege_title_effect = yes }
 		}
 	}
 }
 
-tgp_destroy_ceremonial_liege_title_effect = {
+LR_tgp_destroy_ceremonial_liege_title_effect = {
 	save_scope_as = ceremonial_liege
 	random_held_title = {
 		limit = { exists = var:ceremonial_title }
@@ -2948,7 +2948,7 @@ tgp_destroy_ceremonial_liege_title_effect = {
 			limit = { top_liege = scope:ceremonial_liege.top_liege }
 			send_interface_message = {
 				type = event_generic_bad
-				title = tgp_destroy_ceremonial_liege_throne_title
+				title = LR_tgp_destroy_ceremonial_liege_throne_title
 				left_icon = scope:ceremonial_liege
 				right_icon = scope:liege
 				show_as_tooltip = {
@@ -2998,7 +2998,7 @@ LR_tgp_gaul_demand_administrative_refusal_effect = {
 	}
 }
 
-tgp_restore_palatine_civil_war_effect = {
+LR_tgp_restore_palatine_civil_war_effect = {
 	$REBEL$ = {
 		save_scope_as = actor
 		save_scope_value_as = {
@@ -3156,7 +3156,7 @@ tgp_restore_palatine_civil_war_effect = {
 	}
 }
 
-tgp_set_historical_house_relation_effect = {
+LR_tgp_set_historical_house_relation_effect = {
 	if = {
 		limit = {
 			house_relation_is_valid_to_start_trigger = {
@@ -3172,12 +3172,12 @@ tgp_set_historical_house_relation_effect = {
 	}
 }
 
-tgp_setup_historical_house_relation_effect = {
+LR_tgp_setup_historical_house_relation_effect = {
 	### 867 ###
 	if = {
 		limit = { game_start_date = 5867.1.1 }
 		house:house_fujiwara_ashikaga = {
-			tgp_set_historical_house_relation_effect = { #
+			LR_tgp_set_historical_house_relation_effect = { #
 				OTHER_HOUSE = house:house_minamoto_kozuke
 				LEVEL = rivalry
 			}
@@ -3187,7 +3187,7 @@ tgp_setup_historical_house_relation_effect = {
 	else_if = {
 		limit = { game_start_date = 1066.9.15 }
 		dynasty:sacral_minamoto_murakami.dynasty_founder.house = {
-			tgp_set_historical_house_relation_effect = { #
+			LR_tgp_set_historical_house_relation_effect = { #
 				OTHER_HOUSE = dynasty:sacral_fujiwara.dynasty_founder.house
 				LEVEL = friendly
 			}
@@ -3197,71 +3197,71 @@ tgp_setup_historical_house_relation_effect = {
 	else_if = {
 		limit = { game_start_date = 6178.10.1 }
 		dynasty:sacral_sugawara.dynasty_founder.house = {
-			tgp_set_historical_house_relation_effect = { #
+			LR_tgp_set_historical_house_relation_effect = { #
 				OTHER_HOUSE = dynasty:sacral_ki.dynasty_founder.house
 				LEVEL = friendly
 			}
 		}
 		house:house_minamoto_kiso = {
-			tgp_set_historical_house_relation_effect = { # Yoshikata killed by Yoshihira
+			LR_tgp_set_historical_house_relation_effect = { # Yoshikata killed by Yoshihira
 				OTHER_HOUSE = dynasty:sacral_nakahara_kiso.dynasty_founder.house
 				LEVEL = friendly
 			}
 		}
 		house:house_minamoto_kawachi = {
-			tgp_set_historical_house_relation_effect = { # Yoritomo's brothers killed by Kiyomori
+			LR_tgp_set_historical_house_relation_effect = { # Yoritomo's brothers killed by Kiyomori
 				OTHER_HOUSE = dynasty:sacral_nakahara_kiso.dynasty_founder.house
 				LEVEL = rivalry
 			}
-			tgp_set_historical_house_relation_effect = { # Marriage and historical alliance
+			LR_tgp_set_historical_house_relation_effect = { # Marriage and historical alliance
 				OTHER_HOUSE = house:house_taira_hojo
 				LEVEL = friendly
 			}
 		}
 		house:house_kudo_kawazu = {
-			tgp_set_historical_house_relation_effect = { # Soga brothers
+			LR_tgp_set_historical_house_relation_effect = { # Soga brothers
 				OTHER_HOUSE = house:house_kudo_ito_2
 				LEVEL = rivalry
 			}
 		}
 		house:house_taira_wada = {
-			tgp_set_historical_house_relation_effect = { # Yoshimune killed by Tsunetomo
+			LR_tgp_set_historical_house_relation_effect = { # Yoshimune killed by Tsunetomo
 				OTHER_HOUSE = dynasty:sacral_nagasa.dynasty_founder.house
 				LEVEL = rivalry
 			}
 		}
 		house:house_taira_chichibu = {
-			tgp_set_historical_house_relation_effect = { # Shigetaka killed by Yoshihira
+			LR_tgp_set_historical_house_relation_effect = { # Shigetaka killed by Yoshihira
 				OTHER_HOUSE = house:house_minamoto_kawachi
 				LEVEL = rivalry
 			}
 		}
 		house:house_taira_soga = {
-			tgp_set_historical_house_relation_effect = { # Soga brothers
+			LR_tgp_set_historical_house_relation_effect = { # Soga brothers
 				OTHER_HOUSE = house:house_minamoto_kawachi
 				LEVEL = rivalry
 			}
 		}
 		dynasty:sacral_ito.dynasty_founder.house = {
-			tgp_set_historical_house_relation_effect = { # Tadanao killed by Tametomo
+			LR_tgp_set_historical_house_relation_effect = { # Tadanao killed by Tametomo
 				OTHER_HOUSE = house:house_minamoto_kawachi
 				LEVEL = rivalry
 			}
 		}
 		house:house_kudo_ito_2 = {
-			tgp_set_historical_house_relation_effect = { # Sukeyasu_2 killed by Suketsune_2
+			LR_tgp_set_historical_house_relation_effect = { # Sukeyasu_2 killed by Suketsune_2
 				OTHER_HOUSE = house:house_kudo_kawazu
 				LEVEL = rivalry
 			}
 		}
 		house:house_fujiwara_shijo = {
-			tgp_set_historical_house_relation_effect = { # Takasue's brothers killed by Kiyomori
+			LR_tgp_set_historical_house_relation_effect = { # Takasue's brothers killed by Kiyomori
 				OTHER_HOUSE = dynasty:sacral_taira_kanmu.dynasty_founder.house
 				LEVEL = rivalry
 			}
 		}
 		dynasty:sacral_fujiwara.dynasty_founder.house = {
-			tgp_set_historical_house_relation_effect = { # Yorinaga killed by Shigesada
+			LR_tgp_set_historical_house_relation_effect = { # Yorinaga killed by Shigesada
 				OTHER_HOUSE = house:house_minamoto_mitsumasa
 				LEVEL = rivalry
 			}
@@ -3269,7 +3269,7 @@ tgp_setup_historical_house_relation_effect = {
 	}
 }
 
-tgp_liege_change_bloc_management_effect = {
+LR_tgp_liege_change_bloc_management_effect = {
 	$VASSAL$ = {
 		if = { # Leave if not a valid member anymore
 			limit = {
@@ -3316,7 +3316,7 @@ tgp_liege_change_bloc_management_effect = {
 							}
 						}
 						scope:vassal_house_temp = {
-							tgp_leave_house_bloc_effect = {
+							LR_tgp_leave_house_bloc_effect = {
 								OPINION = flag:no
 								TRUCE = flag:yes
 							}
@@ -3355,7 +3355,7 @@ tgp_liege_change_bloc_management_effect = {
 LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 	save_scope_as = super_manorial
 	scope:super_manorial.primary_title.duchy ?= { save_scope_as = title_scope }
-	# Crime to Kampaku
+	# Crime to sacral_majordomo
 	if = {
 		limit = {
 			top_liege = { government_has_mechanic = administrative }
@@ -3369,7 +3369,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 			top_liege = {
 				send_interface_toast = {
 					type = event_war_bad
-					title = LR_tgp_gaul_manorial_war_is_crime_kampaku_title
+					title = LR_tgp_gaul_manorial_war_is_crime_sacral_majordomo_title
 					left_icon = scope:super_manorial
 					right_icon = scope:title_scope
 					add_opinion = {
@@ -3406,7 +3406,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 				save_scope_as = war
 			}
 		}
-		tgp_bloc_members_join_war_effect = { WAR = scope:war }
+		LR_tgp_bloc_members_join_war_effect = { WAR = scope:war }
 		custom_tooltip = domination_war_holder_custom_tooltip
 	}
 	else_if = {
@@ -3535,7 +3535,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 		}
 		if = {
 			limit = { exists = scope:war }
-			tgp_bloc_members_join_war_effect = { WAR = scope:war }
+			LR_tgp_bloc_members_join_war_effect = { WAR = scope:war }
 		}
 		save_scope_value_as = {
 			name = super_manorial_war_current_enemy_strength
@@ -3636,7 +3636,7 @@ LR_tgp_gaul_assert_regional_dominance_war_outcome_effect = {
 	resolve_title_and_vassal_change = scope:change
 }
 
-tgp_set_minamoto_taira_dynasty_prestige_effect = {
+LR_tgp_set_minamoto_taira_dynasty_prestige_effect = {
 	holder.dynasty ?= {
 		while = {
 			limit = { dynasty_prestige_level < 5 }
@@ -3728,7 +3728,7 @@ sacral_establish_manorial_administration_reward_effect = {
 	}
 }
 
-tgp_learn_chinese_effect_game_start = {
+LR_tgp_learn_chinese_effect_game_start = {
 	if = {
 		limit = {
 			should_learn_chinese_trigger = yes
@@ -3736,7 +3736,7 @@ tgp_learn_chinese_effect_game_start = {
 		learn_language = language_chinese
 	}
 }
-tgp_learn_chinese_effect_birthday = {
+LR_tgp_learn_chinese_effect_birthday = {
 	if = {
 		limit = {
 			should_learn_chinese_trigger = yes
@@ -3795,7 +3795,7 @@ create_love_artifact_poetry_effect = {
 	}
 }
 
-tgp_bloc_members_join_faction_effect = {
+LR_tgp_bloc_members_join_faction_effect = {
 	if = { # sacral blocs
 		limit = { scope:faction.faction_leader.house.house_confederation.leading_house ?= scope:faction.faction_leader.house }
 		scope:faction.faction_leader.house.house_confederation ?= {
@@ -3807,9 +3807,9 @@ tgp_bloc_members_join_faction_effect = {
 	}
 }
 
-tgp_bloc_members_join_war_effect = {
+LR_tgp_bloc_members_join_war_effect = {
 	custom_tooltip = {
-		text = tgp_bloc_members_join_war_effect_tt
+		text = LR_tgp_bloc_members_join_war_effect_tt
 		if = {
 			limit = { house.house_confederation.leading_house.house_head = this }
 			house.house_confederation ?= {
@@ -3825,7 +3825,7 @@ tgp_bloc_members_join_war_effect = {
 	}
 }
 
-tgp_renounce_estate_effect = {
+LR_tgp_renounce_estate_effect = {
 	save_scope_as = retired
 	random_held_title = {
 		limit = { is_noble_family_title = yes }
@@ -3996,7 +3996,7 @@ tgp_renounce_estate_effect = {
 			OPINION = default_friend_opinion
 		}
 	}
-	tgp_step_down_title_recipient_tooltip_effect = yes
+	LR_tgp_step_down_title_recipient_tooltip_effect = yes
 	set_variable = {
 		name = appointment_trait_override
 		value = trait:intellect_good_3
