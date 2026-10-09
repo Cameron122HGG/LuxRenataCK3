@@ -1,6 +1,6 @@
 ﻿
 # War to install Bloc member -- Bloc Expansion
-gaul_install_bloc_member_cb = {
+sacral_gaul_install_bloc_member_cb = {
 	icon = bloc
 	group = subjugation
 	combine_into_one = yes
@@ -17,7 +17,7 @@ gaul_install_bloc_member_cb = {
 		has_tgp_dlc_trigger = yes
 		is_landed = yes
 		highest_held_title_tier >= tier_county
-		tgp_soryo_or_bushido_trigger = yes # Soryo
+		LR_tgp_roman_or_frank_trigger = yes # Soryo
 		exists = house.house_confederation # In a Bloc
 	}
 
@@ -52,14 +52,14 @@ gaul_install_bloc_member_cb = {
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { tgp_soryo_or_bushido_trigger = no }
+			scope:attacker = { LR_tgp_roman_or_frank_trigger = no }
 			scope:defender.house.house_confederation ?= scope:attacker.house.house_confederation # Same bloc already
 			NOT = { exists = scope:attacker.house.house_confederation } # Bloc destroyed
 		}
 	}
 
 	on_invalidated_desc = {
-		desc = gaul_install_bloc_member_cb_ended_invalid.desc
+		desc = sacral_gaul_install_bloc_member_cb_ended_invalid.desc
 	}
 
 	on_declaration = {
@@ -92,7 +92,7 @@ gaul_install_bloc_member_cb = {
 
 	on_victory_desc = {
 		desc = {
-			desc = gaul_install_bloc_member_cb_victory_desc
+			desc = sacral_gaul_install_bloc_member_cb_victory_desc
 			triggered_desc = {
 				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
 				desc = gaul_manorial_conquest_cb_admin_warning
@@ -173,7 +173,7 @@ gaul_install_bloc_member_cb = {
 
 	on_white_peace_desc = {
 		desc = {
-			desc = gaul_install_bloc_member_cb_white_peace_desc
+			desc = sacral_gaul_install_bloc_member_cb_white_peace_desc
 			triggered_desc = {
 				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
 				desc = gaul_manorial_conquest_cb_admin_warning
@@ -215,7 +215,7 @@ gaul_install_bloc_member_cb = {
 
 	on_defeat_desc = {
 		desc = {
-			desc = gaul_install_bloc_member_cb_defeat_desc
+			desc = sacral_gaul_install_bloc_member_cb_defeat_desc
 			triggered_desc = {
 				trigger = { LR_tgp_gaul_internal_manorial_war_is_crime_trigger = yes }
 				desc = gaul_manorial_conquest_cb_admin_warning
@@ -305,7 +305,7 @@ gaul_install_bloc_member_cb = {
 }
 
 # War for landless feudal to take land
-gaul_manorial_conquest_county_landless_cb = {
+sacral_gaul_manorial_conquest_county_landless_cb = {
 	icon = soryo
 	group = conquest
 	combine_into_one = yes
@@ -324,7 +324,7 @@ gaul_manorial_conquest_county_landless_cb = {
 		has_tgp_dlc_trigger = yes
 		is_landed = no
 		government_is_sacral_trigger = yes
-		tgp_soryo_or_bushido_trigger = yes
+		LR_tgp_roman_or_frank_trigger = yes
 	}
 
 	# scope:defender
@@ -624,7 +624,7 @@ gaul_manorial_conquest_county_landless_cb = {
 }
 
 # War for feudal to take land
-gaul_manorial_conquest_county_cb = {
+sacral_gaul_manorial_conquest_county_cb = {
 	icon = soryo
 	group = conquest
 	combine_into_one = yes
@@ -643,7 +643,7 @@ gaul_manorial_conquest_county_cb = {
 		has_tgp_dlc_trigger = yes
 		is_landed = yes
 		# Attacker must be Japanese Feudal, or have the Bushido tradition
-		tgp_soryo_or_bushido_trigger = yes
+		LR_tgp_roman_or_frank_trigger = yes
 	}
 
 	# scope:defender
@@ -669,7 +669,7 @@ gaul_manorial_conquest_county_cb = {
 	should_invalidate = {
 		OR = {
 			NOT = {
-				scope:attacker = { tgp_soryo_or_bushido_trigger = yes }
+				scope:attacker = { LR_tgp_roman_or_frank_trigger = yes }
 			}
 			scope:defender = {
 				top_liege != scope:attacker.top_liege
@@ -1230,7 +1230,7 @@ sacral_gaul_demand_administrative_cb = {
 }
 
 # War to conquer Japan
-gaul_sacral_expansion_cb = {
+sacral_gaul_expansion_cb = {
 	icon = ritsuryo_government
 	group = conquest
 	combine_into_one = yes
@@ -1256,7 +1256,7 @@ gaul_sacral_expansion_cb = {
 
 	# root = scope:attacker
 	allowed_for_character = {
-		gaul_sacral_expansion_cb_allowed_for_character_trigger = yes
+		sacral_gaul_expansion_cb_allowed_for_character_trigger = yes
 	}
 
 	# root = scope:attacker
@@ -1267,14 +1267,14 @@ gaul_sacral_expansion_cb = {
 
 	# root = scope:defender, scope:attacker
 	allowed_against_character = {
-		gaul_sacral_expansion_cb_allowed_against_character_trigger = yes
+		sacral_gaul_expansion_cb_allowed_against_character_trigger = yes
 	}
 
 	# root = scope:defender, scope:attacker
 	allowed_against_character_display_regardless = {
 		# Must be neighbours, but we want to show casus belli in list regardless
 		custom_tooltip = {
-			text = gaul_sacral_expansion_cb_neighbour_tt
+			text = sacral_gaul_expansion_cb_neighbour_tt
 			any_sub_realm_county = {
 				any_title_to_title_neighboring_and_across_water_county = { holder.top_liege = scope:attacker.top_liege }
 			}
@@ -1305,8 +1305,8 @@ gaul_sacral_expansion_cb = {
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { gaul_sacral_expansion_cb_allowed_for_character_trigger = no }
-			scope:defender = { gaul_sacral_expansion_cb_allowed_against_character_trigger = no }
+			scope:attacker = { sacral_gaul_expansion_cb_allowed_for_character_trigger = no }
+			scope:defender = { sacral_gaul_expansion_cb_allowed_against_character_trigger = no }
 		}
 	}
 
@@ -1314,11 +1314,11 @@ gaul_sacral_expansion_cb = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					scope:attacker = { gaul_sacral_expansion_cb_allowed_for_character_trigger = no }
+					scope:attacker = { sacral_gaul_expansion_cb_allowed_for_character_trigger = no }
 				}
-				desc = gaul_sacral_expansion_cb_ended_invalid.desc.attacker
+				desc = sacral_gaul_expansion_cb_ended_invalid.desc.attacker
 			}
-			desc = gaul_sacral_expansion_cb_ended_invalid.desc
+			desc = sacral_gaul_expansion_cb_ended_invalid.desc
 		}
 	}
 
@@ -1336,9 +1336,9 @@ gaul_sacral_expansion_cb = {
 							is_independent_ruler = yes
 						}
 					}
-					desc = gaul_sacral_expansion_cb_victory_desc_attacker
+					desc = sacral_gaul_expansion_cb_victory_desc_attacker
 				}
-				desc = gaul_sacral_expansion_cb_victory_desc
+				desc = sacral_gaul_expansion_cb_victory_desc
 			}
 			triggered_desc = {
 				trigger = {
@@ -1578,7 +1578,7 @@ gaul_sacral_expansion_cb = {
 }
 
 # War to reconquer Japan
-gaul_sacral_reconquest_cb = {
+sacral_gaul_reconquest_cb = {
 	icon = ritsuryo_government
 	group = de_jure
 
@@ -1598,7 +1598,7 @@ gaul_sacral_reconquest_cb = {
 					limit = { empire = title:e_sacral_kingdom_gaul }
 					add = {
 						value = 50
-						desc = gaul_sacral_reconquest_cb_cost_tt
+						desc = sacral_gaul_reconquest_cb_cost_tt
 					}
 				}
 			}
@@ -1616,7 +1616,7 @@ gaul_sacral_reconquest_cb = {
 
 	# root = scope:attacker
 	allowed_for_character = {
-		gaul_sacral_reconquest_cb_allowed_for_character_trigger = yes
+		sacral_gaul_reconquest_cb_allowed_for_character_trigger = yes
 	}
 
 	# root = scope:attacker
@@ -1626,7 +1626,7 @@ gaul_sacral_reconquest_cb = {
 
 	# root = scope:defender, scope:attacker
 	allowed_against_character = {
-		gaul_sacral_reconquest_cb_allowed_against_character_trigger = yes
+		sacral_gaul_reconquest_cb_allowed_against_character_trigger = yes
 	}
 
 	valid_to_start = {
@@ -1646,8 +1646,8 @@ gaul_sacral_reconquest_cb = {
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { gaul_sacral_reconquest_cb_allowed_for_character_trigger = no }
-			scope:defender = { gaul_sacral_reconquest_cb_allowed_against_character_trigger = no }
+			scope:attacker = { sacral_gaul_reconquest_cb_allowed_for_character_trigger = no }
+			scope:defender = { sacral_gaul_reconquest_cb_allowed_against_character_trigger = no }
 		}
 	}
 
@@ -1655,11 +1655,11 @@ gaul_sacral_reconquest_cb = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					scope:attacker = { gaul_sacral_reconquest_cb_allowed_for_character_trigger = no }
+					scope:attacker = { sacral_gaul_reconquest_cb_allowed_for_character_trigger = no }
 				}
-				desc = gaul_sacral_reconquest_cb_ended_invalid.desc.attacker
+				desc = sacral_gaul_reconquest_cb_ended_invalid.desc.attacker
 			}
-			desc = gaul_sacral_reconquest_cb_ended_invalid.desc
+			desc = sacral_gaul_reconquest_cb_ended_invalid.desc
 		}
 	}
 
@@ -1674,7 +1674,7 @@ gaul_sacral_reconquest_cb = {
 					trigger = { scope:attacker = { is_local_player = yes } }
 					desc = de_jure_cb_victory_desc_attacker
 				}
-				desc = gaul_sacral_reconquest_cb_victory_desc
+				desc = sacral_gaul_reconquest_cb_victory_desc
 			}
 			triggered_desc = {
 				trigger = {
@@ -1853,7 +1853,7 @@ gaul_sacral_reconquest_cb = {
 }
 
 # War to reimpose Ritsuryo
-sacral_sacral_refused_palatine_cb = {
+sacral_gaul_refused_palatine_cb = {
 	icon = dissolution_war
 	group = civil_war
 	ai_only_against_liege = yes
@@ -2471,7 +2471,7 @@ sacral_establish_manorial_administration_cb = {
 			save_scope_as = leader
 		}
 		scope:defender = {
-			save_scope_as = daijo_daijin
+			save_scope_as = sacral_magister_militum
 		}
 
 		# Legitimacy
@@ -2587,7 +2587,7 @@ sacral_establish_manorial_administration_cb = {
 			save_scope_as = leader
 		}
 		scope:defender = {
-			save_scope_as = daijo_daijin
+			save_scope_as = sacral_magister_militum
 			show_as_tooltip = { sacral_establish_manorial_administration_reward_effect = yes }
 			trigger_event = LR_tgp_gaul_decision.9606
 		}
@@ -2676,7 +2676,7 @@ sacral_establish_manorial_administration_cb = {
 }
 
 # War to disrupt Bloc
-sacral_bloc_war_cb = {
+sacral_gaul_bloc_war_cb = {
 	icon = bloc
 	group = subjugation
 	combine_into_one = yes
@@ -2688,7 +2688,7 @@ sacral_bloc_war_cb = {
 	allowed_for_character = {
 		has_tgp_dlc_trigger = yes
 		# Soryo Bloc leader checks
-		tgp_soryo_or_bushido_trigger = yes
+		LR_tgp_roman_or_frank_trigger = yes
 		is_house_head = yes
 		house.house_confederation.leading_house ?= house
 		any_held_title = { is_noble_family_title = yes }
@@ -2696,14 +2696,14 @@ sacral_bloc_war_cb = {
 
 	allowed_for_character_display_regardless = {
 		custom_tooltip = {
-			text = sacral_bloc_war_cb_cohesion_requirement_tt
+			text = sacral_gaul_bloc_war_cb_cohesion_requirement_tt
 			house.house_confederation.cohesion >= 25
 		}
 	}
 
 	# scope:defender
 	allowed_against_character = {
-		tgp_soryo_or_bushido_trigger = yes
+		LR_tgp_roman_or_frank_trigger = yes
 		is_house_head = yes
 		house.house_confederation.leading_house ?= house
 		NOR = {
@@ -2714,7 +2714,7 @@ sacral_bloc_war_cb = {
 			}
 			# Not any ongoing bloc war
 			any_character_war = {
-				using_cb = sacral_bloc_war_cb
+				using_cb = sacral_gaul_bloc_war_cb
 				save_temporary_scope_as = war_temp
 				scope:attacker = { is_participant_in_war = scope:war_temp }
 			}
@@ -2725,10 +2725,10 @@ sacral_bloc_war_cb = {
 
 	should_invalidate = {
 		OR = {
-			scope:attacker = { tgp_soryo_or_bushido_trigger = no }
+			scope:attacker = { LR_tgp_roman_or_frank_trigger = no }
 			scope:defender = {
 				OR = {
-					tgp_soryo_or_bushido_trigger = no
+					LR_tgp_roman_or_frank_trigger = no
 					NOT = { exists = house.house_confederation } # Left bloc
 					house.house_confederation ?= scope:attacker.house.house_confederation # Same bloc
 					is_landed = no
@@ -2748,7 +2748,7 @@ sacral_bloc_war_cb = {
 	}
 
 	on_invalidated_desc = {
-		desc = sacral_bloc_war_cb_ended_invalid.desc
+		desc = sacral_gaul_bloc_war_cb_ended_invalid.desc
 	}
 
 	on_declaration = {
@@ -2757,7 +2757,7 @@ sacral_bloc_war_cb = {
 	}
 
 	on_victory_desc = {
-		desc = sacral_bloc_war_cb_victory_desc
+		desc = sacral_gaul_bloc_war_cb_victory_desc
 	}
 
 	on_victory = {
@@ -2832,7 +2832,7 @@ sacral_bloc_war_cb = {
 	}
 
 	on_white_peace_desc = {
-		desc = sacral_bloc_war_cb_white_peace_desc
+		desc = sacral_gaul_bloc_war_cb_white_peace_desc
 	}
 
 	on_white_peace = {
@@ -2868,7 +2868,7 @@ sacral_bloc_war_cb = {
 	}
 
 	on_defeat_desc = {
-		desc = sacral_bloc_war_cb_defeat_desc
+		desc = sacral_gaul_bloc_war_cb_defeat_desc
 	}
 
 	on_defeat = {
