@@ -1,4 +1,4 @@
-﻿gaul_establish_house_fief_effect = {
+﻿sacral_establish_house_fief_effect = {
 	save_scope_as = house_fiefer
 	save_scope_as = new_head
 	# Dynasty
@@ -50,16 +50,9 @@
 	# House
 	else_if = {
 		limit = { is_house_head = no }
-		if = {
-			limit = { exists = var:new_sacral_house_name }
-			found_cadet_house_decision_effect = {
-				CHARACTER = root
-				PRESTIGE = 0
-			}
-			house = { save_scope_as = new_house }
-		}
-		else = {
-			create_cadet_branch = { save_scope_as = new_house }
+		found_cadet_house_decision_effect = {
+			CHARACTER = root
+			PRESTIGE = 0
 		}
 	}
 	# Government
@@ -100,7 +93,7 @@
 			limit = {
 				scope:new_head = {
 					is_landed = yes
-					NOR = { 
+					NOR = {
 						var:petition_liege_house_fief_allowed_flag ?= scope:new_head.top_liege
 						top_liege = {
 							government_has_flag = government_is_sacral_feudal
@@ -117,7 +110,7 @@
 			hidden_effect = {
 				send_interface_message = {
 					type = event_toast_effect_bad
-					title = LR_tgp_gaul_establish_house_fief_mayor_gaul_toast
+					title = LR_tgp_gaul_establish_house_fief_kampaku_toast
 					left_icon = scope:new_head
 					right_icon = scope:new_head.primary_title
 					show_as_tooltip = {
@@ -143,7 +136,7 @@
 	add_achievement_flag_effect = { FLAG = achievement_a_house_of_my_own_flag }
 }
 
-sacral_set_house_of_all_descendants_effect = {
+set_house_of_all_descendants_effect = {
 	if = {
 		limit = { any_child = { count >= 1 } }
 		every_child = { # Children
@@ -165,7 +158,7 @@ sacral_set_house_of_all_descendants_effect = {
 	}
 }
 
-gaul_set_house_effect = {
+sacral_set_house_effect = {
 	house = { save_scope_as = old_house }
 	$NEW_HOUSE$ = { save_scope_as = new_house }
 	set_house = scope:new_house
@@ -181,7 +174,43 @@ gaul_set_house_effect = {
 	}
 }
 
-
+sacral_dynasty_tracker_setup_effect = {
+	# FUJIWARA
+	dynasty:sacral_fujiwara ?= { add_to_list = fujiwara_list }
+	dynasty:sacral_fujiwara_oshu ?= { add_to_list = fujiwara_list }
+	every_in_list = {
+		list = fujiwara_list
+		set_variable = { name = fujiwara_flag }
+	}
+	# MINAMOTO
+	dynasty:sacral_minamoto_daigo ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_kazan ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_koko ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_gosanjo ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_montoku ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_murakami ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_ninmyo ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_saga ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_sanjo ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_seiwa ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_uda ?= { add_to_list = minamoto_list }
+	dynasty:sacral_minamoto_yozei ?= { add_to_list = minamoto_list }
+	every_in_list = {
+		list = minamoto_list
+		set_variable = { name = minamoto_flag }
+		#dynasty_founder.house ?= { set_house_name = "dynn_Minamoto" } # For easier parsing of house names
+	}
+	# TAIRA
+	dynasty:sacral_taira_kanmu ?= { add_to_list = taira_list }
+	dynasty:sacral_taira_koko ?= { add_to_list = taira_list }
+	dynasty:sacral_taira_montoku ?= { add_to_list = taira_list }
+	dynasty:sacral_taira_ninmyo ?= { add_to_list = taira_list }
+	every_in_list = {
+		list = taira_list
+		set_variable = { name = taira_flag }
+		#dynasty_founder.house ?= { set_house_name = "dynn_Taira" } # For easier parsing of house names
+	}
+}
 
 fill_external_sacral_manor_building_effect = {
 	switch = {
@@ -189,7 +218,7 @@ fill_external_sacral_manor_building_effect = {
 		sacral_manor_main_05 = {
 			while = {
 				limit = { free_external_domicile_building_slots >= 1 }
-				add_random_external_estate_building = yes
+				add_random_external_sacral_manor_building = yes
 			}
 		}
 		sacral_manor_main_04 = {
@@ -266,7 +295,7 @@ add_random_external_sacral_manor_building = {
 			}
 			10 = {
 				trigger = {
-					owner = { government_has_flag = government_is_administrative }
+					owner = { government_has_mechanic = administrative }
 					NOT = { has_domicile_building_or_higher = sacral_archive_01 }
 					owner.house = { has_house_aspiration_parameter = unlocks_sacral_manor_archive }
 				}
@@ -461,22 +490,22 @@ add_random_internal_sacral_manor_building = {
 	}
 }
 
-gaul_clear_flavour_flags_effect = {
-	remove_global_variable = sacral_dictatorship_established
-	remove_global_variable = sacral_king_gaul_restored
-	remove_character_flag = sacral_dictator_flag
+sacral_clear_flavour_flags_effect = {
+	remove_global_variable = shogunate_established
+	remove_global_variable = tenno_restored
+	remove_character_flag = shogun_flag
 	remove_character_flag = ceremonial_liege_flag
-	remove_character_flag = low_king_flag
+	remove_character_flag = joko_flag
 }
 
-become_sacral_dictator_reward_effect = {
+sacral_become_shogun_reward_effect = {
 	# Setup
-	gaul_clear_flavour_flags_effect = yes
+	sacral_clear_flavour_flags_effect = yes
 	set_global_variable = {
-		name = sacral_dictatorship_established
+		name = shogunate_established
 		value = yes
 	}
-	add_character_flag = sacral_dictator_flag
+	add_character_flag = shogun_flag
 
 	# Rewards
 	if = {
@@ -498,14 +527,28 @@ become_sacral_dictator_reward_effect = {
 	dynasty = { add_dynasty_prestige = monumental_dynasty_prestige_gain }
 	culture = {
 		if = {
-			limit = { has_cultural_tradition = lux_tradition_tgp_sacral_peace }
+			limit = { has_cultural_tradition = tradition_tgp_sacral_peace }
 			custom_tooltip = {
-				text = lux_tradition_tgp_sacred_chivalry_tt
-				remove_culture_tradition = lux_tradition_tgp_sacral_peace
-				add_culture_tradition = lux_tradition_tgp_sacred_chivalry
+				text = tradition_tgp_bushido_tt
+				remove_culture_tradition = tradition_tgp_sacral_peace
+				add_culture_tradition = tradition_tgp_bushido
 			}
 		}
-		else = { custom_tooltip = unlocks_sacred_chivalry_tradition_tooltip }
+		else = { custom_tooltip = unlocks_bushido_tradition_tooltip }
+	}
+	every_culture_global = {
+		limit = {
+			has_cultural_tradition = tradition_tgp_sacral_peace
+			OR = {
+				has_cultural_pillar = heritage_japonic
+				culture_head ?= { government_is_sacral_trigger = yes }
+			}
+		}
+		custom_tooltip = {
+			text = tradition_tgp_bushido_tt
+			remove_culture_tradition = tradition_tgp_sacral_peace
+			add_culture_tradition = tradition_tgp_bushido
+		}
 	}
 	every_vassal = {
 		custom = every_sacral_admin_vassal_custom_bullet
@@ -516,7 +559,7 @@ become_sacral_dictator_reward_effect = {
 	}
 }
 
-sacral_restore_ceremonial_liege_faction_combined_effect = {
+restore_ceremonial_liege_faction_combined_effect = {
 	top_liege = {
 		save_temporary_scope_as = regent_temp
 		primary_title = {
@@ -532,9 +575,9 @@ sacral_restore_ceremonial_liege_faction_combined_effect = {
 		}
 	}
 	# GLOBAL VAR
-	gaul_clear_flavour_flags_effect = yes
+	sacral_clear_flavour_flags_effect = yes
 	set_global_variable = {
-		name = sacral_king_gaul_restored
+		name = tenno_restored
 		value = yes
 	}
 	show_as_tooltip = { restore_ceremonial_liege_faction_reward_effect = yes }
@@ -542,7 +585,7 @@ sacral_restore_ceremonial_liege_faction_combined_effect = {
 	scope:ceremonial_liege_temp = { trigger_event = LR_tgp_gaul_decision.9301 }
 }
 
-sacral_restore_ceremonial_liege_faction_reward_effect = {
+restore_ceremonial_liege_faction_reward_effect = {
 	top_liege = {
 		save_temporary_scope_as = regent_temp
 		primary_title = {
@@ -551,7 +594,7 @@ sacral_restore_ceremonial_liege_faction_reward_effect = {
 		}
 	}
 	scope:ceremonial_liege_temp = {
-		custom_tooltip = gaul_government_gaul_duchy_creation_tt
+		custom_tooltip = tenno_duchy_creation_tt
 		if = {
 			limit = { has_legitimacy = yes }
 			add_legitimacy = major_legitimacy_gain
@@ -568,7 +611,7 @@ sacral_restore_ceremonial_liege_faction_reward_effect = {
 	}
 }
 
-sacral_restore_ceremonial_liege_faction_titles_effect = {
+restore_ceremonial_liege_faction_titles_effect = {
 	top_liege = {
 		save_temporary_scope_as = regent_temp
 		primary_title = {
@@ -608,9 +651,1840 @@ sacral_restore_ceremonial_liege_faction_titles_effect = {
 	resolve_title_and_vassal_change = scope:title_change
 }
 
+assign_sacral_house_name_options_effect = {
+	random_list = {
+		### AKI
+		### AKITA (NUSHIRO)
+		1 = { # OKAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_kawa TITLE = title:c_nushiro } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_nushiro }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_kawa }
+		}
+		1 = { # YURI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yuri TITLE = title:c_nushiro } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_nushiro }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yuri }
+		}
+		### AWA
+		1 = { # MIYOSHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Miyoshi TITLE = title:c_awa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_awa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Miyoshi }
+		}
+		1 = { # TAGUCHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Taguchi TITLE = title:c_awa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_awa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Taguchi }
+		}
+		### BINGO
+		1 = { # OTA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_ta TITLE = title:c_bingo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bingo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_ta }
+		}
+		### BITCHU
+		1 = { # SENOO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Seno_o TITLE = title:c_bitchu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bitchu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Seno_o }
+		}
+		### BIZEN
+		1 = { # NAMBA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Namba TITLE = title:c_bizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Namba }
+		}
+		### BUNGO
+		1 = { # ANAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Anami TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Anami }
+		}
+		1 = { # HONDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Honda TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Honda }
+		}
+		1 = { # MITAI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mitai TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mitai }
+		}
+		1 = { # OGATA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ogata TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ogata }
+		}
+		1 = { # ONO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_no TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_no }
+		}
+		1 = { # SHIGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shiga TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shiga }
+		}
+		1 = { # WASADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Wasada TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Wasada }
+		}
+		1 = { # USUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Usuki TITLE = title:c_bungo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_bungo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Usuki }
+		}
+		### BUZEN
+		1 = { # YAMAGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamaga TITLE = title:c_buzen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_buzen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamaga }
+		}
+		### CHIKUGO
+		1 = { # KAMACHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kamachi TITLE = title:c_chikugo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_chikugo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kamachi }
+		}
+		### CHIKUZEN
+		1 = { # AKIZUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akizuki TITLE = title:c_chikugo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_chikugo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akizuki }
+		}
+		1 = { # HARADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Harada TITLE = title:c_chikugo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_chikugo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Harada }
+		}
+		### DEWA (TOKISARA)
+		1 = { # SAGAE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sagae TITLE = title:c_tokisara } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tokisara }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sagae }
+		}
+		### ECHIGO
+		1 = { # HANJO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kanazu TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kanazu }
+		}
+		1 = { # IROBE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Irobe TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Irobe }
+		}
+		1 = { # KAJI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kaji TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kaji }
+		}
+		1 = { # KANAZU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kanazu TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kanazu }
+		}
+		1 = { # NAKAJO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_NakajO_ TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_NakajO_ }
+		}
+		1 = { # OGUNI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Oguni TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Oguni }
+		}
+		1 = { # SADO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sado TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sado }
+		}
+		1 = { # YASUDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yasuda TITLE = title:c_echigo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yasuda }
+		}
+		### ECHIZEN
+		1 = { # AKATSUKA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akatsuka TITLE = title:c_echizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akatsuka }
+		}
+		1 = { # ICHIJI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ichiji TITLE = title:c_echizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ichiji }
+		}
+		1 = { # MIKATA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mikata TITLE = title:c_echizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mikata }
+		}
+		1 = { # ODA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Oda TITLE = title:c_echizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Oda }
+		}
+		1 = { # NANJO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_NanjO_ TITLE = title:c_echizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_NanjO_ }
+		}
+		1 = { # TSUTSUMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tsutsumi TITLE = title:c_echizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_echizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tsutsumi }
+		}
+		### ETCHU
+		### HARIMA
+		1 = { # AKAMATSU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akamatsu TITLE = title:c_harima } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_harima }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akamatsu }
+		}
+		1 = { # BESSHO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Bessho TITLE = title:c_harima } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_harima }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Bessho }
+		}
+		1 = { # URAKAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Urakami TITLE = title:c_harima } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_harima }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Urakami }
+		}
+		### HIDA
+		1 = { # USHIMARU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ushimaru TITLE = title:c_hida } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hida }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ushimaru }
+		}
+		### HIGO
+		1 = { # ASO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Aso TITLE = title:c_higo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_higo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Aso }
+		}
+		1 = { # KIKUCHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kikuchi TITLE = title:c_higo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_higo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kikuchi }
+		}
+		1 = { # KUMABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kumabe TITLE = title:c_higo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_higo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kumabe }
+		}
+		1 = { # TAKEZAKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Takezaki TITLE = title:c_higo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_higo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Takezaki }
+		}
+		### HITACHI
+		1 = { # AKASU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akasu TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akasu }
+		}
+		1 = { # ASABA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Asaba TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Asaba }
+		}
+		1 = { # HATTA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hatta TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hatta }
+		}
+		1 = { # ISA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Isa TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Isa }
+		}
+		1 = { # KATAOKA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kataoka TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kataoka }
+		}
+		1 = { # MIMURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mimura TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mimura }
+		}
+		1 = { # NAMEKATA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Namekata TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Namekata }
+		}
+		1 = { # NEMOTO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nemoto TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nemoto }
+		}
+		1 = { # NISSAI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nissai TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nissai }
+		}
+		1 = { # ONOZAKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Onozaki TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Onozaki }
+		}
+		1 = { # SATAKE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Satake TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Satake }
+		}
+		1 = { # SHIDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shida TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shida }
+		}
+		1 = { # TAKEDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Takeda TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Takeda }
+		}
+		1 = { # TOMURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tomura TITLE = title:c_hitachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tomura }
+		}
+		### HIZEN
+		1 = { # MATSURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Matsura TITLE = title:c_hizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Matsura }
+		}
+		1 = { # YASUTOMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yasutomi TITLE = title:c_hizen } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_hizen }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yasutomi }
+		}
+		### HOKI
+		### HYUGA
+		### INABA
+		1 = { # HIKIDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hikida TITLE = title:c_inaba } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_inaba }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hikida }
+		}
+		1 = { # SAJI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Saji TITLE = title:c_inaba } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_inaba }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Saji }
+		}
+		### ISAWA
+		1 = { # SHIBA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shiba TITLE = title:c_isawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_isawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shiba }
+		}
+		### ISE
+		1 = { # HATTORI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hattori TITLE = title:c_yamato } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_yamato }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hattori }
+		}
+		1 = { # IGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Iga TITLE = title:c_ise } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_ise }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Iga }
+		}
+		1 = { # ITO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_ItO_ TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_ItO_ }
+		}
+		1 = { # KANBE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kanbe TITLE = title:c_ise } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_ise }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kanbe }
+		}
+		1 = { # KUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kuki TITLE = title:c_ise } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_ise }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kuki }
+		}
+		1 = { # SEKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Seki TITLE = title:c_ise } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_ise }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Seki }
+		}
+		1 = { # SHIMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shima TITLE = title:c_ise } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_ise }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shima }
+		}
+		### IWAKI
+		1 = { # TAMURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tamura TITLE = title:c_iwaki } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwaki }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tamura }
+		}
+		1 = { # WATARI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Watari TITLE = title:c_iwaki } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwaki }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Watari }
+		}
+		### IWASHIRO
+		1 = { # DATE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Date TITLE = title:c_iwase } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwase }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Date }
+		}
+		1 = { # SUGIME
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sugime TITLE = title:c_iwase } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwase }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sugime }
+		}
+		### IWASE
+		1 = { # ASAKA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Asaka TITLE = title:c_iwase } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwase }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Asaka }
+		}
+		### IYO
+		1 = { # KONO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_KO_no TITLE = title:c_iyo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iyo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_KO_no }
+		}
+		### IZU
+		1 = { # AKAZAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akazawa TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akazawa }
+		}
+		1 = { # AMANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Amano TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Amano }
+		}
+		1 = { # EMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ema TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ema }
+		}
+		1 = { # HOJO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_HO_jO_ TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_HO_jO_ }
+		}
+		1 = { # ITO 2
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_ItO__2 TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_ItO__2 }
+		}
+		1 = { # KANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kano TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kano }
+		}
+		1 = { # KAWAZU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kawazu TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kawazu }
+		}
+		1 = { # OMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_mi TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_mi }
+		}
+		1 = { # TASHIRO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tashiro TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tashiro }
+		}
+		1 = { # USAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Usami TITLE = title:c_izu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Usami }
+		}
+		### IWAMI
+		1 = { # MASUDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Masuda TITLE = title:c_iwami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Masuda }
+		}
+		### IZUMO
+		1 = { # MISAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Misawa TITLE = title:c_izumo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izumo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Misawa }
+		}
+		1 = { # MITOYA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mitoya TITLE = title:c_izumo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izumo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mitoya }
+		}
+		1 = { # NOGI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nogi TITLE = title:c_izumo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izumo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nogi }
+		}
+		### KAGA
+		1 = { # KUMASAKA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kumasaka TITLE = title:c_kaga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kaga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kumasaka }
+		}
+		1 = { # TOGASHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Togashi TITLE = title:c_kaga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kaga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Togashi }
+		}
+		### KAI
+		1 = { # AKIYAMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akiyama TITLE = title:c_kai } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kai }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akiyama }
+		}
+		1 = { # ASARI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Asari TITLE = title:c_kai } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kai }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Asari }
+		}
+		1 = { # ICHIJO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_IchijO_ TITLE = title:c_kai } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kai }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_IchijO_ }
+		}
+		1 = { # ITSUMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Henmi TITLE = title:c_kai } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kai }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Henmi }
+		}
+		1 = { # KAGAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kagami TITLE = title:c_kai } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kai }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kagami }
+		}
+		1 = { # NANBU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nanbu TITLE = title:c_kai } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kai }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nanbu }
+		}
+		1 = { # OGASAWARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ogasawara TITLE = title:c_kai } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kai }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ogasawara }
+		}
+		### KAWACHI
+		1 = { # IZUMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Izumi TITLE = title:c_kawachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kawachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Izumi }
+		}
+		1 = { # TAKAYASU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Takayasu TITLE = title:c_kawachi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kawachi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Takayasu }
+		}
+		### KAZUSA
+		1 = { # ANZAI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Anzai TITLE = title:c_kazusa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kazusa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Anzai }
+		}
+		1 = { # HANYU 2
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_HanyU__2 TITLE = title:c_kazusa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kazusa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_HanyU__2 }
+		}
+		1 = { # INTO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_IntO_ TITLE = title:c_kazusa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kazusa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_IntO_ }
+		}
+		1 = { # KANEDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kaneda TITLE = title:c_kazusa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kazusa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kaneda }
+		}
+		1 = { # NAGASA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nagasa TITLE = title:c_awa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_awa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nagasa }
+		}
+		1 = { # OBU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Obu TITLE = title:c_kazusa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kazusa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Obu }
+		}
+		1 = { # SAKUMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sakuma TITLE = title:c_kazusa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kazusa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sakuma }
+		}
+		### KII
+		1 = { # AKATA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akata TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akata }
+		}
+		1 = { # ITOGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Itoga TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Itoga }
+		}
+		1 = { # HOZUMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hozumi TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hozumi }
+		}
+		1 = { # SHINGU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_ShingU_ TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_ShingU_ }
+		}
+		1 = { # SUZUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Suzuki TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Suzuki }
+		}
+		1 = { # UI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ui TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ui }
+		}
+		1 = { # YAMAMOTO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamamoto TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamamoto }
+		}
+		1 = { # YUASA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yuasa TITLE = title:c_kii } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yuasa }
+		}
+		### KOZUKE
+		1 = { # AKAHORI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Akahori TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Akahori }
+		}
+		1 = { # AOYAMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Aoyama TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Aoyama }
+		}
+		1 = { # IWAMATSU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Iwamatsu TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Iwamatsu }
+		}
+		1 = { # JINBO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Jinbo TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Jinbo }
+		}
+		1 = { # MOMONOI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Momonoi TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Momonoi }
+		}
+		1 = { # NITTA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nitta TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nitta }
+		}
+		1 = { # OBATA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Obata TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Obata }
+		}
+		1 = { # SATOMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Satomi TITLE = title:c_mino } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Satomi }
+		}
+		1 = { # TOKUGAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tokugawa TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tokugawa }
+		}
+		1 = { # YAMANA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamana TITLE = title:c_kozuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_kozuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamana }
+		}
+		### MIKAWA
+		1 = { # ASUKE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Asuke TITLE = title:c_mikawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mikawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Asuke }
+		}
+		1 = { # HOSOKAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hosokawa TITLE = title:c_mikawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mikawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hosokawa }
+		}
+		1 = { # IMAGAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Imagawa TITLE = title:c_mikawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mikawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Imagawa }
+		}
+		1 = { # ISSHIKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Isshiki TITLE = title:c_higo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_higo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Isshiki }
+		}
+		1 = { # KIRA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kira TITLE = title:c_mikawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mikawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kira }
+		}
+		1 = { # MAKINO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Makino TITLE = title:c_mikawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mikawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Makino }
+		}
+		1 = { # MATSUDAIRA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Matsudaira TITLE = title:c_mikawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mikawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Matsudaira }
+		}
+		1 = { # NIKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Niki TITLE = title:c_mikawa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mikawa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Niki }
+		}
+		### MIMASAKA
+		1 = { # KATSUTA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Katsuta TITLE = title:c_mimasaka } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mimasaka }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Katsuta }
+		}
+		1 = { # SHINMEN
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shinmen TITLE = title:c_mimasaka } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mimasaka }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shinmen }
+		}
+		### MINO
+		1 = { # ASANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Asano TITLE = title:c_mino } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Asano }
+		}
+		1 = { # FUKUSHIMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Fukushima TITLE = title:c_mino } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Fukushima }
+		}
+		1 = { # IKEDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ikeda TITLE = title:c_mino } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ikeda }
+		}
+		1 = { # KIDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kida TITLE = title:c_mino } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kida }
+		}
+		1 = { # TOKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Toki_JP TITLE = title:c_mino } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Toki_JP }
+		}
+		1 = { # TOYOYAMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Toyoyama TITLE = title:c_mino } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Toyoyama }
+		}
+		### MUSASHI
+		1 = { # ADACHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Adachi TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Adachi }
+		}
+		1 = { # ASAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Asami TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Asami }
+		}
+		1 = { # CHICHIBU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Chichibu TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Chichibu }
+		}
+		1 = { # INAGE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Inage TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Inage }
+		}
+		1 = { # INOMATA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Inomata TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Inomata }
+		}
+		1 = { # KANEKO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kaneko TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kaneko }
+		}
+		1 = { # KASAI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kasai TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kasai }
+		}
+		1 = { # KASUKABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kasukabe TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kasukabe }
+		}
+		1 = { # KAWAGOE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kawagoe TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kawagoe }
+		}
+		1 = { # KAWASAKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kawasaki TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kawasaki }
+		}
+		1 = { # KUMAGAI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kumagai TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kumagai }
+		}
+		1 = { # HATAKEYAMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hatakeyama TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hatakeyama }
+		}
+		1 = { # HIKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hiki TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hiki }
+		}
+		1 = { # HIRUKAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hirukawa TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hirukawa }
+		}
+		1 = { # INAZAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Inazawa TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Inazawa }
+		}
+		1 = { # MOKUSAI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mokusai TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mokusai }
+		}
+		1 = { # MURAYAMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Murayama TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Murayama }
+		}
+		1 = { # NARITA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Narita TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Narita }
+		}
+		1 = { # NOMOTO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nomoto TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nomoto }
+		}
+		1 = { # NOYO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Noyo TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Noyo }
+		}
+		1 = { # OI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_i TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_i }
+		}
+		1 = { # OYAMADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Oyamada TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Oyamada }
+		}
+		1 = { # TOSHIMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Toshima TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Toshima }
+		}
+		1 = { # SHINAGAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shinagawa TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shinagawa }
+		}
+		1 = { # USHIODA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ushioda TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ushioda }
+		}
+		1 = { # YOKOYAMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yokoyama TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yokoyama }
+		}
+		1 = { # YOMODA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yomoda TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yomoda }
+		}
+		### NAGATO
+		### NOTO
+		1 = { # TOKUDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tokuda TITLE = title:c_noto } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_noto }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tokuda }
+		}
+		### OKI
+		### OMI
+		1 = { # AMAGO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Amago TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Amago }
+		}
+		1 = { # AMENOMORI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Amenomori TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Amenomori }
+		}
+		1 = { # HAYAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hayami TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hayami }
+		}
+		1 = { # IBA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Iba_JP TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Iba_JP }
+		}
+		1 = { # KUTSUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kutsuki TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kutsuki }
+		}
+		1 = { # MIKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Miki TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Miki }
+		}
+		1 = { # OHARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_hara TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_hara }
+		}
+		1 = { # SASAKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sasaki TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sasaki }
+		}
+		1 = { # TANAKA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tanaka TITLE = title:c_omi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tanaka }
+		}
+		### OSUMI
+		1 = { # KIMOTSUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kimotsuki TITLE = title:c_osumi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_osumi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kimotsuki }
+		}
+		1 = { # KITAHARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kitahara TITLE = title:c_osumi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_osumi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kitahara }
+		}
+		### OWARI
+		1 = { # HACHISUKA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hachisuka TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hachisuka }
+		}
+		1 = { # HOTTA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hotta TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hotta }
+		}
+		1 = { # NIWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Niwa TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Niwa }
+		}
+		1 = { # OGAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ogawa TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ogawa }
+		}
+		1 = { # OKADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Okada TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Okada }
+		}
+		1 = { # OSADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Osada TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Osada }
+		}
+		1 = { # YAMADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamada TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamada }
+		}
+		1 = { # YASUDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yasuda TITLE = title:c_owari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yasuda }
+		}
+		### SAGAMI
+		1 = { # AIHARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Aihara TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Aihara }
+		}
+		1 = { # AIKO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_AikO_ TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_AikO_ }
+		}
+		1 = { # ASHINA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ashina_JP TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ashina_JP }
+		}
+		1 = { # DOI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Doi TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Doi }
+		}
+		1 = { # EBINA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ebina TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ebina }
+		}
+		1 = { # HATANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hatano TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hatano }
+		}
+		1 = { # KAGAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kagawa TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kagawa }
+		}
+		1 = { # KAJIWARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kajiwara TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kajiwara }
+		}
+		1 = { # KOBAYAKAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kobayakawa TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kobayakawa }
+		}
+		1 = { # MATANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Matano TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Matano }
+		}
+		1 = { # MIURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Miura TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Miura }
+		}
+		1 = { # MORI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mori_JP TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mori_JP }
+		}
+		1 = { # NAGAE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nagae TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nagae }
+		}
+		1 = { # NAGAO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nagao TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nagao }
+		}
+		1 = { # NAKAMURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nakamura TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nakamura }
+		}
+		1 = { # NIKAIDO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nikaido TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nikaido }
+		}
+		1 = { # OBA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_ba TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_ba }
+		}
+		1 = { # OKAZAKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Okazaki TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Okazaki }
+		}
+		1 = { # OTAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_tawa TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_tawa }
+		}
+		1 = { # OTOMO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_tomo TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_tomo }
+		}
+		1 = { # SAWARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sawara TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sawara }
+		}
+		1 = { # SHIBUYA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shibuya TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shibuya }
+		}
+		1 = { # SOGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Soga TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Soga }
+		}
+		1 = { # SUGIMOTO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sugimoto TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sugimoto }
+		}
+		1 = { # TOKIWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tokiwa TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tokiwa }
+		}
+		1 = { # TSUCHIYA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tsuchiya TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tsuchiya }
+		}
+		1 = { # YAMAUCHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamauchi TITLE = title:c_sagami } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamauchi }
+		}
+		### SANUKI
+		1 = { # SOGO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_SogO_ TITLE = title:c_sanuki } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sanuki }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_SogO_ }
+		}
+		### SATSUMA
+		1 = { # SHIMAZU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shimazu TITLE = title:c_satsuma } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_satsuma }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shimazu }
+		}
+		1 = { # TOGO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_TO_gO_ TITLE = title:c_satsuma } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_satsuma }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_TO_gO_ }
+		}
+		1 = { # YAMADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamada TITLE = title:c_satsuma } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_satsuma }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamada }
+		}
+		### SETTSU
+		1 = { # MINASE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Minase TITLE = title:c_settsu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_settsu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Minase }
+		}
+		1 = { # MIZOKUI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mizokui TITLE = title:c_settsu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_settsu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mizokui }
+		}
+		1 = { # NOSE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nose TITLE = title:c_settsu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_settsu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nose }
+		}
+		1 = { # TADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tada TITLE = title:c_settsu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_settsu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tada }
+		}
+		1 = { # WATANABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Watanabe TITLE = title:c_settsu } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_settsu }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Watanabe }
+		}
+		### SHINANO
+		1 = { # AIDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Aida TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Aida }
+		}
+		1 = { # ATOBE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Atobe TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Atobe }
+		}
+		1 = { # DEURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Deura TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Deura }
+		}
+		1 = { # HIGUCHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Higuchi TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Higuchi }
+		}
+		1 = { # HOSHINA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hoshina TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hoshina }
+		}
+		1 = { # IIDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Iida TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Iida }
+		}
+		1 = { # IINUMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Iinuma TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Iinuma }
+		}
+		1 = { # IMAI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Imai TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Imai }
+		}
+		1 = { # INA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ina TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ina }
+		}
+		1 = { # INOUE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Inoue TITLE = title:c_musashi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Inoue }
+		}
+		1 = { # KATAGIRI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Katagiri TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Katagiri }
+		}
+		1 = { # KOSAKA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kosaka TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kosaka }
+		}
+		1 = { # KISO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kiso TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kiso }
+		}
+		1 = { # KURITA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kurita TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kurita }
+		}
+		1 = { # MOCHIZUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mochizuki TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mochizuki }
+		}
+		1 = { # MURAKAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Murakami TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Murakami }
+		}
+		1 = { # NAKANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nakano TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nakano }
+		}
+		1 = { # NATSUME
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Natsume TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Natsume }
+		}
+		1 = { # NEZU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nezu TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nezu }
+		}
+		1 = { # NISHINA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nishina TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nishina }
+		}
+		1 = { # ODAGIRI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Odagiri TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Odagiri }
+		}
+		1 = { # SANADA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sanada TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sanada }
+		}
+		1 = { # SHIODA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shioda TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shioda }
+		}
+		1 = { # TOMONO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Tomono TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tomono }
+		}
+		1 = { # UEDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ueda TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ueda }
+		}
+		1 = { # UNNO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Unno TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Unno }
+		}
+		1 = { # YASHIRO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yashiro TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yashiro }
+		}
+		1 = { # YODA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yoda TITLE = title:c_shinano } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yoda }
+		}
+		### SHIMOSA
+		1 = { # CHIBA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Chiba TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Chiba }
+		}
+		1 = { # HARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hara TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hara }
+		}
+		1 = { # KOKUBU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kokubu TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kokubu }
+		}
+		1 = { # OSUGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_suga TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_suga }
+		}
+		1 = { # SHIMOKOBE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_ShimokO_be TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_ShimokO_be }
+		}
+		1 = { # SOMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_SO_ma TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_SO_ma }
+		}
+		1 = { # SOSA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_SO_sa TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_SO_sa }
+		}
+		1 = { # TAKEISHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Takeishi TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Takeishi }
+		}
+		1 = { # TO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_TO_ TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_TO_ }
+		}
+		1 = { # YUKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_YU_ki TITLE = title:c_shimosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_YU_ki }
+		}
+		### SHIMOTSUKE
+		1 = { # ASHIKAGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ashikaga TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ashikaga }
+		}
+		1 = { # HAGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Haga TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Haga }
+		}
+		1 = { # ITAKURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Itakura TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Itakura }
+		}
+		1 = { # NASU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Nasu TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nasu }
+		}
+		1 = { # ONODERA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Onodera TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Onodera }
+		}
+		1 = { # OYAMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Oyama TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Oyama }
+		}
+		1 = { # SANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sano TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sano }
+		}
+		1 = { # SHIONOYA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shionoya TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shionoya }
+		}
+		1 = { # UJIIE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Uji_ie TITLE = title:c_shimotsuke } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Uji_ie }
+		}
+		### SUO
+		1 = { # MIGATA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Migata TITLE = title:c_suo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Migata }
+		}
+		1 = { # OUCHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_uchi TITLE = title:c_suo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_uchi }
+		}
+		1 = { # TOIDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Toida TITLE = title:c_suo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Toida }
+		}
+		1 = { # WASHIZU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Washizu TITLE = title:c_suo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Washizu }
+		}
+		1 = { # YAMAGUCHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamaguchi TITLE = title:c_suo } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamaguchi }
+		}
+		### SURUGA
+		1 = { # ABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Abe TITLE = title:c_suruga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suruga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Abe }
+		}
+		1 = { # ANO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ano TITLE = title:c_suruga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suruga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ano }
+		}
+		1 = { # IRIE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Irie TITLE = title:c_suruga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suruga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Irie }
+		}
+		1 = { # KAMBARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kambara TITLE = title:c_suruga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suruga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kambara }
+		}
+		1 = { # KIKKAWA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kikkawa TITLE = title:c_suruga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suruga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kikkawa }
+		}
+		1 = { # MAKI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Maki TITLE = title:c_suruga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suruga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Maki }
+		}
+		1 = { # OKABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Okabe TITLE = title:c_suruga } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_suruga }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Okabe }
+		}
+		### TAGA
+		1 = { # HIZUME
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hizume TITLE = title:c_korehari } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_korehari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hizume }
+		}
+		### TAJIMA
+		1 = { # ASAKURA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Asakura TITLE = title:c_tajima } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tajima }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Asakura }
+		}
+		### TANBA
+		1 = { # ASHIDA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ashida TITLE = title:c_tanba } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tanba }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ashida }
+		}
+		1 = { # OTA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_ta TITLE = title:c_tanba } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tanba }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_ta }
+		}
+		1 = { # UESUGI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Uesugi TITLE = title:c_tanba } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tanba }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Uesugi }
+		}
+		### TOSA
+		1 = { # CHOSOKABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_ChO_sokabe TITLE = title:c_tosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_ChO_sokabe }
+		}
+		1 = { # HASUIKE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Hasuike TITLE = title:c_tosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hasuike }
+		}
+		1 = { # KOSOKABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_KO_sokabe TITLE = title:c_tosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_KO_sokabe }
+		}
+		1 = { # SOGABE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sogabe TITLE = title:c_tosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sogabe }
+		}
+		1 = { # YASU
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Yasu TITLE = title:c_tosa } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tosa }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yasu }
+		}
+		### TOTOMI
+		1 = { # HARAISHI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Haraishi TITLE = title:c_totomi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_totomi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Haraishi }
+		}
+		1 = { # II
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ii TITLE = title:c_totomi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_totomi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ii }
+		}
+		1 = { # ISHITANI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ishitani TITLE = title:c_totomi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_totomi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ishitani }
+		}
+		1 = { # SAGARA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Sagara TITLE = title:c_totomi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_totomi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Sagara }
+		}
+		1 = { # TOYODA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Toyoda TITLE = title:c_totomi } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_totomi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Toyoda }
+		}
+		### TSUGARU
+		### TSUSHIMA
+		1 = { # SO
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_SO_ TITLE = title:c_tsushima } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tsushima }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_SO_ }
+		}
+		### UGO
+		### UZEN
+		1 = { # MOGAMI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Mogami TITLE = title:c_tokisara } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tokisara }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Mogami }
+		}
+		1 = { # OZONE
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_zone TITLE = title:c_tokisara } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tokisara }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_zone }
+		}
+		1 = { # SHIRATORI
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Shiratori TITLE = title:c_tokisara } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tokisara }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Shiratori }
+		}
+		### YAMATO
+		1 = { # KASUGA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Kasuga TITLE = title:c_yamato } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_yamato }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kasuga }
+		}
+		1 = { # IKOMA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_Ikoma TITLE = title:c_yamato } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_yamato }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ikoma }
+		}
+		1 = { # OMIYA
+			trigger = { sacral_house_name_county_trigger = { FLAG = flag:dynn_O_miya TITLE = title:c_yamato } }
+			sacral_new_house_name_modifiers = { TITLE = title:c_yamato }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_miya }
+		}
+		### OTHER / SHARED
+		1 = { # FURUICHI
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Furuichi TITLE = title:c_kawachi }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Furuichi TITLE = title:c_omi }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Furuichi TITLE = title:c_settsu }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Furuichi TITLE = title:c_yamato }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_kawachi }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			sacral_new_house_name_modifiers = { TITLE = title:c_settsu }
+			sacral_new_house_name_modifiers = { TITLE = title:c_yamato }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Furuichi }
+		}
+		1 = { # HAYASHI
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Hayashi TITLE = title:c_kaga }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Hayashi TITLE = title:c_owari }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_kaga }
+			sacral_new_house_name_modifiers = { TITLE = title:c_owari }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hayashi }
+		}
+		1 = { # HONJO
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Furuichi TITLE = title:c_echigo }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Furuichi TITLE = title:c_musashi }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_echigo }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_HonjO_ }
+		}
+		1 = { # HIRAGA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Hiraga TITLE = title:c_shinano }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Hiraga TITLE = title:c_tokisara }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_shinano }
+			sacral_new_house_name_modifiers = { TITLE = title:c_tokisara }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Hiraga }
+		}
+		1 = { # ISHIKAWA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Ishikawa TITLE = title:c_kawachi }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Ishikawa TITLE = title:c_iwaki }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_kawachi }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwaki }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Ishikawa }
+		}
+		1 = { # KODAMA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Kodama TITLE = title:c_hoki }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Kodama TITLE = title:c_musashi }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_hoki }
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kodama }
+		}
+		1 = { # NAKAMURA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Nakamura TITLE = title:c_hitachi }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Nakamura TITLE = title:c_sagami }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Nakamura TITLE = title:c_shimotsuke }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			sacral_new_house_name_modifiers = { TITLE = title:c_shimotsuke }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nakamura }
+		}
+		1 = { # SHINGU
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_ShingU_ TITLE = title:c_kii }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_ShingU_ TITLE = title:c_iwase }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_kii }
+			sacral_new_house_name_modifiers = { TITLE = title:c_iwase }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_ShingU_ }
+		}
+		1 = { # TAKAOKA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Takaoka TITLE = title:c_hitachi }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Takaoka TITLE = title:c_izumo }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_hitachi }
+			sacral_new_house_name_modifiers = { TITLE = title:c_izumo }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Takaoka }
+		}
+		1 = { # WADA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Wada TITLE = title:c_kawachi }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Wada TITLE = title:c_sagami }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_kawachi }
+			sacral_new_house_name_modifiers = { TITLE = title:c_sagami }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Wada }
+		}
+		1 = { # YAMAGATA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamagata TITLE = title:c_aki }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Yamagata TITLE = title:c_mino }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_aki }
+			sacral_new_house_name_modifiers = { TITLE = title:c_mino }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yamagata }
+		}
+		1 = { # YOSHIDA
+			trigger = {
+				OR = {
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Yoshida TITLE = title:c_musashi }
+					sacral_house_name_county_trigger = { FLAG = flag:dynn_Yoshida TITLE = title:c_omi }
+				}
+			}
+			sacral_new_house_name_modifiers = { TITLE = title:c_musashi }
+			sacral_new_house_name_modifiers = { TITLE = title:c_omi }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Yoshida }
+		}
+		### FUJIWARA
+		3 = { # ANDO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_AndO_ }
+		}
+		3 = { # ENDO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_EndO_ }
+		}
+		3 = { # GOTO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_GotO_ }
+		}
+		3 = { # KATO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_KatO_ }
+		}
+		3 = { # KONDO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_KondO_ }
+		}
+		3 = { # KUDO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_KudO_ }
+		}
+		3 = { # MUTO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_MutO_ }
+		}
+		3 = { # SAITO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_SaitO_ }
+		}
+		3 = { # SATO
+			trigger = { dynasty ?= { exists = var:fujiwara_flag } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_SatO_ }
+		}
+	}
+}
 
+assign_sacral_house_name_options_kyoto_effect = {
+	### YAMASHIRO (KYOTO)
+	random_list = {
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_Awata } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Awata }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_Awataguchi } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Awataguchi }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_GojO_ } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_GojO_ }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_IchijO_ } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_IchijO_ }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_Kitabatake } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Kitabatake }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_Konoe } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Konoe }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_KyO_goku } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_KyO_goku }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_Nakamikado } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Nakamikado }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_NijO_ } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_NijO_ }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_O_inomikado } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_O_inomikado }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_Rokkaku } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Rokkaku }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_RokujO_ } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_RokujO_ }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_SanjO_ } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_SanjO_ }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_ShijO_ } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_ShijO_ }
+		}
+		1 = {
+			trigger = { sacral_house_name_trigger = { FLAG = flag:dynn_Tsuchimikado } }
+			add_to_variable_list = { name = sacral_house_names target = flag:dynn_Tsuchimikado }
+		}
+	}
+}
 
-sacral_faction_demand_regent_transfer_effect = {
+faction_demand_regent_transfer_effect = {
 	top_liege = {
 		save_temporary_scope_as = old_regent_temp
 		primary_title = {
@@ -660,7 +2534,7 @@ sacral_faction_demand_regent_transfer_effect = {
 		}
 	}
 	resolve_title_and_vassal_change = scope:title_change
-	scope:new_regent_temp = { 
+	scope:new_regent_temp = {
 		if = {
 			limit = {
 				has_title = scope:preferred_capital_temp # do I own the preferred capital?
@@ -683,7 +2557,7 @@ LR_tgp_gaul_schoolhouse_education_boost_effect = {
 	save_scope_as = student
 	house.house_head.domicile ?= {
 		if = {
-			limit = { 
+			limit = {
 				has_domicile_parameter = sacral_schoolhouse_education_boost_1
 			}
 			switch = {
@@ -699,80 +2573,80 @@ LR_tgp_gaul_schoolhouse_education_boost_effect = {
 	}
 }
 
-LR_tgp_restore_sacral_monarchy_decision_effect = {
-	save_scope_as = sacral_majordomo
-	LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = yes
+tgp_restore_sacral_monarchy_decision_effect = {
+	save_scope_as = kampaku
+	tgp_restore_sacral_monarchy_yamato_scion_effect = yes
 	add_prestige = major_prestige_value
 	if = {
-		limit = { government_has_mechanic = administrative }
+		limit = { government_has_flag = government_has_influence }
 		change_influence = major_influence_value
 	}
 	else = { add_piety = medium_piety_value }
 	if = {
-		limit = { exists = scope:sacral_scion }
+		limit = { exists = scope:scion }
 		add_hook = {
 			type = strong_favor_hook
-			target = scope:sacral_scion
+			target = scope:scion
 		}
 	}
-	else = { custom_tooltip = LR_tgp_restore_sacral_monarchy_decision_hook_tt }
+	else = { custom_tooltip = tgp_restore_sacral_monarchy_decision_hook_tt }
 }
 
-LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
-	title:k_sacral_king_gaul_throne.previous_holder ?= { save_scope_as = last_sacral_king_gaul }
-	dynasty:frankish_merovingian.dynasty_founder.house ?= {
-		save_scope_as = house_merovingian
+tgp_restore_sacral_monarchy_yamato_scion_effect = {
+	title:k_chrysanthemum_throne.previous_holder ?= { save_scope_as = last_tenno }
+	dynasty:sacral_yamato.dynasty_founder.house ?= {
+		save_scope_as = house_yamato
 		if = {
-			limit = { this = scope:sacral_majordomo.house }
+			limit = { this = scope:kampaku.house }
 			if = { # Avoid display of short tooltips after creation
-				limit = { NOT = { exists = scope:sacral_scion } }
-				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_created_tt
+				limit = { NOT = { exists = scope:scion } }
+				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_kampaku_tt
 			}
-			scope:sacral_majordomo = { save_scope_as = sacral_scion }
+			scope:kampaku = { save_scope_as = scion }
 		}
 		else_if = {
 			limit = {
-				scope:last_sacral_king_gaul ?= { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
+				scope:last_tenno ?= { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 			}
 			if = { # Avoid display of short tooltips after creation
-				limit = { NOT = { exists = scope:sacral_scion } }
-				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_last_tt
+				limit = { NOT = { exists = scope:scion } }
+				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_last_tt
 			}
-			scope:last_sacral_king_gaul = { save_scope_as = sacral_scion }
+			scope:last_tenno = { save_scope_as = scion }
 		}
 		else_if = {
 			limit = {
-				scope:last_sacral_king_gaul ?= {
+				scope:last_tenno ?= {
 					any_child = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
 			if = { # Avoid display of short tooltips after creation
-				limit = { NOT = { exists = scope:sacral_scion } }
-				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_last_child_tt
+				limit = { NOT = { exists = scope:scion } }
+				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_last_child_tt
 			}
-			scope:last_sacral_king_gaul = {
+			scope:last_tenno = {
 				ordered_child = {
 					limit = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
-					save_scope_as = sacral_scion
+					save_scope_as = scion
 				}
 			}
 		}
 		else_if = {
 			limit = {
-				scope:last_sacral_king_gaul ?= {
+				scope:last_tenno ?= {
 					any_close_family_member = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
 			if = { # Avoid display of short tooltips after creation
-				limit = { NOT = { exists = scope:sacral_scion } }
-				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_last_close_family_tt
+				limit = { NOT = { exists = scope:scion } }
+				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_last_close_family_tt
 			}
-			scope:last_sacral_king_gaul = {
+			scope:last_tenno = {
 				ordered_close_family_member = {
 					limit = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
-					save_scope_as = sacral_scion
+					save_scope_as = scion
 				}
 			}
 		}
@@ -785,8 +2659,8 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 				}
 			}
 			if = { # Avoid display of short tooltips after creation
-				limit = { NOT = { exists = scope:sacral_scion } }
-				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_found_tt
+				limit = { NOT = { exists = scope:scion } }
+				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_found_tt
 			}
 			ordered_house_member = {
 				limit = {
@@ -796,41 +2670,41 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 					is_healthy = yes
 				}
 				order_by = age
-				save_scope_as = sacral_scion
+				save_scope_as = scion
 			}
 		}
 		else = {
-			LR_tgp_restore_sacral_monarchy_merovingian_creation_effect = yes
+			tgp_restore_sacral_monarchy_yamato_creation_effect = yes
 			if = { # Avoid display of short tooltips after creation
-				limit = { NOT = { exists = scope:sacral_scion } }
-				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_created_tt
+				limit = { NOT = { exists = scope:scion } }
+				custom_tooltip = tgp_restore_sacral_monarchy_yamato_scion_created_tt
 			}
 		}
 		# Save children for portraits
-		scope:sacral_scion = {
+		scope:scion = {
 			save_scope_as = background_throne_room_scope
 			ordered_child = {
-				limit = { house = scope:sacral_scion.house }
+				limit = { house = scope:scion.house }
 				max = 3
 				check_range_bounds = no
 				order_by = age
 				switch = {
 					trigger = exists
-					scope:sacral_scion_child_2 = { save_scope_as = sacral_scion_child_3 }
-					scope:sacral_scion_child_1 = { save_scope_as = sacral_scion_child_2 }
-					fallback = { save_scope_as = sacral_scion_child_1 }
+					scope:scion_child_2 = { save_scope_as = scion_child_3 }
+					scope:scion_child_1 = { save_scope_as = scion_child_2 }
+					fallback = { save_scope_as = scion_child_1 }
 				}
 			}
 		}
 	}
 }
 
-LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
+tgp_restore_sacral_monarchy_yamato_restoration_effect = {
 	add_character_flag = LR_tgp_gaul_restore_sacral_monarchy_flag
 	if = {
-		limit = { exists = scope:sacral_scion }
+		limit = { exists = scope:scion }
 		if = {
-			limit = { exists = title:k_sacral_king_gaul_throne.holder }
+			limit = { exists = title:k_chrysanthemum_throne.holder }
 			create_title_and_vassal_change = {
 				type = usurped
 				save_scope_as = change
@@ -843,20 +2717,20 @@ LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
 				save_scope_as = change
 			}
 		}
-		title:k_sacral_king_gaul_throne ?= {
+		title:k_chrysanthemum_throne ?= {
 			change_title_holder = {
-				holder = scope:sacral_scion
+				holder = scope:scion
 				change = scope:change
 			}
 		}
 		if = {
 			limit = {
-				scope:sacral_scion.liege != scope:sacral_majordomo
-				scope:sacral_scion != scope:sacral_majordomo
+				scope:scion.liege != scope:kampaku
+				scope:scion != scope:kampaku
 			}
-			scope:sacral_scion ?= {
+			scope:scion ?= {
 				change_liege = {
-					liege = scope:sacral_majordomo
+					liege = scope:kampaku
 					change = scope:change
 				}
 			}
@@ -865,7 +2739,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
 	}
 	remove_character_flag = LR_tgp_gaul_restore_sacral_monarchy_flag
 	hidden_effect = {
-		scope:sacral_scion = {
+		scope:scion = {
 			if = {
 				limit = {
 					NOT = { government_has_flag = government_is_sacral_administrative }
@@ -876,61 +2750,61 @@ LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
 	}
 }
 
-LR_tgp_restore_sacral_monarchy_merovingian_creation_effect = {
+tgp_restore_sacral_monarchy_yamato_creation_effect = {
 	create_character = {
 		template = LR_tgp_gaul_sacral_scion_template
-		location = scope:sacral_majordomo.capital_province
+		location = scope:kampaku.capital_province
 		age = { 16 38 }
-		save_scope_as = sacral_scion
+		save_scope_as = scion
 	}
-	scope:sacral_scion ?= {
+	scope:scion ?= {
 		if = {
 			limit = { is_female = yes }
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:sacral_majordomo.capital_province
-				mother = scope:sacral_scion
+				location = scope:kampaku.capital_province
+				mother = scope:scion
 				age = { 11 12 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:sacral_majordomo.capital_province
-				mother = scope:sacral_scion
+				location = scope:kampaku.capital_province
+				mother = scope:scion
 				age = { 7 8 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:sacral_majordomo.capital_province
-				mother = scope:sacral_scion
+				location = scope:kampaku.capital_province
+				mother = scope:scion
 				age = { 3 4  }
 			}
 		}
 		else = {
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:sacral_majordomo.capital_province
-				father = scope:sacral_scion
+				location = scope:kampaku.capital_province
+				father = scope:scion
 				age = { 11 12 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:sacral_majordomo.capital_province
-				father = scope:sacral_scion
+				location = scope:kampaku.capital_province
+				father = scope:scion
 				age = { 7 8 }
 			}
 			create_character = {
 				template = LR_tgp_gaul_sacral_scion_template
-				location = scope:sacral_majordomo.capital_province
-				father = scope:sacral_scion
+				location = scope:kampaku.capital_province
+				father = scope:scion
 				age = { 3 4 }
 			}
 		}
 	}
 }
 
-LR_tgp_restore_sacral_government_decision_effect = {
-	gaul_clear_flavour_flags_effect = yes
-	save_scope_as = sacral_majordomo
+tgp_restore_sacral_government_decision_effect = {
+	sacral_clear_flavour_flags_effect = yes
+	save_scope_as = kampaku
 	save_scope_as = background_throne_room_scope
 	add_character_flag = LR_tgp_gaul_restore_sacral_government_flag
 	# Change government if relevant
@@ -946,8 +2820,8 @@ LR_tgp_restore_sacral_government_decision_effect = {
 		custom = every_sacral_feudal_vassal_custom
 		limit = { government_has_flag = government_is_sacral_feudal }
 		add_opinion = {
-			target = scope:sacral_majordomo
-			modifier = restored_palatine_opinion
+			target = scope:kampaku
+			modifier = restored_ritsuryo_opinion
 		}
 	}
 	if = {
@@ -960,15 +2834,15 @@ LR_tgp_restore_sacral_government_decision_effect = {
 				is_ai = yes
 				NOR = {
 					government_has_mechanic = administrative
-					is_allied_to = scope:sacral_majordomo
+					is_allied_to = scope:kampaku
 				}
 				opinion = {
-					target = scope:sacral_majordomo
+					target = scope:kampaku
 					value < 25
 				}
 				save_temporary_scope_as = vassal_temp
 				NOT = {
-					scope:sacral_majordomo = { has_usable_hook = scope:vassal_temp }
+					scope:kampaku = { has_usable_hook = scope:vassal_temp }
 				}
 			}
 			order_by = military_power
@@ -983,12 +2857,12 @@ LR_tgp_restore_sacral_government_decision_effect = {
 					is_ai = yes
 					NOT = { government_has_mechanic = administrative }
 					opinion = {
-						target = scope:sacral_majordomo
+						target = scope:kampaku
 						value < 25
 					}
 					save_temporary_scope_as = vassal_temp
 					NOT = {
-						scope:sacral_majordomo = { has_usable_hook = scope:vassal_temp }
+						scope:kampaku = { has_usable_hook = scope:vassal_temp }
 					}
 				}
 				order_by = military_power
@@ -997,9 +2871,9 @@ LR_tgp_restore_sacral_government_decision_effect = {
 		}
 		if = {
 			limit = { exists = scope:rebel }
-			tgp_restore_palatine_civil_war_effect = {
+			tgp_restore_ritsuryo_civil_war_effect = {
 				REBEL = scope:rebel
-				LIEGE = scope:sacral_majordomo
+				LIEGE = scope:kampaku
 			}
 		}
 	}
@@ -1008,7 +2882,7 @@ LR_tgp_restore_sacral_government_decision_effect = {
 		every_vassal_or_below = {
 			limit = {
 				primary_title.tier >= tier_county
-				culture = { has_same_culture_heritage = scope:sacral_majordomo.culture }
+				culture = { has_same_culture_heritage = scope:kampaku.culture }
 			}
 			trigger_event = {
 				id = LR_tgp_gaul_decision.9912
@@ -1019,7 +2893,7 @@ LR_tgp_restore_sacral_government_decision_effect = {
 	remove_character_flag = LR_tgp_gaul_restore_sacral_government_flag
 }
 
-sacral_tgp_destroy_ceremonial_throne_effect = {
+tgp_destroy_ceremonial_throne_effect = {
 	liege = { save_scope_as = liege }
 	save_scope_as = vassal
 	scope:vassal ?= {
@@ -1036,7 +2910,7 @@ sacral_tgp_destroy_ceremonial_throne_effect = {
 	}
 }
 
-sacral_tgp_destroy_ceremonial_liege_title_effect = {
+tgp_destroy_ceremonial_liege_title_effect = {
 	save_scope_as = ceremonial_liege
 	random_held_title = {
 		limit = { exists = var:ceremonial_title }
@@ -1116,15 +2990,15 @@ LR_tgp_gaul_demand_administrative_refusal_effect = {
 		}
 		scope:actor = {
 			start_war = {
-				casus_belli = gaul_demand_administrative_cb
+				casus_belli = sacral_demand_administrative_cb
 				target = scope:recipient
 			}
 		}
-		custom_tooltip = gaul_demand_administrative_cb_warning_gaul_tt
+		custom_tooltip = sacral_demand_administrative_cb_warning_sacral_tt
 	}
 }
 
-tgp_restore_palatine_civil_war_effect = {
+tgp_restore_ritsuryo_civil_war_effect = {
 	$REBEL$ = {
 		save_scope_as = actor
 		save_scope_value_as = {
@@ -1132,7 +3006,7 @@ tgp_restore_palatine_civil_war_effect = {
 			value = yes
 		}
 		start_war = {
-			casus_belli = gaul_refused_palatine_cb
+			casus_belli = sacral_refused_ritsuryo_cb
 			target = $LIEGE$
 		}
 	}
@@ -1155,7 +3029,7 @@ tgp_restore_palatine_civil_war_effect = {
 						target = $LIEGE$
 						value >= 80
 					}
-					is_allied_to = $LIEGE$ 
+					is_allied_to = $LIEGE$
 					is_at_war_with = $REBEL$
 					is_at_war_with = $LIEGE$
 				}
@@ -1164,12 +3038,12 @@ tgp_restore_palatine_civil_war_effect = {
 					#Lovers and friends always back rebel (unless also lovers/friends of the liege)
 					AND = {
 						OR = {
-							is_allied_to = $REBEL$ 
+							is_allied_to = $REBEL$
 							has_relation_lover = $REBEL$
 							has_relation_friend = $REBEL$
 						}
 						NOR = {
-							is_allied_to = $LIEGE$ 
+							is_allied_to = $LIEGE$
 							has_relation_lover = $LIEGE$
 							has_relation_friend = $LIEGE$
 						}
@@ -1242,7 +3116,7 @@ tgp_restore_palatine_civil_war_effect = {
 				$REBEL$ = {
 					every_character_war = {
 						limit = {
-							using_cb = gaul_refused_palatine_cb
+							using_cb = sacral_refused_ritsuryo_cb
 							casus_belli = {
 								primary_attacker = $REBEL$
 								primary_defender = $LIEGE$
@@ -1282,15 +3156,206 @@ tgp_restore_palatine_civil_war_effect = {
 	}
 }
 
+tgp_set_historical_house_relation_effect = {
+	if = {
+		limit = {
+			house_relation_is_valid_to_start_trigger = {
+				HOUSE = this
+				OTHER_HOUSE = $OTHER_HOUSE$
+			}
+		}
+		set_house_relation = {
+			target = $OTHER_HOUSE$
+			level = $LEVEL$
+			description = house_relation_reason_historical_desc
+		}
+	}
+}
 
+tgp_setup_historical_house_relation_effect = {
+	### 867 ###
+	if = {
+		limit = { game_start_date = 5867.1.1 }
+		house:house_fujiwara_ashikaga = {
+			tgp_set_historical_house_relation_effect = { #
+				OTHER_HOUSE = house:house_minamoto_kozuke
+				LEVEL = rivalry
+			}
+		}
+	}
+	### 1066 ###
+	else_if = {
+		limit = { game_start_date = 1066.9.15 }
+		dynasty:sacral_minamoto_murakami.dynasty_founder.house = {
+			tgp_set_historical_house_relation_effect = { #
+				OTHER_HOUSE = dynasty:sacral_fujiwara.dynasty_founder.house
+				LEVEL = friendly
+			}
+		}
+	}
+	### 1178 ###
+	else_if = {
+		limit = { game_start_date = 6178.10.1 }
+		dynasty:sacral_sugawara.dynasty_founder.house = {
+			tgp_set_historical_house_relation_effect = { #
+				OTHER_HOUSE = dynasty:sacral_ki.dynasty_founder.house
+				LEVEL = friendly
+			}
+		}
+		house:house_minamoto_kiso = {
+			tgp_set_historical_house_relation_effect = { # Yoshikata killed by Yoshihira
+				OTHER_HOUSE = dynasty:sacral_nakahara_kiso.dynasty_founder.house
+				LEVEL = friendly
+			}
+		}
+		house:house_minamoto_kawachi = {
+			tgp_set_historical_house_relation_effect = { # Yoritomo's brothers killed by Kiyomori
+				OTHER_HOUSE = dynasty:sacral_nakahara_kiso.dynasty_founder.house
+				LEVEL = rivalry
+			}
+			tgp_set_historical_house_relation_effect = { # Marriage and historical alliance
+				OTHER_HOUSE = house:house_taira_hojo
+				LEVEL = friendly
+			}
+		}
+		house:house_kudo_kawazu = {
+			tgp_set_historical_house_relation_effect = { # Soga brothers
+				OTHER_HOUSE = house:house_kudo_ito_2
+				LEVEL = rivalry
+			}
+		}
+		house:house_taira_wada = {
+			tgp_set_historical_house_relation_effect = { # Yoshimune killed by Tsunetomo
+				OTHER_HOUSE = dynasty:sacral_nagasa.dynasty_founder.house
+				LEVEL = rivalry
+			}
+		}
+		house:house_taira_chichibu = {
+			tgp_set_historical_house_relation_effect = { # Shigetaka killed by Yoshihira
+				OTHER_HOUSE = house:house_minamoto_kawachi
+				LEVEL = rivalry
+			}
+		}
+		house:house_taira_soga = {
+			tgp_set_historical_house_relation_effect = { # Soga brothers
+				OTHER_HOUSE = house:house_minamoto_kawachi
+				LEVEL = rivalry
+			}
+		}
+		dynasty:sacral_ito.dynasty_founder.house = {
+			tgp_set_historical_house_relation_effect = { # Tadanao killed by Tametomo
+				OTHER_HOUSE = house:house_minamoto_kawachi
+				LEVEL = rivalry
+			}
+		}
+		house:house_kudo_ito_2 = {
+			tgp_set_historical_house_relation_effect = { # Sukeyasu_2 killed by Suketsune_2
+				OTHER_HOUSE = house:house_kudo_kawazu
+				LEVEL = rivalry
+			}
+		}
+		house:house_fujiwara_shijo = {
+			tgp_set_historical_house_relation_effect = { # Takasue's brothers killed by Kiyomori
+				OTHER_HOUSE = dynasty:sacral_taira_kanmu.dynasty_founder.house
+				LEVEL = rivalry
+			}
+		}
+		dynasty:sacral_fujiwara.dynasty_founder.house = {
+			tgp_set_historical_house_relation_effect = { # Yorinaga killed by Shigesada
+				OTHER_HOUSE = house:house_minamoto_mitsumasa
+				LEVEL = rivalry
+			}
+		}
+	}
+}
 
-
-
+tgp_liege_change_bloc_management_effect = {
+	$VASSAL$ = {
+		if = { # Leave if not a valid member anymore
+			limit = {
+				OR = {
+					exists = confederation.leading_house
+					exists = house.house_confederation
+				}
+			}
+			save_temporary_scope_as = vassal_temp
+			house ?= { save_temporary_scope_as = vassal_house_temp }
+			liege ?= { save_temporary_scope_as = new_liege }
+			confederation ?= {
+				save_temporary_scope_as = current_bloc_temp
+				leading_house = { save_temporary_scope_as = current_bloc_leader_temp }
+			}
+			house.house_confederation ?= {
+				save_temporary_scope_as = current_house_bloc_temp
+				leading_house = { save_temporary_scope_as = current_house_bloc_leader_temp }
+			}
+			if = {
+				limit = {
+					exists = scope:current_bloc_temp
+					exists =  scope:old_liege
+					trigger_if = { # If a vassal
+						limit = { is_independent_ruler = no }
+						scope:new_liege.liege != scope:old_liege.liege
+						scope:new_liege = {
+							is_independent_ruler = no
+						}
+					}
+					trigger_else = {
+						NOT = { scope:vassal_temp = scope:old_liege.top_liege }
+					}
+				}
+				scope:current_bloc_temp = {
+					if = {
+						limit = {
+							scope:vassal_temp = {
+								is_house_head = yes
+								house.house_confederation = scope:current_bloc_temp
+								scope:new_liege = {
+									is_independent_ruler = no
+								}
+							}
+						}
+						scope:vassal_house_temp = {
+							tgp_leave_house_bloc_effect = {
+								OPINION = flag:no
+								TRUCE = flag:yes
+							}
+						}
+					}
+					else_if = {
+						limit = { scope:vassal_temp.confederation = scope:current_bloc_temp }
+						remove_confederation_member = scope:vassal_temp
+					}
+				}
+				debug_log = "Bloc liege change member leave"
+				debug_log_scopes = yes
+			}
+			if = { # Join if not a member of valid
+				limit = {
+					is_house_head = no
+					exists = scope:current_house_bloc_temp
+					scope:vassal_house_temp.house_head.liege ?= liege
+					NOT = { confederation = scope:vassal_house_temp.house_confederation }
+				}
+				confederation ?= {
+					save_temporary_scope_as = current_bloc_temp
+					remove_confederation_member = scope:vassal_temp
+				}
+				house.house_confederation = {
+					save_temporary_scope_as = house_bloc_temp
+					add_confederation_member = scope:vassal_temp
+				}
+				debug_log = "Bloc liege change member join"
+				debug_log_scopes = yes
+			}
+		}
+	}
+}
 
 LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
-	save_scope_as = super_manorial
-	scope:super_manorial.primary_title.duchy ?= { save_scope_as = title_scope }
-	# Crime to sacral_majordomo
+	save_scope_as = super_soryo
+	scope:super_soryo.primary_title.duchy ?= { save_scope_as = title_scope }
+	# Crime to Kampaku
 	if = {
 		limit = {
 			top_liege = { government_has_mechanic = administrative }
@@ -1298,18 +3363,18 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 		# Message for attacker
 		send_interface_toast = {
 			type = event_war_bad
-			title = LR_tgp_gaul_manorial_war_is_crime_title
+			title = LR_tgp_gaul_soryo_war_is_crime_title
 			left_icon = top_liege
 			right_icon = scope:title_scope
 			top_liege = {
 				send_interface_toast = {
 					type = event_war_bad
-					title = LR_tgp_gaul_manorial_war_is_crime_sacral_king_gaul_title
-					left_icon = scope:super_manorial
+					title = LR_tgp_gaul_soryo_war_is_crime_kampaku_title
+					left_icon = scope:super_soryo
 					right_icon = scope:title_scope
 					add_opinion = {
-						target = scope:super_manorial
-						modifier = admin_manorial_conquest_crime
+						target = scope:super_soryo
+						modifier = admin_soryo_conquest_crime
 					}
 				}
 			}
@@ -1319,7 +3384,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 		limit = { exists = scope:title_scope.holder }
 		hidden_effect = {
 			scope:title_scope.holder = { save_scope_as = main_defender }
-			scope:super_manorial = {
+			scope:super_soryo = {
 				if = {
 					limit = {
 						any_truce_target = { this = scope:main_defender }
@@ -1328,7 +3393,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 				}
 			}
 			start_war = {
-			#lets make sure this is appropriate for gaul
+			#lets make sure this is appropriate for Japan
 				cb = domination_cb
 				target = scope:main_defender
 				target_title = scope:title_scope
@@ -1346,7 +3411,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 	}
 	else_if = {
 		limit = {
-			scope:super_manorial = {
+			scope:super_soryo = {
 				NOR = {
 					prestige_level >= 4
 					legitimacy_level >= 3
@@ -1355,25 +3420,25 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 			scope:title_scope ?= {
 				any_de_jure_county_holder = {
 					NOR = {
-						is_liege_or_above_of = scope:super_manorial
-						top_suzerain ?= scope:super_manorial
-						is_allied_to = scope:super_manorial
+						is_liege_or_above_of = scope:super_soryo
+						top_suzerain ?= scope:super_soryo
+						is_allied_to = scope:super_soryo
 						government_has_flag = government_is_herder
 						trigger_if = {
 							limit = {
-								exists = scope:super_manorial.confederation
+								exists = scope:super_soryo.confederation
 							}
-							confederation ?= scope:super_manorial.confederation
-						}	
+							confederation ?= scope:super_soryo.confederation
+						}
 					}
 					#They wont join if you're too scary
 					has_dread_level_towards = {
-						target = scope:super_manorial
+						target = scope:super_soryo
 						level < 2
 					}
 					#Must be strong enough to feel like they can fight you
 					current_military_strength >= {
-						value = scope:super_manorial.current_military_strength
+						value = scope:super_soryo.current_military_strength
 						multiply = 0.5
 					}
 				}
@@ -1383,39 +3448,39 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 			scope:title_scope = {
 				every_de_jure_county_holder = {
 					limit = {
-						NOT = { is_liege_or_above_of = scope:super_manorial }
+						NOT = { is_liege_or_above_of = scope:super_soryo }
 					}
 					if = {
 						limit = {
 							NOR = {
-								top_suzerain ?= scope:super_manorial
-								is_allied_to = scope:super_manorial
+								top_suzerain ?= scope:super_soryo
+								is_allied_to = scope:super_soryo
 								government_has_flag = government_is_herder
 								trigger_if = {
 									limit = {
-										exists = scope:super_manorial.confederation
+										exists = scope:super_soryo.confederation
 									}
-									confederation ?= scope:super_manorial.confederation
-								}	
+									confederation ?= scope:super_soryo.confederation
+								}
 							}
-							
+
 							#They wont join if you're too scary
 							has_dread_level_towards = {
-								target = scope:super_manorial
+								target = scope:super_soryo
 								level < 2
 							}
 							#Must be strong enough to feel like they can fight you
 							current_military_strength >= {
-								value = scope:super_manorial.current_military_strength
+								value = scope:super_soryo.current_military_strength
 								multiply = 0.5
 							}
 						}
 						add_to_list = war_targets
 					}
 					else = {
-						add_to_list = potential_vassals 
+						add_to_list = potential_vassals
 					}
-					
+
 				}
 				ordered_in_list = {
 					list = war_targets
@@ -1423,7 +3488,7 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 					save_scope_as = main_defender
 				}
 			}
-			scope:super_manorial = {
+			scope:super_soryo = {
 				if = {
 					limit = {
 						any_truce_target = { this = scope:main_defender }
@@ -1439,23 +3504,23 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 			#find ai for war
 			random_character_war = {
 				limit = {
-					primary_attacker = scope:super_manorial
+					primary_attacker = scope:super_soryo
 					primary_defender = scope:main_defender
 					using_cb = domination_cb
 				}
-				save_scope_as = super_manorial_war
+				save_scope_as = super_soryo_war
 				every_in_list = {
 					list = war_targets
 					limit = {
-						NOT = { is_participant_in_war = scope:super_manorial_war }
+						NOT = { is_participant_in_war = scope:super_soryo_war }
 						is_ai = yes
 					}
-					save_scope_as = super_manorial_war_target
-					scope:super_manorial_war = {
+					save_scope_as = super_soryo_war_target
+					scope:super_soryo_war = {
 						hidden_effect = {
-							set_called_to = scope:super_manorial_war_target
+							set_called_to = scope:super_soryo_war_target
 						}
-						add_defender = scope:super_manorial_war_target
+						add_defender = scope:super_soryo_war_target
 					}
 				}
 			}
@@ -1473,11 +3538,11 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 			tgp_bloc_members_join_war_effect = { WAR = scope:war }
 		}
 		save_scope_value_as = {
-			name = super_manorial_war_current_enemy_strength
+			name = super_soryo_war_current_enemy_strength
 			value = {
 				value = 0
 				every_in_list = {
-					list = war_targets 
+					list = war_targets
 					add = {
 						value = current_military_strength
 						every_tributary = {
@@ -1502,20 +3567,20 @@ LR_tgp_gaul_assert_regional_dominion_government_decision_effect = {
 									}
 								}
 							}
-						}	
+						}
 					}
 				}
 			}
 		}
-		custom_tooltip = super_manorial_war_no_holder_custom_tooltip
-		custom_tooltip = super_manorial_potential_peaceful
+		custom_tooltip = super_soryo_war_no_holder_custom_tooltip
+		custom_tooltip = super_soryo_potential_peaceful
 	}
 	else = {
 		scope:title_scope = { LR_tgp_gaul_assert_regional_dominance_war_outcome_effect = yes }
 		add_dread = 15
 		add_legitimacy = 50
 		dynasty = { add_dynasty_prestige = 150 }
-		custom_tooltip = super_manorial_reward_peaceful
+		custom_tooltip = super_soryo_reward_peaceful
 	}
 }
 
@@ -1543,7 +3608,7 @@ LR_tgp_gaul_assert_regional_dominance_war_outcome_effect = {
 			limit = {
 				holder = {
 					NOT = { government_has_mechanic = administrative }
-					highest_held_title_tier <= tier_duchy
+					highest_held_title_tier <= tier_county
 				}
 			}
 			holder = {
@@ -1571,9 +3636,16 @@ LR_tgp_gaul_assert_regional_dominance_war_outcome_effect = {
 	resolve_title_and_vassal_change = scope:change
 }
 
+tgp_set_minamoto_taira_dynasty_prestige_effect = {
+	holder.dynasty ?= {
+		while = {
+			limit = { dynasty_prestige_level < 5 }
+			add_dynasty_prestige_level = 1
+		}
+	}
+}
 
-
-LR_tgp_gaul_manorial_eradicate_cb_transfer_effect = {
+LR_tgp_gaul_soryo_eradicate_cb_transfer_effect = {
 	scope:loser = {
 		every_held_title = {
 			limit = {
@@ -1624,11 +3696,11 @@ LR_tgp_gaul_manorial_eradicate_cb_transfer_effect = {
 			holder = scope:winner
 			change = scope:change
 		}
-	}	
+	}
 	resolve_title_and_vassal_change = scope:change
 }
 
-sacral_establish_manorial_administration_reward_effect = {
+sacral_establish_soryo_administration_reward_effect = {
 	save_temporary_scope_as = winner_temp
 	scope:winner_temp = {
 		if = {
@@ -1645,23 +3717,337 @@ sacral_establish_manorial_administration_reward_effect = {
 		}
 		house.house_confederation ?= {
 			custom_tooltip = {
-				text = sacral_establish_manorial_administration_vassal_government_tt
+				text = sacral_establish_soryo_administration_vassal_government_tt
 				every_confederation_member = {
 					limit = { has_government = sacral_administrative_government }
 					change_government = sacral_feudal_government
 				}
 			}
 		}
-		custom_tooltip = sacral_establish_manorial_administration_imprison_tt
+		custom_tooltip = sacral_establish_soryo_administration_imprison_tt
 	}
 }
 
-LR_tgp_sacral_policy_event_effect = {
-	save_scope_as = liege
-	every_player = {
-		limit = { top_liege = scope:liege }
-		trigger_event = LR_tgp_gaul_general.9300
+tgp_learn_chinese_effect_game_start = {
+	if = {
+		limit = {
+			should_learn_chinese_trigger = yes
+		}
+		learn_language = language_chinese
+	}
+}
+tgp_learn_chinese_effect_birthday = {
+	if = {
+		limit = {
+			should_learn_chinese_trigger = yes
+		}
+		learn_language = language_chinese
+		every_player = {
+			limit = {
+				OR = {
+					is_parent_of = scope:child_learned_chinese
+					this = scope:child_learned_chinese
+					has_relation_guardian = scope:child_learned_chinese
+					has_relation_elder = scope:child_learned_chinese
+				}
+			}
+			send_interface_toast = {
+				type = event_childhood_good_with_text
+				title = sacral_korean_child_learned_chinese_title
+				desc = sacral_korean_child_learned_chinese_effect
+				left_icon = scope:child_learned_chinese
+				show_as_tooltip = {
+					scope:child_learned_chinese = {
+						learn_language = language_chinese
+					}
+				}
+			}
+		}
 	}
 }
 
+create_love_artifact_poetry_effect = {
+	$OWNER$ = { save_scope_as = owner }
 
+	hidden_effect_new_object = {
+		get_artifact_quality_effect = yes
+		get_artifact_wealth_effect = yes
+
+		scope:owner = {
+			create_artifact = {
+				name = love_artifact_poetry_name
+				creator = scope:owner
+				description = love_artifact_poetry_description
+				visuals = scroll
+				type = miscellaneous
+				modifier = artifact_monthly_minor_prestige_1_modifier
+				modifier = artifact_attraction_opinion_1_modifier
+				save_scope_as = newly_created_artifact
+				wealth = scope:wealth
+				quality = scope:quality
+			}
+		}
+
+		scope:newly_created_artifact = {
+			add_scaled_artifact_modifier_minor_prestige_effect = yes
+			add_scaled_artifact_modifier_majesty_effect = yes
+		}
+	}
+}
+
+tgp_bloc_members_join_faction_effect = {
+	if = { # sacral blocs
+		limit = { scope:faction.faction_leader.house.house_confederation.leading_house ?= scope:faction.faction_leader.house }
+		scope:faction.faction_leader.house.house_confederation ?= {
+			every_confederation_member = {
+				limit = { can_join_faction = scope:faction }
+				join_faction = scope:faction
+			}
+		}
+	}
+}
+
+tgp_bloc_members_join_war_effect = {
+	custom_tooltip = {
+		text = tgp_bloc_members_join_war_effect_tt
+		if = {
+			limit = { house.house_confederation.leading_house.house_head = this }
+			house.house_confederation ?= {
+				every_confederation_member = {
+					limit = {
+						NOT = { is_participant_in_war = $WAR$ }
+					}
+					save_temporary_scope_as = war_participant_temp
+					scope:war = { add_attacker = scope:war_participant_temp }
+				}
+			}
+		}
+	}
+}
+
+tgp_renounce_estate_effect = {
+	save_scope_as = retired
+	random_held_title = {
+		limit = { is_noble_family_title = yes }
+		current_heir = { 
+			save_scope_as = new_player
+			if = {
+				limit = { scope:retired = { is_ai = no } }
+				save_scope_as = new_human_player_character
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:new_player }
+		}
+		player_heir ?= {
+			save_scope_as = new_player
+			if = {
+				limit = { scope:retired = { is_ai = no } }
+				save_scope_as = new_human_player_character
+			}
+		}
+	}
+	add_character_modifier = { modifier = ep3_renounced_estate }
+	custom_tooltip = {
+		text = renounce_noble_family_title_decision_tt
+		send_interface_toast = {
+			type = event_toast_effect_neutral
+			title = renounce_noble_family_title_decision_toast_title
+			custom_tooltip = renounce_noble_family_title_decision_toast_desc
+			left_icon = scope:new_player
+			right_icon = this
+		}
+	}
+	if = {
+		limit = {
+			NOT = { has_trait = devoted }
+		}
+		add_trait = devoted
+	}
+	# TODO TIT-74285 use clean depose = yes after abdication also subjected to admin_allows_holding_multiple_primary_tier_titles
+	if = {
+		limit = { exists = scope:new_player }
+		hidden_effect = {
+			scope:new_player ?= {
+				set_variable = {
+					name = previous_holder_grandeur_value
+					value = prev.court_grandeur_current
+				}
+			}
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = title_change
+				add_claim_on_loss = no
+			}
+			if = {
+				limit = { is_governor = no }
+				every_held_title = {
+					limit = { tier > tier_barony }
+					change_title_holder_include_vassals = {
+						holder = scope:new_player
+						change = scope:title_change
+					}
+				}
+				# pass all artifacts away
+				every_character_artifact = {
+					if = {
+						limit = { is_equipped = yes }
+						add_to_list = equipped
+					}
+					set_owner = {
+						target = scope:new_player
+						history = {
+							type = inherited
+							recipient = scope:new_player
+						}
+					}
+				}
+			}
+			else = {
+				# pass the artifact if it's binded to NF (should not happen in vanilla tho), take from others title or not binded to a title
+				every_character_artifact = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = artifact_succession_title }
+							OR = {
+								var:artifact_succession_title.holder ?= { this != scope:retired }
+								var:artifact_succession_title ?= { is_noble_family_title = yes }
+							}
+						}
+					}
+					if = {
+						limit = { is_equipped = yes }
+						add_to_list = equipped
+					}
+					set_owner = {
+						target = scope:new_player
+						history = {
+							type = inherited
+							recipient = scope:new_player
+						}
+					}
+				}
+				every_held_title = {
+					limit = { is_noble_family_title = yes }
+					change_title_holder = {
+						holder = scope:new_player
+						change = scope:title_change
+					}
+				}
+			}
+			resolve_title_and_vassal_change = scope:title_change
+			if = {
+				limit = { is_ruler = yes }
+				primary_title.current_heir = { save_scope_as = heir_temp }
+				# now handle title succession
+				every_character_artifact = {
+					limit = { var:artifact_succession_title.holder ?= scope:retired }
+					if = {
+						limit = { is_equipped = yes }
+						add_to_list = equipped
+					}
+					set_owner = {
+						target = scope:heir_temp
+						history = {
+							type = inherited
+							recipient = scope:heir_temp
+						}
+					}
+				}
+				create_title_and_vassal_change = {
+					type = appointment
+					save_scope_as = title_change
+					add_claim_on_loss = no
+				}
+				every_held_title = {
+					limit = { tier > tier_barony }
+					change_title_holder_include_vassals = {
+						holder = scope:heir_temp
+						change = scope:title_change
+					}
+				}
+				resolve_title_and_vassal_change = scope:title_change
+				every_in_list = {
+					list = equipped
+					limit = { artifact_owner = { can_equip_artifact = prev } }
+					equip_artifact_to_owner = yes
+				}
+				pay_short_term_gold = {
+					target = scope:new_player
+					gold = gold
+				}
+			}
+		}
+		house = {
+			if = {
+				limit = { NOT = { house_head = scope:new_player } }
+				set_house_head = scope:new_player
+			}
+		}
+		if = {
+			limit = { exists = scope:new_human_player_character }
+			set_player_character = scope:new_human_player_character
+		}
+		progress_towards_friend_effect = {
+			REASON = friend_retired_from_governorship
+			CHARACTER = scope:new_player
+			OPINION = default_friend_opinion
+		}
+	}
+	tgp_step_down_title_recipient_tooltip_effect = yes
+	set_variable = {
+		name = appointment_trait_override
+		value = trait:intellect_good_3
+	}
+}
+
+setup_sacral_house_name_scopes_effect = {
+	save_scope_as = new_head
+	save_scope_as = new_house_head # don't ask
+	house ?= {
+		save_scope_as = old_house
+		house_head = { save_scope_as = old_head }
+	}
+	if = {
+		limit = { domicile.domicile_location.county.holder ?= scope:new_head }
+		domicile.domicile_location.barony = {
+			save_scope_as = domicile_barony
+			county = { save_scope_as = domicile_county }
+		}
+	}
+	else_if = {
+		limit = {
+			is_landed = no
+			scope:old_head.domicile.domicile_location.county.holder ?= scope:old_head
+		}
+		scope:old_head.domicile.domicile_location.barony = {
+			save_scope_as = domicile_barony
+			county = { save_scope_as = domicile_county }
+		}
+	}
+	else_if = {
+		limit = { is_landed = yes }
+		save_scope_as = land_haver
+	}
+	else = {
+		limit = { house.house_head ?= { is_landed = yes } }
+		house.house_head = { save_scope_as = land_haver }
+	}
+	scope:land_haver.capital_county ?= {
+		save_scope_as = primary_county
+		random_county_province = {
+			limit = {
+				has_holding = yes
+				NOT = { has_holding_type = church_holding }
+			}
+			alternative_limit = { has_holding = yes }
+			barony = { save_scope_as = random_barony }
+		}
+	}
+	if = {
+		limit = { NOT = { exists = scope:random_barony } }
+		location.barony = { save_scope_as = random_barony }
+	}
+}
