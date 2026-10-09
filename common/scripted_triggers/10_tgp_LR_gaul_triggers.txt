@@ -17,9 +17,9 @@ LR_tgp_is_gaul_sacral_majordomo_trigger = {
 	}
 }
 
-LR_tgp_is_gallic_governor_trigger = {
+LR_tgp_is_sacral_governor_trigger = {
 	custom_tooltip = {
-		text = LR_tgp_is_gallic_governor_trigger
+		text = LR_tgp_is_sacral_governor_trigger
 		government_has_flag = government_is_gaul_administrative
 		is_landed = yes
 		is_ruler = yes
@@ -28,7 +28,7 @@ LR_tgp_is_gallic_governor_trigger = {
 		tgp_is_ceremonial_liege_trigger = no
 	}
 }
-LR_tgp_can_have_gallic_regency_succession_law_trigger = {
+LR_tgp_can_have_sacral_regency_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 	is_independent_ruler = yes
 	government_has_flag = government_is_gaul_administrative
@@ -41,14 +41,14 @@ LR_tgp_can_have_gallic_regency_succession_law_trigger = {
 	}
 }
 
-LR_can_keep_gallic_regency_succession_law_trigger = {
+LR_can_keep_sacral_regency_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 	trigger_if = {
 		limit = {
-			has_realm_law = gallic_regency_succession_law
+			has_realm_law = sacral_regency_succession_law
 		}
 		OR = {
-			LR_tgp_can_have_gallic_regency_succession_law_trigger = yes
+			LR_tgp_can_have_sacral_regency_succession_law_trigger = yes
 			has_title = title:e_sacral_kingdom_gaul
 		}
 	}
@@ -58,15 +58,15 @@ LR_tgp_gaul_any_descendants_are_governors = {
 	# A direct descendant is currently a Governor
 	any_child = { # Children
 		OR = {
-			LR_tgp_is_gallic_governor_trigger = yes
+			LR_tgp_is_sacral_governor_trigger = yes
 			any_child = { # Grandchildren
 				OR = {
-					LR_tgp_is_gallic_governor_trigger = yes
+					LR_tgp_is_sacral_governor_trigger = yes
 					any_child = { # Great-grandchildren
 						OR = {
-							LR_tgp_is_gallic_governor_trigger = yes
+							LR_tgp_is_sacral_governor_trigger = yes
 							any_child = { # Great-great-grandchildren
-								LR_tgp_is_gallic_governor_trigger = yes
+								LR_tgp_is_sacral_governor_trigger = yes
 							}
 						}
 					}
@@ -186,7 +186,7 @@ LR_tgp_gaul_ceremonial_candidacy_restriction_trigger = {
 				exists = scope:target.var:administrative_ui_special_title
 				scope:target.holder = {
 					OR = {
-						has_realm_law = gallic_regency_succession_law
+						has_realm_law = sacral_regency_succession_law
 					}
 				}
 			}
@@ -252,22 +252,22 @@ LR_tgp_gaul_ceremonial_title_revoke_restriction_trigger = {
 
 
 
-can_have_gallic_appointment_succession_law_trigger = {
+can_have_sacral_appointment_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 	government_has_flag = government_is_gaul_administrative
 	is_independent_ruler = no
 	NOT = { has_title = title:k_sacral_king_gaul_throne }
 }
 
-can_keep_gallic_appointment_succession_law_trigger = {
+can_keep_sacral_appointment_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 	trigger_if = {
-		limit = { has_realm_law = gallic_appointment_succession_law }
-		can_have_gallic_appointment_succession_law_trigger = yes
+		limit = { has_realm_law = sacral_appointment_succession_law }
+		can_have_sacral_appointment_succession_law_trigger = yes
 	}
 }
 
-can_change_gallic_appointment_succession_law_trigger = {
+can_change_sacral_appointment_succession_law_trigger = {
 	has_tgp_dlc_trigger = yes
 }
 
@@ -337,13 +337,13 @@ gaul_house_name_county_trigger = {
 	}
 	trigger_else = { always = yes }
 	NOT = {
-		is_target_in_variable_list = { name = gallic_house_names target = $FLAG$ }
+		is_target_in_variable_list = { name = sacral_house_names target = $FLAG$ }
 	}
 }
 
 gaul_house_name_trigger = {
 	NOT = {
-		is_target_in_variable_list = { name = gallic_house_names target = $FLAG$ }
+		is_target_in_variable_list = { name = sacral_house_names target = $FLAG$ }
 	}
 }
 
@@ -728,14 +728,14 @@ gaul_castle_construction_trigger = {
 		}
 		custom_tooltip = {
 			text = gaul_castle_construction_trigger_tt
-			county.holder.top_liege ?= { has_realm_law_flag = gallic_disarmament_law }
+			county.holder.top_liege ?= { has_realm_law_flag = sacral_disarmament_law }
 		}
 	}
 }
 
 
 
-has_gallic_house_aspiration_trigger = {
+has_sacral_house_aspiration_trigger = {
 	house ?= {
 		OR = {
 			has_house_aspiration_parameter = aspiration_ceremony
@@ -752,11 +752,24 @@ tgp_manorial_or_bushido_trigger = {
 	government_has_flag = government_is_gaul_feudal
 }
 
-LR_tgp_can_become_gallic_feudal_trigger = {
+LR_tgp_can_become_sacral_feudal_trigger = {
 	has_tgp_dlc_trigger = yes
 	OR = {
 		top_liege = { government_is_sacral_trigger = yes } # Soryo not created outside Ritsuryo/Soryo Realms
 		domicile ?= { is_domicile_type = sacral_manor } # Vassalized Ritsuryo/Soryo stay Soryo
-		has_character_flag = can_become_gallic_feudal
+		has_character_flag = can_become_sacral_feudal
+	}
+}
+
+LR_tgp_can_become_sacral_administrative_trigger = {
+	OR = {
+		top_liege = {
+			OR = {
+				government_is_sacral_trigger = yes
+				has_character_flag = LR_tgp_gaul_restore_sacral_government_flag
+			}
+		}
+		government_is_japanese_trigger = yes
+		has_character_flag = LR_tgp_gaul_restore_sacral_government_flag
 	}
 }
