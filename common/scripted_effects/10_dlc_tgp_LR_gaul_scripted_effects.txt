@@ -5,35 +5,35 @@
 	if = {
 		limit = { LR_tgp_gaul_cadet_creates_dynasty_trigger = yes }
 		if = {
-			limit = { exists = var:new_gallic_house_name }
+			limit = { exists = var:new_sacral_house_name }
 			create_dynasty = {
 				name = {
 					first_valid = {
 						triggered_desc = {
-							trigger = { scope:new_head.var:new_gallic_house_name ?= flag:gallic_house_random_barony }
-							desc = gallic_house_random_barony
+							trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_random_barony }
+							desc = sacral_house_random_barony
 						}
 						triggered_desc = {
-							trigger = { scope:new_head.var:new_gallic_house_name ?= flag:gallic_house_primary_county }
-							desc = gallic_house_primary_county
+							trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_primary_county }
+							desc = sacral_house_primary_county
 						}
 						triggered_desc = {
-							trigger = { scope:new_head.var:new_gallic_house_name ?= flag:gallic_house_domicile_barony }
-							desc = gallic_house_domicile_barony
+							trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_domicile_barony }
+							desc = sacral_house_domicile_barony
 						}
 						triggered_desc = {
-							trigger = { scope:new_head.var:new_gallic_house_name ?= flag:gallic_house_domicile_county }
-							desc = gallic_house_domicile_county
+							trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_domicile_county }
+							desc = sacral_house_domicile_county
 						}
 						triggered_desc = {
-							trigger = { scope:new_head.var:new_gallic_house_name ?= flag:gallic_house_first_name }
-							desc = gallic_house_first_name
+							trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_first_name }
+							desc = sacral_house_first_name
 						}
 						triggered_desc = {
-							trigger = { scope:new_head.var:new_gallic_house_name ?= flag:custom }
-							desc = gallic_house_name_custom
+							trigger = { scope:new_head.var:new_sacral_house_name ?= flag:custom }
+							desc = sacral_house_name_custom
 						}
-						desc = gallic_house_name_flag
+						desc = sacral_house_name_flag
 					}
 				}
 				save_scope_as = new_dynasty
@@ -43,7 +43,7 @@
 			create_dynasty = { save_scope_as = new_dynasty }
 		}
 		house = {
-			set_house_name = gallic_dynasty_name
+			set_house_name = sacral_dynasty_name
 			save_scope_as = new_house
 		}
 	}
@@ -51,7 +51,7 @@
 	else_if = {
 		limit = { is_house_head = no }
 		if = {
-			limit = { exists = var:new_gallic_house_name }
+			limit = { exists = var:new_sacral_house_name }
 			found_cadet_house_decision_effect = {
 				CHARACTER = root
 				PRESTIGE = 0
@@ -73,12 +73,12 @@
 				scope:old_head ?= this
 				exists = scope:old_nf_title
 			}
-			#scope:old_nf_title = { set_title_name_dynamic = gallic_noble_family_name }
+			#scope:old_nf_title = { set_title_name_dynamic = sacral_noble_family_name }
 		}
 		else = {
 			create_noble_family_effect = { GOVERNMENT_GIVER = this }
 			scope:new_title = {
-				#set_title_name_dynamic = gallic_noble_family_name
+				#set_title_name_dynamic = sacral_noble_family_name
 				set_coa = scope:new_house
 			}
 		}
@@ -143,7 +143,7 @@
 	add_achievement_flag_effect = { FLAG = achievement_a_house_of_my_own_flag }
 }
 
-gallic_set_house_of_all_descendants_effect = {
+sacral_set_house_of_all_descendants_effect = {
 	if = {
 		limit = { any_child = { count >= 1 } }
 		every_child = { # Children
@@ -225,165 +225,165 @@ add_random_external_sacral_manor_building = {
 		random_list = {
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_fields_01 }
+					NOT = { has_domicile_building_or_higher = sacral_fields_01 }
 				}
-				add_domicile_building = gallic_fields_01
+				add_domicile_building = sacral_fields_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_fields_01
+						has_domicile_building_or_higher = sacral_fields_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_fields_02
+					add_domicile_building = sacral_fields_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_shrine_01 }
+					NOT = { has_domicile_building_or_higher = sacral_shrine_01 }
 					owner.house = { has_house_aspiration_parameter = unlocks_sacral_manor_shrine }
 				}
-				add_domicile_building = gallic_shrine_01
+				add_domicile_building = sacral_shrine_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_shrine_01
+						has_domicile_building_or_higher = sacral_shrine_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_shrine_02
+					add_domicile_building = sacral_shrine_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_brewery_01 }
+					NOT = { has_domicile_building_or_higher = sacral_brewery_01 }
 					owner.house = { has_house_aspiration_parameter = unlocks_sacral_manor_brewery }
 				}
-				add_domicile_building = gallic_brewery_01
+				add_domicile_building = sacral_brewery_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_brewery_01
+						has_domicile_building_or_higher = sacral_brewery_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_brewery_02
+					add_domicile_building = sacral_brewery_02
 				}
 			}
 			10 = {
 				trigger = {
 					owner = { government_has_flag = government_is_administrative }
-					NOT = { has_domicile_building_or_higher = gallic_archive_01 }
+					NOT = { has_domicile_building_or_higher = sacral_archive_01 }
 					owner.house = { has_house_aspiration_parameter = unlocks_sacral_manor_archive }
 				}
-				add_domicile_building = gallic_archive_01
+				add_domicile_building = sacral_archive_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_archive_01
+						has_domicile_building_or_higher = sacral_archive_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_archive_02
+					add_domicile_building = sacral_archive_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_armory_01 }
+					NOT = { has_domicile_building_or_higher = sacral_armory_01 }
 					owner.house = { has_house_aspiration_parameter = unlocks_sacral_manor_armory }
 				}
-				add_domicile_building = gallic_armory_01
+				add_domicile_building = sacral_armory_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_armory_01
+						has_domicile_building_or_higher = sacral_armory_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_armory_02
+					add_domicile_building = sacral_armory_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_watch_house_01 }
+					NOT = { has_domicile_building_or_higher = sacral_watch_house_01 }
 					owner.house = { has_house_aspiration_parameter = unlocks_sacral_manor_watch_house }
 				}
-				add_domicile_building = gallic_watch_house_01
+				add_domicile_building = sacral_watch_house_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_watch_house_01
+						has_domicile_building_or_higher = sacral_watch_house_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_watch_house_02
+					add_domicile_building = sacral_watch_house_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_horse_pastures_01 }
+					NOT = { has_domicile_building_or_higher = sacral_horse_pastures_01 }
 				}
-				add_domicile_building = gallic_horse_pastures_01
+				add_domicile_building = sacral_horse_pastures_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_horse_pastures_01
+						has_domicile_building_or_higher = sacral_horse_pastures_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_horse_pastures_02
+					add_domicile_building = sacral_horse_pastures_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_tea_plantation_01 }
+					NOT = { has_domicile_building_or_higher = sacral_tea_plantation_01 }
 				}
-				add_domicile_building = gallic_tea_plantation_01
+				add_domicile_building = sacral_tea_plantation_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_tea_plantation_01
+						has_domicile_building_or_higher = sacral_tea_plantation_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_tea_plantation_02
+					add_domicile_building = sacral_tea_plantation_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_stables_01 }
+					NOT = { has_domicile_building_or_higher = sacral_stables_01 }
 				}
-				add_domicile_building = gallic_stables_01
+				add_domicile_building = sacral_stables_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_stables_01
+						has_domicile_building_or_higher = sacral_stables_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_stables_02
+					add_domicile_building = sacral_stables_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_workshop_01 }
+					NOT = { has_domicile_building_or_higher = sacral_workshop_01 }
 				}
-				add_domicile_building = gallic_workshop_01
+				add_domicile_building = sacral_workshop_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_workshop_01
+						has_domicile_building_or_higher = sacral_workshop_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_workshop_02
+					add_domicile_building = sacral_workshop_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_tea_house_01 }
+					NOT = { has_domicile_building_or_higher = sacral_tea_house_01 }
 					owner.house = { has_house_aspiration_parameter = unlocks_sacral_manor_tea_house }
 				}
-				add_domicile_building = gallic_tea_house_01
+				add_domicile_building = sacral_tea_house_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_tea_house_01
+						has_domicile_building_or_higher = sacral_tea_house_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_tea_house_02
+					add_domicile_building = sacral_tea_house_02
 				}
 			}
 			10 = {
 				trigger = {
-					NOT = { has_domicile_building_or_higher = gallic_garden_01 }
+					NOT = { has_domicile_building_or_higher = sacral_garden_01 }
 				}
-				add_domicile_building = gallic_garden_01
+				add_domicile_building = sacral_garden_01
 				if = {
 					limit = {
-						has_domicile_building_or_higher = gallic_garden_01
+						has_domicile_building_or_higher = sacral_garden_01
 						has_domicile_building_or_higher = sacral_manor_main_03
 					}
-					add_domicile_building = gallic_garden_02
+					add_domicile_building = sacral_garden_02
 				}
 			}
 		}
@@ -394,24 +394,24 @@ add_random_internal_sacral_manor_building = {
 	random_list = {
 		10 = {
 			trigger = {
-				NOT = { has_domicile_building_or_higher = gallic_main_tax_collectors_01 }
+				NOT = { has_domicile_building_or_higher = sacral_main_tax_collectors_01 }
 				domicile_building_has_free_internal_slot = sacral_manor_main_01
 			}
-			add_domicile_building = gallic_main_tax_collectors_01
+			add_domicile_building = sacral_main_tax_collectors_01
 			if = {
 				limit = { has_domicile_building = sacral_manor_main_03 }
-				add_domicile_building = gallic_main_tax_collectors_02
+				add_domicile_building = sacral_main_tax_collectors_02
 			}
 		}
 		10 = {
 			trigger = {
-				NOT = { has_domicile_building_or_higher = gallic_main_carpenter_01 }
+				NOT = { has_domicile_building_or_higher = sacral_main_carpenter_01 }
 				domicile_building_has_free_internal_slot = sacral_manor_main_01
 			}
-			add_domicile_building = gallic_main_carpenter_01
+			add_domicile_building = sacral_main_carpenter_01
 			if = {
 				limit = { has_domicile_building = sacral_manor_main_03 }
-				add_domicile_building = gallic_main_carpenter_02
+				add_domicile_building = sacral_main_carpenter_02
 			}
 		}
 		10 = {
@@ -494,7 +494,7 @@ become_sacral_dictator_reward_effect = {
 	}
 	add_dread = massive_dread_gain
 	add_legitimacy = monumental_legitimacy_gain
-	add_realm_law = gallic_bureaucracy_1
+	add_realm_law = sacral_bureaucracy_1
 	dynasty = { add_dynasty_prestige = monumental_dynasty_prestige_gain }
 	culture = {
 		if = {
@@ -516,7 +516,7 @@ become_sacral_dictator_reward_effect = {
 	}
 }
 
-gallic_restore_ceremonial_liege_faction_combined_effect = {
+sacral_restore_ceremonial_liege_faction_combined_effect = {
 	top_liege = {
 		save_temporary_scope_as = regent_temp
 		primary_title = {
@@ -542,7 +542,7 @@ gallic_restore_ceremonial_liege_faction_combined_effect = {
 	scope:ceremonial_liege_temp = { trigger_event = LR_tgp_gaul_decision.9301 }
 }
 
-gallic_restore_ceremonial_liege_faction_reward_effect = {
+sacral_restore_ceremonial_liege_faction_reward_effect = {
 	top_liege = {
 		save_temporary_scope_as = regent_temp
 		primary_title = {
@@ -568,7 +568,7 @@ gallic_restore_ceremonial_liege_faction_reward_effect = {
 	}
 }
 
-gallic_restore_ceremonial_liege_faction_titles_effect = {
+sacral_restore_ceremonial_liege_faction_titles_effect = {
 	top_liege = {
 		save_temporary_scope_as = regent_temp
 		primary_title = {
@@ -610,7 +610,7 @@ gallic_restore_ceremonial_liege_faction_titles_effect = {
 
 
 
-gallic_faction_demand_regent_transfer_effect = {
+sacral_faction_demand_regent_transfer_effect = {
 	top_liege = {
 		save_temporary_scope_as = old_regent_temp
 		primary_title = {
@@ -684,16 +684,16 @@ LR_tgp_gaul_schoolhouse_education_boost_effect = {
 	house.house_head.domicile ?= {
 		if = {
 			limit = { 
-				has_domicile_parameter = gallic_schoolhouse_education_boost_1
+				has_domicile_parameter = sacral_schoolhouse_education_boost_1
 			}
 			switch = {
 				trigger = has_domicile_building
-				gallic_schoolhouse_01 = { scope:student = { education_point_add_general_effect = { VALUE = 1 } } }
-				gallic_schoolhouse_02 = { scope:student = { education_point_add_general_effect = { VALUE = 2 } } }
-				gallic_schoolhouse_03 = { scope:student = { education_point_add_general_effect = { VALUE = 3 } } }
-				gallic_schoolhouse_04 = { scope:student = { education_point_add_general_effect = { VALUE = 4 } } }
-				gallic_schoolhouse_04 = { scope:student = { education_point_add_general_effect = { VALUE = 5 } } }
-				gallic_schoolhouse_04 = { scope:student = { education_point_add_general_effect = { VALUE = 6 } } }
+				sacral_schoolhouse_01 = { scope:student = { education_point_add_general_effect = { VALUE = 1 } } }
+				sacral_schoolhouse_02 = { scope:student = { education_point_add_general_effect = { VALUE = 2 } } }
+				sacral_schoolhouse_03 = { scope:student = { education_point_add_general_effect = { VALUE = 3 } } }
+				sacral_schoolhouse_04 = { scope:student = { education_point_add_general_effect = { VALUE = 4 } } }
+				sacral_schoolhouse_04 = { scope:student = { education_point_add_general_effect = { VALUE = 5 } } }
+				sacral_schoolhouse_04 = { scope:student = { education_point_add_general_effect = { VALUE = 6 } } }
 			}
 		}
 	}
@@ -937,9 +937,9 @@ LR_tgp_restore_sacral_government_decision_effect = {
 	change_government = gaul_administrative_government
 	if = {
 		limit = {
-			NOT = { has_realm_law = gallic_regency_succession_law }
+			NOT = { has_realm_law = sacral_regency_succession_law }
 		}
-		add_realm_law_skip_effects = gallic_regency_succession_law
+		add_realm_law_skip_effects = sacral_regency_succession_law
 	}
 	# Inform vassals and convert governments if relevant
 	every_vassal = {
@@ -1019,7 +1019,7 @@ LR_tgp_restore_sacral_government_decision_effect = {
 	remove_character_flag = LR_tgp_gaul_restore_sacral_government_flag
 }
 
-gallic_tgp_destroy_ceremonial_throne_effect = {
+sacral_tgp_destroy_ceremonial_throne_effect = {
 	liege = { save_scope_as = liege }
 	save_scope_as = vassal
 	scope:vassal ?= {
@@ -1036,7 +1036,7 @@ gallic_tgp_destroy_ceremonial_throne_effect = {
 	}
 }
 
-gallic_tgp_destroy_ceremonial_liege_title_effect = {
+sacral_tgp_destroy_ceremonial_liege_title_effect = {
 	save_scope_as = ceremonial_liege
 	random_held_title = {
 		limit = { exists = var:ceremonial_title }
@@ -1628,7 +1628,7 @@ LR_tgp_gaul_manorial_eradicate_cb_transfer_effect = {
 	resolve_title_and_vassal_change = scope:change
 }
 
-gallic_establish_manorial_administration_reward_effect = {
+sacral_establish_manorial_administration_reward_effect = {
 	save_temporary_scope_as = winner_temp
 	scope:winner_temp = {
 		if = {
@@ -1639,20 +1639,20 @@ gallic_establish_manorial_administration_reward_effect = {
 		}
 		if = {
 			limit = {
-				NOT = { has_realm_law = gallic_bureaucracy_0 }
+				NOT = { has_realm_law = sacral_bureaucracy_0 }
 			}
-			add_realm_law = gallic_bureaucracy_0
+			add_realm_law = sacral_bureaucracy_0
 		}
 		house.house_confederation ?= {
 			custom_tooltip = {
-				text = gallic_establish_manorial_administration_vassal_government_tt
+				text = sacral_establish_manorial_administration_vassal_government_tt
 				every_confederation_member = {
 					limit = { has_government = gaul_administrative_government }
 					change_government = gaul_feudal_government
 				}
 			}
 		}
-		custom_tooltip = gallic_establish_manorial_administration_imprison_tt
+		custom_tooltip = sacral_establish_manorial_administration_imprison_tt
 	}
 }
 

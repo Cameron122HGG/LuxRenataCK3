@@ -27,7 +27,7 @@ gaul_install_bloc_member_cb = {
 		highest_held_title_tier >= tier_county
 		top_liege = scope:attacker.top_liege # Same realm
 		NOT = { this = scope:attacker.top_liege } # Not top liege
-		government_is_gallic_trigger = yes # Soryo or Ritsuryo
+		government_is_sacral_trigger = yes # Soryo or Ritsuryo
 		trigger_if = { # Not in same Bloc
 			limit = { exists = house.house_confederation }
 			house.house_confederation != scope:attacker.house.house_confederation
@@ -323,7 +323,7 @@ gaul_manorial_conquest_county_landless_cb = {
 	allowed_for_character = {
 		has_tgp_dlc_trigger = yes
 		is_landed = no
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 		tgp_soryo_or_bushido_trigger = yes
 	}
 
@@ -331,7 +331,7 @@ gaul_manorial_conquest_county_landless_cb = {
 	allowed_against_character = {
 		is_landed = yes
 		highest_held_title_tier >= tier_county
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 		top_liege = {
 			# Must be part of same realm
 			this = scope:attacker.top_liege
@@ -1165,9 +1165,9 @@ gaul_demand_administrative_cb = {
 				add_prestige = major_prestige_loss
 				switch = {
 					trigger = has_realm_law
-					gallic_bureaucracy_3 = { add_realm_law = gallic_bureaucracy_2 }
-					gallic_bureaucracy_2 = { add_realm_law = gallic_bureaucracy_1 }
-					gallic_bureaucracy_1 = { add_realm_law = gallic_bureaucracy_0 }
+					sacral_bureaucracy_3 = { add_realm_law = sacral_bureaucracy_2 }
+					sacral_bureaucracy_2 = { add_realm_law = sacral_bureaucracy_1 }
+					sacral_bureaucracy_1 = { add_realm_law = sacral_bureaucracy_0 }
 					fallback = { force_step_down_landed_titles = yes }
 				}
 			}
@@ -2588,7 +2588,7 @@ gaul_establish_manorial_administration_cb = {
 		}
 		scope:defender = {
 			save_scope_as = daijo_daijin
-			show_as_tooltip = { gallic_establish_manorial_administration_reward_effect = yes }
+			show_as_tooltip = { sacral_establish_manorial_administration_reward_effect = yes }
 			trigger_event = LR_tgp_gaul_decision.9606
 		}
 

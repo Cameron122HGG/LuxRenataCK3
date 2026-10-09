@@ -35,7 +35,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 
 	is_valid = {
 		# Is a Palatine Governor
-		LR_tgp_is_gallic_governor_trigger = yes
+		LR_tgp_is_sacral_governor_trigger = yes
 		trigger_if = {
 			limit = { is_ai = no } # AI are an exception as they can continue to play despite not being House Heads
 			custom_tooltip = {
@@ -98,7 +98,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 			}
 			custom_tooltip = {
 				text = LR_tgp_gaul_establish_house_fief_centralization_trigger
-				NOT = { has_realm_law = gallic_bureaucracy_3 }
+				NOT = { has_realm_law = sacral_bureaucracy_3 }
 			}
 		}
 		# Prevent ai flipflopping back after demand admin gov interaction
@@ -183,9 +183,9 @@ LR_tgp_gaul_establish_house_fief_decision = {
 							}
 						}
 						random_list = {
-							1 = { set_house_aspiration = { type = gallic_determination } }
-							1 = { set_house_aspiration = { type = gallic_prosperity } }
-							1 = { set_house_aspiration = { type = gallic_strength } }
+							1 = { set_house_aspiration = { type = sacral_determination } }
+							1 = { set_house_aspiration = { type = sacral_prosperity } }
+							1 = { set_house_aspiration = { type = sacral_strength } }
 						}
 					}
 				}
@@ -218,7 +218,7 @@ LR_tgp_gaul_establish_house_fief_decision = {
 		has_government = gaul_administrative_government
 		NOT = { # Reluctance to forgo potential to become Kampaku
 			top_liege = {
-				has_realm_law = gallic_regency_succession_law
+				has_realm_law = sacral_regency_succession_law
 				primary_title = { "place_in_line_of_succession(root)" <= 3 }
 			}
 		}
@@ -375,15 +375,15 @@ LR_tgp_gaul_establish_house_fief_decision = {
 			add = 20
 		}
 		modifier = {
-			has_realm_law = gallic_bureaucracy_1
+			has_realm_law = sacral_bureaucracy_1
 			add = 10
 		}
 		modifier = {
-			has_realm_law = gallic_bureaucracy_2
+			has_realm_law = sacral_bureaucracy_2
 			add = 20
 		}
 		modifier = {
-			has_realm_law = gallic_bureaucracy_3
+			has_realm_law = sacral_bureaucracy_3
 			add = 30
 		}
 		opinion_modifier = { # Opinion of liege
@@ -472,7 +472,7 @@ LR_tgp_gaul_establish_manorial_manor_decision = {
 			}
 			custom_tooltip = {
 				text = LR_tgp_gaul_establish_house_fief_centralization_trigger
-				NOT = { has_realm_law = gallic_bureaucracy_3 }
+				NOT = { has_realm_law = sacral_bureaucracy_3 }
 			}
 		}
 	}
@@ -577,7 +577,7 @@ LR_tgp_gaul_establish_manorial_administration_decision = {
 	is_shown = {
 		has_tgp_dlc_trigger = yes
 		is_independent_ruler = yes
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 		NOR = { 
 			government_has_flag = government_is_gaul_feudal 
 			has_global_variable = sacral_dictatorship_established
@@ -590,11 +590,11 @@ LR_tgp_gaul_establish_manorial_administration_decision = {
 			limit = {
 				has_title = title:e_sacral_kingdom_gaul
 			}
-			has_realm_law = gallic_regency_succession_law
+			has_realm_law = sacral_regency_succession_law
 		}
 		is_independent_ruler = yes
 		has_government = gaul_administrative_government
-		has_realm_law = gallic_bureaucracy_3
+		has_realm_law = sacral_bureaucracy_3
 		custom_tooltip = {
 			text = house_head_create_faction_cohesion_hard_tt
 			house.house_confederation ?= {
@@ -621,9 +621,9 @@ LR_tgp_gaul_establish_manorial_administration_decision = {
 			VARIABLE = achieved_ep4_18_yes_i_need_my_samurai_achievement
 			VALUE = yes
 		}
-		custom_tooltip = gallic_establish_manorial_administration_war_start_tt
+		custom_tooltip = sacral_establish_manorial_administration_war_start_tt
 		custom_description_no_bullet = { text = if_you_win_effect }
-		show_as_tooltip = { gallic_establish_manorial_administration_reward_effect = yes }
+		show_as_tooltip = { sacral_establish_manorial_administration_reward_effect = yes }
 		trigger_event = {
 			id = LR_tgp_gaul_decision.9601
 			delayed = yes
@@ -682,8 +682,8 @@ LR_tgp_gaul_become_sacral_dictator_decision = {
 		custom_tooltip = {
 			text = LR_tgp_gaul_become_sacral_dictator_decision_centralization_trigger
 			OR = {
-				has_realm_law = gallic_bureaucracy_2
-				has_realm_law = gallic_bureaucracy_3
+				has_realm_law = sacral_bureaucracy_2
+				has_realm_law = sacral_bureaucracy_3
 			}
 		}
 		is_at_war = no
@@ -709,7 +709,7 @@ LR_tgp_gaul_become_sacral_dictator_decision = {
 		if = {
 			limit = {
 				is_ai = no
-				#this = character:gallic_minamoto_seiwa_10
+				#this = character:sacral_minamoto_seiwa_10
 			}
 			add_achievement_global_variable_effect = {
 				VARIABLE = finished_ep4_08_shogun_achievement
@@ -765,8 +765,8 @@ LR_tgp_gaul_sacral_king_restoration_decision = {
 		custom_tooltip = {
 			text = LR_tgp_gaul_become_sacral_dictator_decision_centralization_trigger
 			OR = {
-				has_realm_law = gallic_bureaucracy_2
-				has_realm_law = gallic_bureaucracy_3
+				has_realm_law = sacral_bureaucracy_2
+				has_realm_law = sacral_bureaucracy_3
 			}
 		}
 		is_at_war = no
@@ -834,7 +834,7 @@ LR_tgp_gaul_become_a_poet_decision = {
 	picture = {
 		trigger = {
 			OR = {
-				government_is_gallic_trigger = yes
+				government_is_sacral_trigger = yes
 				government_has_flag = government_is_roman_government
 				government_has_flag = government_is_classical_group
 			}
@@ -851,7 +851,7 @@ LR_tgp_gaul_become_a_poet_decision = {
 		has_tgp_dlc_trigger = yes
 		OR = {
 			AND = {
-				government_is_gallic_trigger = yes
+				government_is_sacral_trigger = yes
 				house = { has_house_aspiration_parameter = ceremony_become_a_poet_decision }
 			}
 			top_participant_group:dynastic_cycle ?= {
@@ -919,7 +919,7 @@ LR_tgp_gaul_train_with_troops_decision = {
 
 	is_shown = {
 		has_tgp_dlc_trigger = yes
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 		house = { has_house_aspiration_parameter = strength_train_with_troops_decision }
 	}
 
@@ -1170,7 +1170,7 @@ LR_tgp_gaul_restore_sacral_monarchy_decision = {
 
 	is_shown = {
 		has_tgp_dlc_trigger = yes
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 		# Chrysanthemum no longer part of gaul or destroyed
 		trigger_if = {
 			limit = { exists = title:k_sacral_king_gaul_throne.holder }
@@ -1238,12 +1238,12 @@ LR_tgp_gaul_restore_sacral_government_decision = {
 
 	is_shown = {
 		has_tgp_dlc_trigger = yes
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 		NOT = { government_has_flag = government_is_gaul_administrative }
 		# gaul not governed gallicly or destroyed
 		trigger_if = {
 			limit = { exists = title:e_sacral_kingdom_gaul.holder }
-			title:e_sacral_kingdom_gaul.holder = { government_is_gallic_trigger = no }
+			title:e_sacral_kingdom_gaul.holder = { government_is_sacral_trigger = no }
 		}
 		# gallic culture
 		culture = {
@@ -1258,7 +1258,7 @@ LR_tgp_gaul_restore_sacral_government_decision = {
 		is_independent_ruler = yes
 		has_title = title:e_sacral_kingdom_gaul
 		is_at_war = no
-		has_realm_law = gallic_bureaucracy_3
+		has_realm_law = sacral_bureaucracy_3
 		prestige_level >= 4
 		completely_controls = title:k_france
 		completely_controls = title:k_neustria
@@ -1403,22 +1403,22 @@ LR_tgp_gaul_assert_regional_dominion_government_decision = {
 				limit = {
 					OR = {
 						AND = {
-							has_realm_law = gallic_bureaucracy_3
+							has_realm_law = sacral_bureaucracy_3
 							culture = { has_cultural_tradition = lux_tradition_tgp_sacred_chivalry }
 						}
-						has_realm_law = gallic_bureaucracy_2
+						has_realm_law = sacral_bureaucracy_2
 					}
 				}
 				trigger_if = {
 					limit = {
 						culture = { has_cultural_tradition = lux_tradition_tgp_sacred_chivalry }
 					}
-					NOT = { has_realm_law = gallic_bureaucracy_3 }
+					NOT = { has_realm_law = sacral_bureaucracy_3 }
 				}
 				trigger_else = {
 					NOR = {
-						has_realm_law = gallic_bureaucracy_0
-						has_realm_law = gallic_bureaucracy_1
+						has_realm_law = sacral_bureaucracy_0
+						has_realm_law = sacral_bureaucracy_1
 					}
 				}
 			}
@@ -1547,7 +1547,7 @@ become_king_of_franks_decision = {
 	is_shown = {
 		has_tgp_dlc_trigger = yes
 		is_independent_ruler = yes
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 		AND = {
 			religion = religion:christianity_religion
 			culture = culture:french
