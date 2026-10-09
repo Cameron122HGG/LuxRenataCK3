@@ -1,6 +1,6 @@
 ﻿is_valid_for_gaul_events_trigger = {
 	OR = {
-		government_has_flag = government_is_gallic_group
+		government_has_flag = government_is_sacral_group
 		any_realm_county = {
 			title_province = { geographical_region = LR_world_europe_gaul }
 		}
@@ -145,7 +145,7 @@ LR_tgp_gaul_offensive_wars_ban_trigger = {
 			scope:attacker.top_liege ?= {
 				has_title = title:e_sacral_kingdom_gaul
 				scope:defender.top_liege != this
-				government_is_gallic_trigger = yes
+				government_is_sacral_trigger = yes
 				realm_law_use_sacral_policy_trigger = yes
 			}
 		}
@@ -366,7 +366,7 @@ gaul_sacral_expansion_cb_allowed_for_character_trigger = {
 	tgp_realm_has_ceremonial_liege_trigger = yes
 }
 
-government_is_gallic_trigger = {
+government_is_sacral_trigger = {
 	OR = {
 		government_has_flag = government_is_gaul_administrative
 		government_has_flag = government_is_gaul_feudal
@@ -406,7 +406,7 @@ gaul_sacral_reconquest_cb_allowed_against_character_trigger = {
 realm_law_use_sacral_policy_trigger = {
 	top_liege = { 
 		highest_held_title_tier >= tier_empire
-		government_is_gallic_trigger = yes 
+		government_is_sacral_trigger = yes 
 	}
 }
 
@@ -433,7 +433,7 @@ LR_tgp_gaul_defense_mobilization_valid_trigger = {
 					primary_attacker = {
 						OR = {
 							capital_county.empire != scope:liege_temp.capital_county.empire
-							NOT = { government_is_gallic_trigger = yes }
+							NOT = { government_is_sacral_trigger = yes }
 						}
 					}
 				}
@@ -490,10 +490,10 @@ LR_tgp_gaul_install_regent_faction_can_create_trigger = {
 	trigger_if = {
 		limit = {
 			scope:target ?= {
-				government_is_gallic_trigger = yes # am I a compatible government type?
+				government_is_sacral_trigger = yes # am I a compatible government type?
 			}
 		}
-		government_is_gallic_trigger = yes
+		government_is_sacral_trigger = yes
 	}
 }
 
@@ -502,7 +502,7 @@ LR_tgp_gaul_install_regent_faction_can_create_trigger = {
 LR_tgp_gaul_restore_ceremonial_liege_faction_can_create_trigger = {
 	tgp_realm_has_ceremonial_liege_trigger = yes
 	trigger_if = {
-		limit = { government_is_gallic_trigger = yes }
+		limit = { government_is_sacral_trigger = yes }
 		custom_tooltip = {
 			text = house_head_create_faction_cohesion_hard_tt
 			OR = {
@@ -627,7 +627,7 @@ LR_tgp_gaul_cadet_creates_dynasty_trigger = {
 		this = dynasty.dynast
 		this = house.house_head
 	}
-	dynasty.dynast ?= { government_has_flag = government_is_gallic_group }
+	dynasty.dynast ?= { government_has_flag = government_is_sacral_group }
 }
 
 LR_tgp_roman_or_frank_trigger = {
@@ -653,7 +653,7 @@ should_learn_greek_trigger = {
 	probably_unintelligent_trigger = no
 	house.house_head ?= {
 		OR = {
-			government_is_gallic_trigger = yes
+			government_is_sacral_trigger = yes
 			#This will account for korea and friends
 			government_allows = merit 
 		}
@@ -680,7 +680,7 @@ should_learn_greek_trigger = {
 gaul_government_gaul_kingdom_restriction_trigger = {
 	trigger_if = {
 		limit = {
-			government_is_gallic_trigger = yes
+			government_is_sacral_trigger = yes
 			OR = {
 				is_independent_ruler = no
 				AND = {
@@ -755,7 +755,7 @@ tgp_manorial_or_bushido_trigger = {
 LR_tgp_can_become_gallic_feudal_trigger = {
 	has_tgp_dlc_trigger = yes
 	OR = {
-		top_liege = { government_is_gallic_trigger = yes } # Soryo not created outside Ritsuryo/Soryo Realms
+		top_liege = { government_is_sacral_trigger = yes } # Soryo not created outside Ritsuryo/Soryo Realms
 		domicile ?= { is_domicile_type = sacral_manor } # Vassalized Ritsuryo/Soryo stay Soryo
 		has_character_flag = can_become_gallic_feudal
 	}
