@@ -577,7 +577,7 @@ restore_ceremonial_liege_faction_combined_effect = {
 	# GLOBAL VAR
 	sacral_clear_flavour_flags_effect = yes
 	set_global_variable = {
-		name = tenno_restored
+		name = sacral_king_gaul_restored
 		value = yes
 	}
 	show_as_tooltip = { restore_ceremonial_liege_faction_reward_effect = yes }
@@ -594,7 +594,7 @@ restore_ceremonial_liege_faction_reward_effect = {
 		}
 	}
 	scope:ceremonial_liege_temp = {
-		custom_tooltip = tenno_duchy_creation_tt
+		custom_tooltip = sacral_king_gaul_duchy_creation_tt
 		if = {
 			limit = { has_legitimacy = yes }
 			add_legitimacy = major_legitimacy_gain
@@ -762,9 +762,9 @@ LR_tgp_restore_sacral_monarchy_decision_effect = {
 }
 
 LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
-	title:k_chrysanthemum_throne.previous_holder ?= { save_scope_as = last_tenno }
-	dynasty:sacral_yamato.dynasty_founder.house ?= {
-		save_scope_as = house_yamato
+	title:k_sacral_king_gaul_throne.previous_holder ?= { save_scope_as = last_sacral_king_gaul }
+	dynasty:sacral_merovingian.dynasty_founder.house ?= {
+		save_scope_as = house_merovingian
 		if = {
 			limit = { this = scope:sacral_majordomo.house }
 			if = { # Avoid display of short tooltips after creation
@@ -775,17 +775,17 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		}
 		else_if = {
 			limit = {
-				scope:last_tenno ?= { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
+				scope:last_sacral_king_gaul ?= { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 			}
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
 				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_last_tt
 			}
-			scope:last_tenno = { save_scope_as = scion }
+			scope:last_sacral_king_gaul = { save_scope_as = scion }
 		}
 		else_if = {
 			limit = {
-				scope:last_tenno ?= {
+				scope:last_sacral_king_gaul ?= {
 					any_child = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
@@ -793,7 +793,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 				limit = { NOT = { exists = scope:scion } }
 				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_last_child_tt
 			}
-			scope:last_tenno = {
+			scope:last_sacral_king_gaul = {
 				ordered_child = {
 					limit = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
@@ -803,7 +803,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		}
 		else_if = {
 			limit = {
-				scope:last_tenno ?= {
+				scope:last_sacral_king_gaul ?= {
 					any_close_family_member = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
@@ -811,7 +811,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 				limit = { NOT = { exists = scope:scion } }
 				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_last_close_family_tt
 			}
-			scope:last_tenno = {
+			scope:last_sacral_king_gaul = {
 				ordered_close_family_member = {
 					limit = { LR_tgp_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
@@ -843,7 +843,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 			}
 		}
 		else = {
-			LR_tgp_restore_sacral_monarchy_yamato_creation_effect = yes
+			LR_tgp_restore_sacral_monarchy_merovingian_creation_effect = yes
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:scion } }
 				custom_tooltip = LR_tgp_restore_sacral_monarchy_merovingian_scion_created_tt
@@ -868,12 +868,12 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 	}
 }
 
-LR_tgp_restore_sacral_monarchy_yamato_restoration_effect = {
+LR_tgp_restore_sacral_monarchy_merovingian_restoration_effect = {
 	add_character_flag = LR_tgp_gaul_restore_sacral_monarchy_flag
 	if = {
 		limit = { exists = scope:scion }
 		if = {
-			limit = { exists = title:k_chrysanthemum_throne.holder }
+			limit = { exists = title:k_sacral_king_gaul_throne.holder }
 			create_title_and_vassal_change = {
 				type = usurped
 				save_scope_as = change
@@ -886,7 +886,7 @@ LR_tgp_restore_sacral_monarchy_yamato_restoration_effect = {
 				save_scope_as = change
 			}
 		}
-		title:k_chrysanthemum_throne ?= {
+		title:k_sacral_king_gaul_throne ?= {
 			change_title_holder = {
 				holder = scope:scion
 				change = scope:change
@@ -919,7 +919,7 @@ LR_tgp_restore_sacral_monarchy_yamato_restoration_effect = {
 	}
 }
 
-LR_tgp_restore_sacral_monarchy_yamato_creation_effect = {
+LR_tgp_restore_sacral_monarchy_merovingian_creation_effect = {
 	create_character = {
 		template = LR_tgp_gaul_sacral_scion_template
 		location = scope:sacral_majordomo.capital_province
