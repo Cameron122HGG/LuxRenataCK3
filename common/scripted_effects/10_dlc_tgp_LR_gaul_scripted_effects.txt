@@ -491,14 +491,14 @@ add_random_internal_sacral_manor_building = {
 }
 
 sacral_clear_flavour_flags_effect = {
-	remove_global_variable = shogunate_established
-	remove_global_variable = tenno_restored
-	remove_character_flag = shogun_flag
+	remove_global_variable = sacral_dictatorship_established
+	remove_global_variable = sacral_king_gaul_restored
+	remove_character_flag = sacral_dictator_flag
 	remove_character_flag = ceremonial_liege_flag
-	remove_character_flag = joko_flag
+	remove_character_flag = low_king_flag
 }
 
-sacral_become_shogun_reward_effect = {
+sacral_become_dictator_reward_effect = {
 	# Setup
 	sacral_clear_flavour_flags_effect = yes
 	set_global_variable = {
@@ -527,27 +527,27 @@ sacral_become_shogun_reward_effect = {
 	dynasty = { add_dynasty_prestige = monumental_dynasty_prestige_gain }
 	culture = {
 		if = {
-			limit = { has_cultural_tradition = tradition_LR_tgp_sacral_peace }
+			limit = { has_cultural_tradition = lux_tradition_LR_tgp_sacral_peace }
 			custom_tooltip = {
-				text = tradition_LR_tgp_bushido_tt
-				remove_culture_tradition = tradition_LR_tgp_sacral_peace
-				add_culture_tradition = tradition_LR_tgp_bushido
+				text = lux_tradition_LR_tgp_sacred_chivalry_tt
+				remove_culture_tradition = lux_tradition_LR_tgp_sacral_peace
+				add_culture_tradition = lux_tradition_LR_tgp_sacred_chivalry
 			}
 		}
-		else = { custom_tooltip = unlocks_bushido_tradition_tooltip }
+		else = { custom_tooltip = unlocks_sacred_chivalry_tradition_tooltip }
 	}
 	every_culture_global = {
 		limit = {
-			has_cultural_tradition = tradition_LR_tgp_sacral_peace
+			has_cultural_tradition = lux_tradition_LR_tgp_sacral_peace
 			OR = {
-				has_cultural_pillar = heritage_japonic
+				has_cultural_pillar = heritage_frankish
 				culture_head ?= { government_is_sacral_trigger = yes }
 			}
 		}
 		custom_tooltip = {
 			text = tradition_LR_tgp_bushido_tt
-			remove_culture_tradition = tradition_LR_tgp_sacral_peace
-			add_culture_tradition = tradition_LR_tgp_bushido
+			remove_culture_tradition = lux_tradition_LR_tgp_sacral_peace
+			add_culture_tradition = lux_tradition_LR_tgp_sacred_chivalry
 		}
 	}
 	every_vassal = {
