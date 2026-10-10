@@ -338,10 +338,13 @@ is_military_candidate_trigger = {
 # $MINISTER_OF_WAR$ - The Minister of War
 tgp_celestial_military_governor_can_join_war_trigger = {
 	save_temporary_scope_as = joining_governor
+	scope:joining_governor.primary_title = { is_noble_family_title = no }
 	OR = {
 		vassal_contract_has_flag = celestial_military_appointment
 		vassal_contract_has_flag = meritocratic_military_appointment
 		has_title = title:e_minister_grand_marshal
+		
+		vassal_contract_has_flag = province_military		
 	}
 	NOR = {
 		scope:joining_governor = $TARGET_GOVERNOR$
