@@ -1,0 +1,262 @@
+﻿
+lux_tradition_persian_splendour = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = mediterranean
+		4 = palace_politics.dds 
+	}
+
+	is_shown = {
+		has_ep3_dlc_trigger = yes
+		any_culture_county = {
+			count >= 50
+			any_county_province = {
+				OR = {
+					geographical_region = world_middle_east
+					geographical_region = world_india
+				}
+			}
+		}
+	}	
+	can_pick = {
+		NOR = {
+			culture_tradition:tradition_ep3_roman_ceremonies = { is_in_list = traits }
+			culture_tradition:tradition_ep3_palace_politics = { is_in_list = traits }
+			culture_tradition:tradition_tgp_court_machinations = { is_in_list = traits }
+
+			scope:replacing = culture_tradition:tradition_ep3_roman_ceremonies
+			scope:replacing = culture_tradition:tradition_ep3_palace_politics
+			scope:replacing = culture_tradition:tradition_tgp_court_machinations
+		}		
+		scope:character = { government_has_mechanic = administrative }
+	}
+	
+	parameters = {
+		can_adopt_administrative_government_as_kingdom_tier = yes
+	
+		#unlock_maa_cataphract = yes
+		#frontier_themes_borrow_neighbor_troops = yes
+		
+		unlock_co_emperors = yes
+		unlock_junior_emperors = yes
+
+		reduced_bodyguard_aptitude = yes
+		can_blind_prisoners = yes
+		can_castrate_prisoners = yes
+		eunuch_trait_bonuses = yes
+		can_appoint_chief_eunuch = yes
+		#family_castration = yes
+		ambitious_trait_more_common = yes
+		#physical_disfigurement_blocks_inheritance = yes #Actually only blocks claimants and reduce score in elective. Also includes infertility for tooltip reasons.
+		cultrad_unlocks_t2_countermeasures = yes
+		palace_politics_trait_bonuses = yes
+		palace_politics_trait_maluses = yes
+		
+		#number_of_spouses_hegemony = 1
+		#number_of_consorts_hegemony = 20		
+	}
+
+	character_modifier = {
+		#men_at_arms_title_limit = 1
+		#monthly_court_grandeur_change_mult = 0.2
+		#political_scheme_phase_duration_add = minor_scheme_phase_duration_bonus_value
+		#personal_scheme_phase_duration_add = minor_scheme_phase_duration_bonus_value
+		hostile_scheme_phase_duration_add = medium_scheme_phase_duration_bonus_value
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = 1000
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 0
+	}
+}
+
+lux_tradition_imperial_polygamy = {
+	category = regional
+
+	layers = {
+		0 = intrigue
+		1 = mediterranean
+		4 = greeting.dds
+	}
+
+	is_shown = {
+		has_ep3_dlc_trigger = yes
+		any_culture_county = {
+			count >= 50
+			any_county_province = {
+				OR = {
+					geographical_region = world_middle_east
+					geographical_region = world_india
+				}
+			}
+		}
+	}	
+	can_pick = {
+		OR = {
+			scope:character.primary_title = {
+				tier >= tier_empire
+			}
+			scope:character = { government_has_mechanic = administrative }
+		}
+		NOT = {
+			scope:replacing = culture_tradition:tradition_ep3_palace_politics
+			culture_tradition:tradition_ep3_palace_politics = { is_in_list = traits }
+		}
+		custom_tooltip = {
+			text = only_one_marriage_tradition_allowed
+			trigger_if = {
+				limit = {
+					OR = {
+						NOT = { exists = scope:replacing }
+						NOR = {
+							scope:replacing = culture_tradition:tradition_monogamous
+							scope:replacing = culture_tradition:tradition_polygamous
+							scope:replacing = culture_tradition:tradition_concubines
+							scope:replacing = culture_tradition:tradition_tgp_court_machinations
+						}
+					}
+				}
+				NOR = {
+					culture_tradition:tradition_monogamous = { is_in_list = traits }
+					culture_tradition:tradition_polygamous = { is_in_list = traits }
+					culture_tradition:tradition_concubines = { is_in_list = traits }
+					culture_tradition:tradition_tgp_court_machinations = { is_in_list = traits }
+				}
+			}
+		}
+	}
+	can_pick_for_hybridization = {
+		custom_tooltip = {
+			text = only_one_marriage_tradition_allowed
+			NOR = {
+				culture_tradition:tradition_monogamous = { is_in_list = traits }
+				culture_tradition:tradition_polygamous = { is_in_list = traits }
+				culture_tradition:tradition_concubines = { is_in_list = traits }
+			}
+		}
+	}	
+	
+	partners = {
+		#number_of_spouses = 4
+		number_of_consorts = 3
+
+		number_of_consorts_by_tier = {
+			empire = 10
+			hegemony = 20
+		}
+	}	
+	parameters = {
+		rivalries_more_common = yes
+	}
+
+	character_modifier = {
+		monthly_court_grandeur_change_mult = 0.25
+		#spouse_opinion = -20
+		#close_relative_opinion = -25
+		#player_heir_opinion = 15
+		short_reign_duration_mult = 0.25
+		long_reign_bonus_mult = 0.25
+		personal_scheme_phase_duration_add = minor_scheme_phase_duration_bonus_value
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = 1000
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 0
+	}
+}
+
+lux_tradition_slave_soldiers = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = mediterranean
+		4 = ceremony.dds 
+	}
+
+	is_shown = {
+		has_ep3_dlc_trigger = yes
+		any_culture_county = {
+			count >= 50
+			any_county_province = {
+				OR = {
+					geographical_region = world_middle_east
+					geographical_region = world_india
+				}
+			}
+		}
+	}
+	can_pick = {
+		NOR = {
+			scope:replacing = culture_tradition:tradition_ep3_imperial_tagmata
+			culture_tradition:tradition_ep3_imperial_tagmata = { is_in_list = traits }
+		}
+		trigger_if = {
+			limit = {
+				OR = {
+					NOT = { exists = scope:replacing }
+					NOT = {
+						scope:replacing = culture_tradition:tradition_ep3_imperial_tagmata
+					}
+				}
+			}
+			NOT = {
+				culture_tradition:tradition_ep3_imperial_tagmata = { is_in_list = traits }
+			}
+		}		
+		scope:character = { government_has_mechanic = administrative }
+	}
+	
+	parameters = {
+		unlock_maa_cataphract_archers = yes
+		frontier_themes_borrow_neighbor_troops = yes
+		can_recruit_dry_specialist = yes
+	}
+	character_modifier = {
+		heavy_cavalry_max_size_add = 1
+		light_cavalry_max_size_add = 1
+		archer_cavalry_max_size_add = 1
+		#heavy_infantry_max_size_add = 1
+		men_at_arms_title_limit = 1
+		knight_limit = 1
+		political_scheme_phase_duration_add = minor_scheme_phase_duration_bonus_value
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = 1000
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 0
+	}
+}
+
