@@ -206,7 +206,7 @@ name = "Ignatius" # Ignatius of Antioch
 saint_0005 = {
 	name = "Cyprian" #Cyprian of Carthage
 	rite = "roman_rite"
-	culture = "roman" # Afro-Roman of Berber descent
+	culture = "afro_roman" # Afro-Roman of Berber descent
 	trait = brave
 	trait = generous
 	trait = education_learning_3
@@ -377,7 +377,6 @@ name = "George" #Saint George - "dragon slayer" - holy lance Ascalon
 	trait = brave
 	trait = lifestyle_blademaster
 	trait = education_martial_3
-	obscured = yes
 
 	5280.1.1 = {
 		birth = yes
@@ -392,6 +391,15 @@ name = "George" #Saint George - "dragon slayer" - holy lance Ascalon
 				PRESET = yes
 			}
 			religion:christianity_religion = {
+				every_faith = {
+					limit = {
+						main_rite = { is_rite_enabled = yes }
+						NOT = { has_saint_character = root }
+					}
+					add_saint = { character = root }
+				}
+			}
+			religion:mithras_religion = {
 				every_faith = {
 					limit = {
 						main_rite = { is_rite_enabled = yes }
@@ -443,7 +451,7 @@ saint_0012 = {
 	name = "Catherine" # Catherine of Alexandria - Monastery of St. Catherine in Sinai
 	female = yes
 	rite = "roman_rite"
-	culture = "greek" # Greco-Egyptian. greek is more suit than arabic-egyptian
+	culture = "egyptian_hellenistic" # Greco-Egyptian. greek is more suit than arabic-egyptian
 	trait = forgiving
 	trait = chaste
 	trait = education_diplomacy_4
@@ -453,7 +461,10 @@ saint_0012 = {
 		birth = yes
 	}
 	5305.1.1 = {
-		death = yes
+		death = {
+			death_reason = death_execution
+			killer = 12517
+		}
 		effect_even_if_dead = {
 			pam_canonize_saint_effect = {	
 				CANONIZER = root
@@ -550,7 +561,7 @@ name = "Lucia" # Lucia of Syracuse
 saint_0015 = {
 name = "Anthony" # Anthony the Great - Has an order in game already (etipoia)
 	rite = "roman_rite"
-	culture = "egyptian" # Coptic
+	culture = "egyptian_hellenistic" # Coptic
 	trait = diligent
 	trait = temperate
 	trait = education_learning_3
@@ -660,5 +671,3 @@ name = "Boniface" # Boniface, born Wynfreth.  Benedictine monk, german bishop
 		}
 	}
 }
-
-
