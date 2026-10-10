@@ -5050,12 +5050,54 @@ Riouf_III_Hrolfring = {
 		death = 5945.1.1
 	}
 }
+Saint_Olga = {
+	name = "Olga"	#Saint Olga
+	female = yes
+	rite = "slavic_pagan"
+	culture = "russian"
+	5890.6.5 = {
+		birth = "890.6.5"
+	}
+	5905.1.1 = {
+		add_spouse = 13501
+	}
+	5959.10.12 = {
+		# rite = roman_rite
+		#She was baptized in Constantinople
+		rite = slavic_rite
+	}
+	5969.7.11 = {
+		death = "969.7.11"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = root
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:547 #	Kiev
+				PRESET = yes
+			}
+			religion:christianity_religion = {
+				every_faith = {
+					limit = {
+						is_non_chalcedonianism_christian_faith = no
+						main_rite = {
+							is_rite_enabled = yes
+						}
+						NOT = { has_saint_character = root }
+					}
+					add_saint = { character = root }
+				}
+			}
+		}
+	}
+}
+
 13502 = {
 	name = Sviatoslav
 	dynasty = 1100266
 	rite = sol_norse
 	culture = varangian
 	father = 13501
+	mother = Saint_Olga
 	trait = bloodline_rurik
 	give_nickname = nick_the_brave
 	5942.1.1 = {
@@ -5078,7 +5120,15 @@ Riouf_III_Hrolfring = {
 		birth = 5960.1.2
 	}
 	6015.7.15 = {
-		death = 6015.7.15
+		death = yes
+		effect_even_if_dead = {
+		pam_canonize_saint_effect = {	
+			CANONIZER = root
+			CANDIDATE = root
+			CONSECRATION_PROVINCE = province:5083 #	Actually Kiev, Church of the Tithes
+			PRESET = yes
+			}
+		}
 	}
 }
 13503 = {
