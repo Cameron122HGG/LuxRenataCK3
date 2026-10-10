@@ -1,4 +1,5 @@
 ﻿lux_doctrine_ascendant_pure = {
+	doctrine_group_type = lux_doctrine_ascendant
 	icon = lux_doctrine_null_ascendant
 	piety_cost = {
 		value = 0
@@ -32,6 +33,7 @@
 }
 	
 lux_doctrine_graeco_roman_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
 	icon = lux_doctrine_graeco_roman_ascendant 
 	piety_cost = {
 		if = {
@@ -58,11 +60,11 @@ lux_doctrine_graeco_roman_ascendant = {
 		NOT = { rite_has_doctrine = graeco_roman_special_hostility_doctrine }
 	}
 	can_pick = { always = yes }
-	parameters = {
-		hostility_override_graeco_roman_special_hostility_doctrine = 1
-		graeco_roman_syncretic_actor_opinion_active = yes
-		#opinion_of_graeco_roman_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
-		#unreformed_syncretic_conversion_malus_active = yes
+	special_parameters = {
+		hostility_level_override = {
+			graeco_roman_special_hostility_doctrine = astray
+			#graeco_roman_syncretic_actor_opinion_active = yes
+		}
 	}
 		
 	traits = {
@@ -72,6 +74,7 @@ lux_doctrine_graeco_roman_ascendant = {
 }
 	
 lux_doctrine_christian_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
 	icon = lux_doctrine_christian_ascendant
 
 	piety_cost = {
@@ -100,14 +103,19 @@ lux_doctrine_christian_ascendant = {
 	}
 	can_pick = { always = yes }
 	parameters = {
-		hostility_override_special_doctrine_is_christian_faith = 2
+		#special_doctrine_is_christian_faith = hostile
 		#For loc:
 		#is_christian_faith_bilateral_loc_override = 2
 		# This parameter is empty; the syncretic religious trigger checks against the doctrine, as that's much clearer in tooltips and allows us to use a unified syncretic trigger per-religion rather than having bitty situational triggers.
-		can_use_christian_artefacts = yes
-		christian_syncretic_actor_opinion_active = yes
+		can_use_christian_artefacts
+		#christian_syncretic_actor_opinion_active = yes
 		#opinion_of_christian_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
 	}
+	special_parameters = {
+		hostility_level_override = {
+			special_doctrine_is_christian_faith = hostile
+		}
+	}	
 	traits = {
 		virtues = { compassionate }
 		sins = { callous sadistic }
@@ -115,6 +123,7 @@ lux_doctrine_christian_ascendant = {
 }
 
 lux_doctrine_islamic_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
 	icon = lux_doctrine_islamic_ascendant
 	piety_cost = {
 		if = {
@@ -140,12 +149,17 @@ lux_doctrine_islamic_ascendant = {
 	}
 	can_pick = { always = yes }
 	parameters = {
-		hostility_override_special_doctrine_is_islamic_faith = 2
+		#hostility_override_special_doctrine_is_islamic_faith = 2
 		# This parameter is empty; the syncretic religious trigger checks against the doctrine, as that's much clearer in tooltips and allows us to use a unified syncretic trigger per-religion rather than having bitty situational triggers.
-		can_use_islamic_artefacts = yes
-		islamic_syncretic_actor_opinion_active = yes
+		can_use_islamic_artefacts
+		#islamic_syncretic_actor_opinion_active = yes
 		#opinion_of_islamic_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
 	}
+	special_parameters = {
+		hostility_level_override = {
+			special_doctrine_is_islamic_faith = hostile
+		}
+	}		
 	traits = {
 		virtues = { generous }
 		sins = { greedy arbitrary }
@@ -153,6 +167,7 @@ lux_doctrine_islamic_ascendant = {
 }
 
 lux_doctrine_persian_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
 	icon = lux_doctrine_persian_ascendant
 	piety_cost = {
 		if = {
@@ -177,15 +192,18 @@ lux_doctrine_persian_ascendant = {
 	is_shown = {
 		NOT = { religion_tag = zoroastrianism_religion }
 	}
-	can_pick = { always = yes }
-		parameters = {
-		hostility_override_special_doctrine_is_zoroastrian_faith = 1
-		# This parameter is empty; the syncretic religious trigger checks against the doctrine, as that's much clearer in tooltips and allows us to use a unified syncretic trigger per-religion rather than having bitty situational triggers.
-		can_use_zoroastrian_artefacts = yes
-		persian_syncretic_actor_opinion_active = yes
-		#opinion_of_persian_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
-		hostility_override_special_doctrine_is_anti_zoroastrian_faith = 3
+	can_pick = {
+		always = yes
 	}
+	parameters = {
+		can_use_zoroastrian_artefact
+	}
+	special_parameters = {
+		hostility_level_override = {
+			special_doctrine_is_zoroastrian_faith = astray
+			special_doctrine_is_anti_zoroastrian_faith = evil
+		}
+	}	
 	traits = {
 		virtues = { honest }
 		sins = { deceitful }
@@ -193,6 +211,7 @@ lux_doctrine_persian_ascendant = {
 }
 
 lux_doctrine_jewish_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
 	icon = lux_doctrine_jewish_ascendant
 	piety_cost = {
 		if = {
@@ -220,13 +239,18 @@ lux_doctrine_jewish_ascendant = {
 		NOT = { religion_tag = judaism_religion }
 	}
 	can_pick = { always = yes }
-		parameters = {
-			hostility_override_special_doctrine_is_jewish_faith = 2
-			# This parameter is empty; the syncretic religious trigger checks against the doctrine, as that's much clearer in tooltips and allows us to use a unified syncretic trigger per-religion rather than having bitty situational triggers.
-			can_use_jewish_artefacts = yes
-			jewish_syncretic_actor_opinion_active = yes
-			#opinion_of_jewish_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+	parameters = {
+		#hostility_override_special_doctrine_is_jewish_faith = 2
+		# This parameter is empty; the syncretic religious trigger checks against the doctrine, as that's much clearer in tooltips and allows us to use a unified syncretic trigger per-religion rather than having bitty situational triggers.
+		can_use_jewish_artefacts
+		#jewish_syncretic_actor_opinion_active = yes
+		#opinion_of_jewish_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+	}
+	special_parameters = {
+		hostility_level_override = {
+			special_doctrine_is_jewish_faith = astray
 		}
+	}	
 
 	traits = {
 		virtues = { patient }
@@ -235,6 +259,7 @@ lux_doctrine_jewish_ascendant = {
 }
 
 lux_doctrine_dualist_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
 	icon = lux_doctrine_gnostic_ascendant
 	piety_cost = {
 		if = {
@@ -261,116 +286,127 @@ lux_doctrine_dualist_ascendant = {
 	}
 	can_pick = { always = yes }
 	parameters = {
-		hostility_override_special_doctrine_is_gnostic_faith = 1
+		#hostility_override_special_doctrine_is_gnostic_faith = 1
 		# This parameter is empty; the syncretic religious trigger checks against the doctrine, as that's much clearer in tooltips and allows us to use a unified syncretic trigger per-religion rather than having bitty situational triggers.
 		#can_use_gnostic_artefacts = yes
-		gnostic_syncretic_actor_opinion_active = yes
+		gnostic_syncretic_actor_opinion_active
 		#opinion_of_gnostic_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
-		granting_titles_gives_stress = yes
-		hostility_override_special_doctrine_is_anti_zoroastrian_faith = 3
+		granting_titles_gives_stress
 	}
+	special_parameters = {
+		hostility_level_override = {
+			special_doctrine_is_gnostic_faith = astray
+			special_doctrine_is_anti_zoroastrian_faith = evil
+		}
+	}		
 	traits = {
 		virtues = { temperate }
 		sins = { gluttonous }
 	}
 }
 
-	lux_doctrine_sinitic_ascendant = {
-		icon = lux_doctrine_sinitic_ascendant
-		piety_cost = {
-			if = {
-				limit = {
-					OR = {
-						religion_tag = buddhism_religion
-						rite_has_doctrine = pagan_special_hostility_doctrine
-					}
+lux_doctrine_sinitic_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
+	icon = lux_doctrine_sinitic_ascendant
+	piety_cost = {
+		if = {
+			limit = {
+				OR = {
+					religion_tag = buddhism_religion
+					rite_has_doctrine = pagan_special_hostility_doctrine
 				}
-				value = faith_tenet_cost_low
 			}
-			else_if = {
-				limit = {
-					religion_tag = islam_religion
-				}
-				value = faith_tenet_cost_high
-			}
-			else = {
-				value = faith_tenet_cost_mid
-			}
-
-			# Multiplier for keeping same tenet
-			if = {
-				limit = { rite_has_doctrine = lux_doctrine_sinitic_ascendant }
-				multiply = faith_unchanged_doctrine_cost_mult
-			}
+			value = faith_tenet_cost_low
 		}
-
-		is_shown = {
-			NOT = {
-				religion = { is_in_family = rf_sinitic }
+		else_if = {
+			limit = {
+				religion_tag = islam_religion
 			}
+			value = faith_tenet_cost_high
 		}
-		can_pick = { always = yes }
-		parameters = {
-			hostility_override_special_doctrine_immaterial_harmony = 1
-			#For loc:
-			#is_eastern_faith_bilateral_loc_override = 1
-			eastern_syncretic_actor_opinion_active = yes
-			#opinion_of_eastern_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+		else = {
+			value = faith_tenet_cost_mid
 		}
-		#traits = {
-		#	virtues = { honest }
-		#	sins = { wrathful }
-		#}
-	}
-
-	lux_doctrine_eastern_ascendant = {
-		icon = lux_doctrine_eastern_ascendant
-		piety_cost = {
-			if = {
-				limit = {
-					OR = {
-						religion_tag = dualism_religion
-						rite_has_doctrine = pagan_special_hostility_doctrine
-					}
-				}
-				value = faith_tenet_cost_low
-			}
-			else_if = {
-				limit = {
-					religion_tag = islam_religion
-				}
-				value = faith_tenet_cost_high
-			}
-			else = {
-				value = faith_tenet_cost_mid
-			}
-
-			# Multiplier for keeping same tenet
-			if = {
-				limit = { rite_has_doctrine = lux_doctrine_eastern_ascendant }
-				multiply = faith_unchanged_doctrine_cost_mult
-			}
-		}
-
-		is_shown = {
-			OR = {
-				NOT = { rite_has_doctrine = special_doctrine_is_eastern_faith }
-				religion = { is_in_family = rf_sinitic }
-			}
-		}
-		can_pick = { always = yes }
-		parameters = {
-			hostility_override_special_doctrine_is_eastern_faith = 1
-			#For loc:
-			#is_eastern_faith_bilateral_loc_override = 1
-			eastern_syncretic_actor_opinion_active = yes
-			#opinion_of_eastern_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
-		}
-		traits = {
-			virtues = { honest }
-			sins = { wrathful }
+		# Multiplier for keeping same tenet
+		if = {
+			limit = { rite_has_doctrine = lux_doctrine_sinitic_ascendant }
+			multiply = faith_unchanged_doctrine_cost_mult
 		}
 	}
+	is_shown = {
+		NOT = {
+			religion = { is_in_family = rf_sinitic }
+		}
+	}
+	can_pick = { always = yes }
+	parameters = {
+		#For loc:
+		#is_eastern_faith_bilateral_loc_override = 1
+		#eastern_syncretic_actor_opinion_active = yes
+		#opinion_of_eastern_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+	}
+	special_parameters = {
+		hostility_level_override = {
+			special_doctrine_immaterial_harmony = astray
+		}
+	}		
+	#traits = {
+	#	virtues = { honest }
+	#	sins = { wrathful }
+	#}
+}
+
+lux_doctrine_eastern_ascendant = {
+	doctrine_group_type = lux_doctrine_ascendant
+	icon = lux_doctrine_eastern_ascendant
+	piety_cost = {
+		if = {
+			limit = {
+				OR = {
+					religion_tag = dualism_religion
+					rite_has_doctrine = pagan_special_hostility_doctrine
+				}
+			}
+			value = faith_tenet_cost_low
+		}
+		else_if = {
+			limit = {
+				religion_tag = islam_religion
+			}
+			value = faith_tenet_cost_high
+		}
+		else = {
+			value = faith_tenet_cost_mid
+		}
+		# Multiplier for keeping same tenet
+		if = {
+			limit = { rite_has_doctrine = lux_doctrine_eastern_ascendant }
+			multiply = faith_unchanged_doctrine_cost_mult
+		}
+	}
+	is_shown = {
+		OR = {
+			NOT = { rite_has_doctrine = special_doctrine_is_eastern_faith }
+			religion = { is_in_family = rf_sinitic }
+		}
+	}
+	can_pick = { always = yes }
+	parameters = {
+		#For loc:
+		#is_eastern_faith_bilateral_loc_override = 1
+		#eastern_syncretic_actor_opinion_active = yes
+		#opinion_of_eastern_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+	}
+	special_parameters = {
+		hostility_level_override = {
+			special_doctrine_is_eastern_faith = astray
+		}
+	}	
+	traits = {
+		virtues = { honest }
+		sins = { wrathful }
+	}
+}
 
 	#lux_doctrine_steppe_ascendant = {
 	#	icon = lux_doctrine_steppe_ascendant
@@ -593,6 +629,7 @@ lux_doctrine_dualist_ascendant = {
 	#}
 
 	lux_doctrine_folk_ascendant = {
+		doctrine_group_type = lux_doctrine_ascendant
 		icon = lux_doctrine_old_gods_ascendant
 		piety_cost = {
 			if = {
@@ -629,11 +666,15 @@ lux_doctrine_dualist_ascendant = {
 		}
 		can_pick = { always = yes }
 		parameters = {
-			hostility_override_pagan_special_hostility_doctrine = 2
-			unreformed_syncretic_actor_opinion_active = yes
+			#unreformed_syncretic_actor_opinion_active = yes
 			#opinion_of_unreformed_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
 			#unreformed_syncretic_conversion_malus_active = yes
 		}
+		special_parameters = {
+			hostility_level_override = {
+				pagan_special_hostility_doctrine = astray
+			}
+		}		
 		traits = {
 			virtues = { gregarious }
 			sins = { craven }
@@ -641,6 +682,7 @@ lux_doctrine_dualist_ascendant = {
 	}
 
 	lux_doctrine_archaic_ascendant = {
+		doctrine_group_type = lux_doctrine_ascendant
 		icon = lux_doctrine_archaic_ascendant
 		piety_cost = {
 			if = {
@@ -674,11 +716,15 @@ lux_doctrine_dualist_ascendant = {
 		}
 		can_pick = { always = yes }
 		parameters = {
-			hostility_override_archaic_special_hostility_doctrine = 1
-			archaic_syncretic_actor_opinion_active = yes
+			#archaic_syncretic_actor_opinion_active = yes
 			#opinion_of_archaic_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
 			#archaic_syncretic_conversion_malus_active = yes
 		}
+		special_parameters = {
+			hostility_level_override = {
+				archaic_special_hostility_doctrine = astray
+			}
+		}		
 		traits = {
 			virtues = { arrogant }
 			sins = { cynical }
@@ -686,6 +732,7 @@ lux_doctrine_dualist_ascendant = {
 	}
 
 	lux_doctrine_subsaharan_ascendant = {
+		doctrine_group_type = lux_doctrine_ascendant
 		icon = lux_doctrine_sub_sahara_ascendant
 		piety_cost = {
 			if = {
@@ -720,10 +767,13 @@ lux_doctrine_dualist_ascendant = {
 		can_pick = { always = yes }
 		parameters = {
 			#hostility_override_unreformed_faith_doctrine = 2
-			hostility_override_west_african_unreformed_faith_doctrine = 2
-			unreformed_syncretic_actor_opinion_active = yes
 			#opinion_of_unreformed_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
 			##unreformed_syncretic_conversion_malus_active = yes
+		}
+		special_parameters = {
+			hostility_level_override = {
+				graeco_roman_special_hostility_doctrine = astray
+			}
 		}
 		traits = {
 			virtues = { patient }
