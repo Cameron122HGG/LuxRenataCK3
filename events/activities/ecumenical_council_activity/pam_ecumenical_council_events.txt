@@ -373,6 +373,19 @@ scripted_effect save_sway_guests_scopes_effect = {
 				limit = {
 					$TRIGGER$ = yes
 					is_ai = yes
+					NOT = { pam_ec_is_active_counterplayer_trigger = yes }
+					# The AI cannot win back attendees already swayed this debate
+					trigger_if = {
+						limit = { scope:actor = { is_ai = yes } }
+						NOT = {
+							scope:activity = {
+								is_target_in_variable_list = {
+									name = locked_into_conservatives
+									target = prev
+								}
+							}
+						}
+					}
 				}
 				add_to_list = feature_conservatives
 			}
@@ -384,6 +397,17 @@ scripted_effect save_sway_guests_scopes_effect = {
 					$TRIGGER$ = yes
 					scope:host != this
 					is_ai = yes
+					trigger_if = {
+						limit = { scope:actor = { is_ai = yes } }
+						NOT = {
+							scope:activity = {
+								is_target_in_variable_list = {
+									name = locked_into_innovators
+									target = prev
+								}
+							}
+						}
+					}
 				}
 				add_to_list = feature_innovators
 			}
@@ -486,6 +510,14 @@ scripted_effect save_sway_guests_scopes_effect = {
 		}
 	}
 	save_scope_value_as = {
+		name = ec_sway_change_tier
+		value = ecumenical_council_sway_change_tier_value
+	}
+	save_scope_value_as = {
+		name = ec_sway_duel_penalty
+		value = ecumenical_council_sway_duel_penalty_value
+	}
+	save_scope_value_as = {
 		name = feature_conservatives_size
 		value = list_size:feature_conservatives
 	}
@@ -496,6 +528,10 @@ scripted_effect save_sway_guests_scopes_effect = {
 			multiply = 0.5
 			floor = yes
 		}
+	}
+	save_scope_value_as = {
+		name = feature_conservatives_free_max
+		value = ecumenical_council_sway_free_max_conservatives_value
 	}
 	save_scope_value_as = {
 		name = feature_innovators_size
@@ -2350,14 +2386,14 @@ ecumenical_council_events.0011 = {
 
 	option = {
 		name = ecumenical_council_events.0011.a
-		ecumenical_council_become_innovator_effect = { CHARACTER = root }
+		ecumenical_council_log_stance_effect = { SIDE = innovator }
 		ai_chance = {
 			base = 100
 		}
 	}
 	option = {
 		name = ecumenical_council_events.0011.b
-		ecumenical_council_become_conservative_effect = { CHARACTER = root }
+		ecumenical_council_log_stance_effect = { SIDE = conservative }
 		ai_chance = {
 			base = 100
 		}
@@ -3965,14 +4001,14 @@ ecumenical_council_events.0021 = {
 
 	option = {
 		name = ecumenical_council_events.0021.a
-		ecumenical_council_become_innovator_effect = { CHARACTER = root }
+		ecumenical_council_log_stance_effect = { SIDE = innovator }
 		ai_chance = {
 			base = 100
 		}
 	}
 	option = {
 		name = ecumenical_council_events.0021.b
-		ecumenical_council_become_conservative_effect = { CHARACTER = root }
+		ecumenical_council_log_stance_effect = { SIDE = conservative }
 		ai_chance = {
 			base = 100
 		}
@@ -4006,14 +4042,14 @@ ecumenical_council_events.0031 = {
 
 	option = {
 		name = ecumenical_council_events.0031.a
-		ecumenical_council_become_innovator_effect = { CHARACTER = root }
+		ecumenical_council_log_stance_effect = { SIDE = innovator }
 		ai_chance = {
 			base = 100
 		}
 	}
 	option = {
 		name = ecumenical_council_events.0031.b
-		ecumenical_council_become_conservative_effect = { CHARACTER = root }
+		ecumenical_council_log_stance_effect = { SIDE = conservative }
 		ai_chance = {
 			base = 100
 		}
@@ -4178,6 +4214,15 @@ ecumenical_council_events.0080 = {
 				add_to_list = ec_conservatives
 			}
 		}
+		# Saved values, not activity variables: the tally is only read by loc, and an unused variable is a startup error; 0081 inherits them
+		save_scope_value_as = {
+			name = ec_vote_for
+			value = list_size:ec_innovators
+		}
+		save_scope_value_as = {
+			name = ec_vote_against
+			value = list_size:ec_conservatives
+		}
 		if = {
 			limit = { exists = scope:activity.var:core_tenet_to_swap_2 }
 			scope:activity.var:core_tenet_to_swap_2 = { save_scope_as = core_tenet_to_swap }
@@ -4271,6 +4316,10 @@ ecumenical_council_events.0080 = {
 
 	option = {
 		name = ecumenical_council_events.0080.a
+		custom_tooltip = ecumenical_council_vote_tally_tt
+		show_as_tooltip = {
+			ecumenical_council_current_debate_personal_tenet_fulfillment_effect = yes
+		}
 		ai_chance = {
 			base = 100
 		}
@@ -4339,6 +4388,10 @@ ecumenical_council_events.0081 = {
 
 	option = {
 		name = ecumenical_council_events.0081.a
+		custom_tooltip = ecumenical_council_vote_tally_tt
+		show_as_tooltip = {
+			ecumenical_council_current_debate_personal_tenet_fulfillment_effect = yes
+		}
 		ai_chance = {
 			base = 100
 		}
@@ -4386,6 +4439,14 @@ ecumenical_council_events.0082 = {
 				scope:ec_council.var:first_debate_resolution ?= flag:passed
 			}
 			custom_tooltip = ecumenical_council_events.0082.a.tt.tenet_1
+			show_as_tooltip = {
+				ecumenical_council_personal_tenet_fulfillment_effect = {
+					TOPIC = scope:ec_letter_tenet_1
+					PROPOSAL = scope:ec_council.var:first_debate_proposal
+					SWAPPED = scope:ec_council.var:core_tenet_to_swap_1
+					RITE = scope:ec_council_faith.main_rite
+				}
+			}
 		}
 		if = {
 			limit = {
@@ -4393,6 +4454,14 @@ ecumenical_council_events.0082 = {
 				scope:ec_council.var:second_debate_resolution ?= flag:passed
 			}
 			custom_tooltip = ecumenical_council_events.0082.a.tt.tenet_2
+			show_as_tooltip = {
+				ecumenical_council_personal_tenet_fulfillment_effect = {
+					TOPIC = scope:ec_letter_tenet_2
+					PROPOSAL = scope:ec_council.var:second_debate_proposal
+					SWAPPED = scope:ec_council.var:core_tenet_to_swap_2
+					RITE = scope:ec_council_faith.main_rite
+				}
+			}
 		}
 		if = {
 			limit = {
@@ -4453,7 +4522,7 @@ ecumenical_council_events.0050 = {
 				doctrine:doctrine_monogamy = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_polygamy = {
@@ -4466,7 +4535,7 @@ ecumenical_council_events.0050 = {
 				doctrine:doctrine_polygamy = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_concubines = {
@@ -4479,7 +4548,7 @@ ecumenical_council_events.0050 = {
 				doctrine:doctrine_concubines = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -4591,7 +4660,7 @@ ecumenical_council_events.0051 = {
 				doctrine:doctrine_divorce_disallowed = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_divorce_approval = {
@@ -4604,7 +4673,7 @@ ecumenical_council_events.0051 = {
 				doctrine:doctrine_divorce_approval = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_divorce_allowed = {
@@ -4617,7 +4686,7 @@ ecumenical_council_events.0051 = {
 				doctrine:doctrine_divorce_allowed = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -4728,7 +4797,7 @@ ecumenical_council_events.0052 = {
 				doctrine:doctrine_bastardry_none = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_bastardry_legitimization = {
@@ -4741,7 +4810,7 @@ ecumenical_council_events.0052 = {
 				doctrine:doctrine_bastardry_legitimization = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_bastardry_all = {
@@ -4754,7 +4823,7 @@ ecumenical_council_events.0052 = {
 				doctrine:doctrine_bastardry_all = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -4865,7 +4934,7 @@ ecumenical_council_events.0053 = {
 				doctrine:doctrine_homosexuality_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_homosexuality_shunned = {
@@ -4878,7 +4947,7 @@ ecumenical_council_events.0053 = {
 				doctrine:doctrine_homosexuality_shunned = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_homosexuality_accepted = {
@@ -4891,7 +4960,7 @@ ecumenical_council_events.0053 = {
 				doctrine:doctrine_homosexuality_accepted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -5002,7 +5071,7 @@ ecumenical_council_events.0054 = {
 				doctrine:doctrine_deviancy_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_deviancy_shunned = {
@@ -5015,7 +5084,7 @@ ecumenical_council_events.0054 = {
 				doctrine:doctrine_deviancy_shunned = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_deviancy_accepted = {
@@ -5028,7 +5097,7 @@ ecumenical_council_events.0054 = {
 				doctrine:doctrine_deviancy_accepted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_deviancy_virtuous = {
@@ -5041,7 +5110,7 @@ ecumenical_council_events.0054 = {
 				doctrine:doctrine_deviancy_virtuous = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -5170,7 +5239,7 @@ ecumenical_council_events.0055 = {
 				doctrine:doctrine_adultery_men_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_adultery_men_shunned = {
@@ -5183,7 +5252,7 @@ ecumenical_council_events.0055 = {
 				doctrine:doctrine_adultery_men_shunned = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_adultery_men_accepted = {
@@ -5196,7 +5265,7 @@ ecumenical_council_events.0055 = {
 				doctrine:doctrine_adultery_men_accepted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -5307,7 +5376,7 @@ ecumenical_council_events.0056 = {
 				doctrine:doctrine_adultery_women_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_adultery_women_shunned = {
@@ -5320,7 +5389,7 @@ ecumenical_council_events.0056 = {
 				doctrine:doctrine_adultery_women_shunned = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_adultery_women_accepted = {
@@ -5333,7 +5402,7 @@ ecumenical_council_events.0056 = {
 				doctrine:doctrine_adultery_women_accepted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -5444,7 +5513,7 @@ ecumenical_council_events.0057 = {
 				doctrine:doctrine_kinslaying_any_dynasty_member_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_kinslaying_extended_family_crime = {
@@ -5457,7 +5526,7 @@ ecumenical_council_events.0057 = {
 				doctrine:doctrine_kinslaying_extended_family_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_kinslaying_close_kin_crime = {
@@ -5470,7 +5539,7 @@ ecumenical_council_events.0057 = {
 				doctrine:doctrine_kinslaying_close_kin_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_kinslaying_shunned = {
@@ -5483,7 +5552,7 @@ ecumenical_council_events.0057 = {
 				doctrine:doctrine_kinslaying_shunned = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_kinslaying_accepted = {
@@ -5496,7 +5565,7 @@ ecumenical_council_events.0057 = {
 				doctrine:doctrine_kinslaying_accepted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -5643,7 +5712,7 @@ ecumenical_council_events.0058 = {
 				doctrine:doctrine_witchcraft_crime = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_witchcraft_shunned = {
@@ -5656,7 +5725,7 @@ ecumenical_council_events.0058 = {
 				doctrine:doctrine_witchcraft_shunned = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_witchcraft_accepted = {
@@ -5669,7 +5738,7 @@ ecumenical_council_events.0058 = {
 				doctrine:doctrine_witchcraft_accepted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_witchcraft_virtuous = {
@@ -5682,7 +5751,7 @@ ecumenical_council_events.0058 = {
 				doctrine:doctrine_witchcraft_virtuous = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -5811,7 +5880,7 @@ ecumenical_council_events.0059 = {
 				doctrine:doctrine_gender_male_dominated = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_gender_equal = {
@@ -5824,7 +5893,7 @@ ecumenical_council_events.0059 = {
 				doctrine:doctrine_gender_equal = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_gender_female_dominated = {
@@ -5837,7 +5906,7 @@ ecumenical_council_events.0059 = {
 				doctrine:doctrine_gender_female_dominated = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -5948,7 +6017,7 @@ ecumenical_council_events.0060 = {
 				doctrine:doctrine_consanguinity_dynastic = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_consanguinity_restricted = {
@@ -5961,7 +6030,7 @@ ecumenical_council_events.0060 = {
 				doctrine:doctrine_consanguinity_restricted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_consanguinity_cousins = {
@@ -5974,7 +6043,7 @@ ecumenical_council_events.0060 = {
 				doctrine:doctrine_consanguinity_cousins = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_consanguinity_aunt_nephew_and_uncle_niece = {
@@ -5987,7 +6056,7 @@ ecumenical_council_events.0060 = {
 				doctrine:doctrine_consanguinity_aunt_nephew_and_uncle_niece = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_consanguinity_unrestricted = {
@@ -6000,7 +6069,7 @@ ecumenical_council_events.0060 = {
 				doctrine:doctrine_consanguinity_unrestricted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -6147,7 +6216,7 @@ ecumenical_council_events.0061 = {
 				doctrine:doctrine_pluralism_fundamentalist = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_pluralism_righteous = {
@@ -6160,7 +6229,7 @@ ecumenical_council_events.0061 = {
 				doctrine:doctrine_pluralism_righteous = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_pluralism_pluralistic = {
@@ -6173,7 +6242,7 @@ ecumenical_council_events.0061 = {
 				doctrine:doctrine_pluralism_pluralistic = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -6284,7 +6353,7 @@ ecumenical_council_events.0062 = {
 				doctrine:doctrine_theocracy_temporal = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_theocracy_lay_clergy = {
@@ -6297,7 +6366,7 @@ ecumenical_council_events.0062 = {
 				doctrine:doctrine_theocracy_lay_clergy = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -6407,7 +6476,7 @@ ecumenical_council_events.0063 = {
 				doctrine:doctrine_no_head = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_spiritual_head = {
@@ -6420,7 +6489,7 @@ ecumenical_council_events.0063 = {
 				doctrine:doctrine_spiritual_head = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_temporal_head = {
@@ -6433,7 +6502,7 @@ ecumenical_council_events.0063 = {
 				doctrine:doctrine_temporal_head = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -6544,7 +6613,7 @@ ecumenical_council_events.0064 = {
 				doctrine:doctrine_clerical_function_taxation = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_function_alms_and_pacification = {
@@ -6557,7 +6626,7 @@ ecumenical_council_events.0064 = {
 				doctrine:doctrine_clerical_function_alms_and_pacification = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_function_recruitment = {
@@ -6570,7 +6639,7 @@ ecumenical_council_events.0064 = {
 				doctrine:doctrine_clerical_function_recruitment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -6681,7 +6750,7 @@ ecumenical_council_events.0065 = {
 				doctrine:doctrine_clerical_gender_male_only = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_gender_female_only = {
@@ -6694,7 +6763,7 @@ ecumenical_council_events.0065 = {
 				doctrine:doctrine_clerical_gender_female_only = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_gender_either = {
@@ -6707,7 +6776,7 @@ ecumenical_council_events.0065 = {
 				doctrine:doctrine_clerical_gender_either = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -6818,7 +6887,7 @@ ecumenical_council_events.0066 = {
 				doctrine:doctrine_clerical_marriage_allowed = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_marriage_disallowed = {
@@ -6831,7 +6900,7 @@ ecumenical_council_events.0066 = {
 				doctrine:doctrine_clerical_marriage_disallowed = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -6924,7 +6993,7 @@ ecumenical_council_events.0067 = {
 				doctrine:doctrine_clerical_succession_temporal_appointment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_succession_spiritual_appointment = {
@@ -6937,7 +7006,7 @@ ecumenical_council_events.0067 = {
 				doctrine:doctrine_clerical_succession_spiritual_appointment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_succession_temporal_fixed_appointment = {
@@ -6950,7 +7019,7 @@ ecumenical_council_events.0067 = {
 				doctrine:doctrine_clerical_succession_temporal_fixed_appointment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_clerical_succession_spiritual_fixed_appointment = {
@@ -6963,7 +7032,7 @@ ecumenical_council_events.0067 = {
 				doctrine:doctrine_clerical_succession_spiritual_fixed_appointment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -7113,7 +7182,7 @@ ecumenical_council_events.0068 = {
 				doctrine:doctrine_pilgrimage_forbidden = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_pilgrimage_encouraged = {
@@ -7126,7 +7195,7 @@ ecumenical_council_events.0068 = {
 				doctrine:doctrine_pilgrimage_encouraged = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_pilgrimage_local_rites = {
@@ -7139,7 +7208,7 @@ ecumenical_council_events.0068 = {
 				doctrine:doctrine_pilgrimage_local_rites = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_pilgrimage_mandatory = {
@@ -7152,7 +7221,7 @@ ecumenical_council_events.0068 = {
 				doctrine:doctrine_pilgrimage_mandatory = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_pilgrimage_mandatory_hajj = {
@@ -7165,7 +7234,7 @@ ecumenical_council_events.0068 = {
 				doctrine:doctrine_pilgrimage_mandatory_hajj = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -7312,7 +7381,7 @@ ecumenical_council_events.0069 = {
 				doctrine:doctrine_funeral_stoic = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_funeral_bewailment = {
@@ -7325,7 +7394,7 @@ ecumenical_council_events.0069 = {
 				doctrine:doctrine_funeral_bewailment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_funeral_cremation = {
@@ -7338,7 +7407,7 @@ ecumenical_council_events.0069 = {
 				doctrine:doctrine_funeral_cremation = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_funeral_sky_burial = {
@@ -7351,7 +7420,7 @@ ecumenical_council_events.0069 = {
 				doctrine:doctrine_funeral_sky_burial = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_funeral_mummification = {
@@ -7364,7 +7433,7 @@ ecumenical_council_events.0069 = {
 				doctrine:doctrine_funeral_mummification = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_family_rites = {
@@ -7377,7 +7446,7 @@ ecumenical_council_events.0069 = {
 				doctrine:doctrine_family_rites = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -7542,7 +7611,7 @@ ecumenical_council_events.0070 = {
 				doctrine:doctrine_no_anointment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_anointment_permitted = {
@@ -7555,7 +7624,7 @@ ecumenical_council_events.0070 = {
 				doctrine:doctrine_anointment_permitted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_imperial_anointment = {
@@ -7568,7 +7637,7 @@ ecumenical_council_events.0070 = {
 				doctrine:doctrine_imperial_anointment = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -7679,7 +7748,7 @@ ecumenical_council_events.0071 = {
 				doctrine:doctrine_monotheist = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_polytheist = {
@@ -7692,7 +7761,7 @@ ecumenical_council_events.0071 = {
 				doctrine:doctrine_polytheist = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -7785,7 +7854,7 @@ ecumenical_council_events.0072 = {
 				doctrine:doctrine_monasticism_encouraged = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_monasticism_accepted = {
@@ -7798,7 +7867,7 @@ ecumenical_council_events.0072 = {
 				doctrine:doctrine_monasticism_accepted = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_monasticism_absent = {
@@ -7811,7 +7880,7 @@ ecumenical_council_events.0072 = {
 				doctrine:doctrine_monasticism_absent = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_monasticism_forbidden = {
@@ -7824,7 +7893,7 @@ ecumenical_council_events.0072 = {
 				doctrine:doctrine_monasticism_forbidden = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -7953,7 +8022,7 @@ ecumenical_council_events.0073 = {
 				doctrine:doctrine_sacraments_central = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 		doctrine:doctrine_sacraments_absent = {
@@ -7966,7 +8035,7 @@ ecumenical_council_events.0073 = {
 				doctrine:doctrine_sacraments_absent = {
 					save_temporary_scope_as = doctrine
 				}
-				add = ecumenical_council_doctrine_desire_value
+				add = ecumenical_council_doctrine_host_pick_value
 			}
 		}
 
@@ -8062,6 +8131,7 @@ ecumenical_council_events.0101 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_learned_trigger = yes
 			}
 			OR = {
@@ -8098,8 +8168,8 @@ ecumenical_council_events.0101 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0101.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0101.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -8133,8 +8203,8 @@ ecumenical_council_events.0101 = {
 			MAX = scope:feature_conservatives_size
 		}
 		add_piety = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_piety_cost_conservatives_value
+			multiply = -1
 		}
 		ai_chance = {
 			base = 0
@@ -8158,6 +8228,10 @@ ecumenical_council_events.0101 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -8188,6 +8262,10 @@ ecumenical_council_events.0101 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -8362,6 +8440,7 @@ ecumenical_council_events.0102 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_devout_trigger = yes
 			}
 			OR = {
@@ -8397,8 +8476,8 @@ ecumenical_council_events.0102 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0102.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0102.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		stress_and_fulfillment_impact = {
 			cynical = minor_stress_impact_gain
@@ -8434,8 +8513,8 @@ ecumenical_council_events.0102 = {
 			MAX = scope:feature_conservatives_size
 		}
 		add_piety = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_piety_cost_conservatives_value
+			multiply = -1
 		}
 		stress_and_fulfillment_impact = {
 			cynical = minor_stress_impact_gain
@@ -8462,6 +8541,10 @@ ecumenical_council_events.0102 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -8492,6 +8575,10 @@ ecumenical_council_events.0102 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -8666,6 +8753,7 @@ ecumenical_council_events.0103 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_worldly_trigger = yes
 				exists = primary_title
 			}
@@ -8778,8 +8866,8 @@ ecumenical_council_events.0103 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0103.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0103.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		stress_and_fulfillment_impact = {
 			just = minor_stress_impact_gain
@@ -8805,7 +8893,10 @@ ecumenical_council_events.0103 = {
 			CUSTOM = ecumenical_council_events.0103.conservatives_custom
 			MAX = scope:feature_conservatives_size
 		}
-		remove_short_term_gold = medium_gold_value
+		remove_short_term_gold = {
+			value = medium_gold_value
+			multiply = ecumenical_council_sway_change_cost_multiplier_value
+		}
 		stress_and_fulfillment_impact = {
 			just = minor_stress_impact_gain
 		}
@@ -8831,6 +8922,10 @@ ecumenical_council_events.0103 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -8861,6 +8956,10 @@ ecumenical_council_events.0103 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -9026,6 +9125,7 @@ ecumenical_council_events.0104 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				dynasty = root.dynasty
 			}
 			OR = {
@@ -9061,8 +9161,8 @@ ecumenical_council_events.0104 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0104.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0104.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		stress_and_fulfillment_impact = {
 			honest = minor_stress_impact_gain
@@ -9098,8 +9198,8 @@ ecumenical_council_events.0104 = {
 			MAX = scope:feature_conservatives_size
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		stress_and_fulfillment_impact = {
 			honest = minor_stress_impact_gain
@@ -9126,6 +9226,10 @@ ecumenical_council_events.0104 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -9156,6 +9260,10 @@ ecumenical_council_events.0104 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -9332,6 +9440,7 @@ ecumenical_council_events.0105 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				culture = root.culture
 			}
 			OR = {
@@ -9367,8 +9476,8 @@ ecumenical_council_events.0105 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0105.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0105.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -9401,8 +9510,8 @@ ecumenical_council_events.0105 = {
 			MAX = scope:feature_conservatives_size
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ai_chance = {
 			base = 0
@@ -9427,6 +9536,10 @@ ecumenical_council_events.0105 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -9457,6 +9570,10 @@ ecumenical_council_events.0105 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -9647,6 +9764,7 @@ ecumenical_council_events.0106 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_vassal_trigger = yes
 			}
 			any_attending_character = {
@@ -9676,8 +9794,8 @@ ecumenical_council_events.0106 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0106.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0106.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -9711,8 +9829,8 @@ ecumenical_council_events.0106 = {
 			MAX = scope:feature_conservatives_size
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ai_chance = {
 			base = 0
@@ -9736,6 +9854,10 @@ ecumenical_council_events.0106 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -9766,6 +9888,10 @@ ecumenical_council_events.0106 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -9937,6 +10063,7 @@ ecumenical_council_events.0107 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_young_trigger = yes
 			}
 			OR = {
@@ -9972,8 +10099,8 @@ ecumenical_council_events.0107 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0107.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0107.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -10006,8 +10133,8 @@ ecumenical_council_events.0107 = {
 			MAX = scope:feature_conservatives_size
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ai_chance = {
 			base = 0
@@ -10031,6 +10158,10 @@ ecumenical_council_events.0107 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -10061,6 +10192,10 @@ ecumenical_council_events.0107 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -10229,6 +10364,7 @@ ecumenical_council_events.0108 = {
 						is_in_guest_subset = { name = conservative }
 						is_ai = yes
 						this != root
+						NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 						ecumenical_council_is_confidant_trigger = yes
 					}
 				}
@@ -10326,8 +10462,8 @@ ecumenical_council_events.0108 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0108.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0108.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 100
@@ -10406,6 +10542,7 @@ ecumenical_council_events.0109 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_has_desired_tenet_trigger = yes
 			}
 			OR = {
@@ -10441,8 +10578,8 @@ ecumenical_council_events.0109 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0109.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0109.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -10475,8 +10612,8 @@ ecumenical_council_events.0109 = {
 			MAX = scope:feature_conservatives_size
 		}
 		add_piety = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_piety_cost_conservatives_value
+			multiply = -1
 		}
 		ai_chance = {
 			base = 0
@@ -10500,6 +10637,10 @@ ecumenical_council_events.0109 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -10530,6 +10671,10 @@ ecumenical_council_events.0109 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -10698,6 +10843,7 @@ ecumenical_council_events.0110 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				has_trait = ambitious
 			}
 			OR = {
@@ -10733,8 +10879,8 @@ ecumenical_council_events.0110 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0110.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0110.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -10775,8 +10921,8 @@ ecumenical_council_events.0110 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ai_chance = {
 			base = 0
@@ -10800,6 +10946,10 @@ ecumenical_council_events.0110 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -10830,6 +10980,10 @@ ecumenical_council_events.0110 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -11012,6 +11166,7 @@ ecumenical_council_events.0111 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_elderly_trigger = yes
 			}
 			OR = {
@@ -11047,8 +11202,8 @@ ecumenical_council_events.0111 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0111.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0111.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -11077,8 +11232,8 @@ ecumenical_council_events.0111 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -11107,6 +11262,10 @@ ecumenical_council_events.0111 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -11137,6 +11296,10 @@ ecumenical_council_events.0111 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -11305,6 +11468,7 @@ ecumenical_council_events.0112 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_has_plague_struck_realm_trigger = yes
 			}
 			OR = {
@@ -11340,8 +11504,8 @@ ecumenical_council_events.0112 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0112.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0112.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -11369,8 +11533,8 @@ ecumenical_council_events.0112 = {
 			}
 		}
 		add_piety = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_piety_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -11399,6 +11563,10 @@ ecumenical_council_events.0112 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -11429,6 +11597,10 @@ ecumenical_council_events.0112 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -11596,6 +11768,7 @@ ecumenical_council_events.0113 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_has_besieged_faithful_trigger = yes
 			}
 			OR = {
@@ -11631,8 +11804,8 @@ ecumenical_council_events.0113 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0113.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0113.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -11660,8 +11833,8 @@ ecumenical_council_events.0113 = {
 			}
 		}
 		add_piety = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_piety_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -11690,6 +11863,10 @@ ecumenical_council_events.0113 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -11720,6 +11897,10 @@ ecumenical_council_events.0113 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -11901,6 +12082,7 @@ ecumenical_council_events.0114 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_warrior_trigger = yes
 			}
 			OR = {
@@ -12022,8 +12204,8 @@ ecumenical_council_events.0114 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0114.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0114.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -12051,8 +12233,8 @@ ecumenical_council_events.0114 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -12081,6 +12263,10 @@ ecumenical_council_events.0114 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -12111,6 +12297,10 @@ ecumenical_council_events.0114 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -12278,6 +12468,7 @@ ecumenical_council_events.0115 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_high_intrigue_trigger = yes
 			}
 			OR = {
@@ -12313,8 +12504,8 @@ ecumenical_council_events.0115 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0115.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0115.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -12342,8 +12533,8 @@ ecumenical_council_events.0115 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -12372,6 +12563,10 @@ ecumenical_council_events.0115 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -12402,6 +12597,10 @@ ecumenical_council_events.0115 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -12561,6 +12760,7 @@ ecumenical_council_events.0116 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_high_stewardship_trigger = yes
 			}
 			OR = {
@@ -12596,8 +12796,8 @@ ecumenical_council_events.0116 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0116.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0116.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -12625,8 +12825,8 @@ ecumenical_council_events.0116 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -12655,6 +12855,10 @@ ecumenical_council_events.0116 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -12685,6 +12889,10 @@ ecumenical_council_events.0116 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -12852,6 +13060,7 @@ ecumenical_council_events.0117 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_high_diplomacy_trigger = yes
 			}
 			OR = {
@@ -12887,8 +13096,8 @@ ecumenical_council_events.0117 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0117.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0117.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -12916,8 +13125,8 @@ ecumenical_council_events.0117 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -12946,6 +13155,10 @@ ecumenical_council_events.0117 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -12976,6 +13189,10 @@ ecumenical_council_events.0117 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -13146,6 +13363,7 @@ ecumenical_council_events.0118 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_distant_custom_trigger = yes
 			}
 			# A distinct innovator face must exist so the player is never shown as their own innovator
@@ -13257,8 +13475,8 @@ ecumenical_council_events.0118 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0118.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0118.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -13287,8 +13505,8 @@ ecumenical_council_events.0118 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -13317,6 +13535,10 @@ ecumenical_council_events.0118 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -13347,6 +13569,10 @@ ecumenical_council_events.0118 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -13515,6 +13741,7 @@ ecumenical_council_events.0120 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				prestige_level >= high_prestige_level
 			}
 			OR = {
@@ -13550,8 +13777,8 @@ ecumenical_council_events.0120 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0120.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0120.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -13579,8 +13806,8 @@ ecumenical_council_events.0120 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -13609,6 +13836,10 @@ ecumenical_council_events.0120 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -13639,6 +13870,10 @@ ecumenical_council_events.0120 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -13806,6 +14041,7 @@ ecumenical_council_events.0122 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				ecumenical_council_is_ailing_trigger = yes
 			}
 			OR = {
@@ -13842,8 +14078,8 @@ ecumenical_council_events.0122 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0122.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0122.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -13873,8 +14109,8 @@ ecumenical_council_events.0122 = {
 			scope:feature_conservatives_size >= 1
 		}
 		add_piety = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_piety_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -13905,6 +14141,10 @@ ecumenical_council_events.0122 = {
 					multiplier = 3.5
 					min = -49
 				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
+				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
 					value = pam_ec_sway_tenet_impact_value
@@ -13934,6 +14174,10 @@ ecumenical_council_events.0122 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -14105,6 +14349,7 @@ ecumenical_council_events.0123 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				is_allied_to = root
 			}
 			any_attending_character = {
@@ -14134,8 +14379,8 @@ ecumenical_council_events.0123 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0123.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0123.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -14163,8 +14408,8 @@ ecumenical_council_events.0123 = {
 			}
 		}
 		add_prestige = {
-			value = -40
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_prestige_cost_conservatives_value
+			multiply = -1
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
@@ -14193,6 +14438,10 @@ ecumenical_council_events.0123 = {
 					value = scope:duel_value
 					multiplier = 3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
 				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
@@ -14223,6 +14472,10 @@ ecumenical_council_events.0123 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {
@@ -14390,6 +14643,7 @@ ecumenical_council_events.0126 = {
 						is_in_guest_subset = { name = conservative }
 						is_ai = yes
 						this != root
+						NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 						ecumenical_council_is_rival_trigger = yes
 					}
 				}
@@ -14486,8 +14740,8 @@ ecumenical_council_events.0126 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0126.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0126.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 100
@@ -14610,6 +14864,7 @@ ecumenical_council_events.0129 = {
 				is_in_guest_subset = { name = conservative }
 				is_ai = yes
 				this != root
+				NOT = { pam_ec_is_active_counterplayer_trigger = yes }
 				has_dread_level_towards = { target = root level >= 1 }
 			}
 		}
@@ -14636,8 +14891,8 @@ ecumenical_council_events.0129 = {
 		}
 		ecumenical_council_sway_to_innovators_effect = {
 			LIST = feature_conservatives
-			CUSTOM = ecumenical_council_events.0129.conservatives_custom
-			MAX = scope:feature_conservatives_size
+			CUSTOM = ecumenical_council_events.0129.conservatives_custom_capped
+			MAX = scope:feature_conservatives_free_max
 		}
 		ai_chance = {
 			base = 0
@@ -14665,8 +14920,8 @@ ecumenical_council_events.0129 = {
 			}
 		}
 		add_dread = {
-			value = -1
-			multiply = scope:feature_conservatives_size
+			value = ecumenical_council_sway_dread_cost_conservatives_value
+			multiply = -1
 		}
 		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_gain
@@ -14699,6 +14954,10 @@ ecumenical_council_events.0129 = {
 					multiplier = 3.5
 					min = -49
 				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = -1
+				}
 				# The debated tenet's faith (un)popularity nudges the sway in the same direction.
 				compare_modifier = {
 					value = pam_ec_sway_tenet_impact_value
@@ -14728,6 +14987,10 @@ ecumenical_council_events.0129 = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
+				}
+				compare_modifier = {
+					value = scope:ec_sway_duel_penalty
+					multiplier = 1
 				}
 				# ...and correspondingly makes the sway less likely to fail.
 				compare_modifier = {

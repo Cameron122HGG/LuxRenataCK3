@@ -81,7 +81,7 @@ ecumenical_council_events_josh.0001 = {
 				}
 				desc = ecumenical_council_events_josh.0001.a.tt2
 				send_interface_toast = {
-					type = event_toast_effect_good
+					type = event_toast_effect_bad
 					title = ecumenical_council_events_josh.0001.a.toast.failure
 					left_icon = root.intent_target
 					right_icon = root
@@ -89,7 +89,7 @@ ecumenical_council_events_josh.0001 = {
 					if = { # Check if they are already your rival or nemesis
     					limit = {
         					scope:murder_target = {
-            					NOT = {
+            					NOR = {
                 					has_relation_rival = root
                						has_relation_nemesis = root
            						}
@@ -249,7 +249,7 @@ ecumenical_council_events_josh.0010 = {
         }
         else_if = { # June – Boniface
             limit = { current_month = 6 }
-            character:saint_0017 = { save_scope_as = monthly_saint }
+            character:walpurga_6 = { save_scope_as = monthly_saint }
         }
         else_if = { # July – Mary Magdalene
             limit = { current_month = 7 }
@@ -924,6 +924,7 @@ ecumenical_council_events_josh.0013 = {
 					value = scope:duel_value
 					multiplier = 0.5
 				}
+				desc = ecumenical_council_events_josh.0013.b.toast.success
 				add_piety = medium_piety_gain
 				add_prestige = minor_prestige_gain
 				stress_and_fulfillment_impact = {
@@ -945,13 +946,14 @@ ecumenical_council_events_josh.0013 = {
 					value = scope:duel_value
 					multiplier = -0.5
 				}
+				desc = ecumenical_council_events_josh.0013.b.toast.failure
 				progress_towards_rival_effect = {
 					REASON = fashion_criminal_at_council_reason
 					CHARACTER = scope:fashion_criminal
 					OPINION = default_rival_opinion
 				}
 				send_interface_toast = {
-					type = event_toast_effect_good
+					type = event_toast_effect_bad
 					title = ecumenical_council_events_josh.0013.b.toast.failure
 					left_icon = scope:fashion_criminal
 					right_icon = root
@@ -1389,6 +1391,7 @@ ecumenical_council_events_josh.0022 = {
 					value = scope:duel_value
 					multiplier = 0.5
 				}
+				desc = ecumenical_council_events_josh.0022.b.toast.success
 				scope:alliance_target = {
 					add_opinion = {
 						target = root
@@ -1416,6 +1419,7 @@ ecumenical_council_events_josh.0022 = {
 					value = scope:duel_value
 					multiplier = -0.5
 				}
+				desc = ecumenical_council_events_josh.0022.b.toast.failure
 				progress_towards_rival_effect = {
 					REASON = alliance_target_at_council_reason
 					CHARACTER = scope:alliance_target
@@ -1945,6 +1949,8 @@ ecumenical_council_events_josh.0025 = {
 			location = root.location
 			culture = culture:ethiopian
 			faith = faith:miaphysitism
+			rite = faith:miaphysitism.main_rite
+			trait = cleric
 			save_scope_as = theologian
 		}
 	}
@@ -2042,7 +2048,12 @@ ecumenical_council_events_josh.0025 = {
 	}
 	after = {
 		scope:theologian = {
-			silent_disappear_ai_if_not_hired = yes
+			if = {
+				limit = {
+					NOT = { involved_activity ?= root.involved_activity }
+				}
+				silent_disappear_ai_if_not_hired = yes
+			}
 		}
 	}
 }

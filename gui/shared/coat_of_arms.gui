@@ -90,10 +90,22 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
 				parentanchor = hcenter
 				size = { 32 22 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_28.dds"
+
+				block "top_decor_visible" {}
+			}
+
+			icon = {
+				name = "cardinal_top_decor"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				parentanchor = hcenter
+				size = { 32 22 }
+				texture = "gfx/interface/coat_of_arms/cardinal_topframe_28.dds"
+
+				block "top_decor_visible" {}
 			}
 
 			widget = {
@@ -206,10 +218,20 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
 				parentanchor = hcenter
 				size = { 52 32 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_44.dds"
+
+				block "top_decor_visible" {}
+			}
+
+			icon = {
+				name = "cardinal_top_decor"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				parentanchor = hcenter
+				size = { 52 32 }
+				texture = "gfx/interface/coat_of_arms/cardinal_topframe_44.dds"
 
 				block "top_decor_visible" {}
 			}
@@ -323,10 +345,22 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
 				parentanchor = hcenter
 				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_62.dds"
+
+				block "top_decor_visible" {}
+			}
+
+			icon = {
+				name = "cardinal_top_decor"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				parentanchor = hcenter
+				size = { 64 40 }
+				texture = "gfx/interface/coat_of_arms/cardinal_topframe_62.dds"
+
+				block "top_decor_visible" {}
 			}
 
 			widget = {
@@ -440,10 +474,22 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
 				parentanchor = hcenter
 				size = { 96 60 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_86.dds"
+
+				block "top_decor_visible" {}
+			}
+
+			icon = {
+				name = "cardinal_top_decor"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				parentanchor = hcenter
+				size = { 96 60 }
+				texture = "gfx/interface/coat_of_arms/cardinal_topframe_86.dds"
+
+				block "top_decor_visible" {}
 			}
 
 			widget = {
@@ -556,10 +602,22 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[Character.GetGovernment.IsType('ecclesiastical_government')]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
 				parentanchor = hcenter
 				size = { 128 80 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_115.dds"
+
+				block "top_decor_visible" {}
+			}
+
+			icon = {
+				name = "cardinal_top_decor"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				parentanchor = hcenter
+				size = { 128 80 }
+				texture = "gfx/interface/coat_of_arms/cardinal_topframe_115.dds"
+
+				block "top_decor_visible" {}
 			}
 
 			widget = {
@@ -2819,12 +2877,15 @@ types CoATypes
 
 			icon = {
 				name = "sigil"
-				visible = "[Character.HasSealCoA]"
+				block "sigil_coa"
+				{
+					visible = "[Character.HasSealCoA]"
+					datacontext = "[Character.GetSealCoA]"
+				}
 				gfxtype = coatofarmsgfx
 				shaderfile = "gfx/FX/gui_coatofarms.shader"
 				effectname = PdxGuiSeal
 				alwaystransparent = yes
-				datacontext = "[Character.GetSealCoA]"
 				coat_of_arms_slot = "[CoatOfArms.GetSlot('(int32)88','(int32)88')]"
 				coat_of_arms = "[CoatOfArms.GetTexture('(int32)88','(int32)88')]"
 				coat_of_arms_mask = "gfx/interface/skinned/window_letter/sigil_center.dds"
@@ -2838,7 +2899,10 @@ types CoATypes
 
 			icon = {
 				name = "sigil_lowborn"
-				visible = "[Not( Character.HasSealCoA )]"
+				block "sigil_lowborn_visible"
+				{
+					visible = "[Not( Character.HasSealCoA )]"
+				}
 				texture = "gfx/interface/skinned/window_letter/sigil_center_lowborn.dds"
 				alwaystransparent = yes
 				parentanchor = center
@@ -2877,6 +2941,20 @@ types CoATypes
 					alpha = @overlay_alpha
 				}
 			}
+		}
+	}
+
+	type coa_house_sigil = coa_character_sigil
+	{
+		blockoverride "sigil_coa"
+		{
+			visible = "[Character.GetHouse.IsValid]"
+			datacontext = "[Character.GetHouse.GetHouseCoA]"
+		}
+
+		blockoverride "sigil_lowborn_visible"
+		{
+			visible = "[Not( Character.GetHouse.IsValid )]"
 		}
 	}
 }

@@ -2407,23 +2407,7 @@ change_career_path_for_family_member_interaction = {
 				is_grandchild_of = scope:actor
 				is_great_grandchild_of = scope:actor
 			}
-			trigger_if = {
-				limit = {
-					scope:actor = {
-						rite = { rite_has_doctrine = doctrine_gender_female_dominated }
-					}
-				}
-				is_female = yes
-			}
-			trigger_else_if = {
-				limit = {
-					scope:actor = {
-						rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-					}
-				}
-				is_female = no
-			}
-			trigger_else = { always = yes }
+			scope:actor.rite = { rite_has_dominant_ruling_gender = prev }
 		}
 	}
 
@@ -2605,23 +2589,7 @@ send_child_to_examination_interaction = {
 				is_grandchild_of = scope:actor
 				is_great_grandchild_of = scope:actor
 			}
-			trigger_if = {
-				limit = {
-					scope:actor = {
-						rite = { rite_has_doctrine = doctrine_gender_female_dominated }
-					}
-				}
-				is_female = yes
-			}
-			trigger_else_if = {
-				limit = {
-					scope:actor = {
-						rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-					}
-				}
-				is_female = no
-			}
-			trigger_else = { always = yes }
+			scope:actor.rite = { rite_has_dominant_ruling_gender = prev }
 			age < 16
 			is_landed = no
 			NOT = {
@@ -4854,7 +4822,7 @@ celestial_request_military_aid_interaction = {
 	}
 
 	is_available = {
-		#government_allows = merit
+		government_allows = merit
 		trigger_if = {
 			limit = { is_ai = yes }
 			is_at_war = yes
@@ -4863,15 +4831,8 @@ celestial_request_military_aid_interaction = {
 			is_governor = yes
 			has_title = title:e_minister_grand_marshal
 		}
-		###MOD
-		AND = {
-			government_has_mechanic = administrative
-			is_landed = yes
-			top_liege != this
-			highest_held_title_tier >= tier_county
-			tgp_is_ceremonial_liege_trigger = no
-		}
-		###
+		top_liege != this
+		government_has_mechanic = administrative
 	}
 
 	is_shown = {
@@ -4900,7 +4861,6 @@ celestial_request_military_aid_interaction = {
 					OR = {
 						vassal_contract_has_flag = celestial_military_appointment
 						vassal_contract_has_flag = meritocratic_military_appointment
-						vassal_contract_has_flag = province_military ##MOD
 					}
 				}
 			}
@@ -5413,7 +5373,6 @@ celestial_request_treasury_interaction = {
 						}
 						scope:actor = {
 							vassal_contract_has_flag = celestial_military_appointment
-							NOT = { is_councillor_of = top_liege }
 						}
 					}
 					AND = {
@@ -5423,10 +5382,7 @@ celestial_request_treasury_interaction = {
 							government_has_flag = government_is_celestial
 						}
 						scope:actor = {
-							NOR = {
-								vassal_contract_has_flag = celestial_military_appointment
-								is_councillor_of = top_liege
-							}
+							NOT = { vassal_contract_has_flag = celestial_military_appointment }
 						}
 					}
 				}
@@ -6631,17 +6587,6 @@ celestial_send_military_aid_interaction = {
 					desc = "[minister_of_war|E]"
 				}
 			}
-			if = {
-				limit = {
-					scope:actor = { 
-						NOT = { government_has_flag = government_is_celestial } 
-					}
-				}
-				multiply = {
-					value = 4
-					desc = "[administrative|E]"
-				}
-			}			
 		}
 	}
 
@@ -6649,7 +6594,7 @@ celestial_send_military_aid_interaction = {
 		OR = {
 			# Or if you are an independent admin ruler with military governors
 			AND = {
-				#government_allows = merit
+				government_allows = merit
 				top_liege ?= this
 				government_has_mechanic = administrative
 			}
@@ -6661,7 +6606,7 @@ celestial_send_military_aid_interaction = {
 			OR = {
 				# Or if you are an independent admin ruler with military governors
 				AND = {
-					#government_allows = merit
+					government_allows = merit
 					top_liege ?= this
 					# But don't bother if you have the minister of war, he'll do it for you
 					tgp_has_access_to_ministry_trigger = no
@@ -6691,7 +6636,6 @@ celestial_send_military_aid_interaction = {
 					OR = {
 						vassal_contract_has_flag = celestial_military_appointment
 						vassal_contract_has_flag = meritocratic_military_appointment
-						vassal_contract_has_flag =  province_military
 					}
 				}
 			}

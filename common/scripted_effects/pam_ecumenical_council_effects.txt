@@ -516,6 +516,8 @@ ecumenical_council_apply_debate_outcome_effect = {
 		if = {
 			# First/Second debate: tenet demotion of a schism-rite tenet counts; promotion books nothing
 			limit = {
+				# A doctrine ruling's tooltip preview still sees the previous debate's tenet flag
+				NOT = { exists = scope:ec_proposal_doctrine }
 				OR = {
 					scope:activity.var:current_debate_proposal ?= flag:permit
 					scope:activity.var:current_debate_proposal ?= flag:prohibit
@@ -780,39 +782,140 @@ ecumenical_council_apply_debate_outcome_effect = {
 	}
 }
 
+ecumenical_council_personal_tenet_fulfillment_effect = {
+	if = {
+		limit = { $PROPOSAL$ ?= flag:make_core }
+		pam_personal_tenet_made_core_fulfillment_effect = {
+			TENET = $TOPIC$
+			RITE = $RITE$
+		}
+		if = {
+			limit = { exists = $SWAPPED$ }
+			pam_personal_tenet_lost_core_fulfillment_effect = {
+				TENET = $SWAPPED$
+				RITE = $RITE$
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				$PROPOSAL$ ?= flag:permit
+				$PROPOSAL$ ?= flag:prohibit
+			}
+		}
+		pam_personal_tenet_status_change_fulfillment_effect = { TENET = $TOPIC$ }
+	}
+}
+
+ecumenical_council_current_debate_personal_tenet_fulfillment_effect = {
+	if = {
+		limit = {
+			scope:activity.var:last_debate_passed ?= flag:passed
+			exists = scope:activity.var:current_topic
+			exists = scope:activity.var:ec_throttled_faith
+		}
+		if = {
+			limit = { exists = scope:activity.var:second_debate_resolution }
+			ecumenical_council_personal_tenet_fulfillment_effect = {
+				TOPIC = scope:activity.var:current_topic
+				PROPOSAL = scope:activity.var:current_debate_proposal
+				SWAPPED = scope:activity.var:core_tenet_to_swap_2
+				RITE = scope:activity.var:ec_throttled_faith.main_rite
+			}
+		}
+		else = {
+			ecumenical_council_personal_tenet_fulfillment_effect = {
+				TOPIC = scope:activity.var:current_topic
+				PROPOSAL = scope:activity.var:current_debate_proposal
+				SWAPPED = scope:activity.var:core_tenet_to_swap_1
+				RITE = scope:activity.var:ec_throttled_faith.main_rite
+			}
+		}
+	}
+}
+
+# The proposal line for an attendee on SIDE (support or oppose) in the current debate
+ecumenical_council_sway_stance_tt_effect = {
+	if = {
+		limit = {
+			scope:activity = { has_current_phase = ecumenical_council_phase_first_debate }
+		}
+		custom_tooltip = ec_sway_$SIDE$_tt
+	}
+	else_if = {
+		limit = {
+			scope:activity = { has_current_phase = ecumenical_council_phase_second_debate }
+		}
+		custom_tooltip = ec_sway_$SIDE$_tt_2
+	}
+	else = {
+		custom_tooltip = ec_sway_$SIDE$_tt_3
+	}
+}
+
+# Logs a player attendee taking SIDE (innovator or conservative) in a debate
+ecumenical_council_log_stance_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = ecumenical_council_lineup_log
+			score = 0
+			character = root
+			location = root.location
+			ecumenical_council_become_$SIDE$_effect = { CHARACTER = root }
+		}
+	}
+}
+
 # LIST = attendees to sway, and CUSTOM = the loc key for the group line that has the count
 ecumenical_council_sway_to_innovators_effect = {
 	scope:activity = {
-		add_activity_log_entry = {
-			key = ecumenical_council_guests_swayed_to_innovators_log
-			score = 0
-			character = scope:actor
-			location = scope:actor.location
-			ordered_in_list = {
-				list = $LIST$
-				custom = $CUSTOM$
-				max = $MAX$
-				order_by = "opinion(scope:actor)"
-				if = {
+		# Skip the entry when nobody is left to sway
+		if = {
+			limit = { any_in_list = { list = $LIST$ } }
+			# Other players see the sway when it happens, not only in the log
+			hidden_effect = {
+				every_attending_character = {
 					limit = {
-						scope:activity = { has_current_phase = ecumenical_council_phase_first_debate }
+						is_ai = no
+						this != scope:actor
 					}
-					custom_tooltip = ec_sway_support_tt
-				}
-				else_if = {
-					limit = {
-						scope:activity = { has_current_phase = ecumenical_council_phase_second_debate }
+					send_interface_toast = {
+						type = event_toast_effect_neutral
+						title = ecumenical_council_guests_swayed_to_innovators_log_title
+						left_icon = scope:actor
+						show_as_tooltip = {
+							ordered_in_list = {
+								list = $LIST$
+								custom = $CUSTOM$
+								max = $MAX$
+								order_by = "opinion(scope:actor)"
+								ecumenical_council_sway_stance_tt_effect = { SIDE = support }
+							}
+						}
 					}
-					custom_tooltip = ec_sway_support_tt_2
-				}
-				else = {
-					custom_tooltip = ec_sway_support_tt_3
-				}
-				hidden_effect = {
-					save_temporary_scope_as = change
-					ecumenical_council_become_innovator_effect = { CHARACTER = scope:change }
 				}
 			}
+			add_activity_log_entry = {
+				key = ecumenical_council_guests_swayed_to_innovators_log
+				score = 0
+				character = scope:actor
+				location = scope:actor.location
+				ordered_in_list = {
+					list = $LIST$
+					custom = $CUSTOM$
+					max = $MAX$
+					order_by = "opinion(scope:actor)"
+					ecumenical_council_sway_stance_tt_effect = { SIDE = support }
+					hidden_effect = {
+						save_temporary_scope_as = change
+						ecumenical_council_become_innovator_effect = { CHARACTER = scope:change }
+					}
+				}
+			}
+		}
+		else = {
+			custom_tooltip = ec_sway_nobody_tt
 		}
 	}
 }
@@ -820,36 +923,52 @@ ecumenical_council_sway_to_innovators_effect = {
 # Sways a list of attendees at an Ecumenical Council to oppose the host's proposed change (become Conservatives).
 ecumenical_council_sway_to_conservatives_effect = {
 	scope:activity = {
-		add_activity_log_entry = {
-			key = ecumenical_council_guests_swayed_to_conservatives_log
-			score = 0
-			character = scope:actor
-			location = scope:actor.location
-			ordered_in_list = {
-				list = $LIST$
-				custom = $CUSTOM$
-				max = $MAX$
-				order_by = "opinion(scope:actor)"
-				if = {
+		# Skip the entry when nobody is left to sway
+		if = {
+			limit = { any_in_list = { list = $LIST$ } }
+			# Other players see the sway when it happens, not only in the log
+			hidden_effect = {
+				every_attending_character = {
 					limit = {
-						scope:activity = { has_current_phase = ecumenical_council_phase_first_debate }
+						is_ai = no
+						this != scope:actor
 					}
-					custom_tooltip = ec_sway_oppose_tt
-				}
-				else_if = {
-					limit = {
-						scope:activity = { has_current_phase = ecumenical_council_phase_second_debate }
+					send_interface_toast = {
+						type = event_toast_effect_neutral
+						title = ecumenical_council_guests_swayed_to_conservatives_log_title
+						left_icon = scope:actor
+						show_as_tooltip = {
+							ordered_in_list = {
+								list = $LIST$
+								custom = $CUSTOM$
+								max = $MAX$
+								order_by = "opinion(scope:actor)"
+								ecumenical_council_sway_stance_tt_effect = { SIDE = oppose }
+							}
+						}
 					}
-					custom_tooltip = ec_sway_oppose_tt_2
-				}
-				else = {
-					custom_tooltip = ec_sway_oppose_tt_3
-				}
-				hidden_effect = {
-					save_temporary_scope_as = change
-					ecumenical_council_become_conservative_effect = { CHARACTER = scope:change }
 				}
 			}
+			add_activity_log_entry = {
+				key = ecumenical_council_guests_swayed_to_conservatives_log
+				score = 0
+				character = scope:actor
+				location = scope:actor.location
+				ordered_in_list = {
+					list = $LIST$
+					custom = $CUSTOM$
+					max = $MAX$
+					order_by = "opinion(scope:actor)"
+					ecumenical_council_sway_stance_tt_effect = { SIDE = oppose }
+					hidden_effect = {
+						save_temporary_scope_as = change
+						ecumenical_council_become_conservative_effect = { CHARACTER = scope:change }
+					}
+				}
+			}
+		}
+		else = {
+			custom_tooltip = ec_sway_nobody_tt
 		}
 	}
 }
@@ -860,6 +979,10 @@ pam_sort_guests_into_ecumenical_council_groups_effect = {
 		# Clear all lists
 		clear_variable_list = major_innovator
 		clear_variable_list = major_conservative
+		clear_variable_list = locked_into_innovators
+		clear_variable_list = locked_into_conservatives
+		# Explain the backlash again for each debate that passes
+		remove_variable = ec_backlash_tt_shown
 		every_guest_subset = {
 		 	name = innovator
 			scope:activity = {
@@ -1070,6 +1193,59 @@ pam_sort_guests_into_ecumenical_council_groups_effect = {
 						target = prev
 					}
 				}
+			}
+		}
+		# One AI Conservative argues against the host in every debate: the AI Head of Faith if he opposes, else the top mainline-rite Conservative
+		remove_variable = ec_counterplayer
+		every_in_list = {
+			list = conservative
+			limit = { scope:host.faith.religious_head ?= this }
+			save_temporary_scope_as = ec_counterplayer_pick
+		}
+		if = {
+			limit = { NOT = { exists = scope:ec_counterplayer_pick } }
+			ordered_in_list = {
+				list = conservative
+				limit = { rite = scope:host.faith.main_rite }
+				order_by = ecumenical_council_counterplayer_sort_value
+				save_temporary_scope_as = ec_counterplayer_pick
+			}
+		}
+		if = {
+			limit = { NOT = { exists = scope:ec_counterplayer_pick } }
+			ordered_in_list = {
+				list = conservative
+				order_by = ecumenical_council_counterplayer_sort_value
+				save_temporary_scope_as = ec_counterplayer_pick
+			}
+		}
+		if = {
+			limit = { exists = scope:ec_counterplayer_pick }
+			set_variable = {
+				name = ec_counterplayer
+				value = scope:ec_counterplayer_pick
+			}
+		}
+		# Log the sides each debate starts with, since the AI is sorted anew for every proposal
+		var:current_topic ?= { save_scope_as = ec_current_topic }
+		if = {
+			limit = { NOT = { exists = scope:actor } }
+			scope:host = { save_scope_as = actor }
+		}
+		add_activity_log_entry = {
+			key = ecumenical_council_lineup_log
+			score = 0
+			character = scope:host
+			location = scope:host.location
+			every_in_list = {
+				list = innovator
+				custom = game_concept_ec_innovators
+				ecumenical_council_sway_stance_tt_effect = { SIDE = support }
+			}
+			every_in_list = {
+				list = conservative
+				custom = game_concept_ec_conservatives
+				ecumenical_council_sway_stance_tt_effect = { SIDE = oppose }
 			}
 		}
 		# Send event for player guests to know what was proposed

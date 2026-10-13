@@ -1227,17 +1227,7 @@ hajj.3001 = {
 		name = hajj.3001.a
 		#Must be equal or dominant gendered
 		trigger = {
-			OR = {
-				AND = {
-					rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-					is_male = yes
-				}
-				AND = {
-					rite = { rite_has_doctrine = doctrine_gender_female_dominated }
-					is_female = yes
-				}
-				rite = { rite_has_doctrine = doctrine_gender_equal }
-			}
+			rite = { rite_has_dominant_ruling_gender = prev }
 		}
 		pious_type_option_effect = yes
 		scope:activity = {
@@ -1280,15 +1270,7 @@ hajj.3001 = {
 				scope:host = {
 					if = {
 						limit = {
-							rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-							is_female = yes
-						}
-						add_piety = miniscule_piety_gain
-					}
-					else_if = {
-						limit = {
-							rite = { rite_has_doctrine = doctrine_gender_female_dominated }
-							is_male = yes
+							rite = { rite_has_dominant_ruling_gender = prev }
 						}
 						add_piety = miniscule_piety_gain
 					}

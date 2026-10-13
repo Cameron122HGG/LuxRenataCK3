@@ -1548,6 +1548,7 @@ procure_estate_interaction_effect = {
 		if = {
 			limit = { faith != scope:recipient.faith }
 			set_character_faith = scope:recipient.faith
+			set_character_rite = scope:recipient.rite
 			add_character_flag = {
 				flag = procure_estate_conversion
 				months = 1
@@ -1659,6 +1660,10 @@ procure_estate_interaction_effect = {
 			change = scope:title_change
 		}
 		resolve_title_and_vassal_change = scope:title_change
+		add_character_modifier = {
+			modifier = ep3_administrative_outsider_modifier
+			years = 15
+		}
 		hidden_effect = {
 			domicile ?= {
 				if = {
@@ -1668,14 +1673,17 @@ procure_estate_interaction_effect = {
 					move_domicile = scope:recipient.capital_province
 				}
 			}
-		}
-		add_character_modifier = {
-			modifier = ep3_administrative_outsider_modifier
-			years = 15
-		}
-		every_in_list = {
-			list = titles_list
-			prev = { destroy_title = prev }
+			every_held_title = {
+				limit = {
+					is_noble_family_title = yes
+				}
+				add_to_list = titles_list
+			}
+			give_noble_family_title_effect = { GOVERNMENT_GIVER = scope:recipient }
+			every_in_list = {
+				list = titles_list
+				prev = { destroy_title = prev }
+			}
 		}
 	}
 	scope:recipient.top_liege = {
@@ -9394,6 +9402,7 @@ ep3_missionary_effect = {
 		}
 		$LOCATION$ = {
 			set_county_faith = $PREACHER$.faith
+			set_county_rite = $PREACHER$.rite
 		}
 	}
 	# Preacher is Gnostic, convert the locals to a regionally appropriate form of Gnosticism
@@ -9861,6 +9870,10 @@ hasan_sabbah_end_war = {
 					type = story_hasan
 					var:preferred_caliph = { save_scope_as = caliph }
 				}
+			}
+			random_owned_story = {
+				type = story_hasan
+				var:assassins ?= { save_scope_as = assassins }
 			}
 			trigger_event = {
 				id = hasan_sabbah.1050

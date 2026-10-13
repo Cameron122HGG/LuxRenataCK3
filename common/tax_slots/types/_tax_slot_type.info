@@ -1,24 +1,23 @@
 ## tax_slot_type are used instead of individual vassals contracts.
 #
 tax_slot_type_key = {
-	### government = government_key
-	## government_type key
-	## vassals of this type can be assign to this governance
-	government = government_key
+	### default_obligation = tax_obligation_key
+	## Key from common/tax_slots/obligations. The obligation a tax slot of this type starts with; always available and listed first among the obligations
+	default_obligation = tax_obligation_key
 
-	### vassal_contracts = list of vassal_contract_keys
-	## vassal_contract keys
-	## These are the different obligations a governance can apply to the assigned vassals
-	vassal_contracts = {
-		vassal_contract_key_1
-		vassal_contract_key_2
+	### obligations = list of tax_obligation_keys
+	## Keys from common/tax_slots/obligations
+	## These are the additional obligations a governance can apply to the assigned vassals
+	obligations = {
+		tax_obligation_key_1
+		tax_obligation_key_2
 	}
 
 	### tax_slot_vassal_limit
 	## scripted value
 	## How many vassals can be assigned to this tax slot
-	## scope:root = tax_slot
-	## scope:lige - owner of the tax slot
+	## scope:tax_slot = tax_slot
+	## scope:liege - owner of the tax slot
 	## scope:tax_collector = character - the tax collector of the slot or the potential new tax collector
 	tax_slot_vassal_limit = {
 		add = {
@@ -40,14 +39,12 @@ tax_slot_type_key = {
 	## root = character we want to employ
 	## scope:liege = character that owns the tax collection slot and employs the employee
 	is_valid_tax_collector = {
-		scope:tax_collector = {
-			is_courtier_of = scope:liege
-		}
+		is_courtier_of = scope:liege
 	}
 
 	### aptitude_level_breakpoints
 	## Break points for the aptitude levels
-	## Array of fixedpoints
+	## Array of fixedpoints, must be in ascending order
 	aptitude_level_breakpoints = {
 
 	}
@@ -79,6 +76,7 @@ tax_slot_type_key = {
 	## effect trigger when vassal is assigned to a tax slot
 	## scope:liege = the owner of the tax slot
 	## scope:tax_slot = tax slot the character is being assigned to
+	## scope:tax_collector = the tax collector of the slot
 	## scope:vassal = the character that will assigned
 	on_vassal_assigned = {
 	}
@@ -87,7 +85,11 @@ tax_slot_type_key = {
 	## effect trigger when vassal is removed from a tax slot
 	## scope:liege = the owner of the tax slot
 	## scope:tax_slot = tax slot the character is being removed from
+	## scope:tax_collector = the tax collector of the slot
 	## scope:vassal = the character that will removed
 	on_vassal_removed = {
 	}
 }
+
+## Generated modifiers
+## <tax_slot_type_key>_add - character modifier, added to the generic tax_slot_add modifier to give the number of tax slots of this type

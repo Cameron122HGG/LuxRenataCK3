@@ -987,18 +987,43 @@ ecumenical_council_summons_events.0040 = {
 		trigger = { prestige_level >= 1 } # If you are Disgraced you can't even do it lol
 		show_as_unavailable = { always = yes }
 		add_prestige = minor_prestige_loss
-		random = {
-			chance = {
-				value = root.prestige_level
-				multiply = 20
+		# 20% per prestige level
+		random_list = {
+			20 = {
+				modifier = {
+					add = {
+						value = root.prestige_level
+						subtract = 1
+						multiply = 20
+					}
+					always = yes
+				}
+				desc = ecumenical_council_summons_events.0040.a.tt.success
+				send_interface_toast = {
+					title = ecumenical_council_summons_events.0040.a.tt.success
+					left_icon = scope:chaplain
+					progress_towards_friend_effect = {
+						REASON = friend_reassured_at_council
+						CHARACTER = scope:chaplain
+						OPINION = default_friend_opinion
+					}
+				}
 			}
-			send_interface_toast = {
-				title = ecumenical_council_summons_events.0040.a.tt.success
-				left_icon = scope:chaplain
-				progress_towards_friend_effect = {
-					REASON = friend_reassured_at_council
-					CHARACTER = scope:chaplain
-					OPINION = default_friend_opinion
+			80 = {
+				modifier = {
+					add = {
+						value = root.prestige_level
+						subtract = 1
+						multiply = -20
+					}
+					always = yes
+				}
+				min = 0
+				desc = ecumenical_council_summons_events.0040.a.tt.failure
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = ecumenical_council_summons_events.0040.a.tt.failure
+					left_icon = scope:chaplain
 				}
 			}
 		}

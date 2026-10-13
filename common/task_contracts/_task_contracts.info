@@ -47,27 +47,33 @@
 
 	# Should not taken contract invalidate? (if triggers are false)
 	# root - existing contract
+	# scope:employer - contract employer, can be empty
 	valid_to_keep = {
 		<trigger>
 	}
 
 	# On-Action Effects
 	## Effects called when contract is created (create_task_contract effect)
+	# root - contract owner
+	# scope:contract - the created contract
 	on_create = {
 		<effects>
 	}
 
 	## Effects called when contract is accepted (accept_task_contract effect)
+	# root - the contract
 	on_accepted = {
 		<effects>
 	}
 
 	# Effects called when contract is completed successfully, along with rewards (complete_task_contract effect)
+	# root - the contract
 	on_completed = {
 	    <effects>
 	}
 
 	# Effects called when contract is invalidated (valid_to_continue is false, or invalidate_task_contract effect)
+	# root - the contract
 	on_invalidated = {
 	    <effects>
 	}
@@ -81,6 +87,7 @@
 		<string> = {
 			# Default = no, showing completed contract reward effect desription
 			should_print_on_complete = no
+			# root - the contract
 			effect = {
 				<effects>
 			}

@@ -377,6 +377,16 @@ feast_main_befriend.1001 = {
 		if = {
 			limit = {
 				can_set_relation_friend_trigger = { CHARACTER = scope:potential_friend }
+				# Heads of faith and rite need two feasts: the first only makes them a potential friend
+				OR = {
+					has_relation_potential_friend = scope:potential_friend
+					scope:potential_friend = {
+						NOR = {
+							faith.religious_head ?= this
+							rite.head_of_rite ?= this
+						}
+					}
+				}
 			}
 			set_relation_friend = { reason = friend_feast_talking_and_laughing target = scope:potential_friend }
 			# Complete activity intent if relevant
@@ -404,6 +414,7 @@ feast_main_befriend.1001 = {
 		}
 		if = {
 			limit = {
+				has_relation_friend = scope:potential_friend
 				any_scheme = {
 					type = befriend
 					scheme_target_character = scope:potential_friend
@@ -482,7 +493,21 @@ feast_main_befriend.2001 = {
 		name = feast_main_befriend.2001.a
 		add_prestige = medium_prestige_gain
 		show_as_tooltip = {
-			set_relation_friend = scope:activity.activity_host
+			if = {
+				limit = {
+					OR = {
+						has_relation_potential_friend = scope:activity.activity_host
+						NOR = {
+							faith.religious_head ?= this
+							rite.head_of_rite ?= this
+						}
+					}
+				}
+				set_relation_friend = scope:activity.activity_host
+			}
+			else = {
+				set_relation_potential_friend = scope:activity.activity_host
+			}
 			hidden_effect = {
 				add_opinion = {
 					target = scope:activity.activity_host
