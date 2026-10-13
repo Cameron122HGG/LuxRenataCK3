@@ -273,9 +273,9 @@ sacral_gaul_install_bloc_member_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_INSTALL_BLOC_MEMBER_WAR_NAME"
-	war_name_base = "GAUL_INSTALL_BLOC_MEMBER_WAR_NAME_BASE"
-	cb_name = "GAUL_INSTALL_BLOC_MEMBER_CB_NAME"
+	war_name = "SACRAL_GAUL_INSTALL_BLOC_MEMBER_WAR_NAME"
+	war_name_base = "SACRAL_GAUL_INSTALL_BLOC_MEMBER_WAR_NAME_BASE"
+	cb_name = "SACRAL_GAUL_INSTALL_BLOC_MEMBER_CB_NAME"
 	interface_priority = 100
 
 	ticking_war_score_targets_entire_realm = no
@@ -607,9 +607,9 @@ sacral_gaul_manorial_conquest_county_landless_cb = {
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 
-	war_name = "GAUL_SORYO_CONQUEST_LANDLESS_WAR_NAME"
-	war_name_base = "GAUL_SORYO_CONQUEST_LANDLESS_WAR_NAME_BASE"
-	cb_name = "GAUL_SORYO_CONQUEST_LANDLESS_COUNTY_CB_NAME"
+	war_name = "SACRAL_GAUL_MANORIAL_CONQUEST_LANDLESS_WAR_NAME"
+	war_name_base = "SACRAL_GAUL_MANORIAL_CONQUEST_LANDLESS_WAR_NAME_BASE"
+	cb_name = "SACRAL_GAUL_MANORIAL_CONQUEST_LANDLESS_COUNTY_CB_NAME"
 
 	ai_score_mult = {
 		value = 1
@@ -904,9 +904,9 @@ sacral_gaul_manorial_conquest_county_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_SORYO_CONQUEST_WAR_NAME"
-	war_name_base = "GAUL_SORYO_CONQUEST_WAR_NAME_BASE"
-	cb_name = "GAUL_SORYO_CONQUEST_COUNTY_CB_NAME"
+	war_name = "SACRAL_GAUL_MANORIAL_CONQUEST_WAR_NAME"
+	war_name_base = "SACRAL_GAUL_MANORIAL_CONQUEST_WAR_NAME_BASE"
+	cb_name = "SACRAL_GAUL_MANORIAL_CONQUEST_COUNTY_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
@@ -1198,9 +1198,9 @@ sacral_gaul_demand_administrative_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_DEMAND_ADMINISTRATIVE_WAR_NAME"
-	war_name_base = "GAUL_DEMAND_ADMINISTRATIVE_WAR_NAME_BASE"
-	cb_name = "GAUL_DEMAND_ADMINISTRATIVE_CB_NAME"
+	war_name = "SACRAL_GAUL_DEMAND_ADMINISTRATIVE_WAR_NAME"
+	war_name_base = "SACRAL_GAUL_DEMAND_ADMINISTRATIVE_WAR_NAME_BASE"
+	cb_name = "SACRAL_GAUL_DEMAND_ADMINISTRATIVE_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
@@ -1231,7 +1231,7 @@ sacral_gaul_demand_administrative_cb = {
 
 # War to conquer Japan
 sacral_gaul_expansion_cb = {
-	icon = ritsuryo_government
+	icon = ritsuryo
 	group = conquest
 	combine_into_one = yes
 	ai_only_against_neighbors = yes
@@ -1546,9 +1546,9 @@ sacral_gaul_expansion_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_SACRAL_EXPANSION_WAR_NAME"
-	war_name_base = "GAUL_SACRAL_EXPANSION_WAR_NAME_BASE"
-	cb_name = "GAUL_SACRAL_EXPANSION_CB_NAME"
+	war_name = "SACRAL_GAUL_EXPANSION_WAR_NAME"
+	war_name_base = "SACRAL_GAUL_EXPANSION_WAR_NAME_BASE"
+	cb_name = "SACRAL_GAUL_EXPANSION_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
@@ -1579,12 +1579,12 @@ sacral_gaul_expansion_cb = {
 
 # War to reconquer Japan
 sacral_gaul_reconquest_cb = {
-	icon = ritsuryo_government
+	icon = ritsuryo
 	group = de_jure
 
-	war_name = sacral_gaul_SACRAL_RECONQUEST_WAR_NAME
-	war_name_base = sacral_gaul_SACRAL_RECONQUEST_WAR_NAME_BASE
-	cb_name = sacral_gaul_SACRAL_RECONQUEST_CB_NAME
+	war_name = SACRAL_GAUL_RECONQUEST_WAR_NAME
+	war_name_base = SACRAL_GAUL_RECONQUEST_WAR_NAME_BASE
+	cb_name = SACRAL_GAUL_RECONQUEST_CB_NAME
 	interface_priority = 80
 
 	combine_into_one = yes
@@ -2088,7 +2088,7 @@ sacral_gaul_refused_palatine_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "GAUL_REFUSED_PALATINE_WAR_NAME"
+	war_name = "SACRAL_GAUL_REFUSED_PALATINE_WAR_NAME"
 
 	interface_priority = 80
 
@@ -2106,341 +2106,10 @@ sacral_gaul_refused_palatine_cb = {
 }
 
 # Eradicate Rival House
-eradicate_house_cb = {
-	icon = execute
-	group = subjugation
-	combine_into_one = yes
-	ai_only_against_neighbors = yes
-	allow_hostages = no
-	should_show_war_goal_subview = no
 
-	# scope:attacker
-	allowed_for_character = {
-		#Display so once a player has bad house relations they can be tempted to make them worse to validate cb
-		trigger_if = {
-			limit = {
-				is_ai = yes
-			}
-			house ?= {
-				any_house_relation = {
-					has_house_relation_level = feud
-				}
-			}
-		}
-		trigger_else = {
-			house ?= {
-				any_house_relation = {
-					OR = {
-						has_house_relation_level = quarrel
-						has_house_relation_level = rivalry
-						has_house_relation_level = feud
-					}
-				}
-			}
-		}
-	}
-
-	# scope:defender
-	allowed_against_character = {
-		is_landed = yes
-		#Can't be the attacker's top liege
-		NOR = {
-			is_vassal_or_below_of = scope:attacker
-			is_liege_or_above_of = scope:attacker
-		}
-	}
-
-	valid_to_start = {
-		#We need the worst house relations
-		tgp_has_house_relation_level_trigger = {
-			HOUSE_1_MEMBER = scope:attacker
-			HOUSE_2_MEMBER = scope:defender
-			LEVEL = feud
-		}
-	}
-
-	cost = {
-		prestige = {
-			add = {
-				value = 100
-				desc = CB_BASE_COST
-			}
-			multiply = common_cb_prestige_cost_multiplier
-		}
-	}
-
-	should_invalidate = {
-		#cancel if they become friendly
-		OR = {
-			NOT = {
-				tgp_has_house_relation_level_trigger = {
-					HOUSE_1_MEMBER = scope:attacker
-					HOUSE_2_MEMBER = scope:defender
-					LEVEL = feud
-				}
-			}
-			scope:defender = { is_landed = no }
-		}
-	}
-
-	on_invalidated_desc = {
-		desc = eradicate_house_cb_ended_invalid.desc
-	}
-
-	on_declaration = {
-		on_declared_war = yes
-	}
-
-	on_victory_desc = {
-		desc = eradicate_house_cb_victory_desc
-	}
-
-	on_victory = {
-		scope:attacker = {
-			if = {
-				limit = {
-					is_ai = no
-				}
-				add_achievement_global_variable_effect = {
-					VARIABLE = finished_ep4_07_cut_off_the_head_and_the_body_will_follow_achievement
-					VALUE = yes
-				}
-			}
-		}
-
-		scope:attacker = { show_pow_release_message_effect = yes }
-
-		# Legitimacy
-		add_legitimacy_attacker_victory_effect = yes
-
-		#EP2 Accolade glory gain from winning against higher ranked enemy
-		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
-
-		scope:attacker = {
-			add_prestige = {
-				value = scope:defender.tier_scaled_prestige_value
-			}
-		}
-
-		scope:defender = {
-			add_prestige = {
-				value = 0
-				subtract = tier_scaled_prestige_value
-			}
-		}
-		#Show land transfer
-		show_as_tooltip = {
-			#loser/winner scopes are only being set here to correctly display the effects of LR_tgp_sacral_gaul_manorial_eradicate_cb_transfer_effect in the tooltip!
-			scope:defender = {
-				save_scope_as = loser
-			}
-			scope:attacker = {
-				save_scope_as = winner
-			}
-			LR_tgp_sacral_gaul_manorial_eradicate_cb_transfer_effect = yes
-		}
-		#show death
-		show_as_tooltip = {
-			scope:defender = {
-				death = {
-					death_reason = death_eradicated
-					killer = scope:attacker
-				}
-			}
-			scope:defender = {
-				every_courtier = {
-					custom = every_close_family_house_member_in_court_cb_win_desc
-					limit = {
-						house = scope:defender.house
-						NOT = {
-							scope:defender.primary_heir ?= this
-						}
-					}
-					death = {
-						death_reason = death_eradicated
-						killer = scope:attacker
-					}
-				}
-			}
-		}
-
-		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
-		modify_allies_of_participants_fame_values = {
-			WINNER = scope:attacker
-			FAME_BASE = major_prestige_value
-			IS_RELIGIOUS_WAR = no
-			WINNER_ALLY_FAME_SCALE = 1
-			LOSER_ALLY_FAME_SCALE = 1
-		}
-
-		# Truce
-		add_truce_attacker_victory_effect = yes
-
-		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
-		laamp_as_mercenary_payout_tooltip_effect = yes
-
-		#Eradicate House follow up event
-		scope:defender = {
-			trigger_event = LR_tgp_sacral_gaul_general.9550
-		}
-	}
-
-	on_white_peace_desc = {
-		desc = eradicate_house_cb_white_peace_desc
-	}
-	on_white_peace = {
-		scope:attacker = {
-			show_pow_release_message_effect = yes
-			stress_and_fulfillment_impact = {
-				ambitious = medium_stress_impact_gain
-				arrogant = medium_stress_impact_gain
-			}
-			add_prestige = medium_prestige_loss
-		}
-
-		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
-		modify_allies_of_participants_fame_values = {
-			WINNER = scope:attacker # not important as the scales are identical
-			FAME_BASE = major_prestige_value
-			IS_RELIGIOUS_WAR = no
-			WINNER_ALLY_FAME_SCALE = 1
-			LOSER_ALLY_FAME_SCALE = 1
-		}
-
-		scope:defender = {
-			stress_and_fulfillment_impact = {
-				arrogant = medium_stress_impact_gain
-			}
-		}
-
-		# Truce
-		add_truce_attacker_victory_effect = yes
-
-		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
-		laamp_as_mercenary_payout_tooltip_effect = yes
-	}
-
-	on_defeat_desc = {
-		desc = eradicate_house_cb_defeat_desc
-	}
-
-	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-
-		# Legitimacy
-		add_legitimacy_attacker_defeat_effect = yes
-
-		scope:defender = {
-			mandala_peacemaker_perk_serenity_effect = yes
-			#EP2 accolade glory gain for winning against higher ranked enemy
-			accolade_defender_war_end_glory_gain_high_effect = yes
-		}
-
-		scope:attacker = {
-			add_prestige = {
-				value = 0
-				subtract = tier_scaled_prestige_value
-			}
-		}
-		scope:defender = {
-			add_prestige = {
-				value = tier_scaled_prestige_value
-			}
-		}
-		#Show land transfer
-		show_as_tooltip = {
-			#loser/winner scopes are only being set here to correctly display the effects of LR_tgp_sacral_gaul_manorial_eradicate_cb_transfer_effect in the tooltip!
-			scope:defender = {
-				save_scope_as = winner
-			}
-			scope:attacker = {
-				save_scope_as = loser
-			}
-			LR_tgp_sacral_gaul_manorial_eradicate_cb_transfer_effect = yes
-		}
-		#Show killing
-		show_as_tooltip = {
-
-			scope:attacker = {
-				death = {
-					death_reason = death_eradicated
-					killer = scope:defender
-				}
-			}
-			scope:attacker = {
-				every_courtier = {
-					custom = every_close_family_house_member_in_court_cb_lose_desc
-					limit = {
-						house = scope:attacker.house
-						NOT = {
-							this = scope:attacker.primary_heir
-						}
-					}
-					death = {
-						death_reason = death_eradicated
-						killer = scope:defender
-					}
-				}
-			}
-		}
-		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
-		modify_allies_of_participants_fame_values = {
-			WINNER = scope:defender
-			FAME_BASE = major_prestige_value
-			IS_RELIGIOUS_WAR = no
-			WINNER_ALLY_FAME_SCALE = 1
-			LOSER_ALLY_FAME_SCALE = 1
-		}
-
-		# Truce
-		add_truce_attacker_defeat_effect = yes
-
-		scope:attacker = { save_temporary_scope_as = loser }
-		on_lost_aggression_war_discontent_loss = yes
-
-		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
-		laamp_as_mercenary_payout_tooltip_effect = yes
-		#Eradicate House follow up event
-		scope:attacker = {
-			trigger_event = LR_tgp_sacral_gaul_general.9550
-		}
-	}
-
-	on_primary_attacker_death = inherit
-	on_primary_defender_death = inherit
-
-	attacker_allies_inherit = yes
-	defender_allies_inherit = yes
-
-	war_name = "ERADICATE_HOUSE_WAR_NAME"
-	war_name_base = "ERADICATE_HOUSE_WAR_NAME_BASE"
-	cb_name = "ERADICATE_HOUSE_CB_NAME"
-	interface_priority = 80
-
-	ticking_war_score_targets_entire_realm = yes
-	attacker_ticking_warscore = 0.01
-	attacker_wargoal_percentage = 0.01
-	attacker_score_from_occupation_scale = 100
-	defender_score_from_occupation_scale = 100
-	attacker_score_from_battles_scale = 150
-	defender_score_from_battles_scale = 150
-
-	max_attacker_score_from_battles = 200
-	max_defender_score_from_battles = 200
-
-	max_defender_score_from_occupation = 50
-	max_attacker_score_from_occupation = 50
-
-	max_ai_diplo_distance_to_title = 500
-
-	ai_score_mult = {
-		value = 1
-		add = frankokratia_leader_protection_value #Set back to 0. Declaring war on the frankokratia leader can really ruin the whole thing
-	}
-}
 
 # War to become Soryo as Kampaku
-sacral_gaul_establish_manorial_administration_cb = {
+SACRAL_GAUL_ESTABLISH_MANORIAL_ADMINISTRATION_CB = {
 	icon = soryo
 	group = subjugation
 	combine_into_one = yes
@@ -2588,7 +2257,7 @@ sacral_gaul_establish_manorial_administration_cb = {
 		}
 		scope:defender = {
 			save_scope_as = sacral_magister_militum
-			show_as_tooltip = { sacral_gaul_establish_manorial_administration_reward_effect = yes }
+			show_as_tooltip = { SACRAL_GAUL_ESTABLISH_manorial_administration_reward_effect = yes }
 			trigger_event = LR_tgp_sacral_gaul_decision.9606
 		}
 
@@ -2655,9 +2324,9 @@ sacral_gaul_establish_manorial_administration_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "sacral_gaul_establish_SORYO_ADMINISTRATION_WAR_NAME"
-	war_name_base = "sacral_gaul_establish_SORYO_ADMINISTRATION_WAR_NAME_BASE"
-	cb_name = "sacral_gaul_establish_manorial_administration_cb_NAME"
+	war_name = "SACRAL_GAUL_ESTABLISH_MANORIAL_ADMINISTRATION_WAR_NAME"
+	war_name_base = "SACRAL_GAUL_ESTABLISH_MANORIAL_ADMINISTRATION_WAR_NAME_BASE"
+	cb_name = "SACRAL_GAUL_ESTABLISH_MANORIAL_ADMINISTRATION_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
@@ -2948,9 +2617,9 @@ sacral_gaul_bloc_war_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "sacral_bloc_WAR_NAME"
-	war_name_base = "sacral_bloc_WAR_NAME_BASE"
-	cb_name = "sacral_bloc_WAR_CB_NAME"
+	war_name = "SACRAL_GAUL_BLOC_WAR_NAME"
+	war_name_base = "SACRAL_GAUL_BLOC_WAR_NAME_BASE"
+	cb_name = "SACRAL_GAUL_BLOC_WAR_CB_NAME"
 	interface_priority = 80
 
 	ticking_war_score_targets_entire_realm = yes
