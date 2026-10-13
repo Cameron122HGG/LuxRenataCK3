@@ -209,29 +209,6 @@ yearly_global_pulse = {
 			}
 		}
 		# Almohad Invasion
-		if = {
-			limit = {
-				current_date >= 1110.1.1
-				current_date < 1150.1.1
-				NOT = { has_global_variable = spawned_almohads }
-			}
-			random = {
-				chance = almohad_appearance_base_chance
-				modifier = {
-					add = 3
-					current_date >= 1130.1.1
-				}
-				modifier = {
-					add = 3
-					current_date >= 1140.1.1
-				}
-				debug_log = "Attempting to spawn Almohads within 240 days"
-				trigger_event = {
-					id = almohad.0001
-					days = { 2 240 }
-				}
-			}
-		}
 		# Jomsvikings form autonomously.
 		if = {
 			limit = {
@@ -254,28 +231,28 @@ yearly_global_pulse = {
 				# Add 5% every decade for the first half of the century.
 				modifier = {
 					add = 5
-					current_date >= 910.1.1
+					current_date >= 5910.1.1
 				}
 				modifier = {
 					add = 5
-					current_date >= 920.1.1
+					current_date >= 5920.1.1
 				}
 				modifier = {
 					add = 5
-					current_date >= 930.1.1
+					current_date >= 5930.1.1
 				}
 				modifier = {
 					add = 5
-					current_date >= 940.1.1
+					current_date >= 5940.1.1
 				}
 				modifier = {
 					add = 5
-					current_date >= 950.1.1
+					current_date >= 5950.1.1
 				}
 				# And then add another 25% solid chance for the whole of the latter half of the century.
 				modifier = {
 					add = 25
-					current_date >= 960.1.1
+					current_date >= 5960.1.1
 				}
 				# Fire the event.
 				trigger_event = {
@@ -290,7 +267,7 @@ yearly_global_pulse = {
 				# Do we have the correct flavour pack?
 				has_fp2_dlc_trigger = yes
 				# Must be before the monk would likely die.
-				current_date <= 880.1.1
+				current_date <= 5880.1.1
 				# The monk hasn't already tried to turn up somewhere.
 				NOT = {
 					is_target_in_global_variable_list = {
@@ -313,7 +290,7 @@ yearly_global_pulse = {
 								capital_province = { geographical_region = dlc_fp2_lyonese_monk_region }
 								fp2_lyonese_monk_0002_valid_character_configuration_trigger = yes
 							}
-							current_date = 880.1.1
+							current_date = 5880.1.1
 						}
 					}
 					# Fire the event.
@@ -337,19 +314,19 @@ yearly_global_pulse = {
 					# Slowly ramp up the chance till *someone* is selected, assuming we have any valid candidates.
 					modifier = {
 						add = 20
-						current_date >= 870.1.1
+						current_date >= 5870.1.1
 					}
 					modifier = {
 						add = 25
-						current_date >= 873.1.1
+						current_date >= 5873.1.1
 					}
 					modifier = {
 						add = 25
-						current_date >= 876.1.1
+						current_date >= 5876.1.1
 					}
 					modifier = {
 						add = 25
-						current_date = 880.1.1
+						current_date = 5880.1.1
 					}
 					# Fire the event.
 					trigger_event = {
@@ -364,7 +341,7 @@ yearly_global_pulse = {
 		if = {
 			limit = {
 				# Rabbi Gershom bans polygamy sometime in the 11th century
-				current_date > "1000.01.01"
+				current_date > "6000.01.01"
 				# Make sure this hasn't happened already
 				faith:rabbinic_faith = {
 					main_rite = {
@@ -525,21 +502,7 @@ yearly_global_pulse = {
 		}
 
 		# Zanj Rebellion
-		if = {
-			limit = {
-				current_date = 5868.1.2
-				NOT = { exists = global_var:zanj_rebellion_happened }
-			}
-			debug_log = "Zanj Rebellion Story Cycle Started"
-			trigger_event = {
-				id = fp3_story_cycle_zanj_rebellion_events.0001
-				days = { 100 5000 }
-			}
-			set_global_variable = {
-				name = zanj_rebellion_happened
-				value = yes
-			}
-		}
+
 		#Grant latin emperor a de jure kingdom after 100 years, if they've failed to grab any de jure lands yet
 		if = {
 			limit = {
