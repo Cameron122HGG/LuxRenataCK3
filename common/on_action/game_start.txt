@@ -4043,154 +4043,150 @@ on_game_start_after_lobby = {
 			game_rule_sexuality_distribution_effect = yes
 		}
 
-		### GAME RULE: SITUATION TOGGLES
-		struggle:iberian_struggle ?= {
-			if = {
-				limit = { has_game_rule = struggle_iberia_toggle_off }
-				end_struggle = yes
-			}
-		}
-		struggle:persian_struggle ?= {
-			if = {
-				limit = { has_game_rule = struggle_persia_toggle_off }
-				end_struggle = yes
-			}
-		}
-		situation:the_great_steppe ?= {
-			if = {
-				limit = { has_game_rule = situation_the_great_steppe_toggle_off }
-				end_situation = yes
-			}
-		}
+		#Lux Renata TBA
+		#### GAME RULE: SITUATION TOGGLES
+		#struggle:iberian_struggle ?= {
+		#	if = {
+		#		limit = { has_game_rule = struggle_iberia_toggle_off }
+		#		end_struggle = yes
+		#	}
+		#}
+		#struggle:persian_struggle ?= {
+		#	if = {
+		#		limit = { has_game_rule = struggle_persia_toggle_off }
+		#		end_struggle = yes
+		#	}
+		#}
+		#situation:the_great_steppe ?= {
+		#	if = {
+		#		limit = { has_game_rule = situation_the_great_steppe_toggle_off }
+		#		end_situation = yes
+		#	}
+		#}
 
-		### GAME RULE: RULER OF MUNSTER
-		if = {
-			limit = {
-				game_start_date = 1066.9.15
-				has_game_rule = historicity_ruler_of_munster_historical_toirdelbach
-			}
-			create_title_and_vassal_change = {
-				type = conquest
-				save_scope_as = title_change
-			}
-			character:83355 = {
-				every_held_title = {
-					title_tier >= county
-					change_title_holder = {
-						holder = character:906
-						change = scope:title_change
-					}
-				}
-				pay_short_term_gold = {
-					target = character:906
-					gold = gold
-				}
-			}
-			resolve_title_and_vassal_change = scope:title_change
-			# Since Murchad is back to his historical self, he gets to suck.
-			character:83355 = {
-				add_diplomacy_skill = -10
-				remove_trait = gregarious
-				add_trait = craven
-				# Plus, usurpation rivalry — now Toidelbach has a perfectly good claim to the kingdom and will do a lot more with it than Murchad managed in his 5m in power, but by gameplay terms, this _is_ a usurpation.
-				set_relation_rival = {
-					target = character:906
-					reason = rival_usurper
-				}
-			}
-			# Alright, let's give Toirdelbach his alliance.
-			character:906 = {
-				add_opinion = {
-					modifier = perk_negotiated_alliance_opinion
-					target = character:922
-				}
-				reverse_add_opinion = {
-					modifier = event_negotiated_alliance_opinion
-					target = character:922
-				}
-				create_alliance = {
-					target = character:922
-					allied_through_owner = character:906
-					allied_through_target = character:922
-				}
-			}
-			character:906 = {
-				every_held_title = {
-					title_tier = county
-					change_county_control = 100
-				}
-			}
-			random_player = {
-				limit = { this = character:83355 }
-				set_player_character = character:906
-			}
-		}
+		# ### GAME RULE: RULER OF MUNSTER
+		# if = {
+		# 	limit = {
+		# 		game_start_date = 6066.1.1
+		# 		has_game_rule = historicity_ruler_of_munster_historical_toirdelbach
+		# 	}
+		# 	create_title_and_vassal_change = {
+		# 		type = conquest
+		# 		save_scope_as = title_change
+		# 	}
+		# 	character:83355 = {
+		# 		every_held_title = {
+		# 			title_tier >= county
+		# 			change_title_holder = {
+		# 				holder = character:906
+		# 				change = scope:title_change
+		# 			}
+		# 		}
+		# 		pay_short_term_gold = {
+		# 			target = character:83355
+		# 			gold = gold
+		# 		}
+		# 	}
+		# 	random_player = {
+		# 		limit = { this = character:83355 }
+		# 		set_player_character = character:906
+		# 	}
+		# 	resolve_title_and_vassal_change = scope:title_change
+		# 	# Since Murchad is back to his historical self, he gets to suck.
+		# 	character:83355 = {
+		# 		add_diplomacy_skill = -10
+		# 		remove_trait = gregarious
+		# 		add_trait = craven
+		# 		# Plus, usurpation rivalry — now Toidelbach has a perfectly good claim to the kingdom and will do a lot more with it than Murchad managed in his 5m in power, but by gameplay terms, this _is_ a usurpation.
+		# 		set_relation_rival = {
+		# 			target = character:906
+		# 			reason = rival_usurper
+		# 		}
+		# 	}
+		# 	# Alright, let's give Toirdelbach his alliance.
+		# 	character:906 = {
+		# 		add_opinion = {
+		# 			modifier = perk_negotiated_alliance_opinion
+		# 			target = character:922
+		# 		}
+		# 		reverse_add_opinion = {
+		# 			modifier = event_negotiated_alliance_opinion
+		# 			target = character:922
+		# 		}
+		# 		create_alliance = {
+		# 			target = character:922
+		# 			allied_through_owner = character:906
+		# 			allied_through_target = character:922
+		# 		}
+		# 	}
+		# }
 
-		### GAME RULE: DETERMINISTIC CONQUEST
-		if = {
-			limit = {
-				OR = {
-					NOT = { has_game_rule = historicity_norman_conquest_default_random }
-					game_rule_rig_norman_conquest_for_hereward_trigger = yes
-				}
-			}
-			set_global_variable = deterministic_conquest_of_england_1066
-			# See if we should just teleport our combatants' armies into place.
-			trigger_event = {
-				id = game_rule.1151
-				trigger_on_next_date = 1066.09.25
-			}
-			trigger_event = {
-				id = game_rule.1152
-				trigger_on_next_date = 1066.10.14
-			}
-		}
+		#### GAME RULE: DETERMINISTIC CONQUEST
+		#if = {
+		#	limit = {
+		#		OR = {
+		#			NOT = { has_game_rule = historicity_norman_conquest_default_random }
+		#			game_rule_rig_norman_conquest_for_hereward_trigger = yes
+		#		}
+		#	}
+		#	set_global_variable = deterministic_conquest_of_england_1066
+		#	# See if we should just teleport our combatants' armies into place.
+		#	trigger_event = {
+		#		id = game_rule.1151
+		#		trigger_on_next_date = 6066.09.25
+		#	}
+		#	trigger_event = {
+		#		id = game_rule.1152
+		#		trigger_on_next_date = 6066.10.14
+		#	}
+		#}
 
-		### 867 - MISC ###
-		# Basileios has just murdered Michael III.
-		character:1700 ?= { trigger_event = bookmark.0211 }
+		#### 867 - MISC ###
+		## Basileios has just murdered Michael III.
+		#character:1700 ?= { trigger_event = bookmark.0211 }
 
-		### GAME RULE: EXTRA ADMINS
-		## We'll be doing some excessive triggers below in a bid to lightly future-proof + error-spam mods less, don't worry about it.
-		### We handle players after the lobby.
-		# Historic chars.
-		apply_historic_administrative_game_rule_effect = yes
-		# Players.
-		if = {
-			limit = { has_dlc_feature = roads_to_power }
-			if = {
-				limit = {
-					NOT = { has_game_rule = historicity_extra_admin_player_wherever_gameplay_not_administrative }
-				}
-				if = {
-					limit = { has_game_rule = historicity_extra_admin_player_wherever_alt_historic_always }
-					every_player = {
-						limit = {
-							highest_held_title_tier >= tier_kingdom
-							NOR = {
-								government_has_mechanic = administrative
-								is_landed = no
-							}
-						}
-						convert_to_administrative_from_feudalism_game_start_effect = yes
-					}
-				}
-				else_if = {
-					limit = { has_game_rule = historicity_extra_admin_player_wherever_alt_historic_with_august_trait }
-					every_player = {
-						limit = {
-							highest_held_title_tier >= tier_kingdom
-							NOR = {
-								government_has_mechanic = administrative
-								is_landed = no
-							}
-							has_trait = august
-						}
-						convert_to_administrative_from_feudalism_game_start_effect = yes
-					}
-				}
-			}
-		}
+		#### GAME RULE: EXTRA ADMINS
+		### We'll be doing some excessive triggers below in a bid to lightly future-proof + error-spam mods less, don't worry about it.
+		#### We handle players after the lobby.
+		## Historic chars.
+		#apply_historic_administrative_game_rule_effect = yes
+		## Players.
+		#if = {
+		#	limit = { has_dlc_feature = roads_to_power }
+		#	if = {
+		#		limit = {
+		#			NOT = { has_game_rule = historicity_extra_admin_player_wherever_gameplay_not_administrative }
+		#		}
+		#		if = {
+		#			limit = { has_game_rule = historicity_extra_admin_player_wherever_alt_historic_always }
+		#			every_player = {
+		#				limit = {
+		#					highest_held_title_tier >= tier_kingdom
+		#					NOR = {
+		#						government_allows = administrative
+		#						is_landed = no
+		#					}
+		#				}
+		#				convert_to_administrative_from_feudalism_game_start_effect = yes
+		#			}
+		#		}
+		#		else_if = {
+		#			limit = { has_game_rule = historicity_extra_admin_player_wherever_alt_historic_with_august_trait }
+		#			every_player = {
+		#				limit = {
+		#					highest_held_title_tier >= tier_kingdom
+		#					NOR = {
+		#						government_allows = administrative
+		#						is_landed = no
+		#					}
+		#					has_trait = august
+		#				}
+		#				convert_to_administrative_from_feudalism_game_start_effect = yes
+		#			}
+		#		}
+		#	}
+		#}
+		#Lux Renata TBA End
 
 		# Give Ruler Designer characters regencies.
 		every_in_global_list = {
@@ -7303,7 +7299,7 @@ on_game_start_after_lobby = {
 	}
 
 	events = {
-		game_rule.1011	#Hungarian Migration management.
+		#game_rule.1011	#Hungarian Migration management.
 		historical_artifacts.0050			# Starting Holy Site Relics
 		historical_artifacts.0023			# Historical Artifacts Generator
 		coronation_events.0302 # ACH crown giveaway
