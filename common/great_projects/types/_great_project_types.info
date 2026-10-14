@@ -13,9 +13,14 @@
 #
 <project_key> = {
 
-	# name of the image that will be used for this great project as list and pin icon. uses the project key if left unset.
-	# place your images in GREAT_PROJECT_ICON_PATH
-	icon = project_key
+	# trigger list of icon paths used for this great project as list and pin icon. The first entry that satisfies the trigger will be used for ongoing Great Projects.
+	# define a default with no triggers as fallback entry; an error is logged if there is none.
+	# Supports the same scopes as illustration below.
+	icon = {
+		trigger = { ... }				# trigger that enables specific icon
+
+		reference = file_path			# complete path of the icon image
+	}
 
 	# trigger list of paths for the illustrations. The first entry that satisfies the trigger will be used for ongoing Great Projects.
 	# define a sensible default with no triggers as last entry for fallback illustrations.
@@ -89,6 +94,11 @@
 	#
 	# Supported scopes:
 	# 	root = the character who's trying to cancel
+	#	scope:province = the province where the project is in
+	#	scope:great_project = the project
+	#	scope:owner = the character who currently owns the project
+	#	scope:founder = the character who funded the project
+	#	scope:founder_heir = the current alive heir of the founder - may be null
 	#
 	can_cancel = {
 		<triggers>
@@ -108,7 +118,7 @@
 	}
 
 	### Brief: owner (owner)
-	# how does the project determine who owns it? defaults to province_owner
+	# how does the project determine who owns it? defaults to province_owner_top_liege
 	#	- province_owner_top_liege: top liege of the province where the project is planned
 	#	- province_owner: direct owner of the province where the project is planned
 	#   - province_clerical_region_title_owner: holder of the clerical_region title this province belongs to
@@ -147,7 +157,7 @@
 	### Brief: construction_time ( scripted value int32 )
 	# Number of days required to complete the great project. Supports scripted values.
 	# Supported scopes:
-	# 	root = the funded project
+	# 	root = the character who funded the project
 	#	scope:province = the province where the project is in
 	#	scope:owner = the character who currently owns the project
 	#	scope:founder = the character who funded the project
@@ -158,10 +168,11 @@
 	### Brief: contribution_threshold ( fixed point )
 	# Percentage of progress after which optional contributions (if any) cannot be funded anymore.
 	# The actual date is calculated from the scripted construction time without taking into account character modifiers.
+	# Must be between 0 and 100. Default: NGreatProject::DEFAULT_CONTRIBUTION_THRESHOLD define
 	#
 	contribution_threshold = 50
 
-	### Brief: investor_cooldown ( scripted value int32 )
+	### Brief: contributor_cooldown ( scripted value int32 )
 	# Number of days until potential contributors may start funding project contributions. This system is in place to give the founder a head start in funding contributions.
 	# Supported scopes:
 	# 	root = character who planned the project
@@ -243,7 +254,7 @@
 	invite_interaction = request_great_project_contribution_interaction
 
 	### Brief: allowed_contributor_filter ( bitmask )
-	# broad category of rulers who are allowed to invest in contributions for this project. Default is vassals and owner
+	# broad category of rulers who are allowed to invest in contributions for this project. Default is vassals, owner and founder
 	#
 	# Possible values:
 	#	vassals: direct, non-tributary vassals of the owner of the project
@@ -258,6 +269,8 @@
 	#	founder: the founder of the project (may be different from the owner)
 	#	duchy: rulers with capital in the duchy of the province
 	#	clerical_region: rulers with capital in the clerical region of the project, if any
+	#	puppeteer: the puppeteer of the owner of the project, or of its founder
+	#	councillor: the councillors of the owner of the project, or of its founder
 	#
 	allowed_contributor_filter = {
 		vassals = yes
@@ -338,7 +351,7 @@
 				<scripted_cost>
 			}
 
-			### Brief: investor_cooldown ( scripted value int32 )
+			### Brief: contributor_cooldown ( scripted value int32 )
 			# How many days until the character may contribute to another contribution for the same project
 			contributor_cooldown = 300
 
@@ -361,7 +374,6 @@
 			#	scope:great_project = the funded project
 			#	scope:owner = the character who currently owns the project (only used for ongoing Great Projects)
 			#	scope:founder = the character who funded the project
-			#	scope:founder_heir = the current alive heir of the founder - may be null
 			#
 			on_complete = { }
 
@@ -445,7 +457,7 @@
 	#	* minor_project
 	#	* environmental_project
 	# environmental_project hides the owner portrait in all related UI. There are no distinctions between major and minor projects as of now.
-	group = major
+	group = major_project
 
 	# Sound that will be played by the notifications when the project completes. Empty by default
 	completion_sound_effect = ""

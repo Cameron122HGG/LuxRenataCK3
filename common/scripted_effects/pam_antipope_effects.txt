@@ -284,13 +284,15 @@ pam_strip_antipope_office_effect = {
 	}
 	# On rite-detach, code unregisters the challenger before any script runs
 	# The marked office title is then all that is left of it
-	every_held_title = {
-		limit = { has_variable = pam_antipope_office }
-		save_temporary_scope_as = pam_title_to_destroy
-		scope:pam_removed_antipope = {
-			clear_puppet_status = yes
-			remove_puppet_modifiers_effect = yes
-			destroy_title = scope:pam_title_to_destroy
+	hidden_effect = {
+		every_held_title = {
+			limit = { has_variable = pam_antipope_office }
+			save_temporary_scope_as = pam_title_to_destroy
+			scope:pam_removed_antipope = {
+				clear_puppet_status = yes
+				remove_puppet_modifiers_effect = yes
+				destroy_title = scope:pam_title_to_destroy
+			}
 		}
 	}
 	remove_character_flag = antipope_flag
@@ -391,6 +393,7 @@ pam_antipope_become_hof_effect = {
 		}
 		scope:new_hof = {
 			set_realm_capital = scope:old_hof_capital
+			set_location_to_default = yes
 		}
 	}
 	scope:new_hof = {

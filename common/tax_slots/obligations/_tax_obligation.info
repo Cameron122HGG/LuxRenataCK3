@@ -25,14 +25,42 @@
 		}
 	}
 
-	vassal_opinion = 10
+	# Contribution values, same format as the obligation levels in common/subject_contracts/contracts
+	# tax/levies/herd/prestige/piety/barter_goods, min_<same>, <same>_factor, contribution_desc,
+	# <same>_contribution_postfix, unclamped_contribution_label, min_contribution_label
 	tax_factor = 0.5
 	levies_factor = -0.75
 
-	vassal_modifier = {
+	# Modifiers applied to the liege / the vassals in the slot
+	liege_modifier = {
+		domain_tax_mult = 0.01
+	}
+	subject_modifier = {
 		monthly_prestige = -0.2
 	}
 
 	flag = vassal_contract_cannot_revoke_titles
 	flag = religiously_protected
+
+	# Script value, how much the AI wants to pick this obligation. Highest valid (is_shown and is_valid) obligation is picked
+	# scope:tax_slot = the tax slot
+	# scope:liege = owner of the tax slot
+	# scope:tax_collector = collector of this slot (or the potential new collector)
+	# scope:num_vassal_slots = vassal limit of the slot
+	# scope:num_slots_with_obligation = number of the liege's other tax slots with this obligation
+	# scope:is_current_obligation = whether this is the slot's current obligation
+	ai_will_do = {
+		value = 1
+	}
+
+	# Effects run when the obligation is set on / removed from a tax slot
+	# scope:tax_slot = the tax slot
+	# scope:liege = owner of the tax slot
+	# scope:tax_collector = collector of this slot
+	on_added = {
+		<effect>
+	}
+	on_removed = {
+		<effect>
+	}
 }

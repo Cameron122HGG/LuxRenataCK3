@@ -926,6 +926,18 @@ feast_events_ewan.0401 = {
 			value = medium_skill_rating
 			# You bond over the conversation.
 			25 = {
+				# Heads of faith and rite need a feast as potential friends first
+				trigger = {
+					OR = {
+						has_relation_potential_friend = scope:intent_target
+						scope:intent_target = {
+							NOR = {
+								faith.religious_head ?= this
+								rite.head_of_rite ?= this
+							}
+						}
+					}
+				}
 				compare_modifier = {
 					value = scope:duel_value
 					multiplier = 3.5

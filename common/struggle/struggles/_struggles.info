@@ -27,7 +27,7 @@ struggle_name = {
 	involvement_prerequisite_percentage = 0.8 # a culture of faith is involved if %80 of total number of counties belonging to it are inside the struggle region
 
 	# How many days before the new phase starts once the threshold is reached
-	# If the value is defined then PHASE_TRANSITION_DURATION is going to be used instead
+	# If the value is not defined then PHASE_TRANSITION_DURATION is going to be used instead
 	transition_state_duration = { days/weeks/months/years = x }
 
 	# There has to be at least one.
@@ -38,8 +38,8 @@ struggle_name = {
 			# There has to be at least one.
 			future_phases = {
 				struggle_iberia_phase_hostility = {	
-					default = yes
-					#these should be defined in common/struggle/catalyst
+					#these should be defined in common/struggle/catalysts
+					#values are int script values, root = struggle
 					catalysts = {					
 						catalysts_betrayed_alliance = 25
 						catalysts_something_something = 30
@@ -87,10 +87,13 @@ struggle_name = {
 				
 				uninvolved_county_modifier = { 					# County Modifiers applied to all the Involved County owned by uninvolved characters
 				}
-							
-				# At least one Phase needs to have an Ending Decision.
-				ending_decisions = { }
 			}
+			
+			# At least one Phase needs to have an Ending Decision (or be an ending phase).
+			ending_decisions = { }
+
+			# If yes, accumulated progress towards this phase is kept when the struggle changes phase. Default: no
+			save_progress = no
 		}
 
 		struggle_phase_based_phase_example = {

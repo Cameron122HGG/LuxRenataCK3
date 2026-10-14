@@ -112,7 +112,7 @@ pam_heresy_c1_pick_diverging_rite_effect = {
 		limit = {
 			this != faith.main_rite
 			rite_counties >= 1
-			exists = head_of_rite
+			head_of_rite ?= { is_ai = yes }
 		}
 
 		weight = {
@@ -204,6 +204,11 @@ pam_heresy_convert_ruler_to_heresy_faith_effect = {
 	if = {
 		limit = { faith != scope:heresy_faith }
 		set_character_faith_with_conversion = scope:heresy_faith
+		# The faith_conversion rule can refuse a new heresy, so we convert the ruler directly instead
+		if = {
+			limit = { faith != scope:heresy_faith }
+			set_character_faith = scope:heresy_faith
+		}
 	}
 	every_held_title = {
 		limit = {
@@ -261,8 +266,75 @@ pam_heresy_convert_ruler_to_heresy_faith_effect = {
 				set_county_faith = scope:heresy_faith
 				holder = {
 					if = {
-						limit = { is_eligible_rite_growth_target_trigger = yes }
+						# Faith version of is_eligible_rite_growth_target_trigger, since scope:source_rite is not set after declaration
+						limit = {
+							is_physically_able_ai_adult = yes
+							faith = scope:origin_faith
+							NOR = {
+								scope:founder ?= this
+								has_trait = heresiarch
+								has_trait = herald
+								recently_converted_faith_trigger = yes
+								has_character_flag = recently_converted_by_rite_growth
+								has_character_flag = ai_will_not_convert
+								faith.religious_head ?= this
+								highest_held_title_tier >= tier_empire
+							}
+						}
 						pam_heresy_convert_ruler_to_heresy_faith_effect = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+# Any scope. Spread message for all three components, sent after scope:convert_ruler converts
+# Reaches same-faith players near the convert and the convert's liege
+# Shows a rite change when scope:new_rite exists, otherwise a faith change to scope:heresy_faith
+# TITLE = message title loc key
+pam_heresy_send_spread_message_effect = {
+	every_player = {
+		limit = {
+			faith = scope:origin_faith
+			NOR = {
+				this = scope:convert_ruler
+				scope:founder ?= this
+			}
+			OR = {
+				scope:convert_ruler.liege ?= this
+				capital_county ?= {
+					squared_distance = {
+						target = scope:convert_ruler.capital_county
+						value <= squared_distance_medium
+					}
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:new_rite }
+			send_interface_message = {
+				type = msg_pam_heresy_spread
+				title = $TITLE$
+				left_icon = scope:convert_ruler
+				right_icon = scope:new_rite
+				show_as_tooltip = {
+					scope:convert_ruler = {
+						set_character_rite = scope:new_rite
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { exists = scope:heresy_faith }
+			send_interface_message = {
+				type = msg_pam_heresy_spread
+				title = $TITLE$
+				left_icon = scope:convert_ruler
+				right_icon = scope:founder
+				show_as_tooltip = {
+					scope:convert_ruler = {
+						set_character_faith = scope:heresy_faith
 					}
 				}
 			}

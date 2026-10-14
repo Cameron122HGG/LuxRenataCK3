@@ -3956,18 +3956,6 @@ scripted_effect ask_help_crusade_setup_effect = {
 					faith = scope:the_faith
 				}
 				alternative_limit = {
-					scope:the_faith = { main_rite = { rite_has_doctrine = doctrine_gender_female_dominated } }
-					is_female = yes
-					is_adult = yes
-					is_ai = yes
-					NOR = {
-						has_trait = excommunicated
-						has_trait = incapable
-						has_trait = devoted
-					}
-					faith = scope:the_faith
-				}
-				limit = {
 					is_adult = yes
 					is_ai = yes
 					NOR = {
@@ -4439,7 +4427,12 @@ ep3_decisions_event.4022 = {
 			type = was_evangelized_memory
 			participants = { missionary = scope:evangelizer sender = scope:sender }
 		}
-		set_character_faith_with_conversion = scope:evangelizer.faith
+		set_character_faith = scope:evangelizer.faith
+		set_character_rite = scope:evangelizer.rite
+		capital_county ?= {
+			set_county_faith = scope:evangelizer.faith
+			set_county_rite = scope:evangelizer.rite
+		}
 		if = {
 			limit = {
 				scope:evangelizer.faith = { has_doctrine = doctrine_monotheist }
@@ -4599,7 +4592,12 @@ ep3_decisions_event.4023 = {
 						add = 10
 					}
 					scope:pagan = {
-						set_character_faith_with_conversion = scope:evangelizer.faith
+						set_character_faith = scope:evangelizer.faith
+						set_character_rite = scope:evangelizer.rite
+						capital_county ?= {
+							set_county_faith = scope:evangelizer.faith
+							set_county_rite = scope:evangelizer.rite
+						}
 						create_character_memory = {
 							type = was_evangelized_memory
 							participants = { missionary = scope:evangelizer sender = scope:sender }
@@ -4822,7 +4820,12 @@ ep3_decisions_event.4025 = {
 			}
 			show_as_tooltip = {
 				scope:pagan = {
-					set_character_faith_with_conversion = scope:evangelizer.faith
+					set_character_faith = scope:evangelizer.faith
+					set_character_rite = scope:evangelizer.rite
+					capital_county ?= {
+						set_county_faith = scope:evangelizer.faith
+						set_county_rite = scope:evangelizer.rite
+					}
 				}
 			}
 			custom_tooltip = ep3_decisions_event.4025.a.tt
@@ -5173,7 +5176,7 @@ ep3_decisions_event.4060 = {
 
 	immediate = {
 		show_as_tooltip = {
-			change_government = root.government_type
+			change_government = government_type
 			if = {
 				limit = {
 					NOT = { has_character_flag = latin_emp_force_admin_flag }
@@ -5189,7 +5192,7 @@ ep3_decisions_event.4060 = {
 			# Adopting vassal tooltip
 			every_powerful_vassal = {
 				limit = { has_same_government = root }
-				change_government = root.government_type
+				change_government = government_type
 			}
 		}
 		hidden_effect = {

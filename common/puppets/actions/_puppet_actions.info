@@ -1,11 +1,13 @@
 ﻿# Puppet actions are interactions or decisions that you can only take via puppet characters.
 # Localize puppet_action_description_[puppet_action_key] to get a readable generic string for UI visualisation
+# (used for type = character_interaction and type = trigger; decision and great_project actions use the decision title / great project name)
 puppet_action_key = {
 	# type: what kind of action is this. defaults to character_interaction
 	# possible values:
 	#  character_interaction
 	#  decision
 	#  great_project
+	#  trigger (no linked interaction/decision/project; only is_enabled, which is required. Checked from script with is_puppet_action_valid)
 	type = character_interaction
 
 	# the key for the interaction enabled by  this action, if it is a character interaction
@@ -24,7 +26,8 @@ puppet_action_key = {
 	#
 	is_enabled = { trigger }
 
-	# bool. flags whether this action should be shown in UI. default is no
+	# bool. type = character_interaction only: yes lists the interaction among the highlighted (special) interactions
+	# of its category in the intrigue window puppet entry, no among the generic ones. default is no
 	#
 	is_important = no
 

@@ -60,6 +60,7 @@
 		is_incapable = no
 		scope:target = {
 			in_diplomatic_range = scope:owner
+			is_imprisoned = no
 		}
 		NOR = {
 			faith = scope:target.faith # You can't study within your own faith
@@ -248,7 +249,7 @@
 		modifier = {
 			add = {
 				value = scope:owner.learning
-				multiply = 3
+				multiply = 2
 			}
 			desc = SCHEME_LEARNING_MODIFIER
 			scope:owner.learning > 0
@@ -257,7 +258,7 @@
 		modifier = {
 			add = {
 				value = scope:owner.piety_level
-				multiply = 5
+				multiply = 3
 			}
 			desc = SCHEME_PIETY_LEVEL_MODIFIER
 			scope:owner.piety_level > 0
@@ -293,7 +294,7 @@
 		modifier = {
 			scope:owner = { has_trait = theologian }
 			desc = "STUDY_FAITH_THEOLOGIAN_PERK_DESC"
-			add = 20
+			add = 10
 		}
 		#Erudite
 		modifier = {
@@ -500,6 +501,26 @@
 				}
 			}
 		}
+		if = {
+			limit = {
+				scope:target = { is_imprisoned = yes }
+			}
+			scope:target.imprisoner = {
+				save_scope_as = other_imprisoner
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = study_faith_invalidated_title
+					left_icon = scope:target
+					right_icon = scope:other_imprisoner
+					custom_description_no_bullet = {
+						subject = scope:other_imprisoner
+						object = scope:target
+						text = scheme_target_imprisoned_by_other
+					}
+				}
+			}
+		}
 		
 		# invalidated by invalid target but can still study the rite
 		scope:owner = {
@@ -510,6 +531,7 @@
 						OR = {
 							is_alive = no
 							NOT = { in_diplomatic_range = scope:owner }
+							is_imprisoned = yes
 						}
 					}
 					rite != scope:target.rite

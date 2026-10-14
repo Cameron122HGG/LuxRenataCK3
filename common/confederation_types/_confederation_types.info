@@ -87,6 +87,40 @@
 		# Minimum amount of confederation cohesion required to get this level of bonuses.
 		#
 		cohesion_threshold = <num>
+
+		### Parameters
+		#
+		# Parameters active while the confederation is at this cohesion level.
+		#
+		parameters = { <parameter> = yes }
+
+		## Modifiers applied to various members of houses in a bloc (house based confederation)
+		#
+		# Houses inside a bloc/confederation come in three categories:
+		#  - The *leading* house is the house that leads the confederation,
+		#    and it's aspiration determines the type of confederation
+		#  - An *aligned* house has the same aspiration as the leader, and is rewarded for that.
+		#  - A *divergent* house has a different aspiration as the leader, and is punished for that.
+		#
+		# Ideally you'd want to belong to a confederation stat shares your aspiration.
+		#
+		# On top of these category specific modifiers there are also modifiers that apply to anyone in a house.
+		#
+		# *_head applies to the house head only, *_member_not_head to members that are not the house head,
+		# and *_member to all members (including the house head).
+		#
+		leading_house_head = <modifier>
+		leading_house_member_not_head = <modifier>
+		leading_house_member = <modifier>
+		aligned_house_head = <modifier>
+		aligned_house_member_not_head = <modifier>
+		aligned_house_member = <modifier>
+		divergent_house_head = <modifier>
+		divergent_house_member_not_head = <modifier>
+		divergent_house_member = <modifier>
+		any_member_house_head = <modifier>
+		any_member_house_member_not_head = <modifier>
+		any_member_house_member = <modifier>
 	}
 
 	## Is this confederation still valid, or should it dissolve?
@@ -99,27 +133,6 @@
 	is_valid_confederation = <trigger>
 	on_confederation_destroyed = <effect>
 
-	## Modifiers applied to various members of houses in a bloc (house based confederation)
-	#
-	# Houses inside a bloc/confederation come in three categories:
-	#  - The *leading* house is the house that leads the confederation,
-	#    and it's aspiration determines the type of confederation
-	#  - An *aligned* house has the same aspiration as the leader, and is rewarded for that.
-	#  - A *divergent* house has a different aspiration as the leader, and is punished for that.
-	#
-	# Ideally you'd want to belong to a confederation stat shares your aspiration.
-	#
-	# On top of these category specific modifiers there are also modifiers that apply to anyone in a house.
-	#
-	leading_house_head = <modifier>
-	leading_house_member = <modifier>
-	aligned_house_head = <modifier>
-	aligned_house_member = <modifier>
-	divergent_house_head = <modifier>
-	divergent_house_member = <modifier>
-	any_member_house_head = <modifier>
-	any_member_house_member = <modifier>
-
 	## Member character
 	#
 	# Determine if a character is a valid member.
@@ -131,7 +144,8 @@
 	# Scope:
 	#  root - The confederation
 	#  character - The character who can be expected to be a living ruler
-	#  house (conditional) - The house that the character belongs to which causes the character to be indirectly added.
+	#  house - The house of the character (through which the character is indirectly added, if not an individual member)
+	#  confederation - The confederation
 	is_valid_member_character = <trigger>
 	on_member_character_joined = <effect>
 	on_member_character_left = <effect>

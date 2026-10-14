@@ -551,7 +551,12 @@ rite_growth.0011 = {
 		}
 
 		if = {
-			limit = { exists = scope:convert_ruler }
+			limit = {
+				scope:convert_ruler ?= {
+					is_alive = yes
+					rite != scope:new_rite
+				}
+			}
 
 			scope:convert_ruler = {
 				rite_growth_convert_ruler_to_new_rite_effect = yes
@@ -605,29 +610,32 @@ rite_growth.0011 = {
 			}
 
 			# Discreet notification to faith-mates living near the converted ruler.
-			every_player = {
-				limit = {
-					faith = scope:origin_faith
-					NOR = {
-						this = scope:convert_ruler
-						this = scope:founder
-					}
-					capital_county ?= {
-						squared_distance = {
-							target = scope:convert_ruler.capital_county
-							value <= squared_distance_medium
+			if = {
+				limit = { scope:convert_ruler ?= { rite = scope:new_rite } }
+				every_player = {
+					limit = {
+						faith = scope:origin_faith
+						NOR = {
+							this = scope:convert_ruler
+							this = scope:founder
+						}
+						capital_county ?= {
+							squared_distance = {
+								target = scope:convert_ruler.capital_county
+								value <= squared_distance_medium
+							}
 						}
 					}
-				}
-				send_interface_message = {
-					type = msg_pam_rite_growth_spread
-					title = rite_growth.0011.notification.title
-					desc = rite_growth.0011.notification.desc
-					left_icon = scope:convert_ruler
-					right_icon = scope:new_rite
-					show_as_tooltip = {
-						scope:convert_ruler = {
-							set_character_rite = scope:new_rite
+					send_interface_message = {
+						type = msg_pam_rite_growth_spread
+						title = rite_growth.0011.notification.title
+						desc = rite_growth.0011.notification.desc
+						left_icon = scope:convert_ruler
+						right_icon = scope:new_rite
+						show_as_tooltip = {
+							scope:convert_ruler = {
+								set_character_rite = scope:new_rite
+							}
 						}
 					}
 				}

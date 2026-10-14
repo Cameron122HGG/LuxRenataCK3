@@ -2744,7 +2744,6 @@ types DynasticCycleTypes
 
 			vbox = {
 				name = "catalyst_information_area"
-
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
 
@@ -2752,21 +2751,29 @@ types DynasticCycleTypes
 					layoutpolicy_vertical = expanding
 					layoutpolicy_horizontal = expanding
 
-					blockoverride "scrollbox_background" {}
-					blockoverride "scrollbox_background_fade" {}
 					blockoverride "scrollbox_margins" {}
+					
+					blockoverride "scrollbox_empty"
+					{
+						align = center
+						text = "SITUATION_HISTORY_NO_ENTRIES"
+						
+						block "history_empty_visible" {
+							visible = "[IsDataModelEmpty( SituationWindow.GetCurrentHistoryPage )]"
+						}
+					}
 
 					blockoverride "scrollbox_content"
 					{
 						vbox = {
 							name = "history_entries"
-							margin_right = 16
+							layoutpolicy_horizontal = expanding
+							margin = { 15 0 }
+							margin_top = 15
 
 							block "history_data" {
 								datamodel = "[SituationWindow.GetCurrentHistoryPage]"
 							}
-
-							layoutpolicy_horizontal = expanding
 
 							item = {
 								block "history_item"
@@ -2784,7 +2791,7 @@ types DynasticCycleTypes
 
 					blockoverride "scrollbox_expand"
 					{
-						expand = { }
+						expand = {}
 					}
 				}
 

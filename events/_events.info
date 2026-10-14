@@ -38,6 +38,8 @@ my_events.1001 = {
 	hidden = yes/no # If yes, no event window is shown
 	major = yes/no
 	major_trigger = { ... }
+	weight_multiplier = { base = 1 modifier = { ... } } # Multiplies the weight of this event when picked from an on_action's random_events. Default = 1
+	soundeffect = none # Mutes the event window sound effect and ambience. Other values are read but not used
 
 	# Non-character scoped events generally need to be hidden or major.
 
@@ -179,6 +181,9 @@ my_events.1001 = {
 			# controller = {
 			#   type = <controller_type>
 			#   data = { ... }
+			#   # text controller data:
+			#   #   key = variable_name # Required. Variable the entered text is saved to
+			#   #   default = loc_key | { localization_key = loc_key trigger = { ... } } # At least one required. Default text; first whose trigger passes is used (character scope)
 			# }
 
 			# Optional scope setup effect for controller expectations
@@ -204,6 +209,9 @@ my_events.1001 = {
 		# Highlights the event portrait of this character while this option is hovered. This is in addition to the automatic highlighting when hovering an event option that has an effect that affects portrait characters.
 		highlight_portrait = scope:a_character
 
+		# Dynamic description shown as flavor text in the option tooltip
+		flavor = X
+
 		reason = <flag> # Special reason for why this option is unlocked, can be any arbitrary string, is be checked in the UI to show special by reason
 		skill = diplomacy/martial/stewardship/intrigue/learning/prowess # Marks this option as skill-relevant in unlock reason UI (if shown); you still have to specify the skill and level in the trigger to unlock it
 		trait = some_trait # Marks this option as trait-relevant in unlock reason UI (if shown); you still have to specify the trait in the trigger to unlock it
@@ -212,6 +220,8 @@ my_events.1001 = {
 		show_unlock_reason = yes/no # Controls whether unlock reason UI is shown for this option
 		is_cancel_option = yes/no # Marks this option as a cancel/back-out style option (used by some widgets/controllers)
 		clicksound = "sound_event" # Sound to play when selecting this option
+		timeout_option = yes/no # This option is picked when the event times out. Only one option per event may be marked
+		original_recipient_only = yes/no # If set, the option is only allowed for the original recipient (yes) or only for other recipients (no)
 		fallback = yes/no # If no regular options are valid, fallback options are considered
 		exclusive = yes/no # If any exclusive option is valid, non-exclusive options are ignored
 

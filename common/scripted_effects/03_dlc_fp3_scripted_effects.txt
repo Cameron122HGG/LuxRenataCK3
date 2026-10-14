@@ -5,120 +5,15 @@
 			faith.religious_head != root
 		}
 		hidden_effect = {
-			# Are we Nizari?
-			if = {
-				limit = { rite = rite:nizari }
-				# Transfer the title.
-				create_title_and_vassal_change = {
-					type = created
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				title:d_nizari = {
-					change_title_holder = {
-						holder = scope:founder
-						change = scope:change
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-				faith = { set_religious_head_title = title:d_nizari }
-
-				# Set up the remaining bits'n'bobs.
-				if = {
-					limit = {
-						NOT = { has_realm_law = same_faith_succession_law }
-					}
-					add_realm_law_skip_effects = same_faith_succession_law
-				}
-				title:d_nizari = { add_title_law = temporal_head_of_faith_succession_law }
-				# Make it the HoF head.
-			}
-			# Are we Zayidi?
-			else_if = {
-				limit = { rite = rite:zayidi }
-				# Transfer the title.
-				create_title_and_vassal_change = {
-					type = created
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				title:d_zayidi = {
-					change_title_holder = {
-						holder = scope:founder
-						change = scope:change
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-				faith = { set_religious_head_title = title:d_zayidi }
-
-				# Set up the remaining bits'n'bobs.
-				if = {
-					limit = {
-						NOT = { has_realm_law = same_faith_succession_law }
-					}
-					add_realm_law_skip_effects = same_faith_succession_law
-				}
-				title:d_zayidi = { add_title_law = temporal_head_of_faith_succession_law }
-				# Make it the HoF head.
-			}
-			# Are we Twelvers?
-			else_if = {
-				limit = { rite = rite:imami }
-				# Transfer the title.
-				create_title_and_vassal_change = {
-					type = created
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				title:d_imami = {
-					change_title_holder = {
-						holder = scope:founder
-						change = scope:change
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-				faith = { set_religious_head_title = title:d_imami }
-
-				# Set up the remaining bits'n'bobs.
-				if = {
-					limit = {
-						NOT = { has_realm_law = same_faith_succession_law }
-					}
-					add_realm_law_skip_effects = same_faith_succession_law
-				}
-				title:d_imami = { add_title_law = temporal_head_of_faith_succession_law }
-				# Make it the HoF head.
-			}
-			# Are we Ismailis?
-			else_if = {
-				limit = { rite = rite:ismaili }
-				# Transfer the title.
-				create_title_and_vassal_change = {
-					type = created
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				title:d_ismaili = {
-					change_title_holder = {
-						holder = scope:founder
-						change = scope:change
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-				faith = { set_religious_head_title = title:d_ismaili }
-
-				# Set up the remaining bits'n'bobs.
-				if = {
-					limit = {
-						NOT = { has_realm_law = same_faith_succession_law }
-					}
-					add_realm_law_skip_effects = same_faith_succession_law
-				}
-				title:d_ismaili = { add_title_law = temporal_head_of_faith_succession_law }
-				# Make it the HoF head.
-			}
+			give_or_make_temporal_head_of_faith_title = { RITE = rite:maliki TITLE = title:d_muwalladi }
+			give_or_make_temporal_head_of_faith_title = { RITE = rite:nizari TITLE = title:d_nizari }
+			give_or_make_temporal_head_of_faith_title = { RITE = rite:zayidi TITLE = title:d_zayidi }
+			give_or_make_temporal_head_of_faith_title = { RITE = rite:ismaili TITLE = title:d_ismaili }
+			give_or_make_temporal_head_of_faith_title = { RITE = rite:imami TITLE = title:d_imami }
+			
 			# If not, follow the usual flow.
-			else = {
+			if = {
+				limit = { NOT = { exists = scope:hof_assigned } }
 				set_up_dynamic_temporal_hof_title_effect = { NEW_HOLDER = scope:founder }
 				faith = { set_religious_head_title = scope:new_title }
 			}
@@ -185,6 +80,7 @@ avenge_the_battle_of_nahrawan_scripted_effect = {
 			random = {
 				chance = 25
 				set_character_faith = scope:avenger.faith
+				set_character_rite = scope:avenger.rite
 			}
 		}
 	}
@@ -222,7 +118,10 @@ avenge_the_battle_of_nahrawan_scripted_effect = {
 			random = {
 				chance = 25
 				custom_tooltip = every_non_avenger_faith_convert
-				hidden_effect = { set_county_faith = scope:avenger.faith }
+				hidden_effect = {
+					set_county_faith = scope:avenger.faith
+					set_county_rite = scope:avenger.rite
+				}
 			}
 		}
 	}

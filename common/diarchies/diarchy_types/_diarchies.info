@@ -3,9 +3,11 @@ Structure:
 # Diarchy type
 key = {
 	# trigger has to be true when diarchy starts
+	# root - is the liege
 	start = {}
 
 	# diarchy ends when trigger is true. Empty trigger means diarchy ends only via script
+	# root - is the liege
 	end = {}
 
 	# if diarchy type uses diarch succession mechanic
@@ -22,11 +24,13 @@ key = {
 	# qualifications for individual mandates can be used here
 	# Please avoid circular dependencies and don't use aptitude for mandate
 	# qualifications
+	# root - is the diarch or candidate being evaluated
 	aptitude_score = {
 		add = mandate_type_qualification:some_mandate_type
 	}
 
 	# Sctipted value describing loyalty of the diarch
+	# root - is the diarch
 	loyalty_score = {
 		if = {
 			limit = {
@@ -54,22 +58,28 @@ key = {
 		# can have several parameters on the same power level
 		parameter = limited_power
 		parameter = unlimited_power
+
+		# Same as parameter, but not shown in the UI
+		hidden_parameter = some_hidden_power
 	}
 
 	# scales of power swing trends towards this scripted value
 	# by DIARCHY_MONTHLY_POWER_CHANGE every month
+	# root - is the diarch
 	swing_balance = {
 		value = 40
 	}
 
 	# character interaction is used to end this type of diarchy and accessible via diarchy window
-	end_interation = interaction_name
+	end_interaction = interaction_name
 
 	# Modifier applied to the liege of the character in this position
 	# Can take a "scale" parameter to scale by (a script value; see _script_values.info)
+	# "scale" root - is the diarch. Requires a "name"
 	liege_modifier = {}
 
 	# Modifier applied to the active diarch
 	# Can take a "scale" parameter to scale by (a script value; see _script_values.info)
-	liege_modifier = {}
+	# "scale" root - is the diarch. Requires a "name"
+	diarch_modifier = {}
 }

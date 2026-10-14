@@ -1634,15 +1634,7 @@ scripted_trigger ep3_story_cycle_admin_eunuch_valid_patriarch_trigger = {
 		scope:protege_temp ?= this
 		scope:protege ?= this
 	}
-	trigger_if = {
-		limit = { root.rite = { rite_has_doctrine = doctrine_clerical_gender_male_only } }
-		is_male = yes
-	}
-	trigger_else_if = {
-		limit = { root.rite = { rite_has_doctrine = doctrine_clerical_gender_female_only } }
-		is_female = yes
-	}
-	trigger_else = { always = yes }
+	root.rite = { rite_has_allowed_gender_for_clergy = prev }
 	trigger_if = {
 		limit = { root.rite = { rite_has_doctrine = doctrine_clerical_marriage_disallowed } }
 		is_married = no
@@ -3777,17 +3769,7 @@ scripted_trigger ep3_story_cycle_admin_eunuch_family_protege_trigger = {
 	top_liege ?= root.top_liege
 	age < $EUNUCH$.age
 	is_eunuch_trigger = no
-	OR = {
-		AND = {
-			is_male = yes
-			root.rite = { rite_has_doctrine = doctrine_gender_male_dominated }
-		}
-		AND = {
-			is_female = yes
-			root.rite = { rite_has_doctrine = doctrine_gender_female_dominated }
-		}
-		root.rite = { rite_has_doctrine = doctrine_gender_equal }
-	}
+	root.rite = { rite_has_dominant_ruling_gender = prev }
 }
 
 ep3_story_cycle_admin_eunuch.3000 = {

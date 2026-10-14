@@ -310,7 +310,6 @@ action_can_request_new_clerical_region = {
 			limit = {
 				is_ai = no
 				has_pam_dlc_trigger = yes
-				government_has_flag = government_is_ecclesiastical
 				is_landed = yes
 				faith = { has_doctrine_parameter = has_clerical_regions }
 				NOT = {
@@ -318,8 +317,15 @@ action_can_request_new_clerical_region = {
 						has_clerical_region = yes
 					}
 				}
-				capital_county ?= {
-					NOT = { exists = clerical_region_title }
+				trigger_if = {
+					limit = { government_has_flag = government_is_ecclesiastical }
+					capital_county ?= {
+						NOT = { exists = clerical_region_title }
+					}
+				}
+				trigger_else = {
+					NOT = { pam_government_is_religious_playable_trigger = yes }
+					highest_held_title_tier >= tier_duchy
 				}
 			}
 			if = {
@@ -335,7 +341,13 @@ action_can_request_new_clerical_region = {
 				}
 			}
 			if = {
-				limit = { exists = scope:clerical_region_authority }
+				limit = {
+					exists = scope:clerical_region_authority
+					is_character_interaction_valid = {
+						interaction = request_ecclesiastical_title_creation_interaction
+						recipient = scope:clerical_region_authority
+					}
+				}
 				ordered_held_title = {
 					order_by = {
 						value = tier
@@ -348,14 +360,6 @@ action_can_request_new_clerical_region = {
 					check_range_bounds = no
 					limit = {
 						pam_valid_new_clerical_region_anchor_trigger = { PETITIONER = root }
-						save_temporary_scope_as = clerical_region_anchor_candidate
-						root = {
-							is_character_interaction_potentially_accepted = {
-								interaction = request_ecclesiastical_title_creation_interaction
-								recipient = scope:clerical_region_authority
-								target_title = scope:clerical_region_anchor_candidate
-							}
-						}
 					}
 					save_temporary_scope_as = clerical_region_anchor
 					root = {
@@ -369,6 +373,11 @@ action_can_request_new_clerical_region = {
 				}
 			}
 		}
+	}
+
+	unimportant = {
+		scope:target_title = { save_temporary_scope_as = target }
+		piety < pam_new_clerical_region_cost_value
 	}
 
 	effect = {
@@ -1525,7 +1534,7 @@ action_can_found_holy_site_in_capital = {
 					is_leased_out = no
 					is_holy_site = no
 				}
-				can_manage_faith_holy_sites_trigger = yes
+				can_create_faith_holy_site_trigger = { BARONY = root.capital_barony }
 				faith = {
 					list_size:holy_site < religion.holy_sites_max
 					faith_holy_site_kingdom_unused_trigger = { BARONY = root.capital_barony }
