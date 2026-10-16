@@ -667,35 +667,24 @@ lux_tradition_persian_splendour = {
 		any_culture_county = {
 			count >= 50
 			any_county_province = {
-				geographical_region = world_alexanders_empire
+				OR = {
+					geographical_region = world_middle_east
+					geographical_region = world_india
+				}
 			}
 		}
 	}	
 	can_pick = {
+		NOR = {
+			culture_tradition:tradition_ep3_roman_ceremonies = { is_in_list = traits }
+			culture_tradition:tradition_ep3_palace_politics = { is_in_list = traits }
+			culture_tradition:tradition_tgp_court_machinations = { is_in_list = traits }
+
+			scope:replacing = culture_tradition:tradition_ep3_roman_ceremonies
+			scope:replacing = culture_tradition:tradition_ep3_palace_politics
+			scope:replacing = culture_tradition:tradition_tgp_court_machinations
+		}		
 		scope:character = { government_has_mechanic = administrative }
-
-		trigger_if = {
-			limit = {
-				OR = {
-					NOT = { exists = scope:replacing }
-					NOR = {
-						scope:replacing = culture_tradition:tradition_ep3_roman_ceremonies
-						scope:replacing = culture_tradition:tradition_ep3_palace_politics
-						scope:replacing = culture_tradition:tradition_tgp_court_machinations
-						scope:replacing = culture_tradition:lux_tradition_diadochi_kingship
-					}
-				}
-	
-		
-				NOR = {
-					culture_tradition:tradition_ep3_roman_ceremonies = { is_in_list = traits }
-					culture_tradition:tradition_ep3_palace_politics = { is_in_list = traits }
-					culture_tradition:tradition_tgp_court_machinations = { is_in_list = traits }
-					culture_tradition:lux_tradition_diadochi_kingship = { is_in_list = traits }	
-
-				}		
-			}
-		}
 	}
 	
 	parameters = {
@@ -761,7 +750,10 @@ lux_tradition_imperial_polygamy = {
 		any_culture_county = {
 			count >= 50
 			any_county_province = {
-				geographical_region = world_alexanders_empire
+				OR = {
+					geographical_region = world_middle_east
+					geographical_region = world_india
+				}
 			}
 		}
 	}	
@@ -802,18 +794,24 @@ lux_tradition_imperial_polygamy = {
 	can_pick_for_hybridization = {
 		custom_tooltip = {
 			text = only_one_marriage_tradition_allowed
-			NOT = { # Only blocks monogamous to avoid duplicate warnings, but is blocked by polygamous
+			NOR = {
 				culture_tradition:tradition_monogamous = { is_in_list = traits }
+				culture_tradition:tradition_polygamous = { is_in_list = traits }
+				culture_tradition:tradition_concubines = { is_in_list = traits }
 			}
 		}
 	}	
 	
-	parameters = {
+	partners = {
 		#number_of_spouses = 4
-		number_of_consorts = 6
+		number_of_consorts = 3
 
-		number_of_consorts_hegemony = 20
-		
+		number_of_consorts_by_tier = {
+			empire = 10
+			hegemony = 20
+		}
+	}	
+	parameters = {
 		rivalries_more_common = yes
 	}
 
@@ -822,8 +820,8 @@ lux_tradition_imperial_polygamy = {
 		#spouse_opinion = -20
 		#close_relative_opinion = -25
 		#player_heir_opinion = 15
-		short_reign_duration_mult = -0.5
-		long_reign_bonus_mult = -0.5
+		short_reign_duration_mult = 0.25
+		long_reign_bonus_mult = 0.25
 		personal_scheme_phase_duration_add = minor_scheme_phase_duration_bonus_value
 	}
 	
@@ -857,7 +855,10 @@ lux_tradition_slave_soldiers = {
 		any_culture_county = {
 			count >= 50
 			any_county_province = {
-				geographical_region = world_alexanders_empire
+				OR = {
+					geographical_region = world_middle_east
+					geographical_region = world_india
+				}
 			}
 		}
 	}
@@ -865,9 +866,6 @@ lux_tradition_slave_soldiers = {
 		NOR = {
 			scope:replacing = culture_tradition:tradition_ep3_imperial_tagmata
 			culture_tradition:tradition_ep3_imperial_tagmata = { is_in_list = traits }
-			
-			scope:replacing = culture_tradition:lux_tradition_diadochi_phalanx
-			culture_tradition:lux_tradition_diadochi_phalanx = { is_in_list = traits }
 		}
 		trigger_if = {
 			limit = {
@@ -893,6 +891,7 @@ lux_tradition_slave_soldiers = {
 	character_modifier = {
 		heavy_cavalry_max_size_add = 1
 		light_cavalry_max_size_add = 1
+		archer_cavalry_max_size_add = 1
 		#heavy_infantry_max_size_add = 1
 		men_at_arms_title_limit = 1
 		knight_limit = 1
