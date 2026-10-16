@@ -3588,3 +3588,310 @@ roman_restoration.1213 = {
 		# No stress, no AI.
 	}
 }
+
+namespace = LR_major_decisions
+
+#The True Empire of the West
+LR_major_decisions.0003 = {
+	type = character_event
+	title = LR_major_decisions.0003.t
+	desc = LR_major_decisions.0003.desc
+	theme = emperor
+	override_background = { reference = ep3_hippodrome_track }
+	left_portrait = {
+		character = root
+		animation = jockey_wave
+		camera = camera_event_horse_left
+	}
+
+	immediate = {
+		play_sound_effect = "event:/DLC/EP3/SFX/Stingers/Byzantine_Flavor/ep3_mx_sting_byzantineflavor_hold_triumph"
+		save_scope_as = scoped_ruler
+		hidden_effect = {
+			restore_western_rome_scripted_effect = yes
+		}
+	}
+	option = {
+		name = LR_major_decisions.0003.a
+		add_prestige = major_prestige_gain
+		
+		# Add a unique nickname.
+		#give_nickname = nick_restitutor_orbis
+
+		# Send narrative fluff to other players (if any).
+		every_player = {
+			limit = {
+				NOT = { this = root }
+				capital_province = { geographical_region = world_europe_west }
+			}
+			trigger_event = roman_restoration.0141
+		}
+	}
+}
+
+### Restore the Western Empire
+LR_major_decisions.0004 = {
+	type = character_event
+	title = LR_major_decisions.0004.t
+	desc = LR_major_decisions.0004.desc
+	theme = emperor
+	override_background = { reference = ep3_hippodrome_track }
+	left_portrait = {
+		character = root
+		animation = jockey_wave
+		camera = camera_event_horse_left
+	}
+
+	immediate = {
+		play_sound_effect = "event:/DLC/EP3/SFX/Stingers/Byzantine_Flavor/ep3_mx_sting_byzantineflavor_hold_triumph"
+		LR_restore_western_hegemony_decision_effect = yes
+		create_character_memory = {
+			type = byz_theodosian_border_memory
+		}
+	}
+
+	option = {
+		name = LR_major_decisions.0004.a
+	}
+}
+
+#Restore the roman_provinces System
+LR_major_decisions.0007 = {
+	type = character_event
+	title = LR_major_decisions.0007.t
+	desc = LR_major_decisions.0007.desc
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+
+	option = {
+		name = LR_major_decisions.0007.a
+		restore_western_roman_provinces_system_decision_effect = yes
+	}
+}
+
+#Restore the roman_provinces of Gallia and Viennensis
+LR_major_decisions.0008 = {
+	type = character_event
+	title = LR_major_decisions.0008.t
+	desc = LR_major_decisions.0008.desc
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+
+	option = {
+		name = LR_major_decisions.0008.a
+		restore_roman_provinces_viennensis_decision_effect = yes
+	}
+}
+
+#Restore the Exarchate of Syria
+LR_major_decisions.0009 = {
+	type = character_event
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+	title = LR_major_decisions.0009.t
+	desc = LR_major_decisions.0009.desc
+
+	option = {
+		name = LR_major_decisions.0009.a
+		restore_roman_provinces_syria_decision_effect = yes
+	}
+}
+
+#Restore the Exarchate of Aegyptus
+LR_major_decisions.0010 = {
+	type = character_event
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+	title = LR_major_decisions.0010.t
+	desc = LR_major_decisions.0010.desc
+
+	option = {
+		name = LR_major_decisions.0010.a
+		restore_roman_provinces_aegyptus_decision_effect = yes
+	}
+}
+
+#Restore the roman provinces Africa and Mauretania
+LR_major_decisions.0011 = {
+	type = character_event
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+	title = LR_major_decisions.0011.t
+	desc = LR_major_decisions.0011.desc
+
+	option = {
+		name = LR_major_decisions.0011.a
+		restore_roman_provinces_africa_mauretania_decision_effect = yes
+	}
+}
+
+
+#Restore the roman provinces Hispania
+LR_major_decisions.0013 = {
+	type = character_event
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+	title = LR_major_decisions.0013.t
+	desc = LR_major_decisions.0013.desc
+
+	option = {
+		name = LR_major_decisions.0013.a
+		restore_roman_provinces_hispania_decision_effect = yes
+	}
+}
+
+#Restore the roman provinces Britannia
+LR_major_decisions.0014 = {
+	type = character_event
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+	title = LR_major_decisions.0014.t
+	desc = LR_major_decisions.0014.desc
+
+	option = {
+		name = LR_major_decisions.0014.a
+		restore_roman_provinces_britannia_decision_effect = yes
+	}
+}
+
+# Should I LARP or nah?
+LR_major_decisions.0015 = {
+	type = character_event
+	window = fullscreen_event
+	title = ep3_roman_restoration.0100.t
+	desc = ep3_roman_restoration.0100.desc
+	theme = emperor
+	override_background = { reference = ep3_fullscreen_restore_rome }
+
+	immediate = {
+		save_scope_as = scoped_emperor
+	}
+
+	option = { # LARP (Hard Mode)
+		name = ep3_roman_restoration.0100.a
+		custom_tooltip = ep3_roman_restoration.hard_mode
+		custom_tooltip = ep3_roman_restoration.end_hard_mode
+		custom_tooltip = ep3_roman_restoration.invasion_cb
+		every_held_title = {
+			limit = {
+				is_head_of_faith = yes
+			}
+			root = {
+				destroy_title = prev
+			}
+		}
+		set_character_faith = faith:hellenic_pagan 
+		primary_title = { set_state_faith = faith:hellenic_pagan }
+		every_held_title = {
+			custom = custom.every_held_county
+			limit = { tier = tier_county }
+			set_county_faith = faith:hellenic_pagan
+		}
+		every_vassal = {
+			custom = custom.every_vassal
+			custom_tooltip = {
+				text = may_choose_to_convert_hellenic_desc
+				run_interaction = { # We use the same interaction as when creating a new faith to keep a consistent behaviour, since that is essentially what you're doing here
+					interaction = ask_for_conversion_interaction
+					actor = root
+					recipient = this
+					execute_threshold = accept
+				}
+			}
+		}
+		custom_tooltip = {
+			text = ep3_roman_restoration.household_gods_tenet
+			set_global_variable = household_gods_tenet_unlocked
+		}
+		custom_tooltip = {
+			text = uses_custom_caesar_flavourization_tt
+			set_variable = uses_custom_caesar_flavourization
+		}
+		if = {
+			limit = {
+				any_owned_story = { story_type = ep3_story_cycle_restoring_rome }
+			}
+			random_owned_story = {
+				limit = { story_type = ep3_story_cycle_restoring_rome }
+				set_variable = roman_empire_hard_mode
+			}
+		}
+	}
+
+	option = { # Roleplay option (become Hellenic without Hard Mode)
+		name = ep3_roman_restoration.0100.c
+		custom_tooltip = ep3_roman_restoration.easy_mode
+		every_held_title = {
+			limit = {
+				is_head_of_faith = yes
+			}
+			root = {
+				destroy_title = prev
+			}
+		}
+		set_character_faith = faith:hellenic_pagan 
+		primary_title = { set_state_faith = faith:hellenic_pagan }
+		every_held_title = {
+			custom = custom.every_held_county
+			limit = { tier = tier_county }
+			set_county_faith = faith:hellenic_pagan
+		}
+		every_vassal = {
+			custom = custom.every_vassal
+			custom_tooltip = {
+				text = may_choose_to_convert_hellenic_desc
+				run_interaction = { # We use the same interaction as when creating a new faith to keep a consistent behaviour, since that is essentially what you're doing here
+					interaction = ask_for_conversion_interaction
+					actor = root
+					recipient = this
+					execute_threshold = accept
+				}
+			}
+		}
+		custom_tooltip = {
+			text = ep3_roman_restoration.household_gods_tenet
+			set_global_variable = household_gods_tenet_unlocked
+		}
+		custom_tooltip = {
+			text = uses_custom_caesar_flavourization_tt
+			set_variable = uses_custom_caesar_flavourization
+		}
+	}
+
+	option = { # Easy Mode
+		name = ep3_roman_restoration.0100.b
+		custom_tooltip = ep3_roman_restoration.easy_mode
+	}
+
+	after = {
+		create_WRE_roman_empire_scripted_effect = yes
+		set_nickname_effect = { NICKNAME = nick_the_glorious }
+		# Send narrative fluff to other players (if any).
+		every_player = {
+			limit = { NOT = { this = root } }
+			trigger_event = ep3_roman_restoration.0101
+		}
+	}
+}
+
+#Restore Eastern Provinces System
+LR_major_decisions.0016 = {
+	type = character_event
+	title = LR_major_decisions.0016.t
+	desc = LR_major_decisions.0016.desc
+	window = fullscreen_event
+	theme = war
+	override_background = { reference = ep3_triumph }
+
+	option = {
+		name = LR_major_decisions.0016.a
+		restore_eastern_roman_provinces_system_decision_effect = yes
+	}
+}
