@@ -2175,7 +2175,25 @@ doctrine_polytheist = {
 		}
 	}
 }
+doctrine_henotheist = {
+	icon = "doctrine_henotheist"
 
+	piety_cost = {
+		value = faith_doctrine_cost_high
+		if = {
+			limit = { has_doctrine = abrahamic_hostility_doctrine }
+			multiply = faith_changed_doctrine_cost_mult_three_step
+		}
+		else_if = {
+			limit = { has_doctrine = doctrine_polytheist }
+			multiply = faith_unchanged_doctrine_cost_mult
+		}
+	}
+
+	parameters = {
+		hostility_others = 2
+	}
+}
 doctrine_scriptural = {
 	doctrine_group_type = preservation
 	index = 0
