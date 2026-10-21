@@ -704,7 +704,7 @@ LR_tgp_restore_sacral_monarchy_decision_effect = {
 	LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = yes
 	add_prestige = major_prestige_value
 	if = {
-		limit = { government_allows = administrative }
+		limit = { government_has_mechanic = administrative }
 		change_influence = major_influence_value
 	}
 	else = { add_piety = medium_piety_value }
@@ -959,7 +959,7 @@ LR_tgp_restore_sacral_government_decision_effect = {
 			limit = {
 				is_ai = yes
 				NOR = {
-					government_allows = administrative
+					government_has_mechanic = administrative
 					is_allied_to = scope:sacral_regent_admin
 				}
 				opinion = {
@@ -981,7 +981,7 @@ LR_tgp_restore_sacral_government_decision_effect = {
 			ordered_vassal = {
 				limit = {
 					is_ai = yes
-					NOT = { government_allows = administrative }
+					NOT = { government_has_mechanic = administrative }
 					opinion = {
 						target = scope:sacral_regent_admin
 						value < 25
@@ -1293,7 +1293,7 @@ LR_tgp_sacral_assert_regional_dominion_government_decision_effect = {
 	# Crime to sacral_regent_admin
 	if = {
 		limit = {
-			top_liege = { government_allows = administrative }
+			top_liege = { government_has_mechanic = administrative }
 		}
 		# Message for attacker
 		send_interface_toast = {
@@ -1542,7 +1542,7 @@ LR_tgp_sacral_assert_regional_dominance_war_outcome_effect = {
 		if = {
 			limit = {
 				holder = {
-					NOT = { government_allows = administrative }
+					NOT = { government_has_mechanic = administrative }
 					highest_held_title_tier <= tier_duchy
 				}
 			}
@@ -1557,7 +1557,7 @@ LR_tgp_sacral_assert_regional_dominance_war_outcome_effect = {
 			limit = {
 				holder = {
 					OR = {
-						government_allows = administrative
+						government_has_mechanic = administrative
 						this = root.top_liege
 					}
 				}

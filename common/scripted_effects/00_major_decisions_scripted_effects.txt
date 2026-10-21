@@ -1,1 +1,177 @@
-﻿
+﻿mend_great_schism_scripted_effect = {
+	faith = {
+		if = { #If from obscure branch of Christianity, make it official.
+			limit = {
+				NOT = { has_doctrine = special_doctrine_ecumenical_christian }
+			}
+			add_doctrine = special_doctrine_ecumenical_christian
+		}
+		change_fervor = {
+			value = medium_fervor_gain
+			desc = fervor_gain_mended_schism
+		}
+	}
+	if = {
+		limit = {
+			faith = faith:catholic
+		}
+		custom_tooltip = {
+			text = pam_mend_great_schism_effect_tt_byz
+			faith:catholic = {
+				save_scope_as = mending_faith
+			}
+			faith:orthodox = {
+				main_rite = {
+					save_scope_as = byzantine_rite
+				}
+				remove_religious_head_title = yes
+				every_faith_rite = {
+					limit = {
+						faith != scope:mending_faith
+					}
+					set_can_convert_to_rite = no
+					set_parent_faith = {
+						target = faith:catholic
+						main = no
+						include_derived = no
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			faith = faith:orthodox
+		}
+		custom_tooltip = {
+			text = pam_mend_great_schism_effect_tt_rom
+			faith:orthodox = {
+				save_scope_as = mending_faith
+			}
+			faith:catholic = {
+				main_rite = {
+					save_scope_as = roman_rite
+				}
+				remove_religious_head_title = yes
+				every_faith_rite = {
+					limit = {
+						faith != scope:mending_faith
+					}
+					set_can_convert_to_rite = no
+					set_parent_faith = {
+						target = faith:orthodox
+						main = no
+						include_derived = no
+					}
+				}
+			}
+		}
+	}
+	else = {
+		custom_tooltip = {
+			text = pam_mend_great_schism_effect_tt
+			faith = {
+				save_scope_as = mending_faith
+			}
+			faith:orthodox = {
+				main_rite = {
+					save_scope_as = byzantine_rite
+				}
+				remove_religious_head_title = yes
+				every_faith_rite = {
+					limit = {
+						faith != scope:mending_faith
+					}
+					set_can_convert_to_rite = no
+					set_parent_faith = {
+						target = root.faith
+						main = no
+						include_derived = no
+					}
+				}
+			}
+			faith:catholic = {
+				main_rite = {
+					save_scope_as = roman_rite
+				}
+				remove_religious_head_title = yes
+				every_faith_rite = {
+					limit = {
+						faith != scope:mending_faith
+					}
+					set_can_convert_to_rite = no
+					set_parent_faith = {
+						target = root.faith
+						main = no
+						include_derived = no
+					}
+				}
+			}
+		}
+	}
+	every_player = { #Notify all players of the same Faith.
+		limit = {
+			this != root
+			faith = root.faith
+		}
+		trigger_event = roman_restoration.0103
+	}
+	every_ruler = { #Notify rulers of other Christian branches that they are no longer valid and offer chance at conversion.
+		limit = {
+			faith.religion = root.faith.religion
+			faith != root.faith
+			NOT = { government_has_flag = government_is_theocracy }
+			this != this.faith.religious_head
+			faith = {
+				OR = {
+					has_doctrine = special_doctrine_ecumenical_christian
+					has_doctrine = special_doctrine_ecumenical_miaphysite
+				}
+			}
+		}
+		trigger_event = roman_restoration.0101
+	}
+	every_player = { #Then notify all infidel players that might be around.
+		limit = {
+			OR = {
+				AND = { #Either filthy heretics...
+					faith.religion = root.faith.religion
+					faith = {
+						NOR = {
+							has_doctrine = special_doctrine_ecumenical_christian
+							has_doctrine = special_doctrine_ecumenical_miaphysite
+						}
+					}
+				}
+				faith.religion != root.faith.religion #...Or Heathens.
+			}
+		}
+		trigger_event = roman_restoration.0102
+	}
+	religion:christianity_religion = {
+		every_faith = { #All main branches of Christianity that were considered Ecumenical are now heresies.
+			custom = every_ecumenical_christian_faith.tt
+			limit = {
+				this.religion = root.faith.religion
+				OR = {
+					has_doctrine = special_doctrine_ecumenical_christian
+					has_doctrine = special_doctrine_ecumenical_miaphysite
+				}
+				this != root.faith
+			}
+			if = {
+				limit = { has_doctrine = special_doctrine_ecumenical_christian }
+				remove_doctrine = special_doctrine_ecumenical_christian
+			}
+			else = {
+				remove_doctrine = special_doctrine_ecumenical_miaphysite
+			}
+			change_fervor = {
+				value = medium_fervor_loss
+				desc = fervor_loss_mended_schism
+			}
+		}
+	}
+
+	set_nickname_effect = { NICKNAME = nick_the_ecumenist }
+}
