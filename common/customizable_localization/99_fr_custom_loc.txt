@@ -124,6 +124,8 @@
 # FR_GetRandomWonContest_Le pour GetRandomWonContest
 # FR_GetRealmOrDomicileConcept_FR_Le pour GetRealmOrDomicileConcept
 # FR_GetCourtOwnerConcept_FR_Du pour GetCourtOwnerConcept
+# FR_pam_anointment_authority_name_loc_FR_Le pour pam_anointment_authority_name_loc
+# FR_pam_anointment_authority_name_loc_FR_Du pour pam_anointment_authority_name_loc
 
 # FR_FaithGenderedAdj - GetFaith.GetAdjective\GetFaith.GetAdherentName (scope: character)
 # FR_Scheme_FullAction - GetActionName - SCHEME_FULL_ACTION_NAME
@@ -175,9 +177,9 @@
 # FR_InspirationSmithBaseType_Le devant InspirationSmithBaseType (Sans espace apres)
 # FR_Le_GetVersusRound devant GetVersusRound
 
-# FR_Artifact_OnA devant une commande d'artifact (Avec espace apres)
-# FR_Le_ArtifactType devant le type d'artifact (Sans espace apres)
-# FR_E_ArtifactType pour le type d'artifact
+# FR_Artifact_OnA devant une commande d'artefact (Avec espace apres)
+# FR_Le_ArtifactType devant le type d'artefact (Sans espace apres)
+# FR_E_ArtifactType pour le type d'artefact
 
 # FR_ActivityShort_template
 # FR_Le_ActivityShort devant l'activité GetShortName (Sans espace apres)
@@ -913,6 +915,18 @@ FR_GetCourtOwnerConcept_FR_Du = {
 	suffix = _FR_Du
 }
 
+FR_pam_anointment_authority_name_loc_FR_Le = { 
+	log_loc_errors = no
+	parent = pam_anointment_authority_name_loc
+	suffix = _FR_Le
+}
+
+FR_pam_anointment_authority_name_loc_FR_Du = { 
+	log_loc_errors = no
+	parent = pam_anointment_authority_name_loc
+	suffix = _FR_Du
+}
+
 #############################################
 #############################################
 FR_FaithGenderedAdj = { 
@@ -1090,23 +1104,21 @@ FR_le_Char = {
 			OR = {
 				AND = { # emperor (Empereur), emperor_female (Impératrice)
 					highest_held_title_tier = tier_empire
-					NOT = {
-						OR = {
-							culture = { has_cultural_pillar = heritage_central_germanic } # Kaiser
-							culture = { has_name_list = name_list_greek } # Basileus
-							AND = { # emperor_feudal_male_altaic_group (Khagan)
-								OR = {
-									has_government = western_feudal_government
-									has_government = clan_government
-									has_government = tribal_government
-								}
-								OR = {
-									culture = { has_cultural_pillar = heritage_mongolic }
-									culture = { has_cultural_pillar = heritage_turkic }
-								}
+					NOR = {
+						culture = { has_cultural_pillar = heritage_central_germanic } # Kaiser
+						culture = { has_name_list = name_list_greek } # Basileus
+						AND = { # emperor_feudal_male_altaic_group (Khagan)
+							OR = {
+								has_government = feudal_government
+								has_government = clan_government
+								has_government = tribal_government
 							}
-							has_government = tribal_government # emperor_tribal_male (Grand roi), emperor_tribal_female (Grande reine)
+							OR = {
+								culture = { has_cultural_pillar = heritage_mongolic }
+								culture = { has_cultural_pillar = heritage_turkic }
+							}
 						}
+						has_government = tribal_government # emperor_tribal_male (Grand roi), emperor_tribal_female (Grande reine)
 					}
 				}
 				AND = { # duke_theocracy_male_paganism_religion (Archiprêtre), duke_theocracy_female_paganism_religion (Archiprêtresse)
@@ -1137,8 +1149,7 @@ FR_le_Char = {
 					highest_held_title_tier = tier_duchy
 					OR = {
 						AND = { 
-							exists = top_liege
-							top_liege = {
+							top_liege ?= {
 								OR = {
 									has_government = western_feudal_government
 									has_government = clan_government
@@ -1199,18 +1210,14 @@ FR_le_Char = {
 							exists = top_liege
 						}
 						top_liege = {
+							culture = { has_cultural_pillar = heritage_arabic }
 							OR = {
-								culture = { has_cultural_pillar = heritage_arabic }
-							}
-							OR = {
-								has_government = western_feudal_government
+								has_government = feudal_government
 								has_government = clan_government
 							}
 						}
 					}
-					OR = {
-						culture = { has_cultural_pillar = heritage_arabic }
-					}
+					culture = { has_cultural_pillar = heritage_arabic }
 					highest_held_title_tier = tier_duchy
 					OR = {
 						has_government = western_feudal_government
@@ -1227,13 +1234,9 @@ FR_le_Char = {
 							has_government = clan_government
 						}
 					}
-					OR = {
-						culture = { has_cultural_pillar = heritage_iberian }
-					}
+					culture = { has_cultural_pillar = heritage_iberian }
 					highest_held_title_tier = tier_duchy
-					OR = {
-						has_government = clan_government
-					}
+					has_government = clan_government
 				}
 				# AND = {
 				# 	is_female = no
@@ -1474,23 +1477,21 @@ FR_du_Char = {
 			OR = {
 				AND = { # emperor (Empereur), emperor_female (Impératrice)
 					highest_held_title_tier = tier_empire
-					NOT = {
-						OR = {
-							culture = { has_cultural_pillar = heritage_central_germanic } # Kaiser
-							culture = { has_name_list = name_list_greek } # Basileus
-							AND = { # emperor_feudal_male_altaic_group (Khagan)
-								OR = {
-									has_government = western_feudal_government
-									has_government = clan_government
-									has_government = tribal_government
-								}
-								OR = {
-									culture = { has_cultural_pillar = heritage_mongolic }
-									culture = { has_cultural_pillar = heritage_turkic }
-								}
+					NOR = {
+						culture = { has_cultural_pillar = heritage_central_germanic } # Kaiser
+						culture = { has_name_list = name_list_greek } # Basileus
+						AND = { # emperor_feudal_male_altaic_group (Khagan)
+							OR = {
+								has_government = feudal_government
+								has_government = clan_government
+								has_government = tribal_government
 							}
-							has_government = tribal_government # emperor_tribal_male (Grand roi), emperor_tribal_female (Grande reine)
+							OR = {
+								culture = { has_cultural_pillar = heritage_mongolic }
+								culture = { has_cultural_pillar = heritage_turkic }
+							}
 						}
+						has_government = tribal_government # emperor_tribal_male (Grand roi), emperor_tribal_female (Grande reine)
 					}
 				}
 				AND = { # duke_theocracy_male_paganism_religion (Archiprêtre), duke_theocracy_female_paganism_religion (Archiprêtresse)
@@ -1521,8 +1522,7 @@ FR_du_Char = {
 					highest_held_title_tier = tier_duchy
 					OR = {
 						AND = { 
-							exists = top_liege
-							top_liege = {
+							top_liege ?= {
 								OR = {
 									has_government = western_feudal_government
 									has_government = clan_government
@@ -1583,21 +1583,17 @@ FR_du_Char = {
 							exists = top_liege
 						}
 						top_liege = {
+							culture = { has_cultural_pillar = heritage_arabic }
 							OR = {
-								culture = { has_cultural_pillar = heritage_arabic }
-							}
-							OR = {
-								has_government = western_feudal_government
+								has_government = feudal_government
 								has_government = clan_government
 							}
 						}
 					}
-					OR = {
-						culture = { has_cultural_pillar = heritage_arabic }
-					}
+					culture = { has_cultural_pillar = heritage_arabic }
 					highest_held_title_tier = tier_duchy
 					OR = {
-						has_government = western_feudal_government
+						has_government = feudal_government
 						has_government = clan_government
 					}
 				}
@@ -1611,20 +1607,16 @@ FR_du_Char = {
 							has_government = clan_government
 						}
 					}
-					OR = {
-						culture = { has_cultural_pillar = heritage_iberian }
-					}
+					culture = { has_cultural_pillar = heritage_iberian }
 					highest_held_title_tier = tier_duchy
-					OR = {
-						has_government = clan_government
-					}
+					has_government = clan_government
 				}
 				# AND = {
 				# 	is_female = no
 				# 	highest_held_title_tier = tier_county
 				# 	OR = {
 				# 		AND = { # count_feudal_male_english (Earl)
-				# 			has_government = western_feudal_government
+				# 			has_government = feudal_government
 				# 			primary_title = { 
 				# 				target_is_de_jure_liege_or_above = title:e_britannia
 				# 				NOT = { target_is_de_jure_liege_or_above = title:k_wales } # count_feudal_male_k_wales (Lord)
@@ -1632,7 +1624,7 @@ FR_du_Char = {
 				# 		}
 				# 		AND = { # count_feudal_male_e_britannia (Earl)
 				# 			OR = {
-				# 				has_government = western_feudal_government
+				# 				has_government = feudal_government
 				# 				has_government = tribal_government
 				# 			}
 				# 			culture = { has_name_list = name_list_english }
