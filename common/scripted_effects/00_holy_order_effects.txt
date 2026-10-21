@@ -5018,12 +5018,12 @@ set_up_historical_military_orders_effect = {
 	#Create Templars
 	if = {
 		limit = {
-			game_start_date >= 6178.10.1
+			game_start_date >= 6066.1.1
 		}
 		character:st_amand_1 = {
 			save_scope_as = leader
 		}
-		character:223523 = {
+		title:k_jerusalem = {
 			save_scope_as = founder
 			set_variable = {
 				name = military_order_game_start_founder
@@ -5086,218 +5086,12 @@ set_up_historical_military_orders_effect = {
 			}
 		}
 		# Grandmasters/members
-		character:gualdim_pais_1 = { set_employer = scope:leader } # Gualdim Pais
-		character:gilbert_horal_1 = { set_employer = scope:leader } # Gilbert Horal
-		character:231001 = { set_employer = scope:leader } # Gilbert de Ridefort
-		character:torroja_2 = { set_employer = scope:leader } # Arnau de Torroja
+		#character:gualdim_pais_1 = { set_employer = scope:leader } # Gualdim Pais
+		#character:gilbert_horal_1 = { set_employer = scope:leader } # Gilbert Horal
+		#character:231001 = { set_employer = scope:leader } # Gilbert de Ridefort
+		#character:torroja_2 = { set_employer = scope:leader } # Arnau de Torroja
 	}
-	#Create Hospitallers
-	if = {
-		limit = {
-			game_start_date >= 6178.10.1
-		}
-		character:231000 = {
-			save_scope_as = leader_1
-		}
-		character:223523 = {
-			save_scope_as = founder_1
-			set_variable = {
-				name = military_order_game_start_founder
-				days = 10
-			}
-		}
-		title:b_hebron = {
-			save_scope_as = barony_1
-		}
-		create_holy_order_neutral_effect = {
-			LEADER = scope:leader_1
-			CAPITAL = scope:barony_1
-			NEW_HO_SCOPE = new_holy_order
-			FOUNDER = scope:founder_1
-			ORDER_TYPE = military
-		}
-		scope:leader_1 = {
-			every_courtier = {
-				add_trait = order_member
-			}
-			faith = {
-				random_faith_holy_order = {
-					limit = {
-						leader = scope:leader_1
-					}
-					save_scope_as = hospitaller
-				}
-			}
-		}
-		#Lease out additional holdings
-		if = {
-			limit = {
-				exists = scope:hospitaller
-			}
-			title:b_antartus = { # Tripoli lease (in lieu of Krak)
-				create_title_and_vassal_change = {
-					type = revoked
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				change_title_holder = {
-					holder = title:c_tripoli.holder
-					change = scope:change
-				}
-				resolve_title_and_vassal_change = scope:change
-				lease_out_to_holy_order = scope:hospitaller
-			}
-			title:b_haugsdorf = { # Mailberg
-				create_title_and_vassal_change = {
-					type = revoked
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				change_title_holder = {
-					holder = title:c_krems.holder
-					change = scope:change
-				}
-				resolve_title_and_vassal_change = scope:change
-				lease_out_to_holy_order = scope:hospitaller
-			}
-		}
-		# Grandmasters/members
-		character:142132 = { set_employer = scope:leader_1 } # Fernando Afonso de Borgonha
-		character:147007 = { set_employer = scope:leader_1 } # Guillaume Borrel
-		character:147008 = { set_employer = scope:leader_1 } # Ermengol d'Asp
-		character:147009 = { set_employer = scope:leader_1 } # Garnier de Naplouse
-		character:147010 = { set_employer = scope:leader_1 } # Geoffroy de Donjon
-		character:147012 = { set_employer = scope:leader_1 } # Geoffroy le Rat
-	}
-	#Knights of Santiago
-	if = {
-		limit = {
-			current_year > 6178
-		}
-		title:b_trujillo = {
-			save_scope_as = order_barony
-			create_title_and_vassal_change = {
-				type = revoked
-				save_scope_as = change
-				add_claim_on_loss = no
-			}
-			change_title_holder = {
-				holder = title:c_merida.holder
-				change = scope:change
-			}
-			resolve_title_and_vassal_change = scope:change
-		}
-		title:k_leon.holder = {
-			save_scope_as = game_start_founder
-			set_variable = {
-				name = military_order_game_start_founder
-				days = 10
-			}
-		}
-		character:72363 = {
-			save_scope_as = order_leader
-		}
-		scope:game_start_founder = {
-			create_holy_order_neutral_effect = {
-				LEADER = scope:order_leader
-				CAPITAL = scope:order_barony
-				NEW_HO_SCOPE = new_holy_order
-				FOUNDER = scope:game_start_founder
-				ORDER_TYPE = military
-			}
-		}
-		scope:order_leader = {
-			every_courtier = {
-				add_trait = order_member
-			}
-		}
-	}
-	#Knights of Calatrava
-	if = {
-		limit = {
-			current_year > 6178
-		}
-		title:b_tomelloso = {
-			save_scope_as = order_barony
-			create_title_and_vassal_change = {
-				type = revoked
-				save_scope_as = change
-				add_claim_on_loss = no
-			}
-			change_title_holder = {
-				holder = title:c_calatrava.holder
-				change = scope:change
-			}
-			resolve_title_and_vassal_change = scope:change
-		}
-		title:k_castille.holder = {
-			save_scope_as = game_start_founder
-			set_variable = {
-				name = military_order_game_start_founder
-				days = 10
-			}
-		}
-		character:iberian_knight_1 = {
-			save_scope_as = order_leader
-		}
-		scope:game_start_founder = {
-			create_holy_order_neutral_effect = {
-				LEADER = scope:order_leader
-				CAPITAL = scope:order_barony
-				NEW_HO_SCOPE = new_holy_order
-				FOUNDER = scope:game_start_founder
-				ORDER_TYPE = military
-			}
-		}
-		scope:order_leader = {
-			every_courtier = {
-				add_trait = order_member
-			}
-		}
-	}
-	#Knights of Aviz
-	if = {
-		limit = {
-			current_year > 6178
-		}
-		title:b_avis = {
-			save_scope_as = order_barony
-			create_title_and_vassal_change = {
-				type = revoked
-				save_scope_as = change
-				add_claim_on_loss = no
-			}
-			change_title_holder = {
-				holder = title:c_alcacer_do_sal.holder
-				change = scope:change
-			}
-			resolve_title_and_vassal_change = scope:change
-		}
-		title:k_portugal.holder = {
-			save_scope_as = game_start_founder
-			set_variable = {
-				name = military_order_game_start_founder
-				days = 10
-			}
-		}
-		character:lanhoso_5 = {
-			save_scope_as = order_leader
-		}
-		scope:game_start_founder = {
-			create_holy_order_neutral_effect = {
-				LEADER = scope:order_leader
-				CAPITAL = scope:order_barony
-				NEW_HO_SCOPE = new_holy_order
-				FOUNDER = scope:game_start_founder
-				ORDER_TYPE = military
-			}
-		}
-		scope:order_leader = {
-			every_courtier = {
-				add_trait = order_member
-			}
-		}
-	}
+
 
 	#MUSLIM MILITARY ORDERS
 
@@ -5628,19 +5422,6 @@ set_up_historical_military_orders_effect = {
 			current_year < 5868
 		}
 		character:ghazi_5 = {
-			save_scope_as = order_leader
-		}
-	}
-	else_if = {
-		limit = {
-			current_year < 6067
-		}
-		character:ghazi_6 = {
-			save_scope_as = order_leader
-		}
-	}
-	else = {
-		character:ghazi_7 = {
 			save_scope_as = order_leader
 		}
 	}
