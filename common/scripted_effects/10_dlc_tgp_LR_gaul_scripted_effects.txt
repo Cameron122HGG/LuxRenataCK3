@@ -498,11 +498,11 @@ become_sacral_dictator_reward_effect = {
 	dynasty = { add_dynasty_prestige = monumental_dynasty_prestige_gain }
 	culture = {
 		if = {
-			limit = { has_cultural_tradition = lux_tradition_tgp_sacral_peace }
+			limit = { has_cultural_tradition = lux_tradition_LR_tgp_sacral_peace }
 			custom_tooltip = {
 				text = lux_tradition_LR_tgp_sacred_chivalry_tt
-				remove_culture_tradition = lux_tradition_tgp_sacral_peace
-				add_culture_tradition = lux_tradition_tgp_sacred_chivalry
+				remove_culture_tradition = lux_tradition_LR_tgp_sacral_peace
+				add_culture_tradition = lux_tradition_LR_tgp_sacred_chivalry
 			}
 		}
 		else = { custom_tooltip = unlocks_sacred_chivalry_tradition_tooltip }
@@ -551,7 +551,7 @@ sacral_restore_ceremonial_liege_faction_reward_effect = {
 		}
 	}
 	scope:ceremonial_liege_temp = {
-		custom_tooltip = sacral_gaul_government_sacral_duchy_creation_tt
+		custom_tooltip = sacral_government_sacral_duchy_creation_tt
 		if = {
 			limit = { has_legitimacy = yes }
 			add_legitimacy = major_legitimacy_gain
@@ -732,7 +732,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		}
 		else_if = {
 			limit = {
-				scope:last_sacral_king_gaul ?= { LR_tgp_sacral_valid_restore_monarchy_scion_trigger = yes }
+				scope:last_sacral_king_gaul ?= { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 			}
 			if = { # Avoid display of short tooltips after creation
 				limit = { NOT = { exists = scope:sacral_scion } }
@@ -743,7 +743,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		else_if = {
 			limit = {
 				scope:last_sacral_king_gaul ?= {
-					any_child = { LR_tgp_sacral_valid_restore_monarchy_scion_trigger = yes }
+					any_child = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
 			if = { # Avoid display of short tooltips after creation
@@ -752,7 +752,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 			}
 			scope:last_sacral_king_gaul = {
 				ordered_child = {
-					limit = { LR_tgp_sacral_valid_restore_monarchy_scion_trigger = yes }
+					limit = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
 					save_scope_as = scion
 				}
@@ -761,7 +761,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 		else_if = {
 			limit = {
 				scope:last_sacral_king_gaul ?= {
-					any_close_family_member = { LR_tgp_sacral_valid_restore_monarchy_scion_trigger = yes }
+					any_close_family_member = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 				}
 			}
 			if = { # Avoid display of short tooltips after creation
@@ -770,7 +770,7 @@ LR_tgp_restore_sacral_monarchy_merovingian_scion_effect = {
 			}
 			scope:last_sacral_king_gaul = {
 				ordered_close_family_member = {
-					limit = { LR_tgp_sacral_valid_restore_monarchy_scion_trigger = yes }
+					limit = { LR_tgp_sacral_gaul_valid_restore_monarchy_scion_trigger = yes }
 					order_by = age
 					save_scope_as = scion
 				}
@@ -1304,7 +1304,7 @@ LR_tgp_sacral_assert_regional_dominion_government_decision_effect = {
 			top_liege = {
 				send_interface_toast = {
 					type = event_war_bad
-					title = LR_tgp_sacral_gaul_manorial_war_is_crime_sacral_king_gaul_title
+					title = LR_tgp_sacral_gaul_manorial_war_is_crime_sacral_majordomo_title
 					left_icon = scope:super_manorial
 					right_icon = scope:title_scope
 					add_opinion = {
@@ -1645,14 +1645,14 @@ sacral_gaul_establish_manorial_administration_reward_effect = {
 		}
 		house.house_confederation ?= {
 			custom_tooltip = {
-				text = sacral_establish_manorial_administration_vassal_government_tt
+				text = sacral_gaul_establish_manorial_administration_vassal_government_tt
 				every_confederation_member = {
 					limit = { has_government = sacral_administrative_government }
 					change_government = sacral_feudal_government
 				}
 			}
 		}
-		custom_tooltip = sacral_establish_manorial_administration_imprison_tt
+		custom_tooltip = sacral_gaul_establish_manorial_administration_imprison_tt
 	}
 }
 
