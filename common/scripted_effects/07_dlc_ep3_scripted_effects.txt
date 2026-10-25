@@ -3520,6 +3520,153 @@ create_noble_family_effect = {
 	debug_log_scopes = yes
 }
 
+give_noble_family_title_effect = {
+	$GOVERNMENT_GIVER$ = {
+		switch = {
+			trigger = has_government
+			japan_administrative_government = { # Japan has count level NFs
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = japan_administrative_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			japan_feudal_government = { # Japan has count level NFs
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = japan_feudal_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			celestial_government = { # China has different government
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = celestial_government
+						save_scope_as = new_title
+					}
+					trigger_event = {
+						id = tgp_china_career.0001
+						days = { 2 5 }
+					}
+				}
+			}
+			meritocratic_government = { # Meritocratic has different government
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = meritocratic_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			steppe_admin_government = { # Steppe Admin has different government
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = steppe_admin_government
+						save_scope_as = new_title
+					}
+				}
+			}
+
+			sacral_administrative_government = { # Japan has count level NFs
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = sacral_administrative_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			sacral_feudal_government = { # Japan has count level NFs
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = sacral_feudal_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			roman_administrative_government = { # Meritocratic has different government
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = roman_administrative_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			alexandrian_administrative_government = {
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = alexandrian_administrative_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			western_administrative_government = {
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = western_administrative_government
+						save_scope_as = new_title
+					}
+				}
+			}
+			roman_autocratic_government = {
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = county
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = roman_autocratic_government
+						save_scope_as = new_title
+					}
+				}
+			}
+
+			fallback = {
+				prev = {
+					give_noble_family_title = {
+						name = noble_family_name
+						tier = duchy
+						article = DEFAULT_TITLE_NAME_ARTICLE
+						government = administrative_government
+						save_scope_as = new_title
+					}
+				}
+			}
+		}
+	}
+	scope:new_title ?= { set_coa = prev.house }
+}
+
 increase_governance_effect = {
 	# VALUE - The amount of XP added to the Governor trait/increased chance to gain the Governor trait
 	save_scope_value_as = {
