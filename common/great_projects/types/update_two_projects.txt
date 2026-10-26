@@ -46,25 +46,6 @@ aurelian_walls_maintenance = {
 		NOT = { is_planning_great_project = aurelian_walls_maintenance }
 		NOT = { has_global_variable = aurelian_walls_maintenance_cooldown }
 		is_ruler = yes
-		OR = {
-			title:e_byzantium = { holder.top_liege = root.top_liege }
-			title:h_roman_empire = { holder.top_liege = root.top_liege }
-			title:h_eastern_roman_empire = { holder.top_liege = root.top_liege }	
-			AND = {
-				has_game_rule = empire_requirements_bgp_pretenders
-				OR = {
-					title:e_hre = { holder.top_liege = root.top_liege }
-					title:e_latin_empire = { holder.top_liege = root.top_liege }
-					title:e_byzantium = { holder.top_liege = root.top_liege }
-				}
-			}
-			has_game_rule = empire_requirements_bgp_everyone
-		}
-		OR = {
-			has_game_rule = bgp_anyone
-			culture = { has_cultural_pillar = heritage_byzantine }
-			culture = { has_cultural_pillar = heritage_hellenistic }
-		}
 	}
 	can_start_planning = {
 		is_at_war = no
@@ -100,7 +81,7 @@ aurelian_walls_maintenance = {
 		}
 	}
 	on_complete = {
-		great_project_notify_completion = { CHARACTER = scope:owner }
+		
 		scope:owner = {
 			trigger_event = aurelian_walls_maintenance.0006
 			trigger_event = {
@@ -390,7 +371,7 @@ restore_knossos_palace = {
 		OR = {
 			has_game_rule = bgp_anyone
 			culture = { has_cultural_pillar = heritage_byzantine }
-			culture = { has_cultural_pillar = heritage_hellenistic }
+			culture = { has_cultural_pillar = heritage_ancient_greek }
 		}
 	}
 	can_start_planning = {
@@ -428,12 +409,12 @@ restore_knossos_palace = {
 		}
 	}
 	on_complete = {
-		great_project_notify_completion = { CHARACTER = scope:owner }
+		
 		scope:owner = {
 			trigger_event = restore_knossos_palace.0006
 		}
 		title:b_iraklio.title_province = { add_special_building = bgp_knossos_palace }
-		set_global_variable = { name = restore_knossos_palace_cooldown months = 1200 }
+		set_global_variable = { name = restore_knossos_palace_cooldown months = -1 }
 	}
 	project_contributions = {
 		port = {
@@ -669,7 +650,7 @@ restore_knossos_palace_alt = {
 		OR = {
 			has_game_rule = bgp_anyone
 			culture = { has_cultural_pillar = heritage_byzantine }
-			culture = { has_cultural_pillar = heritage_hellenistic }
+			culture = { has_cultural_pillar = heritage_ancient_greek }
 		}
 	}
 	can_start_planning = {
@@ -706,7 +687,7 @@ restore_knossos_palace_alt = {
 		}
 	}
 	on_complete = {
-		great_project_notify_completion = { CHARACTER = scope:owner }
+		
 		title:b_iraklio.title_province = { add_special_building = bgp_knossos_palace }
 		scope:owner = {
 			trigger_event = restore_knossos_palace.0008
@@ -990,7 +971,7 @@ reestablish_neoplatonic_academy = {
 		OR = {
 			has_game_rule = bgp_anyone
 			culture = { has_cultural_pillar = heritage_byzantine }
-			culture = { has_cultural_pillar = heritage_hellenistic }
+			culture = { has_cultural_pillar = heritage_ancient_greek }
 		}
 	}
 	can_start_planning = {
@@ -1014,19 +995,9 @@ reestablish_neoplatonic_academy = {
 		scope:owner = {
 			add_legitimacy_effect = { LEGITIMACY = minor_legitimacy_gain }
 		}
-		scope:great_project = {
-			every_contribution = {
-				limit = {
-					contribution_is_funded = yes
-				}
-				contributor = {
-					add_prestige = minor_prestige_value 
-				}	
-			}
-		}
 	}
 	on_complete = {
-		great_project_notify_completion = { CHARACTER = scope:owner }
+		
 		scope:owner = {
 			trigger_event = reestablish_neoplatonic_academy.0006
 		}
