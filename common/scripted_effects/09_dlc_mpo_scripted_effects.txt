@@ -254,7 +254,7 @@ migration_settle_down_obedient_vassal_effect = {
 		value = culture
 	}
 	set_county_culture = scope:current_vassal.domicile.domicile_culture
-	set_county_faith = scope:current_vassal.domicile.domicile_faith
+	set_county_rite = scope:current_vassal.domicile.domicile_rite
 	scope:current_vassal = {
 		change_liege = {
 			liege = scope:actor
@@ -852,6 +852,7 @@ migration_set_obedient_vassal_effect = {
 		create_character = {
 			template = herder_character
 			faith = scope:current_vassal.domicile.domicile_faith
+			rite = scope:current_vassal.domicile.domicile_rite
 			culture = scope:current_vassal.domicile.domicile_culture
 			location = scope:current_vassal.primary_title.title_capital_county.title_province
 			save_scope_as = herder_character
@@ -6161,6 +6162,23 @@ expanding_steppe_effect = {
 			expanding_steppe_add_region_effect = {
 				SUB_REGION = central
 				REGION = dlc_mpo_steppe_siberia_further_expansion
+			}
+			custom_tooltip = permafrost_modifier_removal_desc
+			hidden_effect = {
+				situation:the_great_steppe ?= {
+					situation_sub_region:steppe_central = {
+						every_situation_sub_region_county = {
+							if = {
+								limit = { has_county_modifier = mpo_siberian_permafrost_modifier }
+								remove_county_modifier = mpo_siberian_permafrost_modifier
+							}
+							else_if = {
+								limit = { has_county_modifier = mpo_siberian_permafrost_modifier_bad }
+								remove_county_modifier = mpo_siberian_permafrost_modifier_bad
+							}
+						}
+					}
+				}
 			}
 		}
 		# East
