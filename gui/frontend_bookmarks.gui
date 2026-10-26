@@ -3337,9 +3337,10 @@ types BookmarkPortraits
 			}
 		}
 	}
+
 	type bookmark_button = button_normal {
 		size = { 100% 100% }
-		position = { -60 0}
+
 		onclick = "[PdxGuiInterruptThenTriggerAllAnimations('bookmark_change','bookmark_change')]"
 		onclick = "[PdxGuiTriggerAllAnimations('bookmark_tab_reset')]"
 		onclick = "[PdxGuiInterruptThenTriggerAllAnimations('map_characters_appear','map_characters_appear')]"
@@ -3347,8 +3348,6 @@ types BookmarkPortraits
 		onclick = "[GetVariableSystem.Clear( 'show_character_info' )]"
 		down = "[GameSetup.IsBookmarkSelected( Bookmark.Self )]"
 		alwaystransparent = "[GameSetup.IsBookmarkSelected( Bookmark.Self )]"
-		using = SubTabShortcut
-		
 
 		state = {
 			name = "_mouse_enter"
@@ -3360,6 +3359,16 @@ types BookmarkPortraits
 			name = "_mouse_leave"
 		}
 
+		#GH ADDITION
+		state = { 
+			name = _show
+			duration = 0.3
+			using = Animation_Curve_Default
+
+			position_y = -25
+		} 
+		#GH END
+		
 		state = {
 			name = "button_selection"
 			trigger_when = "[GameSetup.IsBookmarkSelected( Bookmark.Self )]"
@@ -3368,7 +3377,7 @@ types BookmarkPortraits
 			duration = 0.1
 			using = Animation_Curve_Default
 
-			position_y = 15
+			position_y = 0
 		}
 
 		state = {
@@ -3376,7 +3385,7 @@ types BookmarkPortraits
 			duration = 0.3
 			using = Animation_Curve_Default
 
-			position_y = 5
+			position_y = -25
 		}
 
 		state = {
@@ -3384,9 +3393,15 @@ types BookmarkPortraits
 			duration = 0.3
 			using = Animation_Curve_Default
 
-			position_y = 5
+			position_y = -25
 		}
-
+		###DDDD
+				state = {
+					name = "bookmarks_game_start"
+					using = Animation_Curve_Default
+					position_y = -25
+				}
+				
 		icon = {
 			name = "bookmarks_button"
 			parentanchor = bottom|hcenter
@@ -3563,19 +3578,15 @@ types BookmarkPortraits
 
 				hbox = {
 					margin = { 5 0 }
-					spacing = 7
+					spacing = 2
 					expand = {}
-
-					widget ={
-						size = {20 20}
-					}
 
 					text_single = {
 						text = "[Bookmark.GetName]"
 						default_format = "#high;glow_color:{0,0,0,1}"
-						align = nobaseline
+						align = center
+						max_width = 190
 						using = Font_Size_Medium
-						max_width = 220
 					}
 
 					icon = {
