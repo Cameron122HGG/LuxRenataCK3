@@ -40,8 +40,16 @@ GetGovernmentAuthority = {
 		localization_key = meritocratic_bureaucracy
 	}
 	text = {
+		trigger = { realm_law_use_roman_bureaucracy = yes }
+		localization_key = roman_bureaucracy
+	}
+	text = {
 		trigger = { realm_law_use_japanese_bureaucracy = yes }
 		localization_key = japanese_bureaucracy
+	}
+	text = {
+		trigger = { realm_law_use_sacral_bureaucracy = yes }
+		localization_key = sacral_bureaucracy
 	}
 	text = {
 		trigger = { realm_law_use_crown_authority = yes }
@@ -408,6 +416,45 @@ GetDungeonConceptPlural = {
 
 GetRealmOrDomicile = {
 	type = character
+	### Roman frontier commands (duces): their realm is a Command, not a Noble Family
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_dux_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_dux_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_COMMAND
+	}
+	### Landless Roman offices: Prefecture / Ministry
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_prefect_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_prefect_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_PREFECTURE
+	}
+	### Landless Roman offices: Prefecture / Ministry
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_minister_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_minister_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_MINISTRY
+	}
 
 	text = {
 		trigger = {
@@ -454,6 +501,45 @@ GetRealmOrDomicile = {
 
 GetRealmOrDomicileTooltip = {
 	type = character
+	### Roman frontier commands (duces): their realm is a Command, not a Noble Family
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_dux_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_dux_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_COMMAND_TOOLTIP
+	}
+	### Landless Roman offices: Prefecture / Ministry
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_prefect_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_prefect_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_PREFECTURE_TOOLTIP
+	}
+	### Landless Roman offices: Prefecture / Ministry
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_minister_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_minister_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_MINISTRY_TOOLTIP
+	}
 
 	text = {
 		trigger = {
@@ -570,6 +656,45 @@ GetRealmOrDomicileTooltip = {
 
 GetRealmOrDomicileConcept = {
 	type = character
+	### Roman frontier commands (duces): their realm is a Command, not a Noble Family
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_dux_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_dux_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_COMMAND_CONCEPT
+	}
+	### Landless Roman offices: Prefecture / Ministry
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_prefect_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_prefect_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_PREFECTURE_CONCEPT
+	}
+	### Landless Roman offices: Prefecture / Ministry
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				primary_title ?= { LR_is_roman_minister_title_trigger = yes }
+			}
+			trigger_else = {
+				liege.primary_title ?= { LR_is_roman_minister_title_trigger = yes }
+			}
+		}
+		localization_key = LR_ROMAN_MINISTRY_CONCEPT
+	}
 
 	text = {
 		trigger = {
@@ -1282,15 +1407,15 @@ GetGovernmentIcon = {
 		trigger = {
 			trigger_if = {
 				limit = { is_alive = no }
-				has_government = classical_government
+				OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }
 			}
 			trigger_else = {
 				trigger_if = {
 					limit = { is_ruler = yes }
-					has_government = classical_government
+					OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }
 				}
 				trigger_else = {
-					liege ?= { has_government = classical_government }
+					liege ?= { OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government } }
 				}
 			}
 		}
@@ -1336,15 +1461,15 @@ GetGovernmentIcon = {
 		trigger = {
 			trigger_if = {
 				limit = { is_alive = no }
-				has_government = roman_autocratic_government
+				OR = { has_government = roman_autocratic_government has_government = roman_imperial_government }
 			}
 			trigger_else = {
 				trigger_if = {
 					limit = { is_ruler = yes }
-					has_government = roman_autocratic_government
+					OR = { has_government = roman_autocratic_government has_government = roman_imperial_government }
 				}
 				trigger_else = {
-					liege ?= { has_government = roman_autocratic_government }
+					liege ?= { OR = { has_government = roman_autocratic_government has_government = roman_imperial_government } }
 				}
 			}
 		}
@@ -1356,15 +1481,15 @@ GetGovernmentIcon = {
 				limit = {
 					is_alive = no
 				}
-				has_government = despotic_government
+				OR = { has_government = despotic_government has_government = persianate_dynastic_government }
 			}
 			trigger_else = {
 				trigger_if = {
 					limit = { is_ruler = yes }
-					has_government = despotic_government
+					OR = { has_government = despotic_government has_government = persianate_dynastic_government }
 				}
 				trigger_else = {
-					liege ?= { has_government = despotic_government }
+					liege ?= { OR = { has_government = despotic_government has_government = persianate_dynastic_government } }
 				}
 			}
 		}

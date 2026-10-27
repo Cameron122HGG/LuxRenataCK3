@@ -60,6 +60,81 @@
 	realm_mask_scale = { 1 1 }
 }
 
+gupta_dynastic_government = { # Gupta Dynastic: the indic_feudal tier for players with the Roads to Power and All Under Heaven DLC (twin of gupta_administrative_government)
+	government_rules = {
+		noble_families = yes
+		house_aspirations = yes
+		use_as_base_on_landed = yes
+		use_as_base_on_rank_up = yes
+		landless_playable = yes
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		dynasty_named_realms = yes
+		legitimacy = yes
+		allow_accolades = yes
+	}
+
+	royal_court = any
+
+	fallback = 5
+
+	primary_holding = castle_holding
+	valid_holdings = { temple_citadel_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+	primary_heritages = { heritage_dravidian heritage_indo_aryan }
+
+	vassal_contract_group = despotic_vassal
+
+	ai = {
+		use_legends = yes
+	}
+
+	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
+	can_get_government = {
+		LR_has_dynastic_governments_dlc_trigger = yes
+	}
+	domicile_type = indic_group_estate
+	compatible_government_type_succession = { gupta_administrative_government }
+	flags = {
+		government_is_gupta_dynastic
+		government_has_county_tier_noble_families
+		government_uses_domicile_but_not_adventurer
+		government_is_feudal
+		government_is_indic_group
+		government_is_indic_feudal
+		government_is_settled
+		may_elevate_co_monarch
+		government_uses_crown_authority
+		government_uses_domain_limit
+	}
+
+	mechanic_type = feudal
+	is_mechanic_type_default = no
+
+	possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }
+
+	# Grant candidate for nomads and herders who want to settle
+	grant_vassal_ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				pam_nomad_grant_settled_government_trigger = yes
+				faith = {
+					NOT = {
+						religion = religion:islam_religion
+						#has_doctrine_parameter = unreformed
+					}
+				}
+			}
+			add = 10
+		}
+	}
+
+	color = { 200 140 60 }
+	realm_mask_offset = { 0.0 0.01 }
+	realm_mask_scale = { 1 1 }
+}
+
 gupta_administrative_government = {
 	government_rules = {
 		create_cadet_branches = yes
@@ -156,9 +231,8 @@ gupta_administrative_government = {
 		government_uses_salary_budget
 		government_uses_military_budget
 		
-		government_is_classical_group
-		government_is_roman_administrative
-		government_is_roman_government
+		government_is_indic_group
+		government_is_gupta_administrative
 		may_elevate_co_monarch
 		government_has_county_tier_noble_families
 	}

@@ -906,9 +906,18 @@ tgp_ceremonial_liege_events.0030 = {
         }
         else = {
             add_prestige = minor_prestige_loss
-            add_character_modifier = {
-                modifier = tgp_spreading_scholarly_work_modifier
-                years = 5
+            if = { # LR: Gaulish (sacral) realms get their own wording
+                limit = { top_liege ?= { government_is_sacral_trigger = yes } }
+                add_character_modifier = {
+                    modifier = LR_gaul_tgp_spreading_scholarly_work_modifier
+                    years = 5
+                }
+            }
+            else = {
+                add_character_modifier = {
+                    modifier = tgp_spreading_scholarly_work_modifier
+                    years = 5
+                }
             }
         }
 

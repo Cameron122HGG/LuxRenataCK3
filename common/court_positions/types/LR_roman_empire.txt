@@ -1,1 +1,1144 @@
-﻿#
+﻿# Roman imperial court positions, adapted from the celestial ones (00_celestial_court_positions.txt).
+# Shown for governments with government_is_roman_imperial; they share the celestial positions' tasks.
+
+LR_quaestor_court_position = {
+	sort_order = 1000
+	max_available_positions = 1
+	minimum_rank = empire # Should only be available for emperors and hegemons
+	skill = learning
+
+	court_position_asset = {
+		animation = holding_hu
+		background = "gfx/interface/illustrations/event_scenes/ep3_byzantine_throne_room.dds"
+	}
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 1
+		add = {
+			value = merit_level
+			multiply = 5
+			max = 50
+			desc = court_position_merit_level
+		}
+		add = {
+			value = learning
+			multiply = 1.75
+			max = 50
+			desc = court_position_skill_learning
+		}
+		# Confucian Education
+		if = {
+			limit = {
+				has_trait = confucian_education
+			}
+			add = {
+				value = "has_trait_xp(confucian_education)"
+				floor = yes
+				desc = court_position_confucian_education_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = erudite
+			}
+			add = {
+				value = 5
+				desc = court_position_erudite_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = diligent
+			}
+			add = {
+				value = 5
+				desc = court_position_diligent_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = patient
+			}
+			add = {
+				value = 5
+				desc = court_position_patient_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = calm
+			}
+			add = {
+				value = 5
+				desc = court_position_calm_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = intellect_good_3
+			}
+			add = {
+				value = 15
+				desc = court_position_intellect_good_3_trait
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = intellect_good_2
+			}
+			add = {
+				value = 10
+				desc = court_position_intellect_good_2_trait
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = intellect_good_1
+			}
+			add = {
+				value = 5
+				desc = court_position_intellect_good_1_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = shrewd
+			}
+			add = {
+				value = 10
+				desc = court_position_shrewd_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = reclusive
+			}
+			add = {
+				value = -10
+				desc = court_position_reclusive_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			add = {
+				value = -10
+				desc = court_position_shy_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = lazy
+			}
+			add = {
+				value = -10
+				desc = court_position_lazy_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = incapable
+			}
+			multiply = {
+				value = 0
+				desc = court_position_incapable_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = infirm
+			}
+			add = {
+				value = -50
+				desc = court_position_infirm_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+		add = general_aptitude_bonus
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	is_shown = {
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	valid_position = {
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			court_position_employee_shown_trigger = yes
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			LR_quaestor_validity_trigger = { EMPLOYER = scope:liege }
+		}
+	}
+
+	revoke_cost = { # root is the liege, no other scopes are passed here!
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = { free_court_position_revoke_trigger = { POS = LR_quaestor } }
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = LR_quaestor_total_salary_value
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = LR_quaestor_total_salary_value
+			}
+		}
+		prestige = {
+			value = major_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	received_salary = {
+		gold = {
+			value = LR_quaestor_total_salary_value
+		}
+		prestige = {
+			value = major_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	is_powerful_agent = yes
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_influence = 0.5
+			direct_vassal_opinion = 2
+		}
+		poor = {
+			monthly_influence = 0.75
+			direct_vassal_opinion = 4
+		}
+		average = {
+			monthly_influence = 1.0
+			direct_vassal_opinion = 6
+		}
+		good = {
+			monthly_influence = 1.25
+			direct_vassal_opinion = 8
+		}
+		excellent = {
+			monthly_influence = 1.5
+			direct_vassal_opinion = 10
+		}
+	}
+
+	modifier = {
+		monthly_influence = 3
+		monthly_merit = 10
+		monthly_diplomacy_lifestyle_xp_gain_mult = 0.1
+	}
+
+	on_court_position_received = {
+		LR_quaestor_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		LR_quaestor_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		LR_quaestor_title_invalidated_effect = yes
+	}
+	on_court_position_vacated = {
+		court_position_vacated_event_effect = {
+			COURT_POSITION_TYPE = LR_quaestor_court_position
+		}
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	ai_position_score = {
+		value = 500
+		add = court_position_debt_considerations_value
+	}
+	ai_candidate_score = {
+		value = 50
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+		if = { # To stop petitioned positions immediately being fired by the AI
+			limit = {
+				court_position_petition_ai_weight_trigger = { ROLE = LR_quaestor }
+			}
+			add = 1000
+		}
+	}
+}
+
+LR_palatine_magister_court_position = {
+	sort_order = 990
+	max_available_positions = 1
+	minimum_rank = empire # Should only be available for emperors and hegemons
+	skill = learning
+
+	court_position_asset = {
+		animation = happy_teacher
+		background = "gfx/interface/illustrations/event_scenes/ep3_byzantine_throne_room.dds"
+	}
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 1
+		add = {
+			value = merit_level
+			multiply = 5
+			max = 50
+			desc = court_position_merit_level
+		}
+		add = {
+			value = learning
+			multiply = 1.75
+			max = 50
+			desc = court_position_skill_learning
+		}
+		# Confucian Education
+		if = {
+			limit = {
+				has_trait = confucian_education
+			}
+			add = {
+				value = "has_trait_xp(confucian_education)"
+				floor = yes
+				desc = court_position_confucian_education_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = erudite
+			}
+			add = {
+				value = 5
+				desc = court_position_erudite_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = diligent
+			}
+			add = {
+				value = 5
+				desc = court_position_diligent_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = patient
+			}
+			add = {
+				value = 5
+				desc = court_position_patient_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = calm
+			}
+			add = {
+				value = 5
+				desc = court_position_calm_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = intellect_good_3
+			}
+			add = {
+				value = 10
+				desc = court_position_intellect_good_3_trait
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = intellect_good_2
+			}
+			add = {
+				value = 10
+				desc = court_position_intellect_good_2_trait
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = intellect_good_1
+			}
+			add = {
+				value = 5
+				desc = court_position_intellect_good_1_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = shrewd
+			}
+			add = {
+				value = 10
+				desc = court_position_shrewd_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = reclusive
+			}
+			add = {
+				value = -10
+				desc = court_position_reclusive_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			add = {
+				value = -10
+				desc = court_position_shy_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = lazy
+			}
+			add = {
+				value = -10
+				desc = court_position_lazy_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = incapable
+			}
+			multiply = {
+				value = 0
+				desc = court_position_incapable_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = infirm
+			}
+			add = {
+				value = -50
+				desc = court_position_infirm_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+		add = general_aptitude_bonus
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	is_shown = {
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	valid_position = {
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			court_position_employee_shown_trigger = yes
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			LR_palatine_magister_validity_trigger = { EMPLOYER = scope:liege }
+		}
+	}
+
+	revoke_cost = { # root is the liege, no other scopes are passed here!
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = { free_court_position_revoke_trigger = { POS = LR_palatine_magister } }
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = LR_palatine_magister_total_salary_value
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = LR_palatine_magister_total_salary_value
+			}
+		}
+		prestige = {
+			value = major_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	received_salary = {
+		gold = {
+			value = LR_palatine_magister_total_salary_value
+		}
+		prestige = {
+			value = major_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	is_powerful_agent = yes
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			diplomacy = 1
+			stewardship = 1
+			learning = 1
+		}
+		poor = {
+			diplomacy = 2
+			stewardship = 2
+			learning = 2
+		}
+		average = {
+			diplomacy = 3
+			stewardship = 3
+			learning = 3
+		}
+		good = {
+			diplomacy = 4
+			stewardship = 4
+			learning = 4
+		}
+		excellent = {
+			diplomacy = 5
+			stewardship = 5
+			learning = 5
+		}
+	}
+
+	modifier = {
+		monthly_influence = 3
+		monthly_merit = 10
+		monthly_learning_lifestyle_xp_gain_mult = 0.1
+	}
+
+	on_court_position_received = {
+		LR_palatine_magister_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		LR_palatine_magister_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		LR_palatine_magister_title_invalidated_effect = yes
+	}
+	on_court_position_vacated = {
+		court_position_vacated_event_effect = {
+			COURT_POSITION_TYPE = LR_palatine_magister_court_position
+		}
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	ai_position_score = {
+		value = 500
+		add = court_position_debt_considerations_value
+	}
+	ai_candidate_score = {
+		value = 50
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+		if = { # To stop petitioned positions immediately being fired by the AI
+			limit = {
+				court_position_petition_ai_weight_trigger = { ROLE = LR_palatine_magister }
+			}
+			add = 1000
+		}
+	}
+}
+
+LR_comes_excubitorum_court_position = {
+	sort_order = 995
+	max_available_positions = 1
+	minimum_rank = empire # Should only be available for emperors and hegemons
+	skill = martial
+
+	court_position_asset = {
+		animation = relaxed_spear
+		background = "gfx/interface/illustrations/event_scenes/ep3_byzantine_throne_room.dds"
+	}
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 1
+		add = {
+			value = merit_level
+			multiply = 5
+			max = 50
+			desc = court_position_merit_level
+		}
+		add = {
+			value = martial
+			multiply = 1.75
+			max = 50
+			desc = court_position_skill_martial
+		}
+		# Confucian Education
+		if = {
+			limit = {
+				has_trait = confucian_education
+			}
+			add = {
+				value = "has_trait_xp(confucian_education)"
+				floor = yes
+				desc = court_position_confucian_education_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = erudite
+			}
+			add = {
+				value = 5
+				desc = court_position_erudite_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = diligent
+			}
+			add = {
+				value = 5
+				desc = court_position_diligent_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = patient
+			}
+			add = {
+				value = 5
+				desc = court_position_patient_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = calm
+			}
+			add = {
+				value = 5
+				desc = court_position_calm_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = intellect_good_3
+			}
+			add = {
+				value = 10
+				desc = court_position_intellect_good_3_trait
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = intellect_good_2
+			}
+			add = {
+				value = 10
+				desc = court_position_intellect_good_2_trait
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = intellect_good_1
+			}
+			add = {
+				value = 5
+				desc = court_position_intellect_good_1_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = shrewd
+			}
+			add = {
+				value = 10
+				desc = court_position_shrewd_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = reclusive
+			}
+			add = {
+				value = -10
+				desc = court_position_reclusive_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			add = {
+				value = -10
+				desc = court_position_shy_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = lazy
+			}
+			add = {
+				value = -10
+				desc = court_position_lazy_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = incapable
+			}
+			multiply = {
+				value = 0
+				desc = court_position_incapable_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = infirm
+			}
+			add = {
+				value = -50
+				desc = court_position_infirm_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+		add = general_aptitude_bonus
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	is_shown = {
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	valid_position = {
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			court_position_employee_shown_trigger = yes
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			LR_comes_excubitorum_validity_trigger = { EMPLOYER = scope:liege }
+		}
+	}
+
+	revoke_cost = { # root is the liege, no other scopes are passed here!
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = { free_court_position_revoke_trigger = { POS = LR_comes_excubitorum } }
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = LR_comes_excubitorum_total_salary_value
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = LR_comes_excubitorum_total_salary_value
+			}
+		}
+		prestige = {
+			value = major_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	received_salary = {
+		gold = {
+			value = LR_comes_excubitorum_total_salary_value
+		}
+		prestige = {
+			value = major_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	is_powerful_agent = yes
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			army_damage_mult = 0.01
+			army_toughness_mult = 0.01
+		}
+		poor = {
+			army_damage_mult = 0.03
+			army_toughness_mult = 0.03
+		}
+		average = {
+			army_damage_mult = 0.05
+			army_toughness_mult = 0.05
+		}
+		good = {
+			army_damage_mult = 0.08
+			army_toughness_mult = 0.08
+		}
+		excellent = {
+			army_damage_mult = 0.15
+			army_toughness_mult = 0.15
+		}
+	}
+
+	modifier = {
+		monthly_influence = 3
+		monthly_merit = 10
+		monthly_martial_lifestyle_xp_gain_mult = 0.1
+	}
+
+	on_court_position_received = {
+		LR_comes_excubitorum_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		LR_comes_excubitorum_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		LR_comes_excubitorum_title_invalidated_effect = yes
+	}
+	on_court_position_vacated = {
+		court_position_vacated_event_effect = {
+			COURT_POSITION_TYPE = LR_comes_excubitorum_court_position
+		}
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	ai_position_score = {
+		value = 500
+		add = court_position_debt_considerations_value
+	}
+	ai_candidate_score = {
+		value = 50
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+		if = { # To stop petitioned positions immediately being fired by the AI
+			limit = {
+				court_position_petition_ai_weight_trigger = { ROLE = LR_comes_excubitorum }
+			}
+			add = 1000
+		}
+	}
+}
+
+LR_siphonarios_court_position = {
+	sort_order = {
+		value = 225
+	}
+	max_available_positions = 1
+	skill = learning
+
+	court_position_asset = {
+		animation = reading
+		background = "gfx/interface/illustrations/event_scenes/ep3_byzantine_throne_room.dds"
+	}
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 1
+		# Skill
+		add = {
+			value = learning
+			multiply = 1.75
+			max = 50
+			desc = court_position_skill_learning
+		}
+
+		# Positive
+		if = {
+			limit = {
+				has_trait = erudite
+			}
+			add = {
+				value = 15
+				desc = court_position_erudite_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = architect
+			}
+			add = {
+				value = 15
+				desc = court_position_architect_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = diligent
+			}
+			add = {
+				value = 15
+				desc = court_position_diligent_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = patient
+			}
+			add = {
+				value = 15
+				desc = court_position_patient_trait
+			}
+		}
+		# Negative
+		if = {
+			limit = {
+				has_trait = lazy
+			}
+			add = {
+				value = -15
+				desc = court_position_lazy_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = impatient
+			}
+			add = {
+				value = -15
+				desc = court_position_impatient_trait
+			}
+		}
+
+		add = {
+			value = aptitude_military_engineer_value
+			multiply = 2
+			desc = court_position_military_engineer_trait
+		}
+			
+		add = court_position_aptitude_low_penalty_value
+		add = general_aptitude_bonus
+	}
+
+	is_shown = {
+		government_has_flag = government_is_roman_imperial
+		is_independent_ruler = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+		highest_held_title_tier >= tier_kingdom
+		government_has_flag = government_is_roman_imperial
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			court_position_employee_shown_trigger = yes
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			LR_siphonarios_validity_trigger = { EMPLOYER = scope:liege }
+		}
+	}
+
+	revoke_cost = { # root is the liege, no other scopes are passed here!
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = { free_court_position_revoke_trigger = { POS = LR_siphonarios } }
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = LR_siphonarios_total_salary_value
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = LR_siphonarios_total_salary_value
+			}
+		}
+		prestige = {
+			value = minor_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	received_salary = {
+		gold = {
+			value = LR_siphonarios_total_salary_value
+		}
+		prestige = {
+			value = minor_court_position_prestige_salary
+		}
+		round = no
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			siege_phase_time = -0.05
+		}
+		poor = {
+			siege_phase_time = -0.1
+		}
+		average = {
+			siege_phase_time = -0.15
+		}
+		good = {
+			siege_phase_time = -0.2
+		}
+		excellent = {
+			siege_phase_time = -0.25
+		}
+	}
+
+	on_court_position_received = {
+		basic_gained_court_position_effect = yes
+	}
+	on_court_position_revoked = {
+		basic_revoked_court_position_effect = yes
+	}
+	on_court_position_invalidated = {
+		basic_invalidated_court_position_effect = yes
+	}
+
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	ai_position_score = {
+		value = 50
+		if = {
+			limit = {
+				scope:liege = {
+					ai_has_warlike_personality = yes
+				}
+			}
+			add = 200
+		}
+		add = court_position_debt_considerations_value
+	}
+	ai_candidate_score = {
+		value = 50
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+		if = { # To stop petitioned positions immediately being fired by the AI
+			limit = {
+				court_position_petition_ai_weight_trigger = { ROLE = LR_siphonarios }
+			}
+			add = 1000
+		}
+	}
+}

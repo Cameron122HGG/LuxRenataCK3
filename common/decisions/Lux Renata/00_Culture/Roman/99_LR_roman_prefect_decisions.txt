@@ -1,0 +1,186 @@
+﻿# Appoint a landless Praetorian Prefect for a restored prefecture
+LR_appoint_roman_prefect_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
+	}
+	ai_check_interval = 60
+	decision_group_type = roman
+
+	desc = LR_appoint_roman_prefect_decision_desc
+	selection_tooltip = LR_appoint_roman_prefect_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		is_restored_roman_emperor_trigger = yes
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 200
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 200
+			}
+		}
+		prestige = 300
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_appoint_roman_prefect_decision_trigger_1
+			OR = {
+				LR_roman_prefecture_italia_available_trigger = yes
+				LR_roman_prefecture_gallia_available_trigger = yes
+				LR_roman_prefecture_illyricum_available_trigger = yes
+				LR_roman_prefecture_macedonia_available_trigger = yes
+				LR_roman_prefecture_oriens_available_trigger = yes
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_appoint_roman_prefect"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_PREFECTURE_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = prefecture_italia
+			current_description = {
+				desc = LR_prefect_italia_option_desc
+			}
+			localization = {
+				desc = LR_prefect_italia_option_desc
+			}
+			is_shown = {
+				LR_roman_prefecture_italia_available_trigger = yes
+			}
+			is_valid = {
+				LR_roman_prefecture_italia_available_trigger = yes
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = prefecture_gallia
+			current_description = {
+				desc = LR_prefect_gallia_option_desc
+			}
+			localization = {
+				desc = LR_prefect_gallia_option_desc
+			}
+			is_shown = {
+				LR_roman_prefecture_gallia_available_trigger = yes
+			}
+			is_valid = {
+				LR_roman_prefecture_gallia_available_trigger = yes
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = prefecture_illyricum
+			current_description = {
+				desc = LR_prefect_illyricum_option_desc
+			}
+			localization = {
+				desc = LR_prefect_illyricum_option_desc
+			}
+			is_shown = {
+				LR_roman_prefecture_illyricum_available_trigger = yes
+			}
+			is_valid = {
+				LR_roman_prefecture_illyricum_available_trigger = yes
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = prefecture_macedonia
+			current_description = {
+				desc = LR_prefect_macedonia_option_desc
+			}
+			localization = {
+				desc = LR_prefect_macedonia_option_desc
+			}
+			is_shown = {
+				LR_roman_prefecture_macedonia_available_trigger = yes
+			}
+			is_valid = {
+				LR_roman_prefecture_macedonia_available_trigger = yes
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = prefecture_oriens
+			current_description = {
+				desc = LR_prefect_oriens_option_desc
+			}
+			localization = {
+				desc = LR_prefect_oriens_option_desc
+			}
+			is_shown = {
+				LR_roman_prefecture_oriens_available_trigger = yes
+			}
+			is_valid = {
+				LR_roman_prefecture_oriens_available_trigger = yes
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_appoint_roman_prefect_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:prefecture_italia = yes }
+				LR_appoint_roman_prefect_effect = { TITLE = k_praefectus_praetorio_italia }
+			}
+			else_if = {
+				limit = { scope:prefecture_gallia = yes }
+				LR_appoint_roman_prefect_effect = { TITLE = k_praefectus_praetorio_gallia }
+			}
+			else_if = {
+				limit = { scope:prefecture_illyricum = yes }
+				LR_appoint_roman_prefect_effect = { TITLE = k_praefectus_praetorio_illyricum }
+			}
+			else_if = {
+				limit = { scope:prefecture_macedonia = yes }
+				LR_appoint_roman_prefect_effect = { TITLE = k_praefectus_praetorio_macedonia }
+			}
+			else_if = {
+				limit = { scope:prefecture_oriens = yes }
+				LR_appoint_roman_prefect_effect = { TITLE = k_praefectus_praetorio_oriens }
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}

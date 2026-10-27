@@ -1,0 +1,93 @@
+﻿on_game_start = {
+	on_actions = {
+		LR_roman_dioceses_on_game_start
+	}
+}
+
+# If a start date already has a restored Roman emperor with dioceses in place (e.g. the 936 start),
+# treat that half's administrative divisions as already restored, as if the administration decision had been taken.
+LR_roman_dioceses_on_game_start = {
+	effect = {
+		# East
+		if = {
+			limit = {
+				exists = title:e_eastern_roman_empire.holder
+				OR = {
+					exists = title:k_diocese_thracia.holder
+					exists = title:k_diocese_macedonia.holder
+					exists = title:k_diocese_pontus.holder
+					exists = title:k_diocese_asia.holder
+					exists = title:k_diocese_armenia.holder
+					exists = title:k_diocese_syria.holder
+					exists = title:k_diocese_palestine.holder
+					exists = title:k_diocese_aegyptus.holder
+				}
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:eastern_roman_diocese_restored
+					}
+				}
+			}
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:eastern_roman_diocese_restored
+			}
+			set_global_variable = {
+				name = num_of_provinces_restored_ere
+				value = 0
+			}
+			if = { limit = { exists = title:k_diocese_thracia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_macedonia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_pontus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_asia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_armenia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_syria.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_palestine.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_aegyptus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+		}
+
+		# West (Africa and Mauretania are restored together, so they count once)
+		if = {
+			limit = {
+				exists = title:e_western_roman_empire.holder
+				OR = {
+					exists = title:k_diocese_italia_annonaria.holder
+					exists = title:k_diocese_italia_suburbicaria.holder
+					exists = title:k_diocese_africa.holder
+					exists = title:k_diocese_lugdunensis.holder
+					exists = title:k_diocese_viennensis.holder
+					exists = title:k_diocese_hispania.holder
+					exists = title:k_diocese_britannia.holder
+					exists = title:k_diocese_illyricum.holder
+					exists = title:k_diocese_noricum.holder
+					exists = title:k_diocese_dardania.holder
+				}
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:western_roman_diocese_restored
+					}
+				}
+			}
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:western_roman_diocese_restored
+			}
+			set_global_variable = {
+				name = num_of_provinces_restored_wre
+				value = 0
+			}
+			if = { limit = { exists = title:k_diocese_italia_annonaria.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_italia_suburbicaria.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_africa.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_lugdunensis.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_viennensis.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_hispania.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_britannia.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_illyricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_noricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_dardania.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+		}
+	}
+}

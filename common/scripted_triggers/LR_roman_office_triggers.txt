@@ -1,0 +1,148 @@
+﻿# Landless Roman offices: Praetorian Prefects and ministries
+
+LR_is_roman_prefect_title_trigger = {
+	OR = {
+		this = title:k_praefectus_praetorio_italia
+		this = title:k_praefectus_praetorio_gallia
+		this = title:k_praefectus_praetorio_illyricum
+		this = title:k_praefectus_praetorio_macedonia
+		this = title:k_praefectus_praetorio_oriens
+	}
+}
+
+LR_is_roman_minister_title_trigger = {
+	OR = {
+		this = title:k_lr_ministry_east_cubiculi
+		this = title:k_lr_ministry_west_cubiculi
+		this = title:k_lr_ministry_east_agentes
+		this = title:k_lr_ministry_west_agentes
+		this = title:k_lr_ministry_east_officiorum
+		this = title:k_lr_ministry_west_officiorum
+		this = title:k_lr_ministry_east_memoriae
+		this = title:k_lr_ministry_west_memoriae
+		this = title:k_lr_ministry_east_urbi
+		this = title:k_lr_ministry_west_urbi
+		this = title:k_lr_ministry_east_militum
+		this = title:k_lr_ministry_west_militum
+	}
+}
+
+LR_is_roman_civil_minister_title_trigger = {
+	OR = {
+		this = title:k_lr_ministry_east_cubiculi
+		this = title:k_lr_ministry_west_cubiculi
+		this = title:k_lr_ministry_east_agentes
+		this = title:k_lr_ministry_west_agentes
+		this = title:k_lr_ministry_east_officiorum
+		this = title:k_lr_ministry_west_officiorum
+		this = title:k_lr_ministry_east_memoriae
+		this = title:k_lr_ministry_west_memoriae
+		this = title:k_lr_ministry_east_urbi
+		this = title:k_lr_ministry_west_urbi
+	}
+}
+
+LR_is_roman_military_minister_title_trigger = {
+	OR = {
+		this = title:k_lr_ministry_east_militum
+		this = title:k_lr_ministry_west_militum
+	}
+}
+
+# Does this character hold any landless Roman office (dux, prefect or minister)?
+LR_holds_roman_office_trigger = {
+	any_held_title = {
+		OR = {
+			LR_is_roman_dux_title_trigger = yes
+			LR_is_roman_prefect_title_trigger = yes
+			LR_is_roman_minister_title_trigger = yes
+		}
+	}
+}
+
+# Can this character be appointed Praetorian Prefect by $EMPEROR$?
+LR_can_be_roman_prefect_trigger = {
+	is_adult = yes
+	is_imprisoned = no
+	NOT = { this = $EMPEROR$ }
+	NOT = { is_heir_of = $EMPEROR$ }
+	LR_holds_roman_office_trigger = no
+	LR_can_be_roman_minister_trigger = { COURT_OWNER = $EMPEROR$ }
+	OR = {
+		is_ruler = no
+		AND = {
+			government_has_flag = government_is_roman_imperial
+			highest_held_title_tier <= tier_duchy
+		}
+	}
+}
+
+# Every diocese of the prefecture of Italy and Africa is held within root's realm, and the prefecture has no prefect
+LR_roman_prefecture_italia_available_trigger = {
+	exists = title:k_diocese_italia_annonaria.holder
+	title:k_diocese_italia_annonaria.holder.top_liege = root
+	exists = title:k_diocese_italia_suburbicaria.holder
+	title:k_diocese_italia_suburbicaria.holder.top_liege = root
+	exists = title:k_diocese_africa.holder
+	title:k_diocese_africa.holder.top_liege = root
+	NOT = { exists = title:k_praefectus_praetorio_italia.holder }
+}
+
+# Every diocese of the prefecture of the Gauls is held within root's realm, and the prefecture has no prefect
+LR_roman_prefecture_gallia_available_trigger = {
+	exists = title:k_diocese_lugdunensis.holder
+	title:k_diocese_lugdunensis.holder.top_liege = root
+	exists = title:k_diocese_viennensis.holder
+	title:k_diocese_viennensis.holder.top_liege = root
+	exists = title:k_diocese_hispania.holder
+	title:k_diocese_hispania.holder.top_liege = root
+	exists = title:k_diocese_britannia.holder
+	title:k_diocese_britannia.holder.top_liege = root
+	NOT = { exists = title:k_praefectus_praetorio_gallia.holder }
+}
+
+# Every diocese of the prefecture of Illyricum is held within root's realm, and the prefecture has no prefect
+LR_roman_prefecture_illyricum_available_trigger = {
+	exists = title:k_diocese_noricum.holder
+	title:k_diocese_noricum.holder.top_liege = root
+	exists = title:k_diocese_illyricum.holder
+	title:k_diocese_illyricum.holder.top_liege = root
+	exists = title:k_diocese_dardania.holder
+	title:k_diocese_dardania.holder.top_liege = root
+	NOT = { exists = title:k_praefectus_praetorio_illyricum.holder }
+}
+
+# Every diocese of the prefecture of Macedonia is held within root's realm, and the prefecture has no prefect
+LR_roman_prefecture_macedonia_available_trigger = {
+	exists = title:k_diocese_thracia.holder
+	title:k_diocese_thracia.holder.top_liege = root
+	exists = title:k_diocese_macedonia.holder
+	title:k_diocese_macedonia.holder.top_liege = root
+	exists = title:k_diocese_pontus.holder
+	title:k_diocese_pontus.holder.top_liege = root
+	exists = title:k_diocese_asia.holder
+	title:k_diocese_asia.holder.top_liege = root
+	exists = title:k_diocese_armenia.holder
+	title:k_diocese_armenia.holder.top_liege = root
+	NOT = { exists = title:k_praefectus_praetorio_macedonia.holder }
+}
+
+# Every diocese of the prefecture of the East is held within root's realm, and the prefecture has no prefect
+LR_roman_prefecture_oriens_available_trigger = {
+	exists = title:k_diocese_syria.holder
+	title:k_diocese_syria.holder.top_liege = root
+	exists = title:k_diocese_palestine.holder
+	title:k_diocese_palestine.holder.top_liege = root
+	exists = title:k_diocese_aegyptus.holder
+	title:k_diocese_aegyptus.holder.top_liege = root
+	NOT = { exists = title:k_praefectus_praetorio_oriens.holder }
+}
+
+# Is this title a landless Roman office (dux command, prefecture or ministry)?
+LR_is_roman_office_title_trigger = {
+	OR = {
+		LR_is_roman_dux_title_trigger = yes
+		LR_is_roman_prefect_title_trigger = yes
+		LR_is_roman_minister_title_trigger = yes
+	}
+}

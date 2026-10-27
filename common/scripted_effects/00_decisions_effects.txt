@@ -2658,7 +2658,52 @@ create_cadet_house_with_name_effect = {
 	save_scope_as = new_house_head # don't ask
 	save_best_location_for_house_name_effect = yes
 
-	if = { # Prefixed Primary Title - (PREFIX) (TITLE)
+	if = { # LR: Gaulish (sacral) naming event choice - (PLACE) / (FOUNDER)-ing / (FOUNDER)-iacus / custom
+		limit = { exists = scope:new_head.var:new_sacral_house_name }
+		create_cadet_branch = {
+			name = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_random_barony }
+						desc = sacral_house_random_barony
+					}
+					triggered_desc = {
+						trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_primary_county }
+						desc = sacral_house_primary_county
+					}
+					triggered_desc = {
+						trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_domicile_barony }
+						desc = sacral_house_domicile_barony
+					}
+					triggered_desc = {
+						trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_domicile_county }
+						desc = sacral_house_domicile_county
+					}
+					triggered_desc = {
+						trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_first_name }
+						desc = sacral_house_first_name
+					}
+					triggered_desc = {
+						trigger = { scope:new_head.var:new_sacral_house_name ?= flag:sacral_house_first_name_frankish }
+						desc = sacral_house_first_name_frankish
+					}
+					triggered_desc = {
+						trigger = { scope:new_head.var:new_sacral_house_name ?= flag:custom }
+						desc = sacral_house_name_custom
+					}
+					triggered_desc = {
+						trigger = { exists = scope:new_head.var:new_sacral_house_name }
+						desc = sacral_house_name_flag
+					}
+					desc = sacral_house_name_fallback
+				}
+			}
+			save_scope_as = new_house
+		}
+		scope:new_house ?= { generate_coa = yes }
+		scope:new_head = { remove_variable = new_sacral_house_name } # used up; a later cadet branch asks again
+	}
+	else_if = { # Prefixed Primary Title - (PREFIX) (TITLE)
 		limit = {
 			is_landed = yes
 			highest_held_title_tier <= tier_duchy

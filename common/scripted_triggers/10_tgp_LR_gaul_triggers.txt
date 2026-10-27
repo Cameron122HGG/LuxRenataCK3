@@ -302,51 +302,6 @@ LR_tgp_blocked_ruler_against_ceremonial_action_trigger = {
 	}
 }
 
-gaul_house_name_county_trigger = {
-	exists = $TITLE$
-	save_temporary_scope_as = new_head_temp
-	trigger_if = {
-		limit = {
-			OR = {
-				$TITLE$.holder ?= scope:new_head_temp
-				scope:new_head_temp.domicile.domicile_location.county ?= $TITLE$
-			}
-		}
-		always = yes
-	}
-	trigger_else_if = {
-		limit = { exists = scope:old_head }
-		OR = {
-			$TITLE$.holder ?= scope:old_head
-			scope:old_head.domicile.domicile_location.county ?= $TITLE$
-		}
-	}
-	trigger_else_if = {
-		limit = { exists = scope:new_head_temp.house.house_head }
-		OR = {
-			$TITLE$.holder ?= scope:new_head_temp.house.house_head
-			scope:new_head_temp.house.house_head.domicile.domicile_location.county ?= $TITLE$
-		}
-	}
-	trigger_else_if = {
-		limit = { exists = scope:old_head.house.house_head }
-		OR = {
-			$TITLE$.holder ?= scope:old_head.house.house_head
-			scope:old_head.house.house_head.domicile.domicile_location.county ?= $TITLE$
-		}
-	}
-	trigger_else = { always = yes }
-	NOT = {
-		is_target_in_variable_list = { name = sacral_house_names target = $FLAG$ }
-	}
-}
-
-gaul_house_name_trigger = {
-	NOT = {
-		is_target_in_variable_list = { name = sacral_house_names target = $FLAG$ }
-	}
-}
-
 LR_tgp_sacral_gaul_internal_manorial_war_is_crime_trigger = {
 	scope:defender = {
 		government_has_flag = government_is_sacral_administrative
@@ -769,7 +724,18 @@ LR_tgp_can_become_sacral_administrative_trigger = {
 				has_character_flag = LR_tgp_sacral_gaul_restore_sacral_government_flag
 			}
 		}
-		government_is_japanese_trigger = yes
 		has_character_flag = LR_tgp_sacral_gaul_restore_sacral_government_flag
+	}
+}
+
+# Frankish and other West/Central Germanic cultures name a cadet house after its founder with the Frankish -ing (Karling, Merowing);
+# everyone else in Gaul uses the Gallo-Roman estate form -iacus (Floriacus, Patriciacus)
+LR_uses_frankish_house_names_trigger = {
+	culture = {
+		OR = {
+			has_cultural_pillar = heritage_frankish
+			has_cultural_pillar = heritage_central_germanic
+			has_cultural_pillar = heritage_west_germanic
+		}
 	}
 }

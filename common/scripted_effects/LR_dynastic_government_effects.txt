@@ -1,0 +1,112 @@
+﻿# Dynastic tier of the Lux Renata government groups
+
+# Root is a ruler. With the DLC, the plain starting governments (classical, western feudal, despotic, Indic feudal) become
+# their dynastic version; without it, the dynastic governments fall back to the plain ones.
+# Run at game start and whenever a government changes, so decisions and events can keep setting the plain government.
+LR_normalize_dynastic_government_effect = {
+	if = {
+		limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+		if = {
+			limit = { has_government = classical_government }
+			if = {
+				limit = { LR_culture_is_hellenic_trigger = yes }
+				change_government = alexandrian_dynastic_government
+			}
+			else = {
+				change_government = roman_dynastic_government
+			}
+		}
+		else_if = {
+			limit = { has_government = western_feudal_government }
+			change_government = western_dynastic_government
+		}
+		else_if = {
+			limit = { has_government = despotic_government }
+			change_government = persianate_dynastic_government
+		}
+		else_if = {
+			limit = { has_government = indic_feudal_government }
+			change_government = gupta_dynastic_government
+		}
+	}
+	else = {
+		if = {
+			limit = { OR = { has_government = roman_dynastic_government has_government = alexandrian_dynastic_government } }
+			change_government = classical_government
+		}
+		else_if = {
+			limit = { has_government = western_dynastic_government }
+			change_government = western_feudal_government
+		}
+		else_if = {
+			limit = { has_government = persianate_dynastic_government }
+			change_government = despotic_government
+		}
+		else_if = {
+			limit = { has_government = gupta_dynastic_government }
+			change_government = indic_feudal_government
+		}
+	}
+}
+
+# Root has an administrative (or top-tier) government that is giving up administration: it falls back to its dynastic twin
+# (or, without the DLC, the plain government of its group).
+LR_change_admin_to_dynastic_effect = {
+	if = {
+		limit = { has_government = iqta_administrative_government }
+		change_government = iqta_dynastic_government
+	}
+	else_if = {
+		limit = { has_government = japan_administrative_government }
+		change_government = japan_feudal_government
+	}
+	else_if = {
+		limit = { has_government = sacral_administrative_government }
+		change_government = sacral_feudal_government
+	}
+	else_if = {
+		limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+		if = {
+			limit = { OR = { has_government = roman_administrative_government has_government = roman_autocratic_government has_government = roman_imperial_government has_government = decayed_principate_government } }
+			change_government = roman_dynastic_government
+		}
+		else_if = {
+			limit = { has_government = alexandrian_administrative_government }
+			change_government = alexandrian_dynastic_government
+		}
+		else_if = {
+			limit = { has_government = western_administrative_government }
+			change_government = western_dynastic_government
+		}
+		else_if = {
+			limit = { OR = { has_government = persianate_administrative_government has_government = persianate_autocratic_government } }
+			change_government = persianate_dynastic_government
+		}
+		else_if = {
+			limit = { has_government = gupta_administrative_government }
+			change_government = gupta_dynastic_government
+		}
+	}
+	else = {
+		if = {
+			limit = { OR = { has_government = roman_administrative_government has_government = roman_autocratic_government has_government = roman_imperial_government has_government = decayed_principate_government } }
+			change_government = classical_government
+		}
+		else_if = {
+			limit = { has_government = alexandrian_administrative_government }
+			change_government = classical_government
+		}
+		else_if = {
+			limit = { has_government = western_administrative_government }
+			change_government = western_feudal_government
+		}
+		else_if = {
+			limit = { OR = { has_government = persianate_administrative_government has_government = persianate_autocratic_government } }
+			change_government = despotic_government
+		}
+		else_if = {
+			limit = { has_government = gupta_administrative_government }
+			change_government = indic_feudal_government
+		}
+	}
+}

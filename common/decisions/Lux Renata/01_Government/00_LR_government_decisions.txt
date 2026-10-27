@@ -225,13 +225,13 @@ convert_classical_decision = {
 
 	is_shown = {
 		OR = {
-			has_government = western_feudal_government 
+			OR = { has_government = western_feudal_government has_government = western_dynastic_government } 
 			has_government = clan_government
 			AND = {
 				is_independent_ruler = no
-				has_government = despotic_government
+				OR = { has_government = despotic_government has_government = persianate_dynastic_government }
 				liege = {
-					has_government = classical_government
+					OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }
 				}
 			}
 		}
@@ -244,15 +244,15 @@ convert_classical_decision = {
 					rite = { rite_has_doctrine = graeco_roman_special_hostility_doctrine }
 				}	
 				NOR = {
-					has_government = classical_government
-					has_government = despotic_government
+					OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }
+					OR = { has_government = despotic_government has_government = persianate_dynastic_government }
 				}
 			}
 			AND = {
 				NOT = { liege = this }
-				NOT = { has_government = classical_government }
+				NOT = { OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government } }
 				liege = {
-					has_government = classical_government
+					OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }
 				}
 			}
 		}
@@ -267,7 +267,7 @@ convert_classical_decision = {
 					is_independent_ruler = no
 				}
 				liege = {
-					has_government = classical_government			
+					OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }			
 				}
 			}
 		}
@@ -292,7 +292,7 @@ convert_classical_decision = {
 			every_vassal_or_below = {
 				limit = { 
 					OR = {
-						has_government = western_feudal_government 
+						OR = { has_government = western_feudal_government has_government = western_dynastic_government } 
 						has_government = clan_government
 					}
 				}
@@ -348,13 +348,13 @@ convert_despotic_decision = {
 
 	is_shown = {
 		OR = {
-			has_government = western_feudal_government 
+			OR = { has_government = western_feudal_government has_government = western_dynastic_government } 
 			has_government = clan_government
 			AND = {
 				is_independent_ruler = no
-				has_government = despotic_government
+				OR = { has_government = despotic_government has_government = persianate_dynastic_government }
 				liege = {
-					has_government = classical_government
+					OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }
 				}
 			}			
 		}
@@ -369,15 +369,15 @@ convert_despotic_decision = {
 					rite = { rite_has_doctrine = special_doctrine_is_zoroastrian_faith }
 				}
 				NOR = { 
-					has_government = classical_government
-					has_government = despotic_government
+					OR = { has_government = classical_government has_government = roman_dynastic_government has_government = alexandrian_dynastic_government }
+					OR = { has_government = despotic_government has_government = persianate_dynastic_government }
 				}
 			}
 			AND = {
 				NOT = { liege = this }
-				NOT = { has_government = despotic_government }
+				NOT = { OR = { has_government = despotic_government has_government = persianate_dynastic_government } }
 				liege = {
-					has_government = despotic_government			
+					OR = { has_government = despotic_government has_government = persianate_dynastic_government }			
 				}
 			}
 		}		
@@ -394,7 +394,7 @@ convert_despotic_decision = {
 					is_independent_ruler = no
 				}			
 				liege = {
-					has_government = despotic_government			
+					OR = { has_government = despotic_government has_government = persianate_dynastic_government }			
 				}
 			}
 		}			
@@ -419,7 +419,7 @@ convert_despotic_decision = {
 			every_vassal_or_below = {
 				limit = { 
 					OR = {
-						has_government = western_feudal_government 
+						OR = { has_government = western_feudal_government has_government = western_dynastic_government } 
 						has_government = clan_government
 					}
 				}
@@ -487,7 +487,7 @@ adopt_gaul_gov_decision = {
 			has_government = sacral_administrative_government	
 		}
 		OR = {
-			has_government = western_feudal_government
+			OR = { has_government = western_feudal_government has_government = western_dynastic_government }
 			government_has_flag = government_is_administrative
 		}		
 	}
@@ -515,6 +515,7 @@ adopt_gaul_gov_decision = {
 	}
 
 	effect = {
+		hidden_effect = { add_character_flag = can_become_sacral_feudal } # lets a non-sacral ruler take Sacral Feudal
 		change_government = sacral_feudal_government
 		hidden_effect = {
 			create_noble_family_effect = { GOVERNMENT_GIVER = root }
@@ -524,7 +525,7 @@ adopt_gaul_gov_decision = {
 			every_vassal_or_below = {
 				limit = {
 					OR = {
-						has_government = western_feudal_government
+						OR = { has_government = western_feudal_government has_government = western_dynastic_government }
 						government_has_flag = government_is_administrative
 					}
 				}
@@ -1165,6 +1166,10 @@ convert_to_administrative_decision = {
 			limit = { scope:go_sacral_administrative_government = yes }
 			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:sacral_administrative }
 		}
+		else_if = {
+			limit = { scope:go_persianate_administrative_government = yes }
+			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:persianate_administrative }
+		}
 		save_scope_as = actor
 		if = {
 			limit = {
@@ -1360,6 +1365,12 @@ convert_to_feudalism_from_administrative_decision = {
 					}
 					has_realm_law = japanese_bureaucracy_0 
 				}
+				trigger_if = {
+					limit = {
+						has_realm_law_in_group = roman_bureaucracy
+					}
+					has_realm_law = roman_bureaucracy_0 
+				}
 			}
 			custom_tooltip = {
 				text = governorship_is_on_the_border_tt
@@ -1409,6 +1420,12 @@ convert_to_feudalism_from_administrative_decision = {
 					has_realm_law_in_group = japanese_bureaucracy
 				}
 				has_realm_law = japanese_bureaucracy_3
+			}
+			trigger_if = {
+				limit = {
+					has_realm_law_in_group = roman_bureaucracy
+				}
+				has_realm_law = roman_bureaucracy_3
 			}
 		}
 	}

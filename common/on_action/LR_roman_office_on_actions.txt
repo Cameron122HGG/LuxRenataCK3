@@ -1,0 +1,314 @@
+﻿on_title_gain = {
+	on_actions = { LR_roman_office_on_title_gain }
+}
+
+on_title_lost = {
+	on_actions = { LR_roman_office_on_title_lost }
+}
+
+on_councillors_swapped = {
+	on_actions = { LR_roman_office_on_councillors_swapped }
+}
+
+on_game_start = {
+	on_actions = { LR_roman_office_on_game_start }
+}
+
+on_game_start_after_lobby = {
+	on_actions = { LR_roman_office_on_game_start_after_lobby }
+}
+
+on_death = {
+	on_actions = { LR_roman_office_on_death }
+}
+
+# root = new holder, scope:title = the title
+LR_roman_office_on_title_gain = {
+	trigger = {
+		scope:title = {
+			OR = {
+				LR_is_roman_prefect_title_trigger = yes
+				LR_is_roman_minister_title_trigger = yes
+			}
+		}
+	}
+	effect = {
+		LR_roman_office_holder_setup_effect = yes
+		if = {
+			limit = {
+				scope:title = { LR_is_roman_prefect_title_trigger = yes }
+				NOT = { has_character_modifier = LR_roman_prefect_modifier }
+			}
+			add_character_modifier = LR_roman_prefect_modifier
+		}
+		if = {
+			limit = { scope:title = { LR_is_roman_minister_title_trigger = yes } }
+			LR_roman_minister_title_gained_effect = yes
+		}
+	}
+}
+
+# root = old holder, scope:title = the title
+LR_roman_office_on_title_lost = {
+	trigger = {
+		is_alive = yes
+		scope:title = { LR_is_roman_prefect_title_trigger = yes }
+		has_character_modifier = LR_roman_prefect_modifier
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					any_held_title = {
+						this != scope:title
+						LR_is_roman_prefect_title_trigger = yes
+					}
+				}
+			}
+			remove_character_modifier = LR_roman_prefect_modifier
+		}
+	}
+}
+
+# root and scope:councillor swapped seats on scope:councillor_liege's council: swap their ministry titles to match
+LR_roman_office_on_councillors_swapped = {
+	trigger = {
+		scope:councillor_liege = { government_has_flag = government_is_roman_imperial }
+	}
+	effect = {
+		LR_roman_minister_sync_effect = yes
+		scope:councillor = { LR_roman_minister_sync_effect = yes }
+	}
+}
+
+# Prefectures and ministries that already exist in the start date's history get the same setup as newly appointed holders
+LR_roman_office_on_game_start = {
+	effect = {
+		title:k_lr_ministry_east_cubiculi = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_west_cubiculi = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_east_agentes = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_west_agentes = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_east_officiorum = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_west_officiorum = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_east_memoriae = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_west_memoriae = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_east_urbi = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_west_urbi = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_east_militum = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_lr_ministry_west_militum = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_office_holder_setup_effect = yes }
+			}
+		}
+		title:k_praefectus_praetorio_italia = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = {
+					LR_roman_office_holder_setup_effect = yes
+					if = {
+						limit = { NOT = { has_character_modifier = LR_roman_prefect_modifier } }
+						add_character_modifier = LR_roman_prefect_modifier
+					}
+				}
+			}
+		}
+		title:k_praefectus_praetorio_gallia = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = {
+					LR_roman_office_holder_setup_effect = yes
+					if = {
+						limit = { NOT = { has_character_modifier = LR_roman_prefect_modifier } }
+						add_character_modifier = LR_roman_prefect_modifier
+					}
+				}
+			}
+		}
+		title:k_praefectus_praetorio_illyricum = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = {
+					LR_roman_office_holder_setup_effect = yes
+					if = {
+						limit = { NOT = { has_character_modifier = LR_roman_prefect_modifier } }
+						add_character_modifier = LR_roman_prefect_modifier
+					}
+				}
+			}
+		}
+		title:k_praefectus_praetorio_macedonia = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = {
+					LR_roman_office_holder_setup_effect = yes
+					if = {
+						limit = { NOT = { has_character_modifier = LR_roman_prefect_modifier } }
+						add_character_modifier = LR_roman_prefect_modifier
+					}
+				}
+			}
+		}
+		title:k_praefectus_praetorio_oriens = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = {
+					LR_roman_office_holder_setup_effect = yes
+					if = {
+						limit = { NOT = { has_character_modifier = LR_roman_prefect_modifier } }
+						add_character_modifier = LR_roman_prefect_modifier
+					}
+				}
+			}
+		}
+	}
+}
+
+# By now councils are filled: give every Roman Imperial emperor's ministers their ministry titles
+LR_roman_office_on_game_start_after_lobby = {
+	effect = {
+		every_independent_ruler = {
+			limit = {
+				government_has_flag = government_is_roman_imperial
+				highest_held_title_tier >= tier_empire
+			}
+			save_scope_as = councillor_liege
+			if = {
+				limit = { exists = cp:LR_magister_officiorum }
+				cp:LR_magister_officiorum = { LR_roman_minister_sync_effect = yes }
+			}
+			if = {
+				limit = { exists = cp:LR_magister_memoriae }
+				cp:LR_magister_memoriae = { LR_roman_minister_sync_effect = yes }
+			}
+			if = {
+				limit = { exists = cp:LR_praefectus_urbi }
+				cp:LR_praefectus_urbi = { LR_roman_minister_sync_effect = yes }
+			}
+			if = {
+				limit = { exists = cp:LR_magister_militum }
+				cp:LR_magister_militum = { LR_roman_minister_sync_effect = yes }
+			}
+			if = {
+				limit = { exists = cp:councillor_chancellor }
+				cp:councillor_chancellor = { LR_roman_minister_sync_effect = yes }
+			}
+			if = {
+				limit = { exists = cp:councillor_spymaster }
+				cp:councillor_spymaster = { LR_roman_minister_sync_effect = yes }
+			}
+		}
+	}
+}
+
+# root = the character about to die, before their titles are inherited.
+# An office holder's primary title is the office, and noble family titles always follow the primary heir, so at death
+# the family title would follow the office to its appointed successor. Hand each office to its appointed successor first
+# (or let it lapse if there is none); the noble family is then inherited by the family as usual.
+LR_roman_office_on_death = {
+	trigger = {
+		any_held_title = { is_noble_family_title = yes }
+		any_held_title = { LR_is_roman_office_title_trigger = yes }
+	}
+	effect = {
+		every_held_title = {
+			limit = { LR_is_roman_office_title_trigger = yes }
+			add_to_temporary_list = LR_offices_of_the_dying
+		}
+		every_in_list = {
+			list = LR_offices_of_the_dying
+			save_temporary_scope_as = office_of_the_dying
+			if = {
+				limit = {
+					exists = current_heir
+					NOT = { current_heir = root }
+				}
+				create_title_and_vassal_change = {
+					type = appointment
+					save_scope_as = office_handover
+					add_claim_on_loss = no
+				}
+				change_title_holder = {
+					holder = current_heir
+					change = scope:office_handover
+				}
+				resolve_title_and_vassal_change = scope:office_handover
+			}
+			else = {
+				root = { destroy_title = scope:office_of_the_dying }
+			}
+		}
+	}
+}

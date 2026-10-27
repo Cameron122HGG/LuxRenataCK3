@@ -37,6 +37,48 @@ convert_to_administrative_from_feudalism_effect = {
 				value = flag:japan_administrative
 			}
 		}
+		flag:roman_administrative = { # roman_administrative_government (LR)
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:roman_administrative
+			}
+		}
+		flag:alexandrian_administrative = { # alexandrian_administrative_government (LR)
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:alexandrian_administrative
+			}
+		}
+		flag:persianate_administrative = { # persianate_administrative_government (LR)
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:persianate_administrative
+			}
+		}
+		flag:western_administrative = { # western_administrative_government (LR)
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:western_administrative
+			}
+		}
+		flag:sacral_administrative = { # sacral_administrative_government (LR)
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:sacral_administrative
+			}
+		}
+		flag:gupta_administrative = { # gupta_administrative_government (LR)
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:gupta_administrative
+			}
+		}
+		flag:iqta_administrative = { # iqta_administrative_government (LR)
+			save_scope_value_as = {
+				name = has_selected_a_government
+				value = flag:iqta_administrative
+			}
+		}
 	}
 
 	change_to_administrative_effect = yes
@@ -426,58 +468,72 @@ convert_to_feudalism_from_administrative_effect = {
 	}
 
 	#Then change government
+	### LR: Lux Renata administrative governments fall back to their dynastic twin (or their group's plain government without the DLC)
 	if = {
-		limit = { ep3_is_clan_inclined_trigger = yes }
-		change_government = clan_government
-
-		#Duchies automatically transfer, need to poke the kingdoms
-		if = {
+		limit = { LR_has_dynastic_twin_trigger = yes }
+		LR_change_admin_to_dynastic_effect = yes
+		every_vassal = {
 			limit = {
-				any_vassal = {
-					primary_title.tier >= tier_kingdom
-					NOR = {
-						government_has_flag = government_is_clan
-						government_has_flag = government_is_theocracy
-					}
-				}
+				primary_title.tier >= tier_kingdom
+				LR_has_dynastic_twin_trigger = yes
 			}
-			custom_tooltip = kings_become_clan
-			every_vassal = {
-				limit = {
-					primary_title.tier >= tier_kingdom
-					NOR = {
-						government_has_flag = government_is_clan
-						government_has_flag = government_is_theocracy
-					}
-				}
-				hidden_effect = { change_government = clan_government }
-			}
+			hidden_effect = { LR_change_admin_to_dynastic_effect = yes }
 		}
 	}
 	else = {
-		change_government = feudal_government
-
-		#Duchies automatically transfer, need to poke the kingdoms
 		if = {
-			limit = {
-				any_vassal = {
-					primary_title.tier >= tier_kingdom
-					NOR = {
-						government_has_flag = government_is_feudal
-						government_has_flag = government_is_theocracy
+			limit = { ep3_is_clan_inclined_trigger = yes }
+			change_government = clan_government
+
+			#Duchies automatically transfer, need to poke the kingdoms
+			if = {
+				limit = {
+					any_vassal = {
+						primary_title.tier >= tier_kingdom
+						NOR = {
+							government_has_flag = government_is_clan
+							government_has_flag = government_is_theocracy
+						}
 					}
+				}
+				custom_tooltip = kings_become_clan
+				every_vassal = {
+					limit = {
+						primary_title.tier >= tier_kingdom
+						NOR = {
+							government_has_flag = government_is_clan
+							government_has_flag = government_is_theocracy
+						}
+					}
+					hidden_effect = { change_government = clan_government }
 				}
 			}
-			custom_tooltip = kings_become_feudal
-			every_vassal = {
+		}
+		else = {
+			change_government = feudal_government
+
+			#Duchies automatically transfer, need to poke the kingdoms
+			if = {
 				limit = {
-					primary_title.tier >= tier_kingdom
-					NOR = {
-						government_has_flag = government_is_feudal
-						government_has_flag = government_is_theocracy
+					any_vassal = {
+						primary_title.tier >= tier_kingdom
+						NOR = {
+							government_has_flag = government_is_feudal
+							government_has_flag = government_is_theocracy
+						}
 					}
 				}
-				hidden_effect = { change_government = feudal_government }
+				custom_tooltip = kings_become_feudal
+				every_vassal = {
+					limit = {
+						primary_title.tier >= tier_kingdom
+						NOR = {
+							government_has_flag = government_is_feudal
+							government_has_flag = government_is_theocracy
+						}
+					}
+					hidden_effect = { change_government = feudal_government }
+				}
 			}
 		}
 	}

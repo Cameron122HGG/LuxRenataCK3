@@ -99,7 +99,33 @@ change_to_administrative_effect = {
 
 		# Change government
 		# We first check if you have a selected government, then if you are independent, then what your liege has
-		if = { # Ritsuryo
+		### LR: the dynastic tier becomes its administrative twin, unless another administrative government was chosen
+		if = { # Roman Dynastic becomes roman_administrative_government (they share the classical_group_estate)
+			limit = { government_has_flag = government_is_roman_dynastic NOT = { exists = scope:has_selected_a_government } }
+			change_to_administrative_holding_effect = yes
+			change_government = roman_administrative_government
+		}
+		else_if = { # Alexandrian Dynastic becomes alexandrian_administrative_government (they share the classical_group_estate)
+			limit = { government_has_flag = government_is_alexandrian_dynastic NOT = { exists = scope:has_selected_a_government } }
+			change_to_administrative_holding_effect = yes
+			change_government = alexandrian_administrative_government
+		}
+		else_if = { # Carolingian Dynastic becomes western_administrative_government (they share the western_group_estate)
+			limit = { government_has_flag = government_is_western_dynastic NOT = { exists = scope:has_selected_a_government } }
+			change_to_administrative_holding_effect = yes
+			change_government = western_administrative_government
+		}
+		else_if = { # Persianate Dynastic becomes persianate_administrative_government (they share the despotic_group_estate)
+			limit = { government_has_flag = government_is_persianate_dynastic NOT = { exists = scope:has_selected_a_government } }
+			change_to_administrative_holding_effect = yes
+			change_government = persianate_administrative_government
+		}
+		else_if = { # Gupta Dynastic becomes gupta_administrative_government (they share the indic_group_estate)
+			limit = { government_has_flag = government_is_gupta_dynastic NOT = { exists = scope:has_selected_a_government } }
+			change_to_administrative_holding_effect = yes
+			change_government = gupta_administrative_government
+		}
+		else_if = { # Ritsuryo
 			limit = {
 				trigger_if = {
 					limit = {
@@ -308,6 +334,63 @@ change_to_administrative_effect = {
 				NEW_GOVERNMENT_TYPE = western_administrative_government
 			}
 			change_government = western_administrative_government
+		}
+		else_if = { ##Persianate Admin (Despotic group)
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = scope:has_selected_a_government
+					}
+					scope:has_selected_a_government = flag:persianate_administrative
+				}
+				trigger_else = {
+					scope:governor_liege ?= { government_has_flag = government_is_persianate_administrative }
+				}
+			}
+			change_to_administrative_holding_effect = yes
+			tgp_domicile_conversion_when_changing_government_type = {
+				NEW_DOMICILE_TYPE = despotic_group_estate
+				NEW_GOVERNMENT_TYPE = persianate_administrative_government
+			}
+			change_government = persianate_administrative_government
+		}
+		else_if = { ##Gupta Admin (Indic group)
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = scope:has_selected_a_government
+					}
+					scope:has_selected_a_government = flag:gupta_administrative
+				}
+				trigger_else = {
+					scope:governor_liege ?= { government_has_flag = government_is_gupta_administrative }
+				}
+			}
+			change_to_administrative_holding_effect = yes
+			tgp_domicile_conversion_when_changing_government_type = {
+				NEW_DOMICILE_TYPE = indic_group_estate
+				NEW_GOVERNMENT_TYPE = gupta_administrative_government
+			}
+			change_government = gupta_administrative_government
+		}
+		else_if = { ##Iqta Admin (Islamicate group)
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = scope:has_selected_a_government
+					}
+					scope:has_selected_a_government = flag:iqta_administrative
+				}
+				trigger_else = {
+					scope:governor_liege ?= { government_has_flag = government_is_iqta_administrative }
+				}
+			}
+			change_to_administrative_holding_effect = yes
+			tgp_domicile_conversion_when_changing_government_type = {
+				NEW_DOMICILE_TYPE = islamicate_group_estate
+				NEW_GOVERNMENT_TYPE = iqta_administrative_government
+			}
+			change_government = iqta_administrative_government
 		}
 		else = { # Administrative
 			add_character_flag = new_government_is_byz_admin

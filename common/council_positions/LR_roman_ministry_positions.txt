@@ -1,0 +1,268 @@
+﻿# Roman imperial ministries, adapted from the celestial ministers (01_ministry_positions.txt).
+# Extra council seats for a Roman emperor. Each seat holds a landless ministry title for its half of the empire
+# (k_lr_ministry_east_* / k_lr_ministry_west_*), see LR_roman_office_effects.txt.
+
+LR_magister_officiorum = {
+	skill = diplomacy
+
+	name = LR_magister_officiorum
+
+	valid_position = {
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	tooltip = LR_magister_officiorum_desc
+
+	modifier = {
+		name = LR_magister_officiorum_modifier
+		fellow_vassal_opinion = 5
+		monthly_diplomacy_lifestyle_xp_gain_mult = 0.05
+		scale = council_scaled_by_liege_tier
+	}
+
+	modifier = {
+		name = LR_magister_officiorum_modifier
+		monthly_prestige = 1
+		scale = council_scaled_monthly_income
+	}
+
+	modifier = {
+		name = LR_magister_officiorum_modifier
+		monthly_influence = 1
+		enemy_political_scheme_success_chance_max_add = -5
+		scale = council_scaled_admin_value
+	}
+
+	council_owner_modifier = {
+		name = learn_on_the_job_modifier
+		diplomacy = 1
+		scale = chancellor_learn_on_the_job_scale
+	}
+
+	council_owner_modifier = {
+		name = reliable_house_modifier
+		diplomacy = 1
+		scale = chancellor_reliable_house_scale
+	}
+
+	valid_character = {
+		exists = root.liege_or_court_owner
+		LR_can_be_roman_minister_trigger = { COURT_OWNER = root.liege_or_court_owner }
+	}
+
+	on_get_position = {
+		got_council_position_effect = yes
+		LR_roman_minister_seat_gained_effect = { EAST = k_lr_ministry_east_officiorum WEST = k_lr_ministry_west_officiorum LAW = LR_roman_minister_appointment_succession_law }
+	}
+
+	on_fired_from_position = {
+		LR_roman_minister_seat_lost_effect = yes
+		fired_from_council_position_effect = yes
+	}
+
+	portrait_animation = happy_teacher
+
+	barbershop_data = {
+		position = { 918.0 172.0 }
+		click_to_front = no
+	}
+}
+
+LR_magister_memoriae = {
+	skill = learning
+
+	name = LR_magister_memoriae
+
+	valid_position = {
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	tooltip = LR_magister_memoriae_desc
+
+	modifier = {
+		name = LR_magister_memoriae_modifier
+		fellow_vassal_opinion = 5
+		monthly_diplomacy_lifestyle_xp_gain_mult = 0.05
+		scale = council_scaled_by_liege_tier
+	}
+
+	modifier = {
+		name = LR_magister_memoriae_modifier
+		monthly_prestige = 1
+		scale = council_scaled_monthly_income
+	}
+
+	modifier = {
+		name = LR_magister_memoriae_modifier
+		monthly_influence = 1
+		enemy_political_scheme_success_chance_max_add = -5
+		scale = council_scaled_admin_value
+	}
+
+	council_owner_modifier = {
+		name = learn_on_the_job_modifier
+		diplomacy = 1
+		scale = chancellor_learn_on_the_job_scale
+	}
+
+	council_owner_modifier = {
+		name = reliable_house_modifier
+		diplomacy = 1
+		scale = chancellor_reliable_house_scale
+	}
+
+	valid_character = {
+		exists = root.liege_or_court_owner
+		LR_can_be_roman_minister_trigger = { COURT_OWNER = root.liege_or_court_owner }
+	}
+
+	on_get_position = {
+		got_council_position_effect = yes
+		LR_roman_minister_seat_gained_effect = { EAST = k_lr_ministry_east_memoriae WEST = k_lr_ministry_west_memoriae LAW = LR_roman_minister_appointment_succession_law }
+	}
+
+	on_fired_from_position = {
+		LR_roman_minister_seat_lost_effect = yes
+		fired_from_council_position_effect = yes
+	}
+
+	portrait_animation = page_flipping
+
+	barbershop_data = {
+		position = { 918.0 172.0 }
+		click_to_front = no
+	}
+}
+
+LR_praefectus_urbi = {
+	skill = stewardship
+
+	name = LR_praefectus_urbi
+
+	tooltip = LR_praefectus_urbi_desc
+
+	valid_position = {
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	modifier = {
+		name = LR_praefectus_urbi_modifier
+		build_gold_cost = -0.03
+		build_speed = -0.02
+		monthly_stewardship_lifestyle_xp_gain_mult = 0.05
+		scale = council_scaled_by_liege_tier
+	}
+
+	modifier = {
+		name = LR_praefectus_urbi_modifier
+		monthly_influence = 1
+		domicile_build_gold_cost = -0.05
+		scale = council_scaled_admin_value
+	}
+
+
+
+	council_owner_modifier = {
+		name = learn_on_the_job_modifier
+		stewardship = 1
+		scale = steward_learn_on_the_job_scale
+	}
+
+	council_owner_modifier = {
+		name = reliable_house_modifier
+		stewardship = 1
+		scale = steward_reliable_house_scale
+	}
+
+	valid_character = {
+		exists = root.liege_or_court_owner
+		LR_can_be_roman_minister_trigger = { COURT_OWNER = root.liege_or_court_owner }
+	}
+
+	on_get_position = {
+		got_council_position_effect = yes
+		LR_roman_minister_seat_gained_effect = { EAST = k_lr_ministry_east_urbi WEST = k_lr_ministry_west_urbi LAW = LR_roman_minister_appointment_succession_law }
+	}
+
+	on_fired_from_position = {
+		LR_roman_minister_seat_lost_effect = yes
+		fired_from_council_position_effect = yes
+	}
+
+	portrait_animation = minister_works
+
+	barbershop_data = {
+		position = { 1268.0 172.0 }
+		click_to_front = no
+	}
+}
+
+LR_magister_militum = {
+	skill = martial
+
+	name = LR_magister_militum
+
+	tooltip = LR_magister_militum_desc
+
+	valid_position = {
+		government_has_flag = government_is_roman_imperial
+		highest_held_title_tier >= tier_empire
+	}
+
+	modifier = {
+		name = LR_magister_militum_modifier
+		army_maintenance_mult = -0.06
+		monthly_martial_lifestyle_xp_gain_mult = 0.05
+		scale = council_scaled_by_liege_tier
+	}
+
+	modifier = {
+		name = LR_magister_militum_modifier
+		monthly_influence = 1
+		maa_toughness_mult = 0.04
+		scale = council_scaled_admin_value
+	}
+
+
+	modifier = {
+		name = LR_magister_militum_modifier
+		men_at_arms_recruitment_cost = -0.15
+	}
+
+	council_owner_modifier = {
+		name = learn_on_the_job_modifier
+		martial = 1
+		scale = marshal_learn_on_the_job_scale
+	}
+
+	council_owner_modifier = {
+		name = reliable_house_modifier
+		martial = 1
+		scale = marshal_reliable_house_scale
+	}
+
+	valid_character = {
+		exists = root.liege_or_court_owner
+		LR_can_be_roman_magister_militum_trigger = { COURT_OWNER = root.liege_or_court_owner }
+	}
+
+	on_get_position = {
+		got_council_position_effect = yes
+		LR_roman_minister_seat_gained_effect = { EAST = k_lr_ministry_east_militum WEST = k_lr_ministry_west_militum LAW = LR_roman_military_minister_appointment_succession_law }
+	}
+
+	on_fired_from_position = {
+		LR_roman_minister_seat_lost_effect = yes
+		fired_from_council_position_effect = yes
+	}
+
+	portrait_animation = grand_marshal
+
+	barbershop_data = {
+		position = { 1268.0 172.0 }
+		click_to_front = no
+	}
+}

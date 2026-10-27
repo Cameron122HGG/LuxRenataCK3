@@ -1,0 +1,62 @@
+﻿# Roman imperial administration triggers
+
+realm_law_use_roman_bureaucracy = {
+	government_has_flag = government_uses_roman_bureaucracy
+}
+
+LR_can_be_roman_minister_trigger = {
+	can_be_councillor_basics_trigger = yes
+	# Has to be Roman imperial or a non-ruler
+	OR = {
+		is_ruler = no
+		government_has_flag = government_is_roman_imperial
+	}
+	# Gender is based on laws of the liege
+	OR = {
+		has_variable = can_be_councillor_override
+		AND = {
+			is_female = yes
+			$COURT_OWNER$ = {
+				NOR = {
+					has_realm_law = male_only_law
+					has_realm_law = male_preference_law
+				}
+			}
+		}
+		AND = {
+			is_male = yes
+			$COURT_OWNER$ = {
+				NOR = {
+					has_realm_law = female_only_law
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+	}
+	# Players are only allowed if they have enough merit or is a councillor already, unless they are friends or disciples/elders
+	# We do this to prevent the AI from "randomly" requesting the player to be on their council
+	trigger_if = {
+		limit = {
+			is_ai = no
+			$COURT_OWNER$ = { is_ai = yes }
+			NOT = { is_councillor_of = $COURT_OWNER$ }
+		}
+		OR = {
+			merit_level >= merit_level_expected_empire_value
+			has_relation_friend = $COURT_OWNER$
+			has_relation_disciple = $COURT_OWNER$
+			has_relation_elder = $COURT_OWNER$
+		}
+	}
+}
+
+LR_can_be_roman_magister_militum_trigger = {
+	can_be_councillor_basics_trigger = yes
+	# Has to be Roman imperial or a non-ruler
+	OR = {
+		is_ruler = no
+		government_has_flag = government_is_roman_imperial
+	}
+	# Has to be able to lead armies
+	can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = $COURT_OWNER$ }
+}

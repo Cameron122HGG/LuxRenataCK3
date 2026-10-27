@@ -1,0 +1,368 @@
+﻿# Landless Roman offices: Praetorian Prefects and ministries
+
+# Root is the new holder of a landless Roman office (dux, prefect or minister), scope:title the office.
+# A landless holder founds (or keeps) an ordinary county-tier noble family, answers to the emperor directly,
+# and uses the office as their primary title.
+LR_roman_office_holder_setup_effect = {
+	if = {
+		limit = {
+			is_landed = no
+			NOT = {
+				any_held_title = { is_noble_family_title = yes }
+			}
+			exists = top_liege
+			top_liege = { government_has_flag = government_is_roman_imperial }
+		}
+		create_noble_family_effect = { GOVERNMENT_GIVER = top_liege }
+	}
+	if = {
+		limit = {
+			is_landed = no # landed vassals keep their place in the realm
+			exists = top_liege
+			exists = liege
+			NOT = { liege = top_liege }
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = office_liege_change
+		}
+		change_liege = {
+			liege = top_liege
+			change = scope:office_liege_change
+		}
+		resolve_title_and_vassal_change = scope:office_liege_change
+	}
+	if = {
+		limit = {
+			is_landed = no
+			NOT = { government_has_flag = government_is_roman_imperial }
+			top_liege ?= { government_has_flag = government_is_roman_imperial }
+		}
+		change_government = roman_imperial_government
+	}
+	# Kingdom-tier offices always become primary; a duchy-tier command only when no kingdom-tier office is held
+	if = {
+		limit = {
+			is_landed = no
+			NOT = { primary_title = scope:title }
+			OR = {
+				scope:title = { tier = tier_kingdom }
+				NOT = {
+					any_held_title = {
+						OR = {
+							tier = tier_kingdom
+							tier = tier_empire
+						}
+					}
+				}
+			}
+		}
+		set_primary_title_to = scope:title
+	}
+}
+
+# Root is the emperor. Appoints the best available administrator of the realm to title:$TITLE$.
+LR_appoint_roman_prefect_effect = {
+	every_courtier = {
+		limit = { LR_can_be_roman_prefect_trigger = { EMPEROR = root } }
+		add_to_list = LR_prefect_candidates
+	}
+	every_vassal = {
+		limit = { LR_can_be_roman_prefect_trigger = { EMPEROR = root } }
+		add_to_list = LR_prefect_candidates
+	}
+	every_vassal = {
+		every_courtier = {
+			limit = { LR_can_be_roman_prefect_trigger = { EMPEROR = root } }
+			add_to_list = LR_prefect_candidates
+		}
+	}
+	ordered_in_list = {
+		list = LR_prefect_candidates
+		order_by = {
+			value = stewardship
+			add = diplomacy
+		}
+		save_scope_as = new_prefect
+	}
+	if = {
+		limit = { exists = scope:new_prefect }
+		create_title_and_vassal_change = {
+			type = appointment
+			save_scope_as = prefect_change
+			add_claim_on_loss = no
+		}
+		title:$TITLE$ = {
+			change_title_holder = {
+				holder = scope:new_prefect
+				change = scope:prefect_change
+			}
+		}
+		scope:new_prefect = {
+			if = {
+				limit = { NOT = { liege ?= root } }
+				change_liege = {
+					liege = root
+					change = scope:prefect_change
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:prefect_change
+		# on_title_gain runs before fealty is resolved, so finish the setup here
+		scope:new_prefect = {
+			title:$TITLE$ = { save_scope_as = title }
+			LR_roman_office_holder_setup_effect = yes
+			if = {
+				limit = { NOT = { has_character_modifier = LR_roman_prefect_modifier } }
+				add_character_modifier = LR_roman_prefect_modifier
+			}
+		}
+		title:$TITLE$ = {
+			add_title_law = LR_roman_prefect_appointment_succession_law
+		}
+	}
+	else = {
+		custom_tooltip = LR_appoint_roman_prefect_no_candidate_tt
+	}
+}
+
+# Root is a councillor, scope:councillor_liege their emperor. Gives root the ministry title of their seat
+# for the emperor's half of the empire ($EAST$ or $WEST$), taking it from any previous holder.
+LR_roman_minister_grant_effect = {
+	if = {
+		limit = {
+			scope:councillor_liege ?= {
+				NOT = { this = prev } # the emperor doesn't appoint themself (also works at game start, where root is not a character)
+				government_has_flag = government_is_roman_imperial
+				is_independent_ruler = yes
+				highest_held_title_tier >= tier_empire
+			}
+		}
+		save_scope_as = new_minister
+		if = {
+			limit = { scope:councillor_liege = { is_restored_western_roman_emperor_trigger = yes } }
+			title:$WEST$ = { save_scope_as = minister_title }
+		}
+		else = {
+			title:$EAST$ = { save_scope_as = minister_title }
+		}
+		if = {
+			limit = { NOT = { has_title = scope:minister_title } }
+			add_character_flag = LR_minister_seat_driven # the seat is already right: on_title_gain must not reassign it
+			create_title_and_vassal_change = {
+				type = appointment
+				save_scope_as = minister_change
+				add_claim_on_loss = no
+			}
+			scope:minister_title = {
+				change_title_holder = {
+					holder = scope:new_minister
+					change = scope:minister_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:minister_change
+			remove_character_flag = LR_minister_seat_driven
+			# on_title_gain runs before fealty is resolved, so finish the setup here (Roman Imperial government, noble family, primary title)
+			scope:minister_title = { save_scope_as = title }
+			LR_roman_office_holder_setup_effect = yes
+		}
+		# the law needs a Roman Imperial holder
+		if = {
+			limit = { government_has_flag = government_is_roman_imperial }
+			scope:minister_title = {
+				if = {
+					limit = { NOT = { has_title_law = $LAW$ } }
+					add_title_law = $LAW$
+				}
+			}
+		}
+	}
+}
+
+# on_get_position of a Roman ministry seat. Seat swaps are handled by LR_roman_office_on_councillors_swapped.
+LR_roman_minister_seat_gained_effect = {
+	if = {
+		limit = { NOT = { exists = scope:swapped_position } }
+		LR_roman_minister_grant_effect = { EAST = $EAST$ WEST = $WEST$ LAW = $LAW$ }
+	}
+}
+
+# on_fired_from_position of a Roman ministry seat. When the seat is left empty the ministry lapses
+# (the title is destroyed; the former minister keeps their noble family). A replacement takes the title instead.
+LR_roman_minister_seat_lost_effect = {
+	if = {
+		limit = {
+			NOT = { exists = scope:new_councillor }
+			NOT = { exists = scope:swapped_position }
+		}
+		every_held_title = {
+			limit = { LR_is_roman_minister_title_trigger = yes }
+			add_to_temporary_list = LR_lapsed_ministries
+		}
+		every_in_list = {
+			list = LR_lapsed_ministries
+			save_temporary_scope_as = lapsed_ministry
+			root = { destroy_title = scope:lapsed_ministry }
+		}
+	}
+}
+
+# Root is a Roman councillor, scope:councillor_liege their emperor: make root's ministry title match their current seat
+LR_roman_minister_sync_effect = {
+	if = {
+		limit = { has_council_position = LR_magister_officiorum }
+		LR_roman_minister_grant_effect = { EAST = k_lr_ministry_east_officiorum WEST = k_lr_ministry_west_officiorum LAW = LR_roman_minister_appointment_succession_law }
+	}
+	else_if = {
+		limit = { has_council_position = LR_magister_memoriae }
+		LR_roman_minister_grant_effect = { EAST = k_lr_ministry_east_memoriae WEST = k_lr_ministry_west_memoriae LAW = LR_roman_minister_appointment_succession_law }
+	}
+	else_if = {
+		limit = { has_council_position = LR_praefectus_urbi }
+		LR_roman_minister_grant_effect = { EAST = k_lr_ministry_east_urbi WEST = k_lr_ministry_west_urbi LAW = LR_roman_minister_appointment_succession_law }
+	}
+	else_if = {
+		limit = { has_council_position = LR_magister_militum }
+		LR_roman_minister_grant_effect = { EAST = k_lr_ministry_east_militum WEST = k_lr_ministry_west_militum LAW = LR_roman_military_minister_appointment_succession_law }
+	}
+	else_if = {
+		limit = { has_council_position = councillor_chancellor }
+		LR_roman_minister_grant_effect = { EAST = k_lr_ministry_east_cubiculi WEST = k_lr_ministry_west_cubiculi LAW = LR_roman_minister_appointment_succession_law }
+	}
+	else_if = {
+		limit = { has_council_position = councillor_spymaster }
+		LR_roman_minister_grant_effect = { EAST = k_lr_ministry_east_agentes WEST = k_lr_ministry_west_agentes LAW = LR_roman_minister_appointment_succession_law }
+	}
+}
+
+# Root gained a ministry title by appointment succession (scope:title): put them in the matching council seat
+LR_roman_minister_title_gained_effect = {
+	top_liege ?= {
+		if = {
+			limit = {
+				NOT = { this = prev }
+				government_has_flag = government_is_roman_imperial
+				is_independent_ruler = yes
+			}
+			save_scope_as = councillor_liege
+		}
+	}
+	if = {
+		limit = { has_character_flag = LR_minister_seat_driven }
+		clear_saved_scope = councillor_liege # given out by the seat itself
+	}
+	if = {
+		limit = {
+			exists = scope:councillor_liege
+			scope:title = {
+				OR = {
+					this = title:k_lr_ministry_east_officiorum
+					this = title:k_lr_ministry_west_officiorum
+				}
+			}
+			NOT = { has_council_position = LR_magister_officiorum }
+		}
+		scope:councillor_liege = {
+			assign_councillor_type = {
+				type = LR_magister_officiorum
+				target = root
+				remove_existing_councillor = yes
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			exists = scope:councillor_liege
+			scope:title = {
+				OR = {
+					this = title:k_lr_ministry_east_memoriae
+					this = title:k_lr_ministry_west_memoriae
+				}
+			}
+			NOT = { has_council_position = LR_magister_memoriae }
+		}
+		scope:councillor_liege = {
+			assign_councillor_type = {
+				type = LR_magister_memoriae
+				target = root
+				remove_existing_councillor = yes
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			exists = scope:councillor_liege
+			scope:title = {
+				OR = {
+					this = title:k_lr_ministry_east_urbi
+					this = title:k_lr_ministry_west_urbi
+				}
+			}
+			NOT = { has_council_position = LR_praefectus_urbi }
+		}
+		scope:councillor_liege = {
+			assign_councillor_type = {
+				type = LR_praefectus_urbi
+				target = root
+				remove_existing_councillor = yes
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			exists = scope:councillor_liege
+			scope:title = {
+				OR = {
+					this = title:k_lr_ministry_east_militum
+					this = title:k_lr_ministry_west_militum
+				}
+			}
+			NOT = { has_council_position = LR_magister_militum }
+		}
+		scope:councillor_liege = {
+			assign_councillor_type = {
+				type = LR_magister_militum
+				target = root
+				remove_existing_councillor = yes
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			exists = scope:councillor_liege
+			scope:title = {
+				OR = {
+					this = title:k_lr_ministry_east_cubiculi
+					this = title:k_lr_ministry_west_cubiculi
+				}
+			}
+			NOT = { has_council_position = councillor_chancellor }
+		}
+		scope:councillor_liege = {
+			assign_councillor_type = {
+				type = councillor_chancellor
+				target = root
+				remove_existing_councillor = yes
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			exists = scope:councillor_liege
+			scope:title = {
+				OR = {
+					this = title:k_lr_ministry_east_agentes
+					this = title:k_lr_ministry_west_agentes
+				}
+			}
+			NOT = { has_council_position = councillor_spymaster }
+		}
+		scope:councillor_liege = {
+			assign_councillor_type = {
+				type = councillor_spymaster
+				target = root
+				remove_existing_councillor = yes
+			}
+		}
+	}
+}

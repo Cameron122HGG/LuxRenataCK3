@@ -1,0 +1,82 @@
+﻿# Roman frontier commands (duces)
+
+LR_is_roman_dux_title_trigger = {
+	OR = {
+		this = title:d_dux_moesia_prima
+		this = title:d_dux_dacia_ripensis
+		this = title:d_dux_pannonia_secunda
+		this = title:d_dux_moesia_secunda
+		this = title:d_dux_scythia
+		this = title:d_dux_armenia
+		this = title:d_dux_mesopotamia
+		this = title:d_dux_osrhoene
+		this = title:d_dux_euphratensis
+		this = title:d_dux_phoenice
+		this = title:d_dux_arabia
+		this = title:d_dux_palaestina
+		this = title:d_dux_thebais
+		this = title:d_dux_libya
+		this = title:d_dux_raetia
+		this = title:d_dux_noricum
+		this = title:d_dux_valeria
+		this = title:d_dux_mogontiacum
+		this = title:d_dux_belgica
+		this = title:d_dux_sequanica
+		this = title:d_dux_armorica
+		this = title:d_dux_britanniae
+		this = title:d_dux_mauretania
+	}
+}
+
+LR_is_roman_dux_trigger = {
+	OR = {
+		has_title = title:d_dux_moesia_prima
+		has_title = title:d_dux_dacia_ripensis
+		has_title = title:d_dux_pannonia_secunda
+		has_title = title:d_dux_moesia_secunda
+		has_title = title:d_dux_scythia
+		has_title = title:d_dux_armenia
+		has_title = title:d_dux_mesopotamia
+		has_title = title:d_dux_osrhoene
+		has_title = title:d_dux_euphratensis
+		has_title = title:d_dux_phoenice
+		has_title = title:d_dux_arabia
+		has_title = title:d_dux_palaestina
+		has_title = title:d_dux_thebais
+		has_title = title:d_dux_libya
+		has_title = title:d_dux_raetia
+		has_title = title:d_dux_noricum
+		has_title = title:d_dux_valeria
+		has_title = title:d_dux_mogontiacum
+		has_title = title:d_dux_belgica
+		has_title = title:d_dux_sequanica
+		has_title = title:d_dux_armorica
+		has_title = title:d_dux_britanniae
+		has_title = title:d_dux_mauretania
+	}
+}
+
+# Can this character be appointed as a dux by $EMPEROR$?
+LR_can_be_roman_dux_trigger = {
+	is_adult = yes
+	is_imprisoned = no
+	NOT = { this = $EMPEROR$ }
+	NOT = { is_heir_of = $EMPEROR$ }
+	LR_holds_roman_office_trigger = no
+	can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = $EMPEROR$ }
+	# Like the Grand Marshal: a courtier, or a Roman Imperial ruler below kingdom tier
+	OR = {
+		is_ruler = no
+		AND = {
+			government_has_flag = government_is_roman_imperial
+			highest_held_title_tier <= tier_duchy
+		}
+	}
+}
+
+# Is the diocese $DIOCESE$ held within this emperor's realm, and its command not yet filled?
+LR_roman_dux_command_available_trigger = {
+	exists = title:$DIOCESE$.holder
+	title:$DIOCESE$.holder.top_liege = root
+	NOT = { exists = title:$TITLE$.holder }
+}

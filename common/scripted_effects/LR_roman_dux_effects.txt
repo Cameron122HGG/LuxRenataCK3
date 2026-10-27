@@ -1,0 +1,119 @@
+﻿# Roman frontier commands (duces)
+
+# Root is the emperor. Appoints the best available commander of the realm to title:$TITLE$.
+LR_appoint_roman_dux_effect = {
+	every_courtier = {
+		limit = { LR_can_be_roman_dux_trigger = { EMPEROR = root } }
+		add_to_list = LR_dux_candidates
+	}
+	every_vassal = {
+		limit = { LR_can_be_roman_dux_trigger = { EMPEROR = root } }
+		add_to_list = LR_dux_candidates
+	}
+	every_vassal = {
+		every_courtier = {
+			limit = { LR_can_be_roman_dux_trigger = { EMPEROR = root } }
+			add_to_list = LR_dux_candidates
+		}
+	}
+	ordered_in_list = {
+		list = LR_dux_candidates
+		order_by = {
+			value = martial
+			if = {
+				limit = { number_of_commander_traits >= 1 }
+				add = 3
+			}
+			if = {
+				limit = { number_of_commander_traits >= 2 }
+				add = 3
+			}
+		}
+		save_scope_as = new_dux
+	}
+	if = {
+		limit = { exists = scope:new_dux }
+		create_title_and_vassal_change = {
+			type = appointment
+			save_scope_as = dux_change
+			add_claim_on_loss = no
+		}
+		title:$TITLE$ = {
+			change_title_holder = {
+				holder = scope:new_dux
+				change = scope:dux_change
+			}
+		}
+		scope:new_dux = {
+			if = {
+				limit = { NOT = { liege ?= root } }
+				change_liege = {
+					liege = root
+					change = scope:dux_change
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:dux_change
+		scope:new_dux = {
+			if = {
+				limit = { NOT = { government_has_flag = government_is_roman_imperial } }
+				change_government = roman_imperial_government
+			}
+		}
+		title:$TITLE$ = {
+			add_title_law = LR_roman_dux_appointment_succession_law
+		}
+		# on_title_gain runs before fealty is resolved, so finish the setup (noble family, primary title, garrison) here
+		scope:new_dux = {
+			title:$TITLE$ = { save_scope_as = title }
+			LR_roman_dux_setup_effect = yes
+		}
+	}
+	else = {
+		custom_tooltip = LR_appoint_roman_dux_no_candidate_tt
+	}
+}
+
+# Root is the holder of a dux title, scope:title the command. Run when the command is gained and at game start.
+LR_roman_dux_setup_effect = {
+	if = {
+		limit = { NOT = { has_character_modifier = LR_roman_dux_modifier } }
+		add_character_modifier = LR_roman_dux_modifier
+	}
+	# Noble family, fealty to the emperor and primary title (shared with the prefects and ministers)
+	LR_roman_office_holder_setup_effect = yes
+	# A landless dux is not a governor, so they have no province type; with no province contract, title troops are enabled by default
+	# The command's own garrison of limitanei: two regiments, topped up when the command changes hands
+	if = {
+		limit = {
+			scope:title = {
+				NOT = { any_title_maa_regiment = { count >= 1 } }
+			}
+		}
+		create_maa_regiment = {
+			type = roman_limitanei
+			check_can_recruit = no
+			title = scope:title
+			size = 4
+		}
+		create_maa_regiment = {
+			type = roman_limitanei
+			check_can_recruit = no
+			title = scope:title
+			size = 4
+		}
+	}
+	else_if = {
+		limit = {
+			scope:title = {
+				NOT = { any_title_maa_regiment = { count >= 2 } }
+			}
+		}
+		create_maa_regiment = {
+			type = roman_limitanei
+			check_can_recruit = no
+			title = scope:title
+			size = 4
+		}
+	}
+}

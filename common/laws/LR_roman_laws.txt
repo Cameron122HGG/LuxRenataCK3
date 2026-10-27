@@ -1,0 +1,471 @@
+﻿# Roman imperial administration, adapted from the celestial bureaucracy (00_realm_laws.txt)
+# and the meritocratic appointment succession laws (00_succession_laws.txt).
+# Used by governments with government_uses_roman_bureaucracy / government_is_roman_imperial.
+
+@roman_bureaucracy_cooldown_years_1 = 10
+@roman_bureaucracy_cooldown_years_2 = 20
+@roman_bureaucracy_cooldown_years_3 = 30
+
+roman_bureaucracy_0 = {
+	law_group_type = roman_bureaucracy
+	index = 0
+
+	modifier = {
+		courtly_opinion = -20 # Pro-hegemon movement
+		#parochial_opinion = 0 # Advancement movement
+		#belligerent_opinion = 0 # Expansion movement
+		glory_hound_opinion = 10 # Conservative movement
+		#zealot_opinion = 0
+		barons_and_minor_landholders_opinion = 10
+		minority_opinion = 10
+
+		roman_imperial_government_tax_contribution_add = 0.05
+		republic_government_tax_contribution_add = 0.05
+	}
+	flag = uses_roman_bureaucracy
+	flag = titles_cannot_leave_realm_on_succession # Hardcoded flag
+	flag = can_have_tributaries
+	flag = authority_level_0
+	flag = has_requirement_for_authority_level
+
+	can_keep = {
+		realm_law_use_roman_bureaucracy = yes
+		trigger_if = {
+			limit = { should_synchronize_liege_law = yes }
+			liege = { has_realm_law = roman_bureaucracy_0 }
+		}
+	}
+
+	can_pass = {
+		trigger_if = {
+			limit = {
+				should_synchronize_liege_law = yes
+				liege = { has_realm_law = roman_bureaucracy_0 }
+			}
+			custom_tooltip = {
+				text = imperial_bureaucracy_pending_law_change
+				always = no
+			}
+		}
+	}
+
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+}
+
+roman_bureaucracy_1 = {
+	law_group_type = roman_bureaucracy
+	index = 1
+
+	modifier = {
+		courtly_opinion = 20 # Pro-hegemon movement
+		parochial_opinion = -5 # Advancement movement
+		belligerent_opinion = -5 # Expansion movement
+		glory_hound_opinion = -10 # Conservative movement
+		#zealot_opinion = 0
+		barons_and_minor_landholders_opinion = -15
+		minority_opinion = -15
+
+		roman_imperial_government_tax_contribution_add = 0.05
+		republic_government_tax_contribution_add = 0.05
+	}
+	flag = uses_roman_bureaucracy
+	flag = title_revocation_allowed
+	flag = vassal_retraction_allowed
+	flag = can_change_partition_succession_laws
+	flag = vassal_internal_wars_banned
+	flag = diarchs_want_to_subsidise_without_this_flag
+	flag = can_have_tributaries
+	flag = authority_level_1
+
+	can_keep = {
+		realm_law_use_roman_bureaucracy = yes
+		trigger_if = {
+			limit = { should_synchronize_liege_law = yes }
+			liege = { has_realm_law = roman_bureaucracy_1 }
+		}
+	}
+
+	can_pass = {
+		trigger_if = {
+			limit = {
+				has_realm_law = roman_bureaucracy_0
+				should_synchronize_liege_law = no
+			}
+			custom_description = {
+				subject = root
+				text = "has_roman_bureaucracy_cooldown"
+				NOT = { has_variable = imperial_bureaucracy_cooldown }
+			}
+		}
+		trigger_if = {
+			limit = {
+				should_synchronize_liege_law = yes
+				liege = { has_realm_law = roman_bureaucracy_1 }
+			}
+			custom_tooltip = {
+				text = imperial_bureaucracy_pending_law_change
+				always = no
+			}
+		}
+		can_pass_law_ca1_trigger = yes
+	}
+
+	pass_cost = {
+		prestige = {
+			if = {
+				limit = {
+					has_realm_law = roman_bureaucracy_0
+				}
+				add = increase_crown_authority_prestige_cost
+			}
+		}
+	}
+
+	on_pass = {
+		# Increment cooldown breaker tally, if appropriate.
+		if = {
+			limit = {
+				has_realm_law = roman_bureaucracy_0
+			}
+			calculate_authority_cooldown_break_effect = yes
+		}
+		# Set regular cooldown.
+		set_variable = {
+			name = imperial_bureaucracy_cooldown
+			years = @roman_bureaucracy_cooldown_years_1
+		}
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+
+	ai_will_do = {
+		if = {
+			limit = { has_realm_law = roman_bureaucracy_0 }
+			value = 1
+		}
+	}
+}
+
+roman_bureaucracy_2 = {
+	law_group_type = roman_bureaucracy
+	index = 2
+
+	modifier = {
+		courtly_opinion = 5 # Pro-hegemon movement
+		parochial_opinion = -5 # Advancement movement
+		belligerent_opinion = -5 # Expansion movement
+		glory_hound_opinion = -15 # Conservative movement
+		zealot_opinion = -5
+		barons_and_minor_landholders_opinion = -15
+		minority_opinion = -15
+
+		roman_imperial_government_tax_contribution_add = 0.10
+		republic_government_tax_contribution_add = 0.10
+	}
+	flag = uses_roman_bureaucracy
+	flag = vassal_refusal_is_treason
+	flag = can_change_succession_laws
+	flag = vassal_all_wars_banned
+	flag = admin_change_vassal_gov_cheaper
+	flag = can_have_tributaries
+	flag = authority_level_2
+
+	can_keep = {
+		realm_law_use_roman_bureaucracy = yes
+		trigger_if = {
+			limit = { should_synchronize_liege_law = yes }
+			liege = { has_realm_law = roman_bureaucracy_2 }
+		}
+	}
+
+	can_pass = {
+		trigger_if = {
+			limit = {
+				NOT = { has_realm_law = roman_bureaucracy_3 }
+				should_synchronize_liege_law = no
+			}
+			has_realm_law = roman_bureaucracy_1
+			custom_description = {
+				subject = root
+				text = "has_roman_bureaucracy_cooldown"
+				NOT = { has_variable = imperial_bureaucracy_cooldown }
+			}
+		}
+		trigger_if = {
+			limit = {
+				should_synchronize_liege_law = yes
+				liege = { has_realm_law = roman_bureaucracy_2 }
+			}
+			custom_tooltip = {
+				text = imperial_bureaucracy_pending_law_change
+				always = no
+			}
+		}
+		can_pass_law_ca2_trigger = yes
+	}
+
+	pass_cost = {
+		prestige = {
+			if = {
+				limit = {
+					has_realm_law = roman_bureaucracy_1
+				}
+				add = increase_crown_authority_prestige_cost
+			}
+		}
+	}
+
+	on_pass = {
+		# Increment cooldown breaker tally, if appropriate.
+		if = {
+			limit = {
+				has_realm_law = roman_bureaucracy_1
+			}
+			calculate_authority_cooldown_break_effect = yes
+		}
+		# Set regular cooldown.
+		set_variable = {
+			name = imperial_bureaucracy_cooldown
+			years = @roman_bureaucracy_cooldown_years_2
+		}
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+
+	ai_will_do = {
+		if = {
+			limit = { has_realm_law = roman_bureaucracy_1 }
+			value = 1
+		}
+	}
+}
+
+roman_bureaucracy_3 = {
+	law_group_type = roman_bureaucracy
+	index = 3
+
+	modifier = {
+		courtly_opinion = 10 # Pro-hegemon movement
+		parochial_opinion = -10 # Advancement movement
+		belligerent_opinion = -10 # Expansion movement
+		glory_hound_opinion = -15 # Conservative movement
+		zealot_opinion = -15
+		barons_and_minor_landholders_opinion = -20
+		minority_opinion = -20
+
+		roman_imperial_government_tax_contribution_add = 0.10
+		republic_government_tax_contribution_add = 0.10
+	}
+	flag = uses_roman_bureaucracy
+	flag = vassal_all_wars_banned_permanent
+	flag = max_authority_level
+	flag = can_have_tributaries
+	flag = authority_level_3
+
+	can_keep = {
+		realm_law_use_roman_bureaucracy = yes
+		trigger_if = {
+			limit = { should_synchronize_liege_law = yes }
+			liege = { has_realm_law = roman_bureaucracy_3 }
+		}
+	}
+
+	can_pass = {
+		trigger_if = {
+			limit = { should_synchronize_liege_law = no }
+			has_realm_law = roman_bureaucracy_2
+			custom_description = {
+				subject = root
+				text = "has_roman_bureaucracy_cooldown"
+				NOT = { has_variable = imperial_bureaucracy_cooldown }
+			}
+		}
+		trigger_if = {
+			limit = {
+				should_synchronize_liege_law = yes
+				liege = { has_realm_law = roman_bureaucracy_3 }
+			}
+			custom_tooltip = {
+				text = imperial_bureaucracy_pending_law_change
+				always = no
+			}
+		}
+		can_pass_law_ca3_trigger = yes
+	}
+
+	pass_cost = {
+		prestige = {
+			if = {
+				limit = {
+					has_realm_law = roman_bureaucracy_2
+				}
+				add = increase_crown_authority_prestige_cost
+			}
+		}
+	}
+
+	on_pass = {
+		# Increment cooldown breaker tally, if appropriate.
+		calculate_authority_cooldown_break_effect = yes
+		# Set regular cooldown.
+		set_variable = {
+			name = imperial_bureaucracy_cooldown
+			years = @roman_bureaucracy_cooldown_years_3
+		}
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+}
+
+LR_roman_civic_appointment_succession_law = {
+	law_group_type = succession_order_laws
+	index = 40
+
+	can_keep = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+		custom_tooltip = {
+			text = celestial_appointment_allowed_desc
+			NOT = { vassal_contract_has_flag = meritocratic_military_appointment }
+		}
+		# Vassal Contract allows it
+		custom_description = {
+			text = succession_laws_must_not_be_forced_partition
+			NAND = {
+				is_independent_ruler = no
+				vassal_contract_has_flag = locked_to_partition
+			}
+		}
+	}
+	can_have = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+	}
+	can_pass = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+	}
+	should_start_with = {
+		government_has_flag = government_is_roman_imperial
+		is_independent_ruler = no
+		custom_tooltip = {
+			text = celestial_appointment_allowed_desc
+			NOT = { vassal_contract_has_flag = meritocratic_military_appointment }
+		}
+	}
+	succession = {
+		order_of_succession = appointment
+		appointment_type = LR_roman_civic_governor
+	}
+	flag = advanced_succession_law
+	flag = appointment_type_succession
+	flag = appointment_with_level_requirement
+	modifier = {
+		glory_hound_opinion = -10
+		courtly_opinion = 5
+		player_heir_opinion = 20
+		eligible_child_except_player_heir_opinion = -5
+	}
+	pass_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+	revoke_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+
+	ai_will_do = {
+		if = {
+			limit = {
+				OR = {
+					has_realm_law = confederate_partition_succession_law
+					has_realm_law = partition_succession_law
+					has_realm_law = high_partition_succession_law
+				}
+			}
+			value = 3
+		}
+	}
+
+	potential = {
+		government_has_flag = government_is_roman_imperial
+		is_independent_ruler = no
+	}
+}
+
+LR_roman_military_appointment_succession_law = {	
+	law_group_type = succession_order_laws
+	index = 41
+
+	can_keep = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+		custom_tooltip = {
+			text = celestial_military_appointment_allowed_desc
+			vassal_contract_has_flag = meritocratic_military_appointment
+		}
+		# Vassal Contract allows it
+		custom_description = {
+			text = succession_laws_must_not_be_forced_partition
+			NAND = {
+				is_independent_ruler = no
+				vassal_contract_has_flag = locked_to_partition
+			}
+		}
+	}
+	can_have = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+	}
+	can_pass = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+	}
+	should_start_with = {
+		government_has_flag = government_is_roman_imperial
+		is_independent_ruler = no
+		custom_tooltip = {
+			text = celestial_military_appointment_allowed_desc
+			vassal_contract_has_flag = meritocratic_military_appointment
+		}
+	}
+	succession = {
+		order_of_succession = appointment
+		appointment_type = LR_roman_military_governor
+	}
+	flag = advanced_succession_law
+	flag = appointment_type_succession
+	flag = appointment_with_level_requirement
+	modifier = {
+		glory_hound_opinion = -10
+		courtly_opinion = 5
+		player_heir_opinion = 20
+		eligible_child_except_player_heir_opinion = -5
+	}
+	pass_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+	revoke_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+
+	ai_will_do = {
+		if = {
+			limit = {
+				OR = {
+					has_realm_law = confederate_partition_succession_law
+					has_realm_law = partition_succession_law
+					has_realm_law = high_partition_succession_law
+				}
+			}
+			value = 3
+		}
+	}
+
+	potential = {
+		government_has_flag = government_is_roman_imperial
+		is_independent_ruler = no
+	}
+}

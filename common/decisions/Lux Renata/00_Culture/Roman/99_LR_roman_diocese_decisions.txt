@@ -111,8 +111,10 @@ restore_western_roman_administration_decision = {
         has_ep3_dlc_trigger = yes
         is_ruler = yes
         is_playable_character = yes
-        is_decayed_roman_emperor_excluding_byzantium_trigger = yes
-		has_title = title:e_spqr
+		OR = {
+			has_title = title:e_spqr
+			has_title = title:e_western_roman_empire # Already restored: just set up the dioceses
+		}
         NOT = { #Can only do it once.
             is_target_in_global_variable_list = {
                 name = unavailable_unique_decisions
@@ -130,7 +132,7 @@ restore_western_roman_administration_decision = {
 			limit = {
 			has_dlc_feature = all_under_heaven
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 			save_scope_as = actor
 		}
 		create_title_and_vassal_change = {
@@ -150,7 +152,7 @@ restore_western_roman_administration_decision = {
 						}
 					}
 				}
-				change_government = roman_autocratic_government
+				change_government = roman_imperial_government
 			}
 			else_if = {
 				limit = {
@@ -166,7 +168,10 @@ restore_western_roman_administration_decision = {
 				change_government = roman_administrative_government
 			}
 		}
-		LR_transfer_empire_title_effect = { OLD = e_spqr NEW = e_western_roman_empire }
+		if = {
+			limit = { has_title = title:e_spqr }
+			LR_transfer_empire_title_effect = { OLD = e_spqr NEW = e_western_roman_empire }
+		}
 
         custom_tooltip = restore_western_diocese_system_effect_tooltip
         custom_tooltip = restore_western_diocese_system_unlock_tooltip
@@ -175,6 +180,20 @@ restore_western_roman_administration_decision = {
 		set_global_variable = {
 			name = num_of_provinces_restored_wre
 			value = 0
+		}
+		# Dioceses that already exist count toward Restore the Hegemony of the Romans of the West
+		# (Africa and Mauretania are restored together, so they count once, as in the decision)
+		hidden_effect = {
+			if = { limit = { exists = title:k_diocese_italia_annonaria.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_italia_suburbicaria.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_africa.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_lugdunensis.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_viennensis.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_hispania.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_britannia.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_illyricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_noricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_dardania.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
 		}
 
         hidden_effect = {
@@ -202,7 +221,7 @@ restore_western_roman_administration_decision = {
 
     ai_potential = {
         OR = {
-			#has_title = title:e_western_roman_empire
+			has_title = title:e_western_roman_empire
             has_title = title:e_spqr
             #has_title = title:h_western_roman_empire
 			#has_title = title:h_roman_empire
@@ -420,7 +439,10 @@ restore_eastern_roman_administration_decision = {
         has_ep3_dlc_trigger = yes
         is_ruler = yes
         is_playable_character = yes
-		has_title = title:e_byzantium
+		OR = {
+			has_title = title:e_byzantium
+			has_title = title:e_eastern_roman_empire # Already restored (e.g. the 936 start): just set up the dioceses
+		}
         NOT = { #Can only do it once.
             is_target_in_global_variable_list = {
                 name = unavailable_unique_decisions
@@ -438,7 +460,7 @@ restore_eastern_roman_administration_decision = {
 			limit = {
 			has_dlc_feature = all_under_heaven
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 			save_scope_as = actor
 		}
 		create_title_and_vassal_change = {
@@ -458,7 +480,7 @@ restore_eastern_roman_administration_decision = {
 						}
 					}
 				}
-				change_government = roman_autocratic_government
+				change_government = roman_imperial_government
 			}
 			else_if = {
 				limit = {
@@ -471,10 +493,13 @@ restore_eastern_roman_administration_decision = {
 						}
 					}
 				}
-				change_government = roman_autocratic_government
+				change_government = roman_imperial_government
 			}
 		}
-		LR_transfer_empire_title_effect = { OLD = e_byzantium NEW = e_eastern_roman_empire }
+		if = {
+			limit = { has_title = title:e_byzantium }
+			LR_transfer_empire_title_effect = { OLD = e_byzantium NEW = e_eastern_roman_empire }
+		}
 
         custom_tooltip = restore_eastern_diocese_system_effect_tooltip
         custom_tooltip = restore_eastern_diocese_system_unlock_tooltip
@@ -483,6 +508,17 @@ restore_eastern_roman_administration_decision = {
 		set_global_variable = {
 			name = num_of_provinces_restored_ere
 			value = 0
+		}
+		# Dioceses that already exist (e.g. in the 936 start) count toward Reassert Eastern Hegemony
+		hidden_effect = {
+			if = { limit = { exists = title:k_diocese_thracia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_macedonia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_pontus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_asia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_armenia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_syria.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_palestine.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_aegyptus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
 		}
 
         hidden_effect = {
@@ -511,6 +547,7 @@ restore_eastern_roman_administration_decision = {
     ai_potential = {
         OR = {
             has_title = title:e_byzantium
+            has_title = title:e_eastern_roman_empire
             has_title = title:h_eastern_roman_empire
 			has_title = title:h_roman_empire
         }

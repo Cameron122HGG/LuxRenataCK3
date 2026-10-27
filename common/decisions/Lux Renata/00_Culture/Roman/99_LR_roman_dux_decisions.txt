@@ -1,0 +1,623 @@
+﻿# Appoint a landless frontier command (dux) for a restored Roman empire
+LR_appoint_roman_dux_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
+	}
+	ai_check_interval = 60
+	decision_group_type = roman
+
+	desc = LR_appoint_roman_dux_decision_desc
+	selection_tooltip = LR_appoint_roman_dux_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		is_restored_roman_emperor_trigger = yes
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 150
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 150
+			}
+		}
+		prestige = 250
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_appoint_roman_dux_decision_trigger_1
+			OR = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_moesia_prima }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_dacia_ripensis }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_pannonia_secunda }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_thracia TITLE = d_dux_moesia_secunda }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_thracia TITLE = d_dux_scythia }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_armenia TITLE = d_dux_armenia }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_mesopotamia }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_osrhoene }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_euphratensis }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_phoenice }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_palestine TITLE = d_dux_arabia }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_palestine TITLE = d_dux_palaestina }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_dux_thebais }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_dux_libya }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_noricum TITLE = d_dux_raetia }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_noricum TITLE = d_dux_noricum }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_illyricum TITLE = d_dux_valeria }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_mogontiacum }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_belgica }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_sequanica }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_armorica }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_dux_britanniae }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_mauretania TITLE = d_dux_mauretania }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_appoint_roman_dux"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_DUX_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = dux_moesia_prima
+			current_description = {
+				desc = LR_dux_moesia_prima_option_desc
+			}
+			localization = {
+				desc = LR_dux_moesia_prima_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_moesia_prima }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_moesia_prima }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_dacia_ripensis
+			current_description = {
+				desc = LR_dux_dacia_ripensis_option_desc
+			}
+			localization = {
+				desc = LR_dux_dacia_ripensis_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_dacia_ripensis }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_dacia_ripensis }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_pannonia_secunda
+			current_description = {
+				desc = LR_dux_pannonia_secunda_option_desc
+			}
+			localization = {
+				desc = LR_dux_pannonia_secunda_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_pannonia_secunda }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_dardania TITLE = d_dux_pannonia_secunda }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_moesia_secunda
+			current_description = {
+				desc = LR_dux_moesia_secunda_option_desc
+			}
+			localization = {
+				desc = LR_dux_moesia_secunda_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_thracia TITLE = d_dux_moesia_secunda }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_thracia TITLE = d_dux_moesia_secunda }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_scythia
+			current_description = {
+				desc = LR_dux_scythia_option_desc
+			}
+			localization = {
+				desc = LR_dux_scythia_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_thracia TITLE = d_dux_scythia }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_thracia TITLE = d_dux_scythia }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_armenia
+			current_description = {
+				desc = LR_dux_armenia_option_desc
+			}
+			localization = {
+				desc = LR_dux_armenia_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_armenia TITLE = d_dux_armenia }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_armenia TITLE = d_dux_armenia }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_mesopotamia
+			current_description = {
+				desc = LR_dux_mesopotamia_option_desc
+			}
+			localization = {
+				desc = LR_dux_mesopotamia_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_mesopotamia }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_mesopotamia }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_osrhoene
+			current_description = {
+				desc = LR_dux_osrhoene_option_desc
+			}
+			localization = {
+				desc = LR_dux_osrhoene_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_osrhoene }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_osrhoene }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_euphratensis
+			current_description = {
+				desc = LR_dux_euphratensis_option_desc
+			}
+			localization = {
+				desc = LR_dux_euphratensis_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_euphratensis }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_euphratensis }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_phoenice
+			current_description = {
+				desc = LR_dux_phoenice_option_desc
+			}
+			localization = {
+				desc = LR_dux_phoenice_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_phoenice }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_syria TITLE = d_dux_phoenice }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_arabia
+			current_description = {
+				desc = LR_dux_arabia_option_desc
+			}
+			localization = {
+				desc = LR_dux_arabia_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_palestine TITLE = d_dux_arabia }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_palestine TITLE = d_dux_arabia }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_palaestina
+			current_description = {
+				desc = LR_dux_palaestina_option_desc
+			}
+			localization = {
+				desc = LR_dux_palaestina_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_palestine TITLE = d_dux_palaestina }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_palestine TITLE = d_dux_palaestina }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_thebais
+			current_description = {
+				desc = LR_dux_thebais_option_desc
+			}
+			localization = {
+				desc = LR_dux_thebais_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_dux_thebais }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_dux_thebais }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_libya
+			current_description = {
+				desc = LR_dux_libya_option_desc
+			}
+			localization = {
+				desc = LR_dux_libya_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_dux_libya }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_dux_libya }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_raetia
+			current_description = {
+				desc = LR_dux_raetia_option_desc
+			}
+			localization = {
+				desc = LR_dux_raetia_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_noricum TITLE = d_dux_raetia }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_noricum TITLE = d_dux_raetia }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_noricum
+			current_description = {
+				desc = LR_dux_noricum_option_desc
+			}
+			localization = {
+				desc = LR_dux_noricum_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_noricum TITLE = d_dux_noricum }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_noricum TITLE = d_dux_noricum }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_valeria
+			current_description = {
+				desc = LR_dux_valeria_option_desc
+			}
+			localization = {
+				desc = LR_dux_valeria_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_illyricum TITLE = d_dux_valeria }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_illyricum TITLE = d_dux_valeria }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_mogontiacum
+			current_description = {
+				desc = LR_dux_mogontiacum_option_desc
+			}
+			localization = {
+				desc = LR_dux_mogontiacum_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_mogontiacum }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_mogontiacum }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_belgica
+			current_description = {
+				desc = LR_dux_belgica_option_desc
+			}
+			localization = {
+				desc = LR_dux_belgica_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_belgica }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_belgica }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_sequanica
+			current_description = {
+				desc = LR_dux_sequanica_option_desc
+			}
+			localization = {
+				desc = LR_dux_sequanica_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_sequanica }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_sequanica }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_armorica
+			current_description = {
+				desc = LR_dux_armorica_option_desc
+			}
+			localization = {
+				desc = LR_dux_armorica_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_armorica }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_dux_armorica }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_britanniae
+			current_description = {
+				desc = LR_dux_britanniae_option_desc
+			}
+			localization = {
+				desc = LR_dux_britanniae_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_dux_britanniae }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_dux_britanniae }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = dux_mauretania
+			current_description = {
+				desc = LR_dux_mauretania_option_desc
+			}
+			localization = {
+				desc = LR_dux_mauretania_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_mauretania TITLE = d_dux_mauretania }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_mauretania TITLE = d_dux_mauretania }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_appoint_roman_dux_decision_effect_tt
+		hidden_effect = {
+		if = {
+			limit = { scope:dux_moesia_prima = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_moesia_prima }
+		}
+		else_if = {
+			limit = { scope:dux_dacia_ripensis = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_dacia_ripensis }
+		}
+		else_if = {
+			limit = { scope:dux_pannonia_secunda = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_pannonia_secunda }
+		}
+		else_if = {
+			limit = { scope:dux_moesia_secunda = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_moesia_secunda }
+		}
+		else_if = {
+			limit = { scope:dux_scythia = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_scythia }
+		}
+		else_if = {
+			limit = { scope:dux_armenia = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_armenia }
+		}
+		else_if = {
+			limit = { scope:dux_mesopotamia = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_mesopotamia }
+		}
+		else_if = {
+			limit = { scope:dux_osrhoene = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_osrhoene }
+		}
+		else_if = {
+			limit = { scope:dux_euphratensis = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_euphratensis }
+		}
+		else_if = {
+			limit = { scope:dux_phoenice = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_phoenice }
+		}
+		else_if = {
+			limit = { scope:dux_arabia = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_arabia }
+		}
+		else_if = {
+			limit = { scope:dux_palaestina = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_palaestina }
+		}
+		else_if = {
+			limit = { scope:dux_thebais = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_thebais }
+		}
+		else_if = {
+			limit = { scope:dux_libya = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_libya }
+		}
+		else_if = {
+			limit = { scope:dux_raetia = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_raetia }
+		}
+		else_if = {
+			limit = { scope:dux_noricum = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_noricum }
+		}
+		else_if = {
+			limit = { scope:dux_valeria = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_valeria }
+		}
+		else_if = {
+			limit = { scope:dux_mogontiacum = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_mogontiacum }
+		}
+		else_if = {
+			limit = { scope:dux_belgica = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_belgica }
+		}
+		else_if = {
+			limit = { scope:dux_sequanica = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_sequanica }
+		}
+		else_if = {
+			limit = { scope:dux_armorica = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_armorica }
+		}
+		else_if = {
+			limit = { scope:dux_britanniae = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_britanniae }
+		}
+		else_if = {
+			limit = { scope:dux_mauretania = yes }
+			LR_appoint_roman_dux_effect = { TITLE = d_dux_mauretania }
+		}
+		}
+	}
+
+	ai_potential = {
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
