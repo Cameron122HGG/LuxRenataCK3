@@ -1417,7 +1417,17 @@ can_raze_own_holding = {
 #	scope:title ( title )
 #		the title to create or not
 can_create_title = {
-	always = yes
+	# LR: the late-Roman province duchies can only be created inside a restored Roman realm
+	trigger_if = {
+		limit = { scope:title = { LR_is_roman_province_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_roman_province_creation_tt
+			OR = {
+				is_restored_roman_emperor_trigger = yes
+				top_liege ?= { is_restored_roman_emperor_trigger = yes }
+			}
+		}
+	}
 }
 
 # Used to restrict a character from destroying titles, in addition to any title-specific limitation from the can_destroy block in the title definition.

@@ -181,81 +181,9 @@ restore_western_roman_provinces_system_decision_effect = {
 		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_western_roman_empire }
 		title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
-
-	hidden_effect = {
-		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_italia_annonaria DIOCESE = k_diocese_italia_annonaria }
-
-		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_italia_suburbicaria DIOCESE = k_diocese_italia_suburbicaria }
-	}
-
-	# Destroy useless kingdoms
-	if = {
-		limit = { exists = title:k_lombardy.holder }
-		destroy_title = title:k_lombardy
-	}
-	if = {
-		limit = { exists = title:k_urbs.holder }
-		destroy_title = title:k_urbs
-	}
-	if = {
-		limit = { exists = title:k_sicily.holder }
-		destroy_title = title:k_sicily
-	}
-	if = {
-		limit = { exists = title:k_sardinia.holder }
-		destroy_title = title:k_sardinia
-	}
-	if = {
-		limit = { exists = title:k_mediterranean_sea.holder }
-		destroy_title = title:k_mediterranean_sea
-	}
-	if = {
-		limit = { exists = title:k_genoa.holder }
-		destroy_title = title:k_genoa
-	}	
-	if = {
-		limit = { exists = title:k_venice.holder }
-		destroy_title = title:k_venice
-	}	
-	if = {
-		limit = { exists = title:k_austria.holder }
-		destroy_title = title:k_austria
-	}		
-
-	hidden_effect = {
-		#Fix. Carinthia. For. Reasons.
-		title:d_carinthia = { set_de_jure_liege_title = title:k_diocese_italia_annonaria }
-
-		every_held_title = { #Should destroy all kingdoms owned at the time.
-			limit = {
-				tier = tier_kingdom
-			}
-			root = { destroy_title = prev }
-		}
-
-		# Then shift all Kingdoms back.
-		title:k_sicily = { 
-			set_de_jure_liege_title = title:e_western_roman_empire
-		}
-		title:k_lombardy = {
-			set_de_jure_liege_title = title:e_western_roman_empire
-		}
-		title:k_genoa = {
-			set_de_jure_liege_title = title:e_western_roman_empire
-		}
-		title:k_venice = {
-			set_de_jure_liege_title = title:e_western_roman_empire
-		}
-		title:k_urbs = {
-			set_de_jure_liege_title = title:e_western_roman_empire
-		}
-		title:k_sardinia = {
-			set_de_jure_liege_title = title:e_western_roman_empire
-		}
-		title:k_mediterranean_sea = {
-			set_de_jure_liege_title = title:e_western_roman_empire
-		}
-	}	
+	# LR: no automatic de jure shift. Taking the administration decision only makes you the restored empire and sorts
+	# any dioceses that already exist under it; each diocese (and its provinces, Commands and prefecture) is restored
+	# by its own prefecture decision. The old duchy move and kingdom destruction were removed here (backup: pre_admin_no_shift).
 }
 
 restore_roman_italia_suburbicaria_effect = {
@@ -343,85 +271,9 @@ restore_eastern_roman_provinces_system_decision_effect = {
 		}
 		title:e_praetorian_prefecture_macedonia = { set_de_jure_liege_title = title:h_eastern_roman_empire }
 	}
-
-	hidden_effect = {
-		# diocese of Thracia
-		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_thracia DIOCESE = k_diocese_thracia }
-
-		# diocese of Dacia
-	
-
-		# diocese of Macedonia
-		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_macedonia DIOCESE = k_diocese_macedonia }		
-
-		# diocese of Asia
-		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_asia DIOCESE = k_diocese_asia }
-
-		# diocese of Pontus
-		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_pontus DIOCESE = k_diocese_pontus }
-		# diocese of armenia
-		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_armenia DIOCESE = k_diocese_armenia }
-
-
-
-
-		if = {
-			limit = {
-				is_target_in_global_variable_list = { 
-					name = unavailable_unique_decisions
-					target = flag:praetorian_prefecture_macedonia_restored_decision
-				}
-				
-			}
-			#Shift duchies
-			title:d_cilicia = { set_de_jure_liege_title = title:k_diocese_asia }	
-			title:d_cyprus = { set_de_jure_liege_title = title:k_diocese_asia }
-		}	
-
-		# Fix. Bulgaria. For. Reasons
-		#title:d_naissus = { set_de_jure_liege_title = title:k_diocese_dardania }
-	}
-	
-	# Destroy useless kingdoms
-	if = {
-		limit = { exists = title:k_byzantium.holder }
-		destroy_title = title:k_byzantium
-	}
-	if = {
-		limit = { exists = title:k_krete.holder }
-		destroy_title = title:k_krete
-	}
-	if = {
-		limit = { exists = title:k_hellas.holder }
-		destroy_title = title:k_hellas
-	}
-	if = {
-		limit = { exists = title:k_epirus.holder }
-		destroy_title = title:k_epirus
-	}
-	if = {
-		limit = { exists = title:k_bulgaria.holder }
-		destroy_title = title:k_bulgaria
-	}
-	if = {
-		limit = { exists = title:k_pergamon.holder }
-		destroy_title = title:k_pergamon
-	}
-
-	if = {
-		limit = { exists = title:k_anatolia.holder }
-		destroy_title = title:k_anatolia
-	}
-
-	if = {
-		limit = { exists = title:k_cyprus.holder }
-		destroy_title = title:k_cyprus
-	}
-
-	if = {
-		limit = { exists = title:k_pontus.holder }
-		destroy_title = title:k_pontus
-	}	
+	# LR: no automatic de jure shift. Taking the administration decision only makes you the restored empire and sorts
+	# any dioceses that already exist under it; each diocese (and its provinces, Commands and prefecture) is restored
+	# by its own prefecture decision. The old duchy move and kingdom destruction were removed here (backup: pre_admin_no_shift).
 }
 
 restore_roman_provinces_viennensis_decision_effect = {
@@ -1524,6 +1376,8 @@ LR_move_region_duchies_to_diocese_effect = {
 		}
 		set_de_jure_liege_title = title:$DIOCESE$
 	}
+	# Late-Roman provinces: counties move from the old duchies into the diocese's province duchies (where defined)
+	LR_assign_roman_provinces_effect = { DIOCESE = $DIOCESE$ }
 }
 
 restore_roman_provinces_macedonia_effect = {

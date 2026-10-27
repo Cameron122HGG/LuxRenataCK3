@@ -1,0 +1,47 @@
+﻿namespace = LR_roman_proclamation
+
+# The emperor proclaims the new empire
+# scope:new_roman_emperor, scope:proclaimed_empire, scope:old_empire
+LR_roman_proclamation.0001 = {
+	type = character_event
+	title = LR_roman_proclamation.0001.t
+	desc = LR_roman_proclamation.0001.desc
+	window = fullscreen_event
+	queue_icon = "gfx/interface/icons/splash_icons/splash_byzantine.dds"
+	theme = realm
+	override_background = { reference = ep3_triumph }
+
+	option = {
+		name = LR_roman_proclamation.0001.a
+	}
+}
+
+# Other players hear of it; Roman emperors and pretenders take it as a challenge
+LR_roman_proclamation.0002 = {
+	type = character_event
+	title = LR_roman_proclamation.0002.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						is_restored_roman_emperor_trigger = yes
+						has_title = title:e_spqr
+						has_title = title:e_byzantium
+					}
+				}
+				desc = LR_roman_proclamation.0002.desc_rival
+			}
+			desc = LR_roman_proclamation.0002.desc
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = scope:new_roman_emperor
+		animation = personality_honorable
+	}
+
+	option = {
+		name = LR_roman_proclamation.0002.a
+	}
+}

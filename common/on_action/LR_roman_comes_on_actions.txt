@@ -1,0 +1,98 @@
+﻿on_title_lost = {
+	on_actions = { LR_roman_comes_on_title_lost }
+}
+
+on_game_start = {
+	on_actions = { LR_roman_comes_on_game_start }
+}
+
+# root = old holder, scope:title = the title. (Gaining a comes title is handled by LR_roman_dux_on_title_gain.)
+LR_roman_comes_on_title_lost = {
+	trigger = {
+		is_alive = yes
+		scope:title = { LR_is_roman_comes_title_trigger = yes }
+		has_character_modifier = LR_roman_comes_modifier
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					any_held_title = {
+						this != scope:title
+						LR_is_roman_comes_title_trigger = yes
+					}
+				}
+			}
+			remove_character_modifier = LR_roman_comes_modifier
+		}
+	}
+}
+
+# Comites set in a start date's history get the same setup as newly appointed ones
+LR_roman_comes_on_game_start = {
+	effect = {
+		title:d_comes_africae = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_tingitaniae = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_litoris_saxonici = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_isauriam = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_aegypti = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_britanniarum = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_argentoratensis = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_italiae = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_comes_illyrici = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+	}
+}

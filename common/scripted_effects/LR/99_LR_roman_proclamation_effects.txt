@@ -1,0 +1,52 @@
+﻿# Proclaiming a regional Roman empire from a decayed one (Syagria -> Gallic, Tadmor -> Palmyrene, Constantinid -> Brittanic)
+# Root is the proclaiming ruler. Usage: LR_proclaim_regional_roman_empire_effect = { OLD = e_syagria NEW = e_gallic_empire }
+LR_proclaim_regional_roman_empire_effect = {
+	# Government: the emperor and their great Roman vassals take up Roman Autocratic, as restore_gallic_empire_decision does
+	if = {
+		limit = {
+			has_ep3_dlc_trigger = yes
+			has_tgp_dlc_trigger = yes
+		}
+		if = {
+			limit = { NOT = { government_has_flag = government_is_roman_autocratic } }
+			change_government = roman_autocratic_government
+		}
+		every_vassal_or_below = {
+			custom = LR_proclaim_roman_empire_vassals_custom
+			limit = {
+				highest_held_title_tier >= tier_duchy
+				government_has_flag = government_is_classical_group
+				NOT = { government_has_flag = government_is_roman_autocratic }
+			}
+			change_government = roman_autocratic_government
+		}
+	}
+
+	LR_transfer_empire_title_effect = { OLD = $OLD$ NEW = $NEW$ }
+
+	# Rewards
+	add_prestige = major_prestige_gain
+	add_legitimacy = major_legitimacy_gain
+	add_character_modifier = {
+		modifier = LR_proclaimed_roman_emperor_modifier
+		years = 20
+	}
+	every_vassal = {
+		custom = LR_proclaim_roman_empire_opinion_custom
+		limit = { government_has_flag = government_is_classical_group }
+		add_opinion = {
+			target = root
+			modifier = LR_proclaimed_roman_empire_opinion
+		}
+	}
+
+	# Announcement
+	save_scope_as = new_roman_emperor
+	title:$NEW$ = { save_scope_as = proclaimed_empire }
+	title:$OLD$ = { save_scope_as = old_empire }
+	trigger_event = LR_roman_proclamation.0001
+	every_player = {
+		limit = { NOT = { this = root } }
+		trigger_event = LR_roman_proclamation.0002
+	}
+}

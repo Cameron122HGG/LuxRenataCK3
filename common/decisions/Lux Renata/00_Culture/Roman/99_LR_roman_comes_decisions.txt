@@ -1,0 +1,288 @@
+﻿# Appoint a Roman count (comes rei militaris) for a restored Roman empire
+LR_appoint_roman_comes_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
+	}
+	ai_check_interval = 60
+	decision_group_type = roman
+
+	desc = LR_appoint_roman_comes_decision_desc
+	selection_tooltip = LR_appoint_roman_comes_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		is_restored_roman_emperor_trigger = yes
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 200
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 200
+			}
+		}
+		prestige = 300
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_appoint_roman_comes_decision_trigger_1
+			OR = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_africa TITLE = d_comes_africae }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_mauretania TITLE = d_comes_tingitaniae }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_comes_litoris_saxonici }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_asia TITLE = d_comes_isauriam }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_comes_aegypti }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_comes_britanniarum }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_comes_argentoratensis }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_italia_annonaria TITLE = d_comes_italiae }
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_illyricum TITLE = d_comes_illyrici }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_appoint_roman_comes"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_COMES_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = comes_africae
+			current_description = {
+				desc = LR_comes_africae_option_desc
+			}
+			localization = {
+				desc = LR_comes_africae_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_africa TITLE = d_comes_africae }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_africa TITLE = d_comes_africae }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_tingitaniae
+			current_description = {
+				desc = LR_comes_tingitaniae_option_desc
+			}
+			localization = {
+				desc = LR_comes_tingitaniae_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_mauretania TITLE = d_comes_tingitaniae }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_mauretania TITLE = d_comes_tingitaniae }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_litoris_saxonici
+			current_description = {
+				desc = LR_comes_litoris_saxonici_option_desc
+			}
+			localization = {
+				desc = LR_comes_litoris_saxonici_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_comes_litoris_saxonici }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_comes_litoris_saxonici }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_isauriam
+			current_description = {
+				desc = LR_comes_isauriam_option_desc
+			}
+			localization = {
+				desc = LR_comes_isauriam_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_asia TITLE = d_comes_isauriam }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_asia TITLE = d_comes_isauriam }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_aegypti
+			current_description = {
+				desc = LR_comes_aegypti_option_desc
+			}
+			localization = {
+				desc = LR_comes_aegypti_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_comes_aegypti }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_aegyptus TITLE = d_comes_aegypti }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_britanniarum
+			current_description = {
+				desc = LR_comes_britanniarum_option_desc
+			}
+			localization = {
+				desc = LR_comes_britanniarum_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_comes_britanniarum }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_britannia TITLE = d_comes_britanniarum }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_argentoratensis
+			current_description = {
+				desc = LR_comes_argentoratensis_option_desc
+			}
+			localization = {
+				desc = LR_comes_argentoratensis_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_comes_argentoratensis }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_lugdunensis TITLE = d_comes_argentoratensis }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_italiae
+			current_description = {
+				desc = LR_comes_italiae_option_desc
+			}
+			localization = {
+				desc = LR_comes_italiae_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_italia_annonaria TITLE = d_comes_italiae }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_italia_annonaria TITLE = d_comes_italiae }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = comes_illyrici
+			current_description = {
+				desc = LR_comes_illyrici_option_desc
+			}
+			localization = {
+				desc = LR_comes_illyrici_option_desc
+			}
+			is_shown = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_illyricum TITLE = d_comes_illyrici }
+			}
+			is_valid = {
+				LR_roman_dux_command_available_trigger = { DIOCESE = k_diocese_illyricum TITLE = d_comes_illyrici }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+	}
+
+	effect = {
+		custom_tooltip = LR_appoint_roman_comes_decision_effect_tt
+		hidden_effect = {
+		if = {
+			limit = { scope:comes_africae = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_africae }
+		}
+		else_if = {
+			limit = { scope:comes_tingitaniae = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_tingitaniae }
+		}
+		else_if = {
+			limit = { scope:comes_litoris_saxonici = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_litoris_saxonici }
+		}
+		else_if = {
+			limit = { scope:comes_isauriam = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_isauriam }
+		}
+		else_if = {
+			limit = { scope:comes_aegypti = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_aegypti }
+		}
+		else_if = {
+			limit = { scope:comes_britanniarum = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_britanniarum }
+		}
+		else_if = {
+			limit = { scope:comes_argentoratensis = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_argentoratensis }
+		}
+		else_if = {
+			limit = { scope:comes_italiae = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_italiae }
+		}
+		else_if = {
+			limit = { scope:comes_illyrici = yes }
+			LR_appoint_roman_comes_effect = { TITLE = d_comes_illyrici }
+		}
+		}
+	}
+
+	ai_potential = {
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
