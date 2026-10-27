@@ -1,0 +1,392 @@
+﻿template Historical_Bloodline #血脉主界面
+{
+	window = { #BLOODLINE
+		name = "bloodline_list"
+		visible = "[GetVariableSystem.Exists( 'bloodline_open' )]"
+		layer = middle
+		movable = yes
+		position = { 600 90 }
+		size = { 830 820 }
+		alwaystransparent = no
+		using = Animation_Character_Window_Refresh
+
+		using = Window_Background
+		using = Window_Decoration
+		using = Window_Size_CharacterList
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			position_x = 600
+			position_y = 90
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			position_x = 580
+			position_y = 90
+		}
+
+		vbox = {
+			using = Window_Margins
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "BLOODLINE_LIST"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[GetVariableSystem.Clear( 'bloodline_open' )]"
+					onclick = "[GetVariableSystem.Clear( 'bloodline_trait' )]"
+				}
+			}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				datacontext = "[CharacterWindow.GetTraitArrays]"
+
+				blockoverride "scrollbox_content" {
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						datamodel = "[TraitArrays.GetTraits]"
+						margin = { 15 15 }
+						datacontext = "[CharacterWindow.GetTraitArrays]"
+
+						item = {
+							vbox = {
+								visible = "[EqualTo_string( Trait.GetDescription( GetNullCharacter ), '血脉' )]"
+								layoutpolicy_horizontal = expanding
+								
+								onmousehierarchyenter = "[PdxGuiWidget.TriggerAnimation('mouse_enter_bloodline' )]"
+								onmousehierarchyleave = "[PdxGuiWidget.TriggerAnimation('mouse_leave_bloodline' )]"
+
+								state = {
+									name = "mouse_enter_bloodline"
+									on_start = "[GetVariableSystem.Set('bloodline_trait', Trait.GetKey)]"
+								}
+
+								state = {
+									name = "mouse_leave_bloodline"
+									on_start = "[GetVariableSystem.Clear('bloodline_trait')]"
+								}
+										
+								button_standard_list = {
+									name = "bloodline_button"
+									layoutpolicy_horizontal = expanding
+									size = { 0 180 }
+									alwaystransparent = yes
+
+									highlight_icon = {
+										name = "bg"
+										size = { 100% 100% }
+										texture = "gfx/interface/tooltips/tooltip_bg.dds"
+
+										tintcolor = { 0.33 0.24 0.3 0.25 }
+
+										modify_texture = {
+											name = "overlay"
+											texture = "gfx/interface/component_overlay/overlay_window.dds"
+											spriteType = Corneredstretched
+											spriteborder = { 0 0 }
+											blend_mode = overlay
+										}
+									}
+
+									hbox = {
+										margin = { 10 0 }
+										spacing = 5
+										vbox = {
+											datacontext = "[GetGlobalVariable(Trait.GetKey).GetCharacter]"
+											portrait_head = {}
+											text_multi = {
+												align = center
+												name = "legend_originator_name"
+												layoutpolicy_horizontal = expanding
+												visible = "[Character.IsValid]"
+												text = "[Character.GetFirstNameNoTooltip] [Character.GetHouse.GetNameNoTooltip]"
+												margin_left = 5
+												margin_right = 5
+												default_format = "#color_white"
+												background = {
+													margin = { 5 5 }
+													texture = "gfx/interface/bloodline_portrait_pod_bg.dds"
+												}
+												margin_bottom = 5
+											}
+											text_multi = {
+												align = center
+												name = "legend_originator_name_nochar"
+												layoutpolicy_horizontal = expanding
+												visible = "[Not(Character.IsValid)]"
+												text = "[GetGlobalVariable(Trait.GetKey).GetFlagName]"
+												margin_left = 5
+												margin_right = 5
+												default_format = "#color_white"
+												background = {
+													margin = { 5 5 }
+													texture = "gfx/interface/bloodline_portrait_pod_bg.dds"
+												}
+												margin_bottom = 5
+											}
+										}
+
+										vbox = {
+											margin = { 5 5 }
+											spacing = 0
+											layoutpolicy_vertical = expanding
+											layoutpolicy_horizontal = expanding
+
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												text_label_center = {
+													name = "bloodline_name"
+													text = "[Trait.GetNameNoTooltip( Character.Self )]"
+													default_format = "#V"
+													alwaystransparent = no
+													#fontsize_min = 12
+													using = Font_Size_Medium
+												}
+												background = {
+													margin = { 20 0 }
+													texture = "gfx/interface/bloodline_portrait_pod_bg.dds"
+												}
+											}
+											
+											divider_light = {
+												layoutpolicy_horizontal = expanding
+											}
+
+											hbox = {
+												margin = { 0 5 }
+												spacing = 10
+												layoutpolicy_vertical = expanding
+												layoutpolicy_horizontal = expanding
+
+												container = {
+													#position = { 10 10 }
+													#size = { 300 300 }		
+													highlight_icon = {
+														size = { 90 90 }
+														texture = "[Trait.GetIcon(GetNullCharacter)]"
+														tooltip = "#F [Localize( Concatenate( 'trait_' , Concatenate( Trait.GetKey, '_desc' ) ) )]#!"
+													}
+												}	
+
+												divider_light = {
+													layoutpolicy_vertical = expanding
+												}
+
+												vbox = {
+													margin = { 5 5 }
+													spacing = 0
+													layoutpolicy_vertical = expanding
+													layoutpolicy_horizontal = expanding
+													hbox = {
+														datacontext = "[GetGlobalVariable(Trait.GetKey).GetCharacter]"
+														layoutpolicy_horizontal = expanding
+														parentanchor = top|hcenter
+														text_label_center = {
+															visible = "[Character.IsValid]"
+															name = "bloodline_established"
+															text = "bloodline_establish_date_char"
+															default_format = "#clickable"
+															alwaystransparent = no
+															fontsize = 16	
+															using = Font_Size_Medium
+														}
+													}		
+													hbox = {
+														datacontext = "[GetGlobalVariable(Trait.GetKey).GetCharacter]"
+														layoutpolicy_horizontal = expanding
+														text_label_center = {
+															visible = "[Not(Character.IsValid)]"
+															name = "bloodline_established"
+															text = "bloodline_establish_date_nochar"
+															default_format = "#clickable"
+															alwaystransparent = no
+															fontsize = 16
+															using = Font_Size_Medium
+														}
+													}
+													hbox = {																										
+														visible = "[GetVariableSystem.HasValue('bloodline_trait', Trait.GetKey)]"														
+														spacing = 5
+														layoutpolicy_vertical = expanding
+														layoutpolicy_horizontal = expanding		
+														scrollarea = {
+															name = "bloodline_modifier_scrollarea"
+															#minimumsize = { 180 -1 }
+															#maximumsize = { 180 -1 }
+															layoutpolicy_vertical = expanding
+															layoutpolicy_horizontal = expanding		
+															scrollbarpolicy_horizontal = always_off		
+															scrollbar_vertical = {
+																using = Scrollbar_Vertical		
+																blockoverride "alpha"{
+																	alpha = 0.6
+																}
+															}		
+															scrollwidget = {
+																text_multi = {
+																	name = "bloodline_modifiers"
+																	align = left
+																	size = { 415 -1 }
+																	autoresize = yes
+																	max_width = 415
+																	text = "[Trait.GetFullDescription( Character.Self, Character.GetRite.Self )]"
+																	fontsize = 16
+																	fontsize_min = 12
+																}
+															}
+														}
+													}													
+													hbox = {																										
+														visible = "[Not(GetVariableSystem.HasValue('bloodline_trait', Trait.GetKey))]"														
+														spacing = 5
+														layoutpolicy_vertical = expanding
+														layoutpolicy_horizontal = expanding														
+														scrollarea = {
+															name = "bloodline_desc_scrollarea"
+															#minimumsize = { 200 -1 }
+															#maximumsize = { 200 -1 }
+															layoutpolicy_vertical = expanding
+															layoutpolicy_horizontal = expanding															
+															scrollbarpolicy_horizontal = always_off		
+															scrollbar_vertical = {
+																scrollbar = {
+																	name = "vertical_scrollbar"
+																	size = { 12 12 }
+																	wheelstep = 30
+																	direction = vertical																			
+																	track = {
+																		button = {
+																			size = { 12 12 }
+																			gfxtype = buttongfx																							
+																			texture = "gfx/interface/scrollbars/scrollbar_track_vertical.dds"
+																			spriteType = Corneredtiled
+																			spriteborder = { 3 0 }
+																			effectname = "NoHighlight"
+																			intersectionmask = yes
+																			# GUIX # set alpha to 1 to see scroll track (1 of 2)
+																			alpha = 1
+																		}																						
+																	}																			
+																	slider = {
+																		button = {
+																			gfxtype = framedbuttongfx
+																			effectname = "NoHighlight"		
+																			texture = "gfx/interface/scrollbars/scrollbar_slider.dds"
+																			spriteType = Corneredtiled
+																			spriteborder = { 0 3 }
+																			framesize = { 12 40 }
+																			minimumsize = { -1 15 }
+																			# GUIX # set alpha to 1 to see scroll bar (2 of 2)
+																			alpha = 1		
+																			upframe = 1
+																			overframe = 2
+																			downframe = 2																			
+																			intersectionmask = yes
+																			oversound = "event:/SFX/UI/Generic/sfx_ui_generic_icon_pointer_over"																			
+																			state = {
+																				name = _mouse_press
+																				start_sound = {
+																					soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
+																				}
+																			}																			
+																			state = {
+																				name = _mouse_release
+																				start_sound = {
+																					soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
+																				}
+																			}
+																		}
+																	}																			
+																	dec_button = {
+																		button = {
+																		}
+																	}																			
+																	inc_button = {
+																		button = {
+																		}
+																	}
+																}
+															}		
+															scrollwidget = {
+																text_multi = {
+																	margin_right = 0		
+																	autoresize = yes
+																	size = { 415 -1 }
+																	max_width = 415
+																	align = left
+																	name = "bloodline_desc"
+																	fontsize = 16
+																	fontsize_min = 12
+																	raw_text = "#F [Localize( Concatenate( 'trait_' , Concatenate( Trait.GetKey, '_desc' ) ) )]#!"
+																	#raw_text = "#F [Trait.GetDescription( GetNullCharacter )]#"
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+								spacer = {
+									size = { 0 12 }
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+types window_character {
+	# 血脉按钮
+	type Historical_Bloodline_Button = button_normal { #BLOODLINE
+		name = "open_bloodline_list"
+		#visible = "[GreaterThan_CFixedPoint( GuiScope.SetRoot( Character.MakeScope ).ScriptValue('trait_counter'), '(CFixedPoint)0.0' )]"
+
+		block "size" {
+			size = { 35 35 }
+		}
+
+		tooltip = "OPEN_BLOODLINE_LIST_TOOLTIP"
+		using = tooltip_es
+
+		state = {
+			name = close_kill_list
+			on_start = "[ToggleGameViewData( 'kill_list', Character.GetID  )]"
+		}
+
+		icon = {
+			texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+			size = { 100% 100% }
+		}
+
+		button_icon = {
+			texture = "gfx/interface/icons/flat_icons/bloodline.dds"
+			onclick = "[VariableSystem.Toggle( 'bloodline_open' )]"
+			onclick = "[PdxGuiTriggerAllAnimations( Select_CString( IsGameViewOpen('kill_list'), 'close_kill_list', '' ) )]"
+			block "button_icon_size" {
+				size = { 25 25 }
+			}
+			parentanchor = center
+
+			modify_texture = {
+				texture = "gfx/interface/icons/focuses/hud_icon_mask.dds"
+				blend_mode = alphamultiply
+			}
+		}
+	}
+}
