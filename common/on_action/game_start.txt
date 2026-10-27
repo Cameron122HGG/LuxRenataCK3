@@ -1368,8 +1368,8 @@ on_game_start = {
 							#has_government = steppe_admin_government
 							#has_government = japan_administrative_government
 							#has_government = japan_feudal_government
-							has_government = sacral_administrative_government
-							has_government = sacral_feudal_government
+							#has_government = sacral_administrative_government # LR: sacral_government below
+							#has_government = sacral_feudal_government
 							#has_government = hellenic_khanate_government
 							has_government = roman_autocratic_government
 							has_government = roman_imperial_government
@@ -1377,6 +1377,16 @@ on_game_start = {
 					}
 					change_government = classical_government #fix later so it goes by culture group
 
+				}
+				# LR: Gaul's sacral realms keep their group as Sacral Kingship
+				else_if = {
+					limit = {
+						OR = {
+							has_government = sacral_administrative_government
+							has_government = sacral_feudal_government
+						}
+					}
+					change_government = sacral_government
 				}
 				if = {
 					limit = {

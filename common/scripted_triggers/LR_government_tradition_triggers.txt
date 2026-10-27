@@ -1,0 +1,134 @@
+﻿# Lux Renata government traditions (common/culture/traditions/LR_gov_traditions.txt)
+
+# Culture scope
+LR_culture_government_group_classical_trigger = {
+	has_cultural_tradition = lux_tradition_gov_classical
+}
+
+# Culture scope
+LR_culture_government_group_western_trigger = {
+	has_cultural_tradition = lux_tradition_gov_western
+}
+
+# Culture scope
+LR_culture_government_group_despotic_trigger = {
+	has_cultural_tradition = lux_tradition_gov_despotic
+}
+
+# Culture scope
+LR_culture_government_group_indic_trigger = {
+	has_cultural_tradition = lux_tradition_gov_indic
+}
+
+# Culture scope
+LR_culture_government_group_islamic_trigger = {
+	has_cultural_tradition = lux_tradition_gov_islamic
+}
+
+# Culture scope
+LR_culture_government_group_sinic_trigger = {
+	has_cultural_tradition = lux_tradition_gov_sinic
+}
+
+# Culture scope
+LR_culture_government_group_japanese_trigger = {
+	has_cultural_tradition = lux_tradition_gov_japanese
+}
+
+# Culture scope
+LR_culture_government_group_barbarian_trigger = {
+	has_cultural_tradition = lux_tradition_gov_barbarian
+}
+
+# Culture scope: does the culture have any government tradition?
+LR_culture_has_government_tradition_trigger = {
+	OR = {
+		has_cultural_tradition = lux_tradition_gov_classical
+		has_cultural_tradition = lux_tradition_gov_western
+		has_cultural_tradition = lux_tradition_gov_despotic
+		has_cultural_tradition = lux_tradition_gov_indic
+		has_cultural_tradition = lux_tradition_gov_islamic
+		has_cultural_tradition = lux_tradition_gov_sinic
+		has_cultural_tradition = lux_tradition_gov_japanese
+		has_cultural_tradition = lux_tradition_gov_barbarian
+	}
+}
+
+# Character scope: does the government belong to the group the culture's government tradition names?
+LR_government_matches_culture_group_trigger = {
+	OR = {
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_classical }
+			government_has_flag = government_is_classical_group
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_western }
+			government_has_flag = government_is_western_group
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_despotic }
+			government_has_flag = government_is_despotic_group
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_indic }
+			government_has_flag = government_is_indic_group
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_islamic }
+			government_has_flag = government_is_islamic_group
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_sinic }
+			government_has_flag = government_is_sinic_group
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_japanese }
+			government_has_flag = government_is_japanese_group
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_barbarian }
+			government_has_flag = government_is_barbarian_group
+		}
+	}
+}
+
+# Character scope: a government on one of the group ladders (top tiers such as Roman Imperial keep their government)
+LR_has_group_ladder_government_trigger = {
+	OR = {
+		has_government = classical_government
+		has_government = roman_dynastic_government
+		has_government = alexandrian_dynastic_government
+		has_government = roman_administrative_government
+		has_government = alexandrian_administrative_government
+		has_government = western_feudal_government
+		has_government = western_dynastic_government
+		has_government = western_administrative_government
+		has_government = despotic_government
+		has_government = persianate_dynastic_government
+		has_government = persianate_administrative_government
+		has_government = indic_feudal_government
+		has_government = gupta_dynastic_government
+		has_government = gupta_administrative_government
+		has_government = iqta_dynastic_government
+		has_government = iqta_administrative_government
+		has_government = chinese_feudal_government
+		has_government = japan_feudal_government
+		has_government = japan_administrative_government
+		has_government = sacral_government
+		has_government = sacral_feudal_government
+		has_government = sacral_administrative_government
+		has_government = great_tribal_government
+		has_government = feudal_government
+		has_government = clan_government
+		has_government = administrative_government
+	}
+}
+
+# Character scope: the sacral group belongs to the realm of e_sacral_kingdom_gaul, not to a culture.
+# A sacral ruler there keeps their government whatever their culture's government tradition says.
+LR_in_sacral_kingdom_gaul_realm_trigger = {
+	OR = {
+		has_title = title:e_sacral_kingdom_gaul
+		top_liege ?= { has_title = title:e_sacral_kingdom_gaul }
+	}
+}

@@ -1,0 +1,83 @@
+﻿# Lux Renata government traditions
+
+on_tradition_added = {
+	on_actions = { LR_government_tradition_on_tradition_added }
+}
+
+on_culture_created = {
+	on_actions = { LR_government_tradition_on_culture_created }
+}
+
+on_character_culture_change = {
+	on_actions = { LR_government_tradition_on_character_culture_change }
+}
+
+on_game_start = {
+	on_actions = { LR_government_tradition_on_game_start }
+}
+
+on_vassal_change = {
+	on_actions = { LR_government_tradition_on_vassal_change }
+}
+
+# root = culture, scope:tradition = flag of the tradition added.
+# A culture holds one government tradition: the new one replaces the old, and the culture's rulers move to the new group.
+LR_government_tradition_on_tradition_added = {
+	trigger = {
+		OR = {
+			scope:tradition = flag:lux_tradition_gov_classical
+			scope:tradition = flag:lux_tradition_gov_western
+			scope:tradition = flag:lux_tradition_gov_despotic
+			scope:tradition = flag:lux_tradition_gov_indic
+			scope:tradition = flag:lux_tradition_gov_islamic
+			scope:tradition = flag:lux_tradition_gov_sinic
+			scope:tradition = flag:lux_tradition_gov_japanese
+			scope:tradition = flag:lux_tradition_gov_barbarian
+		}
+	}
+	effect = {
+		LR_replace_government_tradition_effect = yes
+		every_ruler = {
+			limit = { culture = root }
+			LR_apply_culture_government_group_effect = yes
+		}
+	}
+}
+
+# root = the new culture, scope:founder = its founder. A divergent culture keeps its parent's government tradition;
+# a hybrid can inherit two (keep the founder's group) or none (seed by heritage).
+LR_government_tradition_on_culture_created = {
+	effect = {
+		LR_keep_one_government_tradition_effect = yes
+		LR_seed_government_tradition_effect = yes
+	}
+}
+
+# root = character
+LR_government_tradition_on_character_culture_change = {
+	trigger = { is_ruler = yes }
+	effect = {
+		LR_apply_culture_government_group_effect = yes
+	}
+}
+
+# Safety net for any culture the culture files left without one. Rulers keep their history governments.
+LR_government_tradition_on_game_start = {
+	effect = {
+		every_culture_global = {
+			LR_seed_government_tradition_effect = yes
+		}
+	}
+}
+
+# root = the vassal changing liege (also fired on gaining independence). A sacral ruler who leaves the realm of
+# e_sacral_kingdom_gaul takes up the group of their culture's government tradition. Joining that realm is by decision.
+LR_government_tradition_on_vassal_change = {
+	trigger = {
+		government_has_flag = government_is_sacral_group
+		LR_in_sacral_kingdom_gaul_realm_trigger = no
+	}
+	effect = {
+		LR_apply_culture_government_group_effect = yes
+	}
+}

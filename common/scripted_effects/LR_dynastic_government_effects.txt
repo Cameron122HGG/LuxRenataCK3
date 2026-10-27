@@ -1,10 +1,219 @@
 ﻿# Dynastic tier of the Lux Renata government groups
 
-# Root is a ruler. With the DLC, the plain starting governments (classical, western feudal, despotic, Indic feudal) become
+# Root is a ruler. The game hands out the vanilla administrative and feudal governments as the defaults of their mechanic
+# (e.g. on becoming someone's vassal); Lux Renata history never uses them. Replace them with the same tier of the realm's
+# group (the top liege's), or failing that the group of the ruler's culture (its government tradition).
+LR_replace_vanilla_default_government_effect = {
+	if = {
+		limit = { has_government = administrative_government }
+		if = {
+			limit = {
+				top_liege != this
+				top_liege = { government_has_mechanic = administrative }
+				OR = {
+					top_liege = { government_has_flag = government_is_classical_group }
+					top_liege = { government_has_flag = government_is_western_group }
+					top_liege = { government_has_flag = government_is_despotic_group }
+					top_liege = { government_has_flag = government_is_indic_group }
+					top_liege = { government_has_flag = government_is_islamic_group }
+					top_liege = { government_has_flag = government_is_japanese_group }
+					top_liege = { government_has_flag = government_is_sacral_group }
+				}
+			}
+			if = {
+				limit = { top_liege = { government_has_flag = government_is_classical_group } }
+				if = {
+					limit = { top_liege = { government_has_flag = government_is_hellenistic_government } }
+					change_government = alexandrian_administrative_government
+				}
+				else = {
+					change_government = roman_administrative_government
+				}
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_western_group } }
+				change_government = western_administrative_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_despotic_group } }
+				change_government = persianate_administrative_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_indic_group } }
+				change_government = gupta_administrative_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_islamic_group } }
+				change_government = iqta_administrative_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_japanese_group } }
+				change_government = japan_administrative_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_sacral_group } }
+				change_government = sacral_administrative_government
+			}
+		}
+		else_if = {
+			limit = { has_title = title:e_sacral_kingdom_gaul }
+			change_government = sacral_administrative_government # normalized to the DLC tier
+		}
+		else = {
+			if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_classical } }
+				if = {
+					limit = { LR_culture_is_hellenic_trigger = yes }
+					change_government = alexandrian_administrative_government
+				}
+				else = {
+					change_government = roman_administrative_government
+				}
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_western } }
+				change_government = western_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_despotic } }
+				change_government = persianate_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_indic } }
+				change_government = gupta_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
+				change_government = iqta_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
+				change_government = japan_administrative_government
+			}
+		}
+	}
+	else_if = {
+		limit = { has_government = feudal_government }
+		if = {
+			limit = {
+				top_liege != this
+				OR = {
+					top_liege = { government_has_flag = government_is_classical_group }
+					top_liege = { government_has_flag = government_is_western_group }
+					top_liege = { government_has_flag = government_is_despotic_group }
+					top_liege = { government_has_flag = government_is_indic_group }
+					top_liege = { government_has_flag = government_is_islamic_group }
+					top_liege = { government_has_flag = government_is_sinic_group }
+					top_liege = { government_has_flag = government_is_japanese_group }
+					top_liege = { government_has_flag = government_is_sacral_group }
+					top_liege = { government_has_flag = government_is_barbarian_group }
+				}
+			}
+			if = {
+				limit = { top_liege = { government_has_flag = government_is_classical_group } }
+				change_government = classical_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_western_group } }
+				change_government = western_feudal_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_despotic_group } }
+				change_government = despotic_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_indic_group } }
+				change_government = indic_feudal_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_islamic_group } }
+				change_government = iqta_dynastic_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_sinic_group } }
+				change_government = chinese_feudal_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_japanese_group } }
+				change_government = japan_feudal_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_sacral_group } }
+				change_government = sacral_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_barbarian_group } }
+				change_government = great_tribal_government
+			}
+		}
+		else_if = {
+			limit = { has_title = title:e_sacral_kingdom_gaul }
+			change_government = sacral_government # normalized to the DLC tier
+		}
+		else = {
+			if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_classical } }
+				change_government = classical_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_western } }
+				change_government = western_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_despotic } }
+				change_government = despotic_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_indic } }
+				change_government = indic_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
+				change_government = iqta_dynastic_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
+				change_government = chinese_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
+				change_government = japan_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_barbarian } }
+				change_government = great_tribal_government
+			}
+		}
+	}
+}
+
+# Root is a ruler. With the DLC, the plain starting governments (classical, western feudal, despotic, Indic feudal, sacral) become
 # their dynastic version; without it, the dynastic governments fall back to the plain ones.
 # Run at game start and whenever a government changes, so decisions and events can keep setting the plain government.
 LR_normalize_dynastic_government_effect = {
+	LR_replace_vanilla_default_government_effect = yes
+	# Sacral group: its DLC tiers (Soryo, Ritsuryo) need only the All Under Heaven DLC
 	if = {
+		limit = { government_has_flag = government_is_sacral_group }
+		if = {
+			limit = {
+				has_tgp_dlc_trigger = yes
+				has_government = sacral_government
+			}
+			change_government = sacral_feudal_government
+		}
+		else_if = {
+			limit = {
+				has_tgp_dlc_trigger = no
+				OR = {
+					has_government = sacral_feudal_government
+					has_government = sacral_administrative_government
+				}
+			}
+			change_government = sacral_government
+		}
+	}
+	else_if = {
 		limit = { LR_has_dynastic_governments_dlc_trigger = yes }
 		if = {
 			limit = { has_government = classical_government }
@@ -62,7 +271,7 @@ LR_change_admin_to_dynastic_effect = {
 	}
 	else_if = {
 		limit = { has_government = sacral_administrative_government }
-		change_government = sacral_feudal_government
+		change_government = sacral_feudal_government # becomes sacral_government without the DLC (LR_normalize_dynastic_government_effect)
 	}
 	else_if = {
 		limit = { LR_has_dynastic_governments_dlc_trigger = yes }

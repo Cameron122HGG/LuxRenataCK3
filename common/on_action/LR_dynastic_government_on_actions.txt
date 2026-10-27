@@ -6,6 +6,10 @@ on_game_start = {
 	on_actions = { LR_dynastic_government_on_game_start }
 }
 
+on_vassal_gained = {
+	on_actions = { LR_dynastic_government_on_vassal_gained }
+}
+
 # root = the character whose government changed
 LR_dynastic_government_on_government_change = {
 	effect = {
@@ -17,6 +21,16 @@ LR_dynastic_government_on_government_change = {
 LR_dynastic_government_on_game_start = {
 	effect = {
 		every_ruler = {
+			LR_normalize_dynastic_government_effect = yes
+		}
+	}
+}
+
+# root = the new liege, scope:vassal = the vassal. The game may give a new vassal the vanilla administrative or feudal
+# government (the defaults of their mechanic); swap it for the realm's group (also caught by on_government_change)
+LR_dynastic_government_on_vassal_gained = {
+	effect = {
+		scope:vassal = {
 			LR_normalize_dynastic_government_effect = yes
 		}
 	}

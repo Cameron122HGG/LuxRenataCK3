@@ -474,18 +474,8 @@ adopt_gaul_gov_decision = {
 
 	is_shown = {
 		is_independent_ruler = no
-		OR = {
-			liege = {
-				has_government = sacral_feudal_government
-			}
-			liege = {
-				has_government = sacral_administrative_government			
-			}			
-		}
-		NOR = {
-			has_government = sacral_feudal_government
-			has_government = sacral_administrative_government	
-		}
+		liege = { government_has_flag = government_is_sacral_group } # incl. Sacral Kingship without the DLC
+		NOT = { government_has_flag = government_is_sacral_group }
 		OR = {
 			OR = { has_government = western_feudal_government has_government = western_dynastic_government }
 			government_has_flag = government_is_administrative
@@ -493,14 +483,7 @@ adopt_gaul_gov_decision = {
 	}
 
 	is_valid = {
-		OR = {
-			liege = {
-				has_government = sacral_feudal_government
-			}
-			liege = {
-				has_government = sacral_administrative_government			
-			}			
-		}
+		liege = { government_has_flag = government_is_sacral_group } # incl. Sacral Kingship without the DLC
 	}
 
 	is_valid_showing_failures_only = {
@@ -516,7 +499,7 @@ adopt_gaul_gov_decision = {
 
 	effect = {
 		hidden_effect = { add_character_flag = can_become_sacral_feudal } # lets a non-sacral ruler take Sacral Feudal
-		change_government = sacral_feudal_government
+		change_government = sacral_feudal_government # becomes sacral_government without the DLC (LR_normalize_dynastic_government_effect)
 		hidden_effect = {
 			create_noble_family_effect = { GOVERNMENT_GIVER = root }
 		}
@@ -1326,12 +1309,19 @@ convert_to_feudalism_from_administrative_decision = {
 		# Ritsuryo gov has its own decisions
 		NOT = { government_has_flag = government_is_japan_administrative }
 		NOT = { government_has_flag = government_is_sacral_administrative }
-		NOT = { government_has_flag = government_is_classical_group }
-		NOT = { government_has_flag = government_is_despotic_group }
-		NOT = { government_has_flag = government_is_western_group }
-		NOT = { government_has_flag = government_is_sinic_group }
-		NOT = { government_has_flag = government_is_islamic_group }
-		NOT = { government_has_flag = government_is_indic_group }
+		# LR: group administrative governments return to their dynastic twin here (LR_change_admin_to_dynastic_effect);
+		# other group governments have no administrative tier to leave
+		OR = {
+			LR_has_dynastic_twin_trigger = yes
+			NOR = {
+				government_has_flag = government_is_classical_group
+				government_has_flag = government_is_despotic_group
+				government_has_flag = government_is_western_group
+				government_has_flag = government_is_sinic_group
+				government_has_flag = government_is_islamic_group
+				government_has_flag = government_is_indic_group
+			}
+		}
 	}
 
 	is_valid = {

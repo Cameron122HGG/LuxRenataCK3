@@ -1,0 +1,411 @@
+﻿# Lux Renata government traditions
+
+# Culture scope: give a culture with no government tradition the one its heritage points to.
+# (Sacral Kingship is never seeded: cultures gain it by restoring Gaul's sacral monarchy.)
+LR_seed_government_tradition_effect = {
+	if = {
+		limit = { LR_culture_has_government_tradition_trigger = no }
+		if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_latin
+						has_cultural_pillar = heritage_byzantine
+						has_cultural_pillar = heritage_hellenistic
+						has_cultural_pillar = heritage_indo_hellenic
+						has_cultural_pillar = heritage_sino_hellenic
+						has_cultural_pillar = heritage_caucasian
+						has_cultural_pillar = heritage_ostrogothic
+						has_cultural_pillar = heritage_vandalic
+						has_cultural_pillar = heritage_visigothic
+						has_cultural_pillar = heritage_suevic
+						has_cultural_pillar = heritage_vlach
+						has_cultural_pillar = heritage_brythonic
+						has_cultural_pillar = heritage_ancient_greek
+						has_cultural_pillar = heritage_albanian
+						has_cultural_pillar = heritage_syriac
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_classical
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_frankish
+						has_cultural_pillar = heritage_central_germanic
+						has_cultural_pillar = heritage_north_germanic
+						has_cultural_pillar = heritage_west_germanic
+						has_cultural_pillar = heritage_iberian
+						has_cultural_pillar = heritage_south_slavic
+						has_cultural_pillar = heritage_east_slavic
+						has_cultural_pillar = heritage_illyrian
+						has_cultural_pillar = heritage_goidelic
+						has_cultural_pillar = heritage_israelite
+						has_cultural_pillar = heritage_west_slavic
+						has_cultural_pillar = heritage_baltic
+						has_cultural_pillar = heritage_balto_finnic
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_western
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_iranian
+						has_cultural_pillar = heritage_magyar
+						has_cultural_pillar = heritage_berber
+						has_cultural_pillar = heritage_egyptian
+						has_cultural_pillar = heritage_phoenician
+						has_cultural_pillar = heritage_sarmatian
+						has_cultural_pillar = heritage_akan
+						has_cultural_pillar = heritage_central_african
+						has_cultural_pillar = heritage_east_african
+						has_cultural_pillar = heritage_sahelian
+						has_cultural_pillar = heritage_senegambian
+						has_cultural_pillar = heritage_west_african
+						has_cultural_pillar = heritage_yoruba
+						has_cultural_pillar = heritage_bantu
+						has_cultural_pillar = heritage_somalian
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_despotic
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_dravidian
+						has_cultural_pillar = heritage_indo_aryan
+						has_cultural_pillar = heritage_burman
+						has_cultural_pillar = heritage_mon_khmer
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_indic
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_arabic
+						has_cultural_pillar = heritage_turkic
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_islamic
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_chinese
+						has_cultural_pillar = heritage_korean
+						has_cultural_pillar = heritage_mongolic
+						has_cultural_pillar = heritage_qiangic
+						has_cultural_pillar = heritage_tai
+						has_cultural_pillar = heritage_tibetan
+						has_cultural_pillar = heritage_tocharian
+						has_cultural_pillar = heritage_buyeo
+						has_cultural_pillar = heritage_hmongic
+						has_cultural_pillar = heritage_viet
+						has_cultural_pillar = heritage_tungusic
+						has_cultural_pillar = heritage_nivkh
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_sinic
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_japonic
+						has_cultural_pillar = heritage_ainuic
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_japanese
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_hunnic
+						has_cultural_pillar = heritage_gothic
+						has_cultural_pillar = heritage_volga_finnic
+						has_cultural_pillar = heritage_ugro_permian
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_barbarian
+			}
+	}
+}
+
+# Culture scope: keep only one government tradition. Keeps the one scope:founder's government belongs to
+# (for a new hybrid culture), otherwise the first in group order.
+LR_keep_one_government_tradition_effect = {
+	if = {
+		limit = { LR_government_tradition_count_value > 1 }
+		if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_classical
+				scope:founder ?= { government_has_flag = government_is_classical_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_classical }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_western
+				scope:founder ?= { government_has_flag = government_is_western_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_western }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_despotic
+				scope:founder ?= { government_has_flag = government_is_despotic_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_despotic }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_indic
+				scope:founder ?= { government_has_flag = government_is_indic_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_indic }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_islamic
+				scope:founder ?= { government_has_flag = government_is_islamic_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_islamic }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_sinic
+				scope:founder ?= { government_has_flag = government_is_sinic_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sinic }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_japanese
+				scope:founder ?= { government_has_flag = government_is_japanese_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_japanese }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_barbarian
+				scope:founder ?= { government_has_flag = government_is_barbarian_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_barbarian }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_classical }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_classical }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_western }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_western }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_despotic }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_despotic }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_indic }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_indic }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_islamic }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_islamic }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_sinic }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sinic }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_japanese }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_japanese }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_barbarian }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_barbarian }
+		}
+		LR_drop_other_government_traditions_effect = yes
+		remove_variable = LR_gov_tradition_keep
+	}
+}
+
+# Culture scope, var:LR_gov_tradition_keep = flag of the government tradition to keep: remove the others.
+LR_drop_other_government_traditions_effect = {
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_classical
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_classical }
+		}
+		remove_culture_tradition = lux_tradition_gov_classical
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_western
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_western }
+		}
+		remove_culture_tradition = lux_tradition_gov_western
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_despotic
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_despotic }
+		}
+		remove_culture_tradition = lux_tradition_gov_despotic
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_indic
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_indic }
+		}
+		remove_culture_tradition = lux_tradition_gov_indic
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_islamic
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_islamic }
+		}
+		remove_culture_tradition = lux_tradition_gov_islamic
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_sinic
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_sinic }
+		}
+		remove_culture_tradition = lux_tradition_gov_sinic
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_japanese
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_japanese }
+		}
+		remove_culture_tradition = lux_tradition_gov_japanese
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_barbarian
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_barbarian }
+		}
+		remove_culture_tradition = lux_tradition_gov_barbarian
+	}
+}
+
+# Culture scope, scope:tradition = flag of the government tradition just added: drop the culture's other one.
+LR_replace_government_tradition_effect = {
+	set_variable = { name = LR_gov_tradition_keep value = scope:tradition }
+	LR_drop_other_government_traditions_effect = yes
+	remove_variable = LR_gov_tradition_keep
+}
+
+# Character scope: move a ruler whose government is on another group's ladder to the same tier of the group
+# their culture's government tradition names. Plain and dynastic tiers go to the group's plain government
+# (LR_normalize_dynastic_government_effect then picks the dynastic twin); an independent administrative ruler
+# goes to the group's administrative government. Administrative vassals follow their realm, top tiers
+# (Roman Imperial, Persianate Autocratic and the like) keep their government, and so do sacral rulers in the realm of
+# e_sacral_kingdom_gaul (the sacral group is tied to that title, not to a culture).
+LR_apply_culture_government_group_effect = {
+	if = {
+		limit = {
+			is_ruler = yes
+			is_landed = yes
+			LR_has_group_ladder_government_trigger = yes
+			culture = { LR_culture_has_government_tradition_trigger = yes }
+			LR_government_matches_culture_group_trigger = no
+			NAND = {
+				government_has_mechanic = administrative
+				is_independent_ruler = no
+			}
+			# The sacral group comes from the Gaul title: its realm keeps its sacral governments
+			NAND = {
+				government_has_flag = government_is_sacral_group
+				LR_in_sacral_kingdom_gaul_realm_trigger = yes
+			}
+		}
+		if = {
+			limit = { government_has_mechanic = administrative }
+			if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_classical } }
+				if = {
+					limit = { LR_culture_is_hellenic_trigger = yes }
+					change_government = alexandrian_administrative_government
+				}
+				else = {
+					change_government = roman_administrative_government
+				}
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_western } }
+				change_government = western_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_despotic } }
+				change_government = persianate_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_indic } }
+				change_government = gupta_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
+				change_government = iqta_administrative_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
+				change_government = chinese_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
+				if = {
+					limit = { has_tgp_dlc_trigger = yes }
+					change_government = japan_administrative_government
+				}
+				else = {
+					change_government = chinese_feudal_government
+				}
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_barbarian } }
+				change_government = great_tribal_government
+			}
+		}
+		else = {
+			if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_classical } }
+				change_government = classical_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_western } }
+				change_government = western_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_despotic } }
+				change_government = despotic_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_indic } }
+				change_government = indic_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
+				change_government = iqta_dynastic_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
+				change_government = chinese_feudal_government
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
+				if = {
+					limit = { has_tgp_dlc_trigger = yes }
+					change_government = japan_feudal_government
+				}
+				else = {
+					change_government = chinese_feudal_government
+				}
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_barbarian } }
+				change_government = great_tribal_government
+			}
+		}
+	}
+}
