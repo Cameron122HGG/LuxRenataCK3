@@ -1,0 +1,161 @@
+# Lux Renata: the Patron Gods tab of the faith window.
+# Built on Elder Kings 2's pattern (one tab button and one widget added to the vanilla window_faith.gui),
+# with the contents rebuilt from the old agot_patron_window.gui. Driven by the patron scripted GUIs in
+# common/scripted_guis/00_agot_patrons_scripted_gui.txt:
+#   religion_has_patron_gods (root = faith)      - does the viewed faith have patron gods? (shows the tab)
+#   faith_switch_effect / get_patron_god_list    - build the player's 'patron_gods' list for the viewed faith
+#   choose_patron_god_generic (patron_god_name)  - pick a patron (piety cost; only for your own faith)
+#   has_this_patron_god (patron_god_name)        - is this the player's current patron?
+# Each god is a flag such as patron_god_roman_deity_01, with:
+#   <flag>             name (loc)          <flag>_desc     description (loc)
+#   <flag>_modifier    character modifier  <flag>_icon     icon (hidden culture innovation, LR_patron_icon_innovations.txt)
+
+types LRPatrons
+{
+	type LR_faith_patrons_tab = vbox {
+		name = "tab_patrons"
+		visible = "[FaithWindow.IsActiveTab( 'tab_patrons' )]"
+		visible_at_creation = no
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		margin = { 10 10 }
+		spacing = 8
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			on_start = "[GetScriptedGui('faith_switch_effect').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', FaithWindow.GetFaith.MakeScope ).End )]"
+			on_start = "[GetScriptedGui('get_patron_god_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', FaithWindow.GetFaith.MakeScope ).End )]"
+		}
+
+		# The viewed faith changed while the tab is open: rebuild the list (Elder Kings' faith_get_patrons refresh)
+		state = {
+			name = "LR_patrons_faith_change"
+			next = _show
+			trigger_when = "[Not( ObjectsEqual( GetPlayer.MakeScope.Var( 'selected_faith' ).Faith, FaithWindow.GetFaith.Self ) )]"
+			on_start = "[GetScriptedGui('clear_patron_god_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		}
+
+		# The viewed faith has no patron gods: go back to Beliefs
+		state = {
+			name = "LR_patrons_none"
+			trigger_when = "[Not( GetScriptedGui('religion_has_patron_gods').IsShown( GuiScope.SetRoot( FaithWindow.GetFaith.MakeScope ).End ) )]"
+			on_start = "[FaithWindow.SetActiveTab( 'tab_beliefs' )]"
+		}
+
+		# Current patron
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 10 4 }
+			spacing = 6
+
+			background = {
+				using = Background_Area
+			}
+
+			text_single = {
+				text = "LR_PATRON_CURRENT"
+				default_format = "#low"
+			}
+			text_single = {
+				visible = "[GetPlayer.MakeScope.Var( 'patron_god' ).IsSet]"
+				text = "[Localize( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName )]"
+				using = Font_Size_Medium
+			}
+			text_single = {
+				visible = "[Not( GetPlayer.MakeScope.Var( 'patron_god' ).IsSet )]"
+				text = "LR_PATRON_NONE"
+				default_format = "#weak"
+			}
+			expand = {}
+			text_single = {
+				visible = "[Not( ObjectsEqual( FaithWindow.GetFaith.Self, GetPlayer.GetFaith.Self ) )]"
+				text = "LR_PATRON_OTHER_FAITH"
+				default_format = "#weak"
+			}
+		}
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_content"
+			{
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 6
+					datamodel = "[GetPlayer.MakeScope.GetList( 'patron_gods' )]"
+
+					item = {
+						LR_patron_god_entry = {}
+					}
+				}
+			}
+		}
+	}
+
+	type LR_patron_god_entry = hbox {
+		layoutpolicy_horizontal = expanding
+		margin = { 8 6 }
+		spacing = 10
+		datacontext = "[GetModifier( Concatenate( Scope.GetFlagName, '_modifier' ) )]"
+
+		background = {
+			using = Background_Area
+		}
+		# Highlight the current patron
+		background = {
+			visible = "[EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName, Scope.GetFlagName )]"
+			texture = "gfx/interface/component_masks/mask_fade_circle.dds"
+			color = { 1.0 1.0 0.9 0.35 }
+		}
+
+		icon = {
+			size = { 90 90 }
+			texture = "[GetCultureInnovationType( Concatenate( Scope.GetFlagName, '_icon' ) ).GetIcon]"
+			using = Mask_Rough_Edges
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 2
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "[Localize( Scope.GetFlagName )]"
+				using = Font_Size_Medium
+				default_format = "#high"
+			}
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				max_width = 300
+				autoresize = yes
+				text = "[Localize( Concatenate( Scope.GetFlagName, '_desc' ) )]"
+				default_format = "#low"
+			}
+			expand = {}
+		}
+
+		text_multi = {
+			max_width = 230
+			autoresize = yes
+			text = "[StaticModifier.GetDescWithEffects]"
+		}
+
+		vbox = {
+			button_standard = {
+				size = { 110 32 }
+				visible = "[Not( EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName, Scope.GetFlagName ) )]"
+				text = "LR_PATRON_CHOOSE"
+				enabled = "[GetScriptedGui('choose_patron_god_generic').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'patron_god_name', MakeScopeFlag( Scope.GetFlagName ) ).End )]"
+				tooltip = "PATRON_GOD_SELECTION_TOOLTIP"
+				onclick = "[GetScriptedGui('choose_patron_god_generic').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'patron_god_name', MakeScopeFlag( Scope.GetFlagName ) ).End )]"
+			}
+			text_single = {
+				visible = "[EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName, Scope.GetFlagName )]"
+				text = "LR_PATRON_IS_CURRENT"
+				default_format = "#high"
+			}
+		}
+	}
+}

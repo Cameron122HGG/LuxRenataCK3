@@ -497,6 +497,30 @@ window = {
 					down = "[FaithWindow.IsActiveTab( 'tab_holy_sites' )]"
 				}
 			}
+
+			# LR: Patron Gods tab (Elder Kings pattern; contents in gui/LR_faith_patrons.gui)
+			button_tab = {
+				shortcut = "tab_4"
+				visible = "[GetScriptedGui('religion_has_patron_gods').IsShown( GuiScope.SetRoot( FaithWindow.GetFaith.MakeScope ).End )]"
+				onclick = "[FaithWindow.SetActiveTab( 'tab_patrons' )]"
+				down = "[FaithWindow.IsActiveTab( 'tab_patrons' )]"
+
+				alwaystransparent = "[FaithWindow.IsActiveTab( 'tab_patrons' )]"
+
+				blockoverride "tab_label"
+				{
+					text = "LR_FAITH_PATRONS"
+					max_width = 140
+				}
+
+				blockoverride "icon_visible" {}
+
+				blockoverride "tab_icon"
+				{
+					texture = "gfx/interface/icons/flat_icons/holy_site.dds"
+					down = "[FaithWindow.IsActiveTab( 'tab_patrons' )]"
+				}
+			}
 		}
 
 		## BELIEFS
@@ -1686,6 +1710,9 @@ window = {
 				}
 			}
 		}
+
+		# LR: Patron Gods tab contents
+		LR_faith_patrons_tab = {}
 	}
 
 	window_religion_sub_window = {
