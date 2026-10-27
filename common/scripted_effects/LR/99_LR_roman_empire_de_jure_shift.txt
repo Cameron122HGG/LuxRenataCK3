@@ -158,7 +158,7 @@
 restore_western_roman_provinces_system_decision_effect = {
 	#Sort the diocese
 	if = {
-		limit = { exists = title:h_western_roman_empire.holder }
+		limit = { has_title = title:h_western_roman_empire }
 		title:k_diocese_illyricum = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
 		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
 		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
@@ -168,14 +168,14 @@ restore_western_roman_provinces_system_decision_effect = {
 		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_western_roman_empire }	
 	}
 	else_if = { 
-		limit = { exists = title:e_spqr.holder }
+		limit = { has_title = title:e_spqr }
 		title:k_diocese_illyricum = { set_de_jure_liege_title = title:e_spqr }
 		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_spqr }
 		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_spqr }
 		title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_spqr }
 	}
 	else_if = { 
-		limit = { exists = title:e_western_roman_empire.holder }
+		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_illyricum = { set_de_jure_liege_title = title:e_western_roman_empire }
 		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_western_roman_empire }
 		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_western_roman_empire }
@@ -307,7 +307,7 @@ restore_roman_provinces_italia_annonaria_effect = {
 restore_eastern_roman_provinces_system_decision_effect = {
 	#Sort the diocese
 	if = {
-		limit = { exists = title:e_eastern_roman_empire.holder }
+		limit = { has_title = title:e_eastern_roman_empire }
 		title:k_diocese_thracia = {
 			set_de_jure_liege_title = title:e_eastern_roman_empire
 		}
@@ -325,7 +325,7 @@ restore_eastern_roman_provinces_system_decision_effect = {
 		}
 	}
 	else_if = {
-		limit = { exists = title:h_eastern_roman_empire.holder }
+		limit = { has_title = title:h_eastern_roman_empire }
 		title:k_diocese_thracia = {
 			set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia
 		}
@@ -448,14 +448,14 @@ restore_roman_provinces_viennensis_decision_effect = {
 		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	if = {
-		limit = { exists = title:h_roman_empire.holder }
+		limit = { has_title = title:h_roman_empire }
 		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 
 		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_roman_empire }
 	}
 	else_if = {
-		limit = { exists = title:e_western_roman_empire.holder }
+		limit = { has_title = title:e_western_roman_empire }
 		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
@@ -570,6 +570,12 @@ restore_roman_provinces_viennensis_decision_effect = {
 			set_de_jure_liege_title = title:e_germany
 		}
 	}	
+
+	# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		title:k_diocese_viennensis = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 restore_roman_provinces_lugdunensis_decision_effect = {
@@ -595,14 +601,14 @@ restore_roman_provinces_lugdunensis_decision_effect = {
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	if = {
-		limit = { exists = title:h_roman_empire.holder }
+		limit = { has_title = title:h_roman_empire }
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 
 		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_roman_empire }
 	}
 	else_if = {
-		limit = { exists = title:e_western_roman_empire.holder }
+		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
@@ -715,6 +721,12 @@ restore_roman_provinces_lugdunensis_decision_effect = {
 			set_de_jure_liege_title = title:e_germany
 		}
 	}	
+
+	# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		title:k_diocese_lugdunensis = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 restore_roman_provinces_africa_mauretania_decision_effect = {
@@ -750,14 +762,14 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
 		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
 	if = {
-		limit = { exists = title:h_roman_empire.holder }
+		limit = { has_title = title:h_roman_empire }
 		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
 		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
 
 		title:e_praetorian_prefecture_africa = { set_de_jure_liege_title = title:h_roman_empire }
 	}
 	else_if = {
-		limit = { exists = title:e_western_roman_empire.holder }
+		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_africa = { set_de_jure_liege_title = title:e_western_roman_empire }
 		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
@@ -820,6 +832,13 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 			set_de_jure_liege_title = title:e_maghreb
 		}
 	}	
+
+	# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		title:k_diocese_africa = { set_de_jure_liege_title = root.primary_title }
+		title:k_diocese_mauretania = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 restore_roman_provinces_syria_decision_effect  = {
@@ -840,7 +859,7 @@ restore_roman_provinces_syria_decision_effect  = {
 	#Sort the Diocese
 	title:k_diocese_syria = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
 	if = {
-		limit = { exists = title:e_eastern_roman_empire.holder }
+		limit = { has_title = title:e_eastern_roman_empire }
 		title:k_diocese_syria = { set_de_jure_liege_title = title:e_eastern_roman_empire }
 	}
 	# Destroy useless kingdoms
@@ -887,6 +906,12 @@ restore_roman_provinces_syria_decision_effect  = {
 			set_de_jure_liege_title = title:e_levant
 		}
 	}	
+
+	# Restored by an emperor outside the Eastern Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_eastern_roman_emperor_trigger = yes } }
+		title:k_diocese_syria = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 restore_roman_provinces_palestine_decision_effect  = {
@@ -907,7 +932,7 @@ restore_roman_provinces_palestine_decision_effect  = {
 	#Sort the Diocese
 	title:k_diocese_palestine = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
 	if = {
-		limit = { exists = title:e_eastern_roman_empire.holder }
+		limit = { has_title = title:e_eastern_roman_empire }
 		title:k_diocese_palestine = { set_de_jure_liege_title = title:e_eastern_roman_empire }
 	}
 	# Destroy useless kingdoms
@@ -952,6 +977,12 @@ restore_roman_provinces_palestine_decision_effect  = {
 			set_de_jure_liege_title = title:e_levant
 		}
 	}	
+
+	# Restored by an emperor outside the Eastern Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_eastern_roman_emperor_trigger = yes } }
+		title:k_diocese_palestine = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 restore_roman_provinces_aegyptus_decision_effect  = {
@@ -972,7 +1003,7 @@ restore_roman_provinces_aegyptus_decision_effect  = {
 	#Sort the Dioceses
 	title:k_diocese_aegyptus = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
 	if = {
-		limit = { exists = title:e_eastern_roman_empire.holder }
+		limit = { has_title = title:e_eastern_roman_empire }
 		title:k_diocese_aegyptus = { set_de_jure_liege_title = title:e_eastern_roman_empire }
 	}
 		hidden_effect = {	
@@ -999,6 +1030,12 @@ restore_roman_provinces_aegyptus_decision_effect  = {
 		title:k_egypt = { 
 			set_de_jure_liege_title = title:e_egypt
 		}
+
+	# Restored by an emperor outside the Eastern Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_eastern_roman_emperor_trigger = yes } }
+		title:k_diocese_aegyptus = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 restore_roman_provinces_hispania_decision_effect = {
@@ -1019,7 +1056,7 @@ restore_roman_provinces_hispania_decision_effect = {
 	#Sort the Dioceses
 	title:k_diocese_hispania = { set_de_jure_liege_title = title:e_spain }
 	if = {
-		limit = { exists = title:e_western_roman_empire.holder }
+		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
 		
@@ -1088,6 +1125,12 @@ restore_roman_provinces_hispania_decision_effect = {
 		title:k_badajoz = { set_de_jure_liege_title = title:e_spain }
 		title:k_portugal = { set_de_jure_liege_title = title:e_spain }
 	}	
+
+	# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		title:k_diocese_hispania = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 restore_roman_provinces_britannia_decision_effect = {
@@ -1108,7 +1151,7 @@ restore_roman_provinces_britannia_decision_effect = {
 	#Sort the Dioceses
 	title:k_diocese_britannia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	if = {
-		limit = { exists = title:e_western_roman_empire.holder }
+		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_britannia = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
 	#Fix Northumberland
@@ -1133,6 +1176,12 @@ restore_roman_provinces_britannia_decision_effect = {
 		title:k_england = { set_de_jure_liege_title = title:e_britannia }
 		title:k_wales = { set_de_jure_liege_title = title:e_britannia }
 	}	
+
+	# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
+	if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		title:k_diocese_britannia = { set_de_jure_liege_title = root.primary_title }
+	}
 }
 
 
@@ -1495,4 +1544,16 @@ restore_roman_provinces_pontus_decision_effect = {
 
 restore_roman_provinces_asia_decision_effect = {
 	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_asia DIOCESE = k_diocese_asia }
+}
+
+restore_roman_provinces_illyricum_decision_effect = {
+	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_illyricum DIOCESE = k_diocese_illyricum }
+}
+
+restore_roman_provinces_noricum_decision_effect = {
+	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_noricum DIOCESE = k_diocese_noricum }
+}
+
+restore_roman_provinces_armenia_decision_effect = {
+	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_armenia DIOCESE = k_diocese_armenia }
 }

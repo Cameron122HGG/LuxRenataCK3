@@ -23,12 +23,18 @@ ep3_should_use_byzantine_graphics_trigger = {
 is_roman_emperor_trigger = {
 	OR = {
 		has_title = title:e_byzantium
-		has_title = title:h_roman_empire
+		has_title = title:e_eastern_roman_empire
 		has_title = title:h_eastern_roman_empire
 		has_title = title:e_spqr
+		has_title = title:e_western_roman_empire
 		has_title = title:h_western_roman_empire
+		has_title = title:h_roman_empire
 		has_title = title:e_gallic_empire
 		has_title = title:e_palmyrene_empire
+		has_title = title:e_brittanic_empire
+		has_title = title:e_constantinid
+		has_title = title:e_tadmor
+		has_title = title:e_syagria
 	}
 }
 
@@ -97,6 +103,60 @@ is_minor_roman_emperor_trigger = {
 	}
 }
 
+# Restored Roman emperors: any minor (restored) or major (hegemony) Roman emperor
+is_restored_roman_emperor_trigger = {
+	OR = {
+		is_minor_roman_emperor_trigger = yes
+		is_major_roman_emperor_trigger = yes
+	}
+}
+
+is_restored_western_roman_emperor_trigger = {
+	OR = {
+		has_title = title:e_western_roman_empire
+		has_title = title:h_western_roman_empire
+		has_title = title:h_roman_empire
+	}
+}
+
+is_restored_eastern_roman_emperor_trigger = {
+	OR = {
+		has_title = title:e_eastern_roman_empire
+		has_title = title:h_eastern_roman_empire
+		has_title = title:h_roman_empire
+	}
+}
+
+# Title scope: is this one of the Roman diocese kingdoms?
+is_roman_diocese_title_trigger = {
+	OR = {
+		this = title:k_diocese_aegyptus
+		this = title:k_diocese_africa
+		this = title:k_diocese_armenia
+		this = title:k_diocese_asia
+		this = title:k_diocese_britannia
+		this = title:k_diocese_caledonia
+		this = title:k_diocese_dardania
+		this = title:k_diocese_germania
+		this = title:k_diocese_hibernia
+		this = title:k_diocese_hispania
+		this = title:k_diocese_illyricum
+		this = title:k_diocese_italia_annonaria
+		this = title:k_diocese_italia_suburbicaria
+		this = title:k_diocese_lugdunensis
+		this = title:k_diocese_macedonia
+		this = title:k_diocese_mauretania
+		this = title:k_diocese_moesia
+		this = title:k_diocese_noricum
+		this = title:k_diocese_palestine
+		this = title:k_diocese_pannonia
+		this = title:k_diocese_pontus
+		this = title:k_diocese_syria
+		this = title:k_diocese_thracia
+		this = title:k_diocese_viennensis
+	}
+}
+
 is_decayed_roman_emperor_trigger = {
 	OR = {
 		has_title = title:e_byzantium
@@ -119,11 +179,12 @@ is_decayed_roman_emperor_excluding_byzantium_trigger = {
 
 is_roman_emperor_excluding_byzantium_trigger = {
 	OR = {
-		has_title = title:h_roman_empire
-		has_title = title:h_western_roman_empire
-		has_title = title:e_spqr
-		has_title = title:e_gallic_empire
 		has_title = title:h_eastern_roman_empire
+		has_title = title:e_spqr
+		has_title = title:e_western_roman_empire
+		has_title = title:h_western_roman_empire
+		has_title = title:h_roman_empire
+		has_title = title:e_gallic_empire
 		has_title = title:e_palmyrene_empire
 		has_title = title:e_brittanic_empire
 		has_title = title:e_constantinid
@@ -135,10 +196,12 @@ is_roman_emperor_excluding_byzantium_trigger = {
 is_roman_emperor_primary_title_trigger = {
 	OR = {
 		primary_title ?= title:e_byzantium
-		primary_title ?= title:h_roman_empire
+		primary_title ?= title:e_eastern_roman_empire
 		primary_title ?= title:h_eastern_roman_empire
 		primary_title ?= title:e_spqr
+		primary_title ?= title:e_western_roman_empire
 		primary_title ?= title:h_western_roman_empire
+		primary_title ?= title:h_roman_empire
 		primary_title ?= title:e_gallic_empire
 		primary_title ?= title:e_palmyrene_empire
 		primary_title ?= title:e_brittanic_empire
@@ -150,12 +213,13 @@ is_roman_emperor_primary_title_trigger = {
 
 is_roman_emperor_primary_title_excluding_byzantium_trigger = {
 	OR = {
-		primary_title ?= title:h_roman_empire
-		primary_title ?= title:h_western_roman_empire
+		primary_title ?= title:h_eastern_roman_empire
 		primary_title ?= title:e_spqr
+		primary_title ?= title:e_western_roman_empire
+		primary_title ?= title:h_western_roman_empire
+		primary_title ?= title:h_roman_empire
 		primary_title ?= title:e_gallic_empire
 		primary_title ?= title:e_palmyrene_empire
-		primary_title ?= title:h_eastern_roman_empire
 		primary_title ?= title:e_brittanic_empire
 		primary_title ?= title:e_constantinid
 		primary_title ?= title:e_tadmor
