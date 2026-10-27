@@ -1,7 +1,13 @@
 ﻿# Roman frontier commands (duces)
 
-# Root is the emperor. Appoints the best available commander of the realm to title:$TITLE$.
+# Root is the emperor. Appoints the best available commander of the realm to the frontier command title:$TITLE$.
 LR_appoint_roman_dux_effect = {
+	LR_appoint_roman_command_effect = { TITLE = $TITLE$ LAW = LR_roman_dux_appointment_succession_law }
+}
+
+# Root is the emperor. Appoints the best available commander of the realm to the Command title:$TITLE$ (a dux or a legion),
+# which gets the appointment succession law $LAW$.
+LR_appoint_roman_command_effect = {
 	every_courtier = {
 		limit = { LR_can_be_roman_dux_trigger = { EMPEROR = root } }
 		add_to_list = LR_dux_candidates
@@ -61,7 +67,7 @@ LR_appoint_roman_dux_effect = {
 			}
 		}
 		title:$TITLE$ = {
-			add_title_law = LR_roman_dux_appointment_succession_law
+			add_title_law = $LAW$
 		}
 		# on_title_gain runs before fealty is resolved, so finish the setup (noble family, primary title, garrison) here
 		scope:new_dux = {
@@ -74,16 +80,34 @@ LR_appoint_roman_dux_effect = {
 	}
 }
 
-# Root is the holder of a dux title, scope:title the command. Run when the command is gained and at game start.
+# Root is the holder of a Command (dux or legion), scope:title the command. Run when the command is gained and at game start.
 LR_roman_dux_setup_effect = {
 	if = {
+		limit = { scope:title = { LR_is_roman_legion_title_trigger = yes } }
+		if = {
+			limit = { NOT = { has_character_modifier = LR_roman_legate_modifier } }
+			add_character_modifier = LR_roman_legate_modifier
+		}
+	}
+	else_if = {
 		limit = { NOT = { has_character_modifier = LR_roman_dux_modifier } }
 		add_character_modifier = LR_roman_dux_modifier
 	}
 	# Noble family, fealty to the emperor and primary title (shared with the prefects and ministers)
 	LR_roman_office_holder_setup_effect = yes
-	# A landless dux is not a governor, so they have no province type; with no province contract, title troops are enabled by default
-	# The command's own garrison of limitanei: two regiments, topped up when the command changes hands
+	# A landless commander is not a governor, so they have no province type; with no province contract, title troops are enabled by default
+	# The command's own troops: two regiments (limitanei for a frontier, comitatenses for a legion), topped up when the command changes hands
+	if = {
+		limit = { scope:title = { LR_is_roman_legion_title_trigger = yes } }
+		LR_roman_command_garrison_effect = { TYPE = roman_comitatenses }
+	}
+	else = {
+		LR_roman_command_garrison_effect = { TYPE = roman_limitanei }
+	}
+}
+
+# Root is the commander, scope:title the command. Keeps two $TYPE$ title regiments on the command.
+LR_roman_command_garrison_effect = {
 	if = {
 		limit = {
 			scope:title = {
@@ -91,13 +115,13 @@ LR_roman_dux_setup_effect = {
 			}
 		}
 		create_maa_regiment = {
-			type = roman_limitanei
+			type = $TYPE$
 			check_can_recruit = no
 			title = scope:title
 			size = 4
 		}
 		create_maa_regiment = {
-			type = roman_limitanei
+			type = $TYPE$
 			check_can_recruit = no
 			title = scope:title
 			size = 4
@@ -110,7 +134,7 @@ LR_roman_dux_setup_effect = {
 			}
 		}
 		create_maa_regiment = {
-			type = roman_limitanei
+			type = $TYPE$
 			check_can_recruit = no
 			title = scope:title
 			size = 4

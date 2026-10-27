@@ -1,0 +1,36 @@
+﻿# Roman legions (landless field commands)
+
+LR_is_roman_legion_title_trigger = {
+	OR = {
+		this = title:d_legio_vi_victrix
+		this = title:d_legio_i_italica
+		this = title:d_legio_viii_augusta
+		this = title:d_legio_xiii_gemina
+		this = title:d_legio_i_roma_victrix
+	}
+}
+
+LR_is_roman_legion_trigger = {
+	OR = {
+		has_title = title:d_legio_vi_victrix
+		has_title = title:d_legio_i_italica
+		has_title = title:d_legio_viii_augusta
+		has_title = title:d_legio_xiii_gemina
+		has_title = title:d_legio_i_roma_victrix
+	}
+}
+
+# Any landless Roman Command: a frontier dux or a legion
+LR_is_roman_command_title_trigger = {
+	OR = {
+		LR_is_roman_dux_title_trigger = yes
+		LR_is_roman_legion_title_trigger = yes
+	}
+}
+
+# Is the legion title:$TITLE$ unfilled, with its garrison county held within this emperor's realm?
+LR_roman_legion_available_trigger = {
+	NOT = { exists = title:$TITLE$.holder }
+	exists = title:$TITLE$.title_capital_county.holder
+	title:$TITLE$.title_capital_county.holder.top_liege = root
+}

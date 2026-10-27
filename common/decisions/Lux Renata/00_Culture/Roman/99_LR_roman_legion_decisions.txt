@@ -1,0 +1,191 @@
+﻿# Raise a legion: a landless field Command for a restored Roman empire
+LR_appoint_roman_legion_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
+	}
+	ai_check_interval = 60
+	decision_group_type = roman
+
+	desc = LR_appoint_roman_legion_decision_desc
+	selection_tooltip = LR_appoint_roman_legion_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_independent_ruler = yes
+		government_has_flag = government_is_roman_imperial
+		is_restored_roman_emperor_trigger = yes
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 250
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 250
+			}
+		}
+		prestige = 300
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_appoint_roman_legion_decision_trigger_1
+			OR = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_vi_victrix }
+				LR_roman_legion_available_trigger = { TITLE = d_legio_i_italica }
+				LR_roman_legion_available_trigger = { TITLE = d_legio_viii_augusta }
+				LR_roman_legion_available_trigger = { TITLE = d_legio_xiii_gemina }
+				LR_roman_legion_available_trigger = { TITLE = d_legio_i_roma_victrix }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_appoint_roman_legion"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_LEGION_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = legio_vi_victrix
+			current_description = {
+				desc = LR_legio_vi_victrix_option_desc
+			}
+			localization = {
+				desc = LR_legio_vi_victrix_option_desc
+			}
+			is_shown = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_vi_victrix }
+			}
+			is_valid = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_vi_victrix }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = legio_i_italica
+			current_description = {
+				desc = LR_legio_i_italica_option_desc
+			}
+			localization = {
+				desc = LR_legio_i_italica_option_desc
+			}
+			is_shown = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_i_italica }
+			}
+			is_valid = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_i_italica }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = legio_viii_augusta
+			current_description = {
+				desc = LR_legio_viii_augusta_option_desc
+			}
+			localization = {
+				desc = LR_legio_viii_augusta_option_desc
+			}
+			is_shown = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_viii_augusta }
+			}
+			is_valid = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_viii_augusta }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = legio_xiii_gemina
+			current_description = {
+				desc = LR_legio_xiii_gemina_option_desc
+			}
+			localization = {
+				desc = LR_legio_xiii_gemina_option_desc
+			}
+			is_shown = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_xiii_gemina }
+			}
+			is_valid = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_xiii_gemina }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = legio_i_roma_victrix
+			current_description = {
+				desc = LR_legio_i_roma_victrix_option_desc
+			}
+			localization = {
+				desc = LR_legio_i_roma_victrix_option_desc
+			}
+			is_shown = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_i_roma_victrix }
+			}
+			is_valid = {
+				LR_roman_legion_available_trigger = { TITLE = d_legio_i_roma_victrix }
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_appoint_roman_legion_decision_effect_tt
+		hidden_effect = {
+		if = {
+			limit = { scope:legio_vi_victrix = yes }
+			LR_appoint_roman_legion_effect = { TITLE = d_legio_vi_victrix }
+		}
+		else_if = {
+			limit = { scope:legio_i_italica = yes }
+			LR_appoint_roman_legion_effect = { TITLE = d_legio_i_italica }
+		}
+		else_if = {
+			limit = { scope:legio_viii_augusta = yes }
+			LR_appoint_roman_legion_effect = { TITLE = d_legio_viii_augusta }
+		}
+		else_if = {
+			limit = { scope:legio_xiii_gemina = yes }
+			LR_appoint_roman_legion_effect = { TITLE = d_legio_xiii_gemina }
+		}
+		else_if = {
+			limit = { scope:legio_i_roma_victrix = yes }
+			LR_appoint_roman_legion_effect = { TITLE = d_legio_i_roma_victrix }
+		}
+		}
+	}
+
+	ai_potential = {
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}

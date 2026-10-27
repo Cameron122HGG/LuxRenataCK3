@@ -1,0 +1,70 @@
+﻿on_title_lost = {
+	on_actions = { LR_roman_legion_on_title_lost }
+}
+
+on_game_start = {
+	on_actions = { LR_roman_legion_on_game_start }
+}
+
+# root = old holder, scope:title = the title
+LR_roman_legion_on_title_lost = {
+	trigger = {
+		is_alive = yes
+		scope:title = { LR_is_roman_legion_title_trigger = yes }
+		has_character_modifier = LR_roman_legate_modifier
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					any_held_title = {
+						this != scope:title
+						LR_is_roman_legion_title_trigger = yes
+					}
+				}
+			}
+			remove_character_modifier = LR_roman_legate_modifier
+		}
+	}
+}
+
+# Legions that already exist in the start date's history get the same setup as newly raised ones
+LR_roman_legion_on_game_start = {
+	effect = {
+		title:d_legio_vi_victrix = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_legio_i_italica = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_legio_viii_augusta = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_legio_xiii_gemina = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:d_legio_i_roma_victrix = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+	}
+}
