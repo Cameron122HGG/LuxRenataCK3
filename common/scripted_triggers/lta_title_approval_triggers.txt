@@ -1,0 +1,35 @@
+﻿# Opt in only: new campaigns default to Disabled; saves without the rule are exempt.
+lta_title_approval_enabled_trigger = {
+	has_game_rule = lta_liege_title_approval_enabled
+}
+
+# Character scope. Crown Authority is indexed from zero in CK3:
+# crown_authority_2 = High (level 3), crown_authority_3 = Absolute (level 4).
+# Check the direct liege, whose approval is required, rather than the vassal's law.
+lta_liege_approval_required_trigger = {
+	lta_title_approval_enabled_trigger = yes
+	exists = liege
+	liege = {
+		OR = {
+			has_realm_law = crown_authority_2
+			has_realm_law = crown_authority_3
+		}
+	}
+}
+
+# Matches the installed empire head-of-faith approval process: opinion > 0.
+# No title-tier filter: every title checked by can_create_title uses this rule.
+lta_can_create_title_trigger = {
+	trigger_if = {
+		limit = { lta_liege_approval_required_trigger = yes }
+		custom_tooltip = {
+			text = lta_liege_approval_required_tt
+			liege = {
+				opinion = {
+					target = root
+					value > 0
+				}
+			}
+		}
+	}
+}
