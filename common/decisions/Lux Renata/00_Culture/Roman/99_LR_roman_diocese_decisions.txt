@@ -14,7 +14,7 @@
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
-		has_title = title:e_spqr
+		has_title = title:e_western_roman_empire
 		is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:western_roman_diocese_restored
@@ -166,6 +166,8 @@ restore_western_roman_administration_decision = {
 				change_government = roman_administrative_government
 			}
 		}
+		LR_transfer_empire_title_effect = { OLD = e_spqr NEW = e_western_roman_empire }
+
         custom_tooltip = restore_western_diocese_system_effect_tooltip
         custom_tooltip = restore_western_diocese_system_unlock_tooltip
 		
@@ -239,7 +241,7 @@ LR_restore_eastern_hegemony_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
-		has_title = title:e_byzantium
+		has_title = title:e_eastern_roman_empire
 		is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:eastern_roman_diocese_restored
@@ -361,8 +363,7 @@ LR_restore_eastern_hegemony_decision = {
 			LR_restore_eastern_hegemony_decision_effect = yes
 		}
 		trigger_event = {
-			id = ep3_decisions_event.4000
-			days = 1
+			id = LR_major_decisions.0017
 		}
 		#Can only be done once
 		add_to_global_variable_list = {
@@ -381,7 +382,7 @@ LR_restore_eastern_hegemony_decision = {
 		}
 	}
 	ai_potential = {
-		has_title = title:e_byzantium
+		has_title = title:e_eastern_roman_empire
 		is_at_war = no
 		NOT = { exists = involved_activity }
 		is_imprisoned = no
@@ -463,6 +464,8 @@ restore_eastern_roman_administration_decision = {
 				change_government = roman_autocratic_government
 			}
 		}
+		LR_transfer_empire_title_effect = { OLD = e_byzantium NEW = e_eastern_roman_empire }
+
         custom_tooltip = restore_eastern_diocese_system_effect_tooltip
         custom_tooltip = restore_eastern_diocese_system_unlock_tooltip
 		
@@ -539,18 +542,6 @@ restore_italia_roman_provinces_decision = {
 			culture = { has_cultural_pillar = heritage_byzantine }
 		}
 		OR = {
-			OR = {
-				title:k_diocese_pannonia = {
-					is_titular = yes
-				}
-				title:k_diocese_pannonia = {
-					NOT = {
-						any_in_de_jure_hierarchy = {
-							is_titular = no
-						}
-					}
-				}
-			}
 			OR = {
 				title:k_diocese_italia_suburbicaria = {
 					is_titular = yes

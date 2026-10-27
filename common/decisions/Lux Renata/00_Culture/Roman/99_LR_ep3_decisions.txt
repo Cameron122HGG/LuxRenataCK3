@@ -400,7 +400,7 @@ retake_eastern_provinces_decision = {
 	decision_group_type = roman
 
 	is_shown = {
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -526,7 +526,7 @@ retake_eastern_provinces_decision = {
 	}
 
 	ai_potential = {
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		is_available_at_peace = yes
 	}
 
@@ -557,7 +557,7 @@ refound_pandidakterion_decision = {
 	decision_group_type = roman
 
 	is_shown = {
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		NOR = {
 			# the pandidakterion already existed at game start
 			title:c_byzantion = { has_county_modifier = pandidakterion_university_modifier }
@@ -619,7 +619,7 @@ refound_pandidakterion_decision = {
 	}
 
 	ai_potential = {
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		gold > 1000
 	}
 
@@ -652,7 +652,7 @@ ask_western_help_decision = {
 	is_shown = {
 		government_has_flag = government_is_administrative
 		# Byz emperor or governor
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		faith ?= {
 			NOT = { has_doctrine_parameter = great_holy_wars_active }
 		}
@@ -880,7 +880,7 @@ ask_western_help_decision = {
 	}
 
 	ai_potential = {
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		realm_size < massive_realm_size
 	}
 
@@ -916,13 +916,13 @@ evangelize_the_slavs_decision = {
 		faith.religion ?= religion:christianity_religion
 		# Byz emperor or governor
 		OR = {
-			liege ?= { has_title = title:e_byzantium }
-			has_title = title:e_byzantium
+			liege ?= { OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire } }
+			OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		}
 		# You border with pagans to convert
 		trigger_if = {
 			limit = {
-				has_title = title:e_byzantium
+				OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 			}
 			any_neighboring_and_across_water_top_liege_realm_owner = {
 				valid_for_pagan_conversion_trigger = yes
@@ -940,7 +940,7 @@ evangelize_the_slavs_decision = {
 		government_has_flag = government_is_administrative
 		trigger_if = {
 			limit = {
-				has_title = title:e_byzantium
+				OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 			}
 			custom_tooltip = {
 				any_neighboring_and_across_water_top_liege_realm_owner = {
@@ -974,7 +974,7 @@ evangelize_the_slavs_decision = {
 
 	ai_potential = {
 		piety > massive_piety_value
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 	}
 
 	ai_will_do = {
@@ -1018,6 +1018,7 @@ recreate_byzantine_empire_decision = {
 	is_shown = {
 		NOR = {
 			exists = title:e_byzantium.holder
+			exists = title:e_eastern_roman_empire.holder
 			exists = title:h_roman_empire.holder
 			exists = title:h_eastern_roman_empire.holder
 		}
@@ -1323,7 +1324,7 @@ found_varangian_guard_decision = {
 	}
 
 	ai_potential = {
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 	}
 
 	ai_will_do = {

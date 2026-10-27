@@ -322,7 +322,7 @@ restore_roman_empire_holy_decision = {
 		is_playable_character = yes
 		has_title = title:e_hre
 		OR = {
-			NOT = { has_title = title:e_byzantium } # Prioritize Byzaboos
+			NOT = { OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire } } # Prioritize Byzaboos
 			primary_title = title:e_hre
 		}
 		NOT = { primary_title = title:e_western_roman_empire }
@@ -424,7 +424,7 @@ restore_roman_empire_decision = {
 		is_ruler = yes
 		is_playable_character = yes
 		OR = {
-			has_title = title:e_byzantium
+			OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 			has_title = title:h_eastern_roman_empire
 		}
 		NOT = { primary_title = title:e_hre }
@@ -567,18 +567,21 @@ merge_pontus_decision = {
         #culture = { has_cultural_pillar = heritage_byzantine }
         #culture = { has_cultural_pillar = heritage_hellenistic }
 		has_title = title:e_pontus
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		top_liege = this
 		}
 		NOR = {
 			title:e_pontus = { is_titular = yes }
-			title:e_byzantium = { is_titular = yes }
+			AND = {
+				title:e_byzantium = { is_titular = yes }
+				title:e_eastern_roman_empire = { is_titular = yes }
+			}
 		}
 	}
 
 	is_valid = {
 		has_title = title:e_pontus
-		has_title = title:e_byzantium
+		OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 		top_liege = this
 		prestige_level >= 3
 	}
@@ -598,17 +601,37 @@ merge_pontus_decision = {
 			limit = {
 				primary_title = { this = title:e_pontus}
 			}
-			merge_pontus_effect = {
-				PRIMARY = e_pontus
-				SECONDARY = e_byzantium
-				TEXT = alt
+			if = {
+				limit = { has_title = title:e_eastern_roman_empire }
+				merge_pontus_effect = {
+					PRIMARY = e_pontus
+					SECONDARY = e_eastern_roman_empire
+					TEXT = alt
+				}
+			}
+			else = {
+				merge_pontus_effect = {
+					PRIMARY = e_pontus
+					SECONDARY = e_byzantium
+					TEXT = alt
+				}
 			}
 		}
 		else = {
-			merge_pontus_effect = {
-				PRIMARY = e_byzantium
-				SECONDARY = e_pontus
-				TEXT = original
+			if = {
+				limit = { has_title = title:e_eastern_roman_empire }
+				merge_pontus_effect = {
+					PRIMARY = e_eastern_roman_empire
+					SECONDARY = e_pontus
+					TEXT = original
+				}
+			}
+			else = {
+				merge_pontus_effect = {
+					PRIMARY = e_byzantium
+					SECONDARY = e_pontus
+					TEXT = original
+				}
 			}
 		}
 

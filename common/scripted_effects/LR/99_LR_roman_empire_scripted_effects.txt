@@ -622,6 +622,7 @@ create_eastern_roman_empire_scripted_effect = {
 		}
 		# We move over the De Jure for all the basic titles
 		title:e_byzantium ?= { set_de_jure_liege_title = title:h_eastern_roman_empire }
+		title:e_eastern_roman_empire ?= { set_de_jure_liege_title = title:h_eastern_roman_empire }
 		title:e_praetorian_prefecture_illyricum ?= { set_de_jure_liege_title = title:h_eastern_roman_empire }
 		title:e_praetorian_prefecture_macedonia ?= { set_de_jure_liege_title = title:h_eastern_roman_empire }
 		title:e_praetorian_prefecture_oriens ?= { set_de_jure_liege_title = title:h_eastern_roman_empire }
@@ -1389,6 +1390,67 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 	}	
 }
 
+# Moves root from OLD empire title to NEW: creates NEW with OLD's history, capital,
+# de jure kingdoms, title MaA and guard bonuses, then destroys OLD.
+# Usage: LR_transfer_empire_title_effect = { OLD = e_byzantium NEW = e_eastern_roman_empire }
+LR_transfer_empire_title_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:$NEW$ = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		copy_title_history = title:$OLD$
+	}
+	resolve_title_and_vassal_change = scope:change
 
+	hidden_effect = {
+		if = {
+			limit = { exists = title:$OLD$.title_capital_county }
+			title:$NEW$ = { set_capital_county = title:$OLD$.title_capital_county }
+		}
+		if = { # Move your Title MaAs to the new title
+			limit = {
+				government_has_mechanic = administrative
+				title:$OLD$ = {
+					any_title_maa_regiment = { count >= 1 }
+				}
+			}
+			title:$OLD$ = { transfer_title_maa_ownership = title:$NEW$ }
+		}
+		if = {
+			limit = { title:$OLD$ = { has_variable = founded_varangian_guard } }
+			title:$NEW$ = { set_variable = founded_varangian_guard }
+		}
+		if = {
+			limit = { title:$OLD$ = { has_variable = refounded_praetorian_guard } }
+			title:$NEW$ = { set_variable = refounded_praetorian_guard }
+		}
 
+		# Move OLD's de jure kingdoms under NEW
+		title:$OLD$ = {
+			every_in_de_jure_hierarchy = {
+				continue = {
+					tier >= tier_kingdom
+				}
+				limit = {
+					tier = tier_kingdom
+				}
+				add_to_temporary_list = $OLD$_de_jure_kingdoms
+			}
+		}
+		every_in_list = {
+			list = $OLD$_de_jure_kingdoms
+			set_de_jure_liege_title = title:$NEW$
+		}
+
+		set_primary_title_to = title:$NEW$
+	}
+
+	destroy_title = title:$OLD$
+}
 
