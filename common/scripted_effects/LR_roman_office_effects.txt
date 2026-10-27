@@ -11,7 +11,7 @@ LR_roman_office_holder_setup_effect = {
 				any_held_title = { is_noble_family_title = yes }
 			}
 			exists = top_liege
-			top_liege = { government_has_flag = government_is_roman_imperial }
+			top_liege = { government_has_flag = government_is_roman_autocratic } # Roman Imperial or a regional Roman empire
 		}
 		create_noble_family_effect = { GOVERNMENT_GIVER = top_liege }
 	}
@@ -39,6 +39,14 @@ LR_roman_office_holder_setup_effect = {
 			top_liege ?= { government_has_flag = government_is_roman_imperial }
 		}
 		change_government = roman_imperial_government
+	}
+	else_if = { # LR: officers of a regional (Roman Autocratic) empire
+		limit = {
+			is_landed = no
+			NOT = { government_has_flag = government_is_roman_autocratic }
+			top_liege ?= { government_has_flag = government_is_roman_autocratic }
+		}
+		change_government = roman_autocratic_government
 	}
 	# Kingdom-tier offices always become primary; a duchy-tier command only when no kingdom-tier office is held
 	if = {

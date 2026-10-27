@@ -29,7 +29,8 @@
 	}
 
 	is_valid = {
-		completely_controls_region = custom_theodosian_wre
+		# LR: only the Italian core, not the whole Theodosian West; the dioceses below must still be yours
+		completely_controls_region = custom_western_roman_imperial_core
 		
 		##Checking if Restoring Provinces has started and then how many
 		custom_tooltip = {
@@ -281,8 +282,9 @@ LR_restore_eastern_hegemony_decision = {
 	}
 
 	is_valid = {
-		government_has_flag = government_is_administrative
-		completely_controls_region = custom_theodosian_ere
+		government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
+		# LR: only the Eastern core (Thracia, Macedonia, Asia, Pontus), not the whole Theodosian East
+		completely_controls_region = custom_eastern_roman_imperial_core
 		##Checking if Restoring Provinces has started and then how many
 		custom_tooltip = {
 			text = LR_has_restored_at_least_three_eastern_provinces_tooltip
@@ -580,10 +582,7 @@ restore_italia_roman_provinces_decision = {
 				target = flag:western_roman_diocese_restored
 			}
 		is_restored_western_roman_emperor_trigger = yes
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			OR = {
 				title:k_diocese_italia_suburbicaria = {
@@ -649,10 +648,7 @@ restore_italia_roman_provinces_decision = {
 
 	is_valid = {
 		is_restored_western_roman_emperor_trigger = yes
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		prestige_level >= medium_prestige_level
 		custom_description = {
 			text = restore_italia_roman_provinces_decision_trigger_1
@@ -934,19 +930,19 @@ restore_gallia_roman_provinces_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:western_roman_diocese_restored
-			}
+		# LR: the Roman emperor needs the administration decision first; a regional empire's own proclamation is its unlock
 		OR = {
-			is_restored_western_roman_emperor_trigger = yes
+			AND = {
+				is_restored_western_roman_emperor_trigger = yes
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:western_roman_diocese_restored
+				}
+			}
 			has_title = title:e_gallic_empire
 			has_title = title:e_brittanic_empire
 		}
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			OR = {
 				title:k_diocese_hispania = {
@@ -1027,10 +1023,7 @@ restore_gallia_roman_provinces_decision = {
 			has_title = title:e_gallic_empire
 			has_title = title:e_brittanic_empire
 		}
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		prestige_level >= medium_prestige_level
 		custom_description = {
 			text = restore_gallia_roman_provinces_decision_trigger_1
@@ -1138,6 +1131,16 @@ restore_gallia_roman_provinces_decision = {
 
 			is_valid = {
 				completely_controls_region = custom_roman_hispania
+				trigger_if = { # LR: like Constantine III, the Brittanic emperor crosses to the continent from a restored Britannia
+					limit = { has_title = title:e_brittanic_empire }
+					custom_tooltip = {
+						text = LR_brittanic_britannia_first_tt
+						OR = {
+							has_title = title:k_diocese_britannia
+							any_vassal = { has_title = title:k_diocese_britannia }
+						}
+					}
+				}
 			}
 
 			ai_chance = {
@@ -1171,6 +1174,16 @@ restore_gallia_roman_provinces_decision = {
 			
 			is_valid = {
 				completely_controls_region = custom_roman_viennensis
+				trigger_if = { # LR: like Constantine III, the Brittanic emperor crosses to the continent from a restored Britannia
+					limit = { has_title = title:e_brittanic_empire }
+					custom_tooltip = {
+						text = LR_brittanic_britannia_first_tt
+						OR = {
+							has_title = title:k_diocese_britannia
+							any_vassal = { has_title = title:k_diocese_britannia }
+						}
+					}
+				}
 			}
 
 			ai_chance = {
@@ -1204,6 +1217,16 @@ restore_gallia_roman_provinces_decision = {
 
 			is_valid = {
 				completely_controls_region = custom_roman_lugdunensis
+				trigger_if = { # LR: like Constantine III, the Brittanic emperor crosses to the continent from a restored Britannia
+					limit = { has_title = title:e_brittanic_empire }
+					custom_tooltip = {
+						text = LR_brittanic_britannia_first_tt
+						OR = {
+							has_title = title:k_diocese_britannia
+							any_vassal = { has_title = title:k_diocese_britannia }
+						}
+					}
+				}
 			}
 
 			ai_chance = {
@@ -1221,6 +1244,7 @@ restore_gallia_roman_provinces_decision = {
 			}
 			#icon = "gfx/interface/icons/diocese_restoration/roman_britannia.dds"
 			is_shown = {
+				NOT = { has_title = title:e_gallic_empire } # LR: the Gallic Empire's home is Gaul and Hispania
 				OR = {
 					title:k_diocese_britannia = {
 						is_titular = yes
@@ -1237,13 +1261,16 @@ restore_gallia_roman_provinces_decision = {
 
 			is_valid = {
 				completely_controls_region = custom_roman_britannia
-				custom_tooltip = { 
-					text = gallia_first_restore_tt
-					OR = { # must first restore diocese of lugdunensis
-						any_vassal = {
+				trigger_if = { # LR: the Brittanic Empire restores Britannia on its own
+					limit = { NOT = { has_title = title:e_brittanic_empire } }
+					custom_tooltip = { 
+						text = gallia_first_restore_tt
+						OR = { # must first restore diocese of lugdunensis
+							any_vassal = {
+								has_title = title:k_diocese_lugdunensis
+							}
 							has_title = title:k_diocese_lugdunensis
 						}
-						has_title = title:k_diocese_lugdunensis
 					}
 				}
 			}
@@ -1280,7 +1307,10 @@ restore_gallia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_hispania_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				if = { # LR: only the Roman emperor's restorations count toward the hegemony
+					limit = { is_restored_western_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0004
 				}
@@ -1309,7 +1339,10 @@ restore_gallia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_viennensis_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				if = { # LR: only the Roman emperor's restorations count toward the hegemony
+					limit = { is_restored_western_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0002
 				}
@@ -1338,7 +1371,10 @@ restore_gallia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_lugdunensis_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				if = { # LR: only the Roman emperor's restorations count toward the hegemony
+					limit = { is_restored_western_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0003
 				}
@@ -1367,7 +1403,10 @@ restore_gallia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_britannia_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				if = { # LR: only the Roman emperor's restorations count toward the hegemony
+					limit = { is_restored_western_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0001
 				}
@@ -1403,10 +1442,7 @@ restore_illyricum_roman_provinces_decision = {
 				target = flag:western_roman_diocese_restored
 			}
 		is_restored_western_roman_emperor_trigger = yes
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			OR = {
 				title:k_diocese_noricum = {
@@ -1471,10 +1507,7 @@ restore_illyricum_roman_provinces_decision = {
 
 	is_valid = {
 		is_restored_western_roman_emperor_trigger = yes
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		prestige_level >= medium_prestige_level
 		custom_description = {
 			text = restore_illyricum_roman_provinces_decision_trigger_1
@@ -1760,10 +1793,7 @@ restore_macedonia_roman_provinces_decision = {
 				target = flag:eastern_roman_diocese_restored
 			}
 		is_restored_eastern_roman_emperor_trigger = yes
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			OR = {
 				title:k_diocese_thracia = {
@@ -1852,10 +1882,7 @@ restore_macedonia_roman_provinces_decision = {
 
 	is_valid = {
 		is_restored_eastern_roman_emperor_trigger = yes
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			religion = religion:christianity_religion
 			religion = religion:hellenism_religion
@@ -2297,18 +2324,18 @@ restore_oriens_roman_provinces_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:eastern_roman_diocese_restored
-			}
+		# LR: the Roman emperor needs the administration decision first; a regional empire's own proclamation is its unlock
 		OR = {
-			is_restored_eastern_roman_emperor_trigger = yes
+			AND = {
+				is_restored_eastern_roman_emperor_trigger = yes
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:eastern_roman_diocese_restored
+				}
+			}
 			has_title = title:e_palmyrene_empire
 		}
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			OR = {
 				title:k_diocese_syria = {
@@ -2376,10 +2403,7 @@ restore_oriens_roman_provinces_decision = {
 			is_restored_eastern_roman_emperor_trigger = yes
 			has_title = title:e_palmyrene_empire
 		}
-		OR = {
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
-		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			religion = religion:christianity_religion
 			religion = religion:hellenism_religion
@@ -2576,7 +2600,10 @@ restore_oriens_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_syria_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				if = { # LR: only the Roman emperor's restorations count toward the hegemony
+					limit = { is_restored_eastern_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0005
 				}
@@ -2605,7 +2632,10 @@ restore_oriens_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_aegyptus_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				if = { # LR: only the Roman emperor's restorations count toward the hegemony
+					limit = { is_restored_eastern_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0006
 				}
@@ -2634,7 +2664,10 @@ restore_oriens_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_palestine_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				if = { # LR: only the Roman emperor's restorations count toward the hegemony
+					limit = { is_restored_eastern_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0025
 				}

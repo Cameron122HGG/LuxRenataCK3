@@ -20,6 +20,10 @@ on_vassal_change = {
 	on_actions = { LR_government_tradition_on_vassal_change }
 }
 
+on_government_change = {
+	on_actions = { LR_government_tradition_on_government_change }
+}
+
 # root = culture, scope:tradition = flag of the tradition added.
 # A culture holds one government tradition: the new one replaces the old, and the culture's rulers move to the new group.
 LR_government_tradition_on_tradition_added = {
@@ -67,6 +71,11 @@ LR_government_tradition_on_game_start = {
 		every_culture_global = {
 			LR_seed_government_tradition_effect = yes
 		}
+		# Remember who starts tribal, so their settling is caught below
+		every_ruler = {
+			limit = { government_has_flag = government_is_tribal }
+			add_character_flag = LR_was_tribal
+		}
 	}
 }
 
@@ -79,5 +88,21 @@ LR_government_tradition_on_vassal_change = {
 	}
 	effect = {
 		LR_apply_culture_government_group_effect = yes
+	}
+}
+
+# root = the character whose government changed. When a tribal ruler settles, the game picks their new government
+# from heritage (primary_heritages); move them to the same tier of their culture's government tradition group instead.
+LR_government_tradition_on_government_change = {
+	effect = {
+		if = {
+			limit = { government_has_flag = government_is_tribal }
+			add_character_flag = LR_was_tribal
+		}
+		else_if = {
+			limit = { has_character_flag = LR_was_tribal }
+			remove_character_flag = LR_was_tribal
+			LR_apply_culture_government_group_effect = yes
+		}
 	}
 }
