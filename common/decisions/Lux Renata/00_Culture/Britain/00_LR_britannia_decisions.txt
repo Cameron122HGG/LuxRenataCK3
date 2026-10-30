@@ -788,50 +788,65 @@
 #}
 
 
-###Unite England - Anglo-Saxon
+###Claim the Bretwalda - Anglo-Saxon (port of Lux Invicta's become_bretwalda)
 unify_england_anglo_saxon_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
 	}
 	decision_group_type = major
+	sort_order = 80
 
 	ai_check_interval_by_tier = {
 		barony = 0
 		county = 0
 		duchy = 0
-		kingdom = 120
-		empire = 120
-		hegemony = 120
+		kingdom = 60
+		empire = 60
+		hegemony = 0
 	}
 
-	desc = unify_england_briton_decision_desc
+	desc = unify_england_anglo_saxon_decision_desc
+	selection_tooltip = unify_england_anglo_saxon_decision_tooltip
 
 	is_shown = {
-		OR = {
-			culture = { has_cultural_pillar = heritage_west_germanic }
-			culture = { has_cultural_pillar = heritage_north_germanic }
-			culture = { has_cultural_pillar = heritage_central_germanic }
+		is_ruler = yes
+		is_playable_character = yes
+		culture = { has_cultural_pillar = heritage_west_germanic }
+		NOR = {
+			has_global_variable = bretwalda_claimed
+			has_global_variable = unified_england_variable
 		}
-		primary_title.title_capital_county.title_province = { geographical_region = ghw_region_england }
-		primary_title.tier >= tier_kingdom
-		NOT = { has_global_variable = unified_england_variable }
 	}
 
 	is_valid = {
 		is_independent_ruler = yes
-		OR = {
-			custom_tooltip = {
-				text = primary_title_is_kingdom_tooltip
-				primary_title.tier = tier_kingdom
-			}
-			primary_title = title:e_britons
-			primary_title = title:e_england
-			primary_title = title:e_anglo_danes
-		}
-		completely_controls = title:e_britons
-		completely_controls = title:e_england
-		completely_controls = title:e_anglo_danes
 		prestige_level >= 3
+		# Wessex, Mercia and Northumbria (Deira and Bernicia) under your control
+		completely_controls = title:k_petty_wessex
+		completely_controls = title:k_petty_mercia
+		completely_controls = title:k_petty_deira
+		completely_controls = title:k_bernicia
+		# The other crowns of the Heptarchy
+		custom_tooltip = {
+			text = LR_bretwalda_holds_anglia_tt
+			LR_bretwalda_holds_petty_kingdom_trigger = { TITLE = title:k_petty_anglia }
+		}
+		custom_tooltip = {
+			text = LR_bretwalda_holds_east_anglia_tt
+			LR_bretwalda_holds_petty_kingdom_trigger = { TITLE = title:k_petty_east_anglia }
+		}
+		custom_tooltip = {
+			text = LR_bretwalda_holds_essex_tt
+			LR_bretwalda_holds_petty_kingdom_trigger = { TITLE = title:k_petty_essex }
+		}
+		custom_tooltip = {
+			text = LR_bretwalda_holds_kent_tt
+			LR_bretwalda_holds_petty_kingdom_trigger = { TITLE = title:k_petty_kent }
+		}
+		custom_tooltip = {
+			text = LR_bretwalda_holds_sussex_tt
+			LR_bretwalda_holds_petty_kingdom_trigger = { TITLE = title:k_petty_sussex }
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -840,66 +855,39 @@ unify_england_anglo_saxon_decision = {
 		is_at_war = no
 	}
 
-	cost = { prestige = 500 }
-
-	effect = {
-		show_as_tooltip = {
-			get_title = title:e_britannia
+	cost = {
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 250
+			}
 		}
-		hidden_effect = {
-			root = { save_scope_as = united_england_founder }
-			primary_title.de_jure_liege = { save_scope_as = former_imperial_liege }
-			title:e_britons = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_duchy }
-					set_de_jure_liege_title = title:k_hk_britons
-				}
-			}
-			title:k_hk_britons = { copy_title_history = title:e_britons }
-			
-			title:e_england = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_duchy }
-					set_de_jure_liege_title = title:k_hk_england
-				}
-			}
-			title:k_hk_england = { copy_title_history = title:e_england }
-			
-			title:e_anglo_danes = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_duchy }
-					set_de_jure_liege_title = title:k_hk_anglo_danes
-				}
-			}
-			title:k_hk_anglo_danes = { copy_title_history = title:e_anglo_danes }
-			
-			title:k_hk_britons = { set_de_jure_liege_title = title:e_britannia }
-			title:k_hk_england = { set_de_jure_liege_title = title:e_britannia }
-			title:k_hk_anglo_danes = { set_de_jure_liege_title = title:e_britannia }
-		
-			create_title_and_vassal_change = {
-				type = created
-				save_scope_as = title_change
-			}
-			title:e_britannia = {
-				change_title_holder = {
-					holder = scope:united_england_founder
-					change = scope:title_change
-				}
-			}
-			resolve_title_and_vassal_change = scope:title_change
-			
-			destroy_title = title:e_britons
-			destroy_title = title:e_england
-			destroy_title = title:e_anglo_danes			
-			
-			set_global_variable = {
-				name = unified_england_variable
-				value = yes
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 250
 			}
 		}
 	}
-	
+
+	effect = {
+		show_as_tooltip = {
+			LR_claim_bretwalda_decision_scripted_effect = yes
+			add_prestige = 500
+		}
+		save_scope_as = founder
+		trigger_event = LR_bretwalda.0001
+		every_player = {
+			limit = {
+				this != root
+				is_within_diplo_range = { CHARACTER = root }
+			}
+			trigger_event = LR_bretwalda.0002
+		}
+	}
+
 	ai_potential = {
 		always = yes
 	}

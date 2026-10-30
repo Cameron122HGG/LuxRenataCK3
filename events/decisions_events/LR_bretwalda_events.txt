@@ -1,0 +1,57 @@
+﻿namespace = LR_bretwalda
+
+# Claim the Bretwalda (unify_england_anglo_saxon_decision)
+
+# The founder is crowned in the Great Mead Hall
+LR_bretwalda.0001 = {
+	type = character_event
+	title = LR_bretwalda.0001.t
+	desc = LR_bretwalda.0001.desc
+	theme = realm
+	left_portrait = {
+		character = scope:founder
+		animation = personality_honorable
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		LR_claim_bretwalda_decision_scripted_effect = yes
+	}
+
+	option = { # In the name of the High God, I am the Bretwalda!
+		name = LR_bretwalda.0001.a
+		add_prestige = 500
+	}
+}
+
+# Inform other players
+LR_bretwalda.0002 = {
+	type = character_event
+	title = LR_bretwalda.0001.t
+	desc = LR_bretwalda.0002.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:founder
+		animation = personality_honorable
+	}
+
+	option = {
+		name = { # Saxons and Angles rejoice
+			trigger = { culture = { has_cultural_pillar = heritage_west_germanic } }
+			text = LR_bretwalda.0002.a
+		}
+		name = { # Britons fear the Saxon tide
+			trigger = { culture = { has_cultural_pillar = heritage_brythonic } }
+			text = LR_bretwalda.0002.b
+		}
+		name = { # No one else especially cares
+			trigger = {
+				NOR = {
+					culture = { has_cultural_pillar = heritage_west_germanic }
+					culture = { has_cultural_pillar = heritage_brythonic }
+				}
+			}
+			text = LR_bretwalda.0002.c
+		}
+	}
+}
