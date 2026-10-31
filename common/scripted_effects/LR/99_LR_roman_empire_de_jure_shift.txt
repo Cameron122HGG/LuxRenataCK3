@@ -163,9 +163,13 @@ restore_western_roman_provinces_system_decision_effect = {
 		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
 		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
 		title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
+		title:k_diocese_noricum = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
+		title:k_diocese_pannonia = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_hispania }
 
 		title:e_praetorian_prefecture_italia = { set_de_jure_liege_title = title:h_western_roman_empire }
 		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_western_roman_empire }	
+		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_western_roman_empire }
 	}
 	else_if = { 
 		limit = { has_title = title:e_spqr }
@@ -251,25 +255,18 @@ restore_eastern_roman_provinces_system_decision_effect = {
 		title:k_diocese_armenia = {
 			set_de_jure_liege_title = title:e_eastern_roman_empire
 		}
+		title:k_diocese_gothia = {
+			set_de_jure_liege_title = title:e_eastern_roman_empire
+		}
 	}
 	else_if = {
 		limit = { has_title = title:h_eastern_roman_empire }
-		title:k_diocese_thracia = {
-			set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia
-		}
-		title:k_diocese_asia = {
-			set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia
-		}
-		title:k_diocese_macedonia = {
-			set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia
-		}
-		title:k_diocese_pontus = {
-			set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia
-		}
-		title:k_diocese_armenia = {
-			set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia
-		}
-		title:e_praetorian_prefecture_macedonia = { set_de_jure_liege_title = title:h_eastern_roman_empire }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_thracia }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_asia }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_macedonia }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_pontus }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_armenia }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_gothia }
 	}
 	# LR: no automatic de jure shift. Taking the administration decision only makes you the restored empire and sorts
 	# any dioceses that already exist under it; each diocese (and its provinces, Commands and prefecture) is restored
@@ -983,6 +980,17 @@ restore_roman_provinces_hispania_decision_effect = {
 		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
 		title:k_diocese_hispania = { set_de_jure_liege_title = root.primary_title }
 	}
+	# Under a Roman hegemony the diocese sits in its prefecture
+	if = {
+		limit = { has_title = title:h_western_roman_empire }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_hispania }
+		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_western_roman_empire }
+	}
+	else_if = {
+		limit = { has_title = title:h_roman_empire }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_hispania }
+		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_roman_empire }
+	}
 }
 
 restore_roman_provinces_britannia_decision_effect = {
@@ -1355,26 +1363,31 @@ dejure_shift_create_hibernia_effect = { #Create Hibernia
 }
 
 ### Region-based diocese restoration
-# Makes every duchy in a geographical region de jure part of a diocese kingdom.
+# Makes a region de jure part of a diocese kingdom: its province counties, or (without provinces) every duchy in it.
 # Usage: LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_macedonia DIOCESE = k_diocese_macedonia }
 LR_move_region_duchies_to_diocese_effect = {
-	every_county_in_region = {
-		region = $REGION$
-		duchy = {
-			if = {
-				limit = {
-					NOT = { is_in_list = $REGION$_duchies }
+	# Dioceses with late-Roman provinces take exactly their provinces' counties (below), so non-Roman counties stay
+	# in their own duchies; the others still take every duchy with a county in the region
+	if = {
+		limit = { NOT = { LR_diocese_has_roman_provinces_trigger = { DIOCESE = $DIOCESE$ } } }
+		every_county_in_region = {
+			region = $REGION$
+			duchy = {
+				if = {
+					limit = {
+						NOT = { is_in_list = $REGION$_duchies }
+					}
+					add_to_temporary_list = $REGION$_duchies
 				}
-				add_to_temporary_list = $REGION$_duchies
 			}
 		}
-	}
-	every_in_list = {
-		list = $REGION$_duchies
-		limit = {
-			NOT = { de_jure_liege = title:$DIOCESE$ }
+		every_in_list = {
+			list = $REGION$_duchies
+			limit = {
+				NOT = { de_jure_liege = title:$DIOCESE$ }
+			}
+			set_de_jure_liege_title = title:$DIOCESE$
 		}
-		set_de_jure_liege_title = title:$DIOCESE$
 	}
 	# Late-Roman provinces: counties move from the old duchies into the diocese's province duchies (where defined)
 	LR_assign_roman_provinces_effect = { DIOCESE = $DIOCESE$ }
@@ -1406,8 +1419,85 @@ restore_roman_provinces_illyricum_decision_effect = {
 
 restore_roman_provinces_noricum_decision_effect = {
 	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_noricum DIOCESE = k_diocese_noricum }
+	# Under a Roman hegemony the diocese sits in its prefecture
+	if = {
+		limit = { has_title = title:h_western_roman_empire }
+		title:k_diocese_noricum = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
+		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_western_roman_empire }
+	}
+	else_if = {
+		limit = { has_title = title:h_roman_empire }
+		title:k_diocese_noricum = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
+		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_roman_empire }
+	}
+}
+
+restore_roman_provinces_pannonia_decision_effect = {
+	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_pannonia DIOCESE = k_diocese_pannonia }
+	# Under a Roman hegemony the diocese sits in its prefecture
+	if = {
+		limit = { has_title = title:h_western_roman_empire }
+		title:k_diocese_pannonia = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
+		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_western_roman_empire }
+	}
+	else_if = {
+		limit = { has_title = title:h_roman_empire }
+		title:k_diocese_pannonia = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
+		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_roman_empire }
+	}
 }
 
 restore_roman_provinces_armenia_decision_effect = {
 	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_armenia DIOCESE = k_diocese_armenia }
+}
+
+restore_roman_provinces_gothia_decision_effect = {
+	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_gothia DIOCESE = k_diocese_gothia }
+}
+
+# Under a Roman hegemony, puts an eastern diocese in its prefecture: Pontica for Pontus, Armenia and Gothia once
+# LR_split_pontic_prefecture_decision has been taken, otherwise Macedonia. Root holds the hegemony.
+# Usage: LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_pontus }
+LR_sort_macedonian_diocese_prefecture_effect = {
+	if = {
+		limit = {
+			OR = {
+				has_title = title:h_eastern_roman_empire
+				has_title = title:h_roman_empire
+			}
+		}
+		if = {
+			limit = { has_title = title:h_eastern_roman_empire }
+			title:h_eastern_roman_empire = { save_scope_as = prefecture_hegemony }
+		}
+		else = {
+			title:h_roman_empire = { save_scope_as = prefecture_hegemony }
+		}
+		if = {
+			limit = {
+				has_global_variable = LR_pontic_prefecture_split
+				title:$DIOCESE$ = {
+					OR = {
+						this = title:k_diocese_pontus
+						this = title:k_diocese_armenia
+						this = title:k_diocese_gothia
+					}
+				}
+			}
+			title:$DIOCESE$ = { set_de_jure_liege_title = title:e_praetorian_prefecture_pontica }
+			title:e_praetorian_prefecture_pontica = { set_de_jure_liege_title = scope:prefecture_hegemony }
+		}
+		else = {
+			title:$DIOCESE$ = { set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia }
+			title:e_praetorian_prefecture_macedonia = { set_de_jure_liege_title = scope:prefecture_hegemony }
+		}
+	}
+}
+
+# LR_split_pontic_prefecture_decision: Pontus, Armenia and Gothia leave the Macedonian prefecture for Pontica
+LR_split_pontic_prefecture_effect = {
+	set_global_variable = { name = LR_pontic_prefecture_split value = yes }
+	LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_pontus }
+	LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_armenia }
+	LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_gothia }
 }

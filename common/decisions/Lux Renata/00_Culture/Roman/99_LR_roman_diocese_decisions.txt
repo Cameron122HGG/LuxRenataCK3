@@ -194,6 +194,7 @@ restore_western_roman_administration_decision = {
 			if = { limit = { exists = title:k_diocese_britannia.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
 			if = { limit = { exists = title:k_diocese_illyricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
 			if = { limit = { exists = title:k_diocese_noricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+			if = { limit = { exists = title:k_diocese_pannonia.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
 			if = { limit = { exists = title:k_diocese_dardania.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
 		}
 
@@ -518,6 +519,7 @@ restore_eastern_roman_administration_decision = {
 			if = { limit = { exists = title:k_diocese_pontus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
 			if = { limit = { exists = title:k_diocese_asia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
 			if = { limit = { exists = title:k_diocese_armenia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+			if = { limit = { exists = title:k_diocese_gothia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
 			if = { limit = { exists = title:k_diocese_syria.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
 			if = { limit = { exists = title:k_diocese_palestine.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
 			if = { limit = { exists = title:k_diocese_aegyptus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
@@ -1457,6 +1459,18 @@ restore_illyricum_roman_provinces_decision = {
 				}
 			}
 			OR = {
+				title:k_diocese_pannonia = {
+					is_titular = yes
+				}
+				title:k_diocese_pannonia = {
+					NOT = {
+						any_in_de_jure_hierarchy = {
+							is_titular = no
+						}
+					}
+				}
+			}
+			OR = {
 				title:k_diocese_illyricum = {
 					is_titular = yes
 				}
@@ -1520,6 +1534,21 @@ restore_illyricum_roman_provinces_decision = {
 							is_titular = yes
 						}
 						title:k_diocese_noricum = {
+							NOT = {
+								any_in_de_jure_hierarchy = {
+									is_titular = no
+								}
+							}
+						}
+					}
+				}
+				AND = {
+					completely_controls_region = custom_roman_pannonia
+					OR = {
+						title:k_diocese_pannonia = {
+							is_titular = yes
+						}
+						title:k_diocese_pannonia = {
 							NOT = {
 								any_in_de_jure_hierarchy = {
 									is_titular = no
@@ -1600,6 +1629,38 @@ restore_illyricum_roman_provinces_decision = {
 			
 			is_valid = {
 				completely_controls_region = custom_roman_noricum
+			}
+	
+			ai_chance = {
+				value = 0
+			}
+		}
+		item = {
+			value = custom_roman_pannonia
+			current_description = {
+				desc = pannonia_diocese_desc
+			}
+			localization  = {
+				desc = pannonia_diocese_desc
+			}
+			#icon = "gfx/interface/icons/diocese_restoration/roman_illyricum.dds"
+			is_shown = {
+				OR = {
+					title:k_diocese_pannonia = {
+						is_titular = yes
+					}
+					title:k_diocese_pannonia = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+			}
+			
+			is_valid = {
+				completely_controls_region = custom_roman_pannonia
 			}
 	
 			ai_chance = {
@@ -1702,6 +1763,34 @@ restore_illyricum_roman_provinces_decision = {
 				change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
 				trigger_event = {
 					id = LR_roman_diocese_event.0027
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:custom_roman_pannonia = yes
+				}
+				create_title_and_vassal_change = {
+					type = created
+					save_scope_as = title_change
+					add_claim_on_loss = no
+				}
+				title:k_diocese_pannonia = {
+					save_scope_as = title_k_diocese_pannonia
+				}
+				title:k_diocese_pannonia = {
+					set_de_jure_liege_title = root.primary_title
+					change_title_holder = {
+						holder = root
+						change = scope:title_change
+					}
+				}
+				resolve_title_and_vassal_change = scope:title_change
+				restore_roman_provinces_pannonia_decision_effect = yes
+				change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				trigger_event = {
+					id = LR_roman_diocese_event.0029
 				}
 			}
 		}
@@ -1855,6 +1944,18 @@ restore_macedonia_roman_provinces_decision = {
 					}
 				}
 			}
+			OR = {
+				title:k_diocese_gothia = {
+					is_titular = yes
+				}
+				title:k_diocese_gothia = {
+					NOT = {
+						any_in_de_jure_hierarchy = {
+							is_titular = no
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -1962,6 +2063,21 @@ restore_macedonia_roman_provinces_decision = {
 							is_titular = yes
 						}
 						title:k_diocese_armenia = {
+							NOT = {
+								any_in_de_jure_hierarchy = {
+									is_titular = no
+								}
+							}
+						}
+					}
+				}
+				AND = {
+					completely_controls_region = custom_roman_gothia
+					OR = {
+						title:k_diocese_gothia = {
+							is_titular = yes
+						}
+						title:k_diocese_gothia = {
 							NOT = {
 								any_in_de_jure_hierarchy = {
 									is_titular = no
@@ -2148,6 +2264,37 @@ restore_macedonia_roman_provinces_decision = {
 				value = 0
 			}
 		}
+		item = {
+			value = custom_roman_gothia
+			current_description = {
+				desc = gothia_diocese_desc
+			}
+			localization  = {
+				desc = gothia_diocese_desc
+			}
+			is_shown = {
+				OR = {
+					title:k_diocese_gothia = {
+						is_titular = yes
+					}
+					title:k_diocese_gothia = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+			}
+
+			is_valid = {
+				completely_controls_region = custom_roman_gothia
+			}
+
+			ai_chance = {
+				value = 0
+			}
+		}
 
 
 	}
@@ -2176,6 +2323,7 @@ restore_macedonia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_macedonia_effect = yes
+				LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_macedonia }
 				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
 				trigger_event = {
 					id = LR_roman_diocese_event.0021
@@ -2205,6 +2353,7 @@ restore_macedonia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_thracia_effect = yes
+				LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_thracia }
 				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
 				trigger_event = {
 					id = LR_roman_diocese_event.0015
@@ -2234,6 +2383,7 @@ restore_macedonia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_pontus_decision_effect = yes
+				LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_pontus }
 				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
 				trigger_event = {
 					id = LR_roman_diocese_event.0023
@@ -2263,6 +2413,7 @@ restore_macedonia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_asia_decision_effect = yes
+				LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_asia }
 				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
 				trigger_event = {
 					id = LR_roman_diocese_event.0024
@@ -2293,9 +2444,39 @@ restore_macedonia_roman_provinces_decision = {
 				}
 				resolve_title_and_vassal_change = scope:title_change
 				restore_roman_provinces_armenia_decision_effect = yes
+				LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_armenia }
 				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
 				trigger_event = {
 					id = LR_roman_diocese_event.0026
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:custom_roman_gothia = yes
+				}
+				create_title_and_vassal_change = {
+					type = created
+					save_scope_as = title_change
+					add_claim_on_loss = no
+				}
+				title:k_diocese_gothia = {
+					save_scope_as = title_k_diocese_gothia
+				}
+				title:k_diocese_gothia = {
+					set_de_jure_liege_title = root.primary_title
+					change_title_holder = {
+						holder = root
+						change = scope:title_change
+					}
+				}
+				resolve_title_and_vassal_change = scope:title_change
+				restore_roman_provinces_gothia_decision_effect = yes
+				LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_gothia }
+				change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				trigger_event = {
+					id = LR_roman_diocese_event.0028
 				}
 			}
 		}
@@ -2684,7 +2865,59 @@ restore_oriens_roman_provinces_decision = {
 	}
 }
 
+# Split Pontus, Armenia and Gothia from the Macedonian prefecture into the Prefecture of Pontica
+LR_split_pontic_prefecture_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = roman
 
+	desc = LR_split_pontic_prefecture_decision_desc
+	selection_tooltip = LR_split_pontic_prefecture_decision_tooltip
+	confirm_text = LR_split_pontic_prefecture_decision_confirm
 
+	is_shown = {
+		is_ruler = yes
+		OR = {
+			has_title = title:h_eastern_roman_empire
+			has_title = title:h_roman_empire
+		}
+		NOT = { has_global_variable = LR_pontic_prefecture_split }
+	}
 
+	is_valid = {
+		custom_tooltip = {
+			text = LR_split_pontic_prefecture_two_dioceses_tt
+			calc_true_if = {
+				amount >= 2
+				exists = title:k_diocese_pontus.holder
+				exists = title:k_diocese_armenia.holder
+				exists = title:k_diocese_gothia.holder
+			}
+		}
+	}
 
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_split_pontic_prefecture_decision_effect_tt
+		hidden_effect = { LR_split_pontic_prefecture_effect = yes }
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
