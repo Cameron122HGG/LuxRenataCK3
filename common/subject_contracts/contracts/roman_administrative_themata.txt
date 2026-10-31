@@ -1,0 +1,408 @@
+﻿# Themes of Roman Administrative in Roman terms (gen_roman_admin_themata.py): a copy of roman_administrative_themes
+# (roman_administrative.txt) with Roman level names; effects and flags are the same, so keep the two in step.
+roman_administrative_themata = {
+	display_mode = radiobutton
+	is_shown = {
+		scope:subject.primary_title.tier >= tier_duchy
+	}
+	obligation_levels = {
+		roman_administrative_thema_balanced = {
+			default = yes
+			position = { 0 0 }
+			icon = "gfx/interface/icons/theme_administration_types/icon_balanced_administration.dds"
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+						}
+					}
+					add = 1
+				}
+				if = {
+					limit = {
+						scope:liege = {
+							is_independent_ruler = no
+							OR = {
+								vassal_contract_has_flag = roman_administrative_theme_balanced
+								vassal_contract_has_flag = roman_administrative_theme_imperial
+								vassal_contract_has_flag = roman_administrative_theme_naval
+							}
+						}
+					}
+					add = 100
+				}				
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.7 0.7 0.7 1.0 }
+			
+			subject_modifier = {
+				governor_xp_gain_mult = 0.2
+			}
+			
+			flag = roman_administrative_theme_balanced
+		}
+		roman_administrative_thema_civilian = {
+			position = { 2 0 }
+			icon = "gfx/interface/icons/theme_administration_types/icon_civilian_administration.dds"
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								has_trait = education_stewardship
+								stewardship >= very_high_skill_rating
+								AND = { # Large semi-coastal themes are good for an economic focus
+									any_sub_realm_county = { count >= 2 is_coastal_county = yes }
+									any_sub_realm_county = { count >= 2 is_coastal_county = no }
+								}
+							}
+						}
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						scope:liege = {
+							ai_has_economical_boom_personality = yes
+						}
+					}
+					add = 1
+				}
+				if = {
+					limit = {
+						scope:liege = {
+							is_independent_ruler = no
+							vassal_contract_has_flag = roman_administrative_theme_civilian
+						}
+					}
+					add = 100
+				}				
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.2 0.2 0.7 1.0 }
+
+			tax_factor = 0.5
+
+			subject_modifier = {
+				development_growth_factor = 0.2
+				build_gold_cost = -0.1
+				build_speed = -0.1
+				men_at_arms_title_limit = -2
+				men_at_arms_title_cap = -2
+			}
+			
+			flag = classical_stewardship_obligation_bonus
+			flag = classical_influence_construction_bonus
+			flag = classical_ai_is_builder
+			flag = roman_administrative_theme_civilian
+			flag = obligation_high_taxes
+		}
+		roman_administrative_thema_military = {
+			position = { 1 0 }
+			icon = "gfx/interface/icons/theme_administration_types/icon_military_administration.dds"
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								has_trait = education_martial
+								martial >= very_high_skill_rating
+								primary_title = { any_owned_title_maa_regiment = { count > 4 } }
+								AND = { # Large inland themes are good for military
+									any_sub_realm_county = { count >= 5 }
+									any_sub_realm_county = { percent >= 0.95 is_coastal_county = no }
+								}
+							}
+						}
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						scope:liege = {
+							ai_has_warlike_personality = yes
+						}
+					}
+					add = 1
+				}
+				if = {
+					limit = {
+						scope:liege = {
+							is_independent_ruler = no
+							OR = {
+								vassal_contract_has_flag = roman_administrative_theme_military
+								vassal_contract_has_flag = roman_administrative_theme_frontier
+							}
+						}
+					}
+					add = 100
+				}				
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.7 0.2 0.2 1.0 }
+
+			tax_factor = -0.75
+			levies_factor = 0.75
+			
+			subject_modifier = {
+				development_growth_factor = -0.25
+				monthly_county_control_growth_factor = 0.1
+				maa_damage_mult = 0.1
+				men_at_arms_title_cap = 2
+				men_at_arms_maintenance = -0.2
+			}
+			
+			flag = classical_martial_obligation_bonus
+			flag = roman_administrative_theme_military
+			flag = obligation_high_levies
+		}
+		roman_administrative_thema_frontier = {
+			position = { 0 1 }
+			icon = "gfx/interface/icons/theme_administration_types/icon_frontier_administration.dds"
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+						}
+					}
+					add = 5
+				}
+				#if = {
+				#	limit = {
+				#		scope:liege = {
+				#			is_independent_ruler = no
+				#			OR = {
+				#				vassal_contract_has_flag = admin_theme_military
+				#				vassal_contract_has_flag = admin_theme_frontier
+				#			}
+				#		}
+				#	}
+				#	add = 100
+				#}				
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.2 0.7 0.2 1.0 }
+			
+			is_valid = {
+				custom_tooltip = {
+					text = roman_administrative_theme_frontier_valid_desc
+					scope:subject = {
+						any_sub_realm_county = {
+							any_neighboring_county = {
+								holder = {
+									NOT = { top_liege = scope:subject.top_liege }
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			tax_factor = -0.4
+
+			subject_modifier = {
+				fort_level = 2
+				defender_advantage = 6
+				hostile_county_attrition = -0.3
+				hostile_raid_time = 0.75
+				
+				# Values to tweak the AI slightly in order to make them more likely to declare war
+				ai_boldness = 20
+				ai_rationality = -15
+			}
+			
+			flag = classical_prowess_obligation_bonus
+			flag = classical_duchy_expansion_unlocked
+			flag = classical_ai_is_warlike
+			flag = roman_administrative_theme_frontier
+			flag = roman_administrative_theme_can_raid
+		}
+		roman_administrative_thema_imperial = {
+			position = { 1 1 }
+			icon = "gfx/interface/icons/theme_administration_types/icon_imperial_administration.dds"
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:liege = {
+							NOT = {
+								any_vassal = { vassal_contract_has_flag = roman_administrative_theme_imperial }
+							}
+						}
+						scope:subject = {
+							is_ai = yes
+							culture = scope:liege.culture
+							faith = top_liege.primary_title.state_faith
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						exists = scope:liege.house
+						exists = scope:subject.house
+						scope:liege.house = scope:subject.house
+					}
+					add = 1
+				}
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.7 0.0 0.7 1.0 }
+			
+			is_valid = {
+				scope:liege = {
+					is_independent_ruler = yes	
+					highest_held_title_tier >= tier_empire
+				}
+				custom_tooltip = {
+					text = roman_administrative_theme_imperial_valid_desc
+					OR = {
+						scope:liege = {
+							NOT = {
+								any_vassal = { vassal_contract_has_flag = roman_administrative_theme_imperial }
+							}
+						}
+						AND = {
+							scope:subject = { vassal_contract_has_flag = roman_administrative_theme_imperial }
+							scope:liege = {
+								any_vassal = {
+									count = 1
+									vassal_contract_has_flag = roman_administrative_theme_imperial
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			tax_factor = 0.1
+
+			liege_modifier = {
+				monthly_prestige_gain_per_legitimacy_level_add = 0.5
+				legitimacy_gain_mult = 0.2
+			}
+
+			subject_modifier = {
+				monthly_prestige = 0.5
+				monthly_influence = 0.25
+			}
+			
+			flag = roman_administrative_theme_imperial
+			flag = classical_prestige_obligation_bonus
+			flag = classical_cannot_revoke_titles_without_cause
+			flag = obligation_high_taxes
+		}
+		roman_administrative_thema_naval = {
+			position = { 2 1 }
+			icon = "gfx/interface/icons/theme_administration_types/icon_naval_administration.dds"
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = { is_ai = yes }
+					}
+					if = {
+						limit = { # Large coastal areas qualify as good naval themes
+							scope:subject = {
+								any_sub_realm_county = {
+									count >= 3
+									is_coastal_county = yes
+								}
+							}
+							scope:liege = { # But don't go overboard with naval themes
+								any_vassal = {
+									percent < 0.15
+									vassal_contract_has_flag = roman_administrative_theme_naval
+								}
+							}
+						}
+						add = 3
+					}
+					
+					if = {
+						limit = { # Islands are good naval candidates
+							scope:subject = {
+								any_sub_realm_county = {
+									percent >= 0.95
+									is_coastal_county = yes
+									OR = {
+										any_neighboring_county = {
+											percent >= 0.95
+											holder = {
+												OR = {
+													this = scope:subject
+													any_liege_or_above = { this = scope:subject }
+												}
+											}
+										}
+										any_neighboring_county = { count < 1 }
+									}
+								}
+							}
+						}
+						add = 8
+					}
+				}
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.0 0.4 0.7 1.0 }
+			
+			is_valid = {
+				custom_tooltip = {
+					text = roman_administrative_theme_naval_valid_desc
+					scope:subject = {
+						any_sub_realm_county = {
+							is_coastal_county = yes
+						}
+					}
+				}
+			}
+			
+			tax_factor = -0.2
+			
+			liege_modifier = {
+				embarkation_cost_mult = -0.1
+				naval_movement_speed_mult = 0.1
+			}
+
+			subject_modifier = {
+				embarkation_cost_mult = -0.5
+				naval_movement_speed_mult = 0.25
+				no_disembark_penalty = yes
+				coastal_advantage = 10
+				development_growth_factor = 0.1
+				monthly_treasury_from_military_budget_base = 1
+			}
+			
+			flag = classical_naval_duchy_expansion_unlocked
+			flag = classical_tradeport_obligation_bonus
+			flag = roman_administrative_theme_naval
+		}
+	}
+}

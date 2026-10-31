@@ -4,9 +4,8 @@
 			levies = {
 				value = 0.3
 			}
-
 			tax = {
-				value = 0.75
+				value = 0.6 # Legati keep part for their armies
 			}
 		}
 	}
@@ -15,18 +14,18 @@
 ### brief: administrative_themes
 # This is referenced in code. 
 #
+# Governor ranks of a province (duchy), before Diocletian: civil and military command still joined in the legatus (gen_roman_autocratic_contracts.py)
 roman_autocratic_provinces = {
 	display_mode = radiobutton
 	is_shown = {
-		scope:subject.primary_title.tier >= tier_duchy
+		scope:subject.highest_held_title_tier = tier_duchy
 	}
 	obligation_levels = {
-		roman_autocratic_province_standard = {
+		roman_autocratic_province_legatus = {
 			default = yes
 			position = { 0 0 }
 			icon = "gfx/interface/icons/celestial_administration_types/icon_standard_administration.dds"
-			gui_tags = { civilian }
-			
+			gui_tags = { military }
 			ai_liege_desire = {
 				value = 0
 				if = {
@@ -36,38 +35,65 @@ roman_autocratic_provinces = {
 						}
 					}
 					add = 1
-					
-					# Cautious AI should tend to have a minor bias towards the default
 					if = {
-						limit = {
-							scope:liege = {
-								ai_has_cautious_personality = yes
-							}
-						}
+						limit = { scope:liege = { ai_has_cautious_personality = yes } }
 						add = 1
 					}
 				}
 			}
 			ai_subject_desire = 0
-			
 			score = 0
 			color = { 0.7 0.7 0.7 1.0 }
-			
-			enable_title_maa = no
-			
 			subject_modifier = {
-				monthly_merit_per_liege_tax = 0.8
+				monthly_merit_per_liege_tax = 0.6
+				monthly_merit_per_title_maa_value = 0.012
 			}
-			
-			flag = roman_autocratic_province_standard
+			flag = roman_autocratic_province_legatus
+			flag = meritocratic_military_appointment
+			flag = province_military
+			flag = roman_autocratic_military_appointment
+			appointment_trait_flag = military_province
+		}
+		roman_autocratic_province_praeses = {
+			position = { 1 0 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_metropolitan_administration.dds"
+			gui_tags = { civilian }
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								has_trait = education_stewardship
+								has_trait = education_diplomacy
+								stewardship >= high_skill_rating
+							}
+						}
+					}
+					add = 2
+				}
+			}
+			ai_subject_desire = 0
+			score = 0
+			color = { 0.75 0.6 0.2 1.0 }
+			tax_factor = 0.15
+			levies_factor = -0.3
+			enable_title_maa = no
+			subject_modifier = {
+				monthly_merit_per_liege_tax = 0.9
+				development_growth_factor = 0.05
+			}
+			flag = roman_autocratic_province_praeses
+			flag = meritocratic_civil_appointment
+			flag = province_civilian
 			flag = roman_autocratic_civil_appointment
 			appointment_trait_flag = civilian_province
 		}
-		roman_autocratic_province_industrial = {
-			position = { 1 0 }
+		roman_autocratic_province_procurator = {
+			position = { 2 0 }
 			icon = "gfx/interface/icons/celestial_administration_types/icon_industrial_administration.dds"
 			gui_tags = { civilian }
-			
 			ai_liege_desire = {
 				value = 0
 				if = {
@@ -78,77 +104,53 @@ roman_autocratic_provinces = {
 								has_trait = education_stewardship
 								stewardship >= very_high_skill_rating
 							}
-							# Avoid replacing any military types if they have title troops already
-							primary_title = {
-								any_owned_title_maa_regiment = { count < 1 }
-							}
 						}
 					}
 					add = 2
-					
-					# Economical AI wants more of civic vassals
 					if = {
-						limit = {
-							scope:liege = { ai_has_builder_or_pious_builder_personality = yes }
-						}
+						limit = { scope:liege = { ai_has_builder_or_pious_builder_personality = yes } }
 						add = 1
 					}
 				}
 			}
 			ai_subject_desire = 0
-			
 			score = 0
 			color = { 0.2 0.2 0.7 1.0 }
-			
 			is_valid = {
-				# Only for direct vassals of the top liege or sub-vassals of a civilian province
 				custom_tooltip = {
-					text = liege_is_not_civilian_desc
-					scope:liege = {
-						trigger_if = {
-							limit = {
-								this != top_liege
-							}
-							vassal_contract_has_flag = roman_autocratic_civil_appointment
-						}
-					}
-				}
-				# There can only be a limited number of industries at a time
-				custom_tooltip = {
-					text = roman_autocratic_province_industrial_amount_desc
+					text = roman_autocratic_province_procurator_amount_desc
 					OR = {
 						scope:liege = {
 							any_vassal = {
-								count < roman_autocratic_province_industrial_max_value
-								vassal_contract_has_flag = roman_autocratic_province_industrial
+								count < roman_autocratic_province_procurator_max_value
+								vassal_contract_has_flag = roman_autocratic_province_procurator
 							}
 						}
-						scope:subject = { vassal_contract_has_flag = roman_autocratic_province_industrial }
+						scope:subject = { vassal_contract_has_flag = roman_autocratic_province_procurator }
 					}
 				}
 			}
-
-			tax_factor = 0.25
+			tax_factor = 0.35
+			levies_factor = -0.3
+			subject_opinion = -5
 			enable_title_maa = no
-
 			subject_modifier = {
-				development_growth_factor = 0.15
-				build_gold_cost = -0.1
-				build_speed = -0.2
 				monthly_merit_per_liege_tax = 1.2
+				build_gold_cost = -0.1
+				development_growth_factor = 0.1
 			}
-			
+			flag = roman_autocratic_province_procurator
 			flag = admin_ai_is_builder
-			flag = roman_autocratic_province_industrial
-			flag = roman_autocratic_civil_appointment
 			flag = obligation_high_taxes
+			flag = meritocratic_civil_appointment
+			flag = province_civilian
+			flag = roman_autocratic_civil_appointment
 			appointment_trait_flag = civilian_province
 		}
-		roman_autocratic_province_military = {
+		roman_autocratic_province_dux = {
 			position = { 0 1 }
 			icon = "gfx/interface/icons/celestial_administration_types/icon_military_administration.dds"
 			gui_tags = { military }
-			
 			ai_liege_desire = {
 				value = 0
 				if = {
@@ -158,81 +160,49 @@ roman_autocratic_provinces = {
 							OR = {
 								has_trait = education_martial
 								martial >= very_high_skill_rating
-								primary_title = { any_owned_title_maa_regiment = { count >= 3 } }
-								any_sub_realm_county = { # Is a border province
-									any_neighboring_county = {
-										holder = {
-											top_liege != scope:subject.top_liege
-										}
-									}
+							}
+							any_sub_realm_county = {
+								any_neighboring_county = {
+									holder = { top_liege != scope:subject.top_liege }
 								}
 							}
 						}
 					}
 					add = 2
-					
-					# Preference for vassals along the border
 					if = {
-						limit = {
-							scope:subject = {
-								any_sub_realm_county = {
-									any_neighboring_county = {
-										holder = {
-											top_liege != scope:subject.top_liege
-										}
-									}
-								}
-							}
-						}
-						add = 3
-					}
-					
-					# Warlike AI wants more military vassals
-					if = {
-						limit = {
-							scope:liege = {
-								ai_has_warlike_personality = yes
-							}
-						}
+						limit = { scope:liege = { ai_has_warlike_personality = yes } }
 						add = 1
 					}
 				}
 			}
 			ai_subject_desire = 0
-			
 			score = 0
 			color = { 0.7 0.2 0.2 1.0 }
-			
 			is_valid = {
-				# Vassal has to be landed and direct vassal of the top liege, or a vassal of another military governor
 				custom_tooltip = {
-					text = liege_is_not_military_desc
-					scope:liege = {
-						trigger_if = {
-							limit = {
-								this != top_liege
-							}
-							vassal_contract_has_flag = roman_autocratic_military_appointment
-						}
-					}
-				}
-				# There can only be a limited number of militaries at a time
-				custom_tooltip = {
-					text = roman_autocratic_province_military_amount_desc
+					text = roman_autocratic_province_dux_amount_desc
 					OR = {
 						scope:liege = {
 							any_vassal = {
-								count < roman_autocratic_province_military_max_value
-								vassal_contract_has_flag = roman_autocratic_province_military
+								count < roman_autocratic_province_dux_max_value
+								vassal_contract_has_flag = roman_autocratic_province_dux
 							}
 						}
-						scope:subject = { vassal_contract_has_flag = roman_autocratic_province_military }
+						scope:subject = { vassal_contract_has_flag = roman_autocratic_province_dux }
+					}
+				}
+				custom_tooltip = {
+					text = roman_autocratic_province_dux_border_desc
+					scope:subject = {
+						any_sub_realm_county = {
+							any_neighboring_county = {
+								holder = { top_liege != scope:subject.top_liege }
+							}
+						}
 					}
 				}
 			}
-
 			levies_factor = 0.5
-			
 			subject_modifier = {
 				development_growth_factor = -0.2
 				monthly_county_control_growth_factor = 0.1
@@ -240,13 +210,13 @@ roman_autocratic_provinces = {
 				defender_advantage = 4
 				monthly_merit_per_title_maa_value = 0.024
 				domain_tax_mult = -0.3
-
 				monthly_treasury_from_military_budget_base = 1.0
 			}
-			
-			flag = roman_autocratic_province_military
-			flag = roman_autocratic_military_appointment
+			flag = roman_autocratic_province_dux
 			flag = obligation_high_levies
+			flag = meritocratic_military_appointment
+			flag = province_military
+			flag = roman_autocratic_military_appointment
 			appointment_trait_flag = military_province
 		}
 	}
@@ -411,26 +381,22 @@ roman_autocratic_salary = {
 	}
 }
 
+# Grade of the office (hidden; the salary it draws): Egregius, Perfectissimus, Clarissimus, Eminentissimus (gen_roman_autocratic_contracts.py)
 roman_autocratic_salary_rank = {
 	display_mode = hidden
-
 	defaults_to_highest_valid_level = yes
-
 	can_be_changed = {
 		always = no
 	}
-
 	obligation_levels = {
 		roman_autocratic_salary_rank_none = {
 			position = { 0 0 }
 			default = yes
-
 			ai_liege_desire = 0
 			ai_subject_desire = 0
 		}
-		roman_autocratic_salary_rank_county = {
+		roman_autocratic_salary_rank_egregius = { # county
 			position = { 1 0 }
-
 			parent = roman_autocratic_salary_rank_none
 			is_valid = {
 				scope:subject = {
@@ -440,62 +406,51 @@ roman_autocratic_salary_rank = {
 					}
 				}
 			}
-
 			ai_liege_desire = 2
 			ai_subject_desire = 2
-
 			subject_modifier = {
 				monthly_treasury_from_salary_budget_base = 0.3
 			}
 		}
-		roman_autocratic_salary_rank_duchy = {
+		roman_autocratic_salary_rank_perfectissimus = { # duchy
 			position = { 2 0 }
-
-			parent = roman_autocratic_salary_rank_county
+			parent = roman_autocratic_salary_rank_egregius
 			is_valid = {
 				scope:subject = {
 					highest_held_title_tier = tier_duchy
 				}
 			}
-
 			ai_liege_desire = 3
 			ai_subject_desire = 3
-
 			subject_modifier = {
 				monthly_treasury_from_salary_budget_base = 0.75
 			}
 		}
-		roman_autocratic_salary_rank_kingdom = {
+		roman_autocratic_salary_rank_clarissimus = { # kingdom
 			position = { 3 0 }
-
-			parent = roman_autocratic_salary_rank_duchy
+			parent = roman_autocratic_salary_rank_perfectissimus
 			is_valid = {
 				scope:subject = {
 					highest_held_title_tier = tier_kingdom
 				}
 			}
-
 			ai_liege_desire = 4
 			ai_subject_desire = 4
-
 			subject_modifier = {
 				monthly_treasury_from_salary_budget_base = 1.0
 			}
 		}
-		roman_autocratic_salary_rank_empire = {
+		roman_autocratic_salary_rank_eminentissimus = { # empire
 			position = { 4 0 }
-
-			parent = roman_autocratic_salary_rank_kingdom
-
-			ai_liege_desire = 5
-			ai_subject_desire = 5
-
+			parent = roman_autocratic_salary_rank_clarissimus
 			is_valid = {
 				scope:subject = {
 					highest_held_title_tier = tier_empire
 					is_landless_ruler = no
 				}
 			}
+			ai_liege_desire = 5
+			ai_subject_desire = 5
 			subject_modifier = {
 				monthly_treasury_from_salary_budget_base = 2.0
 			}
