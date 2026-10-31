@@ -1,0 +1,126 @@
+﻿### Brief: key ( database key )
+# Name of 'scripted_cost'
+# Named costs looked up by code for specific features. Only the keys listed below are used; each one is
+# required and an error is logged if it is missing.
+#
+# The same block syntax ( <scripted_cost> ) is used by cost fields in other databases, e.g. cost = { ... },
+# pass_cost = { ... }, piety_cost = { ... }. Those blocks are defined inline and can't refer to an entry in this folder.
+#
+key = {
+	### Brief: gold ( optional script value )
+	# Gold cost.
+	#
+	gold = <script value>
+
+	### Brief: prestige ( optional script value )
+	# Prestige cost.
+	#
+	prestige = <script value>
+
+	### Brief: piety ( optional script value )
+	# Piety cost.
+	#
+	piety = <script value>
+
+	### Brief: renown ( optional script value )
+	# Renown ( dynasty prestige ) cost. Can only be paid by a dynast; non-dynasts can't afford a non-zero renown cost.
+	#
+	renown = <script value>
+
+	### Brief: influence ( optional script value )
+	# Influence cost.
+	#
+	influence = <script value>
+
+	### Brief: herd ( optional script value )
+	# Herd cost, taken from the character's domicile. Only applied to characters that use herd.
+	#
+	herd = <script value>
+
+	### Brief: treasury ( optional script value )
+	# Treasury cost.
+	#
+	treasury = <script value>
+
+	### Brief: treasury_or_gold ( optional script value )
+	# Paid from treasury if the character's government has the replace_gold_cost_by_treasury rule and the character
+	# has a treasury, otherwise paid from gold. Shown as a treasury or gold cost accordingly.
+	#
+	treasury_or_gold = <script value>
+
+	### Brief: merit ( optional script value )
+	# Merit cost.
+	#
+	merit = <script value>
+
+	### Brief: barter_goods ( optional script value )
+	# Barter goods cost.
+	#
+	barter_goods = <script value>
+
+	### Brief: round ( optional bool )
+	# Round each calculated cost to the nearest integer.
+	# Default: yes
+	#
+	round = yes
+
+	### Brief: clamp_to_zero ( optional bool )
+	# Clamp each calculated cost to 0 or more.
+	# Default: yes
+	#
+	clamp_to_zero = yes
+}
+
+# Notes on <scripted_cost> blocks:
+# - Unset currencies cost 0. A cost of 0 is always affordable.
+# - Clamping happens before rounding.
+# - Script value desc/format entries are used for the cost breakdown tooltips.
+# - Scopes are set up by the database or feature that owns the cost field; see the respective .info file.
+
+#########################
+# == Named costs ==
+#########################
+# hybridize_culture: Cost of hybridizing cultures
+#	root ( character ): character hybridizing
+#	scope:culture: culture they're hybridizing with
+#
+# diverge_culture: Cost of diverging culture
+#	root ( character ): character diverging
+#
+# reform_culture_ethos / reform_culture_language / reform_culture_martial: Cost of changing a culture pillar
+#	root ( culture ): culture being reformed
+#	scope:character: character reforming the culture
+#
+# adopt_court_language: Cost of adopting a court language
+#	root ( character ): character adopting the language
+#
+# reforge_artifact: Cost of reforging an artifact
+# repair_artifact: Cost of repairing an artifact
+#	root ( character ): character reforging / repairing
+#	scope:artifact: the artifact
+#	scope:owner: owner of the artifact
+#	scope:quality: artifact quality ( value )
+#	scope:wealth: artifact wealth ( value )
+#
+# travel_leader: Cost of hiring a travel leader ( gold )
+#	root ( character ): the travel leader
+#	scope:speed_aptitude: the leader's travel speed ( value )
+#	scope:safety_aptitude: the leader's travel safety ( value )
+#
+# create_accolade: Cost of creating an accolade, paid by the accolade owner
+#	root ( character ): the acclaimed knight
+#	scope:owner: the character creating the accolade ( pays the cost )
+#
+# reassign_title_troops: Cost of reassigning administrative title troops
+#	root ( landed title ): the title whose troops are reassigned
+#	scope:actor: the character reassigning the troops
+#
+# enact_treasury_budget: Cost of enacting a treasury budget
+#	root ( character ): ruler enacting the budget
+#
+# create_holy_site: Cost of creating a holy site
+#	root ( character ): character creating the holy site
+#	scope:title: barony title of the holy site location
+#	scope:holy_site_type: holy site type being created
+#	scope:faith: faith the holy site is created for
+#	scope:artifacts ( list ): artifacts being enshrined
