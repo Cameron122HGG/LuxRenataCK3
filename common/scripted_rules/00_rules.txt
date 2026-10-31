@@ -1417,6 +1417,22 @@ can_raze_own_holding = {
 #	scope:title ( title )
 #		the title to create or not
 can_create_title = {
+	# LR: the de jure base list (gen_base_titles.py): its duchies, kingdoms and empires only come from decisions and events
+	trigger_if = {
+		limit = { scope:title = { LR_is_base_list_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_base_list_creation_tooltip
+			always = no
+		}
+	}
+	# LR: warlord titles (gen_warlord_titles.py) only come from decisions and events
+	trigger_if = {
+		limit = { scope:title = { LR_is_warlord_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_warlord_title_creation_tooltip
+			always = no
+		}
+	}
 	# LR: title sets (gen_title_sets.py, LR_title_set_rules.md): only a set's natives may create its titles
 	trigger_if = {
 		limit = { scope:title = { LR_title_set_hellenistic_title_trigger = yes } }
