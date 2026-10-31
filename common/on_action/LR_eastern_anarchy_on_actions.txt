@@ -1,0 +1,43 @@
+﻿# The Eastern Anarchy (gen_eastern_anarchy.py): starts with the 6066 starts while the East has no independent emperor
+on_game_start = {
+	on_actions = { LR_eastern_anarchy_on_game_start }
+}
+
+LR_eastern_anarchy_on_game_start = {
+	effect = {
+		if = {
+			limit = {
+				has_mpo_dlc_trigger = yes # Situations need Khans of the Steppe
+				current_date >= 6066.1.1
+				NOT = { LR_eastern_roman_empire_restored_trigger = yes }
+			}
+			start_situation = {
+				type = LR_eastern_anarchy
+				start_phase = situation_phase_eastern_anarchy_peace
+			}
+			situation:LR_eastern_anarchy = { # Each region starts in a phase of its own, more often the peace
+				situation_sub_region:byzantine_thunderdome = {
+					random_list = {
+						4 = { } # Stay in the Uneasy Peace
+						2 = { change_phase = { phase = situation_phase_eastern_anarchy_tension } }
+						1 = { change_phase = { phase = situation_phase_eastern_anarchy_war } }
+					}
+				}
+				situation_sub_region:byzantine_border = {
+					random_list = {
+						4 = { } # Stay in the Uneasy Peace
+						2 = { change_phase = { phase = situation_phase_eastern_anarchy_tension } }
+						1 = { change_phase = { phase = situation_phase_eastern_anarchy_war } }
+					}
+				}
+				situation_sub_region:roman_italy = {
+					random_list = {
+						4 = { } # Stay in the Uneasy Peace
+						2 = { change_phase = { phase = situation_phase_eastern_anarchy_tension } }
+						1 = { change_phase = { phase = situation_phase_eastern_anarchy_war } }
+					}
+				}
+			}
+		}
+	}
+}

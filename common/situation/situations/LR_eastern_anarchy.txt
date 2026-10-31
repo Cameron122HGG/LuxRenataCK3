@@ -1,16 +1,15 @@
-﻿LR_eastern_anarchy = {
-	
-	is_unique = yes # It can only exist once in the world
+﻿# The Eastern Anarchy (gen_eastern_anarchy.py): the fractured East of the 6066 starts.
+# Started at game start (LR_eastern_anarchy_on_actions.txt) when no one holds an Eastern Roman empire independently;
+# ends when someone does (on_yearly).
+LR_eastern_anarchy = {
+	is_unique = yes
 
 	gui_window_name = "window_situation"
 	gui_participation_window_name = "window_situation_participation"
-	illustration = "gfx/interface/illustrations/terrain_types/mpo_season_abudant_grazing.dds"
+	illustration = "gfx/interface/illustrations/decisions/decision_byz_throne.dds"
 	situation_group_type = major
 	map_mode = sub_regions
 
-	##################################################
-	# Regions
-	##################################################
 	sub_regions = {
 		byzantine_thunderdome = {
 			map_color = rgb { 109 18 117 }
@@ -25,19 +24,36 @@
 			geographical_regions = { custom_western_roman_imperial_core }
 		}
 	}
-	
-	##################################################
-	# On Actions
-	##################################################
-	# on_monthly = {
-	# }
 
-	##################################################
-	# Groups
-	##################################################
+	# Ends once an Eastern Roman empire is held independently again
+	on_yearly = {
+		if = {
+			limit = { LR_eastern_roman_empire_restored_trigger = yes }
+			title:e_byzantium.holder ?= {
+				if = {
+					limit = { is_independent_ruler = yes }
+					trigger_event = LR_eastern_anarchy_situation.0014
+				}
+			}
+			title:e_eastern_roman_empire.holder ?= {
+				if = {
+					limit = { is_independent_ruler = yes }
+					trigger_event = LR_eastern_anarchy_situation.0014
+				}
+			}
+			title:h_eastern_roman_empire.holder ?= {
+				if = {
+					limit = { is_independent_ruler = yes }
+					trigger_event = LR_eastern_anarchy_situation.0014
+				}
+			}
+			end_situation = yes
+		}
+	}
+
 	participant_groups = {
 		byzantine_rulers = {
-			icon = "gfx/interface/icons/situations/debug_situation/group_nomad.dds"
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_emperor.dds"
 			require_capital_in_sub_region = yes
 			is_character_valid = {
 				is_landed = yes
@@ -45,19 +61,11 @@
 				is_independent_ruler = yes
 				capital_province = { geographical_region = custom_eastern_roman_imperial_core }
 			}
-
-			on_join = {
-				trigger_event = LR_eastern_anarchy_situation.0003
-			}
-			on_leave = {
-				trigger_event = LR_eastern_anarchy_situation.0004
-			}
-
+			on_join = { trigger_event = LR_eastern_anarchy_situation.0013 }
 			map_color = hsv { 0.43 0.88 0.19 }
 		}
-
 		byzantine_marches = {
-			icon = "gfx/interface/icons/situations/debug_situation/group_other.dds"
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_independent.dds"
 			require_realm_in_sub_region = yes
 			is_character_valid = {
 				is_landed = yes
@@ -65,326 +73,170 @@
 				is_independent_ruler = yes
 				capital_province = { geographical_region = custom_eastern_imperial_borderlands }
 			}
-			on_join = {
-				trigger_event = LR_eastern_anarchy_situation.0003
-			}
-			on_leave = {
-				trigger_event = LR_eastern_anarchy_situation.0004
-			}
-
-			map_color = hsv{ 0.8 0.75 0.83 }
+			on_join = { trigger_event = LR_eastern_anarchy_situation.0013 }
+			map_color = hsv { 0.8 0.75 0.83 }
 		}
-
 		latin_interlopers = {
-			icon = "gfx/interface/icons/situations/debug_situation/group_out_of_realm.dds"
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_expand.dds"
 			require_realm_in_sub_region = yes
-
-			on_join = {
-				trigger_event = LR_eastern_anarchy_situation.0003
-			}
-			on_leave = {
-				trigger_event = LR_eastern_anarchy_situation.0004
-			}
 			is_character_valid = {
 				is_landed = yes
 				highest_held_title_tier >= tier_county
 				is_independent_ruler = yes
 				capital_province = { geographical_region = custom_western_roman_imperial_core }
 			}
-			require_realm_in_sub_region = yes
+			on_join = { trigger_event = LR_eastern_anarchy_situation.0013 }
 			map_color = hsv { 0.00 0.93 0.57 }
 		}
 	}
-	
-	##################################################
-	# Phases
-	##################################################
+
 	start_phase = situation_phase_eastern_anarchy_peace
 
 	phases = {
-		situation_phase_eastern_anarchy_peace = {
-			icon = "gfx/interface/icons/situations/debug_situation/plentiful_harvest.dds"
+		situation_phase_eastern_anarchy_peace = { # Uneasy Peace
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_advancement.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
 
 			on_start = {
 				scope:situation_sub_region = {
 					every_situation_sub_region_participant = {
-						trigger_event = LR_eastern_anarchy_situation.0001
-					}
-				}
-			}
-			on_end = {
-				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						trigger_event = LR_eastern_anarchy_situation.0002
+						trigger_event = LR_eastern_anarchy_situation.0010
 					}
 				}
 			}
 
-
-			max_duration = { days = 10 }
-			max_duration_next_phase = weighted_random_points
-
+			max_duration = { years = 5 }
+			max_duration_next_phase = weighted_non_takeover # The engine's spelling (its documentation writes takover)
 			future_phases = {
 				situation_phase_eastern_anarchy_tension = {
-					takeover_type = duration
-					takeover_duration = { days = 20 }
+					takeover_type = none
+					weight = 3
 				}
 				situation_phase_eastern_anarchy_war = {
-					takeover_type = duration
-					takeover_duration = { days = 20 }
-				}
-				situation_phase_eastern_anarchy_test = {
-					takeover_type = points
-					takeover_points = 1000
-
-					catalysts = {
-						# Passage of time
-						catalyst_situation_passing_of_time_blessing = medium_the_great_steppe_catalyst_gain
-						catalyst_situation_passing_of_time_lucky_chance_blessing = massive_the_great_steppe_catalyst_gain
-					}
+					takeover_type = none
+					weight = 1
 				}
 			}
 
 			modifier_sets = {
-				debug_situation_effect_set_1 = {
-					icon = "gfx/interface/icons/situations/debug_situation/test_effects.dds"
-
-					all = {
-						character_modifier = {
-							tax_mult = 0.1
-						}
-					}
-
+				LR_eastern_anarchy_peace_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
 					byzantine_rulers = {
 						character_modifier = {
-							tax_mult = 0.1
-						}
-						county_modifier = {
-							county_fertility_growth_add = 0.2
-						}
-						parameters = {
-							unlocks_special_thingy_interaction = yes
+							tax_mult = 0.05
+							monthly_county_control_growth_factor = -0.1
 						}
 					}
 					byzantine_marches = {
 						character_modifier = {
-							tax_mult = -0.1
-						}
-						county_modifier = {
-							county_fertility_growth_add = -0.2
-						}
-						parameters = {
-							unlocks_special_other_thingy_interaction = yes
-						}
-					}
-				}
-				debug_situation_effect_set_2 = {
-					icon = "gfx/interface/icons/situations/debug_situation/test_effects_2.dds"
-
-					byzantine_rulers = {
-						character_modifier = {
-							stewardship = -2
-						}
-					}
-					byzantine_marches = {
-						character_modifier = {
-							learning = -1
+							tax_mult = 0.05
 						}
 					}
 				}
 			}
 		}
-
-		situation_phase_eastern_anarchy_tension = {
-			icon = "gfx/interface/icons/situations/debug_situation/severe_drought.dds"
-
-			max_duration = { days = 80 }
+		situation_phase_eastern_anarchy_tension = { # Usurpations
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_instability.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_corruption.dds"
 
 			on_start = {
 				scope:situation_sub_region = {
 					every_situation_sub_region_participant = {
-						trigger_event = LR_eastern_anarchy_situation.0001
-					}
-				}
-			}
-			on_end = {
-				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						trigger_event = LR_eastern_anarchy_situation.0002
+						trigger_event = LR_eastern_anarchy_situation.0011
 					}
 				}
 			}
 
-			max_duration_next_phase = weighted_random_points
-
+			max_duration = { years = 3 }
+			max_duration_next_phase = weighted_non_takeover # The engine's spelling (its documentation writes takover)
 			future_phases = {
-				situation_phase_eastern_anarchy_peace = {
-				}
 				situation_phase_eastern_anarchy_war = {
+					takeover_type = none
+					weight = 2
+				}
+				situation_phase_eastern_anarchy_peace = {
+					takeover_type = none
+					weight = 1
 				}
 			}
 
 			modifier_sets = {
-				debug_situation_effect_set_1 = {
-					icon = "gfx/interface/icons/situations/debug_situation/test_effects.dds"
-
+				LR_eastern_anarchy_tension_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_character.dds"
 					byzantine_rulers = {
 						character_modifier = {
-							tax_mult = -0.2
-						}
-						county_modifier = {
-							county_fertility_growth_add = -0.1234
-						}
-						parameters = {
-							unlocks_special_thingy_interaction = yes
-						}
-						faith_character_modifier = {
-							name = test_steppe_doctrine_lay_modifier_name
-							doctrine = doctrine_theocracy_lay_clergy
-							same_faith_opinion = -3
+							vassal_opinion = -10
+							levy_size = 0.1
+							title_creation_cost_mult = -0.25
 						}
 					}
 					byzantine_marches = {
 						character_modifier = {
-							tax_mult = -0.5
-						}
-						county_modifier = {
-							county_fertility_growth_add = -0.8
-						}
-						parameters = {
-							unlocks_special_other_thingy_interaction = yes
-						}
-						faith_character_modifier = {
-							name = test_steppe_doctrine_lay_modifier_name
-							doctrine = doctrine_theocracy_lay_clergy
-							same_faith_opinion = -30
+							vassal_opinion = -5
+							levy_size = 0.1
 						}
 					}
-				}
-				debug_situation_effect_set_2 = {
-					icon = "gfx/interface/icons/situations/debug_situation/test_effects_2.dds"
-
-					byzantine_rulers = {
+					latin_interlopers = {
 						character_modifier = {
-							stewardship = 2
-						}
-					}
-					byzantine_marches = {
-						character_modifier = {
-							learning = -1
+							monthly_prestige_gain_mult = 0.1
 						}
 					}
 				}
 			}
 		}
-
-		situation_phase_eastern_anarchy_war = {
-			icon = "gfx/interface/icons/situations/debug_situation/flood.dds"
-
-			max_duration = { days = 30 }
+		situation_phase_eastern_anarchy_war = { # Civil War
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_chaos.dds"
+			illustration = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds"
 
 			on_start = {
 				scope:situation_sub_region = {
 					every_situation_sub_region_participant = {
-						trigger_event = LR_eastern_anarchy_situation.0001
-					}
-				}
-			}
-			on_end = {
-				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						trigger_event = LR_eastern_anarchy_situation.0002
+						trigger_event = LR_eastern_anarchy_situation.0012
 					}
 				}
 			}
 
-			max_duration_next_phase = weighted_random_points
-
+			max_duration = { years = 3 }
+			max_duration_next_phase = weighted_non_takeover # The engine's spelling (its documentation writes takover)
 			future_phases = {
 				situation_phase_eastern_anarchy_tension = {
+					takeover_type = none
+					weight = 2
 				}
 				situation_phase_eastern_anarchy_peace = {
+					takeover_type = none
+					weight = 1
 				}
 			}
 
 			modifier_sets = {
-				debug_situation_effect_set_1 = {
-					icon = "gfx/interface/icons/situations/debug_situation/test_effects.dds"
-
+				LR_eastern_anarchy_war_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_military.dds"
 					byzantine_rulers = {
 						character_modifier = {
-							tax_mult = 0.1
+							levy_size = 0.2
+							men_at_arms_maintenance = -0.15
 						}
 						county_modifier = {
-							county_fertility_growth_add = 0.3
-						}
-						parameters = {
-							unlocks_special_thingy_interaction = yes
-						}
-						faith_character_modifier = {
-							name = test_steppe_doctrine_lay_modifier_name
-							doctrine = doctrine_theocracy_lay_clergy
-							same_faith_opinion = 3
+							development_growth_factor = -0.2
 						}
 					}
 					byzantine_marches = {
 						character_modifier = {
-							tax_mult = -0.1
+							levy_size = 0.1
+							defender_advantage = 3
 						}
 						county_modifier = {
-							county_fertility_growth_add = -0.2
-						}
-						parameters = {
-							unlocks_special_other_thingy_interaction = yes
-						}
-						faith_character_modifier = {
-							name = test_steppe_doctrine_lay_modifier_name
-							doctrine = doctrine_theocracy_lay_clergy
-							same_faith_opinion = -3
-						}
-						faith_character_modifier = {
-							name = test_steppe_doctrine_lay_modifier_name
-							doctrine = doctrine_theocracy_temporal
-							same_faith_opinion = -30
+							development_growth_factor = -0.1
 						}
 					}
-				}
-
-				debug_situation_effect_set_2 = {
-					icon = "gfx/interface/icons/situations/debug_situation/test_effects_2.dds"
-
-					byzantine_rulers = {
+					latin_interlopers = {
 						character_modifier = {
-							stewardship = 1
-						}
-					}
-					byzantine_marches = {
-						character_modifier = {
-							learning = 1
+							monthly_prestige_gain_mult = 0.15
 						}
 					}
 				}
 			}
 		}
-
-
-		situation_phase_eastern_anarchy_test = {
-			icon = "gfx/interface/icons/situations/debug_situation/test_with_catalysts.dds"
-
-			max_duration = { days = 30 }
-			max_duration_next_phase = weighted_random_points
-
-			future_phases = {
-				situation_phase_eastern_anarchy_peace = {
-					takeover_type = points
-					takeover_points = 10
-				}
-				situation_phase_eastern_anarchy_war = {
-					takeover_type = points
-					takeover_points = 10
-				}
-			}
-		}
-
 	}
 }
