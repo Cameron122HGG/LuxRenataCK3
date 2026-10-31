@@ -11,7 +11,10 @@ LR_diadochi_seleukid_kingdom_decision = {
     is_shown = {
         is_ruler = yes
         is_playable_character = yes
-		NOT = { exists = title:k_seleukid_kingdom.holder }
+		OR = { # Free, or the family's titular kingdom
+			NOT = { exists = title:k_seleukid_kingdom.holder }
+			title:k_seleukid_kingdom.holder = root
+		}
 		NOT = { has_primary_title = title:e_byzantium }
 		NOT = { has_primary_title = title:e_antipatrid_empire }
 		NOT = { has_primary_title = title:e_ptolemaic_empire }
@@ -57,10 +60,19 @@ LR_diadochi_seleukid_kingdom_decision = {
 		}
 		prestige_level >= 3
 
-		completely_controls = title:k_syria
-		completely_controls = title:k_jerusalem
-		completely_controls = title:k_mesopotamia 
-		completely_controls = title:k_nineveh
+		completely_controls_region = custom_satrapy_syria
+		custom_tooltip = {
+			text = LR_diadochi_seleukid_second_satrapy_tt
+			OR = {
+				completely_controls_region = custom_satrapy_cilicia
+				completely_controls_region = custom_satrapy_mesopotamia
+				completely_controls_region = custom_satrapy_babylon
+				completely_controls_region = custom_satrapy_susiana
+				completely_controls_region = custom_satrapy_media_minor
+				completely_controls_region = custom_satrapy_persia
+				completely_controls_region = custom_satrapy_parthia
+			}
+		}
     }
     cost = {
 		gold = 1000
@@ -105,7 +117,10 @@ LR_diadochi_ptolemaic_kingdom_decision = {
     is_shown = {
         is_ruler = yes
         is_playable_character = yes
-		NOT = { exists = title:k_ptolemaic_kingdom.holder }
+		OR = { # Free, or the family's titular kingdom
+			NOT = { exists = title:k_ptolemaic_kingdom.holder }
+			title:k_ptolemaic_kingdom.holder = root
+		}
 		NOT = { has_primary_title = title:e_byzantium }
 		NOT = { has_primary_title = title:e_antipatrid_empire }
 		NOT = { has_primary_title = title:e_seleukid_empire }
@@ -137,7 +152,8 @@ LR_diadochi_ptolemaic_kingdom_decision = {
 		   NOT = { exists = title:e_byzantium.holder }
 		}
 		OR = {
-		dynasty = dynasty:dynasty_hellenistic_ptolemaios
+			dynasty = dynasty:dynasty_hellenistic_ptolemaios
+			has_trait = trait:bloodline_ptolemaios
 		}
 		OR = {
 			faith = { religion_tag = solar_religion }
@@ -146,10 +162,7 @@ LR_diadochi_ptolemaic_kingdom_decision = {
 		}
 		prestige_level >= 3
 
-		completely_controls = title:k_egypt
-		completely_controls = title:k_kyrene
-		completely_controls = title:k_cyprus
-		completely_controls = title:k_krete
+		completely_controls_region = custom_satrapy_egypt
 		custom_tooltip = {
 			text = primary_title_is_kingdom_tooltip
 			primary_title.tier = tier_kingdom
@@ -204,7 +217,10 @@ LR_diadochi_antigonid_kingdom_decision = {
     is_shown = {
         is_ruler = yes
         is_playable_character = yes
-		NOT = { exists = title:k_antigonid_kingdom.holder }
+		OR = { # Free, or the family's titular kingdom
+			NOT = { exists = title:k_antigonid_kingdom.holder }
+			title:k_antigonid_kingdom.holder = root
+		}
 		NOT = { has_primary_title = title:e_byzantium }
 		NOT = { has_primary_title = title:e_antipatrid_empire }
 		NOT = { has_primary_title = title:e_seleukid_empire }
@@ -236,7 +252,8 @@ LR_diadochi_antigonid_kingdom_decision = {
 		   NOT = { exists = title:e_byzantium.holder }
 		}
 		OR = {
-		dynasty = dynasty:dynasty_hellenistic_antigonid
+			dynasty = dynasty:dynasty_hellenistic_antigonid
+			has_trait = trait:bloodline_antigonos
 		}
 		OR = {
 			faith = { religion_tag = solar_religion }
@@ -245,9 +262,17 @@ LR_diadochi_antigonid_kingdom_decision = {
 		}
 		prestige_level >= 3
 
-		completely_controls = title:k_anatolia
-		completely_controls = title:k_galatia
-		completely_controls = title:k_krete
+		completely_controls_region = custom_satrapy_lydia
+		custom_tooltip = {
+			text = LR_diadochi_antigonid_second_satrapy_tt
+			OR = {
+				completely_controls_region = custom_satrapy_bithynia
+				completely_controls_region = custom_satrapy_ionia
+				completely_controls_region = custom_satrapy_cappadocia
+				completely_controls_region = custom_satrapy_paphlagonia
+				completely_controls_region = custom_satrapy_pontus
+			}
+		}
 		custom_tooltip = {
 			text = primary_title_is_kingdom_tooltip
 			primary_title.tier = tier_kingdom
@@ -302,7 +327,10 @@ LR_diadochi_antipatrid_kingdom_decision = {
     is_shown = {
         is_ruler = yes
         is_playable_character = yes
-		NOT = { exists = title:k_antipatrid_kingdom.holder }
+		OR = { # Free, or the family's titular kingdom
+			NOT = { exists = title:k_antipatrid_kingdom.holder }
+			title:k_antipatrid_kingdom.holder = root
+		}
 		NOT = { exists = title:e_antipatrid_empire.holder }
 		NOT = { has_primary_title = title:e_byzantium }
 		NOT = { has_primary_title = title:e_seleukid_empire }
@@ -340,8 +368,7 @@ LR_diadochi_antipatrid_kingdom_decision = {
 		}
 		prestige_level >= 3
 
-		completely_controls = title:k_macedonia
-		completely_controls = title:k_hellas
+		completely_controls_region = custom_satrapy_macedonia
 		custom_tooltip = {
 			text = primary_title_is_kingdom_tooltip
 			primary_title.tier = tier_kingdom
