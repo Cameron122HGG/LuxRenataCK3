@@ -619,10 +619,11 @@ form_switzerland_scripted_effect = {
 	title:k_switzerland = { save_scope_as = switzerland }
 	#De jure shifts.
 	title:d_currezia = { set_de_jure_liege_title = title:k_switzerland }
-	title:d_transjurania = { set_de_jure_liege_title = title:k_switzerland }
+	title:d_base_transjurania = { set_de_jure_liege_title = title:k_switzerland }
 	if = {
-		limit = { completely_controls = title:d_savoie }
-		title:d_savoie = { set_de_jure_liege_title = title:k_switzerland }
+		limit = { completely_controls_region = LR_area_d_savoie }
+		title:d_base_savoy = { set_de_jure_liege_title = title:k_switzerland }
+		title:d_base_aosta = { set_de_jure_liege_title = title:k_switzerland }
 	}
 	else = { custom_tooltip = form_switzerland_kingdom_decision_effect_tooltip }
 	title:k_switzerland = { set_de_jure_liege_title = root.top_liege.primary_title }
@@ -895,17 +896,17 @@ form_carolingian_empire_scripted_effect = {
 	title:e_hre.holder ?= { save_scope_as = scoped_emperor }
 	#De jure shifts.
 	hidden_effect = {
-		title:k_france = { set_de_jure_liege_title = title:e_france }
-		title:k_burgundy = { set_de_jure_liege_title = title:e_france }
-		title:k_aquitaine = { set_de_jure_liege_title = title:e_france }
-		title:k_brittany = { set_de_jure_liege_title = title:e_france }
-		title:k_frisia = { set_de_jure_liege_title = title:e_france }
-		title:k_lotharingia = { set_de_jure_liege_title = title:e_france }
-		title:k_bavaria = { set_de_jure_liege_title = title:e_france }
-		title:k_east_francia = { set_de_jure_liege_title = title:e_france }
-		title:k_italy = { set_de_jure_liege_title = title:e_france }
-		title:k_navarra = { set_de_jure_liege_title = title:e_france }
-		title:k_visigoths = { set_de_jure_liege_title = title:e_france }
+		#title:k_france = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_burgundy = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_aquitaine = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_brittany = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_frisia = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_lotharingia = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_bavaria = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_east_francia = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_italy = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_navarra = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_visigoths = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
 		if = {
 			limit = {
 				OR = {
@@ -919,7 +920,7 @@ form_carolingian_empire_scripted_effect = {
 					}
 				}
 			}
-			title:k_austria = { set_de_jure_liege_title = title:e_france }
+			#title:k_austria = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
 		}
 		if = {
 			limit = {
@@ -934,7 +935,7 @@ form_carolingian_empire_scripted_effect = {
 					}
 				}
 			}
-			title:k_switzerland = { set_de_jure_liege_title = title:e_france }
+			#title:k_switzerland = { set_de_jure_liege_title = title:e_france } # base land does not go under warlord titles (ipg_shifts.py)
 		}
 	}
 	# Prestige
@@ -988,21 +989,14 @@ unite_burgundies_scripted_effect = {
 	liege = { save_scope_as = former_liege }
 	#De jure shifts.
 	hidden_effect = {
-		title:d_burgundy = {
-			set_de_jure_liege_title = title:k_burgundy
-		}
-		title:d_provence = { #Just in case they drifted in the meantime.
-			set_de_jure_liege_title = title:k_burgundy
-		}
-		title:d_savoie = {
-			set_de_jure_liege_title = title:k_burgundy
-		}
-		title:d_dauphine = {
-			set_de_jure_liege_title = title:k_burgundy
-		}
-		title:d_upper_burgundy = {
-			set_de_jure_liege_title = title:k_burgundy
-		}
+		title:d_base_dijon = { set_de_jure_liege_title = title:k_base_burgundy }
+		title:d_base_auxerre = { set_de_jure_liege_title = title:k_base_burgundy }
+		title:d_base_provence = { set_de_jure_liege_title = title:k_base_burgundy } #Just in case they drifted in the meantime.
+		title:d_base_savoy = { set_de_jure_liege_title = title:k_base_burgundy }
+		title:d_base_aosta = { set_de_jure_liege_title = title:k_base_burgundy }
+		title:d_base_lyonnais = { set_de_jure_liege_title = title:k_base_burgundy }
+		title:d_base_dauphine = { set_de_jure_liege_title = title:k_base_burgundy }
+		title:d_base_sequania = { set_de_jure_liege_title = title:k_base_burgundy }
 	}
 	if = {
 		limit = {
@@ -1594,7 +1588,7 @@ promote_gothic_innovations_decision_scripted_effect = {
 	}
 	if = {
 		limit = {
-			this = { completely_controls = title:d_valois }
+			this = { completely_controls_region = LR_area_d_valois }
 		}
 		title:c_ile_de_france = {
 			title_province = {
@@ -1607,7 +1601,7 @@ promote_gothic_innovations_decision_scripted_effect = {
 	}
 	if = {
 		limit = {
-			this = { completely_controls = title:d_orleans }
+			this = { completely_controls_region = LR_area_d_orleans }
 		}
 		title:c_orleans = {
 			title_province = {
@@ -1620,7 +1614,7 @@ promote_gothic_innovations_decision_scripted_effect = {
 	}
 	if = {
 		limit = {
-			this = { completely_controls = title:d_provence }
+			this = { completely_controls_region = LR_area_d_provence }
 		}
 		title:c_nice = {
 			title_province = {
@@ -1633,7 +1627,7 @@ promote_gothic_innovations_decision_scripted_effect = {
 	}
 	if = {
 		limit = {
-			this = { completely_controls = title:d_toulouse }
+			this = { completely_controls_region = LR_area_d_toulouse }
 		}
 		title:c_toulouse = {
 			title_province = {
@@ -2017,7 +2011,7 @@ revive_armenian_empire_decision_scripted_effect = {
 				title:k_daylam = { holder = root  }
 				title:d_azerbaijan = {	target_is_de_jure_liege_or_above = title:k_daylam }
 			}
-			title:k_daylam = { set_de_jure_liege_title = title:e_armenia }
+			title:k_base_atropatene = { set_de_jure_liege_title = title:e_armenia }
 		}
 		else_if = {	#If owned & de jure has drifted, annex Daylam & flip Azerbaijan to Armenia.
 			limit = {
@@ -2026,18 +2020,18 @@ revive_armenian_empire_decision_scripted_effect = {
 					title:d_azerbaijan = {	target_is_de_jure_liege_or_above = title:k_daylam }
 				}
 			}
-			title:k_daylam = { set_de_jure_liege_title = title:e_armenia }
-			title:d_azerbaijan = { set_de_jure_liege_title = title:k_armenia }
+			title:k_base_atropatene = { set_de_jure_liege_title = title:e_armenia }
+			title:d_base_azerbaijan = { set_de_jure_liege_title = title:k_armenia }
 		}
 		else = {
-			title:d_azerbaijan = { set_de_jure_liege_title = title:k_armenia }
+			title:d_base_azerbaijan = { set_de_jure_liege_title = title:k_armenia }
 		}
 		if = {	#If owned & de jure has not drifted, annex Daylam & exempt Shirvan from de jure flipping to Armenia.
 			limit = {
 				title:k_daylam = { holder = root  }
 				title:d_shirvan = {	target_is_de_jure_liege_or_above = title:k_daylam }
 			}
-			title:k_daylam = { set_de_jure_liege_title = title:e_armenia }
+			title:k_base_atropatene = { set_de_jure_liege_title = title:e_armenia }
 		}
 		else_if = {	#If owned & de jure has drifted, annex Daylam & flip Shirvan to Armenia.
 			limit = {
@@ -2046,11 +2040,13 @@ revive_armenian_empire_decision_scripted_effect = {
 					title:d_shirvan = {	target_is_de_jure_liege_or_above = title:k_daylam }
 				}
 			}
-			title:k_daylam = { set_de_jure_liege_title = title:e_armenia }
-			title:d_shirvan = { set_de_jure_liege_title = title:k_armenia }
+			title:k_base_atropatene = { set_de_jure_liege_title = title:e_armenia }
+			title:d_base_arran = { set_de_jure_liege_title = title:k_armenia }
+			title:d_base_shirvan = { set_de_jure_liege_title = title:k_armenia }
 		}
 		else = {
-			title:d_shirvan = { set_de_jure_liege_title = title:k_armenia }
+			title:d_base_arran = { set_de_jure_liege_title = title:k_armenia }
+			title:d_base_shirvan = { set_de_jure_liege_title = title:k_armenia }
 		}
 		if = {	#If owned & de jure has not drifted, annex Georgia & exempt ducal Georgia from de jure flipping to Armenia.
 			limit = {
@@ -2951,19 +2947,19 @@ unite_bene_israel_effect = {
 	}
 	resolve_title_and_vassal_change = scope:title_change
 
-	title:d_chera_nadu = { set_de_jure_liege_title = title:k_bene_israel }
-	title:d_konkana = { set_de_jure_liege_title = title:k_bene_israel }
+	#title:d_chera_nadu = { set_de_jure_liege_title = title:k_bene_israel } # base land does not go under warlord titles (ipg_shifts.py)
+	#title:d_konkana = { set_de_jure_liege_title = title:k_bene_israel } # base land does not go under warlord titles (ipg_shifts.py)
 	if = {
 		limit = {
 			title:d_lata = { holder = root }
 		}
-		title:d_lata = { set_de_jure_liege_title = title:k_bene_israel }
+		#title:d_lata = { set_de_jure_liege_title = title:k_bene_israel } # base land does not go under warlord titles (ipg_shifts.py)
 	}
 	if = {
 		limit = {
 			title:d_nasikya = { holder = root }
 		}
-		title:d_nasikya = { set_de_jure_liege_title = title:k_bene_israel }
+		#title:d_nasikya = { set_de_jure_liege_title = title:k_bene_israel } # base land does not go under warlord titles (ipg_shifts.py)
 	}
 	random_held_title = {
 		title_tier = barony
@@ -3859,7 +3855,7 @@ found_empire_of_hindustan_scripted_effect = {
 	}
 	if = {
 		limit = {
-			completely_controls = title:k_punjab #This will always be true but it keeps the decision text easier to read before you fulfill the criteria
+			completely_controls_region = LR_area_k_punjab #This will always be true but it keeps the decision text easier to read before you fulfill the criteria
 			NOT = { has_title = title:k_punjab }
 		}
 		title:k_punjab = {
@@ -3871,7 +3867,7 @@ found_empire_of_hindustan_scripted_effect = {
 	}
 	if = {
 		limit = {
-			completely_controls = title:k_delhi #This will always be true but it keeps the decision text easier to read before you fulfill the criteria
+			completely_controls_region = LR_area_k_delhi #This will always be true but it keeps the decision text easier to read before you fulfill the criteria
 			NOT = { has_title = title:k_delhi }
 		}
 		title:k_delhi = {
@@ -3921,22 +3917,18 @@ found_empire_of_hindustan_scripted_effect = {
 	set_primary_title_to = title:e_hindustan
 
 	hidden_effect = {
-		title:k_delhi = {
-			set_de_jure_liege_title = title:e_hindustan
-		}
-		title:k_punjab = {
-			set_de_jure_liege_title = title:e_hindustan
-		}
+		#title:k_delhi = { set_de_jure_liege_title = title:e_hindustan } # base land does not go under warlord titles (ipg_shifts.py)
+		#title:k_punjab = { set_de_jure_liege_title = title:e_hindustan } # base land does not go under warlord titles (ipg_shifts.py)
 		every_held_title = {
 			limit = {
 				tier = tier_kingdom
 				OR = {
-					de_jure_liege = title:e_bengal
-					de_jure_liege = title:e_deccan
-					de_jure_liege = title:e_rajastan
+					de_jure_liege = title:e_base_prachya
+					de_jure_liege = title:e_base_dakshinapatha
+					de_jure_liege = title:e_base_aparanta
 				}
 			}
-			set_de_jure_liege_title = title:e_hindustan
+			#set_de_jure_liege_title = title:e_hindustan # base land does not go under warlord titles (ipg_shifts.py)
 		}
 		#Areas that have had more muslim influence wants to avoid border gore and gets added even if not held - unless controlled by an independent Emperor of Rajastan:
 		if = {
@@ -3947,9 +3939,7 @@ found_empire_of_hindustan_scripted_effect = {
 					}
 				}
 			}
-			title:k_sindh = {
-				set_de_jure_liege_title = title:e_hindustan
-			}
+			#title:k_sindh = { set_de_jure_liege_title = title:e_hindustan } # base land does not go under warlord titles (ipg_shifts.py)
 		}
 		if = {
 			limit = {
@@ -3959,9 +3949,7 @@ found_empire_of_hindustan_scripted_effect = {
 					}
 				}
 			}
-			title:k_kashmir = {
-				set_de_jure_liege_title = title:e_hindustan
-			}
+			#title:k_kashmir = { set_de_jure_liege_title = title:e_hindustan } # base land does not go under warlord titles (ipg_shifts.py)
 		}
 		add_character_flag = e_hindustan #For title flavorization
 	}
@@ -3977,7 +3965,7 @@ found_empire_of_hindustan_scripted_effect = {
 					limit = {
 						tier = tier_kingdom
 					}
-					set_de_jure_liege_title = title:e_hindustan
+					#set_de_jure_liege_title = title:e_hindustan # base land does not go under warlord titles (ipg_shifts.py)
 				}
 			}
 		}
@@ -3993,7 +3981,7 @@ found_empire_of_hindustan_scripted_effect = {
 					limit = {
 						tier = tier_kingdom
 					}
-					set_de_jure_liege_title = title:e_hindustan
+					#set_de_jure_liege_title = title:e_hindustan # base land does not go under warlord titles (ipg_shifts.py)
 				}
 			}
 		}
@@ -4009,7 +3997,7 @@ found_empire_of_hindustan_scripted_effect = {
 					limit = {
 						tier = tier_kingdom
 					}
-					set_de_jure_liege_title = title:e_hindustan
+					#set_de_jure_liege_title = title:e_hindustan # base land does not go under warlord titles (ipg_shifts.py)
 				}
 			}
 		}
