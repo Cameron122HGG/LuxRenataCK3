@@ -410,6 +410,126 @@ LR_diadochi_antipatrid_kingdom_decision = {
     }
 }
 
+LR_diadochi_argead_empire_decision = {
+    picture = {
+        reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
+    }
+    desc = LR_diadochi_argead_empire_desc
+    selection_tooltip = LR_diadochi_argead_empire_tooltip
+	confirm_text = LR_diadochi_argead_empire_confirm
+    decision_group_type = hellenic
+    ai_check_interval = 120
+    is_shown = {
+        is_ruler = yes
+        is_playable_character = yes
+		NOT = { exists = title:e_argead_empire.holder }
+		NOT = { has_primary_title = title:e_byzantium }
+		NOT = { has_primary_title = title:e_seleukid_empire }
+		NOT = { has_primary_title = title:e_ptolemaic_empire }
+		NOT = { has_primary_title = title:e_antigonid_empire }
+		NOT = { has_primary_title = title:e_antipatrid_empire }
+		dynasty = dynasty:dynasty_hellenistic_argead
+        NOT = {
+            is_target_in_global_variable_list = {
+                name = unavailable_unique_decisions
+                target = flag:flag_lux_argead_reborn
+            }
+        }
+    }
+
+    is_valid = {
+        is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+		culture = { has_cultural_pillar = heritage_hellenistic }
+		OR = {
+		   NOT = { has_title = title:e_byzantium }
+		   NOT = { exists = title:e_byzantium.holder }
+		}
+		OR = {
+			faith = { religion_tag = solar_religion }
+			faith = { religion_tag = hellenism_religion }
+		}
+		prestige_level >= 3
+
+		custom_tooltip = {
+			text = LR_diadochi_argead_home_satrapy_tt
+			OR = {
+				completely_controls_region = custom_satrapy_cyprus
+				completely_controls_region = custom_satrapy_macedonia
+			}
+		}
+		custom_tooltip = {
+			text = LR_diadochi_argead_second_satrapy_tt
+			OR = {
+				AND = { # Both homelands
+					completely_controls_region = custom_satrapy_cyprus
+					completely_controls_region = custom_satrapy_macedonia
+				}
+				completely_controls_region = custom_satrapy_greece
+				completely_controls_region = custom_satrapy_thrace
+				completely_controls_region = custom_satrapy_bithynia
+				completely_controls_region = custom_satrapy_ionia
+				completely_controls_region = custom_satrapy_lydia
+				completely_controls_region = custom_satrapy_cappadocia
+				completely_controls_region = custom_satrapy_paphlagonia
+				completely_controls_region = custom_satrapy_pontus
+				completely_controls_region = custom_satrapy_syria
+				completely_controls_region = custom_satrapy_cilicia
+				completely_controls_region = custom_satrapy_mesopotamia
+				completely_controls_region = custom_satrapy_babylon
+				completely_controls_region = custom_satrapy_susiana
+				completely_controls_region = custom_satrapy_media_minor
+				completely_controls_region = custom_satrapy_persia
+				completely_controls_region = custom_satrapy_parthia
+				completely_controls_region = custom_satrapy_egypt
+				completely_controls_region = custom_satrapy_libya
+				completely_controls_region = custom_satrapy_arabia
+			}
+		}
+		custom_tooltip = {
+			text = primary_title_is_kingdom_tooltip
+			primary_title.tier = tier_kingdom
+		}
+	}
+
+    cost = {
+		gold = 1000
+    }
+
+    effect = {
+		custom_tooltip = LR_diadochi_argead_empire_effect_tooltip
+
+		hidden_effect = {
+		    change_government = alexandrian_administrative_government
+		}
+
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_argead_reborn
+			}
+			set_global_variable = {
+				name = flag_lux_argead_reborn
+				value = root
+			}
+			create_argead_empire_scripted_effect = yes
+		}
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_kingdoms_events.0010
+    }
+
+    ai_potential = {
+        always = yes
+    }
+
+    ai_will_do = {
+        base = 1000000
+    }
+}
+
 LR_create_alexander_hegemony_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
