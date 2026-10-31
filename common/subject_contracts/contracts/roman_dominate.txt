@@ -328,6 +328,221 @@ roman_dominate_provinces = {
 	}
 }
 
+# Diocese ranks (kingdom tier): vicarius, the comes of Oriens, the praefectus Augustalis of Egypt, or a magister militum
+roman_dominate_dioceses = {
+	display_mode = radiobutton
+	is_shown = {
+		scope:subject.highest_held_title_tier = tier_kingdom
+	}
+	obligation_levels = {
+		roman_dominate_diocese_vicarius = {
+			default = yes
+			position = { 0 0 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_standard_administration.dds"
+			gui_tags = { civilian }
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+						}
+					}
+					add = 1
+					if = {
+						limit = { scope:liege = { ai_has_cautious_personality = yes } }
+						add = 1
+					}
+				}
+			}
+			ai_subject_desire = 0
+			score = 0
+			color = { 0.7 0.7 0.7 1.0 }
+			enable_title_maa = no
+			subject_modifier = {
+				monthly_merit_per_liege_tax = 0.8
+			}
+			flag = roman_dominate_diocese_vicarius
+			flag = meritocratic_civil_appointment
+			flag = province_civilian
+			flag = roman_dominate_civil_appointment
+			appointment_trait_flag = civilian_province
+		}
+		roman_dominate_diocese_comes = {
+			position = { 1 0 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_metropolitan_administration.dds"
+			gui_tags = { civilian }
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								prestige_level >= 3
+								diplomacy >= very_high_skill_rating
+							}
+						}
+					}
+					add = 2
+				}
+			}
+			ai_subject_desire = 0
+			score = 0
+			color = { 0.75 0.6 0.2 1.0 }
+			is_valid = {
+				custom_tooltip = {
+					text = roman_dominate_diocese_comes_amount_desc
+					OR = {
+						scope:liege = {
+							any_vassal = {
+								count < roman_dominate_diocese_comes_max_value
+								vassal_contract_has_flag = roman_dominate_diocese_comes
+							}
+						}
+						scope:subject = { vassal_contract_has_flag = roman_dominate_diocese_comes }
+					}
+				}
+			}
+			tax_factor = 0.1
+			subject_opinion = 5
+			enable_title_maa = no
+			subject_modifier = {
+				monthly_merit_per_liege_tax = 1.0
+				monthly_prestige = 1
+				monthly_county_control_growth_factor = 0.1
+			}
+			flag = roman_dominate_diocese_comes
+			flag = meritocratic_civil_appointment
+			flag = province_civilian
+			flag = roman_dominate_civil_appointment
+			appointment_trait_flag = civilian_province
+		}
+		roman_dominate_diocese_praefectus_augustalis = {
+			position = { 2 0 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_industrial_administration.dds"
+			gui_tags = { civilian }
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								has_trait = education_stewardship
+								stewardship >= very_high_skill_rating
+							}
+						}
+					}
+					add = 2
+				}
+			}
+			ai_subject_desire = 0
+			score = 0
+			color = { 0.2 0.2 0.7 1.0 }
+			is_valid = {
+				custom_tooltip = {
+					text = roman_dominate_diocese_praefectus_augustalis_amount_desc
+					OR = {
+						scope:liege = {
+							any_vassal = {
+								count < roman_dominate_diocese_praefectus_augustalis_max_value
+								vassal_contract_has_flag = roman_dominate_diocese_praefectus_augustalis
+							}
+						}
+						scope:subject = { vassal_contract_has_flag = roman_dominate_diocese_praefectus_augustalis }
+					}
+				}
+			}
+			tax_factor = 0.35
+			subject_opinion = -5
+			enable_title_maa = no
+			subject_modifier = {
+				monthly_merit_per_liege_tax = 1.2
+				development_growth_factor = 0.1
+				monthly_county_control_growth_factor = 0.15
+			}
+			flag = roman_dominate_diocese_praefectus_augustalis
+			flag = obligation_high_taxes
+			flag = meritocratic_civil_appointment
+			flag = province_civilian
+			flag = roman_dominate_civil_appointment
+			appointment_trait_flag = civilian_province
+		}
+		roman_dominate_diocese_magister_militum = {
+			position = { 0 1 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_military_administration.dds"
+			gui_tags = { military }
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								has_trait = education_martial
+								martial >= very_high_skill_rating
+							}
+							any_sub_realm_county = {
+								any_neighboring_county = {
+									holder = { top_liege != scope:subject.top_liege }
+								}
+							}
+						}
+					}
+					add = 2
+					if = {
+						limit = { scope:liege = { ai_has_warlike_personality = yes } }
+						add = 1
+					}
+				}
+			}
+			ai_subject_desire = 0
+			score = 0
+			color = { 0.7 0.2 0.2 1.0 }
+			is_valid = {
+				custom_tooltip = {
+					text = roman_dominate_diocese_magister_militum_amount_desc
+					OR = {
+						scope:liege = {
+							any_vassal = {
+								count < roman_dominate_diocese_magister_militum_max_value
+								vassal_contract_has_flag = roman_dominate_diocese_magister_militum
+							}
+						}
+						scope:subject = { vassal_contract_has_flag = roman_dominate_diocese_magister_militum }
+					}
+				}
+				custom_tooltip = {
+					text = roman_dominate_diocese_magister_militum_border_desc
+					scope:subject = {
+						any_sub_realm_county = {
+							any_neighboring_county = {
+								holder = { top_liege != scope:subject.top_liege }
+							}
+						}
+					}
+				}
+			}
+			levies_factor = 0.5
+			subject_modifier = {
+				development_growth_factor = -0.1
+				additional_fort_level = 1
+				defender_advantage = 4
+				monthly_merit_per_title_maa_value = 0.024
+				domain_tax_mult = -0.3
+				monthly_treasury_from_military_budget_base = 2.0
+			}
+			flag = roman_dominate_diocese_magister_militum
+			flag = meritocratic_military_appointment
+			flag = province_military
+			flag = obligation_high_levies
+			flag = roman_dominate_military_appointment
+			appointment_trait_flag = military_province
+		}
+	}
+}
+
 # Senatorial grade of the office (hidden; the salary it draws). County: Perfectissimus, duchy (province): Clarissimus,
 # kingdom (diocese): Spectabilis, empire (prefecture): Illustris
 roman_dominate_salary_rank = {
