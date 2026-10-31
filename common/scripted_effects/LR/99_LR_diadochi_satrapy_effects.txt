@@ -1,0 +1,607 @@
+﻿# Successor satrapies (see 03_LR_diadochi_hyparchies.txt and 01_LR_diadochi_satrapy_decisions.txt)
+
+# Antigonids and Antipatrids found a kingdom; their satrapies need the empire above it.
+# Usage: LR_diadochi_ensure_successor_empire_effect = { KINGDOM = k_antigonid_kingdom EMPIRE = e_antigonid_empire }
+LR_diadochi_ensure_successor_empire_effect = {
+	if = {
+		limit = { NOT = { has_title = title:$EMPIRE$ } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = empire_change
+			add_claim_on_loss = no
+		}
+		title:$EMPIRE$ = {
+			change_title_holder = {
+				holder = root
+				change = scope:empire_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:empire_change
+		hidden_effect = { set_primary_title_to = title:$EMPIRE$ }
+	}
+	if = {
+		limit = { has_title = title:$KINGDOM$ }
+		title:$KINGDOM$ = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+# Root is the restoring ruler: creates the satrapy under the successor empire and lays out its hyparchies.
+# Usage: LR_restore_satrapy_effect = { SATRAPY = k_satrapy_syria EMPIRE = e_seleukid_empire }
+LR_restore_satrapy_effect = {
+	title:$SATRAPY$ = { save_scope_as = restored_satrapy }
+	title:$EMPIRE$ = { save_scope_as = satrapy_empire }
+	title:$SATRAPY$ = { set_de_jure_liege_title = title:$EMPIRE$ }
+	LR_satrapy_hyparchies_$SATRAPY$_effect = yes
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:$SATRAPY$ = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+}
+
+LR_satrapy_hyparchies_k_satrapy_macedonia_effect = {
+	# Bottiaia
+	title:d_hyparchy_bottiaea = { set_de_jure_liege_title = title:k_satrapy_macedonia }
+	title:c_pella = { set_de_jure_liege_title = title:d_hyparchy_bottiaea }
+	title:c_veria = { set_de_jure_liege_title = title:d_hyparchy_bottiaea }
+	title:c_pieria = { set_de_jure_liege_title = title:d_hyparchy_bottiaea }
+	# Amphaxitis
+	title:d_hyparchy_amphaxitis = { set_de_jure_liege_title = title:k_satrapy_macedonia }
+	title:c_thessalonika = { set_de_jure_liege_title = title:d_hyparchy_amphaxitis }
+	title:c_mygdonia = { set_de_jure_liege_title = title:d_hyparchy_amphaxitis }
+	title:c_chalkidike = { set_de_jure_liege_title = title:d_hyparchy_amphaxitis }
+	title:c_stageira = { set_de_jure_liege_title = title:d_hyparchy_amphaxitis }
+	# Amphipolis
+	title:d_hyparchy_amphipolis = { set_de_jure_liege_title = title:k_satrapy_macedonia }
+	title:c_serres = { set_de_jure_liege_title = title:d_hyparchy_amphipolis }
+	title:c_edonis = { set_de_jure_liege_title = title:d_hyparchy_amphipolis }
+	title:c_philippoi = { set_de_jure_liege_title = title:d_hyparchy_amphipolis }
+	title:c_rhodopes = { set_de_jure_liege_title = title:d_hyparchy_amphipolis }
+	# Paionia
+	title:d_hyparchy_paeonia = { set_de_jure_liege_title = title:k_satrapy_macedonia }
+	title:c_strumica = { set_de_jure_liege_title = title:d_hyparchy_paeonia }
+	title:c_pirin = { set_de_jure_liege_title = title:d_hyparchy_paeonia }
+	title:c_skopje = { set_de_jure_liege_title = title:d_hyparchy_paeonia }
+	# Ano Makedonia
+	title:d_hyparchy_upper_macedonia = { set_de_jure_liege_title = title:k_satrapy_macedonia }
+	title:c_ohrid = { set_de_jure_liege_title = title:d_hyparchy_upper_macedonia }
+	title:c_debar = { set_de_jure_liege_title = title:d_hyparchy_upper_macedonia }
+	title:c_antipatreia = { set_de_jure_liege_title = title:d_hyparchy_upper_macedonia }
+	# Thessalia
+	title:d_hyparchy_thessalia = { set_de_jure_liege_title = title:k_satrapy_macedonia }
+	title:c_thessalia = { set_de_jure_liege_title = title:d_hyparchy_thessalia }
+	title:c_demetrias = { set_de_jure_liege_title = title:d_hyparchy_thessalia }
+	title:c_histaiotis = { set_de_jure_liege_title = title:d_hyparchy_thessalia }
+	title:c_thessaliotis = { set_de_jure_liege_title = title:d_hyparchy_thessalia }
+	title:c_perrhaebia = { set_de_jure_liege_title = title:d_hyparchy_thessalia }
+	title:c_neopatras = { set_de_jure_liege_title = title:d_hyparchy_thessalia }
+}
+
+LR_satrapy_hyparchies_k_satrapy_greece_effect = {
+	# Attike
+	title:d_hyparchy_attica = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_attica = { set_de_jure_liege_title = title:d_hyparchy_attica }
+	title:c_megara = { set_de_jure_liege_title = title:d_hyparchy_attica }
+	# Boiotia
+	title:d_hyparchy_boeotia = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_boeotia = { set_de_jure_liege_title = title:d_hyparchy_boeotia }
+	title:c_phocis = { set_de_jure_liege_title = title:d_hyparchy_boeotia }
+	title:c_delphi = { set_de_jure_liege_title = title:d_hyparchy_boeotia }
+	title:c_locris = { set_de_jure_liege_title = title:d_hyparchy_boeotia }
+	# Euboia
+	title:d_hyparchy_euboea = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_euboea = { set_de_jure_liege_title = title:d_hyparchy_euboea }
+	title:c_eretria = { set_de_jure_liege_title = title:d_hyparchy_euboea }
+	title:c_skyros = { set_de_jure_liege_title = title:d_hyparchy_euboea }
+	# Achaia
+	title:d_hyparchy_achaea = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_korinthos = { set_de_jure_liege_title = title:d_hyparchy_achaea }
+	title:c_achaia = { set_de_jure_liege_title = title:d_hyparchy_achaea }
+	title:c_argolis = { set_de_jure_liege_title = title:d_hyparchy_achaea }
+	title:c_arcadia = { set_de_jure_liege_title = title:d_hyparchy_achaea }
+	title:c_elis = { set_de_jure_liege_title = title:d_hyparchy_achaea }
+	# Lakonike
+	title:d_hyparchy_laconia = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_laconia = { set_de_jure_liege_title = title:d_hyparchy_laconia }
+	title:c_mystras = { set_de_jure_liege_title = title:d_hyparchy_laconia }
+	title:c_messenia = { set_de_jure_liege_title = title:d_hyparchy_laconia }
+	# Epeiros
+	title:d_hyparchy_epirus = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_epeiros = { set_de_jure_liege_title = title:d_hyparchy_epirus }
+	title:c_nicopolis = { set_de_jure_liege_title = title:d_hyparchy_epirus }
+	title:c_thesprotis = { set_de_jure_liege_title = title:d_hyparchy_epirus }
+	title:c_metzovo = { set_de_jure_liege_title = title:d_hyparchy_epirus }
+	title:c_buthrotum = { set_de_jure_liege_title = title:d_hyparchy_epirus }
+	# Aitolia
+	title:d_hyparchy_aetolia = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_aetolia = { set_de_jure_liege_title = title:d_hyparchy_aetolia }
+	title:c_acarnania = { set_de_jure_liege_title = title:d_hyparchy_aetolia }
+	title:c_cephalonia = { set_de_jure_liege_title = title:d_hyparchy_aetolia }
+	# Illyris
+	title:d_hyparchy_illyris = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_dyrrachion = { set_de_jure_liege_title = title:d_hyparchy_illyris }
+	title:c_arbanon = { set_de_jure_liege_title = title:d_hyparchy_illyris }
+	title:c_avlonas = { set_de_jure_liege_title = title:d_hyparchy_illyris }
+	# Nesiotai
+	title:d_hyparchy_nesiotes = { set_de_jure_liege_title = title:k_satrapy_greece }
+	title:c_naxos = { set_de_jure_liege_title = title:d_hyparchy_nesiotes }
+	title:c_andros = { set_de_jure_liege_title = title:d_hyparchy_nesiotes }
+	title:c_mellos = { set_de_jure_liege_title = title:d_hyparchy_nesiotes }
+	title:c_thera = { set_de_jure_liege_title = title:d_hyparchy_nesiotes }
+}
+
+LR_satrapy_hyparchies_k_satrapy_thrace_effect = {
+	# Propontis
+	title:d_hyparchy_propontis = { set_de_jure_liege_title = title:k_satrapy_thrace }
+	title:c_byzantion = { set_de_jure_liege_title = title:d_hyparchy_propontis }
+	title:c_selymbria = { set_de_jure_liege_title = title:d_hyparchy_propontis }
+	title:c_perinthos = { set_de_jure_liege_title = title:d_hyparchy_propontis }
+	title:c_brysis = { set_de_jure_liege_title = title:d_hyparchy_propontis }
+	title:c_bizye = { set_de_jure_liege_title = title:d_hyparchy_propontis }
+	# Chersonesos
+	title:d_hyparchy_chersonesos = { set_de_jure_liege_title = title:k_satrapy_thrace }
+	title:c_kalliopolis = { set_de_jure_liege_title = title:d_hyparchy_chersonesos }
+	title:c_aenus = { set_de_jure_liege_title = title:d_hyparchy_chersonesos }
+	title:c_lemnos = { set_de_jure_liege_title = title:d_hyparchy_chersonesos }
+	# Odrysia
+	title:d_hyparchy_odrysia = { set_de_jure_liege_title = title:k_satrapy_thrace }
+	title:c_philippopolis = { set_de_jure_liege_title = title:d_hyparchy_odrysia }
+	title:c_kran = { set_de_jure_liege_title = title:d_hyparchy_odrysia }
+	title:c_beroe = { set_de_jure_liege_title = title:d_hyparchy_odrysia }
+	title:c_adrianopolis = { set_de_jure_liege_title = title:d_hyparchy_odrysia }
+	title:c_mosynopolis = { set_de_jure_liege_title = title:d_hyparchy_odrysia }
+	title:c_zherkovo = { set_de_jure_liege_title = title:d_hyparchy_odrysia }
+	title:c_sredets = { set_de_jure_liege_title = title:d_hyparchy_odrysia }
+	# Pontike Thrake
+	title:d_hyparchy_pontic_thrace = { set_de_jure_liege_title = title:k_satrapy_thrace }
+	title:c_mesembria = { set_de_jure_liege_title = title:d_hyparchy_pontic_thrace }
+	title:c_sozopolis = { set_de_jure_liege_title = title:d_hyparchy_pontic_thrace }
+	title:c_aytos = { set_de_jure_liege_title = title:d_hyparchy_pontic_thrace }
+	title:c_constanta = { set_de_jure_liege_title = title:d_hyparchy_pontic_thrace }
+}
+
+LR_satrapy_hyparchies_k_satrapy_bithynia_effect = {
+	# Bithynia
+	title:d_hyparchy_bithynia = { set_de_jure_liege_title = title:k_satrapy_bithynia }
+	title:c_nikomedia = { set_de_jure_liege_title = title:d_hyparchy_bithynia }
+	title:c_chalcedon = { set_de_jure_liege_title = title:d_hyparchy_bithynia }
+	title:c_nikaea = { set_de_jure_liege_title = title:d_hyparchy_bithynia }
+	title:c_prusias = { set_de_jure_liege_title = title:d_hyparchy_bithynia }
+	# Hellespontos
+	title:d_hyparchy_hellespontos = { set_de_jure_liege_title = title:k_satrapy_bithynia }
+	title:c_kyzikos = { set_de_jure_liege_title = title:d_hyparchy_hellespontos }
+	title:c_abydos = { set_de_jure_liege_title = title:d_hyparchy_hellespontos }
+	title:c_troas = { set_de_jure_liege_title = title:d_hyparchy_hellespontos }
+	title:c_mysia = { set_de_jure_liege_title = title:d_hyparchy_hellespontos }
+	title:c_prusa = { set_de_jure_liege_title = title:d_hyparchy_hellespontos }
+	title:c_apollonia = { set_de_jure_liege_title = title:d_hyparchy_hellespontos }
+}
+
+LR_satrapy_hyparchies_k_satrapy_ionia_effect = {
+	# Aiolis
+	title:d_hyparchy_aeolis = { set_de_jure_liege_title = title:k_satrapy_ionia }
+	title:c_pergamon = { set_de_jure_liege_title = title:d_hyparchy_aeolis }
+	title:c_adramyttion = { set_de_jure_liege_title = title:d_hyparchy_aeolis }
+	title:c_aeolis = { set_de_jure_liege_title = title:d_hyparchy_aeolis }
+	title:c_lesbos = { set_de_jure_liege_title = title:d_hyparchy_aeolis }
+	# Ionia
+	title:d_hyparchy_ionia = { set_de_jure_liege_title = title:k_satrapy_ionia }
+	title:c_ionia = { set_de_jure_liege_title = title:d_hyparchy_ionia }
+	title:c_miletus = { set_de_jure_liege_title = title:d_hyparchy_ionia }
+	title:c_chios = { set_de_jure_liege_title = title:d_hyparchy_ionia }
+	title:c_samos = { set_de_jure_liege_title = title:d_hyparchy_ionia }
+	# Karia
+	title:d_hyparchy_caria = { set_de_jure_liege_title = title:k_satrapy_ionia }
+	title:c_halikarnassos = { set_de_jure_liege_title = title:d_hyparchy_caria }
+	title:c_caria = { set_de_jure_liege_title = title:d_hyparchy_caria }
+	title:c_cnidos = { set_de_jure_liege_title = title:d_hyparchy_caria }
+	title:c_kos = { set_de_jure_liege_title = title:d_hyparchy_caria }
+	title:c_rhodos = { set_de_jure_liege_title = title:d_hyparchy_caria }
+	# Lykia
+	title:d_hyparchy_lycia = { set_de_jure_liege_title = title:k_satrapy_ionia }
+	title:c_lycia = { set_de_jure_liege_title = title:d_hyparchy_lycia }
+	title:c_telmessos = { set_de_jure_liege_title = title:d_hyparchy_lycia }
+	title:c_phaselis = { set_de_jure_liege_title = title:d_hyparchy_lycia }
+	title:c_kabaleia = { set_de_jure_liege_title = title:d_hyparchy_lycia }
+}
+
+LR_satrapy_hyparchies_k_satrapy_lydia_effect = {
+	# Lydia
+	title:d_hyparchy_lydia = { set_de_jure_liege_title = title:k_satrapy_lydia }
+	title:c_sardes = { set_de_jure_liege_title = title:d_hyparchy_lydia }
+	title:c_maeonia = { set_de_jure_liege_title = title:d_hyparchy_lydia }
+	title:c_attalia_lydica = { set_de_jure_liege_title = title:d_hyparchy_lydia }
+	title:c_thyatira = { set_de_jure_liege_title = title:d_hyparchy_lydia }
+	title:c_hadrianeia = { set_de_jure_liege_title = title:d_hyparchy_lydia }
+	title:c_synaos = { set_de_jure_liege_title = title:d_hyparchy_lydia }
+	# Megale Phrygia
+	title:d_hyparchy_phrygia = { set_de_jure_liege_title = title:k_satrapy_lydia }
+	title:c_amorion = { set_de_jure_liege_title = title:d_hyparchy_phrygia }
+	title:c_gordium = { set_de_jure_liege_title = title:d_hyparchy_phrygia }
+	title:c_pacatiana = { set_de_jure_liege_title = title:d_hyparchy_phrygia }
+	title:c_kotyaion = { set_de_jure_liege_title = title:d_hyparchy_phrygia }
+	title:c_sebaste = { set_de_jure_liege_title = title:d_hyparchy_phrygia }
+	title:c_chonae = { set_de_jure_liege_title = title:d_hyparchy_phrygia }
+	# Pisidia
+	title:d_hyparchy_pisidia = { set_de_jure_liege_title = title:k_satrapy_lydia }
+	title:c_pisidia = { set_de_jure_liege_title = title:d_hyparchy_pisidia }
+	title:c_philomelium = { set_de_jure_liege_title = title:d_hyparchy_pisidia }
+	title:c_selge = { set_de_jure_liege_title = title:d_hyparchy_pisidia }
+	title:c_sozopolis_pisidia = { set_de_jure_liege_title = title:d_hyparchy_pisidia }
+	title:c_cremna = { set_de_jure_liege_title = title:d_hyparchy_pisidia }
+	# Pamphylia
+	title:d_hyparchy_pamphylia = { set_de_jure_liege_title = title:k_satrapy_lydia }
+	title:c_attaleia = { set_de_jure_liege_title = title:d_hyparchy_pamphylia }
+	title:c_pamphylia = { set_de_jure_liege_title = title:d_hyparchy_pamphylia }
+	title:c_korakesion = { set_de_jure_liege_title = title:d_hyparchy_pamphylia }
+	title:c_mopsopia = { set_de_jure_liege_title = title:d_hyparchy_pamphylia }
+	# Lykaonia
+	title:d_hyparchy_lycaonia = { set_de_jure_liege_title = title:k_satrapy_lydia }
+	title:c_ikonion = { set_de_jure_liege_title = title:d_hyparchy_lycaonia }
+	title:c_lycaonia = { set_de_jure_liege_title = title:d_hyparchy_lycaonia }
+	title:c_mistea = { set_de_jure_liege_title = title:d_hyparchy_lycaonia }
+	title:c_isauria = { set_de_jure_liege_title = title:d_hyparchy_lycaonia }
+	title:c_laranda = { set_de_jure_liege_title = title:d_hyparchy_lycaonia }
+}
+
+LR_satrapy_hyparchies_k_satrapy_cappadocia_effect = {
+	# Kappadokia
+	title:d_hyparchy_cappadocia = { set_de_jure_liege_title = title:k_satrapy_cappadocia }
+	title:c_kaisereia = { set_de_jure_liege_title = title:d_hyparchy_cappadocia }
+	title:c_charsianon = { set_de_jure_liege_title = title:d_hyparchy_cappadocia }
+	title:c_soanda = { set_de_jure_liege_title = title:d_hyparchy_cappadocia }
+	title:c_trocmi = { set_de_jure_liege_title = title:d_hyparchy_cappadocia }
+	# Tyanitis
+	title:d_hyparchy_tyanitis = { set_de_jure_liege_title = title:k_satrapy_cappadocia }
+	title:c_cappadocia = { set_de_jure_liege_title = title:d_hyparchy_tyanitis }
+	title:c_garsauria = { set_de_jure_liege_title = title:d_hyparchy_tyanitis }
+	title:c_kyzistra = { set_de_jure_liege_title = title:d_hyparchy_tyanitis }
+	# Kataonia
+	title:d_hyparchy_cataonia = { set_de_jure_liege_title = title:k_satrapy_cappadocia }
+	title:c_arabissus = { set_de_jure_liege_title = title:d_hyparchy_cataonia }
+	title:c_lycandus = { set_de_jure_liege_title = title:d_hyparchy_cataonia }
+	title:c_ablastha = { set_de_jure_liege_title = title:d_hyparchy_cataonia }
+	title:c_dasmenda = { set_de_jure_liege_title = title:d_hyparchy_cataonia }
+	# Melitene
+	title:d_hyparchy_melitene = { set_de_jure_liege_title = title:k_satrapy_cappadocia }
+	title:c_melitene = { set_de_jure_liege_title = title:d_hyparchy_melitene }
+	title:c_mesopotamia = { set_de_jure_liege_title = title:d_hyparchy_melitene }
+	title:c_azysia = { set_de_jure_liege_title = title:d_hyparchy_melitene }
+}
+
+LR_satrapy_hyparchies_k_satrapy_paphlagonia_effect = {
+	# Paphlagonia
+	title:d_hyparchy_paphlagonia = { set_de_jure_liege_title = title:k_satrapy_paphlagonia }
+	title:c_gangra = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	title:c_amastris = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	title:c_ionopolis = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	title:c_pompeiopolis = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	title:c_kimiatene = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	title:c_honorias = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	title:c_bythinion = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	title:c_hadrianopolis = { set_de_jure_liege_title = title:d_hyparchy_paphlagonia }
+	# Galatia
+	title:d_hyparchy_galatia = { set_de_jure_liege_title = title:k_satrapy_paphlagonia }
+	title:c_galatia = { set_de_jure_liege_title = title:d_hyparchy_galatia }
+	title:c_galatia_salutaris = { set_de_jure_liege_title = title:d_hyparchy_galatia }
+	title:c_tectosagia_galatia = { set_de_jure_liege_title = title:d_hyparchy_galatia }
+	title:c_lower_galatia = { set_de_jure_liege_title = title:d_hyparchy_galatia }
+}
+
+LR_satrapy_hyparchies_k_satrapy_pontus_effect = {
+	# Pontos
+	title:d_hyparchy_pontus = { set_de_jure_liege_title = title:k_satrapy_pontus }
+	title:c_helenopontus = { set_de_jure_liege_title = title:d_hyparchy_pontus }
+	title:c_sinope = { set_de_jure_liege_title = title:d_hyparchy_pontus }
+	title:c_domanitis = { set_de_jure_liege_title = title:d_hyparchy_pontus }
+	title:c_gazelonitis = { set_de_jure_liege_title = title:d_hyparchy_pontus }
+	title:c_pimolisene = { set_de_jure_liege_title = title:d_hyparchy_pontus }
+	title:c_zelitis = { set_de_jure_liege_title = title:d_hyparchy_pontus }
+	title:c_phanaroia = { set_de_jure_liege_title = title:d_hyparchy_pontus }
+	# Trapezous
+	title:d_hyparchy_trapezous = { set_de_jure_liege_title = title:k_satrapy_pontus }
+	title:c_trebizond = { set_de_jure_liege_title = title:d_hyparchy_trapezous }
+	title:c_byzerene = { set_de_jure_liege_title = title:d_hyparchy_trapezous }
+	title:c_cerasus = { set_de_jure_liege_title = title:d_hyparchy_trapezous }
+	title:c_polemonium = { set_de_jure_liege_title = title:d_hyparchy_trapezous }
+	# Mikra Armenia
+	title:d_hyparchy_lesser_armenia = { set_de_jure_liege_title = title:k_satrapy_pontus }
+	title:c_nicopolis_armenia = { set_de_jure_liege_title = title:d_hyparchy_lesser_armenia }
+	title:c_sebasteia = { set_de_jure_liege_title = title:d_hyparchy_lesser_armenia }
+	title:c_sebastopolis = { set_de_jure_liege_title = title:d_hyparchy_lesser_armenia }
+	title:c_satala = { set_de_jure_liege_title = title:d_hyparchy_lesser_armenia }
+	title:c_camisene = { set_de_jure_liege_title = title:d_hyparchy_lesser_armenia }
+	title:c_colonea = { set_de_jure_liege_title = title:d_hyparchy_lesser_armenia }
+}
+
+LR_satrapy_hyparchies_k_satrapy_syria_effect = {
+	# Antiochis
+	title:d_hyparchy_antiochis = { set_de_jure_liege_title = title:k_satrapy_syria }
+	title:c_antiocheia = { set_de_jure_liege_title = title:d_hyparchy_antiochis }
+	title:c_alexandretta = { set_de_jure_liege_title = title:d_hyparchy_antiochis }
+	title:c_baghras = { set_de_jure_liege_title = title:d_hyparchy_antiochis }
+	# Laodikene
+	title:d_hyparchy_laodikene = { set_de_jure_liege_title = title:k_satrapy_syria }
+	title:c_latakia = { set_de_jure_liege_title = title:d_hyparchy_laodikene }
+	title:c_masyaf = { set_de_jure_liege_title = title:d_hyparchy_laodikene }
+	# Apamene
+	title:d_hyparchy_apamene = { set_de_jure_liege_title = title:k_satrapy_syria }
+	title:c_hama = { set_de_jure_liege_title = title:d_hyparchy_apamene }
+	title:c_shayzar = { set_de_jure_liege_title = title:d_hyparchy_apamene }
+	title:c_homs = { set_de_jure_liege_title = title:d_hyparchy_apamene }
+	# Kyrrhestike
+	title:d_hyparchy_kyrrhestike = { set_de_jure_liege_title = title:k_satrapy_syria }
+	title:c_cyrrhestica = { set_de_jure_liege_title = title:d_hyparchy_kyrrhestike }
+	title:c_aleppo = { set_de_jure_liege_title = title:d_hyparchy_kyrrhestike }
+	title:c_aintab = { set_de_jure_liege_title = title:d_hyparchy_kyrrhestike }
+	# Chalkidike
+	title:d_hyparchy_chalkidike = { set_de_jure_liege_title = title:k_satrapy_syria }
+	title:c_qinnasrin = { set_de_jure_liege_title = title:d_hyparchy_chalkidike }
+	title:c_suriya = { set_de_jure_liege_title = title:d_hyparchy_chalkidike }
+	# Kommagene
+	title:d_hyparchy_kommagene = { set_de_jure_liege_title = title:k_satrapy_syria }
+	title:c_samosata = { set_de_jure_liege_title = title:d_hyparchy_kommagene }
+	title:c_marash = { set_de_jure_liege_title = title:d_hyparchy_kommagene }
+	# Palmyrene
+	title:d_hyparchy_palmyrene = { set_de_jure_liege_title = title:k_satrapy_syria }
+	title:c_palmyra = { set_de_jure_liege_title = title:d_hyparchy_palmyrene }
+	title:c_syrrusafa = { set_de_jure_liege_title = title:d_hyparchy_palmyrene }
+	title:c_sukhna = { set_de_jure_liege_title = title:d_hyparchy_palmyrene }
+	title:c_qaryatan = { set_de_jure_liege_title = title:d_hyparchy_palmyrene }
+}
+
+LR_satrapy_hyparchies_k_satrapy_cilicia_effect = {
+	# Kilikia Pedias
+	title:d_hyparchy_cilicia_pedias = { set_de_jure_liege_title = title:k_satrapy_cilicia }
+	title:c_cilicia = { set_de_jure_liege_title = title:d_hyparchy_cilicia_pedias }
+	title:c_anazaribus = { set_de_jure_liege_title = title:d_hyparchy_cilicia_pedias }
+	title:c_mopsuestia = { set_de_jure_liege_title = title:d_hyparchy_cilicia_pedias }
+	title:c_tall_hamid = { set_de_jure_liege_title = title:d_hyparchy_cilicia_pedias }
+	# Kilikia Tracheia
+	title:d_hyparchy_cilicia_tracheia = { set_de_jure_liege_title = title:k_satrapy_cilicia }
+	title:c_seleucia = { set_de_jure_liege_title = title:d_hyparchy_cilicia_tracheia }
+	title:c_ninike = { set_de_jure_liege_title = title:d_hyparchy_cilicia_tracheia }
+	title:c_soloi = { set_de_jure_liege_title = title:d_hyparchy_cilicia_tracheia }
+}
+
+LR_satrapy_hyparchies_k_satrapy_mesopotamia_effect = {
+	# Osrhoene
+	title:d_hyparchy_osrhoene = { set_de_jure_liege_title = title:k_satrapy_mesopotamia }
+	title:c_edessa = { set_de_jure_liege_title = title:d_hyparchy_osrhoene }
+	title:c_harran = { set_de_jure_liege_title = title:d_hyparchy_osrhoene }
+	title:c_raqqa = { set_de_jure_liege_title = title:d_hyparchy_osrhoene }
+	title:c_dausar = { set_de_jure_liege_title = title:d_hyparchy_osrhoene }
+	# Mygdonia
+	title:d_hyparchy_mygdonia = { set_de_jure_liege_title = title:k_satrapy_mesopotamia }
+	title:c_nasibin = { set_de_jure_liege_title = title:d_hyparchy_mygdonia }
+	title:c_khabur = { set_de_jure_liege_title = title:d_hyparchy_mygdonia }
+	title:c_upper_khabur = { set_de_jure_liege_title = title:d_hyparchy_mygdonia }
+	title:c_sinjar = { set_de_jure_liege_title = title:d_hyparchy_mygdonia }
+	# Assyria
+	title:d_hyparchy_assyria = { set_de_jure_liege_title = title:k_satrapy_mesopotamia }
+	title:c_ninive = { set_de_jure_liege_title = title:d_hyparchy_assyria }
+	title:c_mosul = { set_de_jure_liege_title = title:d_hyparchy_assyria }
+	title:c_irbil = { set_de_jure_liege_title = title:d_hyparchy_assyria }
+	title:c_kurdistan = { set_de_jure_liege_title = title:d_hyparchy_assyria }
+	title:c_shahrazur = { set_de_jure_liege_title = title:d_hyparchy_assyria }
+	# Parapotamia
+	title:d_hyparchy_parapotamia = { set_de_jure_liege_title = title:k_satrapy_mesopotamia }
+	title:c_rahba = { set_de_jure_liege_title = title:d_hyparchy_parapotamia }
+	title:c_hadithat-ana = { set_de_jure_liege_title = title:d_hyparchy_parapotamia }
+	title:c_al-haditha = { set_de_jure_liege_title = title:d_hyparchy_parapotamia }
+}
+
+LR_satrapy_hyparchies_k_satrapy_babylon_effect = {
+	# Seleukeia
+	title:d_hyparchy_seleukeia = { set_de_jure_liege_title = title:k_satrapy_babylon }
+	title:c_baghdad = { set_de_jure_liege_title = title:d_hyparchy_seleukeia }
+	title:c_iskaf = { set_de_jure_liege_title = title:d_hyparchy_seleukeia }
+	title:c_anbar = { set_de_jure_liege_title = title:d_hyparchy_seleukeia }
+	title:c_badaraya = { set_de_jure_liege_title = title:d_hyparchy_seleukeia }
+	# Babylonia
+	title:d_hyparchy_babylonia = { set_de_jure_liege_title = title:k_satrapy_babylon }
+	title:c_karbala = { set_de_jure_liege_title = title:d_hyparchy_babylonia }
+	title:c_kufa = { set_de_jure_liege_title = title:d_hyparchy_babylonia }
+	title:c_safata = { set_de_jure_liege_title = title:d_hyparchy_babylonia }
+	title:c_qadisiya = { set_de_jure_liege_title = title:d_hyparchy_babylonia }
+	title:c_akhadid = { set_de_jure_liege_title = title:d_hyparchy_babylonia }
+	title:c_waqisa = { set_de_jure_liege_title = title:d_hyparchy_babylonia }
+	# Apolloniatis
+	title:d_hyparchy_apolloniatis = { set_de_jure_liege_title = title:k_satrapy_babylon }
+	title:c_samarra = { set_de_jure_liege_title = title:d_hyparchy_apolloniatis }
+	title:c_hulwan = { set_de_jure_liege_title = title:d_hyparchy_apolloniatis }
+	title:c_kirkuk = { set_de_jure_liege_title = title:d_hyparchy_apolloniatis }
+	title:c_takrit = { set_de_jure_liege_title = title:d_hyparchy_apolloniatis }
+	# Mesene
+	title:d_hyparchy_mesene = { set_de_jure_liege_title = title:k_satrapy_babylon }
+	title:c_basra = { set_de_jure_liege_title = title:d_hyparchy_mesene }
+	title:c_ubulla = { set_de_jure_liege_title = title:d_hyparchy_mesene }
+	title:c_rusafa = { set_de_jure_liege_title = title:d_hyparchy_mesene }
+	title:c_wasit = { set_de_jure_liege_title = title:d_hyparchy_mesene }
+	title:c_tib = { set_de_jure_liege_title = title:d_hyparchy_mesene }
+	title:c_batiha = { set_de_jure_liege_title = title:d_hyparchy_mesene }
+}
+
+LR_satrapy_hyparchies_k_satrapy_susiana_effect = {
+	# Susiane
+	title:d_hyparchy_susiane = { set_de_jure_liege_title = title:k_satrapy_susiana }
+	title:c_tustar = { set_de_jure_liege_title = title:d_hyparchy_susiane }
+	title:c_ahvaz = { set_de_jure_liege_title = title:d_hyparchy_susiane }
+	title:c_sardan = { set_de_jure_liege_title = title:d_hyparchy_susiane }
+	title:c_ramhurmuz = { set_de_jure_liege_title = title:d_hyparchy_susiane }
+	title:c_abbadan = { set_de_jure_liege_title = title:d_hyparchy_susiane }
+	title:c_dawraq = { set_de_jure_liege_title = title:d_hyparchy_susiane }
+	# Elymais
+	title:d_hyparchy_elymais = { set_de_jure_liege_title = title:k_satrapy_susiana }
+	title:c_luristan = { set_de_jure_liege_title = title:d_hyparchy_elymais }
+	title:c_saimara = { set_de_jure_liege_title = title:d_hyparchy_elymais }
+	title:c_masabadhan = { set_de_jure_liege_title = title:d_hyparchy_elymais }
+}
+
+LR_satrapy_hyparchies_k_satrapy_media_minor_effect = {
+	# Media
+	title:d_hyparchy_media = { set_de_jure_liege_title = title:k_satrapy_media_minor }
+	title:c_hamadan = { set_de_jure_liege_title = title:d_hyparchy_media }
+	title:c_nihawand = { set_de_jure_liege_title = title:d_hyparchy_media }
+	title:c_dinawar = { set_de_jure_liege_title = title:d_hyparchy_media }
+	title:c_kermanshah = { set_de_jure_liege_title = title:d_hyparchy_media }
+	# Rhagiane
+	title:d_hyparchy_rhagiane = { set_de_jure_liege_title = title:k_satrapy_media_minor }
+	title:c_rayy = { set_de_jure_liege_title = title:d_hyparchy_rhagiane }
+	title:c_khuwar = { set_de_jure_liege_title = title:d_hyparchy_rhagiane }
+	title:c_qom = { set_de_jure_liege_title = title:d_hyparchy_rhagiane }
+	# Paraitakene
+	title:d_hyparchy_paraitakene = { set_de_jure_liege_title = title:k_satrapy_media_minor }
+	title:c_isfahan = { set_de_jure_liege_title = title:d_hyparchy_paraitakene }
+	title:c_ardestan = { set_de_jure_liege_title = title:d_hyparchy_paraitakene }
+	title:c_qumisha = { set_de_jure_liege_title = title:d_hyparchy_paraitakene }
+	title:c_yazd = { set_de_jure_liege_title = title:d_hyparchy_paraitakene }
+	title:c_mafaza = { set_de_jure_liege_title = title:d_hyparchy_paraitakene }
+	title:c_shahre-babak = { set_de_jure_liege_title = title:d_hyparchy_paraitakene }
+}
+
+LR_satrapy_hyparchies_k_satrapy_persia_effect = {
+	# Persis
+	title:d_hyparchy_persis = { set_de_jure_liege_title = title:k_satrapy_persia }
+	title:c_istakhr = { set_de_jure_liege_title = title:d_hyparchy_persis }
+	title:c_shiraz = { set_de_jure_liege_title = title:d_hyparchy_persis }
+	title:c_arrajan = { set_de_jure_liege_title = title:d_hyparchy_persis }
+	title:c_mandestan = { set_de_jure_liege_title = title:d_hyparchy_persis }
+	title:c_lar = { set_de_jure_liege_title = title:d_hyparchy_persis }
+	title:c_darabjerd = { set_de_jure_liege_title = title:d_hyparchy_persis }
+	title:c_irahistan = { set_de_jure_liege_title = title:d_hyparchy_persis }
+	# Karmania
+	title:d_hyparchy_carmania = { set_de_jure_liege_title = title:k_satrapy_persia }
+	title:c_kirman = { set_de_jure_liege_title = title:d_hyparchy_carmania }
+	title:c_behabad = { set_de_jure_liege_title = title:d_hyparchy_carmania }
+	title:c_bam = { set_de_jure_liege_title = title:d_hyparchy_carmania }
+	title:c_sirjan = { set_de_jure_liege_title = title:d_hyparchy_carmania }
+	title:c_jiruft = { set_de_jure_liege_title = title:d_hyparchy_carmania }
+	title:c_hormuz = { set_de_jure_liege_title = title:d_hyparchy_carmania }
+	title:c_sif-i-umara = { set_de_jure_liege_title = title:d_hyparchy_carmania }
+}
+
+LR_satrapy_hyparchies_k_satrapy_parthia_effect = {
+	# Parthyene
+	title:d_hyparchy_parthyene = { set_de_jure_liege_title = title:k_satrapy_parthia }
+	title:c_nishapur = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_tus = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_samaiqan = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_juwain = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_baihaq = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_damghan = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_abivard = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_farava = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_qain = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	title:c_tun = { set_de_jure_liege_title = title:d_hyparchy_parthyene }
+	# Hyrkania
+	title:d_hyparchy_hyrcania = { set_de_jure_liege_title = title:k_satrapy_parthia }
+	title:c_gurgan = { set_de_jure_liege_title = title:d_hyparchy_hyrcania }
+	title:c_dihistan = { set_de_jure_liege_title = title:d_hyparchy_hyrcania }
+	title:c_mazandaran = { set_de_jure_liege_title = title:d_hyparchy_hyrcania }
+	title:c_ruyan = { set_de_jure_liege_title = title:d_hyparchy_hyrcania }
+	title:c_baduspan = { set_de_jure_liege_title = title:d_hyparchy_hyrcania }
+}
+
+LR_satrapy_hyparchies_k_satrapy_egypt_effect = {
+	# Alexandreia
+	title:d_hyparchy_alexandreia = { set_de_jure_liege_title = title:k_satrapy_egypt }
+	title:c_alexandria = { set_de_jure_liege_title = title:d_hyparchy_alexandreia }
+	title:c_al-buhaira = { set_de_jure_liege_title = title:d_hyparchy_alexandreia }
+	title:c_bahriya = { set_de_jure_liege_title = title:d_hyparchy_alexandreia }
+	# Kato Chora
+	title:d_hyparchy_delta = { set_de_jure_liege_title = title:k_satrapy_egypt }
+	title:c_cairo = { set_de_jure_liege_title = title:d_hyparchy_delta }
+	title:c_giza = { set_de_jure_liege_title = title:d_hyparchy_delta }
+	title:c_damietta = { set_de_jure_liege_title = title:d_hyparchy_delta }
+	title:c_al-gharbiya = { set_de_jure_liege_title = title:d_hyparchy_delta }
+	title:c_sharkiya = { set_de_jure_liege_title = title:d_hyparchy_delta }
+	# Heptanomis
+	title:d_hyparchy_heptanomis = { set_de_jure_liege_title = title:k_satrapy_egypt }
+	title:c_fayyum = { set_de_jure_liege_title = title:d_hyparchy_heptanomis }
+	title:c_bahnasa = { set_de_jure_liege_title = title:d_hyparchy_heptanomis }
+	title:c_ushmun = { set_de_jure_liege_title = title:d_hyparchy_heptanomis }
+	title:c_asyut = { set_de_jure_liege_title = title:d_hyparchy_heptanomis }
+	# Thebais
+	title:d_hyparchy_thebais = { set_de_jure_liege_title = title:k_satrapy_egypt }
+	title:c_qus = { set_de_jure_liege_title = title:d_hyparchy_thebais }
+	title:c_aswan = { set_de_jure_liege_title = title:d_hyparchy_thebais }
+	title:c_qusayr = { set_de_jure_liege_title = title:d_hyparchy_thebais }
+	title:c_jabal_quzlum = { set_de_jure_liege_title = title:d_hyparchy_thebais }
+	title:c_kalabsha = { set_de_jure_liege_title = title:d_hyparchy_thebais }
+	title:c_qurta = { set_de_jure_liege_title = title:d_hyparchy_thebais }
+	# Oasis
+	title:d_hyparchy_oasis = { set_de_jure_liege_title = title:k_satrapy_egypt }
+	title:c_kharga = { set_de_jure_liege_title = title:d_hyparchy_oasis }
+	title:c_dakhla = { set_de_jure_liege_title = title:d_hyparchy_oasis }
+	title:c_farafra = { set_de_jure_liege_title = title:d_hyparchy_oasis }
+	# Pelousion
+	title:d_hyparchy_pelousion = { set_de_jure_liege_title = title:k_satrapy_egypt }
+	title:c_farama = { set_de_jure_liege_title = title:d_hyparchy_pelousion }
+	title:c_sinai = { set_de_jure_liege_title = title:d_hyparchy_pelousion }
+	title:c_firaun = { set_de_jure_liege_title = title:d_hyparchy_pelousion }
+}
+
+LR_satrapy_hyparchies_k_satrapy_libya_effect = {
+	# Pentapolis
+	title:d_hyparchy_pentapolis = { set_de_jure_liege_title = title:k_satrapy_libya }
+	title:c_barqa = { set_de_jure_liege_title = title:d_hyparchy_pentapolis }
+	title:c_derna = { set_de_jure_liege_title = title:d_hyparchy_pentapolis }
+	title:c_awjila = { set_de_jure_liege_title = title:d_hyparchy_pentapolis }
+	# Marmarike
+	title:d_hyparchy_marmarike = { set_de_jure_liege_title = title:k_satrapy_libya }
+	title:c_tobruk = { set_de_jure_liege_title = title:d_hyparchy_marmarike }
+	title:c_sullum = { set_de_jure_liege_title = title:d_hyparchy_marmarike }
+	title:c_siwa = { set_de_jure_liege_title = title:d_hyparchy_marmarike }
+}
+
+LR_satrapy_hyparchies_k_satrapy_cyprus_effect = {
+	# Kypros
+	title:d_hyparchy_kypros = { set_de_jure_liege_title = title:k_satrapy_cyprus }
+	title:c_nicosia = { set_de_jure_liege_title = title:d_hyparchy_kypros }
+	title:c_famagusta = { set_de_jure_liege_title = title:d_hyparchy_kypros }
+	# Krete
+	title:d_hyparchy_krete = { set_de_jure_liege_title = title:k_satrapy_cyprus }
+	title:c_chandax = { set_de_jure_liege_title = title:d_hyparchy_krete }
+	title:c_chania = { set_de_jure_liege_title = title:d_hyparchy_krete }
+}
+
+LR_satrapy_hyparchies_k_satrapy_arabia_effect = {
+	# Phoinike
+	title:d_hyparchy_phoinike = { set_de_jure_liege_title = title:k_satrapy_arabia }
+	title:c_beirut = { set_de_jure_liege_title = title:d_hyparchy_phoinike }
+	title:c_tripoli = { set_de_jure_liege_title = title:d_hyparchy_phoinike }
+	title:c_antartus = { set_de_jure_liege_title = title:d_hyparchy_phoinike }
+	title:c_acre = { set_de_jure_liege_title = title:d_hyparchy_phoinike }
+	# Ioudaia
+	title:d_hyparchy_ioudaia = { set_de_jure_liege_title = title:k_satrapy_arabia }
+	title:c_jerusalem = { set_de_jure_liege_title = title:d_hyparchy_ioudaia }
+	title:c_jaffa = { set_de_jure_liege_title = title:d_hyparchy_ioudaia }
+	# Idumaia
+	title:d_hyparchy_idumaia = { set_de_jure_liege_title = title:k_satrapy_arabia }
+	title:c_ghazza = { set_de_jure_liege_title = title:d_hyparchy_idumaia }
+	title:c_negev = { set_de_jure_liege_title = title:d_hyparchy_idumaia }
+	# Galilaia
+	title:d_hyparchy_galilaia = { set_de_jure_liege_title = title:k_satrapy_arabia }
+	title:c_tiberias = { set_de_jure_liege_title = title:d_hyparchy_galilaia }
+	title:c_irbid = { set_de_jure_liege_title = title:d_hyparchy_galilaia }
+	# Koile Syria
+	title:d_hyparchy_koile_syria = { set_de_jure_liege_title = title:k_satrapy_arabia }
+	title:c_damascus = { set_de_jure_liege_title = title:d_hyparchy_koile_syria }
+	title:c_baalbek = { set_de_jure_liege_title = title:d_hyparchy_koile_syria }
+	title:c_juwair = { set_de_jure_liege_title = title:d_hyparchy_koile_syria }
+	title:c_hauran = { set_de_jure_liege_title = title:d_hyparchy_koile_syria }
+	# Ammanitis
+	title:d_hyparchy_ammanitis = { set_de_jure_liege_title = title:k_satrapy_arabia }
+	title:c_balqa = { set_de_jure_liege_title = title:d_hyparchy_ammanitis }
+	title:c_jilat = { set_de_jure_liege_title = title:d_hyparchy_ammanitis }
+	title:c_maab = { set_de_jure_liege_title = title:d_hyparchy_ammanitis }
+	title:c_kerak = { set_de_jure_liege_title = title:d_hyparchy_ammanitis }
+}

@@ -290,6 +290,99 @@ LR_diadochi_antigonid_kingdom_decision = {
     }
 }
 
+LR_diadochi_antipatrid_kingdom_decision = {
+    picture = {
+        reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+    }
+    desc = LR_diadochi_antipatrid_kingdom_desc
+    selection_tooltip = LR_diadochi_antipatrid_kingdom_tooltip
+	confirm_text = LR_diadochi_antipatrid_kingdom_confirm
+    decision_group_type = hellenic
+    ai_check_interval = 120
+    is_shown = {
+        is_ruler = yes
+        is_playable_character = yes
+		NOT = { exists = title:k_antipatrid_kingdom.holder }
+		NOT = { exists = title:e_antipatrid_empire.holder }
+		NOT = { has_primary_title = title:e_byzantium }
+		NOT = { has_primary_title = title:e_seleukid_empire }
+		NOT = { has_primary_title = title:e_ptolemaic_empire }
+		NOT = { dynasty = dynasty:dynasty_hellenistic_antigonid }
+		NOT = { dynasty = dynasty:dynasty_hellenistic_ptolemaios }
+		NOT = { dynasty = dynasty:dynasty_hellenistic_seleukos }
+		NOT = { dynasty = dynasty:dynasty_hellenistic_balasid }
+		OR = {
+			dynasty = dynasty:dynasty_hellenistic_antipater
+			has_trait = trait:bloodline_antipater
+		}
+        NOT = {
+            is_target_in_global_variable_list = {
+                name = unavailable_unique_decisions
+                target = flag:flag_lux_antipatros_reborn
+            }
+        }
+    }
+
+    is_valid = {
+        is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+		culture = { has_cultural_pillar = heritage_hellenistic }
+		OR = {
+		   NOT = { has_title = title:e_byzantium }
+		   NOT = { exists = title:e_byzantium.holder }
+		}
+		OR = {
+			faith = { religion_tag = solar_religion }
+			faith = { religion_tag = hellenism_religion }
+		}
+		prestige_level >= 3
+
+		completely_controls = title:k_macedonia
+		completely_controls = title:k_hellas
+		custom_tooltip = {
+			text = primary_title_is_kingdom_tooltip
+			primary_title.tier = tier_kingdom
+		}
+	}
+
+    cost = {
+		gold = 1000
+    }
+
+    effect = {
+		custom_tooltip = LR_diadochi_antipatrid_kingdom_effect_tooltip
+
+		hidden_effect = {
+		    change_government = alexandrian_administrative_government
+		}
+
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_antipatros_reborn
+			}
+			set_global_variable = {
+				name = flag_lux_antipatros_reborn
+				value = root
+			}
+			create_antipatrid_kingdom_scripted_effect = yes
+		}
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_kingdoms_events.0009
+    }
+
+    ai_potential = {
+        always = yes
+    }
+
+    ai_will_do = {
+        base = 1000000
+    }
+}
+
 LR_create_alexander_hegemony_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"

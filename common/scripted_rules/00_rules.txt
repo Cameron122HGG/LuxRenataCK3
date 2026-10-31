@@ -1428,6 +1428,17 @@ can_create_title = {
 			}
 		}
 	}
+	# LR: the Hellenistic hyparchies can only be created inside a successor realm
+	trigger_if = {
+		limit = { scope:title = { LR_is_hyparchy_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_hyparchy_creation_tooltip
+			OR = {
+				LR_is_diadochi_ruler_trigger = yes
+				top_liege ?= { LR_is_diadochi_ruler_trigger = yes }
+			}
+		}
+	}
 }
 
 # Used to restrict a character from destroying titles, in addition to any title-specific limitation from the can_destroy block in the title definition.
