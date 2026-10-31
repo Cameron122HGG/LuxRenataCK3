@@ -1,0 +1,160 @@
+﻿# Starts the trait map situation once (new games, and saves started without the mod).
+# A situation from an older layout of the mod (no tmm_layout variable, single 'world'
+# sub-region) is ended first; the next call starts the new one.
+tmm_ensure_situation_effect = {
+	situation:tmm_trait_map ?= {
+		if = {
+			limit = { NOT = { has_variable = tmm_layout } }
+			end_situation = yes
+		}
+	}
+	if = {
+		limit = {
+			NOT = { exists = situation:tmm_trait_map }
+		}
+		start_situation = {
+			type = tmm_trait_map
+			start_phase = tmm_watch
+		}
+	}
+}
+
+# Changes the observed trait ($TRAIT$ = a trait scope, e.g. scope:tmm_trait or trait:sayyid),
+# repaints the sub-regions and refreshes the participant groups at once
+# (otherwise the engine re-evaluates them periodically).
+tmm_set_watched_trait_effect = {
+	tmm_ensure_situation_effect = yes
+	situation:tmm_trait_map ?= {
+		set_variable = {
+			name = tmm_watched_trait
+			value = $TRAIT$
+		}
+		tmm_refresh_trait_map_effect = yes
+	}
+	every_ruler = {
+		limit = {
+			OR = {
+				any_character_situation = { situation_type = tmm_trait_map }
+				tmm_has_watched_trait_trigger = yes
+				any_liege_or_above = { tmm_has_watched_trait_trigger = yes }
+			}
+		}
+		recalculate_participant_group = scope:situation
+	}
+}
+
+# Situation scope. The map mode paints the two sub-regions:
+# - tmm_holders: counties held by a character with the observed trait (vassal or not)
+# - tmm_subjects: counties held by a vassal (at any depth) of such a character
+# Only the counties that change sub-region are moved. Also counts the rulers for the legend.
+tmm_refresh_trait_map_effect = {
+	save_scope_as = situation
+	# Default trait
+	if = {
+		limit = { NOT = { has_variable = tmm_watched_trait } }
+		set_variable = {
+			name = tmm_watched_trait
+			value = trait:conqueror
+		}
+	}
+	every_county = {
+		save_temporary_scope_as = tmm_county
+		if = {
+			limit = {
+				holder ?= { tmm_has_watched_trait_trigger = yes }
+			}
+			tmm_move_county_to_sub_region_effect = { TO = tmm_holders FROM = tmm_subjects }
+		}
+		else_if = {
+			limit = {
+				holder ?= { any_liege_or_above = { tmm_has_watched_trait_trigger = yes } }
+			}
+			tmm_move_county_to_sub_region_effect = { TO = tmm_subjects FROM = tmm_holders }
+		}
+		else = {
+			tmm_remove_county_from_sub_region_effect = { FROM = tmm_holders }
+			tmm_remove_county_from_sub_region_effect = { FROM = tmm_subjects }
+		}
+	}
+	set_variable = { name = tmm_holders_count value = 0 }
+	set_variable = { name = tmm_subjects_count value = 0 }
+	every_ruler = {
+		limit = { is_landed = yes }
+		if = {
+			limit = { tmm_has_watched_trait_trigger = yes }
+			scope:situation = { change_variable = { name = tmm_holders_count add = 1 } }
+		}
+		else_if = {
+			limit = { any_liege_or_above = { tmm_has_watched_trait_trigger = yes } }
+			scope:situation = { change_variable = { name = tmm_subjects_count add = 1 } }
+		}
+	}
+}
+
+# Needs scope:situation and scope:tmm_county
+tmm_move_county_to_sub_region_effect = {
+	tmm_remove_county_from_sub_region_effect = { FROM = $FROM$ }
+	scope:situation.situation_sub_region:$TO$ = {
+		if = {
+			limit = { NOT = { situation_sub_region_has_county = scope:tmm_county } }
+			add_dejure_title_to_sub_region = scope:tmm_county
+		}
+	}
+}
+
+tmm_remove_county_from_sub_region_effect = {
+	scope:situation.situation_sub_region:$FROM$ = {
+		if = {
+			limit = { situation_sub_region_has_county = scope:tmm_county }
+			remove_dejure_title_from_sub_region = scope:tmm_county
+		}
+	}
+}
+
+##################################################
+# Trait buttons of the window
+##################################################
+# The buttons are read from three variable lists of trait scopes on the situation,
+# one per row: tmm_traits_fame, tmm_traits_physical, tmm_traits_other.
+# The 'other' row is only shown when it has traits.
+#
+# PUBLIC - other mods add their traits with this effect, from the on_action
+# tmm_register_traits (see common/on_action/tmm_on_actions.txt). Root = the situation.
+#   tmm_register_trait_effect = { TRAIT = my_trait ROW = other }
+# ROW = fame, physical or other. A trait already in a row is not added twice.
+tmm_register_trait_effect = {
+	if = {
+		limit = {
+			NOR = {
+				is_target_in_variable_list = { name = tmm_traits_fame target = trait:$TRAIT$ }
+				is_target_in_variable_list = { name = tmm_traits_physical target = trait:$TRAIT$ }
+				is_target_in_variable_list = { name = tmm_traits_other target = trait:$TRAIT$ }
+			}
+		}
+		add_to_variable_list = {
+			name = tmm_traits_$ROW$
+			target = trait:$TRAIT$
+		}
+	}
+}
+
+# Situation scope: the traits of this mod, then the traits of other mods (on_action).
+# Run at start and every month, so a mod added to a running save shows up within a month.
+tmm_register_traits_effect = {
+	# Fame
+	tmm_register_trait_effect = { TRAIT = conqueror ROW = fame }
+	tmm_register_trait_effect = { TRAIT = sayyid ROW = fame }
+	tmm_register_trait_effect = { TRAIT = born_in_the_purple ROW = fame }
+	tmm_register_trait_effect = { TRAIT = saint ROW = fame }
+	tmm_register_trait_effect = { TRAIT = crusader_king ROW = fame }
+	tmm_register_trait_effect = { TRAIT = herald ROW = fame }
+	# Physical
+	tmm_register_trait_effect = { TRAIT = pure_blooded ROW = physical }
+	tmm_register_trait_effect = { TRAIT = immortal ROW = physical }
+	tmm_register_trait_effect = { TRAIT = fecund ROW = physical }
+	tmm_register_trait_effect = { TRAIT = beauty_good_3 ROW = physical }
+	tmm_register_trait_effect = { TRAIT = intellect_good_3 ROW = physical }
+	tmm_register_trait_effect = { TRAIT = physique_good_3 ROW = physical }
+	# Other mods
+	trigger_event = { on_action = tmm_register_traits }
+}

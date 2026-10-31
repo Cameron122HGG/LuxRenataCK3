@@ -1,0 +1,373 @@
+######################################################
+################ TRAIT MAP WINDOW ####################
+######################################################
+# Situation view of tmm_trait_map (gui_window_name), code window = situation.
+# Opening it switches the map to the 'situation' map mode, which paints the
+# sub-regions of this situation. The trait buttons come from the variable lists
+# tmm_traits_fame / _physical / _other of the situation (tmm_register_trait_effect),
+# so traits from other mods get a button too.
+
+window = {
+	name = "window_tmm_trait_map"
+	widgetid = "window_tmm_trait_map"
+	datacontext = "[SituationWindow.GetSituation]"
+	datacontext = "[GetVariableSystem]"
+	datacontext = "[GetPlayer]"
+	parentanchor = top|right
+	layer = windows_layer
+	movable = no
+	allow_outside = yes
+
+	using = Window_Size_MainTab
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+		using = Window_Position_MainTab
+		on_start = "[SetMapMode( 'situation' )]"
+		# Trait lists of a situation started before they existed
+		on_start = "[GetScriptedGui( 'tmm_register_traits' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		# Same as window_tgp_dynastic_cycle.gui: the participant list opens on a group
+		on_start = "[SituationWindow.AccessParticipantCharacterList.SetSelectedParticipantGroup( Situation.GetTopParticipantGroupByKey( 'tmm_trait_holder' ) )]"
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+		using = Window_Position_MainTab_Hide
+		on_start = "[SetMapMode( 'realms' )]"
+	}
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 0 26 }
+		margin_right = 13
+
+		widget = {
+			size = { 100% 100% }
+
+			vbox = {
+				using = Window_Margins
+
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+
+				header_pattern = {
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "header_text"
+					{
+						text = "[Situation.GetNameNoTooltip]"
+					}
+
+					blockoverride "button_back"
+					{
+						onclick = "[OpenGameView( 'situations' )]"
+					}
+
+					blockoverride "button_close"
+					{
+						onclick = "[SituationWindow.Close]"
+					}
+				}
+
+				### Trait choice ###
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					margin = { 15 12 }
+					spacing = 10
+
+					background = {
+						using = Background_Area
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 6
+
+						text_single = {
+							text = "TMM_WATCHED_TRAIT"
+							align = nobaseline
+						}
+
+						text_single = {
+							text = "[Situation.MakeScope.Var( 'tmm_watched_trait' ).Trait.GetNameNoTooltip( GetNullCharacter )]"
+							default_format = "#high"
+							align = nobaseline
+						}
+
+						expand = {}
+					}
+
+					dynamicgridbox_tmm_trait_row = {
+						datamodel = "[Situation.MakeScope.GetList( 'tmm_traits_fame' )]"
+					}
+
+					dynamicgridbox_tmm_trait_row = {
+						datamodel = "[Situation.MakeScope.GetList( 'tmm_traits_physical' )]"
+					}
+
+					dynamicgridbox_tmm_trait_row = {
+						datamodel = "[Situation.MakeScope.GetList( 'tmm_traits_other' )]"
+						visible = "[Not( IsDataModelEmpty( Situation.MakeScope.GetList( 'tmm_traits_other' ) ) )]"
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "TMM_WINDOW_DESC"
+						default_format = "#weak"
+						align = nobaseline
+					}
+				}
+
+				### Legend ###
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					margin = { 15 10 }
+					spacing = 6
+
+					background = {
+						using = Background_Area
+					}
+
+					hbox_tmm_legend_row = {
+						blockoverride "count"
+						{
+							text = "TMM_LEGEND_COUNT_HOLDERS"
+						}
+
+						blockoverride "swatch_color"
+						{
+							color = { 0.82 0.1 0.14 1 }
+						}
+						blockoverride "group_name"
+						{
+							text = "tmm_trait_map_participant_group_tmm_trait_holder"
+						}
+					}
+
+					hbox_tmm_legend_row = {
+						blockoverride "count"
+						{
+							text = "TMM_LEGEND_COUNT_SUBJECTS"
+						}
+
+						blockoverride "swatch_color"
+						{
+							color = { 0.96 0.59 0.47 1 }
+						}
+						blockoverride "group_name"
+						{
+							text = "tmm_trait_map_participant_group_tmm_trait_subject"
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 10
+
+						icon = {
+							size = { 22 22 }
+							texture = "gfx/interface/colors/white.dds"
+							color = { 0.5 0.5 0.5 1 }
+						}
+
+						text_single = {
+							text = "TMM_LEGEND_OTHERS"
+							default_format = "#weak"
+							align = nobaseline
+						}
+
+						expand = {}
+					}
+				}
+
+				### Map modes & participants ###
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					margin = { 15 10 }
+					spacing = 10
+
+					background = {
+						using = Background_Area
+					}
+
+					text_single = {
+						text = "TMM_MAP_MODES"
+						align = nobaseline
+					}
+
+					icon_button_mapmode = {
+						size = { 36 36 }
+						blockoverride "mm_datacontext"
+						{
+							datacontext = "[GetMapMode( 'situation' )]"
+						}
+					}
+
+					icon_button_mapmode = {
+						size = { 36 36 }
+						blockoverride "mm_datacontext"
+						{
+							datacontext = "[GetMapMode( 'realms' )]"
+						}
+					}
+
+					expand = {}
+
+					button_standard_small = {
+						onclick = "[SituationWindow.AccessParticipantCharacterList.Toggle]"
+						text = "TMM_VIEW_PARTICIPANTS"
+					}
+				}
+
+				expand = {}
+			}
+		}
+	}
+
+	window_situation_participant_groups = {
+		datacontext = "[SituationWindow.AccessParticipantCharacterList]"
+		datacontext = "[SituationParticipantCharacterList.AccessCharacterList]"
+		visible = "[SituationParticipantCharacterList.IsVisible]"
+
+		datacontext = "[SituationWindow.GetSelectedSubRegion]"
+		blockoverride "header_text"
+		{
+			text = "[SituationWindow.GetParticipationWindowHeader]"
+		}
+	}
+}
+
+types TmmTraitMap
+{
+	# One legend line: map colour, name, number of landed rulers (variables set by tmm_refresh_trait_map_effect)
+	type hbox_tmm_legend_row = hbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 10
+
+		icon = {
+			size = { 22 22 }
+			texture = "gfx/interface/colors/white.dds"
+			block "swatch_color" {}
+		}
+
+		text_single = {
+			block "group_name" {}
+			align = nobaseline
+		}
+
+		expand = {}
+
+		text_single = {
+			block "count" {}
+			align = nobaseline
+		}
+	}
+
+	# One row of trait buttons, datamodel = a variable list of trait scopes (10 per line)
+	type dynamicgridbox_tmm_trait_row = dynamicgridbox {
+		datamodel_wrap = 10
+		flipdirection = yes
+
+		item = {
+			widget = {
+				size = { 58 58 }
+
+				button_tmm_trait = {
+					parentanchor = center
+					datacontext = "[Scope.Trait]"
+				}
+			}
+		}
+	}
+
+	# One trait button, same look as the participant group buttons of window_situation.gui.
+	# Needs the list item Scope (a trait scope) and its Trait datacontext.
+	type button_tmm_trait = button {
+		size = { 52 52 }
+		onclick = "[GetScriptedGui( 'tmm_watch_trait' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'tmm_trait', Trait.MakeScope ).End )]"
+
+		# Trait tooltip with description, like the vanilla template character_trait_tooltip
+		# (gui/shared/cooltip.gui) but without a character: GetNullCharacter gives the
+		# generic name and description (the 'NOT = { exists = this }' branch of the trait).
+		tooltipwidget = {
+			object_tooltip_pop_out = {
+				blockoverride "header_additions" {
+					hbox = {
+						margin_right = 10
+						margin_top = 8
+						margin_left = -4
+
+						icon = {
+							size = { 52 52 }
+							texture = "[Trait.GetIcon( GetNullCharacter )]"
+							tintcolor = "[TooltipInfo.GetTintColor]"
+						}
+					}
+				}
+
+				blockoverride "title_text" {
+					margin = { 0 8 }
+					text = "[Trait.GetNameNoTooltip( GetNullCharacter )]"
+				}
+
+				blockoverride "concept_link" {
+					text = "[Trait.GetTraitCategoryLabel]"
+				}
+
+				blockoverride "description_text" {
+					text = "[Trait.GetFullDescription( GetNullCharacter, GetPlayer.GetRite.Self )]"
+				}
+			}
+		}
+		using = tooltip_ne
+
+		# The situation map mode and the participant list keep their content until
+		# the map mode / the selected group changes. When this trait becomes the
+		# observed one (i.e. after the scripted GUI effect has been applied), switch
+		# to realms and back to repaint the map, and select the other group and back
+		# to rebuild the list (it ends on the trait holders).
+		state = {
+			name = tmm_refresh
+			trigger_when = "[Not( GetScriptedGui( 'tmm_watch_trait' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'tmm_trait', Trait.MakeScope ).End ) )]"
+			on_start = "[SetMapMode( 'realms' )]"
+			on_start = "[SituationWindow.AccessParticipantCharacterList.SetSelectedParticipantGroup( Situation.GetTopParticipantGroupByKey( 'tmm_trait_subject' ) )]"
+			duration = 0.05
+			next = tmm_refresh_2
+		}
+		state = {
+			name = tmm_refresh_2
+			on_start = "[SetMapMode( 'situation' )]"
+			on_start = "[SituationWindow.AccessParticipantCharacterList.SetSelectedParticipantGroup( Situation.GetTopParticipantGroupByKey( 'tmm_trait_holder' ) )]"
+		}
+
+		icon = {
+			visible = "[Not( GetScriptedGui( 'tmm_watch_trait' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'tmm_trait', Trait.MakeScope ).End ) )]"
+			parentanchor = center
+			texture = "gfx/interface/buttons/button_round_frame.dds"
+			size = { 64 64 }
+			color = { 0.75 0.75 0.65 1 }
+
+			modify_texture = {
+				texture = "gfx/interface/colors/gold.dds"
+				alpha = 1
+			}
+		}
+
+		icon_round_button_base = {
+			parentanchor = center
+			size = { 100% 100% }
+		}
+
+		icon = {
+			parentanchor = center
+			size = { 42 42 }
+			alwaystransparent = yes
+			texture = "[Trait.GetIcon( GetNullCharacter )]"
+		}
+	}
+}

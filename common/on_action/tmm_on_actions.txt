@@ -1,0 +1,48 @@
+﻿# Trait Map Mode - starts the situation behind the map mode.
+# The quarterly pulse (players only) catches saves started without the mod and
+# situations from an older layout of the mod (ended, then started again).
+# The map mode button can also start it at once (scripted GUI tmm_start_situation).
+
+on_game_start_after_lobby = {
+	on_actions = { tmm_ensure_situation }
+}
+
+quarterly_playable_pulse = {
+	on_actions = { tmm_ensure_situation_player }
+}
+
+tmm_ensure_situation = {
+	effect = {
+		tmm_ensure_situation_effect = yes
+	}
+}
+
+tmm_ensure_situation_player = {
+	trigger = {
+		is_ai = no
+	}
+	effect = {
+		tmm_ensure_situation_effect = yes
+	}
+}
+
+##################################################
+# PUBLIC - trait buttons from other mods
+##################################################
+# Fired at the start of the situation and every month, root = the situation.
+# To add traits from another mod, put a file in that mod (or in a small patch mod),
+# for example common/on_action/zz_mymod_tmm_traits.txt:
+#
+#   tmm_register_traits = {
+#       on_actions = { mymod_tmm_register_traits }
+#   }
+#   mymod_tmm_register_traits = {
+#       effect = {
+#           tmm_register_trait_effect = { TRAIT = my_trait ROW = other }
+#       }
+#   }
+#
+# ROW = fame (first row), physical (second row) or other (third row, shown only when used).
+# Traits are added once; a new mod in a running save shows up within a month.
+tmm_register_traits = {
+}

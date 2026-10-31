@@ -1,0 +1,650 @@
+﻿# Trait Map Mode - override of the type flowcontainer_additional_mapmodes
+# from gui/shared/mapmodes.gui (vanilla 1.20.0.4). GUI types are registered by the
+# first file that declares them and gui/00_* loads before gui/shared/*.
+# Only the lines between 'TMM start' and 'TMM end' differ from vanilla.
+types TmmMapModes
+{
+	type flowcontainer_additional_mapmodes = flowcontainer {
+
+		visible = "[GetVariableSystem.Exists( 'mapmodes_expand' )]"
+		visible_at_creation = no
+
+		margin = { 22 10 }
+		alwaystransparent = no
+		filter_mouse = all
+
+		state = {
+			name = _mouse_hierarchy_leave
+			on_finish = "[GetVariableSystem.Toggle( 'mapmodes_expand' )]"
+		}
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Standard
+		}
+
+		flowcontainer = {
+			direction = vertical
+			margin = { 10 10 }
+			margin_top = 5
+			ignoreinvisible = yes
+
+			background = {
+				using = Background_Area_Dark
+				color = { 0.15 0.15 0.15 0.75 }
+			}
+
+			text_single = {
+				parentanchor = hcenter
+				text = "ADDITIONAL_MAPMODES"
+				default_format = "#medium"
+				margin_bottom = 5
+				max_width = 130
+			}
+
+			block "mapmodes_insert_before"
+			{
+
+			}
+
+			flowcontainer = {
+				ignoreinvisible = yes
+				parentanchor = hcenter
+
+				icon_button_mapmode = {
+					name = "county_fertility"
+					parentanchor = vcenter
+					size = { 32 32 }
+					visible = "[HasDlcFeature( 'khans_of_the_steppe' )]"
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'migration_counties' )]"
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_19"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "terrain"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'terrain' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						texture = "gfx/interface/icons/flat_icons/map_modes/terrain.dds"
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_terrain"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "simple_terrain"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'simple_terrain' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						texture = "[MapMode.GetIcon]"
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_12"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "players"
+					visible = "[And( Or(GameHasMultiplePlayers, InDebugMode), CanChangeMapMode)]"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'players' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 26 26 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_8"
+					}
+				}
+			}
+
+			widget ={
+				size = {0 4}
+			}
+			divider_light = {
+				min_width = 100
+				parentanchor = hcenter
+			}
+			widget ={
+				size = {0 4}
+			}
+
+			flowcontainer = {
+				ignoreinvisible = yes
+				parentanchor = hcenter
+
+				icon_button_mapmode = {
+					name = "map_mode_landless_rulers_button"
+					visible = "[And( HasDlcFeature( 'landless_playable' ), CanChangeMapMode )]"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'landless_rulers' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_18"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "confederations"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'confederations' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						texture = "gfx/interface/icons/flat_icons/map_modes/confederations.dds"
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_confederations"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "map_mode_epidemics_button"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'epidemics' )]"
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_16"
+					}
+				}
+
+
+				icon_button_mapmode = {
+					name = "map_mode_legends_button"
+					visible = "[And( HasDlcFeature( 'legends' ), CanChangeMapMode )]"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'legends' )]"
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_17"
+					}
+				}
+				# TMM start - Trait map: opens the tmm_trait_map situation view
+				widget = {
+					name = "tmm_map_mode_button"
+					parentanchor = vcenter
+					size = { 32 32 }
+					datacontext = "[GetSituation( 'tmm_trait_map' )]"
+					visible = "[CanChangeMapMode]"
+
+					icon = {
+						size = { 100% 100% }
+						texture = "gfx/interface/component_masks/mask_circle.dds"
+						visible = "[And( Situation.IsValid, IsMapMode( 'situation' ) )]"
+
+						glow = {
+							color = { 0.93 0.65 0.45 1.0 }
+							glow_radius = 6
+
+							glow_generation_rules = {
+								glow_alpha_mask = 0
+								glow_blur_passes = 15
+								glow_texture_downscale = 5.5f
+								glow_ignore_inside_pixels = yes
+							}
+						}
+
+						using = Animation_Glow_Pulse
+					}
+
+					button_round = {
+						visible = "[Situation.IsValid]"
+						size = { 100% 100% }
+						using = tooltip_nw
+						onclick = "[ToggleGameViewData( Situation.GetWindowName, Situation.GetID )]"
+						tooltip = "TMM_MAP_MODE_BUTTON_TT"
+
+						icon = {
+							parentanchor = center
+							size = { 24 24 }
+							alwaystransparent = yes
+							texture = "gfx/interface/icons/message_feed/trait.dds"
+						}
+					}
+
+					button_round = {
+						visible = "[Not( Situation.IsValid )]"
+						size = { 100% 100% }
+						using = tooltip_nw
+						onclick = "[GetScriptedGui( 'tmm_start_situation' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						enabled = "[GetScriptedGui( 'tmm_start_situation' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						tooltip = "TMM_MAP_MODE_BUTTON_START_TT"
+
+						icon = {
+							parentanchor = center
+							size = { 24 24 }
+							alwaystransparent = yes
+							alpha = 0.5
+							texture = "gfx/interface/icons/message_feed/trait.dds"
+						}
+					}
+				}
+				# TMM end
+			}
+
+			widget ={
+				size = {0 4}
+			}
+			divider_light = {
+				min_width = 100
+				parentanchor = hcenter
+			}
+			widget ={
+				size = {0 4}
+			}
+
+			flowcontainer = {
+				ignoreinvisible = yes
+				parentanchor = hcenter
+
+				icon_button_mapmode = {
+					name = "map_mode_counties_button"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'dejure_counties' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_6"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "map_mode_hegemonies_button"
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode('dejure_hegemonies')]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 26 26 }
+						position = { 0 2}
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_20"
+					}
+
+					blockoverride "button_bg_color"
+					{
+						color = { 0.12 0.12 0.18 1 }
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "map_mode_government_button"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'government' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_5"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "map_mode_court_languages_button"
+					visible = "[And( HasDlcFeature( 'royal_court' ), CanChangeMapMode )]"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode('court_languages')]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_7"
+					}
+				}
+			}
+
+			widget ={
+				size = {0 4}
+			}
+
+			divider_light = {
+				min_width = 100
+				parentanchor = hcenter
+			}
+			widget ={
+				size = {0 4}
+			}
+
+			flowcontainer = {
+				ignoreinvisible = yes
+				parentanchor = hcenter
+
+				icon_button_mapmode = {
+					name = "county_development"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'county_development' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_13"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "county_control"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'county_control' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 22 22 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_15"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "economy_buildings"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'economy_buildings' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_14"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "diplomatic_relations"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'diplomatic_relations' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						texture = "[MapMode.GetIcon]"
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_diplomatic_relations"
+					}
+				}
+			}
+
+			text_single = {
+				parentanchor = hcenter
+				text = "ADDITIONAL_MAP_SETTINGS"
+				default_format = "#medium"
+				margin_bottom = 5
+				max_width = 130
+			}
+
+			flowcontainer = {
+				direction = vertical
+				margin = { 5 5 }
+				ignoreinvisible = yes
+
+				background = {
+					using = Background_Area_Dark
+				}
+
+				min_width = 159
+
+				button_checkbox_label = {
+					onclick = "[ToggleShowEpidemicMapGraphics]"
+					tooltip = "SETTING_SHOW_EPIDEMIC_MAP_GRAPHICS_TOOLTIP"
+
+					state = {
+						name = _show
+						using = Animation_FadeIn_Standard
+					}
+
+					state = {
+						name = _hide
+						using = Animation_FadeOut_Standard
+					}
+
+					blockoverride "checkbox"
+					{
+						checked = "[ShowEpidemicMapGraphics]"
+						size = { 20 20 }
+					}
+
+					blockoverride "text"
+					{
+						text = "SETTING_SHOW_EPIDEMIC_MAP_GRAPHICS"
+						min_width = 120
+						max_width = 125
+						fontsize = 14
+						max_height = 18
+					}
+				}
+
+				button_checkbox_label = {
+					onclick = "[ToggleShowLegendMapGraphics]"
+					tooltip = "SETTING_SHOW_LEGEND_MAP_GRAPHICS_TOOLTIP"
+					visible = "[HasDlcFeature( 'legends' )]"
+
+					state = {
+						name = _show
+						using = Animation_FadeIn_Standard
+					}
+
+					state = {
+						name = _hide
+						using = Animation_FadeOut_Standard
+					}
+
+					blockoverride "checkbox"
+					{
+						checked = "[ShowLegendMapGraphics]"
+						size = { 20 20 }
+					}
+
+					blockoverride "text"
+					{
+						text = "SETTING_SHOW_LEGEND_MAP_GRAPHICS"
+						min_width = 120
+						max_width = 125
+						fontsize = 14
+						max_height = 18
+					}
+				}
+
+				button_checkbox_label = {
+					visible = "[GetPlayer.CanRaid]"
+					onclick = "[ToggleShowDetailedRaidMapIcons]"
+					tooltip = "SETTING_SHOW_DETAILED_RAID_MAP_ICON_TOOLTIP"
+
+					state = {
+						name = _show
+						using = Animation_FadeIn_Standard
+					}
+
+					state = {
+						name = _hide
+						using = Animation_FadeOut_Standard
+					}
+
+					blockoverride "checkbox"
+					{
+						checked = "[ShowDetailedRaidMapIcons]"
+						size = { 20 20 }
+					}
+
+					blockoverride "text"
+					{
+						text = "SETTING_SHOW_DETAILED_RAID_MAP_ICON"
+						min_width = 120
+						max_width = 125
+						fontsize = 14
+						max_height = 18
+					}
+				}
+
+				button_checkbox_label = {
+					visible = "[GetPlayer.HasBarterGoods]"
+					onclick = "[ToggleShowDetailedBarterMapIcons]"
+					tooltip = "SETTING_SHOW_DETAILED_BARTER_MAP_ICON_TOOLTIP"
+
+					state = {
+						name = _show
+						using = Animation_FadeIn_Standard
+					}
+
+					state = {
+						name = _hide
+						using = Animation_FadeOut_Standard
+					}
+
+					blockoverride "checkbox"
+					{
+						checked = "[ShowDetailedBarterMapIcons]"
+						size = { 20 20 }
+					}
+
+					blockoverride "text"
+					{
+						text = "SETTING_SHOW_DETAILED_BARTER_MAP_ICON"
+						min_width = 120
+						max_width = 125
+						fontsize = 14
+						max_height = 18
+					}
+				}
+			}
+		}
+	}
+}

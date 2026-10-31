@@ -1,0 +1,49 @@
+﻿# Map mode button fallback when the situation does not exist yet (save started without the mod)
+tmm_start_situation = {
+	scope = character
+
+	is_valid = {
+		NOT = { exists = situation:tmm_trait_map }
+	}
+
+	effect = {
+		tmm_ensure_situation_effect = yes
+	}
+}
+
+# Trait buttons of the window. scope:tmm_trait = the trait of the button.
+# is_valid = not observed yet, which also gives the 'selected' state of the button.
+tmm_watch_trait = {
+	scope = character
+	saved_scopes = { tmm_trait }
+
+	is_valid = {
+		NOT = { tmm_trait_is_watched_trigger = yes }
+	}
+
+	effect = {
+		tmm_set_watched_trait_effect = { TRAIT = scope:tmm_trait }
+	}
+}
+
+# Run when the window opens: fills the trait lists and the observed trait of a
+# situation started before they existed (otherwise done by on_monthly)
+tmm_register_traits = {
+	scope = character
+
+	is_valid = {
+		situation:tmm_trait_map ?= {
+			OR = {
+				NOT = { has_variable_list = tmm_traits_fame }
+				NOT = { has_variable = tmm_watched_trait }
+			}
+		}
+	}
+
+	effect = {
+		situation:tmm_trait_map ?= {
+			tmm_register_traits_effect = yes
+			tmm_refresh_trait_map_effect = yes
+		}
+	}
+}

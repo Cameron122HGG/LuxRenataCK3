@@ -1,0 +1,95 @@
+﻿# Trait map (Trait Map Mode) - a world-wide situation used only as a scripted map mode.
+# The engine has no scripted map modes. This situation uses the 'sub_regions' map mode:
+# two sub-regions, filled county by county by tmm_refresh_trait_map_effect, are painted
+# with their map_color and every other county is grey.
+# (The 'participant_groups' map mode was tried first: it does not paint a trait holder
+# whose liege is not a participant, so vassals with the trait stayed grey.)
+# The observed trait is the trait scope in the variable tmm_watched_trait (default: conqueror),
+# set by tmm_set_watched_trait_effect. The trait buttons come from variable lists that
+# other mods can extend (tmm_register_trait_effect). No modifier: no gameplay effect.
+# Until 2026-10-12 the key was cqm_conquerors (mod prefix cqm); saves made before
+# that lose the old situation on load and tmm_ensure_situation_effect starts this one.
+# A situation without the tmm_layout variable is ended and started again (safeguard).
+
+tmm_trait_map = {
+	gui_window_name = "window_tmm_trait_map"
+	illustration = "gfx/interface/illustrations/event_scenes/battlefield.dds"
+	# Type icon: gfx/interface/icons/situation_types/tmm_trait_map.dds (SITUATION_TYPE_ICON_PATH + key)
+	situation_group_type = tmm_hidden # hidden from the situation list, see tmm_situation_group_types.txt
+	map_mode = sub_regions
+
+	is_unique = yes
+
+	##################################################
+	# Regions
+	##################################################
+	# Empty at start, filled by tmm_refresh_trait_map_effect. The first one is the
+	# top sub-region (participant list of the window).
+	sub_regions = {
+		tmm_holders = {
+			icon = "gfx/interface/icons/situations/tmm/tmm_group_holders.dds"
+			map_color = rgb{ 210 25 35 }
+		}
+		tmm_subjects = {
+			icon = "gfx/interface/icons/situations/tmm/tmm_group_subjects.dds"
+			map_color = rgb{ 245 150 120 }
+		}
+	}
+
+	##################################################
+	# On Actions
+	##################################################
+	on_start = {
+		set_variable = tmm_layout
+		tmm_register_traits_effect = yes
+		tmm_refresh_trait_map_effect = yes
+	}
+
+	# Catches trait changes, deaths, conquests and inheritances
+	on_monthly = {
+		if = {
+			limit = { has_variable = tmm_layout }
+			tmm_register_traits_effect = yes
+			tmm_refresh_trait_map_effect = yes
+		}
+		else = {
+			end_situation = yes
+		}
+	}
+
+	##################################################
+	# Groups (participant list of the window)
+	##################################################
+	# First valid group wins, so a trait holder who is the vassal of another holder stays in tmm_trait_holder
+	participant_groups = {
+		tmm_trait_holder = {
+			icon = "gfx/interface/icons/situations/tmm/tmm_group_holders.dds"
+			require_realm_in_sub_region = no
+
+			is_character_valid = {
+				tmm_has_watched_trait_trigger = yes
+			}
+		}
+
+		tmm_trait_subject = {
+			icon = "gfx/interface/icons/situations/tmm/tmm_group_subjects.dds"
+			auto_add_landless_rulers = no
+
+			is_character_valid = {
+				is_landed = yes
+				any_liege_or_above = { tmm_has_watched_trait_trigger = yes }
+			}
+		}
+	}
+
+	##################################################
+	# Phases
+	##################################################
+	start_phase = tmm_watch
+
+	phases = {
+		tmm_watch = {
+			icon = "gfx/interface/icons/situations/tmm/tmm_group_holders.dds"
+		}
+	}
+}

@@ -1,0 +1,25 @@
+﻿# Character scope, needs scope:situation: does the character have the observed trait?
+# The observed trait is the trait scope in the situation variable tmm_watched_trait
+# (set by tmm_set_watched_trait_effect, default conqueror).
+tmm_has_watched_trait_trigger = {
+	trigger_if = {
+		limit = { scope:situation = { has_variable = tmm_watched_trait } }
+		has_trait = scope:situation.var:tmm_watched_trait
+	}
+	trigger_else = {
+		has_trait = conqueror
+	}
+}
+
+# Needs scope:tmm_trait (a trait): is it the observed trait?
+tmm_trait_is_watched_trigger = {
+	situation:tmm_trait_map ?= {
+		trigger_if = {
+			limit = { has_variable = tmm_watched_trait }
+			var:tmm_watched_trait = scope:tmm_trait
+		}
+		trigger_else = {
+			scope:tmm_trait = trait:conqueror
+		}
+	}
+}
