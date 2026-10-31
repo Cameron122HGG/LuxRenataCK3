@@ -1,4 +1,5 @@
-﻿# Satrapies (see 03_LR_diadochi_hyparchies.txt, 03_LR_diadochi_strategiai.txt and 01_LR_diadochi_satrapy_decisions.txt)
+﻿# Satrapies (see 03_LR_diadochi_hyparchies.txt, 03_LR_diadochi_strategiai.txt, 03_LR_diadochi_indian_satrapies.txt
+# and 01_LR_diadochi_satrapy_decisions.txt)
 
 # Antigonids and Antipatrids found a kingdom; their satrapies need the empire above it.
 # Usage: LR_diadochi_ensure_successor_empire_effect = { KINGDOM = k_antigonid_kingdom EMPIRE = e_antigonid_empire }
@@ -25,15 +26,23 @@ LR_diadochi_ensure_successor_empire_effect = {
 	}
 }
 
-# Root is the restoring ruler: creates the satrapy under the successor empire (or its strategia, under the Hegemony)
-# and lays out its hyparchies.
+# Root is the restoring ruler: creates the satrapy and lays out its hyparchies. The satrapy goes into its strategia
+# under h_hellenistic_empire if root holds it, an Indian satrapy into its strategia under h_greek_india if root holds that,
+# and otherwise under EMPIRE (the successor empire).
 # Usage: LR_restore_satrapy_effect = { SATRAPY = k_satrapy_syria EMPIRE = e_seleukid_empire }
 LR_restore_satrapy_effect = {
 	title:$SATRAPY$ = { save_scope_as = restored_satrapy }
 	title:$EMPIRE$ = { save_scope_as = satrapy_empire }
-	if = { # Under the Hegemony the satrapy goes into its strategia
+	if = {
 		limit = { has_title = title:h_hellenistic_empire }
-		LR_satrapy_strategia_$SATRAPY$_effect = yes
+		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else_if = {
+		limit = {
+			has_title = title:h_greek_india
+			LR_is_indian_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+		}
+		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_greek_india }
 	}
 	else = {
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:$EMPIRE$ }
@@ -788,6 +797,7 @@ LR_satrapy_hyparchies_k_satrapy_arachosia_effect = {
 	title:d_hyparchy_paropamisadai = { set_de_jure_liege_title = title:k_satrapy_arachosia }
 	title:c_kabul = { set_de_jure_liege_title = title:d_hyparchy_paropamisadai }
 	title:c_bamian = { set_de_jure_liege_title = title:d_hyparchy_paropamisadai }
+	title:c_chitral = { set_de_jure_liege_title = title:d_hyparchy_paropamisadai }
 	title:c_ghur = { set_de_jure_liege_title = title:d_hyparchy_paropamisadai }
 	title:c_darmashan = { set_de_jure_liege_title = title:d_hyparchy_paropamisadai }
 	title:c_upper_ghur = { set_de_jure_liege_title = title:d_hyparchy_paropamisadai }
@@ -807,51 +817,6 @@ LR_satrapy_hyparchies_k_satrapy_gedrosia_effect = {
 	title:c_khawr = { set_de_jure_liege_title = title:d_hyparchy_oreitis }
 	title:c_turan = { set_de_jure_liege_title = title:d_hyparchy_oreitis }
 	title:c_sibi = { set_de_jure_liege_title = title:d_hyparchy_oreitis }
-}
-
-LR_satrapy_hyparchies_k_satrapy_gandhara_effect = {
-	# Gandhara
-	title:d_hyparchy_gandhara = { set_de_jure_liege_title = title:k_satrapy_gandhara }
-	title:c_udabhanda = { set_de_jure_liege_title = title:d_hyparchy_gandhara }
-	title:c_purushapura = { set_de_jure_liege_title = title:d_hyparchy_gandhara }
-	title:c_nandana = { set_de_jure_liege_title = title:d_hyparchy_gandhara }
-	title:c_bannu = { set_de_jure_liege_title = title:d_hyparchy_gandhara }
-	title:c_urgun = { set_de_jure_liege_title = title:d_hyparchy_gandhara }
-	title:c_chitral = { set_de_jure_liege_title = title:d_hyparchy_gandhara }
-	# Sagala
-	title:d_hyparchy_sagala = { set_de_jure_liege_title = title:k_satrapy_gandhara }
-	title:c_sakala = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-	title:c_lahur = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-	title:c_bhera = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-	title:c_shorkot = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-	title:c_dipalpur = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-	title:c_trigarta = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-	title:c_kangra = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-	title:c_gurjaratra = { set_de_jure_liege_title = title:d_hyparchy_sagala }
-}
-
-LR_satrapy_hyparchies_k_satrapy_india_effect = {
-	# Patalene
-	title:d_hyparchy_patalene = { set_de_jure_liege_title = title:k_satrapy_india }
-	title:c_debul = { set_de_jure_liege_title = title:d_hyparchy_patalene }
-	title:c_sonda = { set_de_jure_liege_title = title:d_hyparchy_patalene }
-	title:c_mansura = { set_de_jure_liege_title = title:d_hyparchy_patalene }
-	title:c_ranikot = { set_de_jure_liege_title = title:d_hyparchy_patalene }
-	title:c_siwistan = { set_de_jure_liege_title = title:d_hyparchy_patalene }
-	# Mousikane
-	title:d_hyparchy_mousikane = { set_de_jure_liege_title = title:k_satrapy_india }
-	title:c_aror = { set_de_jure_liege_title = title:d_hyparchy_mousikane }
-	title:c_bhakkar = { set_de_jure_liege_title = title:d_hyparchy_mousikane }
-	title:c_rajanpur = { set_de_jure_liege_title = title:d_hyparchy_mousikane }
-	title:c_vijnot = { set_de_jure_liege_title = title:d_hyparchy_mousikane }
-	# Malloi
-	title:d_hyparchy_malloi = { set_de_jure_liege_title = title:k_satrapy_india }
-	title:c_multan = { set_de_jure_liege_title = title:d_hyparchy_malloi }
-	title:c_kafirkot = { set_de_jure_liege_title = title:d_hyparchy_malloi }
-	title:c_uch = { set_de_jure_liege_title = title:d_hyparchy_malloi }
-	title:c_karur = { set_de_jure_liege_title = title:d_hyparchy_malloi }
-	title:c_karor = { set_de_jure_liege_title = title:d_hyparchy_malloi }
-	title:c_kalat = { set_de_jure_liege_title = title:d_hyparchy_malloi }
 }
 
 LR_satrapy_hyparchies_k_satrapy_magan_effect = {
@@ -921,314 +886,919 @@ LR_satrapy_hyparchies_k_satrapy_trogodytike_effect = {
 	title:c_wolqayt = { set_de_jure_liege_title = title:d_hyparchy_adoulis }
 }
 
-# Hellenistic prefectures: a satrapy goes into its strategia, and the strategia under the Hegemony
+LR_satrapy_hyparchies_k_poklais_effect = {
+	# Mallia
+	title:d_mallia = { set_de_jure_liege_title = title:k_poklais }
+	title:c_multan = { set_de_jure_liege_title = title:d_mallia }
+	title:c_kafirkot = { set_de_jure_liege_title = title:d_mallia }
+	title:c_uch = { set_de_jure_liege_title = title:d_mallia }
+	title:c_karur = { set_de_jure_liege_title = title:d_mallia }
+	title:c_karor = { set_de_jure_liege_title = title:d_mallia }
+	# Laboklene
+	title:d_laboklene = { set_de_jure_liege_title = title:k_poklais }
+	title:c_lahur = { set_de_jure_liege_title = title:d_laboklene }
+	title:c_dipalpur = { set_de_jure_liege_title = title:d_laboklene }
+	title:c_bhera = { set_de_jure_liege_title = title:d_laboklene }
+	title:c_shorkot = { set_de_jure_liege_title = title:d_laboklene }
+	title:c_sakala = { set_de_jure_liege_title = title:d_laboklene }
+	title:c_gurjaratra = { set_de_jure_liege_title = title:d_laboklene }
+	# Trikartene
+	title:d_trikartene = { set_de_jure_liege_title = title:k_poklais }
+	title:c_trigarta = { set_de_jure_liege_title = title:d_trikartene }
+	title:c_kangra = { set_de_jure_liege_title = title:d_trikartene }
+	# Gandaritis
+	title:d_gandaritis = { set_de_jure_liege_title = title:k_poklais }
+	title:c_udabhanda = { set_de_jure_liege_title = title:d_gandaritis }
+	title:c_purushapura = { set_de_jure_liege_title = title:d_gandaritis }
+	title:c_nandana = { set_de_jure_liege_title = title:d_gandaritis }
+	# Sattagydia
+	title:d_sattagydia = { set_de_jure_liege_title = title:k_poklais }
+	title:c_bannu = { set_de_jure_liege_title = title:d_sattagydia }
+	title:c_urgun = { set_de_jure_liege_title = title:d_sattagydia }
+	title:c_kalat = { set_de_jure_liege_title = title:d_sattagydia }
+}
+
+LR_satrapy_hyparchies_k_kaspeiria_effect = {
+	# Kaspeirene
+	title:d_kaspeirene = { set_de_jure_liege_title = title:k_kaspeiria }
+	title:c_kasmira = { set_de_jure_liege_title = title:d_kaspeirene }
+	title:c_allai = { set_de_jure_liege_title = title:d_kaspeirene }
+	# Daradene
+	title:d_daradene = { set_de_jure_liege_title = title:k_kaspeiria }
+	title:c_astore = { set_de_jure_liege_title = title:d_daradene }
+	title:c_gilgit = { set_de_jure_liege_title = title:d_daradene }
+	title:c_yasin = { set_de_jure_liege_title = title:d_daradene }
+	title:c_golaghmuli = { set_de_jure_liege_title = title:d_daradene }
+}
+
+LR_satrapy_hyparchies_k_sigerdis_effect = {
+	# Patalene
+	title:d_patalene = { set_de_jure_liege_title = title:k_sigerdis }
+	title:c_debul = { set_de_jure_liege_title = title:d_patalene }
+	title:c_sonda = { set_de_jure_liege_title = title:d_patalene }
+	# Sodraia
+	title:d_sodraia = { set_de_jure_liege_title = title:k_sigerdis }
+	title:c_mansura = { set_de_jure_liege_title = title:d_sodraia }
+	title:c_ranikot = { set_de_jure_liege_title = title:d_sodraia }
+	title:c_siwistan = { set_de_jure_liege_title = title:d_sodraia }
+	# Prasiane
+	title:d_prasiane = { set_de_jure_liege_title = title:k_sigerdis }
+	title:c_bhakkar = { set_de_jure_liege_title = title:d_prasiane }
+	title:c_aror = { set_de_jure_liege_title = title:d_prasiane }
+	title:c_rajanpur = { set_de_jure_liege_title = title:d_prasiane }
+	title:c_vijnot = { set_de_jure_liege_title = title:d_prasiane }
+}
+
+LR_satrapy_hyparchies_k_sandrakotte_effect = {
+	# Palibothrene
+	title:d_palibothrene = { set_de_jure_liege_title = title:k_sandrakotte }
+	title:c_magadha = { set_de_jure_liege_title = title:d_palibothrene }
+	title:c_mudgagiri = { set_de_jure_liege_title = title:d_palibothrene }
+	title:c_gaya = { set_de_jure_liege_title = title:d_palibothrene }
+	title:c_sasaram = { set_de_jure_liege_title = title:d_palibothrene }
+	# Hittaiene
+	title:d_hittaiene = { set_de_jure_liege_title = title:k_sandrakotte }
+	title:c_mithila = { set_de_jure_liege_title = title:d_hittaiene }
+	title:c_simaramapura = { set_de_jure_liege_title = title:d_hittaiene }
+	title:c_kusinagara = { set_de_jure_liege_title = title:d_hittaiene }
+	title:c_bangaon = { set_de_jure_liege_title = title:d_hittaiene }
+	# Kasia
+	title:d_kasia = { set_de_jure_liege_title = title:k_sandrakotte }
+	title:c_jaunpur = { set_de_jure_liege_title = title:d_kasia }
+	title:c_varanasi = { set_de_jure_liege_title = title:d_kasia }
+	title:c_chunar = { set_de_jure_liege_title = title:d_kasia }
+	# Sabaraike
+	title:d_sabaraike = { set_de_jure_liege_title = title:k_sandrakotte }
+	title:c_munda = { set_de_jure_liege_title = title:d_sabaraike }
+	title:c_jharkand = { set_de_jure_liege_title = title:d_sabaraike }
+	title:c_rothas = { set_de_jure_liege_title = title:d_sabaraike }
+	title:c_rajrappa = { set_de_jure_liege_title = title:d_sabaraike }
+	title:c_damin_i_koh = { set_de_jure_liege_title = title:d_sabaraike }
+}
+
+LR_satrapy_hyparchies_k_gangesia_effect = {
+	# Gaudia
+	title:d_gaudia = { set_de_jure_liege_title = title:k_gangesia }
+	title:c_laksmanavati = { set_de_jure_liege_title = title:d_gaudia }
+	title:c_gauda = { set_de_jure_liege_title = title:d_gaudia }
+	title:c_radha = { set_de_jure_liege_title = title:d_gaudia }
+	# Poundraia
+	title:d_poundraia = { set_de_jure_liege_title = title:k_gangesia }
+	title:c_pundravardhana = { set_de_jure_liege_title = title:d_poundraia }
+	title:c_kotivarsa = { set_de_jure_liege_title = title:d_poundraia }
+	# Gangene
+	title:d_gangene = { set_de_jure_liege_title = title:k_gangesia }
+	title:c_bikrampur = { set_de_jure_liege_title = title:d_gangene }
+	title:c_candradvipa = { set_de_jure_liege_title = title:d_gangene }
+	title:c_suvarnagram = { set_de_jure_liege_title = title:d_gangene }
+	title:c_madhupur = { set_de_jure_liege_title = title:d_gangene }
+	# Samettene
+	title:d_samettene = { set_de_jure_liege_title = title:k_gangesia }
+	title:c_karmanta = { set_de_jure_liege_title = title:d_samettene }
+	title:c_samatata = { set_de_jure_liege_title = title:d_samettene }
+	title:c_harikela = { set_de_jure_liege_title = title:d_samettene }
+	title:c_srihatta = { set_de_jure_liege_title = title:d_samettene }
+	# Tamalitene
+	title:d_tamalitene = { set_de_jure_liege_title = title:k_gangesia }
+	title:c_nabadwipa = { set_de_jure_liege_title = title:d_tamalitene }
+	title:c_saptagrama = { set_de_jure_liege_title = title:d_tamalitene }
+	title:c_vijayapura = { set_de_jure_liege_title = title:d_tamalitene }
+	title:c_mallabhum = { set_de_jure_liege_title = title:d_tamalitene }
+	title:c_tamralipti = { set_de_jure_liege_title = title:d_tamalitene }
+	title:c_midnapore = { set_de_jure_liege_title = title:d_tamalitene }
+}
+
+LR_satrapy_hyparchies_k_kirrhadia_effect = {
+	# Kamaroupia
+	title:d_kamaroupia = { set_de_jure_liege_title = title:k_kirrhadia }
+	title:c_kamarupanagara = { set_de_jure_liege_title = title:d_kamaroupia }
+	title:c_kamatapur = { set_de_jure_liege_title = title:d_kamaroupia }
+	title:c_goalpara = { set_de_jure_liege_title = title:d_kamaroupia }
+	# Sesataia
+	title:d_sesataia = { set_de_jure_liege_title = title:k_kirrhadia }
+	title:c_haruppeswara = { set_de_jure_liege_title = title:d_sesataia }
+	title:c_charaideo = { set_de_jure_liege_title = title:d_sesataia }
+	title:c_kundina = { set_de_jure_liege_title = title:d_sesataia }
+	# Tiladaia
+	title:d_tiladaia = { set_de_jure_liege_title = title:k_kirrhadia }
+	title:c_dimapur = { set_de_jure_liege_title = title:d_tiladaia }
+	title:c_manipur = { set_de_jure_liege_title = title:d_tiladaia }
+}
+
+LR_satrapy_hyparchies_k_kosalia_effect = {
+	# Kanogizene
+	title:d_kanogizene = { set_de_jure_liege_title = title:k_kosalia }
+	title:c_kanyakubja = { set_de_jure_liege_title = title:d_kanogizene }
+	title:c_lakhnau = { set_de_jure_liege_title = title:d_kanogizene }
+	# Saketaia
+	title:d_saketaia = { set_de_jure_liege_title = title:k_kosalia }
+	title:c_ayodhya = { set_de_jure_liege_title = title:d_saketaia }
+	title:c_naimisa = { set_de_jure_liege_title = title:d_saketaia }
+	title:c_sravasti = { set_de_jure_liege_title = title:d_saketaia }
+	# Hatsia
+	title:d_hatsia = { set_de_jure_liege_title = title:k_kosalia }
+	title:c_kalpi = { set_de_jure_liege_title = title:d_hatsia }
+	title:c_asni = { set_de_jure_liege_title = title:d_hatsia }
+	title:c_prayaga = { set_de_jure_liege_title = title:d_hatsia }
+	# Chedia
+	title:d_chedia = { set_de_jure_liege_title = title:k_kosalia }
+	title:c_mahoba = { set_de_jure_liege_title = title:d_chedia }
+	title:c_kalanjara = { set_de_jure_liege_title = title:d_chedia }
+	title:c_damoh = { set_de_jure_liege_title = title:d_chedia }
+	title:c_gurgi = { set_de_jure_liege_title = title:d_chedia }
+	title:c_manikpur = { set_de_jure_liege_title = title:d_chedia }
+}
+
+LR_satrapy_hyparchies_k_mandalene_effect = {
+	# Tripolia
+	title:d_tripolia = { set_de_jure_liege_title = title:k_mandalene }
+	title:c_tripuri = { set_de_jure_liege_title = title:d_tripolia }
+	title:c_bandhugadha = { set_de_jure_liege_title = title:d_tripolia }
+	# Sabarene
+	title:d_sabarene = { set_de_jure_liege_title = title:k_mandalene }
+	title:c_ratanpur = { set_de_jure_liege_title = title:d_sabarene }
+	title:c_tummana = { set_de_jure_liege_title = title:d_sabarene }
+}
+
+LR_satrapy_hyparchies_k_saraostos_effect = {
+	# Ourzarene
+	title:d_ourzarene = { set_de_jure_liege_title = title:k_saraostos }
+	title:c_sarasvata_mandala = { set_de_jure_liege_title = title:d_ourzarene }
+	title:c_khetaka = { set_de_jure_liege_title = title:d_ourzarene }
+	title:c_mohadavasaka = { set_de_jure_liege_title = title:d_ourzarene }
+	# Anartia
+	title:d_anartia = { set_de_jure_liege_title = title:k_saraostos }
+	title:c_dvaraka = { set_de_jure_liege_title = title:d_anartia }
+	title:c_dhamalpur = { set_de_jure_liege_title = title:d_anartia }
+	title:c_kutch = { set_de_jure_liege_title = title:d_anartia }
+	# Syrastrene
+	title:d_syrastrene = { set_de_jure_liege_title = title:k_saraostos }
+	title:c_bhumilka = { set_de_jure_liege_title = title:d_syrastrene }
+	title:c_somnath = { set_de_jure_liege_title = title:d_syrastrene }
+	title:c_vardhamana = { set_de_jure_liege_title = title:d_syrastrene }
+	title:c_valabhi = { set_de_jure_liege_title = title:d_syrastrene }
+	# Larike
+	title:d_larike = { set_de_jure_liege_title = title:k_saraostos }
+	title:c_vadodara = { set_de_jure_liege_title = title:d_larike }
+	title:c_navasarika = { set_de_jure_liege_title = title:d_larike }
+	title:c_daman = { set_de_jure_liege_title = title:d_larike }
+}
+
+LR_satrapy_hyparchies_k_sourasene_effect = {
+	# Marouene
+	title:d_marouene = { set_de_jure_liege_title = title:k_sourasene }
+	title:c_mandavyapura = { set_de_jure_liege_title = title:d_marouene }
+	title:c_medantaka = { set_de_jure_liege_title = title:d_marouene }
+	title:c_godwad = { set_de_jure_liege_title = title:d_marouene }
+	title:c_naddula = { set_de_jure_liege_title = title:d_marouene }
+	# Jangalia
+	title:d_jangalia = { set_de_jure_liege_title = title:k_sourasene }
+	title:c_nagauda = { set_de_jure_liege_title = title:d_jangalia }
+	title:c_vikramapura = { set_de_jure_liege_title = title:d_jangalia }
+	title:c_reni = { set_de_jure_liege_title = title:d_jangalia }
+	# Abiria
+	title:d_abiria = { set_de_jure_liege_title = title:k_sourasene }
+	title:c_ludrava = { set_de_jure_liege_title = title:d_abiria }
+	title:c_satyapura = { set_de_jure_liege_title = title:d_abiria }
+	# Mattyamike
+	title:d_mattyamike = { set_de_jure_liege_title = title:k_sourasene }
+	title:c_medapata = { set_de_jure_liege_title = title:d_mattyamike }
+	title:c_chitrakut = { set_de_jure_liege_title = title:d_mattyamike }
+	title:c_kota = { set_de_jure_liege_title = title:d_mattyamike }
+	# Mattasyne
+	title:d_mattasyne = { set_de_jure_liege_title = title:k_sourasene }
+	title:c_ajayameru = { set_de_jure_liege_title = title:d_mattasyne }
+	title:c_ranthambore = { set_de_jure_liege_title = title:d_mattasyne }
+	title:c_vairata = { set_de_jure_liege_title = title:d_mattasyne }
+	title:c_sakarai = { set_de_jure_liege_title = title:d_mattasyne }
+	# Methorene
+	title:d_methorene = { set_de_jure_liege_title = title:k_sourasene }
+	title:c_mathura = { set_de_jure_liege_title = title:d_methorene }
+	title:c_kol = { set_de_jure_liege_title = title:d_methorene }
+	title:c_sripatha = { set_de_jure_liege_title = title:d_methorene }
+	title:c_gwalior = { set_de_jure_liege_title = title:d_methorene }
+}
+
+LR_satrapy_hyparchies_k_ozene_effect = {
+	# Avantike
+	title:d_avantike = { set_de_jure_liege_title = title:k_ozene }
+	title:c_ujjayini = { set_de_jure_liege_title = title:d_avantike }
+	title:c_dadhipadra = { set_de_jure_liege_title = title:d_avantike }
+	title:c_dhara = { set_de_jure_liege_title = title:d_avantike }
+	title:c_dasapura = { set_de_jure_liege_title = title:d_avantike }
+	# Dasarnaia
+	title:d_dasarnaia = { set_de_jure_liege_title = title:k_ozene }
+	title:c_vidisa = { set_de_jure_liege_title = title:d_dasarnaia }
+	title:c_sarangpur = { set_de_jure_liege_title = title:d_dasarnaia }
+	title:c_chanderi = { set_de_jure_liege_title = title:d_dasarnaia }
+	title:c_candhoba = { set_de_jure_liege_title = title:d_dasarnaia }
+	# Nambanike
+	title:d_nambanike = { set_de_jure_liege_title = title:k_ozene }
+	title:c_mandapika = { set_de_jure_liege_title = title:d_nambanike }
+	title:c_asirgarh = { set_de_jure_liege_title = title:d_nambanike }
+	title:c_burhanpur = { set_de_jure_liege_title = title:d_nambanike }
+	title:c_thalner = { set_de_jure_liege_title = title:d_nambanike }
+	title:c_chauragarh = { set_de_jure_liege_title = title:d_nambanike }
+}
+
+LR_satrapy_hyparchies_k_kouria_effect = {
+	# Kouria
+	title:d_kouria = { set_de_jure_liege_title = title:k_kouria }
+	title:c_delhi = { set_de_jure_liege_title = title:d_kouria }
+	title:c_hastinapura = { set_de_jure_liege_title = title:d_kouria }
+	title:c_sthanisvara = { set_de_jure_liege_title = title:d_kouria }
+	# Iaoudene
+	title:d_iaoudene = { set_de_jure_liege_title = title:k_kouria }
+	title:c_tribandapura = { set_de_jure_liege_title = title:d_iaoudene }
+	title:c_hisar = { set_de_jure_liege_title = title:d_iaoudene }
+	title:c_sarasvati = { set_de_jure_liege_title = title:d_iaoudene }
+	# Passal
+	title:d_passal1 = { set_de_jure_liege_title = title:k_kouria }
+	title:c_vodamayutja = { set_de_jure_liege_title = title:d_passal1 }
+	title:c_sambhal = { set_de_jure_liege_title = title:d_passal1 }
+	title:c_katehar = { set_de_jure_liege_title = title:d_passal1 }
+}
+
+LR_satrapy_hyparchies_k_marasthene_effect = {
+	# Moulake
+	title:d_moulake = { set_de_jure_liege_title = title:k_marasthene }
+	title:c_devagiri = { set_de_jure_liege_title = title:d_moulake }
+	title:c_mulaka = { set_de_jure_liege_title = title:d_moulake }
+	title:c_vatsagulma = { set_de_jure_liege_title = title:d_moulake }
+	# Hidarbia
+	title:d_hidarbia = { set_de_jure_liege_title = title:k_marasthene }
+	title:c_acalapura = { set_de_jure_liege_title = title:d_hidarbia }
+	title:c_ramagiri = { set_de_jure_liege_title = title:d_hidarbia }
+	title:c_canda = { set_de_jure_liege_title = title:d_hidarbia }
+	title:c_vairagara = { set_de_jure_liege_title = title:d_hidarbia }
+	# Andropeiratene
+	title:d_andropeiratene = { set_de_jure_liege_title = title:k_marasthene }
+	title:c_surparaka = { set_de_jure_liege_title = title:d_andropeiratene }
+	title:c_panaji = { set_de_jure_liege_title = title:d_andropeiratene }
+	title:c_kanara = { set_de_jure_liege_title = title:d_andropeiratene }
+	# Nasike
+	title:d_nasike = { set_de_jure_liege_title = title:k_marasthene }
+	title:c_kondana = { set_de_jure_liege_title = title:d_nasike }
+	title:c_trikuta = { set_de_jure_liege_title = title:d_nasike }
+	# Kandalene
+	title:d_kandalene = { set_de_jure_liege_title = title:k_marasthene }
+	title:c_karahataka = { set_de_jure_liege_title = title:d_kandalene }
+	title:c_taradavadi = { set_de_jure_liege_title = title:d_kandalene }
+	title:c_kolhapur = { set_de_jure_liege_title = title:d_kandalene }
+	# Asmake
+	title:d_asmake = { set_de_jure_liege_title = title:k_marasthene }
+	title:c_ashmaka = { set_de_jure_liege_title = title:d_asmake }
+	title:c_naldurg = { set_de_jure_liege_title = title:d_asmake }
+}
+
+LR_satrapy_hyparchies_k_tosalia_effect = {
+	# Tosalene
+	title:d_tosalene = { set_de_jure_liege_title = title:k_tosalia }
+	title:c_kataka = { set_de_jure_liege_title = title:d_tosalene }
+	title:c_viraja = { set_de_jure_liege_title = title:d_tosalene }
+	title:c_khinjali_mandala = { set_de_jure_liege_title = title:d_tosalene }
+	title:c_kodalaka_mandala = { set_de_jure_liege_title = title:d_tosalene }
+	title:c_khijjingakota = { set_de_jure_liege_title = title:d_tosalene }
+	title:c_puri = { set_de_jure_liege_title = title:d_tosalene }
+	# Notiakosalia
+	title:d_notiakosalia = { set_de_jure_liege_title = title:k_tosalia }
+	title:c_rayapura = { set_de_jure_liege_title = title:d_notiakosalia }
+	title:c_sripuri = { set_de_jure_liege_title = title:d_notiakosalia }
+	title:c_suvarnapura = { set_de_jure_liege_title = title:d_notiakosalia }
+	title:c_sambalpur = { set_de_jure_liege_title = title:d_notiakosalia }
+	title:c_kiranapura = { set_de_jure_liege_title = title:d_notiakosalia }
+	# Kallinikene
+	title:d_kallinikene = { set_de_jure_liege_title = title:k_tosalia }
+	title:c_kalinganagar = { set_de_jure_liege_title = title:d_kallinikene }
+	title:c_swetaka_mandala = { set_de_jure_liege_title = title:d_kallinikene }
+	title:c_vizagipatam = { set_de_jure_liege_title = title:d_kallinikene }
+	# Dandakaranyene
+	title:d_dandakaranyene = { set_de_jure_liege_title = title:k_tosalia }
+	title:c_cakrakuta = { set_de_jure_liege_title = title:d_dandakaranyene }
+	title:c_barasuru = { set_de_jure_liege_title = title:d_dandakaranyene }
+}
+
+LR_satrapy_hyparchies_k_kountale_effect = {
+	# Karnatike
+	title:d_karnatike = { set_de_jure_liege_title = title:k_kountale }
+	title:c_kalyani = { set_de_jure_liege_title = title:d_karnatike }
+	title:c_sagar = { set_de_jure_liege_title = title:d_karnatike }
+	title:c_vatapi = { set_de_jure_liege_title = title:d_karnatike }
+	# Banaousene
+	title:d_banaousene = { set_de_jure_liege_title = title:k_kountale }
+	title:c_vaijayanti = { set_de_jure_liege_title = title:d_banaousene }
+	title:c_banavasi = { set_de_jure_liege_title = title:d_banaousene }
+	title:c_alupa = { set_de_jure_liege_title = title:d_banaousene }
+	# Pounnate
+	title:d_pounnate = { set_de_jure_liege_title = title:k_kountale }
+	title:c_srirangapatna = { set_de_jure_liege_title = title:d_pounnate }
+	title:c_mahishaka = { set_de_jure_liege_title = title:d_pounnate }
+	title:c_talakad = { set_de_jure_liege_title = title:d_pounnate }
+	# Isilene
+	title:d_isilene = { set_de_jure_liege_title = title:k_kountale }
+	title:c_uchangidurga = { set_de_jure_liege_title = title:d_isilene }
+	title:c_gutti = { set_de_jure_liege_title = title:d_isilene }
+	title:c_parivi = { set_de_jure_liege_title = title:d_isilene }
+	title:c_penugonda = { set_de_jure_liege_title = title:d_isilene }
+	title:c_muluvagil = { set_de_jure_liege_title = title:d_isilene }
+	title:c_renandu = { set_de_jure_liege_title = title:d_isilene }
+	# Arembourene
+	title:d_arembourene = { set_de_jure_liege_title = title:k_kountale }
+	title:c_idatarainadu = { set_de_jure_liege_title = title:d_arembourene }
+	title:c_koppam = { set_de_jure_liege_title = title:d_arembourene }
+	title:c_adoni = { set_de_jure_liege_title = title:d_arembourene }
+}
+
+LR_satrapy_hyparchies_k_damirike_effect = {
+	# Pandion
+	title:d_pandion = { set_de_jure_liege_title = title:k_damirike }
+	title:c_madurai = { set_de_jure_liege_title = title:d_pandion }
+	# Soretike
+	title:d_soretike = { set_de_jure_liege_title = title:k_damirike }
+	title:c_cholamandalam = { set_de_jure_liege_title = title:d_soretike }
+	title:c_uraiyur = { set_de_jure_liege_title = title:d_soretike }
+	# Karourene
+	title:d_karourene = { set_de_jure_liege_title = title:k_damirike }
+	title:c_kongu = { set_de_jure_liege_title = title:d_karourene }
+	title:c_tagadur = { set_de_jure_liege_title = title:d_karourene }
+	# Limyrike
+	title:d_limyrike = { set_de_jure_liege_title = title:k_damirike }
+	title:c_kerala = { set_de_jure_liege_title = title:d_limyrike }
+	title:c_venadu = { set_de_jure_liege_title = title:d_limyrike }
+	title:c_eranad = { set_de_jure_liege_title = title:d_limyrike }
+	title:c_maldives = { set_de_jure_liege_title = title:d_limyrike }
+	# Arouarnike
+	title:d_arouarnike = { set_de_jure_liege_title = title:k_damirike }
+	title:c_kanchipuram = { set_de_jure_liege_title = title:d_arouarnike }
+	title:c_tiruvannamalai = { set_de_jure_liege_title = title:d_arouarnike }
+	title:c_candragiri = { set_de_jure_liege_title = title:d_arouarnike }
+	title:c_nellore = { set_de_jure_liege_title = title:d_arouarnike }
+}
+
+LR_satrapy_hyparchies_k_andaria_effect = {
+	# Arouarnia
+	title:d_arouarnia = { set_de_jure_liege_title = title:k_andaria }
+	title:c_palakka = { set_de_jure_liege_title = title:d_arouarnia }
+	title:c_nallamala = { set_de_jure_liege_title = title:d_arouarnia }
+	title:c_cumbum = { set_de_jure_liege_title = title:d_arouarnia }
+	# Maisolia
+	title:d_maisolia = { set_de_jure_liege_title = title:k_andaria }
+	title:c_vengipura = { set_de_jure_liege_title = title:d_maisolia }
+	title:c_mosala = { set_de_jure_liege_title = title:d_maisolia }
+	# Koroungalia
+	title:d_koroungalia = { set_de_jure_liege_title = title:k_andaria }
+	title:c_orangallu = { set_de_jure_liege_title = title:d_koroungalia }
+	title:c_mahur = { set_de_jure_liege_title = title:d_koroungalia }
+	title:c_kambampet = { set_de_jure_liege_title = title:d_koroungalia }
+	title:c_balkonda = { set_de_jure_liege_title = title:d_koroungalia }
+	title:c_katukuru = { set_de_jure_liege_title = title:d_koroungalia }
+	# Pharytrene
+	title:d_pharytrene = { set_de_jure_liege_title = title:k_andaria }
+	title:c_racakonda = { set_de_jure_liege_title = title:d_pharytrene }
+	title:c_pannagallu = { set_de_jure_liege_title = title:d_pharytrene }
+}
+
+LR_satrapy_hyparchies_k_taprobane_effect = {
+	# Sandokandia
+	title:d_sandokandia = { set_de_jure_liege_title = title:k_taprobane }
+	title:c_dakhina_desa = { set_de_jure_liege_title = title:d_sandokandia }
+	title:c_kandy = { set_de_jure_liege_title = title:d_sandokandia }
+	# Rhogandania
+	title:d_rhogandania = { set_de_jure_liege_title = title:k_taprobane }
+	title:c_rohana = { set_de_jure_liege_title = title:d_rhogandania }
+	title:c_batticaloa = { set_de_jure_liege_title = title:d_rhogandania }
+	# Anourogrammene
+	title:d_anourogrammene = { set_de_jure_liege_title = title:k_taprobane }
+	title:c_phiti = { set_de_jure_liege_title = title:d_anourogrammene }
+	title:c_trincomalee = { set_de_jure_liege_title = title:d_anourogrammene }
+	title:c_jaffna = { set_de_jure_liege_title = title:d_anourogrammene }
+	title:c_kotte = { set_de_jure_liege_title = title:d_anourogrammene }
+}
+
+# Prefectures: a satrapy goes into its strategia, and the strategia under HEGEMONY
+# Usage: LR_satrapy_strategia_k_satrapy_syria_effect = { HEGEMONY = h_hellenistic_empire }
 LR_satrapy_strategia_k_satrapy_macedonia_effect = {
 	title:k_satrapy_macedonia = { set_de_jure_liege_title = title:e_strategia_europe }
-	title:e_strategia_europe = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_europe = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_greece_effect = {
 	title:k_satrapy_greece = { set_de_jure_liege_title = title:e_strategia_europe }
-	title:e_strategia_europe = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_europe = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_thrace_effect = {
 	title:k_satrapy_thrace = { set_de_jure_liege_title = title:e_strategia_europe }
-	title:e_strategia_europe = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_europe = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_bithynia_effect = {
 	title:k_satrapy_bithynia = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_ionia_effect = {
 	title:k_satrapy_ionia = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_lydia_effect = {
 	title:k_satrapy_lydia = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_cappadocia_effect = {
 	title:k_satrapy_cappadocia = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_paphlagonia_effect = {
 	title:k_satrapy_paphlagonia = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_pontus_effect = {
 	title:k_satrapy_pontus = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_syria_effect = {
 	title:k_satrapy_syria = { set_de_jure_liege_title = title:e_strategia_syria }
-	title:e_strategia_syria = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_syria = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_cilicia_effect = {
 	title:k_satrapy_cilicia = { set_de_jure_liege_title = title:e_strategia_syria }
-	title:e_strategia_syria = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_syria = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_mesopotamia_effect = {
 	title:k_satrapy_mesopotamia = { set_de_jure_liege_title = title:e_strategia_syria }
-	title:e_strategia_syria = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_syria = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_babylon_effect = {
 	title:k_satrapy_babylon = { set_de_jure_liege_title = title:e_strategia_syria }
-	title:e_strategia_syria = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_syria = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_susiana_effect = {
 	title:k_satrapy_susiana = { set_de_jure_liege_title = title:e_strategia_syria }
-	title:e_strategia_syria = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_syria = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_media_minor_effect = {
 	title:k_satrapy_media_minor = { set_de_jure_liege_title = title:e_strategia_persis }
-	title:e_strategia_persis = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_persis = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_persia_effect = {
 	title:k_satrapy_persia = { set_de_jure_liege_title = title:e_strategia_persis }
-	title:e_strategia_persis = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_persis = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_parthia_effect = {
 	title:k_satrapy_parthia = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_egypt_effect = {
 	title:k_satrapy_egypt = { set_de_jure_liege_title = title:e_strategia_egypt }
-	title:e_strategia_egypt = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_egypt = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_libya_effect = {
 	title:k_satrapy_libya = { set_de_jure_liege_title = title:e_strategia_egypt }
-	title:e_strategia_egypt = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_egypt = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_cyprus_effect = {
 	title:k_satrapy_cyprus = { set_de_jure_liege_title = title:e_strategia_egypt }
-	title:e_strategia_egypt = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_egypt = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_arabia_effect = {
 	title:k_satrapy_arabia = { set_de_jure_liege_title = title:e_strategia_syria }
-	title:e_strategia_syria = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_syria = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_armenia_effect = {
 	title:k_satrapy_armenia = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_clochis_effect = {
 	title:k_satrapy_clochis = { set_de_jure_liege_title = title:e_strategia_asia }
-	title:e_strategia_asia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_asia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_media_major_effect = {
 	title:k_satrapy_media_major = { set_de_jure_liege_title = title:e_strategia_persis }
-	title:e_strategia_persis = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_persis = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_bactria_effect = {
 	title:k_satrapy_bactria = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_chorasmia_effect = {
 	title:k_satrapy_chorasmia = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_sogdiana_effect = {
 	title:k_satrapy_sogdiana = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_arachosia_effect = {
 	title:k_satrapy_arachosia = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_gedrosia_effect = {
 	title:k_satrapy_gedrosia = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
-}
-
-LR_satrapy_strategia_k_satrapy_gandhara_effect = {
-	title:k_satrapy_gandhara = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
-}
-
-LR_satrapy_strategia_k_satrapy_india_effect = {
-	title:k_satrapy_india = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_magan_effect = {
 	title:k_satrapy_magan = { set_de_jure_liege_title = title:e_strategia_persis }
-	title:e_strategia_persis = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_persis = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_nubia_effect = {
 	title:k_satrapy_nubia = { set_de_jure_liege_title = title:e_strategia_egypt }
-	title:e_strategia_egypt = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_egypt = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_trogodytike_effect = {
 	title:k_satrapy_trogodytike = { set_de_jure_liege_title = title:e_strategia_egypt }
-	title:e_strategia_egypt = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_strategia_egypt = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
-# When the Hegemony is formed: every satrapy already restored moves into its strategia
+LR_satrapy_strategia_k_poklais_effect = {
+	title:k_poklais = { set_de_jure_liege_title = title:e_pentapotamia }
+	title:e_pentapotamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_kaspeiria_effect = {
+	title:k_kaspeiria = { set_de_jure_liege_title = title:e_pentapotamia }
+	title:e_pentapotamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_sigerdis_effect = {
+	title:k_sigerdis = { set_de_jure_liege_title = title:e_pentapotamia }
+	title:e_pentapotamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_sandrakotte_effect = {
+	title:k_sandrakotte = { set_de_jure_liege_title = title:e_gangaradia }
+	title:e_gangaradia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_gangesia_effect = {
+	title:k_gangesia = { set_de_jure_liege_title = title:e_gangaradia }
+	title:e_gangaradia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_kirrhadia_effect = {
+	title:k_kirrhadia = { set_de_jure_liege_title = title:e_gangaradia }
+	title:e_gangaradia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_kosalia_effect = {
+	title:k_kosalia = { set_de_jure_liege_title = title:e_gangaradia }
+	title:e_gangaradia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_mandalene_effect = {
+	title:k_mandalene = { set_de_jure_liege_title = title:e_gangaradia }
+	title:e_gangaradia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_saraostos_effect = {
+	title:k_saraostos = { set_de_jure_liege_title = title:e_ariake }
+	title:e_ariake = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_sourasene_effect = {
+	title:k_sourasene = { set_de_jure_liege_title = title:e_ariake }
+	title:e_ariake = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_ozene_effect = {
+	title:k_ozene = { set_de_jure_liege_title = title:e_ariake }
+	title:e_ariake = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_kouria_effect = {
+	title:k_kouria = { set_de_jure_liege_title = title:e_ariake }
+	title:e_ariake = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_marasthene_effect = {
+	title:k_marasthene = { set_de_jure_liege_title = title:e_dakinabades }
+	title:e_dakinabades = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_tosalia_effect = {
+	title:k_tosalia = { set_de_jure_liege_title = title:e_dakinabades }
+	title:e_dakinabades = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_kountale_effect = {
+	title:k_kountale = { set_de_jure_liege_title = title:e_dakinabades }
+	title:e_dakinabades = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_damirike_effect = {
+	title:k_damirike = { set_de_jure_liege_title = title:e_dakinabades }
+	title:e_dakinabades = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_andaria_effect = {
+	title:k_andaria = { set_de_jure_liege_title = title:e_dakinabades }
+	title:e_dakinabades = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+LR_satrapy_strategia_k_taprobane_effect = {
+	title:k_taprobane = { set_de_jure_liege_title = title:e_dakinabades }
+	title:e_dakinabades = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# When Alexander's Hegemony is formed: every satrapy of his empire already restored moves into its strategia
+# (the Indian strategiai join it through LR_join_greek_india_to_hegemony_decision)
 LR_sort_satrapies_into_strategiai_effect = {
 	if = {
 		limit = { title:k_satrapy_macedonia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_macedonia_effect = yes
+		LR_satrapy_strategia_k_satrapy_macedonia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_greece = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_greece_effect = yes
+		LR_satrapy_strategia_k_satrapy_greece_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_thrace = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_thrace_effect = yes
+		LR_satrapy_strategia_k_satrapy_thrace_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_bithynia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_bithynia_effect = yes
+		LR_satrapy_strategia_k_satrapy_bithynia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_ionia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_ionia_effect = yes
+		LR_satrapy_strategia_k_satrapy_ionia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_lydia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_lydia_effect = yes
+		LR_satrapy_strategia_k_satrapy_lydia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_cappadocia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_cappadocia_effect = yes
+		LR_satrapy_strategia_k_satrapy_cappadocia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_paphlagonia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_paphlagonia_effect = yes
+		LR_satrapy_strategia_k_satrapy_paphlagonia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_pontus = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_pontus_effect = yes
+		LR_satrapy_strategia_k_satrapy_pontus_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_syria = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_syria_effect = yes
+		LR_satrapy_strategia_k_satrapy_syria_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_cilicia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_cilicia_effect = yes
+		LR_satrapy_strategia_k_satrapy_cilicia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_mesopotamia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_mesopotamia_effect = yes
+		LR_satrapy_strategia_k_satrapy_mesopotamia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_babylon = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_babylon_effect = yes
+		LR_satrapy_strategia_k_satrapy_babylon_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_susiana = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_susiana_effect = yes
+		LR_satrapy_strategia_k_satrapy_susiana_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_media_minor = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_media_minor_effect = yes
+		LR_satrapy_strategia_k_satrapy_media_minor_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_persia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_persia_effect = yes
+		LR_satrapy_strategia_k_satrapy_persia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_parthia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_parthia_effect = yes
+		LR_satrapy_strategia_k_satrapy_parthia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_egypt = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_egypt_effect = yes
+		LR_satrapy_strategia_k_satrapy_egypt_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_libya = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_libya_effect = yes
+		LR_satrapy_strategia_k_satrapy_libya_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_cyprus = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_cyprus_effect = yes
+		LR_satrapy_strategia_k_satrapy_cyprus_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_arabia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_arabia_effect = yes
+		LR_satrapy_strategia_k_satrapy_arabia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_armenia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_armenia_effect = yes
+		LR_satrapy_strategia_k_satrapy_armenia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_clochis = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_clochis_effect = yes
+		LR_satrapy_strategia_k_satrapy_clochis_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_media_major = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_media_major_effect = yes
+		LR_satrapy_strategia_k_satrapy_media_major_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_bactria = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_bactria_effect = yes
+		LR_satrapy_strategia_k_satrapy_bactria_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_chorasmia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_chorasmia_effect = yes
+		LR_satrapy_strategia_k_satrapy_chorasmia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_sogdiana = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_sogdiana_effect = yes
+		LR_satrapy_strategia_k_satrapy_sogdiana_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_arachosia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_arachosia_effect = yes
+		LR_satrapy_strategia_k_satrapy_arachosia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_gedrosia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_gedrosia_effect = yes
-	}
-	if = {
-		limit = { title:k_satrapy_gandhara = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_gandhara_effect = yes
-	}
-	if = {
-		limit = { title:k_satrapy_india = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_india_effect = yes
+		LR_satrapy_strategia_k_satrapy_gedrosia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_magan = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_magan_effect = yes
+		LR_satrapy_strategia_k_satrapy_magan_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_nubia = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_nubia_effect = yes
+		LR_satrapy_strategia_k_satrapy_nubia_effect = { HEGEMONY = h_hellenistic_empire }
 	}
 	if = {
 		limit = { title:k_satrapy_trogodytike = { is_titular = no } }
-		LR_satrapy_strategia_k_satrapy_trogodytike_effect = yes
+		LR_satrapy_strategia_k_satrapy_trogodytike_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+}
+
+# Root founds the Basileia Indike: any Indian satrapy already restored moves into its strategia under it
+LR_found_greek_india_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = india_change
+		add_claim_on_loss = no
+	}
+	title:h_greek_india = {
+		change_title_holder = {
+			holder = root
+			change = scope:india_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:india_change
+	hidden_effect = { set_primary_title_to = title:h_greek_india }
+	if = {
+		limit = { title:k_poklais = { is_titular = no } }
+		LR_satrapy_strategia_k_poklais_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_kaspeiria = { is_titular = no } }
+		LR_satrapy_strategia_k_kaspeiria_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_sigerdis = { is_titular = no } }
+		LR_satrapy_strategia_k_sigerdis_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_sandrakotte = { is_titular = no } }
+		LR_satrapy_strategia_k_sandrakotte_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_gangesia = { is_titular = no } }
+		LR_satrapy_strategia_k_gangesia_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_kirrhadia = { is_titular = no } }
+		LR_satrapy_strategia_k_kirrhadia_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_kosalia = { is_titular = no } }
+		LR_satrapy_strategia_k_kosalia_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_mandalene = { is_titular = no } }
+		LR_satrapy_strategia_k_mandalene_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_saraostos = { is_titular = no } }
+		LR_satrapy_strategia_k_saraostos_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_sourasene = { is_titular = no } }
+		LR_satrapy_strategia_k_sourasene_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_ozene = { is_titular = no } }
+		LR_satrapy_strategia_k_ozene_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_kouria = { is_titular = no } }
+		LR_satrapy_strategia_k_kouria_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_marasthene = { is_titular = no } }
+		LR_satrapy_strategia_k_marasthene_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_tosalia = { is_titular = no } }
+		LR_satrapy_strategia_k_tosalia_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_kountale = { is_titular = no } }
+		LR_satrapy_strategia_k_kountale_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_damirike = { is_titular = no } }
+		LR_satrapy_strategia_k_damirike_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_andaria = { is_titular = no } }
+		LR_satrapy_strategia_k_andaria_effect = { HEGEMONY = h_greek_india }
+	}
+	if = {
+		limit = { title:k_taprobane = { is_titular = no } }
+		LR_satrapy_strategia_k_taprobane_effect = { HEGEMONY = h_greek_india }
+	}
+}
+
+# Root (Alexander's Hegemon) joins Hellenistic India to h_hellenistic_empire: the Indian strategiai become de jure part of it
+# and root's h_greek_india is destroyed
+LR_join_greek_india_to_hegemony_effect = {
+	title:e_pentapotamia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_gangaradia = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_ariake = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	title:e_dakinabades = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	if = {
+		limit = { has_title = title:h_greek_india }
+		destroy_title = title:h_greek_india
 	}
 }
 
