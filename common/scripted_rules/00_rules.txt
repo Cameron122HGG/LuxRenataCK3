@@ -1433,6 +1433,23 @@ can_create_title = {
 			always = no
 		}
 	}
+	# LR: the Bronze Age and Classical Age titles (gen_bronze_classical.py) can only be created in their own age
+	trigger_if = {
+		limit = { scope:title = { LR_is_bronze_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_bronze_title_creation_tooltip
+			current_date >= 1700.1.1
+			current_date < 3800.1.1
+		}
+	}
+	trigger_if = {
+		limit = { scope:title = { LR_is_classical_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_classical_title_creation_tooltip
+			current_date >= 3800.1.1
+			current_date < 4677.1.1
+		}
+	}
 	# LR: title sets (gen_title_sets.py, LR_title_set_rules.md): only a set's natives may create its titles
 	trigger_if = {
 		limit = { scope:title = { LR_title_set_hellenistic_title_trigger = yes } }
