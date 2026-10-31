@@ -42,6 +42,7 @@ LR_restore_hellenistic_satrapies_decision = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_clochis }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_major }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_chorasmia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arachosia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gedrosia }
@@ -49,6 +50,7 @@ LR_restore_hellenistic_satrapies_decision = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_india }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_magan }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_trogodytike }
 		}
 	}
 
@@ -177,6 +179,10 @@ LR_restore_hellenistic_satrapies_decision = {
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
 				}
 				AND = {
+					completely_controls_region = custom_satrapy_chorasmia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_chorasmia }
+				}
+				AND = {
 					completely_controls_region = custom_satrapy_sogdiana
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
 				}
@@ -203,6 +209,10 @@ LR_restore_hellenistic_satrapies_decision = {
 				AND = {
 					completely_controls_region = custom_satrapy_nubia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_trogodytike
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_trogodytike }
 				}
 			}
 		}
@@ -672,6 +682,24 @@ LR_restore_hellenistic_satrapies_decision = {
 			}
 		}
 		item = {
+			value = custom_satrapy_chorasmia
+			current_description = {
+				desc = custom_satrapy_chorasmia_desc
+			}
+			localization = {
+				desc = custom_satrapy_chorasmia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_chorasmia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_chorasmia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
 			value = custom_satrapy_sogdiana
 			current_description = {
 				desc = custom_satrapy_sogdiana_desc
@@ -797,6 +825,24 @@ LR_restore_hellenistic_satrapies_decision = {
 				value = 10
 			}
 		}
+		item = {
+			value = custom_satrapy_trogodytike
+			current_description = {
+				desc = custom_satrapy_trogodytike_desc
+			}
+			localization = {
+				desc = custom_satrapy_trogodytike_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_trogodytike }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_trogodytike
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
 	}
 
 	effect = {
@@ -903,6 +949,10 @@ LR_restore_hellenistic_satrapies_decision = {
 				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_bactria EMPIRE = h_hellenistic_empire }
 			}
 			if = {
+				limit = { scope:custom_satrapy_chorasmia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_chorasmia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
 				limit = { scope:custom_satrapy_sogdiana = yes }
 				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_sogdiana EMPIRE = h_hellenistic_empire }
 			}
@@ -929,6 +979,10 @@ LR_restore_hellenistic_satrapies_decision = {
 			if = {
 				limit = { scope:custom_satrapy_nubia = yes }
 				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_nubia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_trogodytike = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_trogodytike EMPIRE = h_hellenistic_empire }
 			}
 		}
 		trigger_event = LR_diadochi_satrapy.0001
