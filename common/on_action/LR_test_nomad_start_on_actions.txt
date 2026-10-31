@@ -1,0 +1,21 @@
+﻿# TEST: at the 100.1.1 nomad start (bm_test_nomad_100) every landed independent ruler becomes a nomad.
+# Needs Khans of the Steppe. Not for release.
+on_game_start = {
+	on_actions = { LR_test_nomad_start }
+}
+
+LR_test_nomad_start = {
+	trigger = {
+		current_date < 101.1.1
+		has_mpo_dlc_trigger = yes
+	}
+	effect = {
+		every_independent_ruler = {
+			limit = {
+				is_landed = yes
+				NOT = { government_has_flag = government_is_nomadic }
+			}
+			change_government = nomad_government
+		}
+	}
+}
