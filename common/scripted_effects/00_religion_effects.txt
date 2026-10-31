@@ -555,14 +555,41 @@ add_excommunication_actual_effect_5_years_version = {
 }
 
 create_holy_order_neutral_effect = {
-	# Create a general Holy Order.
-	create_holy_order = {
-		leader = $LEADER$
-		founder = $FOUNDER$
-		random_holy_order_type = $ORDER_TYPE$
-		capital = $CAPITAL$
-		save_scope_as = $NEW_HO_SCOPE$
+	# LR: the historical orders set up at game start fall back to a barony the engine accepts (LR_holy_order_setup_effects.txt),
+	# and an order whose capital, founder or leader still can't work is skipped instead of failing
+	$CAPITAL$ = { save_scope_as = LR_ho_capital }
+	if = {
+		limit = {
+			exists = $FOUNDER$
+			$FOUNDER$ = {
+				OR = {
+					has_variable = monastic_game_start_founder
+					has_variable = military_order_game_start_founder
+				}
+			}
+			NOT = { scope:LR_ho_capital = { LR_holy_order_capital_valid_trigger = yes } }
+		}
+		LR_holy_order_find_capital_effect = yes
 	}
+	if = {
+		limit = {
+			exists = $FOUNDER$
+			exists = $LEADER$
+			$LEADER$ = { is_landed = no }
+			scope:LR_ho_capital = { LR_holy_order_capital_valid_trigger = yes }
+		}
+		# Create a general Holy Order.
+		create_holy_order = {
+			leader = $LEADER$
+			founder = $FOUNDER$
+			random_holy_order_type = $ORDER_TYPE$
+			capital = scope:LR_ho_capital
+			save_scope_as = $NEW_HO_SCOPE$
+		}
+		LR_holy_order_struggle_catalyst_effect = { FOUNDER = $FOUNDER$ }
+	}
+}
+LR_holy_order_struggle_catalyst_effect = {
 	# Struggle Catalysts.
 	$FOUNDER$ = {
 		if = {

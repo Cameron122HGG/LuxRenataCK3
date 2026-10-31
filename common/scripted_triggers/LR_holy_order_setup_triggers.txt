@@ -1,0 +1,12 @@
+﻿# LR: historical holy orders at game start (fix_holy_orders.py)
+# Barony: the engine accepts it as a holy order's capital or lease (not a capital barony, held by a ruler above baron
+# tier who holds other titles too)
+LR_holy_order_capital_valid_trigger = {
+	tier = tier_barony
+	is_capital_barony = no
+	exists = holder
+	holder = {
+		highest_held_title_tier > tier_barony
+		any_held_title = { count >= 2 }
+	}
+}
