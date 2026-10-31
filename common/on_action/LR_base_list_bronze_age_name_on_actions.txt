@@ -1,0 +1,20 @@
+﻿# Age 2 names for the de jure base list (gen_proto_names.py): at game start from 1700.1.1, or once when a game reaches it
+
+on_game_start = {
+	on_actions = { LR_bronze_age_names_check }
+}
+yearly_global_pulse = {
+	on_actions = { LR_bronze_age_names_check }
+}
+
+LR_bronze_age_names_check = {
+	trigger = {
+		current_date >= 1700.1.1
+		NOT = { has_global_variable = LR_bronze_age_names }
+	}
+	effect = {
+		set_global_variable = LR_bronze_age_names
+		LR_apply_bronze_age_names_effect = yes
+	}
+}
+
