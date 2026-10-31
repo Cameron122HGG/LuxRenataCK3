@@ -1,0 +1,183 @@
+﻿namespace = LR_diadochi_line
+
+# Hidden: destroy downgraded titles, then choose a line if root holds more than one
+LR_diadochi_line.0001 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		is_alive = yes
+		LR_holds_diadochi_line_title_trigger = yes
+	}
+
+	immediate = {
+		LR_destroy_downgraded_diadochi_titles_effect = yes
+		if = {
+			limit = { LR_holds_rival_diadochi_lines_trigger = yes }
+			trigger_event = LR_diadochi_line.0002
+		}
+		else = {
+			LR_diadochi_line_government_effect = yes
+		}
+	}
+}
+
+# Root holds titles of two or more lines: keep one
+LR_diadochi_line.0002 = {
+	type = character_event
+	title = LR_diadochi_line.0002.t
+	desc = LR_diadochi_line.0002.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_alive = yes
+		LR_holds_rival_diadochi_lines_trigger = yes
+	}
+
+	option = {
+		name = LR_diadochi_line.0002.antipatrid
+		trigger = { LR_holds_diadochi_line_antipatrid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = antipatrid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_antipatrid_kingdom }
+			modifier = { add = 60 has_title = title:e_antipatrid_empire }
+			modifier = { add = 150 has_title = title:h_antipatrid_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.antigonid
+		trigger = { LR_holds_diadochi_line_antigonid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = antigonid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_antigonid_kingdom }
+			modifier = { add = 60 has_title = title:e_antigonid_empire }
+			modifier = { add = 150 has_title = title:h_antigonid_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.seleukid
+		trigger = { LR_holds_diadochi_line_seleukid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = seleukid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_seleukid_kingdom }
+			modifier = { add = 60 has_title = title:e_seleukid_empire }
+			modifier = { add = 150 has_title = title:h_seleukid_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.ptolemaic
+		trigger = { LR_holds_diadochi_line_ptolemaic_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = ptolemaic }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_ptolemaic_kingdom }
+			modifier = { add = 60 has_title = title:e_ptolemaic_empire }
+			modifier = { add = 150 has_title = title:h_ptolemaic_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.argead
+		trigger = { LR_holds_diadochi_line_argead_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = argead }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 60 has_title = title:e_argead_empire }
+			modifier = { add = 150 has_title = title:h_argead_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.lysimachid
+		trigger = { LR_holds_diadochi_line_lysimachid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = lysimachid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_lysimachid_kingdom }
+			modifier = { add = 60 has_title = title:e_lysimachid_empire }
+			modifier = { add = 150 has_title = title:h_lysimachid_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.attalid
+		trigger = { LR_holds_diadochi_line_attalid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = attalid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_attalid_kingdom }
+			modifier = { add = 60 has_title = title:e_attalid_empire }
+			modifier = { add = 150 has_title = title:h_attalid_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.mithridatid
+		trigger = { LR_holds_diadochi_line_mithridatid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = mithridatid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_mithridatid_kingdom }
+			modifier = { add = 60 has_title = title:e_mithridatid_empire }
+			modifier = { add = 150 has_title = title:h_mithridatid_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.graeco_bactrian
+		trigger = { LR_holds_diadochi_line_graeco_bactrian_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = graeco_bactrian }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_graeco_bactrian_kingdom }
+			modifier = { add = 60 has_title = title:e_graeco_bactrian_empire }
+			modifier = { add = 150 has_title = title:h_graeco_bactrian_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.eumenid
+		trigger = { LR_holds_diadochi_line_eumenid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = eumenid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_eumenid_kingdom }
+			modifier = { add = 60 has_title = title:e_eumenid_empire }
+			modifier = { add = 150 has_title = title:h_eumenid_hegemony }
+		}
+	}
+	option = {
+		name = LR_diadochi_line.0002.peithonid
+		trigger = { LR_holds_diadochi_line_peithonid_trigger = yes }
+		custom_tooltip = LR_diadochi_line.0002.keep_tt
+		LR_keep_diadochi_line_effect = { LINE = peithonid }
+		LR_diadochi_line_government_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 has_title = title:k_peithonid_kingdom }
+			modifier = { add = 60 has_title = title:e_peithonid_empire }
+			modifier = { add = 150 has_title = title:h_peithonid_hegemony }
+		}
+	}
+}

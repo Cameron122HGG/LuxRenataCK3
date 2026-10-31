@@ -12,6 +12,13 @@ LR_is_diadochi_ruler_trigger = {
 		has_title = title:e_argead_empire
 		has_title = title:h_hellenistic_empire
 		has_title = title:h_greek_india
+		has_title = title:e_lysimachid_empire
+		has_title = title:e_attalid_empire
+		has_title = title:e_mithridatid_empire
+		has_title = title:e_graeco_bactrian_empire
+		has_title = title:e_eumenid_empire
+		has_title = title:e_peithonid_empire
+		LR_holds_diadochi_hegemony_trigger = yes
 	}
 }
 
@@ -245,5 +252,312 @@ LR_is_hyparchy_title_trigger = {
 		this = title:d_hyparchy_sandokandia
 		this = title:d_hyparchy_rhogandania
 		this = title:d_hyparchy_anourogrammene
+	}
+}
+
+# Strategia decisions: each successor or warlord empire, its original satrapies, and whether it may expand
+# Character: holds the e_antipatrid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_antipatrid_trigger = {
+	OR = {
+		has_title = title:e_antipatrid_empire
+		has_title = title:h_antipatrid_hegemony
+		AND = {
+			has_title = title:k_antipatrid_kingdom
+			NOT = { exists = title:e_antipatrid_empire.holder }
+			is_target_in_global_variable_list = { # Founded, not just the titular kingdom
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_antipatros_reborn
+			}
+		}
+	}
+}
+
+# Character: holds the e_antigonid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_antigonid_trigger = {
+	OR = {
+		has_title = title:e_antigonid_empire
+		has_title = title:h_antigonid_hegemony
+		AND = {
+			has_title = title:k_antigonid_kingdom
+			NOT = { exists = title:e_antigonid_empire.holder }
+			is_target_in_global_variable_list = { # Founded, not just the titular kingdom
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_antigonos_reborn
+			}
+		}
+	}
+}
+
+# Character: holds the e_seleukid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_seleukid_trigger = {
+	OR = {
+		has_title = title:e_seleukid_empire
+		has_title = title:h_seleukid_hegemony
+	}
+}
+
+# Character: holds the e_ptolemaic_empire (or its founded kingdom)
+LR_holds_satrapy_empire_ptolemaic_trigger = {
+	OR = {
+		has_title = title:e_ptolemaic_empire
+		has_title = title:h_ptolemaic_hegemony
+	}
+}
+
+# Character: holds the e_lysimachid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_lysimachid_trigger = {
+	OR = {
+		has_title = title:e_lysimachid_empire
+		has_title = title:h_lysimachid_hegemony
+	}
+}
+
+# Character: holds the e_attalid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_attalid_trigger = {
+	OR = {
+		has_title = title:e_attalid_empire
+		has_title = title:h_attalid_hegemony
+	}
+}
+
+# Character: holds the e_mithridatid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_mithridatid_trigger = {
+	OR = {
+		has_title = title:e_mithridatid_empire
+		has_title = title:h_mithridatid_hegemony
+	}
+}
+
+# Character: holds the e_graeco_bactrian_empire (or its founded kingdom)
+LR_holds_satrapy_empire_graeco_bactrian_trigger = {
+	OR = {
+		has_title = title:e_graeco_bactrian_empire
+		has_title = title:h_graeco_bactrian_hegemony
+	}
+}
+
+# Character: holds the e_eumenid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_eumenid_trigger = {
+	OR = {
+		has_title = title:e_eumenid_empire
+		has_title = title:h_eumenid_hegemony
+	}
+}
+
+# Character: holds the e_peithonid_empire (or its founded kingdom)
+LR_holds_satrapy_empire_peithonid_trigger = {
+	OR = {
+		has_title = title:e_peithonid_empire
+		has_title = title:h_peithonid_hegemony
+	}
+}
+
+# Character: is SATRAPY one of the original satrapies of an empire they hold?
+# Usage: LR_satrapy_is_original_trigger = { SATRAPY = k_satrapy_syria }
+LR_satrapy_is_original_trigger = {
+	OR = {
+		AND = {
+			LR_holds_satrapy_empire_antipatrid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_macedonia
+					this = title:k_satrapy_greece
+					this = title:k_satrapy_thrace
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_antigonid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_bithynia
+					this = title:k_satrapy_ionia
+					this = title:k_satrapy_lydia
+					this = title:k_satrapy_cappadocia
+					this = title:k_satrapy_paphlagonia
+					this = title:k_satrapy_pontus
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_seleukid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_syria
+					this = title:k_satrapy_cilicia
+					this = title:k_satrapy_mesopotamia
+					this = title:k_satrapy_babylon
+					this = title:k_satrapy_susiana
+					this = title:k_satrapy_media_minor
+					this = title:k_satrapy_persia
+					this = title:k_satrapy_parthia
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_ptolemaic_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_egypt
+					this = title:k_satrapy_libya
+					this = title:k_satrapy_cyprus
+					this = title:k_satrapy_phoenicia
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_lysimachid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_thrace
+					this = title:k_satrapy_bithynia
+					this = title:k_satrapy_ionia
+					this = title:k_satrapy_lydia
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_attalid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_ionia
+					this = title:k_satrapy_lydia
+					this = title:k_satrapy_bithynia
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_mithridatid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_pontus
+					this = title:k_satrapy_paphlagonia
+					this = title:k_satrapy_cappadocia
+					this = title:k_satrapy_clochis
+					this = title:k_satrapy_armenia
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_graeco_bactrian_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_bactria
+					this = title:k_satrapy_sogdiana
+					this = title:k_satrapy_arachosia
+					this = title:k_satrapy_poklais
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_eumenid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_cappadocia
+					this = title:k_satrapy_paphlagonia
+					this = title:k_satrapy_pontus
+				}
+			}
+		}
+		AND = {
+			LR_holds_satrapy_empire_peithonid_trigger = yes
+			title:$SATRAPY$ = {
+				OR = {
+					this = title:k_satrapy_media_minor
+					this = title:k_satrapy_media_major
+					this = title:k_satrapy_parthia
+					this = title:k_satrapy_persia
+				}
+			}
+		}
+	}
+}
+
+# Character: does their realm hold every original satrapy of an empire they hold?
+LR_satrapy_originals_restored_trigger = {
+	OR = {
+		AND = {
+			LR_holds_satrapy_empire_antipatrid_trigger = yes
+			title:k_satrapy_macedonia = { holder.top_liege ?= root }
+			title:k_satrapy_greece = { holder.top_liege ?= root }
+			title:k_satrapy_thrace = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_antigonid_trigger = yes
+			title:k_satrapy_bithynia = { holder.top_liege ?= root }
+			title:k_satrapy_ionia = { holder.top_liege ?= root }
+			title:k_satrapy_lydia = { holder.top_liege ?= root }
+			title:k_satrapy_cappadocia = { holder.top_liege ?= root }
+			title:k_satrapy_paphlagonia = { holder.top_liege ?= root }
+			title:k_satrapy_pontus = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_seleukid_trigger = yes
+			title:k_satrapy_syria = { holder.top_liege ?= root }
+			title:k_satrapy_cilicia = { holder.top_liege ?= root }
+			title:k_satrapy_mesopotamia = { holder.top_liege ?= root }
+			title:k_satrapy_babylon = { holder.top_liege ?= root }
+			title:k_satrapy_susiana = { holder.top_liege ?= root }
+			title:k_satrapy_media_minor = { holder.top_liege ?= root }
+			title:k_satrapy_persia = { holder.top_liege ?= root }
+			title:k_satrapy_parthia = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_ptolemaic_trigger = yes
+			title:k_satrapy_egypt = { holder.top_liege ?= root }
+			title:k_satrapy_libya = { holder.top_liege ?= root }
+			title:k_satrapy_cyprus = { holder.top_liege ?= root }
+			title:k_satrapy_phoenicia = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_lysimachid_trigger = yes
+			title:k_satrapy_thrace = { holder.top_liege ?= root }
+			title:k_satrapy_bithynia = { holder.top_liege ?= root }
+			title:k_satrapy_ionia = { holder.top_liege ?= root }
+			title:k_satrapy_lydia = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_attalid_trigger = yes
+			title:k_satrapy_ionia = { holder.top_liege ?= root }
+			title:k_satrapy_lydia = { holder.top_liege ?= root }
+			title:k_satrapy_bithynia = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_mithridatid_trigger = yes
+			title:k_satrapy_pontus = { holder.top_liege ?= root }
+			title:k_satrapy_paphlagonia = { holder.top_liege ?= root }
+			title:k_satrapy_cappadocia = { holder.top_liege ?= root }
+			title:k_satrapy_clochis = { holder.top_liege ?= root }
+			title:k_satrapy_armenia = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_graeco_bactrian_trigger = yes
+			title:k_satrapy_bactria = { holder.top_liege ?= root }
+			title:k_satrapy_sogdiana = { holder.top_liege ?= root }
+			title:k_satrapy_arachosia = { holder.top_liege ?= root }
+			title:k_satrapy_poklais = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_eumenid_trigger = yes
+			title:k_satrapy_cappadocia = { holder.top_liege ?= root }
+			title:k_satrapy_paphlagonia = { holder.top_liege ?= root }
+			title:k_satrapy_pontus = { holder.top_liege ?= root }
+		}
+		AND = {
+			LR_holds_satrapy_empire_peithonid_trigger = yes
+			title:k_satrapy_media_minor = { holder.top_liege ?= root }
+			title:k_satrapy_media_major = { holder.top_liege ?= root }
+			title:k_satrapy_parthia = { holder.top_liege ?= root }
+			title:k_satrapy_persia = { holder.top_liege ?= root }
+		}
+	}
+}
+
+# Character: may they restore SATRAPY now? Their original satrapies first, the rest of the strategia after
+# Usage: LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_syria }
+LR_satrapy_can_restore_trigger = {
+	OR = {
+		LR_satrapy_is_original_trigger = { SATRAPY = $SATRAPY$ }
+		LR_satrapy_originals_restored_trigger = yes
 	}
 }

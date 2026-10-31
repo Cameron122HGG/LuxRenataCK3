@@ -1,0 +1,867 @@
+﻿# Formable kingdoms of post-Alexander warlords: each needs the lands of one or two satrapies
+
+LR_found_lysimachid_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_found_lysimachid_decision_desc
+	selection_tooltip = LR_found_lysimachid_decision_tooltip
+	confirm_text = LR_found_lysimachid_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { exists = title:k_lysimachid_kingdom.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_lysimachid_founded
+			}
+		}
+		OR = {
+			dynasty = dynasty:dynasty_hellenistic_lysimachus
+			has_trait = trait:bloodline_lysimachus
+		}
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_duchy
+		prestige_level >= 2
+		custom_tooltip = { # One diadochi line per ruler (gen_diadochi_lines.py)
+			text = LR_not_other_diadochi_line_tt
+			NOT = { LR_holds_other_diadochi_line_lysimachid_trigger = yes }
+		}
+		completely_controls_region = custom_satrapy_thrace
+		custom_tooltip = {
+			text = LR_found_lysimachid_decision_second_satrapy_tt
+			OR = {
+				completely_controls_region = custom_satrapy_bithynia
+				completely_controls_region = custom_satrapy_ionia
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = LR_found_lysimachid_decision_effect_tooltip
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_lysimachid_founded
+			}
+			LR_create_diadochi_warlord_kingdom_effect = { TITLE = k_lysimachid_kingdom }
+			change_government = alexandrian_administrative_government
+		}
+		title:k_lysimachid_kingdom = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_found_attalid_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_found_attalid_decision_desc
+	selection_tooltip = LR_found_attalid_decision_tooltip
+	confirm_text = LR_found_attalid_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { exists = title:k_attalid_kingdom.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_attalid_founded
+			}
+		}
+		dynasty = dynasty:dynasty_hellenistic_attalid
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_duchy
+		prestige_level >= 2
+		custom_tooltip = { # One diadochi line per ruler (gen_diadochi_lines.py)
+			text = LR_not_other_diadochi_line_tt
+			NOT = { LR_holds_other_diadochi_line_attalid_trigger = yes }
+		}
+		completely_controls_region = custom_satrapy_ionia
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = LR_found_attalid_decision_effect_tooltip
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_attalid_founded
+			}
+			LR_create_diadochi_warlord_kingdom_effect = { TITLE = k_attalid_kingdom }
+			change_government = alexandrian_administrative_government
+		}
+		title:k_attalid_kingdom = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_found_mithridatid_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_found_mithridatid_decision_desc
+	selection_tooltip = LR_found_mithridatid_decision_tooltip
+	confirm_text = LR_found_mithridatid_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { exists = title:k_mithridatid_kingdom.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_mithridatid_founded
+			}
+		}
+		OR = {
+			dynasty = dynasty:dynasty_hellenistic_mithridates
+			has_trait = trait:bloodline_mithridates
+		}
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_duchy
+		prestige_level >= 2
+		custom_tooltip = { # One diadochi line per ruler (gen_diadochi_lines.py)
+			text = LR_not_other_diadochi_line_tt
+			NOT = { LR_holds_other_diadochi_line_mithridatid_trigger = yes }
+		}
+		completely_controls_region = custom_satrapy_pontus
+		completely_controls_region = custom_satrapy_paphlagonia
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = LR_found_mithridatid_decision_effect_tooltip
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_mithridatid_founded
+			}
+			LR_create_diadochi_warlord_kingdom_effect = { TITLE = k_mithridatid_kingdom }
+			change_government = alexandrian_administrative_government
+		}
+		title:k_mithridatid_kingdom = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_found_graeco_bactrian_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_found_graeco_bactrian_decision_desc
+	selection_tooltip = LR_found_graeco_bactrian_decision_tooltip
+	confirm_text = LR_found_graeco_bactrian_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { exists = title:k_graeco_bactrian_kingdom.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_graeco_bactrian_founded
+			}
+		}
+		OR = {
+			culture = { has_cultural_pillar = heritage_hellenistic }
+			culture = { has_cultural_pillar = heritage_indo_hellenic }
+		}
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_duchy
+		prestige_level >= 2
+		custom_tooltip = { # One diadochi line per ruler (gen_diadochi_lines.py)
+			text = LR_not_other_diadochi_line_tt
+			NOT = { LR_holds_other_diadochi_line_graeco_bactrian_trigger = yes }
+		}
+		completely_controls_region = custom_satrapy_bactria
+		completely_controls_region = custom_satrapy_sogdiana
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = LR_found_graeco_bactrian_decision_effect_tooltip
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_graeco_bactrian_founded
+			}
+			LR_create_diadochi_warlord_kingdom_effect = { TITLE = k_graeco_bactrian_kingdom }
+			change_government = alexandrian_administrative_government
+		}
+		title:k_graeco_bactrian_kingdom = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_found_eumenid_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_found_eumenid_decision_desc
+	selection_tooltip = LR_found_eumenid_decision_tooltip
+	confirm_text = LR_found_eumenid_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { exists = title:k_eumenid_kingdom.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_eumenid_founded
+			}
+		}
+		dynasty = dynasty:dynasty_hellenistic_eumeniai
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_duchy
+		prestige_level >= 2
+		custom_tooltip = { # One diadochi line per ruler (gen_diadochi_lines.py)
+			text = LR_not_other_diadochi_line_tt
+			NOT = { LR_holds_other_diadochi_line_eumenid_trigger = yes }
+		}
+		completely_controls_region = custom_satrapy_cappadocia
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = LR_found_eumenid_decision_effect_tooltip
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_eumenid_founded
+			}
+			LR_create_diadochi_warlord_kingdom_effect = { TITLE = k_eumenid_kingdom }
+			change_government = alexandrian_administrative_government
+		}
+		title:k_eumenid_kingdom = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_found_peithonid_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_found_peithonid_decision_desc
+	selection_tooltip = LR_found_peithonid_decision_tooltip
+	confirm_text = LR_found_peithonid_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { exists = title:k_peithonid_kingdom.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_peithonid_founded
+			}
+		}
+		dynasty = dynasty:dynasty_hellenistic_peithonos
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_duchy
+		prestige_level >= 2
+		custom_tooltip = { # One diadochi line per ruler (gen_diadochi_lines.py)
+			text = LR_not_other_diadochi_line_tt
+			NOT = { LR_holds_other_diadochi_line_peithonid_trigger = yes }
+		}
+		completely_controls_region = custom_satrapy_media_minor
+		completely_controls_region = custom_satrapy_parthia
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = LR_found_peithonid_decision_effect_tooltip
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_peithonid_founded
+			}
+			LR_create_diadochi_warlord_kingdom_effect = { TITLE = k_peithonid_kingdom }
+			change_government = alexandrian_administrative_government
+		}
+		title:k_peithonid_kingdom = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# Reforms of the warlord kingdoms into empires that restore satrapies
+
+LR_reform_lysimachid_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
+	}
+	desc = LR_reform_lysimachid_empire_decision_desc
+	selection_tooltip = LR_reform_lysimachid_empire_decision_tooltip
+	confirm_text = LR_reform_lysimachid_empire_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		has_title = title:k_lysimachid_kingdom
+		NOT = { exists = title:e_lysimachid_empire.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_lysimachid_empire
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		completely_controls_region = custom_satrapy_thrace
+		custom_tooltip = {
+			text = LR_reform_lysimachid_empire_decision_two_satrapies_tt
+			calc_true_if = {
+				amount >= 2
+				completely_controls_region = custom_satrapy_bithynia
+				completely_controls_region = custom_satrapy_ionia
+				completely_controls_region = custom_satrapy_lydia
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_reform_lysimachid_empire_decision_effect_tooltip
+		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_lysimachid_empire
+			}
+			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_lysimachid_kingdom EMPIRE = e_lysimachid_empire }
+		}
+		title:e_lysimachid_empire = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_reform_attalid_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
+	}
+	desc = LR_reform_attalid_empire_decision_desc
+	selection_tooltip = LR_reform_attalid_empire_decision_tooltip
+	confirm_text = LR_reform_attalid_empire_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		has_title = title:k_attalid_kingdom
+		NOT = { exists = title:e_attalid_empire.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_attalid_empire
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		completely_controls_region = custom_satrapy_ionia
+		custom_tooltip = {
+			text = LR_reform_attalid_empire_decision_two_satrapies_tt
+			calc_true_if = {
+				amount >= 2
+				completely_controls_region = custom_satrapy_lydia
+				completely_controls_region = custom_satrapy_bithynia
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_reform_attalid_empire_decision_effect_tooltip
+		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_attalid_empire
+			}
+			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_attalid_kingdom EMPIRE = e_attalid_empire }
+		}
+		title:e_attalid_empire = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_reform_mithridatid_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
+	}
+	desc = LR_reform_mithridatid_empire_decision_desc
+	selection_tooltip = LR_reform_mithridatid_empire_decision_tooltip
+	confirm_text = LR_reform_mithridatid_empire_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		has_title = title:k_mithridatid_kingdom
+		NOT = { exists = title:e_mithridatid_empire.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_mithridatid_empire
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		completely_controls_region = custom_satrapy_pontus
+		custom_tooltip = {
+			text = LR_reform_mithridatid_empire_decision_two_satrapies_tt
+			calc_true_if = {
+				amount >= 2
+				completely_controls_region = custom_satrapy_paphlagonia
+				completely_controls_region = custom_satrapy_cappadocia
+				completely_controls_region = custom_satrapy_clochis
+				completely_controls_region = custom_satrapy_armenia
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_reform_mithridatid_empire_decision_effect_tooltip
+		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_mithridatid_empire
+			}
+			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_mithridatid_kingdom EMPIRE = e_mithridatid_empire }
+		}
+		title:e_mithridatid_empire = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_reform_graeco_bactrian_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
+	}
+	desc = LR_reform_graeco_bactrian_empire_decision_desc
+	selection_tooltip = LR_reform_graeco_bactrian_empire_decision_tooltip
+	confirm_text = LR_reform_graeco_bactrian_empire_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		has_title = title:k_graeco_bactrian_kingdom
+		NOT = { exists = title:e_graeco_bactrian_empire.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_graeco_bactrian_empire
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		completely_controls_region = custom_satrapy_bactria
+		custom_tooltip = {
+			text = LR_reform_graeco_bactrian_empire_decision_two_satrapies_tt
+			calc_true_if = {
+				amount >= 2
+				completely_controls_region = custom_satrapy_sogdiana
+				completely_controls_region = custom_satrapy_arachosia
+				completely_controls_region = custom_satrapy_poklais
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_reform_graeco_bactrian_empire_decision_effect_tooltip
+		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_graeco_bactrian_empire
+			}
+			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_graeco_bactrian_kingdom EMPIRE = e_graeco_bactrian_empire }
+		}
+		title:e_graeco_bactrian_empire = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_reform_eumenid_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
+	}
+	desc = LR_reform_eumenid_empire_decision_desc
+	selection_tooltip = LR_reform_eumenid_empire_decision_tooltip
+	confirm_text = LR_reform_eumenid_empire_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		has_title = title:k_eumenid_kingdom
+		NOT = { exists = title:e_eumenid_empire.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_eumenid_empire
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		completely_controls_region = custom_satrapy_cappadocia
+		custom_tooltip = {
+			text = LR_reform_eumenid_empire_decision_two_satrapies_tt
+			calc_true_if = {
+				amount >= 2
+				completely_controls_region = custom_satrapy_paphlagonia
+				completely_controls_region = custom_satrapy_pontus
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_reform_eumenid_empire_decision_effect_tooltip
+		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_eumenid_empire
+			}
+			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_eumenid_kingdom EMPIRE = e_eumenid_empire }
+		}
+		title:e_eumenid_empire = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_reform_peithonid_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
+	}
+	desc = LR_reform_peithonid_empire_decision_desc
+	selection_tooltip = LR_reform_peithonid_empire_decision_tooltip
+	confirm_text = LR_reform_peithonid_empire_decision_confirm
+	decision_group_type = hellenic
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		has_title = title:k_peithonid_kingdom
+		NOT = { exists = title:e_peithonid_empire.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_peithonid_empire
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		completely_controls_region = custom_satrapy_media_minor
+		custom_tooltip = {
+			text = LR_reform_peithonid_empire_decision_two_satrapies_tt
+			calc_true_if = {
+				amount >= 2
+				completely_controls_region = custom_satrapy_media_major
+				completely_controls_region = custom_satrapy_parthia
+				completely_controls_region = custom_satrapy_persia
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_reform_peithonid_empire_decision_effect_tooltip
+		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_peithonid_empire
+			}
+			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_peithonid_kingdom EMPIRE = e_peithonid_empire }
+		}
+		title:e_peithonid_empire = { save_scope_as = founded_title }
+		root = { save_scope_as = scoped_ruler }
+		trigger_event = LR_diadochi_warlord.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

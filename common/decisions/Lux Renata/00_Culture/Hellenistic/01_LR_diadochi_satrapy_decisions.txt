@@ -1995,32 +1995,25 @@ LR_restore_indian_satrapies_decision = {
 	}
 }
 
-LR_restore_antipatrid_satrapies_decision = {
+LR_restore_strategia_europe_satrapies_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
 	}
 	ai_check_interval = 120
 	decision_group_type = hellenic
 
-	desc = LR_restore_antipatrid_satrapies_decision_desc
-	selection_tooltip = LR_restore_antipatrid_satrapies_decision_tooltip
-	confirm_text = LR_restore_antipatrid_satrapies_decision_confirm
+	desc = LR_restore_strategia_europe_satrapies_decision_desc
+	selection_tooltip = LR_restore_strategia_europe_satrapies_decision_tooltip
+	confirm_text = LR_restore_strategia_europe_satrapies_decision_confirm
 
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		OR = {
-			has_title = title:e_antipatrid_empire
-			AND = {
-				has_title = title:k_antipatrid_kingdom
-				NOT = { exists = title:e_antipatrid_empire.holder }
-				is_target_in_global_variable_list = { # Founded, not just the titular kingdom
-					name = unavailable_unique_decisions
-					target = flag:flag_lux_antipatros_reborn
-				}
-			}
-		}
 		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
+		OR = {
+			LR_holds_satrapy_empire_antipatrid_trigger = yes
+			LR_holds_satrapy_empire_lysimachid_trigger = yes
+		}
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_macedonia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_greece }
@@ -2055,14 +2048,17 @@ LR_restore_antipatrid_satrapies_decision = {
 				AND = {
 					completely_controls_region = custom_satrapy_macedonia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_macedonia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_macedonia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_greece
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_greece }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_greece }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_thrace
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_thrace }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_thrace }
 				}
 			}
 		}
@@ -2094,6 +2090,10 @@ LR_restore_antipatrid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_macedonia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_macedonia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2112,6 +2112,10 @@ LR_restore_antipatrid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_greece
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_greece }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2130,6 +2134,10 @@ LR_restore_antipatrid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_thrace
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_thrace }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2139,19 +2147,18 @@ LR_restore_antipatrid_satrapies_decision = {
 
 	effect = {
 		custom_tooltip = LR_restore_satrapies_decision_effect_tt
-		LR_diadochi_ensure_successor_empire_effect = { KINGDOM = k_antipatrid_kingdom EMPIRE = e_antipatrid_empire }
 		hidden_effect = {
 			if = {
 				limit = { scope:custom_satrapy_macedonia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_macedonia EMPIRE = e_antipatrid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_macedonia }
 			}
 			if = {
 				limit = { scope:custom_satrapy_greece = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_greece EMPIRE = e_antipatrid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_greece }
 			}
 			if = {
 				limit = { scope:custom_satrapy_thrace = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_thrace EMPIRE = e_antipatrid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_thrace }
 			}
 		}
 		trigger_event = LR_diadochi_satrapy.0001
@@ -2166,32 +2173,28 @@ LR_restore_antipatrid_satrapies_decision = {
 	}
 }
 
-LR_restore_antigonid_satrapies_decision = {
+LR_restore_strategia_asia_satrapies_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
 	}
 	ai_check_interval = 120
 	decision_group_type = hellenic
 
-	desc = LR_restore_antigonid_satrapies_decision_desc
-	selection_tooltip = LR_restore_antigonid_satrapies_decision_tooltip
-	confirm_text = LR_restore_antigonid_satrapies_decision_confirm
+	desc = LR_restore_strategia_asia_satrapies_decision_desc
+	selection_tooltip = LR_restore_strategia_asia_satrapies_decision_tooltip
+	confirm_text = LR_restore_strategia_asia_satrapies_decision_confirm
 
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		OR = {
-			has_title = title:e_antigonid_empire
-			AND = {
-				has_title = title:k_antigonid_kingdom
-				NOT = { exists = title:e_antigonid_empire.holder }
-				is_target_in_global_variable_list = { # Founded, not just the titular kingdom
-					name = unavailable_unique_decisions
-					target = flag:flag_lux_antigonos_reborn
-				}
-			}
-		}
 		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
+		OR = {
+			LR_holds_satrapy_empire_antigonid_trigger = yes
+			LR_holds_satrapy_empire_lysimachid_trigger = yes
+			LR_holds_satrapy_empire_attalid_trigger = yes
+			LR_holds_satrapy_empire_mithridatid_trigger = yes
+			LR_holds_satrapy_empire_eumenid_trigger = yes
+		}
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bithynia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_ionia }
@@ -2199,6 +2202,8 @@ LR_restore_antigonid_satrapies_decision = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cappadocia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_paphlagonia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_pontus }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_armenia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_clochis }
 		}
 	}
 
@@ -2229,26 +2234,42 @@ LR_restore_antigonid_satrapies_decision = {
 				AND = {
 					completely_controls_region = custom_satrapy_bithynia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bithynia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_bithynia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_ionia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_ionia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_ionia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_lydia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_lydia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_lydia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_cappadocia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cappadocia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_cappadocia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_paphlagonia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_paphlagonia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_paphlagonia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_pontus
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_pontus }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_pontus }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_armenia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_armenia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_armenia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_clochis
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_clochis }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_clochis }
 				}
 			}
 		}
@@ -2280,6 +2301,10 @@ LR_restore_antigonid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_bithynia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_bithynia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2298,6 +2323,10 @@ LR_restore_antigonid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_ionia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_ionia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2316,6 +2345,10 @@ LR_restore_antigonid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_lydia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_lydia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2334,6 +2367,10 @@ LR_restore_antigonid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_cappadocia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_cappadocia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2352,6 +2389,10 @@ LR_restore_antigonid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_paphlagonia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_paphlagonia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2370,6 +2411,54 @@ LR_restore_antigonid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_pontus
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_pontus }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_armenia
+			current_description = {
+				desc = custom_satrapy_armenia_desc
+			}
+			localization = {
+				desc = custom_satrapy_armenia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_armenia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_armenia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_armenia }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_clochis
+			current_description = {
+				desc = custom_satrapy_clochis_desc
+			}
+			localization = {
+				desc = custom_satrapy_clochis_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_clochis }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_clochis
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_clochis }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2379,31 +2468,38 @@ LR_restore_antigonid_satrapies_decision = {
 
 	effect = {
 		custom_tooltip = LR_restore_satrapies_decision_effect_tt
-		LR_diadochi_ensure_successor_empire_effect = { KINGDOM = k_antigonid_kingdom EMPIRE = e_antigonid_empire }
 		hidden_effect = {
 			if = {
 				limit = { scope:custom_satrapy_bithynia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_bithynia EMPIRE = e_antigonid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_bithynia }
 			}
 			if = {
 				limit = { scope:custom_satrapy_ionia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_ionia EMPIRE = e_antigonid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_ionia }
 			}
 			if = {
 				limit = { scope:custom_satrapy_lydia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_lydia EMPIRE = e_antigonid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_lydia }
 			}
 			if = {
 				limit = { scope:custom_satrapy_cappadocia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_cappadocia EMPIRE = e_antigonid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_cappadocia }
 			}
 			if = {
 				limit = { scope:custom_satrapy_paphlagonia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_paphlagonia EMPIRE = e_antigonid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_paphlagonia }
 			}
 			if = {
 				limit = { scope:custom_satrapy_pontus = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_pontus EMPIRE = e_antigonid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_pontus }
+			}
+			if = {
+				limit = { scope:custom_satrapy_armenia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_armenia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_clochis = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_clochis }
 			}
 		}
 		trigger_event = LR_diadochi_satrapy.0001
@@ -2418,31 +2514,32 @@ LR_restore_antigonid_satrapies_decision = {
 	}
 }
 
-LR_restore_seleukid_satrapies_decision = {
+LR_restore_strategia_syria_satrapies_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
 	}
 	ai_check_interval = 120
 	decision_group_type = hellenic
 
-	desc = LR_restore_seleukid_satrapies_decision_desc
-	selection_tooltip = LR_restore_seleukid_satrapies_decision_tooltip
-	confirm_text = LR_restore_seleukid_satrapies_decision_confirm
+	desc = LR_restore_strategia_syria_satrapies_decision_desc
+	selection_tooltip = LR_restore_strategia_syria_satrapies_decision_tooltip
+	confirm_text = LR_restore_strategia_syria_satrapies_decision_confirm
 
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		has_title = title:e_seleukid_empire
 		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
+		OR = {
+			LR_holds_satrapy_empire_seleukid_trigger = yes
+			LR_holds_satrapy_empire_ptolemaic_trigger = yes
+		}
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_syria }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cilicia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_phoenicia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_mesopotamia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_babylon }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_susiana }
-			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_minor }
-			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_persia }
-			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
 		}
 	}
 
@@ -2473,34 +2570,32 @@ LR_restore_seleukid_satrapies_decision = {
 				AND = {
 					completely_controls_region = custom_satrapy_syria
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_syria }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_syria }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_cilicia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cilicia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_cilicia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_phoenicia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_phoenicia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_phoenicia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_mesopotamia
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_mesopotamia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_mesopotamia }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_babylon
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_babylon }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_babylon }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_susiana
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_susiana }
-				}
-				AND = {
-					completely_controls_region = custom_satrapy_media_minor
-					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_minor }
-				}
-				AND = {
-					completely_controls_region = custom_satrapy_persia
-					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_persia }
-				}
-				AND = {
-					completely_controls_region = custom_satrapy_parthia
-					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_susiana }
 				}
 			}
 		}
@@ -2532,6 +2627,10 @@ LR_restore_seleukid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_syria
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_syria }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2550,6 +2649,32 @@ LR_restore_seleukid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_cilicia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_cilicia }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_phoenicia
+			current_description = {
+				desc = custom_satrapy_phoenicia_desc
+			}
+			localization = {
+				desc = custom_satrapy_phoenicia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_phoenicia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_phoenicia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_phoenicia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2568,6 +2693,10 @@ LR_restore_seleukid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_mesopotamia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_mesopotamia }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2586,6 +2715,10 @@ LR_restore_seleukid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_babylon
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_babylon }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2604,11 +2737,145 @@ LR_restore_seleukid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_susiana
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_susiana }
+				}
 			}
 			ai_chance = {
 				value = 10
 			}
 		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_satrapies_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:custom_satrapy_syria = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_syria }
+			}
+			if = {
+				limit = { scope:custom_satrapy_cilicia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_cilicia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_phoenicia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_phoenicia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_mesopotamia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_mesopotamia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_babylon = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_babylon }
+			}
+			if = {
+				limit = { scope:custom_satrapy_susiana = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_susiana }
+			}
+		}
+		trigger_event = LR_diadochi_satrapy.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_restore_strategia_persis_satrapies_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = hellenic
+
+	desc = LR_restore_strategia_persis_satrapies_decision_desc
+	selection_tooltip = LR_restore_strategia_persis_satrapies_decision_tooltip
+	confirm_text = LR_restore_strategia_persis_satrapies_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
+		OR = {
+			LR_holds_satrapy_empire_seleukid_trigger = yes
+			LR_holds_satrapy_empire_peithonid_trigger = yes
+		}
+		OR = {
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_minor }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_major }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_persia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_magan }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_restore_satrapies_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_satrapy_media_minor
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_minor }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_media_minor }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_media_major
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_major }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_media_major }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_persia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_persia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_persia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_magan
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_magan }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_magan }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
 		item = {
 			value = custom_satrapy_media_minor
 			current_description = {
@@ -2622,6 +2889,32 @@ LR_restore_seleukid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_media_minor
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_media_minor }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_media_major
+			current_description = {
+				desc = custom_satrapy_media_major_desc
+			}
+			localization = {
+				desc = custom_satrapy_media_major_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_major }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_media_major
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_media_major }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2640,24 +2933,32 @@ LR_restore_seleukid_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_persia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_persia }
+				}
 			}
 			ai_chance = {
 				value = 10
 			}
 		}
 		item = {
-			value = custom_satrapy_parthia
+			value = custom_satrapy_magan
 			current_description = {
-				desc = custom_satrapy_parthia_desc
+				desc = custom_satrapy_magan_desc
 			}
 			localization = {
-				desc = custom_satrapy_parthia_desc
+				desc = custom_satrapy_magan_desc
 			}
 			is_shown = {
-				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_magan }
 			}
 			is_valid = {
-				completely_controls_region = custom_satrapy_parthia
+				completely_controls_region = custom_satrapy_magan
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_magan }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2669,36 +2970,20 @@ LR_restore_seleukid_satrapies_decision = {
 		custom_tooltip = LR_restore_satrapies_decision_effect_tt
 		hidden_effect = {
 			if = {
-				limit = { scope:custom_satrapy_syria = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_syria EMPIRE = e_seleukid_empire }
-			}
-			if = {
-				limit = { scope:custom_satrapy_cilicia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_cilicia EMPIRE = e_seleukid_empire }
-			}
-			if = {
-				limit = { scope:custom_satrapy_mesopotamia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_mesopotamia EMPIRE = e_seleukid_empire }
-			}
-			if = {
-				limit = { scope:custom_satrapy_babylon = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_babylon EMPIRE = e_seleukid_empire }
-			}
-			if = {
-				limit = { scope:custom_satrapy_susiana = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_susiana EMPIRE = e_seleukid_empire }
-			}
-			if = {
 				limit = { scope:custom_satrapy_media_minor = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_media_minor EMPIRE = e_seleukid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_media_minor }
+			}
+			if = {
+				limit = { scope:custom_satrapy_media_major = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_media_major }
 			}
 			if = {
 				limit = { scope:custom_satrapy_persia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_persia EMPIRE = e_seleukid_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_persia }
 			}
 			if = {
-				limit = { scope:custom_satrapy_parthia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_parthia EMPIRE = e_seleukid_empire }
+				limit = { scope:custom_satrapy_magan = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_magan }
 			}
 		}
 		trigger_event = LR_diadochi_satrapy.0001
@@ -2713,27 +2998,303 @@ LR_restore_seleukid_satrapies_decision = {
 	}
 }
 
-LR_restore_ptolemaic_satrapies_decision = {
+LR_restore_strategia_upper_satrapies_satrapies_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
 	}
 	ai_check_interval = 120
 	decision_group_type = hellenic
 
-	desc = LR_restore_ptolemaic_satrapies_decision_desc
-	selection_tooltip = LR_restore_ptolemaic_satrapies_decision_tooltip
-	confirm_text = LR_restore_ptolemaic_satrapies_decision_confirm
+	desc = LR_restore_strategia_upper_satrapies_satrapies_decision_desc
+	selection_tooltip = LR_restore_strategia_upper_satrapies_satrapies_decision_tooltip
+	confirm_text = LR_restore_strategia_upper_satrapies_satrapies_decision_confirm
 
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		has_title = title:e_ptolemaic_empire
 		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
+		OR = {
+			LR_holds_satrapy_empire_seleukid_trigger = yes
+			LR_holds_satrapy_empire_graeco_bactrian_trigger = yes
+			LR_holds_satrapy_empire_peithonid_trigger = yes
+		}
+		OR = {
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_chorasmia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arachosia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gedrosia }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_restore_satrapies_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_satrapy_parthia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_parthia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_bactria
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_bactria }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_sogdiana
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_sogdiana }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_chorasmia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_chorasmia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_chorasmia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_arachosia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arachosia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_arachosia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_gedrosia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gedrosia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_gedrosia }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = custom_satrapy_parthia
+			current_description = {
+				desc = custom_satrapy_parthia_desc
+			}
+			localization = {
+				desc = custom_satrapy_parthia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_parthia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_parthia }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_bactria
+			current_description = {
+				desc = custom_satrapy_bactria_desc
+			}
+			localization = {
+				desc = custom_satrapy_bactria_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_bactria
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_bactria }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_sogdiana
+			current_description = {
+				desc = custom_satrapy_sogdiana_desc
+			}
+			localization = {
+				desc = custom_satrapy_sogdiana_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_sogdiana
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_sogdiana }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_chorasmia
+			current_description = {
+				desc = custom_satrapy_chorasmia_desc
+			}
+			localization = {
+				desc = custom_satrapy_chorasmia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_chorasmia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_chorasmia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_chorasmia }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_arachosia
+			current_description = {
+				desc = custom_satrapy_arachosia_desc
+			}
+			localization = {
+				desc = custom_satrapy_arachosia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arachosia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_arachosia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_arachosia }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_gedrosia
+			current_description = {
+				desc = custom_satrapy_gedrosia_desc
+			}
+			localization = {
+				desc = custom_satrapy_gedrosia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gedrosia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_gedrosia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_gedrosia }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_satrapies_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:custom_satrapy_parthia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_parthia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_bactria = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_bactria }
+			}
+			if = {
+				limit = { scope:custom_satrapy_sogdiana = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_sogdiana }
+			}
+			if = {
+				limit = { scope:custom_satrapy_chorasmia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_chorasmia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_arachosia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_arachosia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_gedrosia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_gedrosia }
+			}
+		}
+		trigger_event = LR_diadochi_satrapy.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_restore_strategia_egypt_satrapies_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = hellenic
+
+	desc = LR_restore_strategia_egypt_satrapies_decision_desc
+	selection_tooltip = LR_restore_strategia_egypt_satrapies_decision_tooltip
+	confirm_text = LR_restore_strategia_egypt_satrapies_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
+		LR_holds_satrapy_empire_ptolemaic_trigger = yes
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_egypt }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_libya }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cyprus }
-			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_phoenicia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_trogodytike }
 		}
 	}
 
@@ -2764,18 +3325,27 @@ LR_restore_ptolemaic_satrapies_decision = {
 				AND = {
 					completely_controls_region = custom_satrapy_egypt
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_egypt }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_egypt }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_libya
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_libya }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_libya }
 				}
 				AND = {
 					completely_controls_region = custom_satrapy_cyprus
 					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cyprus }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_cyprus }
 				}
 				AND = {
-					completely_controls_region = custom_satrapy_phoenicia
-					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_phoenicia }
+					completely_controls_region = custom_satrapy_nubia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_nubia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_trogodytike
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_trogodytike }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_trogodytike }
 				}
 			}
 		}
@@ -2807,6 +3377,10 @@ LR_restore_ptolemaic_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_egypt
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_egypt }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2825,6 +3399,10 @@ LR_restore_ptolemaic_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_libya
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_libya }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2843,24 +3421,54 @@ LR_restore_ptolemaic_satrapies_decision = {
 			}
 			is_valid = {
 				completely_controls_region = custom_satrapy_cyprus
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_cyprus }
+				}
 			}
 			ai_chance = {
 				value = 10
 			}
 		}
 		item = {
-			value = custom_satrapy_phoenicia
+			value = custom_satrapy_nubia
 			current_description = {
-				desc = custom_satrapy_phoenicia_desc
+				desc = custom_satrapy_nubia_desc
 			}
 			localization = {
-				desc = custom_satrapy_phoenicia_desc
+				desc = custom_satrapy_nubia_desc
 			}
 			is_shown = {
-				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_phoenicia }
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
 			}
 			is_valid = {
-				completely_controls_region = custom_satrapy_phoenicia
+				completely_controls_region = custom_satrapy_nubia
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_nubia }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_trogodytike
+			current_description = {
+				desc = custom_satrapy_trogodytike_desc
+			}
+			localization = {
+				desc = custom_satrapy_trogodytike_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_trogodytike }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_trogodytike
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_trogodytike }
+				}
 			}
 			ai_chance = {
 				value = 10
@@ -2873,19 +3481,198 @@ LR_restore_ptolemaic_satrapies_decision = {
 		hidden_effect = {
 			if = {
 				limit = { scope:custom_satrapy_egypt = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_egypt EMPIRE = e_ptolemaic_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_egypt }
 			}
 			if = {
 				limit = { scope:custom_satrapy_libya = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_libya EMPIRE = e_ptolemaic_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_libya }
 			}
 			if = {
 				limit = { scope:custom_satrapy_cyprus = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_cyprus EMPIRE = e_ptolemaic_empire }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_cyprus }
 			}
 			if = {
-				limit = { scope:custom_satrapy_phoenicia = yes }
-				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_phoenicia EMPIRE = e_ptolemaic_empire }
+				limit = { scope:custom_satrapy_nubia = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_nubia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_trogodytike = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_trogodytike }
+			}
+		}
+		trigger_event = LR_diadochi_satrapy.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_restore_strategia_pentapotamia_satrapies_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = hellenic
+
+	desc = LR_restore_strategia_pentapotamia_satrapies_decision_desc
+	selection_tooltip = LR_restore_strategia_pentapotamia_satrapies_decision_tooltip
+	confirm_text = LR_restore_strategia_pentapotamia_satrapies_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
+		LR_holds_satrapy_empire_graeco_bactrian_trigger = yes
+		OR = {
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_poklais }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kaspeiria }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sigerdis }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_restore_satrapies_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_satrapy_poklais
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_poklais }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_poklais }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_kaspeiria
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kaspeiria }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_kaspeiria }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_sigerdis
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sigerdis }
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_sigerdis }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = custom_satrapy_poklais
+			current_description = {
+				desc = custom_satrapy_poklais_desc
+			}
+			localization = {
+				desc = custom_satrapy_poklais_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_poklais }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_poklais
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_poklais }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_kaspeiria
+			current_description = {
+				desc = custom_satrapy_kaspeiria_desc
+			}
+			localization = {
+				desc = custom_satrapy_kaspeiria_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kaspeiria }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_kaspeiria
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_kaspeiria }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_sigerdis
+			current_description = {
+				desc = custom_satrapy_sigerdis_desc
+			}
+			localization = {
+				desc = custom_satrapy_sigerdis_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sigerdis }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_sigerdis
+				custom_tooltip = {
+					text = LR_satrapy_originals_first_tt
+					LR_satrapy_can_restore_trigger = { SATRAPY = k_satrapy_sigerdis }
+				}
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_satrapies_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:custom_satrapy_poklais = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_poklais }
+			}
+			if = {
+				limit = { scope:custom_satrapy_kaspeiria = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_kaspeiria }
+			}
+			if = {
+				limit = { scope:custom_satrapy_sigerdis = yes }
+				LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_sigerdis }
 			}
 		}
 		trigger_event = LR_diadochi_satrapy.0001

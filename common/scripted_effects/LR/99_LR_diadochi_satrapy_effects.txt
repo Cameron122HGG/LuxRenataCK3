@@ -44,6 +44,10 @@ LR_restore_satrapy_effect = {
 		}
 		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_greek_india }
 	}
+	else_if = { # Diadochi hegemony (gen_diadochi_hegemonies.py)
+		limit = { LR_holds_diadochi_hegemony_trigger = yes }
+		LR_restore_satrapy_diadochi_effect = { SATRAPY = $SATRAPY$ EMPIRE = $EMPIRE$ }
+	}
 	else = {
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:$EMPIRE$ }
 	}
@@ -1800,6 +1804,126 @@ LR_join_greek_india_to_hegemony_effect = {
 	if = {
 		limit = { has_title = title:h_greek_india }
 		destroy_title = title:h_greek_india
+	}
+}
+
+# Strategia decisions: root restores SATRAPY under the successor or warlord empire they hold (making the Antigonid or
+# Antipatrid empire first if they hold only the founded kingdom)
+# Usage: LR_restore_satrapy_for_root_effect = { SATRAPY = k_satrapy_syria }
+LR_restore_satrapy_for_root_effect = {
+	if = {
+		limit = {
+			OR = {
+				has_title = title:e_antipatrid_empire
+				has_title = title:h_antipatrid_hegemony
+				AND = {
+					has_title = title:k_antipatrid_kingdom
+					NOT = { exists = title:e_antipatrid_empire.holder }
+					is_target_in_global_variable_list = { # Founded, not just the titular kingdom
+						name = unavailable_unique_decisions
+						target = flag:flag_lux_antipatros_reborn
+					}
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { has_title = title:h_antipatrid_hegemony } }
+			LR_diadochi_ensure_successor_empire_effect = { KINGDOM = k_antipatrid_kingdom EMPIRE = e_antipatrid_empire }
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_antipatrid_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_antigonid_empire
+				has_title = title:h_antigonid_hegemony
+				AND = {
+					has_title = title:k_antigonid_kingdom
+					NOT = { exists = title:e_antigonid_empire.holder }
+					is_target_in_global_variable_list = { # Founded, not just the titular kingdom
+						name = unavailable_unique_decisions
+						target = flag:flag_lux_antigonos_reborn
+					}
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { has_title = title:h_antigonid_hegemony } }
+			LR_diadochi_ensure_successor_empire_effect = { KINGDOM = k_antigonid_kingdom EMPIRE = e_antigonid_empire }
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_antigonid_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_seleukid_empire
+				has_title = title:h_seleukid_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_seleukid_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_ptolemaic_empire
+				has_title = title:h_ptolemaic_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_ptolemaic_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_lysimachid_empire
+				has_title = title:h_lysimachid_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_lysimachid_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_attalid_empire
+				has_title = title:h_attalid_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_attalid_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_mithridatid_empire
+				has_title = title:h_mithridatid_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_mithridatid_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_graeco_bactrian_empire
+				has_title = title:h_graeco_bactrian_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_graeco_bactrian_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_eumenid_empire
+				has_title = title:h_eumenid_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_eumenid_empire }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_peithonid_empire
+				has_title = title:h_peithonid_hegemony
+			}
+		}
+		LR_restore_satrapy_effect = { SATRAPY = $SATRAPY$ EMPIRE = e_peithonid_empire }
 	}
 }
 
