@@ -1,0 +1,80 @@
+﻿# Title sets (gen_title_sets.py): keep Foreign Administration in step with the set titles a character holds.
+# Run on title gain and loss and yearly. An outsider's set titles left without de jure land (their counties were
+# reorganised into another set by a restore decision) are dissolved first.
+
+LR_title_set_refresh_effect = {
+	# Hellenistic set
+	if = {
+		limit = { NOT = { LR_title_set_hellenistic_native_trigger = yes } }
+		every_held_title = {
+			limit = {
+				LR_title_set_hellenistic_title_trigger = yes
+				NOT = { any_de_jure_county = { always = yes } }
+			}
+			add_to_temporary_list = LR_title_set_dissolve
+		}
+		every_in_list = {
+			list = LR_title_set_dissolve
+			save_temporary_scope_as = LR_title_set_dissolved
+			root = { destroy_title = scope:LR_title_set_dissolved }
+		}
+	}
+	if = {
+		limit = { LR_title_set_hellenistic_outsider_trigger = yes }
+		if = {
+			limit = { NOT = { has_character_modifier = LR_foreign_administration_hellenistic_modifier } }
+			add_character_modifier = LR_foreign_administration_hellenistic_modifier
+		}
+		every_vassal = {
+			limit = { LR_title_set_hellenistic_native_trigger = yes }
+			add_opinion = { target = root modifier = LR_foreign_administration_hellenistic_opinion years = 1 }
+		}
+	}
+	else = {
+		if = {
+			limit = { has_character_modifier = LR_foreign_administration_hellenistic_modifier }
+			remove_character_modifier = LR_foreign_administration_hellenistic_modifier
+		}
+		every_vassal = {
+			limit = { has_opinion_modifier = { target = root modifier = LR_foreign_administration_hellenistic_opinion } }
+			remove_opinion = { target = root modifier = LR_foreign_administration_hellenistic_opinion }
+		}
+	}
+	# Roman set
+	if = {
+		limit = { NOT = { LR_title_set_roman_native_trigger = yes } }
+		every_held_title = {
+			limit = {
+				LR_title_set_roman_title_trigger = yes
+				NOT = { any_de_jure_county = { always = yes } }
+			}
+			add_to_temporary_list = LR_title_set_dissolve
+		}
+		every_in_list = {
+			list = LR_title_set_dissolve
+			save_temporary_scope_as = LR_title_set_dissolved
+			root = { destroy_title = scope:LR_title_set_dissolved }
+		}
+	}
+	if = {
+		limit = { LR_title_set_roman_outsider_trigger = yes }
+		if = {
+			limit = { NOT = { has_character_modifier = LR_foreign_administration_roman_modifier } }
+			add_character_modifier = LR_foreign_administration_roman_modifier
+		}
+		every_vassal = {
+			limit = { LR_title_set_roman_native_trigger = yes }
+			add_opinion = { target = root modifier = LR_foreign_administration_roman_opinion years = 1 }
+		}
+	}
+	else = {
+		if = {
+			limit = { has_character_modifier = LR_foreign_administration_roman_modifier }
+			remove_character_modifier = LR_foreign_administration_roman_modifier
+		}
+		every_vassal = {
+			limit = { has_opinion_modifier = { target = root modifier = LR_foreign_administration_roman_opinion } }
+			remove_opinion = { target = root modifier = LR_foreign_administration_roman_opinion }
+		}
+	}
+}

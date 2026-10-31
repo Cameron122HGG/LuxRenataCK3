@@ -1,0 +1,162 @@
+﻿# Title sets (gen_title_sets.py, LR_title_set_rules.md). Each set: which titles belong to it (title scope) and who is
+# native to it (character scope). Outsiders cannot create a set's titles and hold them under Foreign Administration.
+
+# Title: one of the Hellenistic set's titles (hyparchies, satrapies and strategiai)
+LR_title_set_hellenistic_title_trigger = {
+	OR = {
+		LR_is_hyparchy_title_trigger = yes
+		this = title:k_satrapy_andaria
+		this = title:k_satrapy_arachosia
+		this = title:k_satrapy_armenia
+		this = title:k_satrapy_babylon
+		this = title:k_satrapy_bactria
+		this = title:k_satrapy_bithynia
+		this = title:k_satrapy_cappadocia
+		this = title:k_satrapy_chorasmia
+		this = title:k_satrapy_cilicia
+		this = title:k_satrapy_clochis
+		this = title:k_satrapy_cyprus
+		this = title:k_satrapy_damirike
+		this = title:k_satrapy_egypt
+		this = title:k_satrapy_gandhara
+		this = title:k_satrapy_gangesia
+		this = title:k_satrapy_gedrosia
+		this = title:k_satrapy_greece
+		this = title:k_satrapy_india
+		this = title:k_satrapy_ionia
+		this = title:k_satrapy_kaspeiria
+		this = title:k_satrapy_kirrhadia
+		this = title:k_satrapy_kosalia
+		this = title:k_satrapy_kountale
+		this = title:k_satrapy_kouria
+		this = title:k_satrapy_libya
+		this = title:k_satrapy_lydia
+		this = title:k_satrapy_macedonia
+		this = title:k_satrapy_magan
+		this = title:k_satrapy_mandalene
+		this = title:k_satrapy_marasthene
+		this = title:k_satrapy_media_major
+		this = title:k_satrapy_media_minor
+		this = title:k_satrapy_mesopotamia
+		this = title:k_satrapy_nubia
+		this = title:k_satrapy_ozene
+		this = title:k_satrapy_paphlagonia
+		this = title:k_satrapy_parthia
+		this = title:k_satrapy_persia
+		this = title:k_satrapy_phoenicia
+		this = title:k_satrapy_poklais
+		this = title:k_satrapy_pontus
+		this = title:k_satrapy_sandrakotte
+		this = title:k_satrapy_saraostos
+		this = title:k_satrapy_sigerdis
+		this = title:k_satrapy_sogdiana
+		this = title:k_satrapy_sourasene
+		this = title:k_satrapy_susiana
+		this = title:k_satrapy_syria
+		this = title:k_satrapy_taprobane
+		this = title:k_satrapy_thrace
+		this = title:k_satrapy_tosalia
+		this = title:k_satrapy_trogodytike
+		this = title:e_strategia_ariake
+		this = title:e_strategia_asia
+		this = title:e_strategia_dakinabades
+		this = title:e_strategia_egypt
+		this = title:e_strategia_europe
+		this = title:e_strategia_gangaradia
+		this = title:e_strategia_pentapotamia
+		this = title:e_strategia_persis
+		this = title:e_strategia_syria
+		this = title:e_strategia_upper_satrapies
+	}
+}
+
+# Character: may use the Hellenistic set (rulers of a Successor realm, rulers inside one and rulers of Hellenistic heritage)
+LR_title_set_hellenistic_native_trigger = {
+	OR = {
+		LR_is_diadochi_ruler_trigger = yes
+		top_liege ?= { LR_is_diadochi_ruler_trigger = yes }
+		culture ?= { has_cultural_pillar = heritage_hellenistic }
+	}
+}
+
+# Character: holds a Hellenistic set title without being native to the set
+LR_title_set_hellenistic_outsider_trigger = {
+	NOT = { LR_title_set_hellenistic_native_trigger = yes }
+	any_held_title = { LR_title_set_hellenistic_title_trigger = yes }
+}
+
+# Title: one of the Roman set's titles (provinces, dioceses and praetorian prefectures)
+LR_title_set_roman_title_trigger = {
+	OR = {
+		LR_is_roman_province_title_trigger = yes
+		this = title:k_diocese_aegyptus
+		this = title:k_diocese_africa
+		this = title:k_diocese_armenia
+		this = title:k_diocese_asia
+		this = title:k_diocese_britannia
+		this = title:k_diocese_caledonia
+		this = title:k_diocese_dardania
+		this = title:k_diocese_germania
+		this = title:k_diocese_gothia
+		this = title:k_diocese_hibernia
+		this = title:k_diocese_hispania
+		this = title:k_diocese_illyricum
+		this = title:k_diocese_italia_annonaria
+		this = title:k_diocese_italia_suburbicaria
+		this = title:k_diocese_lugdunensis
+		this = title:k_diocese_macedonia
+		this = title:k_diocese_mauretania
+		this = title:k_diocese_moesia
+		this = title:k_diocese_noricum
+		this = title:k_diocese_palestine
+		this = title:k_diocese_pannonia
+		this = title:k_diocese_pontus
+		this = title:k_diocese_syria
+		this = title:k_diocese_thracia
+		this = title:k_diocese_viennensis
+		this = title:e_praetorian_prefecture_aegyptus
+		this = title:e_praetorian_prefecture_africa
+		this = title:e_praetorian_prefecture_gallia
+		this = title:e_praetorian_prefecture_germania
+		this = title:e_praetorian_prefecture_hispania
+		this = title:e_praetorian_prefecture_illyricum
+		this = title:e_praetorian_prefecture_italia
+		this = title:e_praetorian_prefecture_macedonia
+		this = title:e_praetorian_prefecture_oriens
+		this = title:e_praetorian_prefecture_pontica
+	}
+}
+
+# Character: may use the Roman set (restored Roman emperors and rulers inside a restored Roman empire)
+LR_title_set_roman_native_trigger = {
+	OR = {
+		is_restored_roman_emperor_trigger = yes
+		top_liege ?= { is_restored_roman_emperor_trigger = yes }
+	}
+}
+
+# Character: holds a Roman set title without being native to the set
+LR_title_set_roman_outsider_trigger = {
+	NOT = { LR_title_set_roman_native_trigger = yes }
+	any_held_title = { LR_title_set_roman_title_trigger = yes }
+}
+
+# Title: belongs to any title set
+LR_is_set_title_trigger = {
+	OR = {
+		LR_title_set_hellenistic_title_trigger = yes
+		LR_title_set_roman_title_trigger = yes
+	}
+}
+
+# Character: may use the set of title $TITLE$ (always true for a title in no set)
+LR_may_use_title_set_trigger = {
+	trigger_if = {
+		limit = { $TITLE$ = { LR_title_set_hellenistic_title_trigger = yes } }
+		LR_title_set_hellenistic_native_trigger = yes
+	}
+	trigger_if = {
+		limit = { $TITLE$ = { LR_title_set_roman_title_trigger = yes } }
+		LR_title_set_roman_native_trigger = yes
+	}
+}
