@@ -1,4 +1,947 @@
-﻿# Successor satrapies: like the Roman diocese restoration, each successor picks one satrapy at a time
+﻿# Satrapies: like the Roman diocese restoration, each successor (or the Hegemon) picks one satrapy at a time
+
+LR_restore_hellenistic_satrapies_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = hellenic
+	sort_order = 900
+
+	desc = LR_restore_hellenistic_satrapies_decision_desc
+	selection_tooltip = LR_restore_hellenistic_satrapies_decision_tooltip
+	confirm_text = LR_restore_hellenistic_satrapies_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:h_hellenistic_empire
+		OR = {
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_macedonia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_greece }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_thrace }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bithynia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_ionia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_lydia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cappadocia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_paphlagonia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_pontus }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_syria }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cilicia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_mesopotamia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_babylon }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_susiana }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_minor }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_persia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_egypt }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_libya }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cyprus }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arabia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_armenia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_clochis }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_major }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arachosia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gedrosia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gandhara }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_india }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_magan }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_restore_satrapies_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_satrapy_macedonia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_macedonia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_greece
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_greece }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_thrace
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_thrace }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_bithynia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bithynia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_ionia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_ionia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_lydia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_lydia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cappadocia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cappadocia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_paphlagonia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_paphlagonia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_pontus
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_pontus }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_syria
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_syria }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cilicia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cilicia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_mesopotamia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_mesopotamia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_babylon
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_babylon }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_susiana
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_susiana }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_media_minor
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_minor }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_persia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_persia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_parthia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_egypt
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_egypt }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_libya
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_libya }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cyprus
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cyprus }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_arabia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arabia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_armenia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_armenia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_clochis
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_clochis }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_media_major
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_major }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_bactria
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_sogdiana
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_arachosia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arachosia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_gedrosia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gedrosia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_gandhara
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gandhara }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_india
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_india }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_magan
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_magan }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_nubia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = custom_satrapy_macedonia
+			current_description = {
+				desc = custom_satrapy_macedonia_desc
+			}
+			localization = {
+				desc = custom_satrapy_macedonia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_macedonia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_macedonia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_greece
+			current_description = {
+				desc = custom_satrapy_greece_desc
+			}
+			localization = {
+				desc = custom_satrapy_greece_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_greece }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_greece
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_thrace
+			current_description = {
+				desc = custom_satrapy_thrace_desc
+			}
+			localization = {
+				desc = custom_satrapy_thrace_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_thrace }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_thrace
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_bithynia
+			current_description = {
+				desc = custom_satrapy_bithynia_desc
+			}
+			localization = {
+				desc = custom_satrapy_bithynia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bithynia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_bithynia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_ionia
+			current_description = {
+				desc = custom_satrapy_ionia_desc
+			}
+			localization = {
+				desc = custom_satrapy_ionia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_ionia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_ionia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_lydia
+			current_description = {
+				desc = custom_satrapy_lydia_desc
+			}
+			localization = {
+				desc = custom_satrapy_lydia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_lydia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_lydia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_cappadocia
+			current_description = {
+				desc = custom_satrapy_cappadocia_desc
+			}
+			localization = {
+				desc = custom_satrapy_cappadocia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cappadocia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cappadocia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_paphlagonia
+			current_description = {
+				desc = custom_satrapy_paphlagonia_desc
+			}
+			localization = {
+				desc = custom_satrapy_paphlagonia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_paphlagonia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_paphlagonia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_pontus
+			current_description = {
+				desc = custom_satrapy_pontus_desc
+			}
+			localization = {
+				desc = custom_satrapy_pontus_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_pontus }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_pontus
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_syria
+			current_description = {
+				desc = custom_satrapy_syria_desc
+			}
+			localization = {
+				desc = custom_satrapy_syria_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_syria }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_syria
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_cilicia
+			current_description = {
+				desc = custom_satrapy_cilicia_desc
+			}
+			localization = {
+				desc = custom_satrapy_cilicia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cilicia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cilicia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_mesopotamia
+			current_description = {
+				desc = custom_satrapy_mesopotamia_desc
+			}
+			localization = {
+				desc = custom_satrapy_mesopotamia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_mesopotamia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_mesopotamia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_babylon
+			current_description = {
+				desc = custom_satrapy_babylon_desc
+			}
+			localization = {
+				desc = custom_satrapy_babylon_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_babylon }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_babylon
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_susiana
+			current_description = {
+				desc = custom_satrapy_susiana_desc
+			}
+			localization = {
+				desc = custom_satrapy_susiana_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_susiana }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_susiana
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_media_minor
+			current_description = {
+				desc = custom_satrapy_media_minor_desc
+			}
+			localization = {
+				desc = custom_satrapy_media_minor_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_minor }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_media_minor
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_persia
+			current_description = {
+				desc = custom_satrapy_persia_desc
+			}
+			localization = {
+				desc = custom_satrapy_persia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_persia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_persia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_parthia
+			current_description = {
+				desc = custom_satrapy_parthia_desc
+			}
+			localization = {
+				desc = custom_satrapy_parthia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_parthia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_parthia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_egypt
+			current_description = {
+				desc = custom_satrapy_egypt_desc
+			}
+			localization = {
+				desc = custom_satrapy_egypt_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_egypt }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_egypt
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_libya
+			current_description = {
+				desc = custom_satrapy_libya_desc
+			}
+			localization = {
+				desc = custom_satrapy_libya_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_libya }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_libya
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_cyprus
+			current_description = {
+				desc = custom_satrapy_cyprus_desc
+			}
+			localization = {
+				desc = custom_satrapy_cyprus_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cyprus }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cyprus
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_arabia
+			current_description = {
+				desc = custom_satrapy_arabia_desc
+			}
+			localization = {
+				desc = custom_satrapy_arabia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arabia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_arabia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_armenia
+			current_description = {
+				desc = custom_satrapy_armenia_desc
+			}
+			localization = {
+				desc = custom_satrapy_armenia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_armenia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_armenia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_clochis
+			current_description = {
+				desc = custom_satrapy_clochis_desc
+			}
+			localization = {
+				desc = custom_satrapy_clochis_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_clochis }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_clochis
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_media_major
+			current_description = {
+				desc = custom_satrapy_media_major_desc
+			}
+			localization = {
+				desc = custom_satrapy_media_major_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_media_major }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_media_major
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_bactria
+			current_description = {
+				desc = custom_satrapy_bactria_desc
+			}
+			localization = {
+				desc = custom_satrapy_bactria_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bactria }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_bactria
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_sogdiana
+			current_description = {
+				desc = custom_satrapy_sogdiana_desc
+			}
+			localization = {
+				desc = custom_satrapy_sogdiana_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sogdiana }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_sogdiana
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_arachosia
+			current_description = {
+				desc = custom_satrapy_arachosia_desc
+			}
+			localization = {
+				desc = custom_satrapy_arachosia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_arachosia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_arachosia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_gedrosia
+			current_description = {
+				desc = custom_satrapy_gedrosia_desc
+			}
+			localization = {
+				desc = custom_satrapy_gedrosia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gedrosia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_gedrosia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_gandhara
+			current_description = {
+				desc = custom_satrapy_gandhara_desc
+			}
+			localization = {
+				desc = custom_satrapy_gandhara_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gandhara }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_gandhara
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_india
+			current_description = {
+				desc = custom_satrapy_india_desc
+			}
+			localization = {
+				desc = custom_satrapy_india_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_india }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_india
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_magan
+			current_description = {
+				desc = custom_satrapy_magan_desc
+			}
+			localization = {
+				desc = custom_satrapy_magan_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_magan }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_magan
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = custom_satrapy_nubia
+			current_description = {
+				desc = custom_satrapy_nubia_desc
+			}
+			localization = {
+				desc = custom_satrapy_nubia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_nubia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_nubia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_satrapies_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:custom_satrapy_macedonia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_macedonia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_greece = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_greece EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_thrace = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_thrace EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_bithynia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_bithynia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_ionia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_ionia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_lydia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_lydia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_cappadocia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_cappadocia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_paphlagonia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_paphlagonia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_pontus = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_pontus EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_syria = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_syria EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_cilicia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_cilicia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_mesopotamia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_mesopotamia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_babylon = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_babylon EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_susiana = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_susiana EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_media_minor = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_media_minor EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_persia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_persia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_parthia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_parthia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_egypt = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_egypt EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_libya = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_libya EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_cyprus = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_cyprus EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_arabia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_arabia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_armenia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_armenia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_clochis = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_clochis EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_media_major = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_media_major EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_bactria = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_bactria EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_sogdiana = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_sogdiana EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_arachosia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_arachosia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_gedrosia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_gedrosia EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_gandhara = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_gandhara EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_india = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_india EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_magan = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_magan EMPIRE = h_hellenistic_empire }
+			}
+			if = {
+				limit = { scope:custom_satrapy_nubia = yes }
+				LR_restore_satrapy_effect = { SATRAPY = k_satrapy_nubia EMPIRE = h_hellenistic_empire }
+			}
+		}
+		trigger_event = LR_diadochi_satrapy.0001
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
 
 LR_restore_antipatrid_satrapies_decision = {
 	picture = {
@@ -25,6 +968,7 @@ LR_restore_antipatrid_satrapies_decision = {
 				}
 			}
 		}
+		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_macedonia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_greece }
@@ -195,6 +1139,7 @@ LR_restore_antigonid_satrapies_decision = {
 				}
 			}
 		}
+		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_bithynia }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_ionia }
@@ -436,6 +1381,7 @@ LR_restore_seleukid_satrapies_decision = {
 		is_ruler = yes
 		is_landed = yes
 		has_title = title:e_seleukid_empire
+		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_syria }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_cilicia }
@@ -730,6 +1676,7 @@ LR_restore_ptolemaic_satrapies_decision = {
 		is_ruler = yes
 		is_landed = yes
 		has_title = title:e_ptolemaic_empire
+		NOT = { has_title = title:h_hellenistic_empire } # The Hegemon uses LR_restore_hellenistic_satrapies_decision
 		OR = {
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_egypt }
 			LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_libya }
