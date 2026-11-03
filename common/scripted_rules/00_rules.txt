@@ -1450,6 +1450,22 @@ can_create_title = {
 			current_date < 5641.1.1 # LR: the Classical layer lasts to the medieval switch (gen_layers.py)
 		}
 	}
+	trigger_if = {
+		limit = { scope:title = { LR_is_medieval_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_medieval_title_creation_tooltip
+			current_date >= 4677.1.1
+			current_date < 6036.1.1 # LR: the medieval set lasts until the warlord map has reached every region (gen_medieval.py)
+		}
+	}
+	# LR: the Eastern Roman Themes (tiers_936.py) can only be created by restored Roman emperors and their vassals
+	trigger_if = {
+		limit = { scope:title = { LR_is_eastern_roman_theme_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_eastern_roman_theme_creation_tooltip
+			LR_title_set_roman_native_trigger = yes
+		}
+	}
 	# LR: title sets (gen_title_sets.py, LR_title_set_rules.md): only a set's natives may create its titles
 	trigger_if = {
 		limit = { scope:title = { LR_title_set_hellenistic_title_trigger = yes } }

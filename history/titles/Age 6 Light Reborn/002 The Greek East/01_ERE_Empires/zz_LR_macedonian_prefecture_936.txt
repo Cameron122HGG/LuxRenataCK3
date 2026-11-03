@@ -1,49 +1,67 @@
-﻿# The Macedonian Prefecture's dioceses already exist in the 936 era, held under the Eastern Roman Empire.
-# From 5936.1.1 each region's counties are de jure part of its province duchies (zz_LR_roman_provinces_936.txt);
-# in 6060 the dioceses are vacated and the counties return to their original duchies, so the 6066 starts are unchanged.
+﻿# The 936 Eastern Roman Empire: catapans over the theme duchies (zz_LR_roman_provinces_936.txt), under the restored
+# hegemony. The diocese titles are not held in 936, so the Roman commands' diocese count starts at 0.
 
-### Dioceses
-k_diocese_thracia = {
+### Exarchs and catapans: the diocese kings of 936 hold the matching catepanates (tiers_936.py), the two great
+# generals the core exarchates (core_exarchates_936.py); the dioceses stay unheld
+k_medieval_catepanate_thrace = {
 	5936.1.1 = {
 		holder = 12545 # Leon Alexandros, Eastern Roman Emperor
-		de_jure_liege = e_eastern_roman_empire
 	}
 	6060.1.1 = { holder = 0 }
 }
-k_diocese_macedonia = {
+e_medieval_exarchate_europa = {
+	5936.1.1 = {
+		holder = 1712473 # Konstantinos Julio-Argeadai, exarch
+		liege = h_eastern_roman_empire
+		government = roman_autocratic_government
+	}
+	6060.1.1 = { holder = 0 }
+}
+k_medieval_catepanate_macedonia = {
 	5936.1.1 = {
 		holder = 1712473 # Konstantinos Julio-Argeadai
-		liege = e_eastern_roman_empire
 		government = roman_autocratic_government
-		de_jure_liege = e_eastern_roman_empire
 	}
 	6060.1.1 = { holder = 0 }
 }
-k_diocese_pontus = {
+e_medieval_exarchate_anatolia = {
 	5936.1.1 = {
-		holder = 12545 # Leon Alexandros, Eastern Roman Emperor
-		de_jure_liege = e_eastern_roman_empire
+		holder = 1712518 # Ioustinianos, exarch
+		liege = h_eastern_roman_empire
+		government = roman_autocratic_government
 	}
 	6060.1.1 = { holder = 0 }
 }
-k_diocese_asia = {
+k_medieval_catepanate_asia = {
 	5936.1.1 = {
 		holder = 1712518 # Ioustinianos
-		liege = e_eastern_roman_empire
 		government = roman_autocratic_government
-		de_jure_liege = e_eastern_roman_empire
 	}
 	6060.1.1 = { holder = 0 }
 }
-k_diocese_armenia = {
+k_medieval_catepanate_pontus = {
 	5936.1.1 = {
-		holder = 1710453 # Davit Bagrationi
-		liege = e_eastern_roman_empire
-		government = roman_autocratic_government
-		de_jure_liege = e_eastern_roman_empire
+		holder = 12545 # Leon Alexandros, Eastern Roman Emperor
 	}
 	6060.1.1 = { holder = 0 }
 }
+# k_medieval_catepanate_iberia is not held in 936: Georgia stays with the Bagratid warlords of Tao-Klarjeti, and the
+# catepanate can be formed by a Roman ruler who wins it back (00_rules.txt)
+
+### The restored hegemony over the Eastern Roman Empire and the exarchates (936 to the warlord map)
+h_eastern_roman_empire = {
+	5936.1.1 = { holder = 12545 government = roman_dominate_government } # Leon Alexandros
+	5946.1.1 = { holder = 12546 } # Aurelian II
+	5960.1.1 = { holder = 1712335 } # Leo IX Argead
+	5974.1.2 = { holder = 12547 } # Julian IV
+	5993.1.1 = { holder = 1712336 } # Basil II Argead
+	6017.1.2 = { holder = 12548 }
+	6018.1.1 = { holder = 12549 }
+	6020.1.1 = { holder = 12550 }
+	6060.1.1 = { holder = 0 }
+}
+# e_eastern_roman_empire stays the emperor's title (the scripts use it) but is not part of the de jure tree here:
+# the hegemony's empire tier is the exarchates (core_exarchates_936.py).
 
 ### Kings whose kingdoms lose all their land become noble families under the Eastern Roman Empire
 # Their now-empty kingdoms are vacated; the families are vacated in 6060 with the dioceses.
