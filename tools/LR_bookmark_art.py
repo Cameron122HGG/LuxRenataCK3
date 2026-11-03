@@ -20,6 +20,8 @@ import os, re, sys, glob, shutil
 MOD = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ART = os.path.join(MOD, "gfx", "interface", "bookmarks")
 FILLER = os.path.join(ART, "LR_bookmark_filler.dds")
+# Character images get a half-size copy: one is needed per character, and they are only a placeholder
+FILLER_LOCATION = os.path.join(ART, "LR_bookmark_filler_location.dds")
 
 # The row sits in the filler's bottom band (1920x1080 canvas; a position is the portrait's top-left corner)
 ROW_Y = 852
@@ -69,12 +71,12 @@ def main(argv):
             names = re.findall(r'^\s*name\s*=\s*"?(\w+)"?', body, re.M)
             bg = os.path.join(ART, key + ".dds")
             uses_filler = not os.path.exists(bg)
-            todo = [bg] if uses_filler else []
-            todo += [p for p in (os.path.join(ART, "%s_%s.dds" % (key, n)) for n in names) if not os.path.exists(p)]
-            for p in todo:
-                print(("would copy" if dry else "copy"), "filler ->", os.path.relpath(p, MOD))
+            todo = [(bg, FILLER)] if uses_filler else []
+            todo += [(p, FILLER_LOCATION) for p in (os.path.join(ART, "%s_%s.dds" % (key, n)) for n in names) if not os.path.exists(p)]
+            for p, src in todo:
+                print(("would copy" if dry else "copy"), os.path.basename(src), "->", os.path.relpath(p, MOD))
                 if not dry:
-                    shutil.copyfile(FILLER, p)
+                    shutil.copyfile(src, p)
             if layout and names and ((only and key in only) or (not only and uses_filler)):
                 pos = iter(row_positions(len(re.findall(r"^\s*position\s*=\s*\{", body, re.M))))
                 new_body = re.sub(r"^(\s*position\s*=\s*)\{[^}]*\}", lambda m: "%s{ %d %d }" % ((m.group(1),) + next(pos)), body, flags=re.M)
