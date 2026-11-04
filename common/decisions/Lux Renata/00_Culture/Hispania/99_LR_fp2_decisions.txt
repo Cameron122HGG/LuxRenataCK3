@@ -500,6 +500,8 @@ struggle_iberia_ending_conciliation_decision = {
 			add_character_flag = ach_ended_struggle
 		}
 		##### Major Effects #####
+		# Lux Renata: the Great Council crowns you High King of an elective Hispania
+		custom_tooltip = LR_council_reconvened_tt
 		show_as_tooltip = {
 			fp2_struggle_conciliation_ender_effect = yes
 			fp2_struggle_conciliation_tooltip_effect = yes
@@ -980,8 +982,11 @@ council_of_toledo_decision = {
 
 	is_shown = {
 		any_vassal = { }
-		# Is Mozarabic (or reformed Mozarabic)
-		rite ?= rite:mozarabic_church
+		# Is Mozarabic (or reformed Mozarabic), or (Lux Renata) Adoptionist, the creed of the Council of 595
+		OR = {
+			rite ?= rite:mozarabic_church
+			rite ?= rite:adoptionist_rite
+		}
 		# DLC check
 		has_fp2_dlc_trigger = yes
 	}

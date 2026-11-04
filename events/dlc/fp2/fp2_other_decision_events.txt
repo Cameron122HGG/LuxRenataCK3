@@ -620,7 +620,7 @@ fp2_other_decisions.0700 = {
 	lower_right_portrait = {
 		trigger = {
 			exists = faith.religious_head
-			rite = rite:mozarabic_church
+			rite = root.rite
 			faith.religious_head != root
 		}
 		character = faith.religious_head
@@ -646,7 +646,7 @@ fp2_other_decisions.0700 = {
 					}
 					every_faith_ruler = {
 						limit = {
-							rite = rite:mozarabic_church
+							rite = root.rite
 							primary_title.tier >= tier_county
 							exists = capital_county
 							capital_county.title_province = { geographical_region = world_europe_west_iberia }
@@ -839,7 +839,7 @@ scripted_trigger fp2_council_toledo_successful_regional_trigger = {
 	any_in_list = {
 		list = council_toledo_guest_list
 		count > council_toledo_success_guest_value
-		NOT = { rite = rite:mozarabic_church }
+		NOT = { rite = root.rite }
 	}
 }
 
@@ -848,7 +848,7 @@ scripted_trigger fp2_council_toledo_failure_regional_trigger = {
 	any_in_list = {
 		list = council_toledo_guest_list
 		count <= council_toledo_success_guest_value
-		NOT = { rite = rite:mozarabic_church }
+		NOT = { rite = root.rite }
 	}
 }
 
@@ -924,7 +924,7 @@ fp2_other_decisions.0701 = {
 					any_in_list = {
 						list = council_toledo_guest_list
 						count < council_toledo_success_guest_value
-						NOT = { rite = rite:mozarabic_church }
+						NOT = { rite = root.rite }
 					}
 				}
 				desc = fp2_other_decisions.0701.failure
@@ -1132,10 +1132,10 @@ scripted_effect fp2_council_toledo_debate_bishop_effect = {
 			this != scope:council_priest
 			trigger_if = {
 				limit = { scope:mozarabic = flag:yes }
-				rite = rite:mozarabic_church
+				rite = root.rite
 			}
 			trigger_else = {
-				NOT = { rite = rite:mozarabic_church }
+				NOT = { rite = root.rite }
 			}
 		}
 		weight = {
@@ -1157,8 +1157,8 @@ scripted_effect fp2_council_toledo_debate_bishop_effect = {
 			location = root.capital_province
 			gender_female_chance = root_faith_dominant_gender_female_chance 
 			trait = zealous 
-			faith = faith:christian_faith 
-			rite = rite:mozarabic_church
+			faith = root.faith 
+			rite = root.rite
 			culture = root.culture 
 			learning = {
 				min_template_high_skill
@@ -1187,12 +1187,12 @@ scripted_effect fp2_council_toledo_debate_bishop_effect = {
 				this != scope:debate_bishop
 				trigger_if = {
 					limit = {
-						scope:debate_bishop = { rite = rite:mozarabic_church }
+						scope:debate_bishop = { rite = root.rite }
 					}
-					NOT = { rite = rite:mozarabic_church }
+					NOT = { rite = root.rite }
 				}
 				trigger_else = {
-					rite = rite:mozarabic_church
+					rite = root.rite
 				}
 			}			
 		}
@@ -1227,7 +1227,7 @@ scripted_effect fp2_council_opinion_mozarabic_effect = {
 					this = scope:counter_bishop
 				}
 				liege = root
-				rite = rite:mozarabic_church
+				rite = root.rite
 			}
 			add_opinion = {
 				target = root
@@ -1243,7 +1243,7 @@ scripted_effect fp2_council_opinion_mozarabic_effect = {
 					this = scope:counter_bishop
 					liege = root
 				}
-				rite = rite:mozarabic_church
+				rite = root.rite
 			}
 			custom = fp2_council_opinion_mozarabic_effect_tt
 			add_opinion = {
@@ -1260,7 +1260,7 @@ scripted_effect fp2_council_opinion_other_effect = {
 		limit = {
 			any_in_list = {
 				list = council_toledo_guest_list
-				NOT = { rite = rite:mozarabic_church }
+				NOT = { rite = root.rite }
 			}
 		}
 		hidden_effect = {
@@ -1272,7 +1272,7 @@ scripted_effect fp2_council_opinion_other_effect = {
 						this = scope:counter_bishop
 					}
 					liege = root
-					NOT = { rite = rite:mozarabic_church }
+					NOT = { rite = root.rite }
 				}
 				add_opinion = {
 					target = root
@@ -1288,7 +1288,7 @@ scripted_effect fp2_council_opinion_other_effect = {
 						this = scope:counter_bishop
 						liege = root
 					}
-					NOT = { rite = rite:mozarabic_church }
+					NOT = { rite = root.rite }
 				}
 				custom = fp2_council_opinion_other_effect_tt
 				add_opinion = {
@@ -1306,7 +1306,7 @@ scripted_effect fp2_council_modifier_effect = {
 		every_faith_ruler = {
 			limit = {
 				primary_title.tier >= tier_county
-				rite = rite:mozarabic_church
+				rite = root.rite
 			}
 			custom = council_of_toledo_ruler_effect_tt
 			add_character_modifier = {
