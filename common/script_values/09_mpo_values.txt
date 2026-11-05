@@ -1412,13 +1412,15 @@ tiny_gold_value_double = {
 }
 
 mpo_zodiac_calculation_value_no_decimal = {
-	value = current_year # LR_DATE_OFFSET: zodiac uses current_year mod 12, offset shifts it 8 years
+	value = current_year
+	subtract = 8 # LR: years are offset by 5000, and 5000 mod 12 = 8, so this keeps the vanilla zodiac
 	divide = 12
 	floor = yes
 }
 
 mpo_zodiac_calculation_value = {
-	value = current_year # LR_DATE_OFFSET: zodiac uses current_year mod 12, offset shifts it 8 years
+	value = current_year
+	subtract = 8 # LR: years are offset by 5000, and 5000 mod 12 = 8, so this keeps the vanilla zodiac
 	divide = 12
 	subtract = mpo_zodiac_calculation_value_no_decimal # To just get the decimal
 	multiply = 12
@@ -2704,7 +2706,7 @@ mpo_missing_kurultai_value = {
 gok_era_scaling_value = {
 	if = {
 		limit = {
-			current_date >= 1300 # LR_DATE_OFFSET: AD year in date check, add 5000
+			current_date >= 6300
 		}
 		value = 5
 	}
