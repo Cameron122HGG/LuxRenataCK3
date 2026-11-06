@@ -139,3 +139,58 @@ LR_in_sacral_kingdom_gaul_realm_trigger = {
 		top_liege ?= { has_title = title:e_sacral_kingdom_gaul }
 	}
 }
+
+# Character scope, $OTHER$ = another character: do both governments belong to the same government group?
+# (Japanese Feudal counts as Japanese, not sinic.) Used by the Anarchy event (LR_gov_anarchy_events.txt).
+LR_government_shares_tradition_group_trigger = {
+	OR = {
+		AND = {
+			government_has_flag = government_is_classical_group
+			$OTHER$ = { government_has_flag = government_is_classical_group }
+		}
+		AND = {
+			government_has_flag = government_is_western_group
+			$OTHER$ = { government_has_flag = government_is_western_group }
+		}
+		AND = {
+			government_has_flag = government_is_despotic_group
+			$OTHER$ = { government_has_flag = government_is_despotic_group }
+		}
+		AND = {
+			government_has_flag = government_is_indic_group
+			$OTHER$ = { government_has_flag = government_is_indic_group }
+		}
+		AND = {
+			government_has_flag = government_is_islamic_group
+			$OTHER$ = { government_has_flag = government_is_islamic_group }
+		}
+		AND = {
+			government_has_flag = government_is_barbarian_group
+			$OTHER$ = { government_has_flag = government_is_barbarian_group }
+		}
+		AND = {
+			government_has_flag = government_is_sacral_group
+			$OTHER$ = { government_has_flag = government_is_sacral_group }
+		}
+		AND = {
+			government_has_flag = government_is_sinic_group
+			NOT = { government_has_flag = government_is_japanese_plain }
+			$OTHER$ = {
+				government_has_flag = government_is_sinic_group
+				NOT = { government_has_flag = government_is_japanese_plain }
+			}
+		}
+		AND = {
+			OR = {
+				government_has_flag = government_is_japanese_group
+				government_has_flag = government_is_japanese_plain
+			}
+			$OTHER$ = {
+				OR = {
+					government_has_flag = government_is_japanese_group
+					government_has_flag = government_is_japanese_plain
+				}
+			}
+		}
+	}
+}
