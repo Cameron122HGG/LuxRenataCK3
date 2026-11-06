@@ -1,0 +1,82 @@
+﻿# Form the Western Celtic Empire
+# Ported from Lux Invicta's create_e_celtic (CK2). An eastern, Galatian counterpart is planned separately.
+form_western_celtic_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 120
+		hegemony = 0
+	}
+
+	desc = form_western_celtic_empire_decision_desc
+	selection_tooltip = form_western_celtic_empire_decision_tooltip
+	confirm_text = form_western_celtic_empire_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		OR = {
+			culture = { has_cultural_pillar = heritage_goidelic }
+			culture = { has_cultural_pillar = heritage_brythonic }
+			culture = culture:norsegael
+		}
+		NOT = { exists = title:h_western_celtic_empire.holder }
+		# Not repeatable.
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_western_celtic_empire
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		highest_held_title_tier < tier_hegemony
+		prestige_level >= 4
+		completely_controls = title:k_ireland
+		completely_controls = title:k_scotland
+		completely_controls = title:k_wales
+		completely_controls = title:d_cornwall
+		completely_controls = title:k_brittany
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		piety = 350
+		prestige = 1000
+	}
+
+	effect = {
+		save_scope_as = founder
+		LR_form_western_celtic_empire_effect = yes
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_western_celtic_empire
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

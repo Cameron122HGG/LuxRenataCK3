@@ -615,6 +615,46 @@ e_ireland = {
 	color = { 6 127 2 }
 	capital = c_dublin
 }
+# Great Moravia (ported from Lux Invicta's e_greatmoravia). Formed by form_great_moravia_decision,
+# which moves k_bohemia, k_moravia (Nitrava) and k_sorbia de jure under it.
+e_great_moravia = {
+	color = { 170 110 40 }
+	capital = c_olomouc
+
+	ai_primary_priority = {
+		if = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_west_slavic }
+			}
+			add = @correct_culture_primary_score
+		}
+	}
+}
+# Western Celtic Empire (ported from Lux Invicta's e_celtic). Formed by form_western_celtic_empire_decision,
+# which moves e_ireland, e_scotland and e_britons de jure under it.
+h_western_celtic_empire = {
+	color = { 5 222 31 }
+	capital = c_dublin
+	definite_form = yes
+
+	can_create = {
+		rule_title_creation_imperial_power_projection_title_creation_trigger = yes
+	}
+
+	ai_primary_priority = {
+		if = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_goidelic }
+					culture = { has_cultural_pillar = heritage_brythonic }
+					culture = culture:norsegael
+				}
+			}
+			add = @correct_culture_primary_score
+			add = @better_than_the_alternatives_score
+		}
+	}
+}
 
 k_hk_england = {
 	color = { 202 26 26 }
