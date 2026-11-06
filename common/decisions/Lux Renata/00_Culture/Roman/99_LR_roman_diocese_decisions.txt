@@ -30,30 +30,18 @@
 	}
 
 	is_valid = {
-		# LR: only the Italian core, not the whole Theodosian West; the dioceses below must still be yours
-		completely_controls_region = custom_western_roman_imperial_core
-		
-		##Checking if Restoring Provinces has started and then how many
+		# LR 2026-11-06 (user): the core prefecture plus one bordering prefecture; a prefecture counts when all its dioceses are in your realm
+		government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
 		custom_tooltip = {
-			text = LR_has_restored_at_least_three_provinces_tooltip	
-			trigger_if = {
-				limit = { exists = global_var:num_of_provinces_restored_wre }
-				global_var:num_of_provinces_restored_wre > 2
-			}
-			trigger_else = { always = no }
+			text = LR_hegemony_prefecture_italia_tt
+			LR_roman_restoration_prefecture_italia_trigger = yes
 		}
-		
 		custom_tooltip = {
-			text = LR_western_kingdoms_held_or_vassals_tt
-			
-			title:k_diocese_italia_annonaria.holder = { OR = { this = root liege = root } }
-			title:k_diocese_italia_suburbicaria.holder = { OR = { this = root liege = root } }
-			title:k_diocese_illyricum.holder = { OR = { this = root liege = root } }
-			title:k_diocese_lugdunensis.holder = { OR = { this = root liege = root } }
-			title:k_diocese_viennensis.holder = { OR = { this = root liege = root } }
-			title:k_diocese_africa.holder = { OR = { this = root liege = root } }
-			title:k_diocese_mauretania.holder = { OR = { this = root liege = root } }
-			title:k_diocese_hispania.holder = { OR = { this = root liege = root } }
+			text = LR_hegemony_neighbour_gallia_illyricum_tt
+			OR = {
+				LR_roman_restoration_prefecture_gallia_trigger = yes
+				LR_roman_restoration_prefecture_illyricum_trigger = yes
+			}
 		}
 	}
 
@@ -286,94 +274,20 @@ LR_restore_eastern_hegemony_decision = {
 	}
 
 	is_valid = {
+		# LR 2026-11-06 (user): the core prefecture plus one bordering prefecture; a prefecture counts when all its dioceses are in your realm
 		government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
-		# LR: only the Eastern core (Thracia, Macedonia, Asia, Pontus), not the whole Theodosian East
-		completely_controls_region = custom_eastern_roman_imperial_core
-		##Checking if Restoring Provinces has started and then how many
 		custom_tooltip = {
-			text = LR_has_restored_at_least_three_eastern_provinces_tooltip
-			trigger_if = {
-				limit = { exists = global_var:num_of_provinces_restored_ere }
-				global_var:num_of_provinces_restored_ere > 2
-			}
-			trigger_else = { always = no }
+			text = LR_hegemony_prefecture_macedonia_tt
+			LR_roman_restoration_prefecture_macedonia_trigger = yes
 		}
 		custom_tooltip = {
-			text = eastern_kingdoms_held_or_vassals_tt
-			trigger_if = {
-				limit = {
-					exists = title:k_bulgaria.holder
-				}
-				title:k_bulgaria.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
+			text = LR_hegemony_neighbour_oriens_illyricum_tt
+			OR = {
+				LR_roman_restoration_prefecture_oriens_trigger = yes
+				LR_roman_restoration_prefecture_illyricum_trigger = yes
 			}
-			trigger_if = {
-				limit = {
-					exists = title:k_epirus.holder
-				}
-				title:k_epirus.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_hellas.holder
-				}
-				title:k_hellas.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_byzantium.holder
-				}
-				title:k_byzantium.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_krete.holder
-				}
-				title:k_krete.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_cyprus.holder
-				}
-				title:k_cyprus.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_pergamon.holder
-				}
-				title:k_pergamon.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_anatolia.holder
-				}
-				title:k_anatolia.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_pontus.holder
-				}
-				title:k_pontus.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_syria.holder
-				}
-				title:k_syria.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_jerusalem.holder
-				}
-				title:k_jerusalem.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-			trigger_if = {
-				limit = {
-					exists = title:k_egypt.holder
-				}
-				title:k_egypt.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
-			}
-	    }
-    }
+		}
+	}
 
 	is_valid_showing_failures_only = {
 		is_at_war = no
@@ -748,7 +662,7 @@ restore_italia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_italia_suburbicaria
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -788,7 +702,7 @@ restore_italia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_italia_annonaria
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -827,7 +741,7 @@ restore_italia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_africa
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1166,7 +1080,7 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1225,7 +1139,7 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1284,7 +1198,7 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1346,7 +1260,7 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1718,7 +1632,7 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_noricum
 			}
-	
+	
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1756,7 +1670,7 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_pannonia
 			}
-	
+	
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1795,7 +1709,7 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_illyricum
 			}
-	
+	
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -1834,7 +1748,7 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_dardania
 			}
-	
+	
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2241,7 +2155,7 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_macedonia
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2279,7 +2193,7 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_thracia
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2318,7 +2232,7 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_pontus
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2357,7 +2271,7 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_asia
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2395,7 +2309,7 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_armenia
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2432,7 +2346,7 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_gothia
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2833,7 +2747,7 @@ restore_oriens_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_syria
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2872,7 +2786,7 @@ restore_oriens_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_palestine
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
@@ -2910,7 +2824,7 @@ restore_oriens_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_aegyptus
 			}
-
+
 			ai_chance = {
 				value = 0
 				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese

@@ -83,3 +83,49 @@ LR_cleave_caesar_title_free_trigger = {
 		title:$TITLE$.holder = scope:new_holder
 	}
 }
+
+
+# Restore the Hegemony of the West / East (2026-11-06): the half's core prefecture plus one bordering prefecture.
+# A prefecture counts when every one of its dioceses (as Appoint a Prefect defines them) is held in your realm.
+# Borders: Gallia - Italia - Illyricum - Macedonia - Oriens. Illyricum is contested and counts for either half.
+
+# Character scope: the diocese title is held by you or inside your realm
+LR_roman_restoration_diocese_held_trigger = {
+	exists = title:k_diocese_$DIOCESE$.holder
+	title:k_diocese_$DIOCESE$.holder.top_liege = root
+}
+
+LR_roman_restoration_prefecture_italia_trigger = {
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = italia_annonaria }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = italia_suburbicaria }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = africa }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = mauretania }
+}
+
+LR_roman_restoration_prefecture_gallia_trigger = {
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = lugdunensis }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = viennensis }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = hispania }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = britannia }
+}
+
+LR_roman_restoration_prefecture_illyricum_trigger = {
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = noricum }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = pannonia }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = illyricum }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = dardania }
+}
+
+LR_roman_restoration_prefecture_macedonia_trigger = {
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = thracia }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = macedonia }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = pontus }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = asia }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = armenia }
+}
+
+LR_roman_restoration_prefecture_oriens_trigger = {
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = syria }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = palestine }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = aegyptus }
+}
