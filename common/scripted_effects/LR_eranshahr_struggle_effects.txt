@@ -135,3 +135,16 @@ LR_eranshahr_greater_victory_effect = {
 		dynasty ?= { add_dynasty_prestige = 3000 }
 	}
 }
+
+# Saves the shah of Iran (holder of e_persia), or the last one, as scope:struggle_liege. Lux Renata's version of
+# fp3_save_sunni_caliph_or_previous_effect, for the Concession ending and its notifications.
+LR_eranshahr_save_shah_or_previous_effect = {
+	if = {
+		limit = { exists = title:e_persia.holder }
+		title:e_persia.holder = { save_scope_as = struggle_liege }
+	}
+	else_if = {
+		limit = { exists = title:e_persia.previous_holder }
+		title:e_persia.previous_holder = { save_scope_as = struggle_liege }
+	}
+}
