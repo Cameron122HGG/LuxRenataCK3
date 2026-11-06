@@ -1,0 +1,116 @@
+﻿#############################################
+# Lux Renata: Ērānšahr, the Persian struggle (persian_struggle)
+# Ending effects. Root = the ender. Call while struggle:persian_struggle still exists.
+#############################################
+
+# Root is crowned King of Kings of Ērānšahr (h_persian_empire), if no one holds it.
+LR_eranshahr_crown_root_effect = {
+	if = {
+		limit = {
+			NOT = { exists = title:h_persian_empire.holder }
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = eranshahr_crown
+			add_claim_on_loss = no
+		}
+		title:h_persian_empire = {
+			change_title_holder = {
+				holder = root
+				change = scope:eranshahr_crown
+			}
+		}
+		resolve_title_and_vassal_change = scope:eranshahr_crown
+	}
+	add_prestige = 3000
+	dynasty ?= { add_dynasty_prestige = 5000 }
+}
+
+# Crowning of the King of Kings: the shah is crowned, and the independent supporters of the crown swear to him.
+LR_eranshahr_crowning_effect = {
+	LR_eranshahr_crown_root_effect = yes
+	if = {
+		limit = { has_title = title:h_persian_empire }
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = eranshahr_fealty
+			add_claim_on_loss = no
+		}
+		struggle:persian_struggle ?= {
+			every_involved_ruler = {
+				limit = { LR_eranshahr_swears_to_crown_trigger = yes }
+				change_liege = {
+					liege = root
+					change = scope:eranshahr_fealty
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:eranshahr_fealty
+	}
+}
+
+# The Old Blood: a great house takes the crown of Ērānšahr, and the old shah bows to it.
+LR_eranshahr_old_blood_effect = {
+	LR_eranshahr_crown_root_effect = yes
+	if = {
+		limit = {
+			has_title = title:h_persian_empire
+			exists = title:e_persia.holder
+			title:e_persia.holder = {
+				this != root
+				top_liege = this
+			}
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = eranshahr_old_shah
+			add_claim_on_loss = no
+		}
+		title:e_persia.holder = {
+			change_liege = {
+				liege = root
+				change = scope:eranshahr_old_shah
+			}
+		}
+		resolve_title_and_vassal_change = scope:eranshahr_old_shah
+	}
+}
+
+# The Three Crowns: Ērānšahr is never restored. Root takes the crown of Media or Bactria, whichever its realm holds most of.
+LR_eranshahr_three_crowns_effect = {
+	set_global_variable = {
+		name = LR_eranshahr_sundered
+		value = yes
+	}
+	if = {
+		limit = {
+			NOT = { exists = title:e_media.holder }
+			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_media PERCENT = 0.75 }
+		}
+		title:e_media = { save_scope_as = eranshahr_new_crown }
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = title:e_bactria.holder }
+			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_bactria PERCENT = 0.75 }
+		}
+		title:e_bactria = { save_scope_as = eranshahr_new_crown }
+	}
+	if = {
+		limit = { exists = scope:eranshahr_new_crown }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = eranshahr_crown
+			add_claim_on_loss = no
+		}
+		scope:eranshahr_new_crown = {
+			change_title_holder = {
+				holder = root
+				change = scope:eranshahr_crown
+			}
+		}
+		resolve_title_and_vassal_change = scope:eranshahr_crown
+	}
+	add_prestige = 2000
+	dynasty ?= { add_dynasty_prestige = 3000 }
+}

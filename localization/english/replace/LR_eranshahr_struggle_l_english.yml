@@ -1,0 +1,79 @@
+﻿l_english:
+ # Lux Renata: the Persian struggle reskinned as the struggle for Ērānšahr. Overrides vanilla FP3 keys (replace folder).
+
+ # The struggle and its phases (game concepts)
+ game_concept_persian_struggle:0 "Struggle for Ērānšahr"
+ game_concept_persian_struggle_desc:0 "The $game_concept_persian_struggle$ is the contest for the crown of the King of Kings. The Sassanid shahs of Iran have ruled since Ardashir, but they hold only the crown of Iran; the crown of [GetTitleByKey('h_persian_empire').GetNameNoTier], over Iran, Media and Bactria, has gone unclaimed.\n\nThe great houses of Iran (the Parmenionids of Media, the Kurusids of Fars, the Median line at Rayy, the Mihrans, the Saka of the east) owe the shah service, not obedience. Every involved [ruler|E] is either a [GetTrait('fp3_struggle_supporter').GetName( GetNullCharacter )] or a [GetTrait('fp3_struggle_detractor').GetName( GetNullCharacter )], and the [struggle|E] swings between the peace of the crown and the revolt of the houses."
+ game_concept_struggle_persia_phase_stabilisation:0 "Peace of the King of Kings"
+ game_concept_struggle_persia_phase_stabilisation_desc:0 "The shah of Iran still commands the houses' respect. Rebellions are on the back foot, and the crown of [GetTitleByKey('h_persian_empire').GetNameNoTier] is within his reach, but the great houses will not be brought easily to heel.\n\nTheir ambitions might spiral into the [struggle_persia_phase_unrest|E]."
+ game_concept_struggle_persia_phase_unrest:0 "Revolt of the Houses"
+ game_concept_struggle_persia_phase_unrest_desc:0 "The great houses have thrown off the shah's authority. Kings of Media, Fars and the east crown themselves, and each dreams of the crown of [GetTitleByKey('h_persian_empire').GetNameNoTier] for his own blood.\n\nOver time, unless an [ending_phase|E] resolves it, the realm will return to the [struggle_persia_phase_stabilisation|E] as the shah's supporters claw back his authority."
+ game_concept_struggle_persia_phase_concession:0 "Concession"
+ game_concept_struggle_persia_phase_concession_desc:0 "Over time, as the shah and the great houses tire of bloodshed, the [persian_struggle|E] may end on its own: no King of Kings is crowned, and [GetTitleByKey('h_persian_empire').GetNameNoTier] waits for whoever is strong enough to claim it."
+
+ # Supporters and detractors
+ trait_fp3_struggle_supporter:0 "Loyalist of the Shah"
+ trait_fp3_struggle_supporter_desc:0 "This character believes that the shah of Iran should be crowned King of Kings, and that the great houses owe him obedience."
+ trait_fp3_struggle_detractor:0 "Partisan of the Great Houses"
+ trait_fp3_struggle_detractor_desc:0 "This character believes that the shah of Iran is first among equals at best, and that the great houses owe him nothing."
+
+ # Changing sides (vanilla: the name read in the Friday prayer)
+ fp3_name_read_in_friday_prayer_decision.supporter_turns_detractor.t:0 "Defy the Shah"
+ fp3_name_read_in_friday_prayer_decision.detractor.turns_supporter.t:0 "Swear to the Shah"
+ fp3_name_read_in_friday_prayer_decision.neutral.t:0 "Declare Stance in the $game_concept_persian_struggle$"
+ fp3_name_read_in_friday_prayer_decision.supporter_turns_detractor.desc.boilerplate:0 "At every great feast, the lords of Iran raise their cups to their sovereigns in order of precedence."
+ fp3_name_read_in_friday_prayer_decision.supporter_turns_detractor.desc:0 "$fp3_name_read_in_friday_prayer_decision.supporter_turns_detractor.desc.boilerplate$\n\nBy leaving the shah's name out of the toasts, I declare to all Iran that my house answers to no one but itself."
+ fp3_name_read_in_friday_prayer_decision.detractor.turns_supporter.desc:0 "$fp3_name_read_in_friday_prayer_decision.supporter_turns_detractor.desc.boilerplate$\n\nBy raising the first and fullest cup to the shah, I mark myself as a loyal servant of his crown."
+ fp3_name_read_in_friday_prayer_decision.neutral.desc:0 "$fp3_name_read_in_friday_prayer_decision.supporter_turns_detractor.desc.boilerplate$\n\nBy choosing whose name I toast first, I can announce where my true loyalties lie."
+ fp3_name_read_in_friday_prayer_decision.tt.sunni_caliph_must_exist:0 "There is no shah of Iran to honour or defy at present"
+ fp3_name_read_in_friday_prayer_decision.tt.sunni_caliph_cannot_change_prayer_order:0 "You #BOL are#! the shah!"
+ fp3_name_read_in_friday_prayer_decision.tt.require_new_caliph_or_modifier_lapse:0 "You have sworn too recently: either your [modifier|E] must expire, or the shah must change"
+ fp3_name_read_in_friday_prayer_decision.tt.require_new_caliph_or_flag_lapse:0 "You have defied the shah too recently: either some decades must pass, or the shah must change"
+ fp3_name_read_in_friday_prayer_decision.tt.caliph_murderers_cant_become_supporters:0 "You killed a shah who wasn't part of your [dynasty|E]: no one will take your loyalty seriously"
+ fp3_name_read_in_friday_prayer_decision.tt.become_supporter:0 "Raise the first cup to the shah"
+ fp3_name_read_in_friday_prayer_decision.tt.become_detractor:0 "Leave the shah out of the toasts"
+
+ # Ērānšahr's creation lock
+ LR_eranshahr_must_end_struggle_trigger:0 "The [persian_struggle|E] has ended"
+ LR_eranshahr_sundered_trigger:0 "[GetTitleByKey('h_persian_empire').GetNameNoTier] was not sundered into three crowns"
+
+ # Endings
+ struggle_persia_ending_assertion:0 "Crowning of the King of Kings"
+ struggle_persia_ending_assertion_tooltip:0 "The houses have bent the knee. Let the shah of Iran be crowned King of Kings of [GetTitleByKey('h_persian_empire').GetNameNoTier]."
+ struggle_persia_ending_assertion_decision_desc:0 "Media and Bactria answer to me, and the great houses have sworn to my crown or been broken. It is time to take up the crown of the King of Kings, as Ardashir and Cyrus did before me."
+ struggle_persia_ending_assertion.l:0 "More than [SCOPE.ScriptValue('fp3_persia_supporter_rulers_decimal_value')|V0%] of [struggle_involved|E] [count|E] or above [independent|E] [rulers|E] or direct [vassals|E] of the shah have the [GetTrait('fp3_struggle_supporter').GetName( GetNullCharacter )] [trait|E]"
+ struggle_persia_ending_foundation:0 "The Old Blood"
+ struggle_persia_ending_foundation_tooltip:0 "The Sassanids have had their centuries. Older blood will wear the crown of the King of Kings."
+ struggle_persia_ending_foundation_decision_desc:0 "My house is older than the Sassanids, and now it is stronger. I will take the crown of [GetTitleByKey('h_persian_empire').GetNameNoTier] for my own blood, and the shah of Iran will kneel to it."
+ struggle_persia_ending_rekindle_iran:0 "The Three Crowns"
+ struggle_persia_ending_rekindle_iran_tooltip:0 "Iran, Media and Bactria were never one realm in truth. Let them be three crowns, and let no King of Kings rise again."
+ struggle_persia_ending_rekindle_iran_decision_desc:0 "No shah will ever again call himself King of Kings over my lands. I will take a crown of my own, and [GetTitleByKey('h_persian_empire').GetNameNoTier] will be remembered only as a name."
+
+ # Ending requirements
+ LR_eranshahr_is_shah_tt:0 "You hold the crown of [GetTitleByKey('e_persia').GetNameNoTier]"
+ LR_eranshahr_not_shah_tt:0 "You do not hold the crown of [GetTitleByKey('e_persia').GetNameNoTier]"
+ LR_eranshahr_revolt_phase_tt:0 "$struggle_ending_decision_correct_involvement_tt$ and the current [struggle_phase|E] is [struggle_persia_phase_unrest|E]"
+ LR_eranshahr_holds_persia_tt:0 "Your realm holds at least three quarters of the [de_jure|E] [counties|E] of [GetTitleByKey('e_persia').GetNameNoTier]"
+ LR_eranshahr_holds_media_tt:0 "Your realm holds at least half of the [de_jure|E] [counties|E] of [GetTitleByKey('e_media').GetNameNoTier]"
+ LR_eranshahr_holds_bactria_tt:0 "Your realm holds at least half of the [de_jure|E] [counties|E] of [GetTitleByKey('e_bactria').GetNameNoTier]"
+ LR_eranshahr_holds_one_empire_tt:0 "Your realm holds at least 60% of the [de_jure|E] [counties|E] of [GetTitleByKey('e_persia').GetNameNoTier], [GetTitleByKey('e_media').GetNameNoTier] or [GetTitleByKey('e_bactria').GetNameNoTier]"
+ LR_eranshahr_holds_media_or_bactria_tt:0 "Your realm holds at least three quarters of the [de_jure|E] [counties|E] of [GetTitleByKey('e_media').GetNameNoTier] or [GetTitleByKey('e_bactria').GetNameNoTier], and no one holds that crown"
+ LR_eranshahr_ends_struggle_tt:0 "Ends the [persian_struggle|E]"
+ LR_eranshahr_never_restored_tt:0 "[GetTitleByKey('h_persian_empire').GetNameNoTier] can never be created again"
+
+ # Ending events
+ LR_eranshahr.0001.t:0 "The King of Kings"
+ LR_eranshahr.0001.desc:0 "Before the magi and the great houses of Iran, the crown of [GetTitleByKey('h_persian_empire').GetNameNoTier] is set upon my head. From Media to Bactria, the lords of Iran swear to me as King of Kings, and the houses that would not swear are broken."
+ LR_eranshahr.0001.a:0 "Ērānšahr is whole again."
+ LR_eranshahr.0002.desc:0 "[eranshahr_ender.GetTitledFirstName] has been crowned King of Kings of [GetTitleByKey('h_persian_empire').GetNameNoTier]. The great houses have bent the knee, and the revolt of the houses is over."
+ LR_eranshahr.0002.a:0 "Long live the King of Kings."
+ LR_eranshahr.0011.t:0 "The Old Blood"
+ LR_eranshahr.0011.desc:0 "My house wore crowns in Iran before the Sassanids were heard of. Now the crown of [GetTitleByKey('h_persian_empire').GetNameNoTier] is ours, and the shah of Iran must kneel to the older blood."
+ LR_eranshahr.0011.a:0 "The old blood rules again."
+ LR_eranshahr.0012.desc:0 "[eranshahr_ender.GetTitledFirstName] has taken the crown of [GetTitleByKey('h_persian_empire').GetNameNoTier]. The Sassanid shahs are no longer first among the houses of Iran."
+ LR_eranshahr.0012.a:0 "A new King of Kings."
+ LR_eranshahr.0021.t:0 "The Three Crowns"
+ LR_eranshahr.0021.desc:0 "Iran, Media and Bactria will each have their own crown, and no shah will call himself King of Kings over the others again. [GetTitleByKey('h_persian_empire').GetNameNoTier] passes into memory."
+ LR_eranshahr.0021.a:0 "Three crowns, and none above them."
+ LR_eranshahr.0022.desc:0 "[eranshahr_ender.GetTitledFirstName] has taken a crown of their own, and the great houses have agreed that [GetTitleByKey('h_persian_empire').GetNameNoTier] will never be restored."
+ LR_eranshahr.0022.a:0 "The age of the King of Kings is over."
