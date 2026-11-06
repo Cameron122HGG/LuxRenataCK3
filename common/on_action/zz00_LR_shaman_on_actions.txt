@@ -1,0 +1,36 @@
+﻿# Lux Invicta shaman hooks, ported 2026-11-06 (events/religion_events/LR_shaman_events.txt)
+
+random_yearly_playable_pulse = {
+	on_actions = { LR_shaman_playable_pulse }
+}
+
+random_yearly_everyone_pulse = {
+	on_actions = { LR_shaman_faith_cleanup }
+}
+
+on_faith_conversion = {
+	on_actions = { LR_shaman_faith_cleanup }
+}
+
+# Shamanic rulers without a Court Shaman get a reminder (shaman.35, players only)
+LR_shaman_playable_pulse = {
+	trigger = {
+		LR_is_shamanic_trigger = yes
+	}
+	random_events = {
+		400 = 0
+		20 = LR_shaman.0001
+	}
+}
+
+# Remove the shaman trait on conversion away from the shamanic religions.
+# Also run yearly, since script conversions (set_character_faith) don't fire on_faith_conversion.
+LR_shaman_faith_cleanup = {
+	trigger = {
+		has_trait = LR_shaman
+		NOT = { LR_is_shamanic_trigger = yes }
+	}
+	effect = {
+		remove_trait = LR_shaman
+	}
+}
