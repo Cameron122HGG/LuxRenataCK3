@@ -1,0 +1,80 @@
+namespace = LR_gov_anarchy
+
+# Anarchy (lux_tradition_gov_anarchy, LR_gov_traditions.txt): a culture without a government tradition.
+
+# root = a player culture head whose culture is in Anarchy. Sent when Anarchy begins and every Jan 1st while it lasts.
+LR_gov_anarchy.0001 = {
+	type = character_event
+	title = LR_gov_anarchy.0001.t
+	desc = LR_gov_anarchy.0001.desc
+	theme = realm
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		culture = { has_cultural_tradition = lux_tradition_gov_anarchy }
+		this = culture.culture_head
+	}
+
+	immediate = {
+		culture = { save_scope_as = LR_anarchic_culture }
+		save_scope_as = LR_gov_model
+		if = {
+			limit = {
+				top_liege != this
+				top_liege = {
+					NOT = { LR_government_shares_tradition_group_trigger = { OTHER = root } }
+				}
+			}
+			top_liege = { save_scope_as = LR_gov_overlord }
+		}
+	}
+
+	# Our own rulers' way becomes the tradition
+	option = {
+		name = LR_gov_anarchy.0001.a
+		add_prestige = LR_anarchy_adoption_prestige_cost_value
+		scope:LR_anarchic_culture = { LR_adopt_government_tradition_of_model_effect = yes }
+		ai_chance = { base = 100 }
+	}
+
+	# Follow the overlord's way
+	option = {
+		name = LR_gov_anarchy.0001.b
+		trigger = { exists = scope:LR_gov_overlord }
+		add_prestige = LR_anarchy_adoption_prestige_cost_value
+		scope:LR_gov_overlord = { save_scope_as = LR_gov_model }
+		scope:LR_anarchic_culture = { LR_adopt_government_tradition_of_model_effect = yes }
+		ai_chance = { base = 50 }
+	}
+
+	# Choose another from the culture's traditions (cheap while in Anarchy); the delay costs prestige that grows each year
+	option = {
+		name = LR_gov_anarchy.0001.c
+		custom_tooltip = LR_gov_anarchy.0001.c.tt
+		add_prestige = LR_anarchy_delay_prestige_cost_value
+		ai_chance = { base = 0 }
+	}
+}
+
+# root = the head of a culture that just lost a government tradition (hidden, a day later): if nothing replaced it,
+# the culture falls into Anarchy.
+LR_gov_anarchy.0002 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		culture = {
+			if = {
+				limit = {
+					LR_culture_has_government_tradition_trigger = no
+					NOT = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				}
+				add_culture_tradition = lux_tradition_gov_anarchy
+			}
+		}
+	}
+}
