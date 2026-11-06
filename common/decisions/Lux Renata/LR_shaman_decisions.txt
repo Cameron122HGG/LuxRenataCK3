@@ -1,0 +1,134 @@
+﻿# Lux Invicta shaman decisions (decisions/LI_misc_decisions.txt: invite_shaman_to_court, ask_ancestors_for_advice), ported 2026-11-06.
+# Events: events/religion_events/LR_shaman_events.txt
+
+# Invite a Shaman to court (LI invite_shaman_to_court)
+LR_invite_shaman_to_court_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = religious
+	ai_check_interval = 120
+
+	desc = LR_invite_shaman_to_court_decision_desc
+	selection_tooltip = LR_invite_shaman_to_court_decision_tooltip
+	confirm_text = LR_invite_shaman_to_court_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		highest_held_title_tier >= tier_county
+		LR_is_shamanic_trigger = yes
+	}
+
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_invite_shaman_to_court_decision_pending_tt
+			NOT = { has_character_flag = LR_shaman_invite_pending }
+		}
+		custom_tooltip = {
+			text = LR_invite_shaman_to_court_decision_none_tt
+			NOR = {
+				any_courtier = { has_trait = LR_shaman }
+				any_vassal = { has_trait = LR_shaman }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		piety = minor_piety_value
+	}
+
+	effect = {
+		add_character_flag = {
+			flag = LR_shaman_invite_pending
+			years = 1
+		}
+		custom_tooltip = LR_invite_shaman_to_court_decision_effect_tt
+		trigger_event = {
+			id = LR_shaman.0002
+			days = { 10 30 }
+		}
+	}
+
+	ai_potential = {
+		NOT = { employs_court_position = LR_court_shaman_court_position }
+	}
+	ai_will_do = {
+		base = 10
+		modifier = { add = 20 has_trait = zealous }
+		modifier = { add = 10 has_trait = diligent }
+		modifier = { add = -10 has_trait = cynical }
+		modifier = { add = -5 has_trait = lazy }
+	}
+}
+
+# Ask the Ancestors for Advice (LI ask_ancestors_for_advice)
+LR_ask_ancestors_for_advice_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = religious
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+
+	desc = LR_ask_ancestors_for_advice_decision_desc
+	selection_tooltip = LR_ask_ancestors_for_advice_decision_tooltip
+	confirm_text = LR_ask_ancestors_for_advice_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		highest_held_title_tier >= tier_county
+		LR_is_shamanic_trigger = yes
+	}
+
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_ask_ancestors_for_advice_decision_shaman_tt
+			OR = {
+				employs_court_position = LR_court_shaman_court_position
+				has_trait = LR_shaman
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		gold = minor_gold_value
+	}
+
+	effect = {
+		if = {
+			limit = { employs_court_position = LR_court_shaman_court_position }
+			random_court_position_holder = {
+				type = LR_court_shaman_court_position
+				save_scope_as = shaman
+			}
+		}
+		else = {
+			save_scope_as = shaman
+		}
+		custom_tooltip = LR_ask_ancestors_for_advice_decision_effect_tt
+		trigger_event = LR_shaman.0100
+	}
+
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 5
+		modifier = { add = 15 has_trait = zealous }
+		modifier = { add = 10 has_trait = diligent }
+		modifier = { add = 10 has_trait = ambitious }
+		modifier = { add = -5 has_trait = lazy }
+		modifier = { add = -10 has_trait = cynical }
+	}
+}
