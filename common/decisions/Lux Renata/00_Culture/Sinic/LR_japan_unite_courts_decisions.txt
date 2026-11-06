@@ -1,0 +1,86 @@
+﻿# LR: the Age of Two Palaces. Since the Isshi Incident (645) Japan has two courts: the Soga court at Saga (e_south_japan,
+# with k_chrysanthemum_throne_south) and the Fujiwara court in Yamato (e_north_japan, with k_chrysanthemum_throne_north).
+# The regent of one court can end the split once the rival court is gone or bows to them. The work is done by
+# unite_the_japanese_courts_decision_effects (common/scripted_effects/LR/99_LR_Japan_decisions_scripted_effects.txt).
+unite_the_japanese_courts_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/event_story/tgp_japanese_shogunate.dds"
+	}
+	decision_group_type = major
+	desc = unite_the_japanese_courts_decision_desc
+	selection_tooltip = unite_the_japanese_courts_decision_tooltip
+	ai_check_interval = 60
+
+	is_shown = {
+		is_landed = yes
+		OR = {
+			has_primary_title = title:e_north_japan
+			has_primary_title = title:e_south_japan
+		}
+		NOT = { exists = title:e_japan.holder }
+		NOT = { has_global_variable = LR_japanese_courts_united }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		# Our own Ten'nō sits at our court
+		custom_tooltip = {
+			text = unite_the_japanese_courts_own_throne_tt
+			trigger_if = {
+				limit = { has_primary_title = title:e_north_japan }
+				title:k_chrysanthemum_throne_north.holder ?= { target_is_liege_or_above = root }
+			}
+			trigger_else = {
+				title:k_chrysanthemum_throne_south.holder ?= { target_is_liege_or_above = root }
+			}
+		}
+		# The rival court is gone or bows to us
+		custom_tooltip = {
+			text = unite_the_japanese_courts_rival_court_tt
+			trigger_if = {
+				limit = { has_primary_title = title:e_north_japan }
+				OR = {
+					NOT = { exists = title:e_south_japan.holder }
+					title:e_south_japan.holder = { target_is_liege_or_above = root }
+				}
+			}
+			trigger_else = {
+				OR = {
+					NOT = { exists = title:e_north_japan.holder }
+					title:e_north_japan.holder = { target_is_liege_or_above = root }
+				}
+			}
+		}
+		# Both palaces: Yamashiro (North) and Hizen (South)
+		completely_controls = title:c_yamashiro
+		completely_controls = title:c_hizen
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		save_scope_as = japan_restorer
+		custom_tooltip = unite_the_japanese_courts_effect_tt
+		unite_the_japanese_courts_decision_effects = yes
+		set_global_variable = {
+			name = LR_japanese_courts_united
+			value = yes
+		}
+		add_dynasty_prestige = 1000
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
