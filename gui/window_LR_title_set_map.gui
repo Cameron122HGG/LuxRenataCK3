@@ -279,6 +279,60 @@ window = {
 						expand = {}
 					}
 
+					# Brythonic (Celtic) and Galatian sets, added 2026-11-06
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+
+						text_single = {
+							text = ""
+							align = nobaseline
+							minimumsize = { 90 0 }
+						}
+
+						button_LR_tsm_view = {
+							text = "LR_TSM_SET_BRYTHONIC"
+							tooltip = "LR_TSM_SET_BRYTHONIC_TT"
+							onclick = "[GetScriptedGui( 'LR_tsm_preview_brythonic' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GetScriptedGui( 'LR_tsm_preview_brythonic' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+
+							# Repaint once this becomes the current choice (see button_tmm_trait)
+							state = {
+								name = LR_tsm_refresh
+								trigger_when = "[Not( GetScriptedGui( 'LR_tsm_preview_brythonic' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+								on_start = "[SetMapMode( 'realms' )]"
+								duration = 0.05
+								next = LR_tsm_refresh_2
+							}
+							state = {
+								name = LR_tsm_refresh_2
+								on_start = "[SetMapMode( 'situation' )]"
+							}
+						}
+
+						button_LR_tsm_view = {
+							text = "LR_TSM_SET_GALATIAN"
+							tooltip = "LR_TSM_SET_GALATIAN_TT"
+							onclick = "[GetScriptedGui( 'LR_tsm_preview_galatian' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GetScriptedGui( 'LR_tsm_preview_galatian' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+
+							# Repaint once this becomes the current choice (see button_tmm_trait)
+							state = {
+								name = LR_tsm_refresh
+								trigger_when = "[Not( GetScriptedGui( 'LR_tsm_preview_galatian' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+								on_start = "[SetMapMode( 'realms' )]"
+								duration = 0.05
+								next = LR_tsm_refresh_2
+							}
+							state = {
+								name = LR_tsm_refresh_2
+								on_start = "[SetMapMode( 'situation' )]"
+							}
+						}
+
+						expand = {}
+					}
+
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						visible = "[GetScriptedGui( 'LR_tsm_is_preview' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
@@ -340,6 +394,27 @@ window = {
 							state = {
 								name = LR_tsm_refresh
 								trigger_when = "[Not( GetScriptedGui( 'LR_tsm_preview_tier_empire' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+								on_start = "[SetMapMode( 'realms' )]"
+								duration = 0.05
+								next = LR_tsm_refresh_2
+							}
+							state = {
+								name = LR_tsm_refresh_2
+								on_start = "[SetMapMode( 'situation' )]"
+							}
+						}
+
+						# Hegemony tier, added 2026-11-06
+						button_LR_tsm_view = {
+							text = "LR_TSM_TIER_HEGEMONY"
+							tooltip = "LR_TSM_TIER_HEGEMONY_TT"
+							onclick = "[GetScriptedGui( 'LR_tsm_preview_tier_hegemony' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GetScriptedGui( 'LR_tsm_preview_tier_hegemony' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+
+							# Repaint once this becomes the current choice (see button_tmm_trait)
+							state = {
+								name = LR_tsm_refresh
+								trigger_when = "[Not( GetScriptedGui( 'LR_tsm_preview_tier_hegemony' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
 								on_start = "[SetMapMode( 'realms' )]"
 								duration = 0.05
 								next = LR_tsm_refresh_2
@@ -425,6 +500,20 @@ window = {
 						blockoverride "swatch_color" { color = { 0.31 0.76 0.82 1 } }
 						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_hebrew" }
 						blockoverride "count" { text = "LR_TSM_COUNT_HEBREW" }
+					}
+
+					hbox_LR_tsm_legend_row = {
+						visible = "[Not( GetScriptedGui( 'LR_tsm_is_preview' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+						blockoverride "swatch_color" { color = { 0.59 0.78 0.24 1 } }
+						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_brythonic" }
+						blockoverride "count" { text = "LR_TSM_COUNT_BRYTHONIC" }
+					}
+
+					hbox_LR_tsm_legend_row = {
+						visible = "[Not( GetScriptedGui( 'LR_tsm_is_preview' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+						blockoverride "swatch_color" { color = { 0.84 0.39 0.59 1 } }
+						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_galatian" }
+						blockoverride "count" { text = "LR_TSM_COUNT_GALATIAN" }
 					}
 
 					hbox_LR_tsm_legend_row = {

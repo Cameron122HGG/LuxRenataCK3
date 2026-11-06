@@ -81,6 +81,38 @@ LR_tsm_preview_hebrew = {
 	effect = { LR_tsm_set_preview_effect = { SET = hebrew } }
 }
 
+LR_tsm_preview_brythonic = {
+	scope = character
+	is_valid = {
+		situation:LR_title_set_map ?= {
+			NOT = {
+				AND = {
+					has_variable = LR_tsm_preview_set
+					LR_tsm_view_is_preview_trigger = yes
+					var:LR_tsm_preview_set = flag:brythonic
+				}
+			}
+		}
+	}
+	effect = { LR_tsm_set_preview_effect = { SET = brythonic } }
+}
+
+LR_tsm_preview_galatian = {
+	scope = character
+	is_valid = {
+		situation:LR_title_set_map ?= {
+			NOT = {
+				AND = {
+					has_variable = LR_tsm_preview_set
+					LR_tsm_view_is_preview_trigger = yes
+					var:LR_tsm_preview_set = flag:galatian
+				}
+			}
+		}
+	}
+	effect = { LR_tsm_set_preview_effect = { SET = galatian } }
+}
+
 LR_tsm_preview_warlord = {
 	scope = character
 	is_valid = {
@@ -131,4 +163,16 @@ LR_tsm_preview_tier_empire = {
 		}
 	}
 	effect = { LR_tsm_set_preview_tier_effect = { TIER = empire } }
+}
+
+LR_tsm_preview_tier_hegemony = {
+	scope = character
+	is_valid = {
+		situation:LR_title_set_map ?= {
+			has_variable = LR_tsm_preview_tier
+			LR_tsm_view_is_preview_trigger = yes
+			NOT = { var:LR_tsm_preview_tier = flag:hegemony }
+		}
+	}
+	effect = { LR_tsm_set_preview_tier_effect = { TIER = hegemony } }
 }
