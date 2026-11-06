@@ -58,3 +58,28 @@ LR_roman_restoration_county_in_realm_trigger = {
 		}
 	}
 }
+
+
+# Cleave the Empire (split_roman_empire_decision), 2026-11-06. Character scope: your capital lies in the Theodosian East
+LR_cleave_keeps_east_trigger = {
+	capital_province = { geographical_region = custom_theodosian_ere }
+}
+
+# Character scope: your capital lies in either half of the Theodosian Empire
+LR_cleave_capital_in_empire_trigger = {
+	capital_province = {
+		OR = {
+			geographical_region = custom_theodosian_ere
+			geographical_region = custom_theodosian_wre
+		}
+	}
+}
+
+# Character scope: the other half's empire title can go to a junior Caesar (unheld, yours, or already theirs)
+LR_cleave_caesar_title_free_trigger = {
+	OR = {
+		NOT = { exists = title:$TITLE$.holder }
+		title:$TITLE$.holder = root
+		title:$TITLE$.holder = scope:new_holder
+	}
+}

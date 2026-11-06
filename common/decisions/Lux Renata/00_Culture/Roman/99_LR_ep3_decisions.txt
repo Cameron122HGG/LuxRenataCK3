@@ -2115,6 +2115,8 @@ adopt_state_faith = {
 
 
 ### Cleave the Empire ###
+# Cleave the Empire, reworked for Lux Renata 2026-11-06: you keep the half of your capital (Theodosian line);
+# LR_cleave_empire.0001 lets you choose two hegemonies (Two Augusti) or a junior Caesar under Rome
 split_roman_empire_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds"
@@ -2137,85 +2139,31 @@ split_roman_empire_decision = {
 	is_shown = {
 		primary_title ?= title:h_roman_empire
 		NOT = { exists = title:h_eastern_roman_empire.holder }
-		has_ep3_dlc_trigger = yes
+		NOT = { exists = title:h_western_roman_empire.holder }
 	}
 
 	is_valid = {
 		realm_size >= 150
-		capital_county = title:c_roma
-		has_title = title:c_byzantion
+		custom_tooltip = {
+			text = LR_cleave_capital_in_empire_tt
+			LR_cleave_capital_in_empire_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_cleave_has_vassal_tt
+			any_vassal = { highest_held_title_tier >= tier_county }
+		}
 	}
 
 	is_valid_showing_failures_only = {
 		is_available = yes
+		is_at_war = no
 	}
 
 	cost = {}
 
 	effect = {
-		if = {
-			limit = {
-				has_active_diarchy = yes
-				has_diarchy_type = co_emperorship
-			}
-			diarch = { save_scope_as = new_holder }
-		}
-		if = {
-			limit = {
-				any_powerful_family = {
-					this != root.house
-					count >= 1
-					exists = house_head
-				}
-			}
-			ordered_powerful_family = {
-				limit = { this != root.house }
-				order_by = house_power_score
-				house_head = { save_scope_as = new_holder }
-			}
-		}
-		else = {
-			ordered_powerful_vassal = {
-				order_by = max_military_strength
-				save_scope_as = new_holder
-			}
-		}
-		custom_tooltip = {
-			text = form_eastern_roman_empire_tt
-			create_eastern_roman_empire_scripted_effect = yes
-		}
-		title:h_roman_empire = {
-			set_title_name = h_western_roman_empire
-		}
-
-		# Add truce with new Byzantine Emperor
-		add_truce_both_ways = {
-			character = scope:new_holder
-			years = 10
-			name = TRUCE_COLLABORATION
-		}
-
-		# Some additional bonuses
-		change_influence = {
-			value = monumental_influence_gain
-			multiply = 2
-		}
-
-		if = {
-			limit = {
-				any_owned_story = {
-					type = ep3_story_cycle_restoring_rome
-					has_variable = roman_empire_hard_mode
-				}
-			}
-			custom_tooltip = {
-				text = ending_of_restore_rome_trials_tt
-				random_owned_story = {
-					limit = { story_type = ep3_story_cycle_restoring_rome }
-					remove_variable = roman_empire_hard_mode
-				}
-			}
-		}
+		custom_tooltip = LR_cleave_empire_decision_effect_tt
+		trigger_event = LR_cleave_empire.0001
 	}
 
 	ai_potential = {

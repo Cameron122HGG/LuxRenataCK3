@@ -1,0 +1,103 @@
+﻿namespace = LR_cleave_empire
+
+# Cleave the Empire (split_roman_empire_decision), reworked 2026-11-06.
+# 0001 - The Augustus chooses: Two Augusti (two hegemonies) or A Caesar (a junior emperor under Rome)
+# 0002 - The new emperor learns of it
+
+LR_cleave_empire.0001 = {
+	type = character_event
+	window = fullscreen_event
+	title = LR_cleave_empire.0001.t
+	desc = LR_cleave_empire.0001.desc
+	theme = emperor
+	override_background = { reference = ep3_fullscreen_restore_rome }
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:new_holder
+		animation = personality_honorable
+	}
+
+	immediate = {
+		save_scope_as = cleaving_emperor
+		if = {
+			limit = { LR_cleave_keeps_east_trigger = yes }
+			LR_cleave_find_new_augustus_effect = { OTHER_REGION = custom_theodosian_wre }
+		}
+		else = {
+			LR_cleave_find_new_augustus_effect = { OTHER_REGION = custom_theodosian_ere }
+		}
+	}
+
+	option = { # Two Augusti: two hegemonies
+		name = LR_cleave_empire.0001.a
+		trigger = { exists = scope:new_holder }
+		LR_cleave_empire_full_effect = yes
+		scope:new_holder = { trigger_event = LR_cleave_empire.0002 }
+		if = {
+			limit = {
+				any_owned_story = {
+					type = ep3_story_cycle_restoring_rome
+					has_variable = roman_empire_hard_mode
+				}
+			}
+			custom_tooltip = {
+				text = ending_of_restore_rome_trials_tt
+				random_owned_story = {
+					limit = { story_type = ep3_story_cycle_restoring_rome }
+					remove_variable = roman_empire_hard_mode
+				}
+			}
+		}
+		ai_chance = {
+			base = 30
+		}
+	}
+
+	option = { # A Caesar: Rome stays, a junior emperor rules the other half as your vassal
+		name = LR_cleave_empire.0001.b
+		trigger = {
+			exists = scope:new_holder
+			trigger_if = {
+				limit = { LR_cleave_keeps_east_trigger = yes }
+				LR_cleave_caesar_title_free_trigger = { TITLE = e_western_roman_empire }
+			}
+			trigger_else = {
+				LR_cleave_caesar_title_free_trigger = { TITLE = e_eastern_roman_empire }
+			}
+		}
+		LR_cleave_empire_junior_effect = yes
+		scope:new_holder = { trigger_event = LR_cleave_empire.0002 }
+		ai_chance = {
+			base = 70
+		}
+	}
+
+	option = { # Not yet
+		name = LR_cleave_empire.0001.c
+		ai_chance = {
+			base = 0
+		}
+	}
+}
+
+LR_cleave_empire.0002 = {
+	type = character_event
+	title = LR_cleave_empire.0002.t
+	desc = LR_cleave_empire.0002.desc
+	theme = emperor
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:cleaving_emperor
+		animation = personality_rational
+	}
+
+	option = {
+		name = LR_cleave_empire.0002.a
+	}
+}
