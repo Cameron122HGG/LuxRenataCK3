@@ -179,12 +179,70 @@ LR_title_set_themes_outsider_trigger = {
 	any_held_title = { LR_title_set_themes_title_trigger = yes }
 }
 
+# Title: one of the Persia set's titles (the Persian realm titles of 01_LR_persia.txt, 2026-11-05)
+LR_title_set_persian_title_trigger = {
+	OR = {
+		this = title:h_persian_empire
+		this = title:e_persia
+		this = title:k_persia
+		this = title:d_fars
+		this = title:d_isfahan
+		this = title:d_khuzestan
+		this = title:d_hormuz
+		this = title:k_kirman
+		this = title:d_kirman
+		this = title:d_yazd
+		this = title:e_bactria
+		this = title:k_bactria
+		this = title:d_merv
+		this = title:d_ghur
+		this = title:d_herat
+		this = title:d_balkh
+		this = title:k_makran
+		this = title:d_makran
+		this = title:d_turan
+		this = title:d_jabal_kufs
+		this = title:d_sistan
+		this = title:k_kabulistan
+		this = title:d_kabul
+		this = title:d_zabulistan
+		this = title:e_media
+		this = title:k_media
+		this = title:d_rayy
+		this = title:d_hamadan
+		this = title:d_kermanshah
+		this = title:k_khorasan
+		this = title:d_nishapur
+		this = title:d_nasa
+		this = title:d_kohestan
+		this = title:d_tabaristan
+		this = title:d_gurgan
+		this = title:k_daylam
+		this = title:d_daylam
+		this = title:d_azerbaijan
+		this = title:d_shirvan
+	}
+}
+
+# Character: may use the Persia set (rulers of Iranian heritage; the user chose culture only, 2026-11-05, so
+# Perso-Hellenistic, Yavanan and other outsiders hold Persian titles under Foreign Administration)
+LR_title_set_persian_native_trigger = {
+	culture ?= { has_cultural_pillar = heritage_iranian }
+}
+
+# Character: holds a Persia set title without being native to the set
+LR_title_set_persian_outsider_trigger = {
+	NOT = { LR_title_set_persian_native_trigger = yes }
+	any_held_title = { LR_title_set_persian_title_trigger = yes }
+}
+
 # Title: belongs to any title set
 LR_is_set_title_trigger = {
 	OR = {
 		LR_title_set_hellenistic_title_trigger = yes
 		LR_title_set_roman_title_trigger = yes
 		LR_title_set_themes_title_trigger = yes
+		LR_title_set_persian_title_trigger = yes
 	}
 }
 
@@ -201,5 +259,9 @@ LR_may_use_title_set_trigger = {
 	trigger_if = {
 		limit = { $TITLE$ = { LR_title_set_themes_title_trigger = yes } }
 		LR_title_set_themes_native_trigger = yes
+	}
+	trigger_if = {
+		limit = { $TITLE$ = { LR_title_set_persian_title_trigger = yes } }
+		LR_title_set_persian_native_trigger = yes
 	}
 }
