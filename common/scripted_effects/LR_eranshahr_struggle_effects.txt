@@ -29,6 +29,7 @@ LR_eranshahr_crown_root_effect = {
 # Crowning of the King of Kings: the shah is crowned, and the independent supporters of the crown swear to him.
 LR_eranshahr_crowning_effect = {
 	LR_eranshahr_crown_root_effect = yes
+	LR_eranshahr_greater_victory_effect = yes
 	if = {
 		limit = { has_title = title:h_persian_empire }
 		create_title_and_vassal_change = {
@@ -52,6 +53,7 @@ LR_eranshahr_crowning_effect = {
 # The Old Blood: a great house takes the crown of Ērānšahr, and the old shah bows to it.
 LR_eranshahr_old_blood_effect = {
 	LR_eranshahr_crown_root_effect = yes
+	LR_eranshahr_greater_victory_effect = yes
 	if = {
 		limit = {
 			has_title = title:h_persian_empire
@@ -85,14 +87,14 @@ LR_eranshahr_three_crowns_effect = {
 	if = {
 		limit = {
 			NOT = { exists = title:e_media.holder }
-			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_media PERCENT = 0.75 }
+			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_media PERCENT = 0.6 }
 		}
 		title:e_media = { save_scope_as = eranshahr_new_crown }
 	}
 	else_if = {
 		limit = {
 			NOT = { exists = title:e_bactria.holder }
-			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_bactria PERCENT = 0.75 }
+			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_bactria PERCENT = 0.6 }
 		}
 		title:e_bactria = { save_scope_as = eranshahr_new_crown }
 	}
@@ -113,4 +115,23 @@ LR_eranshahr_three_crowns_effect = {
 	}
 	add_prestige = 2000
 	dynasty ?= { add_dynasty_prestige = 3000 }
+}
+
+# Ērān and Anērān, the greater victory: a new King of Kings whose realm also holds most of Anērān takes it into
+# Ērānšahr. Mesopotamia and the Jazira (e_mesopotamia) come under h_persian_empire, and Transoxiana under Bactria.
+LR_eranshahr_greater_victory_effect = {
+	if = {
+		limit = {
+			has_title = title:h_persian_empire
+			LR_eranshahr_holds_aneran_trigger = yes
+		}
+		title:e_mesopotamia = { set_de_jure_liege_title = title:h_persian_empire }
+		title:k_transoxiana = { set_de_jure_liege_title = title:e_bactria }
+		set_global_variable = {
+			name = LR_eranshahr_aneran
+			value = yes
+		}
+		add_prestige = 2000
+		dynasty ?= { add_dynasty_prestige = 3000 }
+	}
 }

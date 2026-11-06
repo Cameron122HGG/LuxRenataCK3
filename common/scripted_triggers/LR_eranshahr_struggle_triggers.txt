@@ -26,10 +26,14 @@ LR_eranshahr_swears_to_crown_trigger = {
 		is_mercenary_company = no
 		is_holy_order = no
 	}
-	capital_province ?= {
-		OR = {
-			geographical_region = world_persian_empire
-			geographical_region = ghw_region_kurdistan
-		}
+	capital_province ?= { geographical_region = LR_region_eranshahr }
+}
+
+# Ērān and Anērān: root's realm holds at least half of the counties of Anērān (Mesopotamia, the Jazira, Transoxiana).
+LR_eranshahr_holds_aneran_trigger = {
+	any_county_in_region = {
+		region = LR_region_aneran
+		percent >= 0.5
+		holder.top_liege ?= root
 	}
 }
