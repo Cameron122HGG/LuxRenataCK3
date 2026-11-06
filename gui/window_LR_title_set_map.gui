@@ -330,6 +330,26 @@ window = {
 							}
 						}
 
+						button_LR_tsm_view = {
+							text = "LR_TSM_SET_PUNIC"
+							tooltip = "LR_TSM_SET_PUNIC_TT"
+							onclick = "[GetScriptedGui( 'LR_tsm_preview_punic' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GetScriptedGui( 'LR_tsm_preview_punic' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+
+							# Repaint once this becomes the current choice (see button_tmm_trait)
+							state = {
+								name = LR_tsm_refresh
+								trigger_when = "[Not( GetScriptedGui( 'LR_tsm_preview_punic' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+								on_start = "[SetMapMode( 'realms' )]"
+								duration = 0.05
+								next = LR_tsm_refresh_2
+							}
+							state = {
+								name = LR_tsm_refresh_2
+								on_start = "[SetMapMode( 'situation' )]"
+							}
+						}
+
 						expand = {}
 					}
 
@@ -514,6 +534,13 @@ window = {
 						blockoverride "swatch_color" { color = { 0.84 0.39 0.59 1 } }
 						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_galatian" }
 						blockoverride "count" { text = "LR_TSM_COUNT_GALATIAN" }
+					}
+
+					hbox_LR_tsm_legend_row = {
+						visible = "[Not( GetScriptedGui( 'LR_tsm_is_preview' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+						blockoverride "swatch_color" { color = { 0.49 0.18 0.55 1 } }
+						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_punic" }
+						blockoverride "count" { text = "LR_TSM_COUNT_PUNIC" }
 					}
 
 					hbox_LR_tsm_legend_row = {

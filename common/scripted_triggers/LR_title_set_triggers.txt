@@ -578,6 +578,29 @@ LR_title_set_galatian_outsider_trigger = {
 	any_held_title = { LR_title_set_galatian_title_trigger = yes }
 }
 
+# Title: one of the Punic set's titles: the Carthaginian Empire and its four kingdoms (user 2026-11-06).
+# Their duchies stay the warlord duchies, moved in by restore_carthage_scripted_effect.
+LR_title_set_punic_title_trigger = {
+	OR = {
+		this = title:e_carthage
+		this = title:k_carthage
+		this = title:k_tripolitania
+		this = title:k_mauretania
+		this = title:k_carthago_nova
+	}
+}
+
+# Character: may use the Punic set: every culture of Phoenician heritage (user 2026-11-06)
+LR_title_set_punic_native_trigger = {
+	culture ?= { has_cultural_pillar = heritage_phoenician }
+}
+
+# Character: holds a Punic set title without being native to the set
+LR_title_set_punic_outsider_trigger = {
+	NOT = { LR_title_set_punic_native_trigger = yes }
+	any_held_title = { LR_title_set_punic_title_trigger = yes }
+}
+
 # Title: belongs to any title set
 LR_is_set_title_trigger = {
 	OR = {
@@ -588,6 +611,7 @@ LR_is_set_title_trigger = {
 		LR_title_set_hebrew_title_trigger = yes
 		LR_title_set_brythonic_title_trigger = yes
 		LR_title_set_galatian_title_trigger = yes
+		LR_title_set_punic_title_trigger = yes
 	}
 }
 
@@ -620,5 +644,9 @@ LR_may_use_title_set_trigger = {
 	trigger_if = {
 		limit = { $TITLE$ = { LR_title_set_galatian_title_trigger = yes } }
 		LR_title_set_galatian_native_trigger = yes
+	}
+	trigger_if = {
+		limit = { $TITLE$ = { LR_title_set_punic_title_trigger = yes } }
+		LR_title_set_punic_native_trigger = yes
 	}
 }

@@ -1,0 +1,68 @@
+﻿# LR 2026-11-06: the Kingdom of the Vandals and Alans (LR_found_vandal_kingdom_decision). Character scope (the founder).
+LR_found_vandal_kingdom_effect = {
+	dynasty ?= { add_dynasty_prestige = monumental_dynasty_prestige_gain }
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:e_regnum_vandalorum = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	custom_tooltip = LR_found_vandal_kingdom_dejure_tt
+	hidden_effect = {
+		set_primary_title_to = title:e_regnum_vandalorum
+		title:k_kartaga = { set_de_jure_liege_title = title:e_regnum_vandalorum }
+		if = {
+			limit = { completely_controls_region = custom_vandal_sicily }
+			LR_vandal_kingdom_dejure_effect = { REGION = custom_vandal_kingdom_with_sicily }
+		}
+		else = {
+			LR_vandal_kingdom_dejure_effect = { REGION = custom_vandal_kingdom }
+		}
+	}
+}
+
+# Kingdoms that lie mostly in $REGION$ go under the Vandal kingdom-empire; duchies of kingdoms that lie mostly
+# elsewhere (such as the Balearics) go under the Crown of Carthage (k_kartaga) instead.
+LR_vandal_kingdom_dejure_effect = {
+	every_county_in_region = {
+		region = $REGION$
+		duchy ?= {
+			if = {
+				limit = {
+					exists = kingdom
+					kingdom = {
+						any_de_jure_county = {
+							percent >= 0.5
+							title_province = { geographical_region = $REGION$ }
+						}
+					}
+				}
+				kingdom = {
+					if = {
+						limit = { NOT = { is_in_list = LR_vandal_kingdoms } }
+						add_to_temporary_list = LR_vandal_kingdoms
+					}
+				}
+			}
+			else_if = {
+				limit = { NOT = { is_in_list = LR_vandal_duchies } }
+				add_to_temporary_list = LR_vandal_duchies
+			}
+		}
+	}
+	every_in_list = {
+		list = LR_vandal_kingdoms
+		limit = { NOT = { this = title:k_kartaga } }
+		set_de_jure_liege_title = title:e_regnum_vandalorum
+	}
+	every_in_list = {
+		list = LR_vandal_duchies
+		set_de_jure_liege_title = title:k_kartaga
+	}
+}
