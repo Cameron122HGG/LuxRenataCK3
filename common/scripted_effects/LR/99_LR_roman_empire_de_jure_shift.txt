@@ -52,96 +52,18 @@
 		}
 		resolve_title_and_vassal_change = scope:change
 
-		every_held_title = { #Should destroy all other Empires owned at the time.
-			title_tier = empire
+		every_held_title = { # The old empire titles go; prefectures, exarchates and landless offices stay (LR 2026-11-06)
+			limit = {
+				tier = tier_empire
+				is_landless_type_title = no
+				LR_is_roman_prefecture_or_exarchate_title_trigger = no
+			}
 			root = { destroy_title = prev }
 		}
 
-		# Creating the Praetorian Prefectures
-
-		# Illyricum
-		# Shift the Kingdoms
-		every_county_in_region = {
-			region = custom_roman_prefecture_illyricum
-			kingdom = { add_to_list = custom_roman_prefecture_illyricum_list }
-		}	
-		every_in_list = {
-			list = custom_roman_prefecture_illyricum_list
-			limit = {
-				NOT = { de_jure_liege = title:e_praetorian_prefecture_illyricum }
-			}
-			set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum
-		}
-		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_western_roman_empire }
-
-		#Italia
-		# Shift the Kingdoms
-		title:e_praetorian_prefecture_italia = { set_de_jure_liege_title = title:h_western_roman_empire }
-		every_county_in_region = {
-			region = custom_western_roman_imperial_core
-			kingdom = { add_to_list = custom_western_roman_imperial_core }
-		}	
-		every_in_list = {
-			list = custom_western_roman_imperial_core
-			limit = {
-				NOT = { de_jure_liege = title:e_praetorian_prefecture_italia }
-			}
-			set_de_jure_liege_title = title:e_praetorian_prefecture_italia
-		}
-		title:e_praetorian_prefecture_italia = { set_de_jure_liege_title = title:h_western_roman_empire }
-
-		#Gallia
-		# Shift the Kingdoms
-		every_county_in_region = { #Galliarum
-			region = custom_roman_lugdunensis
-			kingdom = { add_to_list = custom_roman_lugdunensis_list }
-		}	
-		every_county_in_region = { #Viennensis
-			region = custom_roman_viennensis
-			kingdom = { add_to_list = custom_roman_lugdunensis_list }
-		}
-		every_in_list = {
-			list = custom_roman_lugdunensis_list
-			limit = {
-				NOT = { de_jure_liege = title:e_praetorian_prefecture_gallia }
-			}
-			set_de_jure_liege_title = title:e_praetorian_prefecture_gallia
-		}
-		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_western_roman_empire }
-
-		#Hispania
-		# Shift the Kingdoms
-		every_county_in_region = {
-			region = custom_roman_hispania
-			kingdom = { add_to_list = custom_roman_hispania_list }
-		}	
-		every_in_list = {
-			list = custom_roman_hispania_list
-			limit = {
-				NOT = { de_jure_liege = title:e_praetorian_prefecture_hispania }
-			}
-			set_de_jure_liege_title = title:e_praetorian_prefecture_hispania
-		}
-		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_western_roman_empire }
-
-		#Africa
-		# Shift the Kingdoms
-		every_county_in_region = { #Africa
-			region = custom_roman_africa
-			kingdom = { add_to_list = custom_roman_africa_list }
-		}	
-		every_county_in_region = { #Mauretania
-			region = custom_roman_mauretania
-			kingdom = { add_to_list = custom_roman_africa_list }
-		}
-		every_in_list = {
-			list = custom_roman_africa_list
-			limit = {
-				NOT = { de_jure_liege = title:e_praetorian_prefecture_africa }
-			}
-			set_de_jure_liege_title = title:e_praetorian_prefecture_africa
-		}
-		title:e_praetorian_prefecture_africa = { set_de_jure_liege_title = title:h_western_roman_empire }
+		# LR 2026-11-06 (user): only restored dioceses move, into the three Theodosian prefectures (Italia, Gallia,
+		# Illyricum); warlord kingdoms stay where they are until their diocese is restored
+		LR_sort_existing_western_dioceses_effect = yes
 	}
 
 	every_vassal = {
@@ -158,18 +80,13 @@
 restore_western_roman_provinces_system_decision_effect = {
 	#Sort the diocese
 	if = {
-		limit = { has_title = title:h_western_roman_empire }
-		title:k_diocese_illyricum = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
-		title:k_diocese_dardania = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
-		title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
-		title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
-		title:k_diocese_noricum = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
-		title:k_diocese_pannonia = { set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum }
-		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_hispania }
-
-		title:e_praetorian_prefecture_italia = { set_de_jure_liege_title = title:h_western_roman_empire }
-		title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_western_roman_empire }	
-		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_western_roman_empire }
+		limit = {
+			OR = {
+				has_title = title:h_western_roman_empire
+				has_title = title:h_roman_empire
+			}
+		}
+		LR_sort_existing_western_dioceses_effect = yes # LR 2026-11-06: the three Theodosian prefectures
 	}
 	else_if = { 
 		limit = { has_title = title:e_spqr }
@@ -620,14 +537,14 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 	resolve_title_and_vassal_change = scope:change
 
 	#Sort the Dioceses
-		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
-		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
+		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
+		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
 	if = {
 		limit = { has_title = title:h_roman_empire }
-		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
-		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_africa }
+		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
+		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
 
-		title:e_praetorian_prefecture_africa = { set_de_jure_liege_title = title:h_roman_empire }
+		title:e_praetorian_prefecture_italia = { set_de_jure_liege_title = title:h_roman_empire }
 	}
 	else_if = {
 		limit = { has_title = title:e_western_roman_empire }
@@ -702,8 +619,8 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 	}
 
 	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
-	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_africa PREFECTURE = e_praetorian_prefecture_africa HALF = h_western_roman_empire }
-	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_mauretania PREFECTURE = e_praetorian_prefecture_africa HALF = h_western_roman_empire }
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_africa PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_mauretania PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_syria_decision_effect  = {
@@ -1008,17 +925,17 @@ restore_roman_provinces_hispania_decision_effect = {
 	# Under a Roman hegemony the diocese sits in its prefecture
 	if = {
 		limit = { has_title = title:h_western_roman_empire }
-		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_hispania }
-		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_western_roman_empire }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_western_roman_empire }
 	}
 	else_if = {
 		limit = { has_title = title:h_roman_empire }
-		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_hispania }
-		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_roman_empire }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_roman_empire }
 	}
 
 	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
-	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hispania PREFECTURE = e_praetorian_prefecture_hispania HALF = h_western_roman_empire }
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hispania PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_britannia_decision_effect = {
@@ -1124,57 +1041,18 @@ LR_restore_eastern_hegemony_decision_effect = {
 		}
 		resolve_title_and_vassal_change = scope:change
 
-		every_held_title = { #Should destroy all other Empires owned at the time.
-			title_tier = empire
+		every_held_title = { # The old empire titles go; prefectures, exarchates and landless offices stay (LR 2026-11-06)
+			limit = {
+				tier = tier_empire
+				is_landless_type_title = no
+				LR_is_roman_prefecture_or_exarchate_title_trigger = no
+			}
 			root = { destroy_title = prev }
 		}
 
-		# Creating the Praetorian Prefectures
-		
-		# Illyricum
-		# Shift the Kingdoms
-		#every_county_in_region = {
-		#	region = custom_roman_prefecture_illyricum
-		#	kingdom = { add_to_list = custom_roman_prefecture_illyricum_list }
-		#}	
-		#every_in_list = {
-		#	list = custom_roman_prefecture_illyricum_list
-		#	limit = {
-		#		NOT = { de_jure_liege = title:e_praetorian_prefecture_illyricum }
-		#	}
-		#	set_de_jure_liege_title = title:e_praetorian_prefecture_illyricum
-		#}#
-		#title:e_praetorian_prefecture_illyricum = { set_de_jure_liege_title = title:h_eastern_roman_empire }
-		
-		# Oriens
-		# Shift the Kingdoms
-		every_county_in_region = {
-			region = custom_roman_prefecture_oriens
-			kingdom = { add_to_list = custom_roman_prefecture_oriens_list }
-		}	
-		every_in_list = {
-			list = custom_roman_prefecture_oriens_list
-			limit = {
-				NOT = { de_jure_liege = title:e_praetorian_prefecture_oriens }
-			}
-			set_de_jure_liege_title = title:e_praetorian_prefecture_oriens
-		}
-		title:e_praetorian_prefecture_oriens = { set_de_jure_liege_title = title:h_eastern_roman_empire }
-
-		# Macedonian Prefecture
-		# Shift the Kingdoms
-		every_county_in_region = {
-			region = custom_roman_prefecture_macedonia
-			kingdom = { add_to_list = custom_roman_prefecture_macedonia_list }
-		}	
-		every_in_list = {
-			list = custom_roman_prefecture_macedonia_list
-			limit = {
-				NOT = { de_jure_liege = title:e_praetorian_prefecture_macedonia }
-			}
-			set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia
-		}
-		title:e_praetorian_prefecture_macedonia = { set_de_jure_liege_title = title:h_eastern_roman_empire }
+		# LR 2026-11-06: only restored dioceses move, into the Macedonian (or Pontic) and Oriental prefectures;
+		# warlord kingdoms stay where they are until their diocese is restored
+		LR_sort_existing_eastern_dioceses_effect = yes
 
 		#Byzantium Imperial Court
 		#Shift the kingdoms
@@ -1553,5 +1431,98 @@ LR_sort_diocese_into_hegemony_effect = {
 		}
 		title:$DIOCESE$ = { set_de_jure_liege_title = title:$PREFECTURE$ }
 		title:$PREFECTURE$ = { set_de_jure_liege_title = scope:diocese_hegemony }
+	}
+}
+
+# LR 2026-11-06: sort every existing (restored) Western diocese into the three Theodosian prefectures
+# (Italia, Gallia, Illyricum) under your hegemony or Rome. Character scope.
+LR_sort_existing_western_dioceses_effect = {
+	if = {
+		limit = { exists = title:k_diocese_italia_annonaria.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_italia_annonaria PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_italia_suburbicaria.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_italia_suburbicaria PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_africa.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_africa PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_mauretania.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_mauretania PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_lugdunensis.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_lugdunensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_viennensis.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_viennensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_hispania.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hispania PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_britannia.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_britannia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_noricum.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_noricum PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_pannonia.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_pannonia PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_illyricum.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_illyricum PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_dardania.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_dardania PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	}
+}
+
+# LR 2026-11-06: the same for the East: Macedonia (or Pontica after the split) and Oriens. Character scope.
+LR_sort_existing_eastern_dioceses_effect = {
+	if = {
+		limit = { exists = title:k_diocese_thracia.holder }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_thracia }
+	}
+	if = {
+		limit = { exists = title:k_diocese_macedonia.holder }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_macedonia }
+	}
+	if = {
+		limit = { exists = title:k_diocese_asia.holder }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_asia }
+	}
+	if = {
+		limit = { exists = title:k_diocese_pontus.holder }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_pontus }
+	}
+	if = {
+		limit = { exists = title:k_diocese_armenia.holder }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_armenia }
+	}
+	if = {
+		limit = { exists = title:k_diocese_gothia.holder }
+		LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_gothia }
+	}
+	if = {
+		limit = { exists = title:k_diocese_syria.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_syria PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_palestine.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_palestine PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	}
+	if = {
+		limit = { exists = title:k_diocese_aegyptus.holder }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_aegyptus PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
 	}
 }
