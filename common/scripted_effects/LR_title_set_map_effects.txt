@@ -1,0 +1,151 @@
+﻿# Title Set Map (common/situation/situations/LR_title_set_map.txt). The title tags and the per-region moves are in
+# LR_title_set_map_generated_effects.txt (gen_title_set_map.py).
+
+# Starts the Title Set Map situation once (new games, and saves started before it existed).
+# A situation from an older layout (no LR_tsm_layout variable) is ended first; the next call starts the new one.
+LR_tsm_ensure_situation_effect = {
+	situation:LR_title_set_map ?= {
+		if = {
+			limit = { NOT = { has_variable = LR_tsm_layout } }
+			end_situation = yes
+		}
+	}
+	if = {
+		limit = {
+			NOT = { exists = situation:LR_title_set_map }
+		}
+		start_situation = {
+			type = LR_title_set_map
+			start_phase = LR_tsm_watch
+		}
+	}
+}
+
+# Switches the view ($VIEW$ = land or rule) and repaints at once
+LR_tsm_set_view_effect = {
+	LR_tsm_ensure_situation_effect = yes
+	situation:LR_title_set_map ?= {
+		set_variable = { name = LR_tsm_view value = flag:$VIEW$ }
+		LR_tsm_refresh_effect = yes
+	}
+}
+
+# Any scope: asks for a repaint at the next monthly tick (a set title changed hands)
+LR_tsm_mark_dirty_effect = {
+	situation:LR_title_set_map ?= { set_variable = LR_tsm_dirty }
+}
+
+# Situation scope: repaints the six sub-regions for the current view and counts the counties for the legend.
+# Only counties that change sub-region are moved.
+LR_tsm_refresh_effect = {
+	save_scope_as = situation
+	remove_variable = LR_tsm_dirty
+	set_variable = { name = LR_tsm_months value = 0 }
+	if = {
+		limit = { NOT = { has_variable = LR_tsm_view } }
+		set_variable = { name = LR_tsm_view value = flag:land }
+	}
+	LR_tsm_reset_counts_effect = yes
+	every_county = {
+		save_temporary_scope_as = LR_tsm_county
+		scope:situation = {
+			remove_variable = LR_tsm_pick
+			remove_variable = LR_tsm_foreign_seen
+		}
+		if = {
+			limit = { scope:situation = { var:LR_tsm_view = flag:rule } }
+			LR_tsm_check_rule_tier_effect = { TIER = duchy }
+			LR_tsm_check_rule_tier_effect = { TIER = kingdom }
+			LR_tsm_check_rule_tier_effect = { TIER = empire }
+			if = {
+				limit = { scope:situation = { has_variable = LR_tsm_foreign_seen } }
+				LR_tsm_move_to_foreign_effect = yes
+			}
+			else_if = {
+				limit = { scope:situation = { has_variable = LR_tsm_pick } }
+				LR_tsm_move_to_picked_set_effect = yes
+			}
+			else = {
+				LR_tsm_remove_from_all_effect = yes
+			}
+		}
+		else = {
+			LR_tsm_pick_land_tier_effect = { TIER = duchy }
+			LR_tsm_pick_land_tier_effect = { TIER = kingdom }
+			LR_tsm_pick_land_tier_effect = { TIER = empire }
+			if = {
+				limit = { scope:situation = { has_variable = LR_tsm_pick } }
+				LR_tsm_move_to_picked_set_effect = yes
+			}
+			else = {
+				LR_tsm_remove_from_all_effect = yes
+			}
+		}
+	}
+	remove_variable = LR_tsm_pick
+	remove_variable = LR_tsm_foreign_seen
+}
+
+# Land view. Needs scope:situation and scope:LR_tsm_county. The lowest de jure tier ($TIER$ = duchy, kingdom or empire)
+# that is a set title becomes the county's pick.
+LR_tsm_pick_land_tier_effect = {
+	if = {
+		limit = {
+			NOT = { scope:situation = { has_variable = LR_tsm_pick } }
+			scope:LR_tsm_county.$TIER$ ?= { has_variable = LR_tsm_set }
+		}
+		scope:situation = {
+			set_variable = { name = LR_tsm_pick value = scope:LR_tsm_county.$TIER$ }
+		}
+	}
+}
+
+# Rule view. Needs scope:situation and scope:LR_tsm_county. If the county's de jure $TIER$ is a held set title and its
+# holder is the county holder or one of its lieges, the county is ruled under that title: a native holder makes it the
+# pick (lowest tier first), an outsider marks the county as under Foreign Administration.
+LR_tsm_check_rule_tier_effect = {
+	scope:LR_tsm_county.$TIER$ ?= {
+		if = {
+			limit = {
+				has_variable = LR_tsm_set
+				exists = holder
+			}
+			save_temporary_scope_as = LR_tsm_tier_title
+			holder = { save_temporary_scope_as = LR_tsm_tier_holder }
+			if = {
+				limit = {
+					scope:LR_tsm_county.holder ?= {
+						OR = {
+							this = scope:LR_tsm_tier_holder
+							any_liege_or_above = { this = scope:LR_tsm_tier_holder }
+						}
+					}
+				}
+				if = {
+					limit = {
+						scope:LR_tsm_tier_holder = { LR_tsm_is_native_of_tier_title_trigger = yes }
+					}
+					if = {
+						limit = { NOT = { scope:situation = { has_variable = LR_tsm_pick } } }
+						scope:situation = {
+							set_variable = { name = LR_tsm_pick value = scope:LR_tsm_tier_title }
+						}
+					}
+				}
+				else = {
+					scope:situation = { set_variable = LR_tsm_foreign_seen }
+				}
+			}
+		}
+	}
+}
+
+# Needs scope:situation and scope:LR_tsm_county
+LR_tsm_remove_from_effect = {
+	scope:situation.situation_sub_region:$FROM$ = {
+		if = {
+			limit = { situation_sub_region_has_county = scope:LR_tsm_county }
+			remove_dejure_title_from_sub_region = scope:LR_tsm_county
+		}
+	}
+}

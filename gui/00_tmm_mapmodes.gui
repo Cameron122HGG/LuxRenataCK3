@@ -1,7 +1,7 @@
 ﻿# Trait Map Mode - override of the type flowcontainer_additional_mapmodes
 # from gui/shared/mapmodes.gui (vanilla 1.20.0.4). GUI types are registered by the
 # first file that declares them and gui/00_* loads before gui/shared/*.
-# Only the lines between 'TMM start' and 'TMM end' differ from vanilla.
+# Only the lines between 'TMM start' and 'TMM end' differ from vanilla, plus the Lux Renata title set map block after them.
 types TmmMapModes
 {
 	type flowcontainer_additional_mapmodes = flowcontainer {
@@ -293,6 +293,67 @@ types TmmMapModes
 					}
 				}
 				# TMM end
+				# LR title set map start - opens the LR_title_set_map situation view (same build as the Trait Map button)
+				widget = {
+					name = "LR_tsm_map_mode_button"
+					parentanchor = vcenter
+					size = { 32 32 }
+					datacontext = "[GetSituation( 'LR_title_set_map' )]"
+					visible = "[CanChangeMapMode]"
+
+					icon = {
+						size = { 100% 100% }
+						texture = "gfx/interface/component_masks/mask_circle.dds"
+						visible = "[And( Situation.IsValid, IsMapMode( 'situation' ) )]"
+
+						glow = {
+							color = { 0.93 0.65 0.45 1.0 }
+							glow_radius = 6
+
+							glow_generation_rules = {
+								glow_alpha_mask = 0
+								glow_blur_passes = 15
+								glow_texture_downscale = 5.5f
+								glow_ignore_inside_pixels = yes
+							}
+						}
+
+						using = Animation_Glow_Pulse
+					}
+
+					button_round = {
+						visible = "[Situation.IsValid]"
+						size = { 100% 100% }
+						using = tooltip_nw
+						onclick = "[ToggleGameViewData( Situation.GetWindowName, Situation.GetID )]"
+						tooltip = "LR_TSM_MAP_MODE_BUTTON_TT"
+
+						icon = {
+							parentanchor = center
+							size = { 24 24 }
+							alwaystransparent = yes
+							texture = "gfx/interface/icons/message_feed/titles.dds"
+						}
+					}
+
+					button_round = {
+						visible = "[Not( Situation.IsValid )]"
+						size = { 100% 100% }
+						using = tooltip_nw
+						onclick = "[GetScriptedGui( 'LR_tsm_start_situation' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						enabled = "[GetScriptedGui( 'LR_tsm_start_situation' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						tooltip = "LR_TSM_MAP_MODE_BUTTON_START_TT"
+
+						icon = {
+							parentanchor = center
+							size = { 24 24 }
+							alwaystransparent = yes
+							alpha = 0.5
+							texture = "gfx/interface/icons/message_feed/titles.dds"
+						}
+					}
+				}
+				# LR title set map end
 			}
 
 			widget ={

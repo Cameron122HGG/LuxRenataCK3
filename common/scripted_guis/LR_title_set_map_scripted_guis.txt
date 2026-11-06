@@ -1,0 +1,47 @@
+﻿# Title Set Map (LR_title_set_map situation)
+
+# Map mode button fallback when the situation doesn't exist yet (a save started before it existed)
+LR_tsm_start_situation = {
+	scope = character
+
+	is_valid = {
+		NOT = { exists = situation:LR_title_set_map }
+	}
+
+	effect = {
+		LR_tsm_ensure_situation_effect = yes
+	}
+}
+
+# View buttons of the window. is_valid = not the current view, which also gives the 'selected' state of the button.
+LR_tsm_view_land = {
+	scope = character
+
+	is_valid = {
+		situation:LR_title_set_map ?= {
+			has_variable = LR_tsm_view
+			NOT = { var:LR_tsm_view = flag:land }
+		}
+	}
+
+	effect = {
+		LR_tsm_set_view_effect = { VIEW = land }
+	}
+}
+
+LR_tsm_view_rule = {
+	scope = character
+
+	is_valid = {
+		situation:LR_title_set_map ?= {
+			OR = {
+				NOT = { has_variable = LR_tsm_view }
+				NOT = { var:LR_tsm_view = flag:rule }
+			}
+		}
+	}
+
+	effect = {
+		LR_tsm_set_view_effect = { VIEW = rule }
+	}
+}

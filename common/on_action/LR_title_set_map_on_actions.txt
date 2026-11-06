@@ -1,0 +1,44 @@
+﻿# Title Set Map - starts the situation behind the map mode, like the Trait Map (tmm_on_actions.txt).
+# The quarterly pulse (players only) catches saves started before it existed and situations from an older layout.
+# The map mode button can also start it at once (scripted GUI LR_tsm_start_situation).
+
+on_game_start_after_lobby = {
+	on_actions = { LR_tsm_ensure_situation }
+}
+
+quarterly_playable_pulse = {
+	on_actions = { LR_tsm_ensure_situation_player }
+}
+
+LR_tsm_ensure_situation = {
+	effect = {
+		LR_tsm_ensure_situation_effect = yes
+	}
+}
+
+LR_tsm_ensure_situation_player = {
+	trigger = {
+		is_ai = no
+	}
+	effect = {
+		LR_tsm_ensure_situation_effect = yes
+	}
+}
+
+# A set title changing hands repaints the map at the next monthly tick
+on_title_gain = {
+	on_actions = { LR_tsm_on_title_change }
+}
+on_title_lost = {
+	on_actions = { LR_tsm_on_title_change }
+}
+
+# root = the new or old holder, scope:title = the title
+LR_tsm_on_title_change = {
+	trigger = {
+		scope:title ?= { has_variable = LR_tsm_set }
+	}
+	effect = {
+		LR_tsm_mark_dirty_effect = yes
+	}
+}
