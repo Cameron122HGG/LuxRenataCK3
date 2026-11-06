@@ -1,0 +1,262 @@
+﻿# hellenistic_autocratic_government, hellenistic_imperial_government: its own governor obligations (gen_governor_obligations.py, 2026-11-05).
+# A copy of meritocratic_obligations and meritocratic_provinces (meritocratic.txt) with its own level names;
+# effects and flags are the same, plus one hellenistic_province_* flag per level for the governor titles. Keep them in step.
+hellenistic_obligations = {
+	obligation_levels = {
+		default = {
+			levies = {
+				value = 0.3
+			}
+
+			tax = {
+				value = 0.75
+			}
+		}
+	}
+}
+
+hellenistic_provinces = {
+	display_mode = radiobutton
+	is_shown = {
+		scope:subject.primary_title.tier >= tier_duchy
+	}
+	obligation_levels = {
+		hellenistic_province_satrapeia = {
+			default = yes
+			position = { 0 0 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_standard_administration.dds"
+			gui_tags = { civilian }
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+						}
+					}
+					add = 1
+					
+					# Cautious AI should tend to have a minor bias towards the default
+					if = {
+						limit = {
+							scope:liege = {
+								ai_has_cautious_personality = yes
+							}
+						}
+						add = 1
+					}
+				}
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.7 0.7 0.7 1.0 }
+			
+			enable_title_maa = no
+			
+			subject_modifier = {
+				monthly_merit_per_liege_tax = 0.8
+			}
+			
+			flag = meritocratic_province_standard
+			flag = hellenistic_province_satrapeia # rank, read by the governor flavorization
+			flag = meritocratic_civil_appointment
+			flag = province_civilian
+			appointment_trait_flag = civilian_province
+		}
+		hellenistic_province_oikonomia = {
+			position = { 1 0 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_industrial_administration.dds"
+			gui_tags = { civilian }
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								has_trait = education_stewardship
+								stewardship >= very_high_skill_rating
+							}
+							# Avoid replacing any military types if they have title troops already
+							primary_title = {
+								any_owned_title_maa_regiment = { count < 1 }
+							}
+						}
+					}
+					add = 2
+					
+					# Economical AI wants more of civic vassals
+					if = {
+						limit = {
+							scope:liege = { ai_has_builder_or_pious_builder_personality = yes }
+						}
+						add = 1
+					}
+				}
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.2 0.2 0.7 1.0 }
+			
+			is_valid = {
+				# Only for direct vassals of the top liege or sub-vassals of a civilian province
+				custom_tooltip = {
+					text = liege_is_not_civilian_desc
+					scope:liege = {
+						trigger_if = {
+							limit = {
+								this != top_liege
+							}
+							vassal_contract_has_flag = meritocratic_civil_appointment
+						}
+					}
+				}
+				# There can only be a limited number of industries at a time
+				custom_tooltip = {
+					text = meritocratic_province_industrial_amount_desc
+					OR = {
+						scope:liege = {
+							any_vassal = {
+								count < meritocratic_province_industrial_max_value
+								vassal_contract_has_flag = meritocratic_province_industrial
+							}
+						}
+						scope:subject = { vassal_contract_has_flag = meritocratic_province_industrial }
+					}
+				}
+			}
+
+			tax_factor = 0.25
+			enable_title_maa = no
+
+			subject_modifier = {
+				development_growth_factor = 0.15
+				build_gold_cost = -0.1
+				build_speed = -0.2
+				monthly_merit_per_liege_tax = 1.2
+			}
+			
+			flag = admin_ai_is_builder
+			flag = meritocratic_province_industrial
+			flag = hellenistic_province_oikonomia # rank, read by the governor flavorization
+			flag = meritocratic_civil_appointment
+			flag = province_civilian
+			flag = obligation_high_taxes
+			appointment_trait_flag = civilian_province
+		}
+		hellenistic_province_strategia = {
+			position = { 0 1 }
+			icon = "gfx/interface/icons/celestial_administration_types/icon_military_administration.dds"
+			gui_tags = { military }
+			
+			ai_liege_desire = {
+				value = 0
+				if = {
+					limit = {
+						scope:subject = {
+							is_ai = yes
+							OR = {
+								has_trait = education_martial
+								martial >= very_high_skill_rating
+								primary_title = { any_owned_title_maa_regiment = { count >= 3 } }
+								any_sub_realm_county = { # Is a border province
+									any_neighboring_county = {
+										holder = {
+											top_liege != scope:subject.top_liege
+										}
+									}
+								}
+							}
+						}
+					}
+					add = 2
+					
+					# Preference for vassals along the border
+					if = {
+						limit = {
+							scope:subject = {
+								any_sub_realm_county = {
+									any_neighboring_county = {
+										holder = {
+											top_liege != scope:subject.top_liege
+										}
+									}
+								}
+							}
+						}
+						add = 3
+					}
+					
+					# Warlike AI wants more military vassals
+					if = {
+						limit = {
+							scope:liege = {
+								ai_has_warlike_personality = yes
+							}
+						}
+						add = 1
+					}
+				}
+			}
+			ai_subject_desire = 0
+			
+			score = 0
+			color = { 0.7 0.2 0.2 1.0 }
+			
+			is_valid = {
+				# Vassal has to be landed and direct vassal of the top liege, or a vassal of another military governor
+				custom_tooltip = {
+					text = liege_is_not_military_desc
+					scope:liege = {
+						trigger_if = {
+							limit = {
+								this != top_liege
+							}
+							vassal_contract_has_flag = meritocratic_military_appointment
+						}
+					}
+				}
+				# There can only be a limited number of militaries at a time
+				custom_tooltip = {
+					text = meritocratic_province_military_amount_desc
+					OR = {
+						scope:liege = {
+							any_vassal = {
+								count < meritocratic_province_military_max_value
+								vassal_contract_has_flag = meritocratic_province_military
+								LR_is_roman_dux_trigger = no # Roman frontier commands (duces) don't use up Military province slots
+								LR_is_roman_legion_trigger = no # nor do the legions
+								LR_is_roman_comes_trigger = no # nor the comites
+							}
+						}
+						scope:subject = { vassal_contract_has_flag = meritocratic_province_military }
+					}
+				}
+			}
+
+			levies_factor = 0.5
+			
+			subject_modifier = {
+				development_growth_factor = -0.2
+				monthly_county_control_growth_factor = 0.1
+				additional_fort_level = 2
+				defender_advantage = 4
+				monthly_merit_per_title_maa_value = 0.024
+				domain_tax_mult = -0.3
+
+				monthly_treasury_from_military_budget_base = 1.0
+			}
+			
+			flag = meritocratic_province_military
+			flag = hellenistic_province_strategia # rank, read by the governor flavorization
+			flag = meritocratic_military_appointment
+			flag = province_military
+			flag = obligation_high_levies
+			appointment_trait_flag = military_province
+		}
+	}
+}
