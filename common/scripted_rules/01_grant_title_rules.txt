@@ -47,9 +47,52 @@ is_grant_government_shown = {
 	# lock all DLC government types in case they are allowed in modded government
 	trigger_else_if = {
 		limit = {
-			scope:government_type = government_type:administrative_government
+			OR = {
+				scope:government_type = government_type:administrative_government
+				scope:government_type = { government_type_has_flag = government_is_administrative } # LR: the group administrative governments
+			}
 		}
 		has_ep3_dlc_trigger = yes
+	}
+	# LR: dynastic tier (same DLC check as their can_get_government)
+	trigger_else_if = {
+		limit = {
+			scope:government_type = {
+				OR = {
+					government_type_has_flag = government_is_roman_dynastic
+					government_type_has_flag = government_is_alexandrian_dynastic
+					government_type_has_flag = government_is_gupta_dynastic
+					government_type_has_flag = government_is_iqta_dynastic
+					government_type_has_flag = government_is_western_dynastic
+					government_type_has_flag = government_is_persianate_dynastic
+				}
+			}
+		}
+		LR_has_dynastic_governments_dlc_trigger = yes
+	}
+	# LR: merit and house-bloc governments (Roman/Hellenistic/Persianate autocratic, Decayed Principate, Sacral) need All Under Heaven
+	trigger_else_if = {
+		limit = {
+			scope:government_type = {
+				OR = {
+					government_type_has_flag = government_has_merit
+					government_type_has_flag = government_has_house_blocs
+				}
+			}
+		}
+		has_tgp_dlc_trigger = yes
+	}
+	# LR: the plain stand-ins for Japanese and Sacral governments exist only without All Under Heaven
+	trigger_else_if = {
+		limit = {
+			scope:government_type = {
+				OR = {
+					government_type_has_flag = government_is_japanese_plain
+					government_type_has_flag = government_is_sacral_plain
+				}
+			}
+		}
+		has_tgp_dlc_trigger = no
 	}
 	trigger_else_if = {
 		limit = {
