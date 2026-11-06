@@ -1,0 +1,54 @@
+﻿# Celtic divination, ported from Lux Invicta's hold_divination (decisions/druidic_decisions.txt, ancrel.20-109)
+# Written by Patrick Marchand for Lux Invicta, condensed for CK3 Lux Renata (2026-11-06).
+# Events: events/religion_events/LR_divination_events.txt
+
+LR_hold_divination_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = religious
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+
+	desc = LR_hold_divination_decision_desc
+	selection_tooltip = LR_hold_divination_decision_tooltip
+	confirm_text = LR_hold_divination_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		LR_is_celtic_pagan_trigger = yes
+	}
+
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_hold_divination_decision_prisoner_tt
+			any_prisoner = { is_adult = yes }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		gold = minor_gold_value
+	}
+
+	effect = {
+		custom_tooltip = LR_hold_divination_decision_effect_tt
+		trigger_event = LR_divination.0001
+	}
+
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 10
+		modifier = { add = 20 has_trait = zealous }
+		modifier = { add = 15 has_trait = sadistic }
+		modifier = { add = 10 LR_is_druid_trigger = yes }
+		modifier = { add = -10 has_trait = cynical }
+		modifier = { add = -15 has_trait = compassionate }
+	}
+}

@@ -1,0 +1,617 @@
+﻿###################################
+#
+# ANCIENT RELIGIONS
+# - Celtic Flavour Events
+#
+###################################
+
+# Written by Patrick Marchand (bard, Afanc, banshee, Bran's Voyage) and Jacob Hodge (Journey to St Kilda),
+# for Lux Invicta (CK2). Ported to CK3 Lux Renata 2026-11-06.
+# Yearly pulse: LR_celtic_flavor_pulse (zz00_LR_celtic_flavor_on_actions.txt).
+# First Brythonic Emperor: on_title_gain of e_britannia or h_western_celtic_empire.
+
+namespace = LR_celtic_flavor
+
+# Meeting a Bard
+LR_celtic_flavor.0001 = {
+	type = character_event
+	title = LR_celtic_flavor.0001.t
+	desc = LR_celtic_flavor.0001.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		is_travelling = no
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = 2
+			has_trait = zealous
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = cynical
+		}
+		modifier = {
+			factor = 2
+			has_trait = paranoid
+		}
+		modifier = {
+			factor = 2
+			has_trait = lifestyle_mystic
+		}
+		modifier = {
+			factor = 2
+			has_trait = ambitious
+		}
+		modifier = {
+			factor = 0.67
+			has_trait = content
+		}
+	}
+
+	option = {
+		name = LR_celtic_flavor.0001.a
+		add_piety = minor_piety_value
+		random_list = {
+			10 = {
+				add_learning_skill = 1
+			}
+			90 = {}
+		}
+	}
+
+	option = {
+		name = LR_celtic_flavor.0001.b
+		trigger = {
+			has_trait = lifestyle_poet
+		}
+		custom_tooltip = LR_celtic_flavor_sing_poetry_tt
+		add_piety = minor_piety_value
+		add_prestige = minor_prestige_value
+		random_list = {
+			50 = {
+				add_learning_skill = 2
+			}
+			50 = {}
+		}
+	}
+}
+
+# The Afanc
+LR_celtic_flavor.0002 = {
+	type = character_event
+	title = LR_celtic_flavor.0002.t
+	desc = LR_celtic_flavor.0002.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		is_travelling = no
+		is_adult = yes
+		is_imprisoned = no
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = 2.5
+			has_trait = zealous
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = cynical
+		}
+		modifier = {
+			factor = 3
+			has_trait = paranoid
+		}
+		modifier = {
+			factor = 1.67
+			has_trait = brave
+		}
+		modifier = {
+			factor = 2
+			has_trait = arrogant
+		}
+		modifier = {
+			factor = 0.55
+			has_trait = content
+		}
+		modifier = {
+			factor = 2
+			has_any_illness = yes
+		}
+	}
+
+	option = { # Stay and fight
+		name = LR_celtic_flavor.0002.a
+		add_piety = minor_piety_value
+		add_prestige = minor_prestige_value
+		random_list = {
+			20 = {
+				if = {
+					limit = { has_trait = craven }
+					remove_trait = craven
+				}
+				else = {
+					add_trait = brave
+				}
+			}
+			20 = {
+				increase_wounds_effect = { REASON = wild_animal }
+			}
+			5 = {
+				trigger = {
+					NOT = { has_trait = maimed }
+				}
+				apply_maimed_trait_and_modifier_effect = yes
+			}
+			5 = {
+				death = {
+					death_reason = death_wild_animal
+				}
+			}
+			50 = {
+				add_prestige = minor_prestige_value
+			}
+		}
+	}
+
+	option = { # Run away!
+		name = LR_celtic_flavor.0002.b
+		add_piety = minor_piety_value
+		add_prestige = -25
+		if = {
+			limit = { has_trait = brave }
+			remove_trait = brave
+		}
+	}
+}
+
+# The banshee
+LR_celtic_flavor.0003 = {
+	type = character_event
+	title = LR_celtic_flavor.0003.t
+	desc = LR_celtic_flavor.0003.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		is_travelling = no
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = 2
+			has_trait = zealous
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = cynical
+		}
+		modifier = {
+			factor = 2
+			has_trait = paranoid
+		}
+		modifier = {
+			factor = 2
+			has_trait = brave
+		}
+		modifier = {
+			factor = 2
+			has_trait = humble
+		}
+		modifier = {
+			factor = 0.67
+			has_trait = content
+		}
+		modifier = {
+			factor = 2.5
+			has_trait = wounded
+		}
+		modifier = {
+			factor = 2.5
+			has_any_illness = yes
+		}
+	}
+
+	option = { # It's a Banshee!
+		name = LR_celtic_flavor.0003.a
+		add_piety = medium_piety_value
+		random_list = {
+			10 = {
+				trigger = {
+					NOT = { has_trait = depressed_1 }
+				}
+				add_trait = depressed_1
+			}
+			10 = {
+				add_stress = medium_stress_gain
+			}
+			10 = {
+				trigger = {
+					has_trait = cynical
+				}
+				remove_trait = cynical
+			}
+			70 = {}
+		}
+		add_character_modifier = {
+			modifier = LR_banshee_omen_modifier
+			years = 5
+		}
+	}
+
+	option = { # Pah, spirits don't scare me
+		name = LR_celtic_flavor.0003.b
+		add_prestige = medium_prestige_value
+		random_list = {
+			20 = {
+				trigger = {
+					has_trait = zealous
+				}
+				remove_trait = zealous
+			}
+			80 = {}
+		}
+		add_character_modifier = {
+			modifier = LR_banshee_omen_modifier
+			years = 5
+		}
+	}
+}
+
+# Bran's Voyage
+LR_celtic_flavor.0004 = {
+	type = character_event
+	title = LR_celtic_flavor.0004.t
+	desc = LR_celtic_flavor.0004.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		is_landed = yes
+		is_travelling = no
+		capital_province ?= { is_coastal = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = 2
+			has_trait = zealous
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = cynical
+		}
+		modifier = {
+			factor = 2
+			has_trait = paranoid
+		}
+		modifier = {
+			factor = 2
+			has_trait = lifestyle_mystic
+		}
+		modifier = {
+			factor = 2
+			has_trait = ambitious
+		}
+		modifier = {
+			factor = 0.67
+			has_trait = content
+		}
+	}
+
+	option = {
+		name = LR_celtic_flavor.0004.a
+		add_piety = minor_piety_value
+		add_prestige = minor_prestige_value
+		random_list = {
+			10 = {
+				add_learning_skill = 1
+			}
+			90 = {}
+		}
+	}
+}
+
+#######################################
+#
+# - Journey to St Kilda
+#
+#######################################
+
+# Written by Jacob Hodge
+
+# Character sick, rumour of Celts on St Kilda
+LR_celtic_flavor.0005 = {
+	type = character_event
+	title = LR_celtic_flavor.0005.t
+	desc = LR_celtic_flavor.0005.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		is_adult = yes
+		age >= 16
+		is_imprisoned = no
+		is_travelling = no
+		NOT = { LR_is_celtic_pagan_trigger = yes }
+		NOT = { has_character_flag = LR_st_kilda_journey }
+		culture = {
+			OR = {
+				has_cultural_pillar = heritage_goidelic
+				has_cultural_pillar = heritage_brythonic
+			}
+		}
+		OR = {
+			has_trait = ill
+			has_trait = pneumonic
+			has_trait = bubonic_plague
+			has_trait = smallpox
+			has_trait = consumption
+			has_trait = typhus
+			has_trait = dysentery
+			has_trait = measles
+			has_trait = ergotism
+			has_trait = cancer
+			has_trait = leper
+			has_trait = great_pox
+			has_trait = early_great_pox
+		}
+		# Holds the Hebrides (St Kilda lies off the Outer Hebrides), or has them in the realm
+		OR = {
+			title:c_outer_hebrides.holder ?= {
+				OR = {
+					this = root
+					target_is_liege_or_above = root
+				}
+			}
+			title:c_inner_hebrides.holder ?= {
+				OR = {
+					this = root
+					target_is_liege_or_above = root
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = 0.5
+			has_trait = cynical
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = zealous
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = LR_st_kilda_journey
+			years = 20
+		}
+	}
+
+	option = { # Maybe these Celts can cure me
+		name = LR_celtic_flavor.0005.a
+		custom_tooltip = LR_celtic_flavor_travel_island_tt
+		trigger_event = {
+			id = LR_celtic_flavor.0006
+			days = 5
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+
+	option = { # Don't these barbarians also collect the heads of their enemies?
+		name = LR_celtic_flavor.0005.b
+		custom_tooltip = LR_celtic_flavor_ignore_rumors_tt
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+# Arrival at St Kilda
+LR_celtic_flavor.0006 = {
+	type = character_event
+	title = LR_celtic_flavor.0006.t
+	desc = LR_celtic_flavor.0006.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		is_imprisoned = no
+	}
+
+	option = { # Accept the healing and the faith
+		name = LR_celtic_flavor.0006.a
+		custom_tooltip = LR_celtic_flavor_accept_healing_tt
+		trigger_event = {
+			id = LR_celtic_flavor.0007
+			days = 2
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+
+	option = { # I refuse to accept your false gods!
+		name = LR_celtic_flavor.0006.b
+		if = {
+			limit = {
+				NOR = {
+					has_trait = zealous
+					has_trait = cynical
+				}
+			}
+			add_trait = zealous
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+# Accept their faith
+LR_celtic_flavor.0007 = {
+	type = character_event
+	title = LR_celtic_flavor.0007.t
+	desc = LR_celtic_flavor.0007.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = { # Their gods are now my gods
+		name = LR_celtic_flavor.0007.a
+		set_character_faith = faith:celtic_pagan_faith
+		custom_tooltip = LR_celtic_flavor_miracle_st_kilda_tt
+		hidden_effect = {
+			recover_from_disease_effect = { DISEASE = ill }
+			recover_from_disease_effect = { DISEASE = pneumonic }
+			recover_from_disease_effect = { DISEASE = bubonic_plague }
+			recover_from_disease_effect = { DISEASE = smallpox }
+			recover_from_disease_effect = { DISEASE = consumption }
+			recover_from_disease_effect = { DISEASE = typhus }
+			recover_from_disease_effect = { DISEASE = dysentery }
+			recover_from_disease_effect = { DISEASE = measles }
+			recover_from_disease_effect = { DISEASE = ergotism }
+			recover_from_disease_effect = { DISEASE = cancer }
+			recover_from_disease_effect = { DISEASE = leper }
+			recover_from_disease_effect = { DISEASE = great_pox }
+			recover_from_disease_effect = { DISEASE = early_great_pox }
+		}
+	}
+}
+
+########################################
+#
+# - First Celtic Emperor
+#
+########################################
+
+# Y Mab Darogan: the first Brythonic ruler to gain e_britannia or h_western_celtic_empire
+LR_celtic_flavor.0010 = {
+	type = character_event
+	title = LR_celtic_flavor.0010.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { LR_is_celtic_pagan_trigger = yes }
+				desc = LR_celtic_flavor.0010.desc_pagan
+			}
+			desc = LR_celtic_flavor.0010.desc
+		}
+	}
+	theme = crown
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	trigger = {
+		NOT = { has_global_variable = LR_first_brythonic_emperor }
+		culture = { has_cultural_pillar = heritage_brythonic }
+		OR = {
+			has_title = title:e_britannia
+			has_title = title:h_western_celtic_empire
+		}
+	}
+
+	immediate = {
+		set_global_variable = {
+			name = LR_first_brythonic_emperor
+			value = root
+		}
+		save_scope_as = celtic_emperor
+		give_nickname = nick_pendragon
+		add_prestige = major_prestige_value
+		add_piety = medium_piety_value
+		every_player = {
+			limit = {
+				NOT = { this = root }
+			}
+			trigger_event = LR_celtic_flavor.0011
+		}
+	}
+
+	option = {
+		name = LR_celtic_flavor.0010.a
+	}
+}
+
+# Y Mab Darogan: news for every other player
+LR_celtic_flavor.0011 = {
+	type = character_event
+	title = LR_celtic_flavor.0010.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:celtic_emperor = { LR_is_celtic_pagan_trigger = yes }
+				}
+				desc = LR_celtic_flavor.0011.desc_pagan
+			}
+			desc = LR_celtic_flavor.0011.desc
+		}
+	}
+	theme = crown
+
+	left_portrait = {
+		character = scope:celtic_emperor
+		animation = happiness
+	}
+
+	option = {
+		trigger = { LR_is_celtic_pagan_trigger = yes }
+		name = LR_celtic_flavor.0011.a
+	}
+
+	option = {
+		trigger = {
+			NOT = { LR_is_celtic_pagan_trigger = yes }
+		}
+		name = LR_celtic_flavor.0011.b
+	}
+}
