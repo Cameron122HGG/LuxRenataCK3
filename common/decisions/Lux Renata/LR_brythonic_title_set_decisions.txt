@@ -1,0 +1,668 @@
+﻿# Brythonic title set (gen_brythonic_title_set.py): a Briton, Gael or Norse-Gael restores an old Celtic kingdom. The set's hegemony
+# is the Western Celtic Empire (00_Culture/Britain/00_LR_celtic_empire_decisions.txt).
+
+LR_restore_brython_kingdoms_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = realm
+	sort_order = 878
+	desc = LR_restore_brython_kingdoms_decision_desc
+	selection_tooltip = LR_restore_brython_kingdoms_decision_tooltip
+	confirm_text = LR_restore_brython_kingdoms_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		LR_title_set_brythonic_native_trigger = yes
+		highest_held_title_tier >= tier_kingdom
+		OR = {
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_gwynedd }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_powys }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_deheubarth }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_morgannwg }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_rheged }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ystrad_clud }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_gododdin }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ebrauc }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_caint }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_linnuis }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_caer_wynt }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_kernyw }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_llydaw }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_fortriu }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_circinn }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ulaid }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_connachta }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_laigin }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_mide }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_mumu }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_brython_dal_riata }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_restore_brython_kingdoms_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = LR_area_k_brython_gwynedd
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_gwynedd }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_powys
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_powys }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_deheubarth
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_deheubarth }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_morgannwg
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_morgannwg }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_rheged
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_rheged }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_ystrad_clud
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ystrad_clud }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_gododdin
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_gododdin }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_ebrauc
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ebrauc }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_caint
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_caint }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_linnuis
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_linnuis }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_caer_wynt
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_caer_wynt }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_kernyw
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_kernyw }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_llydaw
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_llydaw }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_fortriu
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_fortriu }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_circinn
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_circinn }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_ulaid
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ulaid }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_connachta
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_connachta }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_laigin
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_laigin }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_mide
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_mide }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_mumu
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_mumu }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_brython_dal_riata
+					LR_satrapy_restorable_trigger = { SATRAPY = k_brython_dal_riata }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = LR_brython_gwynedd
+			current_description = {
+				desc = LR_brython_gwynedd_desc
+			}
+			localization = {
+				desc = LR_brython_gwynedd_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_gwynedd }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_gwynedd
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_powys
+			current_description = {
+				desc = LR_brython_powys_desc
+			}
+			localization = {
+				desc = LR_brython_powys_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_powys }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_powys
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_deheubarth
+			current_description = {
+				desc = LR_brython_deheubarth_desc
+			}
+			localization = {
+				desc = LR_brython_deheubarth_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_deheubarth }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_deheubarth
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_morgannwg
+			current_description = {
+				desc = LR_brython_morgannwg_desc
+			}
+			localization = {
+				desc = LR_brython_morgannwg_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_morgannwg }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_morgannwg
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_rheged
+			current_description = {
+				desc = LR_brython_rheged_desc
+			}
+			localization = {
+				desc = LR_brython_rheged_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_rheged }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_rheged
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_ystrad_clud
+			current_description = {
+				desc = LR_brython_ystrad_clud_desc
+			}
+			localization = {
+				desc = LR_brython_ystrad_clud_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ystrad_clud }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_ystrad_clud
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_gododdin
+			current_description = {
+				desc = LR_brython_gododdin_desc
+			}
+			localization = {
+				desc = LR_brython_gododdin_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_gododdin }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_gododdin
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_ebrauc
+			current_description = {
+				desc = LR_brython_ebrauc_desc
+			}
+			localization = {
+				desc = LR_brython_ebrauc_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ebrauc }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_ebrauc
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_caint
+			current_description = {
+				desc = LR_brython_caint_desc
+			}
+			localization = {
+				desc = LR_brython_caint_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_caint }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_caint
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_linnuis
+			current_description = {
+				desc = LR_brython_linnuis_desc
+			}
+			localization = {
+				desc = LR_brython_linnuis_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_linnuis }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_linnuis
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_caer_wynt
+			current_description = {
+				desc = LR_brython_caer_wynt_desc
+			}
+			localization = {
+				desc = LR_brython_caer_wynt_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_caer_wynt }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_caer_wynt
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_kernyw
+			current_description = {
+				desc = LR_brython_kernyw_desc
+			}
+			localization = {
+				desc = LR_brython_kernyw_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_kernyw }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_kernyw
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_llydaw
+			current_description = {
+				desc = LR_brython_llydaw_desc
+			}
+			localization = {
+				desc = LR_brython_llydaw_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_llydaw }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_llydaw
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_fortriu
+			current_description = {
+				desc = LR_brython_fortriu_desc
+			}
+			localization = {
+				desc = LR_brython_fortriu_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_fortriu }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_fortriu
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_circinn
+			current_description = {
+				desc = LR_brython_circinn_desc
+			}
+			localization = {
+				desc = LR_brython_circinn_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_circinn }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_circinn
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_ulaid
+			current_description = {
+				desc = LR_brython_ulaid_desc
+			}
+			localization = {
+				desc = LR_brython_ulaid_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_ulaid }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_ulaid
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_connachta
+			current_description = {
+				desc = LR_brython_connachta_desc
+			}
+			localization = {
+				desc = LR_brython_connachta_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_connachta }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_connachta
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_laigin
+			current_description = {
+				desc = LR_brython_laigin_desc
+			}
+			localization = {
+				desc = LR_brython_laigin_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_laigin }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_laigin
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_mide
+			current_description = {
+				desc = LR_brython_mide_desc
+			}
+			localization = {
+				desc = LR_brython_mide_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_mide }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_mide
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_mumu
+			current_description = {
+				desc = LR_brython_mumu_desc
+			}
+			localization = {
+				desc = LR_brython_mumu_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_mumu }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_mumu
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_brython_dal_riata
+			current_description = {
+				desc = LR_brython_dal_riata_desc
+			}
+			localization = {
+				desc = LR_brython_dal_riata_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_brython_dal_riata }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_brython_dal_riata
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_brython_kingdoms_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:LR_brython_gwynedd = yes }
+				LR_restore_brython_gwynedd_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_powys = yes }
+				LR_restore_brython_powys_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_deheubarth = yes }
+				LR_restore_brython_deheubarth_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_morgannwg = yes }
+				LR_restore_brython_morgannwg_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_rheged = yes }
+				LR_restore_brython_rheged_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_ystrad_clud = yes }
+				LR_restore_brython_ystrad_clud_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_gododdin = yes }
+				LR_restore_brython_gododdin_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_ebrauc = yes }
+				LR_restore_brython_ebrauc_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_caint = yes }
+				LR_restore_brython_caint_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_linnuis = yes }
+				LR_restore_brython_linnuis_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_caer_wynt = yes }
+				LR_restore_brython_caer_wynt_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_kernyw = yes }
+				LR_restore_brython_kernyw_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_llydaw = yes }
+				LR_restore_brython_llydaw_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_fortriu = yes }
+				LR_restore_brython_fortriu_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_circinn = yes }
+				LR_restore_brython_circinn_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_ulaid = yes }
+				LR_restore_brython_ulaid_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_connachta = yes }
+				LR_restore_brython_connachta_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_laigin = yes }
+				LR_restore_brython_laigin_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_mide = yes }
+				LR_restore_brython_mide_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_mumu = yes }
+				LR_restore_brython_mumu_effect = yes
+			}
+			if = {
+				limit = { scope:LR_brython_dal_riata = yes }
+				LR_restore_brython_dal_riata_effect = yes
+			}
+			LR_title_set_reorganise_realm_effect = yes
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

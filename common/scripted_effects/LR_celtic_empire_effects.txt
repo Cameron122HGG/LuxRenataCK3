@@ -1,24 +1,14 @@
 ﻿# Western Celtic Empire (form_western_celtic_empire_decision)
-# The Insular Celtic kingdoms leave Roman Britannia / Gaul and are regrouped under the three
-# Celtic high kingships, which in turn become de jure parts of h_western_celtic_empire.
+# User 2026-11-06: the Celtic Empire is the hegemony of the Brythonic title set (it replaced Ynys Prydain), and no warlord
+# titles are part of the set. Forming it restores every old Celtic kingdom of the set whose lands the founder completely
+# controls (Brythonic and Gaelic alike, LR_brythonic_title_set_effects.txt). Every high-kingship of the set (Cymru, Yr Hen
+# Ogledd, Lloegr, Dumnonia, Prydyn, Eriu) then goes under the Celtic Empire. The old effect re-laid the warlord kingdoms under
+# e_ireland, e_scotland and e_britons; that route is gone.
 LR_form_western_celtic_empire_effect = {
 	custom_tooltip = LR_form_western_celtic_empire_dejure_tt
 	hidden_effect = {
-		# Hibernia
-		title:k_ireland = { set_de_jure_liege_title = title:e_ireland }
-		# Alba
-		title:k_scotland = { set_de_jure_liege_title = title:e_scotland }
-		title:k_alba = { set_de_jure_liege_title = title:e_scotland }
-		title:k_mann_the_isles = { set_de_jure_liege_title = title:e_scotland }
-		# Britons
-		title:k_wales = { set_de_jure_liege_title = title:e_britons }
-		title:k_petty_dumnonia = { set_de_jure_liege_title = title:e_britons }
-		title:k_rheged = { set_de_jure_liege_title = title:e_britons }
-		title:k_brittany = { set_de_jure_liege_title = title:e_britons }
-		# The empire
-		title:e_ireland = { set_de_jure_liege_title = title:h_western_celtic_empire }
-		title:e_scotland = { set_de_jure_liege_title = title:h_western_celtic_empire }
-		title:e_britons = { set_de_jure_liege_title = title:h_western_celtic_empire }
+		LR_brython_restore_all_controlled_effect = yes
+		LR_brython_set_under_celtic_empire_effect = yes
 	}
 
 	create_title_and_vassal_change = {
@@ -35,4 +25,9 @@ LR_form_western_celtic_empire_effect = {
 	resolve_title_and_vassal_change = scope:title_change
 
 	dynasty = { add_dynasty_prestige = major_dynasty_prestige_gain }
+
+	# Restored kingdoms may leave titles of other sets without land
+	hidden_effect = {
+		LR_title_set_reorganise_realm_effect = yes
+	}
 }

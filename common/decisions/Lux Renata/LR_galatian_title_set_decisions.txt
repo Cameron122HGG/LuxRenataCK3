@@ -1,0 +1,276 @@
+﻿# Galatian title set (gen_galatian_title_set.py): a Brythonic ruler restores a Galatian kingdom. The set's hegemony,
+# Reixath Galáthon, is raised by form_reixath_galathon_decision (00_Culture/Britain/00_LR_reixath_galathon_decisions.txt).
+
+LR_restore_galat_kingdoms_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = realm
+	sort_order = 877
+	desc = LR_restore_galat_kingdoms_decision_desc
+	selection_tooltip = LR_restore_galat_kingdoms_decision_tooltip
+	confirm_text = LR_restore_galat_kingdoms_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		LR_title_set_galatian_native_trigger = yes
+		highest_held_title_tier >= tier_kingdom
+		OR = {
+			LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tolistobogioi }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tektosages }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_galat_trokmoi }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_galat_pontogalatia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tulis }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_galat_skordiskoi }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_galat_makedunia }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_restore_galat_kingdoms_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = LR_area_k_galat_tolistobogioi
+					LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tolistobogioi }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_galat_tektosages
+					LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tektosages }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_galat_trokmoi
+					LR_satrapy_restorable_trigger = { SATRAPY = k_galat_trokmoi }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_galat_pontogalatia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_galat_pontogalatia }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_galat_tulis
+					LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tulis }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_galat_skordiskoi
+					LR_satrapy_restorable_trigger = { SATRAPY = k_galat_skordiskoi }
+				}
+				AND = {
+					completely_controls_region = LR_area_k_galat_makedunia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_galat_makedunia }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = LR_galat_tolistobogioi
+			current_description = {
+				desc = LR_galat_tolistobogioi_desc
+			}
+			localization = {
+				desc = LR_galat_tolistobogioi_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tolistobogioi }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_galat_tolistobogioi
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_galat_tektosages
+			current_description = {
+				desc = LR_galat_tektosages_desc
+			}
+			localization = {
+				desc = LR_galat_tektosages_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tektosages }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_galat_tektosages
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_galat_trokmoi
+			current_description = {
+				desc = LR_galat_trokmoi_desc
+			}
+			localization = {
+				desc = LR_galat_trokmoi_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_galat_trokmoi }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_galat_trokmoi
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_galat_pontogalatia
+			current_description = {
+				desc = LR_galat_pontogalatia_desc
+			}
+			localization = {
+				desc = LR_galat_pontogalatia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_galat_pontogalatia }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_galat_pontogalatia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_galat_tulis
+			current_description = {
+				desc = LR_galat_tulis_desc
+			}
+			localization = {
+				desc = LR_galat_tulis_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_galat_tulis }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_galat_tulis
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_galat_skordiskoi
+			current_description = {
+				desc = LR_galat_skordiskoi_desc
+			}
+			localization = {
+				desc = LR_galat_skordiskoi_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_galat_skordiskoi }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_galat_skordiskoi
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_galat_makedunia
+			current_description = {
+				desc = LR_galat_makedunia_desc
+			}
+			localization = {
+				desc = LR_galat_makedunia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_galat_makedunia }
+			}
+			is_valid = {
+				completely_controls_region = LR_area_k_galat_makedunia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_galat_kingdoms_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:LR_galat_tolistobogioi = yes }
+				LR_restore_galat_tolistobogioi_effect = yes
+			}
+			if = {
+				limit = { scope:LR_galat_tektosages = yes }
+				LR_restore_galat_tektosages_effect = yes
+			}
+			if = {
+				limit = { scope:LR_galat_trokmoi = yes }
+				LR_restore_galat_trokmoi_effect = yes
+			}
+			if = {
+				limit = { scope:LR_galat_pontogalatia = yes }
+				LR_restore_galat_pontogalatia_effect = yes
+			}
+			if = {
+				limit = { scope:LR_galat_tulis = yes }
+				LR_restore_galat_tulis_effect = yes
+			}
+			if = {
+				limit = { scope:LR_galat_skordiskoi = yes }
+				LR_restore_galat_skordiskoi_effect = yes
+			}
+			if = {
+				limit = { scope:LR_galat_makedunia = yes }
+				LR_restore_galat_makedunia_effect = yes
+			}
+			LR_title_set_reorganise_realm_effect = yes
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

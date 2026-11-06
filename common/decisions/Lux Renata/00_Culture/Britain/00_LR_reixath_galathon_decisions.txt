@@ -1,5 +1,7 @@
 ﻿# Form Reixath Galáthon, the eastern Celtic empire (user, 2026-11-06). Counterpart to form_western_celtic_empire_decision.
 # The name comes from a fan's campaign with a custom Galatian empire. Galatians are excluded from the western empire.
+# 2026-11-06 (user): Reixath Galáthon is now h_reixath_galathon, the hegemony of the Galatian title set, and no warlord
+# titles are used. Forming it restores every Galatian kingdom the founder completely controls (LR_galatian_title_set_effects.txt).
 form_reixath_galathon_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
@@ -11,7 +13,7 @@ form_reixath_galathon_decision = {
 		county = 0
 		duchy = 0
 		kingdom = 120
-		empire = 0
+		empire = 120
 		hegemony = 0
 	}
 
@@ -22,8 +24,8 @@ form_reixath_galathon_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
-		culture = culture:galatian
-		NOT = { exists = title:e_reixath_galathon.holder }
+		LR_title_set_galatian_native_trigger = yes # Brythonic cultures, Galatians included
+		NOT = { exists = title:h_reixath_galathon.holder }
 		# Not repeatable.
 		NOT = {
 			is_target_in_global_variable_list = {
@@ -36,15 +38,17 @@ form_reixath_galathon_decision = {
 	is_valid = {
 		is_independent_ruler = yes
 		highest_held_title_tier >= tier_kingdom
-		highest_held_title_tier < tier_empire
-		prestige_level >= 3
-		has_title = title:k_galatia
+		highest_held_title_tier < tier_hegemony
+		prestige_level >= 4
+		has_title = title:c_galatia # Ankyra
 		# The three Galatian tribes and Paphlagonia-Pontus
-		completely_controls = title:c_tectosagia_galatia # Tectosages
-		completely_controls = title:c_galatia # Tolistobogii
-		completely_controls = title:c_trocmi # Trocmi
+		completely_controls = title:c_tectosagia_galatia # Tektosages (Vindia)
+		completely_controls = title:c_galatia_salutaris # Tolistobogioi (Germa)
+		completely_controls = title:c_trocmi # Trokmoi (Tavium)
 		completely_controls = title:c_gangra
 		completely_controls = title:c_helenopontus
+		# The Eastern Roman core: Thracia, Macedonia, Asia and Pontus (user, 2026-11-06)
+		completely_controls_region = custom_eastern_roman_imperial_core
 	}
 
 	is_valid_showing_failures_only = {

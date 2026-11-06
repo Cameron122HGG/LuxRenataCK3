@@ -403,6 +403,181 @@ LR_title_set_hebrew_outsider_trigger = {
 	any_held_title = { LR_title_set_hebrew_title_trigger = yes }
 }
 
+# Title: one of the Brythonic set's titles: the Western Celtic Empire (its hegemony, 01_LR_titular_titles.txt), its
+# high-kingships, kingdoms and duchies (gen_brythonic_title_set.py, user-approved 2026-11-06). No warlord titles (user 2026-11-06).
+LR_title_set_brythonic_title_trigger = {
+	OR = {
+		this = title:h_western_celtic_empire
+		this = title:e_brython_cymru
+		this = title:e_brython_hen_ogledd
+		this = title:e_brython_lloegr
+		this = title:e_brython_dumnonia
+		this = title:e_brython_prydyn
+		this = title:e_brython_eriu
+		this = title:k_brython_gwynedd
+		this = title:d_brython_gwynedd_uwch_conwy
+		this = title:d_brython_perfeddwlad
+		this = title:d_brython_manaw
+		this = title:k_brython_powys
+		this = title:d_brython_powys
+		this = title:d_brython_pengwern
+		this = title:k_brython_deheubarth
+		this = title:d_brython_ceredigion
+		this = title:d_brython_dyfed
+		this = title:d_brython_brycheiniog
+		this = title:k_brython_morgannwg
+		this = title:d_brython_morgannwg
+		this = title:d_brython_gwent
+		this = title:d_brython_ergyng
+		this = title:k_brython_rheged
+		this = title:d_brython_caer_liwelydd
+		this = title:d_brython_gallwyddel
+		this = title:k_brython_ystrad_clud
+		this = title:d_brython_alt_clut
+		this = title:d_brython_aeron
+		this = title:k_brython_gododdin
+		this = title:d_brython_eidyn
+		this = title:d_brython_bryneich
+		this = title:k_brython_ebrauc
+		this = title:d_brython_ebrauc
+		this = title:d_brython_elmet
+		this = title:k_brython_caint
+		this = title:d_brython_caer_geint
+		this = title:d_brython_caer_lundein
+		this = title:d_brython_caer_golun
+		this = title:d_brython_caer_grawnt
+		this = title:k_brython_linnuis
+		this = title:d_brython_linnuis
+		this = title:d_brython_caer_lyr
+		this = title:d_brython_caer_lwytgoed
+		this = title:k_brython_caer_wynt
+		this = title:d_brython_caer_wynt
+		this = title:d_brython_rhydychen
+		this = title:d_brython_caer_loyw
+		this = title:k_brython_kernyw
+		this = title:d_brython_kernyw
+		this = title:d_brython_dewnans
+		this = title:d_brython_gwlad_yr_haf
+		this = title:k_brython_llydaw
+		this = title:d_brython_domnonea
+		this = title:d_brython_kernev
+		this = title:d_brython_bro_waroch
+		this = title:d_brython_naoned
+		this = title:d_brython_roazhon
+		this = title:k_brython_fortriu
+		this = title:d_brython_fortriu
+		this = title:d_brython_ce
+		this = title:d_brython_fidach
+		this = title:d_brython_cait
+		this = title:k_brython_circinn
+		this = title:d_brython_circinn
+		this = title:d_brython_fotla
+		this = title:d_brython_fib
+		this = title:k_brython_ulaid
+		this = title:d_brython_ulaid
+		this = title:d_brython_airgialla
+		this = title:d_brython_ailech
+		this = title:k_brython_connachta
+		this = title:d_brython_connachta
+		this = title:d_brython_umall
+		this = title:d_brython_breifne
+		this = title:k_brython_laigin
+		this = title:d_brython_laigin
+		this = title:d_brython_osraige
+		this = title:k_brython_mide
+		this = title:d_brython_mide
+		this = title:d_brython_ath_cliath
+		this = title:k_brython_mumu
+		this = title:d_brython_tuadmumu
+		this = title:d_brython_urmumu
+		this = title:d_brython_desmumu
+		this = title:k_brython_dal_riata
+		this = title:d_brython_dal_riata
+		this = title:d_brython_innse_gall
+	}
+}
+
+# Character: may use the Brythonic set: Britons (not Galatians), Gaels and Norse-Gaels. Romano-Britons are not native.
+# (user 2026-11-06)
+LR_title_set_brythonic_native_trigger = {
+	culture ?= {
+		OR = {
+			AND = {
+				has_cultural_pillar = heritage_brythonic
+				NOT = { this = culture:galatian }
+			}
+			has_cultural_pillar = heritage_goidelic
+			this = culture:norsegael
+		}
+	}
+}
+
+# Character: holds a Brythonic set title without being native to the set
+LR_title_set_brythonic_outsider_trigger = {
+	NOT = { LR_title_set_brythonic_native_trigger = yes }
+	any_held_title = { LR_title_set_brythonic_title_trigger = yes }
+}
+
+# Character: may create the Western Celtic Empire, the Brythonic set's hegemony. Same as the set's natives (2026-11-06).
+LR_western_celtic_native_trigger = {
+	LR_title_set_brythonic_native_trigger = yes
+}
+
+# Title: one of the Galatian set's titles: Reixath Galáthon, its high-kingships, kingdoms and duchies
+# (gen_galatian_title_set.py, user-approved 2026-11-06). No warlord titles (user 2026-11-06).
+LR_title_set_galatian_title_trigger = {
+	OR = {
+		this = title:h_reixath_galathon
+		this = title:e_galat_trigalatia
+		this = title:e_galat_danuuia
+		this = title:k_galat_tolistobogioi
+		this = title:d_galat_pessinunta
+		this = title:d_galat_uoturoi
+		this = title:d_galat_ambitoutoi
+		this = title:d_galat_blukion
+		this = title:k_galat_tektosages
+		this = title:d_galat_ankura
+		this = title:d_galat_uindia
+		this = title:d_galat_gorbeia
+		this = title:d_galat_teutobodiakoi
+		this = title:k_galat_trokmoi
+		this = title:d_galat_tauion
+		this = title:d_galat_ekobrogis
+		this = title:d_galat_danala
+		this = title:d_galat_mithridation
+		this = title:k_galat_pontogalatia
+		this = title:d_galat_amasia
+		this = title:d_galat_zela
+		this = title:d_galat_gangra
+		this = title:k_galat_tulis
+		this = title:d_galat_tulis
+		this = title:d_galat_kabula
+		this = title:d_galat_durostoron
+		this = title:d_galat_nouiodunon
+		this = title:k_galat_skordiskoi
+		this = title:d_galat_singidunon
+		this = title:d_galat_taurunon
+		this = title:d_galat_bononia
+		this = title:d_galat_nauissos
+		this = title:k_galat_makedunia
+		this = title:d_galat_filippodunon
+		this = title:d_galat_orestia
+		this = title:d_galat_tessalonika
+		this = title:d_galat_strumon
+	}
+}
+
+# Character: may use the Galatian set: every Brythonic culture, Galatians included (user 2026-11-06)
+LR_title_set_galatian_native_trigger = {
+	culture ?= { has_cultural_pillar = heritage_brythonic }
+}
+
+# Character: holds a Galatian set title without being native to the set
+LR_title_set_galatian_outsider_trigger = {
+	NOT = { LR_title_set_galatian_native_trigger = yes }
+	any_held_title = { LR_title_set_galatian_title_trigger = yes }
+}
+
 # Title: belongs to any title set
 LR_is_set_title_trigger = {
 	OR = {
@@ -411,6 +586,8 @@ LR_is_set_title_trigger = {
 		LR_title_set_themes_title_trigger = yes
 		LR_title_set_persian_title_trigger = yes
 		LR_title_set_hebrew_title_trigger = yes
+		LR_title_set_brythonic_title_trigger = yes
+		LR_title_set_galatian_title_trigger = yes
 	}
 }
 
@@ -435,5 +612,13 @@ LR_may_use_title_set_trigger = {
 	trigger_if = {
 		limit = { $TITLE$ = { LR_title_set_hebrew_title_trigger = yes } }
 		LR_title_set_hebrew_native_trigger = yes
+	}
+	trigger_if = {
+		limit = { $TITLE$ = { LR_title_set_brythonic_title_trigger = yes } }
+		LR_title_set_brythonic_native_trigger = yes
+	}
+	trigger_if = {
+		limit = { $TITLE$ = { LR_title_set_galatian_title_trigger = yes } }
+		LR_title_set_galatian_native_trigger = yes
 	}
 }
