@@ -1,0 +1,19 @@
+﻿# Roman vassal tiers (LR_roman_vassal_tier_triggers.txt): kingdoms held below a decayed Roman empire are destroyed.
+
+# Scope: the top liege. Destroys every landed kingdom-tier title held by a ruler below a decayed Roman empire.
+LR_decayed_roman_strip_vassal_kingdoms_effect = {
+	if = {
+		limit = { LR_is_decayed_roman_realm_trigger = yes }
+		every_vassal_or_below = {
+			every_held_title = {
+				limit = { LR_is_landed_kingdom_title_trigger = yes }
+				add_to_temporary_list = LR_decayed_roman_vassal_kingdoms
+			}
+		}
+		every_in_list = {
+			list = LR_decayed_roman_vassal_kingdoms
+			save_temporary_scope_as = LR_decayed_roman_kingdom
+			holder ?= { destroy_title = scope:LR_decayed_roman_kingdom }
+		}
+	}
+}

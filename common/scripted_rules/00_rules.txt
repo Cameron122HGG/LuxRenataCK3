@@ -1466,6 +1466,17 @@ can_create_title = {
 			LR_title_set_roman_native_trigger = yes
 		}
 	}
+	# LR: Roman vassal tiers (user, 2026-11-05): no kingdom-tier vassals under a decayed Roman empire
+	trigger_if = {
+		limit = {
+			scope:title = { LR_is_landed_kingdom_title_trigger = yes }
+			is_independent_ruler = no
+		}
+		custom_tooltip = {
+			text = LR_decayed_roman_no_vassal_kingdoms_tooltip
+			NOT = { top_liege = { LR_is_decayed_roman_realm_trigger = yes } }
+		}
+	}
 	# LR: title sets (gen_title_sets.py, LR_title_set_rules.md): only a set's natives may create its titles
 	trigger_if = {
 		limit = { scope:title = { LR_title_set_hellenistic_title_trigger = yes } }
