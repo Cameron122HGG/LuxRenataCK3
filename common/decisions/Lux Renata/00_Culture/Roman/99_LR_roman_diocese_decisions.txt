@@ -304,73 +304,73 @@ LR_restore_eastern_hegemony_decision = {
 				limit = {
 					exists = title:k_bulgaria.holder
 				}
-				title:k_bulgaria.holder = { liege = root }
+				title:k_bulgaria.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_epirus.holder
 				}
-				title:k_epirus.holder = { liege = root }
+				title:k_epirus.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_hellas.holder
 				}
-				title:k_hellas.holder = { liege = root }
+				title:k_hellas.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_byzantium.holder
 				}
-				title:k_byzantium.holder = { liege = root }
+				title:k_byzantium.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_krete.holder
 				}
-				title:k_krete.holder = { liege = root }
+				title:k_krete.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_cyprus.holder
 				}
-				title:k_cyprus.holder = { liege = root }
+				title:k_cyprus.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_pergamon.holder
 				}
-				title:k_pergamon.holder = { liege = root }
+				title:k_pergamon.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_anatolia.holder
 				}
-				title:k_anatolia.holder = { liege = root }
+				title:k_anatolia.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_pontus.holder
 				}
-				title:k_pontus.holder = { liege = root }
+				title:k_pontus.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_syria.holder
 				}
-				title:k_syria.holder = { liege = root }
+				title:k_syria.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_jerusalem.holder
 				}
-				title:k_jerusalem.holder = { liege = root }
+				title:k_jerusalem.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 			trigger_if = {
 				limit = {
 					exists = title:k_egypt.holder
 				}
-				title:k_egypt.holder = { liege = root }
+				title:k_egypt.holder = { OR = { this = root liege = root } } # LR 2026-11-06: held by you counts too
 			}
 	    }
     }
@@ -748,9 +748,15 @@ restore_italia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_italia_suburbicaria
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_italia_suburbicaria
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -782,9 +788,15 @@ restore_italia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_italia_annonaria
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_italia_annonaria
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -815,9 +827,15 @@ restore_italia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_africa
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_africa
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -1148,9 +1166,25 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_hispania
+						trigger_if = { # LR: like Constantine III, the Brittanic emperor crosses to the continent from a restored Britannia
+							limit = { has_title = title:e_brittanic_empire }
+							custom_tooltip = {
+								text = LR_brittanic_britannia_first_tt
+								OR = {
+									has_title = title:k_diocese_britannia
+									any_vassal = { has_title = title:k_diocese_britannia }
+								}
+							}
+						}
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -1191,9 +1225,25 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_viennensis
+						trigger_if = { # LR: like Constantine III, the Brittanic emperor crosses to the continent from a restored Britannia
+							limit = { has_title = title:e_brittanic_empire }
+							custom_tooltip = {
+								text = LR_brittanic_britannia_first_tt
+								OR = {
+									has_title = title:k_diocese_britannia
+									any_vassal = { has_title = title:k_diocese_britannia }
+								}
+							}
+						}
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -1234,9 +1284,25 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_lugdunensis
+						trigger_if = { # LR: like Constantine III, the Brittanic emperor crosses to the continent from a restored Britannia
+							limit = { has_title = title:e_brittanic_empire }
+							custom_tooltip = {
+								text = LR_brittanic_britannia_first_tt
+								OR = {
+									has_title = title:k_diocese_britannia
+									any_vassal = { has_title = title:k_diocese_britannia }
+								}
+							}
+						}
+					}
+					add = 100
+				}
 			}
 		}
 		
@@ -1280,9 +1346,27 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_britannia
+						trigger_if = { # LR: the Brittanic Empire restores Britannia on its own
+							limit = { NOT = { has_title = title:e_brittanic_empire } }
+							custom_tooltip = { 
+								text = gallia_first_restore_tt
+								OR = { # must first restore diocese of lugdunensis
+									any_vassal = {
+										has_title = title:k_diocese_lugdunensis
+									}
+									has_title = title:k_diocese_lugdunensis
+								}
+							}
+						}
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -1634,9 +1718,15 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_noricum
 			}
-	
+	
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_noricum
+					}
+					add = 100
+				}
 			}
 		}
 		item = {
@@ -1666,9 +1756,15 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_pannonia
 			}
-	
+	
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_pannonia
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -1699,9 +1795,15 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_illyricum
 			}
-	
+	
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_illyricum
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -1732,9 +1834,15 @@ restore_illyricum_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_dardania
 			}
-	
+	
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_dardania
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -2133,9 +2241,15 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_macedonia
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_macedonia
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -2165,9 +2279,15 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_thracia
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_thracia
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -2198,9 +2318,15 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_pontus
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_pontus
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -2231,9 +2357,15 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_asia
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_asia
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -2263,9 +2395,15 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_armenia
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_armenia
+					}
+					add = 100
+				}
 			}
 		}
 		item = {
@@ -2294,9 +2432,15 @@ restore_macedonia_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_gothia
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_gothia
+					}
+					add = 100
+				}
 			}
 		}
 
@@ -2689,9 +2833,15 @@ restore_oriens_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_syria
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_syria
+					}
+					add = 100
+				}
 			}
 		}
 	
@@ -2722,9 +2872,15 @@ restore_oriens_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_palestine
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_palestine
+					}
+					add = 100
+				}
 			}
 		}
 		item = {
@@ -2754,9 +2910,15 @@ restore_oriens_roman_provinces_decision = {
 			is_valid = {
 				completely_controls_region = custom_roman_aegyptus
 			}
-
+
 			ai_chance = {
 				value = 0
+				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
+					limit = {
+						completely_controls_region = custom_roman_aegyptus
+					}
+					add = 100
+				}
 			}
 		}
 	}

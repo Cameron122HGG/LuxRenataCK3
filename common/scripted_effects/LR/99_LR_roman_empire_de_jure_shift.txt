@@ -192,17 +192,17 @@ restore_western_roman_provinces_system_decision_effect = {
 
 restore_roman_italia_suburbicaria_effect = {
 	title:k_sicily = {
-		holder = {
+		holder ?= {
 			destroy_title = title:k_sicily 
 		}
 	}
 	title:k_urbs = {
-		holder = {
+		holder ?= {
 			destroy_title = title:k_urbs 
 		}
 	}
 	title:k_sardinia = {
-		holder = {
+		holder ?= {
 			destroy_title = title:k_sardinia 
 		}
 	}
@@ -214,8 +214,11 @@ restore_roman_italia_suburbicaria_effect = {
 		limit = {
 			title:k_italy = { is_titular = yes }
 		}
-		title:k_italy = { holder = { destroy_title = title:k_italy } }
+		title:k_italy = { holder ?= { destroy_title = title:k_italy } }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_italia_suburbicaria PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_italia_annonaria_effect = {
@@ -226,14 +229,17 @@ restore_roman_provinces_italia_annonaria_effect = {
 		limit = {
 			title:k_italy = { is_titular = yes }
 		}
-		title:k_italy = { holder = { destroy_title = title:k_italy } }
+		title:k_italy = { holder ?= { destroy_title = title:k_italy } }
 	}
 	if = {
 		limit = {
 			title:k_bavaria = { is_titular = yes }
 		}
-		title:k_bavaria = { holder = { destroy_title = title:k_bavaria } }
+		title:k_bavaria = { holder ?= { destroy_title = title:k_bavaria } }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_italia_annonaria PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
 }
 
 restore_eastern_roman_provinces_system_decision_effect = {
@@ -425,6 +431,9 @@ restore_roman_provinces_viennensis_decision_effect = {
 		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
 		title:k_diocese_viennensis = { set_de_jure_liege_title = root.primary_title }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_viennensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_lugdunensis_decision_effect = {
@@ -576,6 +585,9 @@ restore_roman_provinces_lugdunensis_decision_effect = {
 		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = root.primary_title }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_lugdunensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_africa_mauretania_decision_effect = {
@@ -688,6 +700,10 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 		title:k_diocese_africa = { set_de_jure_liege_title = root.primary_title }
 		title:k_diocese_mauretania = { set_de_jure_liege_title = root.primary_title }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_africa PREFECTURE = e_praetorian_prefecture_africa HALF = h_western_roman_empire }
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_mauretania PREFECTURE = e_praetorian_prefecture_africa HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_syria_decision_effect  = {
@@ -761,6 +777,9 @@ restore_roman_provinces_syria_decision_effect  = {
 		limit = { NOT = { is_restored_eastern_roman_emperor_trigger = yes } }
 		title:k_diocese_syria = { set_de_jure_liege_title = root.primary_title }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_syria PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
 }
 
 restore_roman_provinces_palestine_decision_effect  = {
@@ -832,6 +851,9 @@ restore_roman_provinces_palestine_decision_effect  = {
 		limit = { NOT = { is_restored_eastern_roman_emperor_trigger = yes } }
 		title:k_diocese_palestine = { set_de_jure_liege_title = root.primary_title }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_palestine PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
 }
 
 restore_roman_provinces_aegyptus_decision_effect  = {
@@ -885,6 +907,9 @@ restore_roman_provinces_aegyptus_decision_effect  = {
 		limit = { NOT = { is_restored_eastern_roman_emperor_trigger = yes } }
 		title:k_diocese_aegyptus = { set_de_jure_liege_title = root.primary_title }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_aegyptus PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
 }
 
 restore_roman_provinces_hispania_decision_effect = {
@@ -991,6 +1016,9 @@ restore_roman_provinces_hispania_decision_effect = {
 		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_hispania }
 		title:e_praetorian_prefecture_hispania = { set_de_jure_liege_title = title:h_roman_empire }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hispania PREFECTURE = e_praetorian_prefecture_hispania HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_britannia_decision_effect = {
@@ -1014,9 +1042,6 @@ restore_roman_provinces_britannia_decision_effect = {
 		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_britannia = { set_de_jure_liege_title = title:e_western_roman_empire }
 	}
-	#Fix Northumberland
-	title:c_northumberland = { set_de_jure_liege_title = title:d_lothian }
-	title:c_cumberland = { set_de_jure_liege_title = title:d_lothian }
 		
 	# Destroy useless kingdoms
 	if = {
@@ -1032,9 +1057,6 @@ restore_roman_provinces_britannia_decision_effect = {
 		# Shift the provinces
 		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_britannia DIOCESE = k_diocese_britannia }
 
-		# Then shift all Kingdoms back.
-		title:k_england = { set_de_jure_liege_title = title:e_britannia }
-		title:k_wales = { set_de_jure_liege_title = title:e_britannia }
 	}	
 
 	# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
@@ -1042,6 +1064,9 @@ restore_roman_provinces_britannia_decision_effect = {
 		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
 		title:k_diocese_britannia = { set_de_jure_liege_title = root.primary_title }
 	}
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_britannia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 }
 
 
@@ -1172,32 +1197,32 @@ LR_restore_eastern_hegemony_decision_effect = {
 dejure_shift_create_caledonia_effect = { #Create Caledonia
 	#Destroy barbaric titles
 	title:d_western_isles = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_western_isles 
 		}
 	}
 	title:d_the_isles = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_the_isles 
 		}
 	}
 	title:d_moray = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_moray 
 		}
 	}
 	title:d_galloway = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_galloway 
 		}
 	}
 	title:d_lothian = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_lothian 
 		}
 	}
 	title:d_albany = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_albany 
 		}
 	}
@@ -1287,27 +1312,27 @@ dejure_shift_create_caledonia_effect = { #Create Caledonia
 dejure_shift_create_hibernia_effect = { #Create Hibernia
 	#Destory barbaric duchy titles
 	title:d_connacht = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_connacht 
 		}
 	}
 	title:d_ulster = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_ulster 
 		}
 	}
 	title:d_munster = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_munster 
 		}
 	}
 	title:d_leinster = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_leinster 
 		}
 	}
 	title:d_meath = {
-		holder = {
+		holder ?= {
 			destroy_title = title:d_meath 
 		}
 	}
@@ -1403,6 +1428,9 @@ restore_roman_provinces_thracia_effect = {
 
 restore_roman_provinces_dardania_effect = {
 	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_dardania DIOCESE = k_diocese_dardania }
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_dardania PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_pontus_decision_effect = {
@@ -1415,6 +1443,9 @@ restore_roman_provinces_asia_decision_effect = {
 
 restore_roman_provinces_illyricum_decision_effect = {
 	LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_illyricum DIOCESE = k_diocese_illyricum }
+
+	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_illyricum PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
 }
 
 restore_roman_provinces_noricum_decision_effect = {
@@ -1500,4 +1531,27 @@ LR_split_pontic_prefecture_effect = {
 	LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_pontus }
 	LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_armenia }
 	LR_sort_macedonian_diocese_prefecture_effect = { DIOCESE = k_diocese_gothia }
+}
+
+# LR 2026-11-06: once you hold a Roman hegemony (or Rome itself), a restored diocese goes to its prefecture,
+# and the prefecture under that hegemony. Before that the restoration effects keep it under the Eastern or
+# Western Empire. Character scope. HALF = h_western_roman_empire or h_eastern_roman_empire
+LR_sort_diocese_into_hegemony_effect = {
+	if = {
+		limit = {
+			OR = {
+				has_title = title:h_roman_empire
+				has_title = title:$HALF$
+			}
+		}
+		if = {
+			limit = { has_title = title:h_roman_empire }
+			title:h_roman_empire = { save_scope_as = diocese_hegemony }
+		}
+		else = {
+			title:$HALF$ = { save_scope_as = diocese_hegemony }
+		}
+		title:$DIOCESE$ = { set_de_jure_liege_title = title:$PREFECTURE$ }
+		title:$PREFECTURE$ = { set_de_jure_liege_title = scope:diocese_hegemony }
+	}
 }
