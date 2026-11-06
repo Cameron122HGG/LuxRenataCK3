@@ -1,0 +1,714 @@
+﻿###################################
+#
+# ANCIENT RELIGIONS
+# - Celtic Divination Events
+#
+###################################
+
+# Written by Patrick Marchand for Lux Invicta (ancrel.20-109), condensed for CK3 Lux Renata (2026-11-06).
+# Started by LR_hold_divination_decision (common/decisions/Lux Renata/LR_celtic_divination_decisions.txt).
+# Chain: .0001 the divination begins -> .0002 the sacrifice -> .0003 (hidden) the druids read the omens
+#        -> .0011-.0015 the omen -> .0020 the divination ends.
+# Saved scopes: LR_div_victim (the prisoner), LR_div_druid (a druid at court, optional),
+#               LR_div_kind (flag: who the victim is), LR_div_spared (yes if the victim was spared).
+
+namespace = LR_divination
+
+# Divination begins (LI ancrel.24)
+LR_divination.0001 = {
+	type = character_event
+	title = LR_divination.0001.t
+	desc = {
+		desc = LR_divination.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:LR_div_druid
+					scope:LR_div_druid = root
+				}
+				desc = LR_divination.0001.desc_self_druid
+			}
+			triggered_desc = {
+				trigger = { exists = scope:LR_div_druid }
+				desc = LR_divination.0001.desc_druid
+			}
+			desc = LR_divination.0001.desc_no_druid
+		}
+	}
+	theme = faith
+	override_background = { reference = wilderness_forest }
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		trigger = {
+			exists = scope:LR_div_druid
+			NOT = { scope:LR_div_druid = root }
+		}
+		character = scope:LR_div_druid
+		animation = prayer
+	}
+
+	immediate = {
+		# A druid at court reads the omens better (LI required a court druid to hold the divination)
+		if = {
+			limit = {
+				any_courtier = { LR_is_druid_trigger = yes is_available_adult = yes }
+			}
+			random_courtier = {
+				limit = { LR_is_druid_trigger = yes is_available_adult = yes }
+				save_scope_as = LR_div_druid
+			}
+		}
+		else_if = {
+			limit = {
+				any_vassal = { LR_is_druid_trigger = yes is_available_adult = yes }
+			}
+			random_vassal = {
+				limit = { LR_is_druid_trigger = yes is_available_adult = yes }
+				save_scope_as = LR_div_druid
+			}
+		}
+		else_if = {
+			limit = { LR_is_druid_trigger = yes }
+			save_scope_as = LR_div_druid
+		}
+	}
+
+	option = {
+		name = LR_divination.0001.a
+		if = {
+			limit = { exists = scope:LR_div_druid }
+			custom_tooltip = LR_divination.0001.a.druid_tt
+		}
+		if = {
+			limit = { any_prisoner = { is_adult = yes } }
+			random_prisoner = {
+				limit = { is_adult = yes }
+				save_scope_as = LR_div_victim
+			}
+			trigger_event = LR_divination.0002
+		}
+		else = {
+			# The prisoner was lost before the rites: the gods get nothing
+			custom_tooltip = LR_divination.0001.a.no_victim_tt
+			save_scope_value_as = { name = LR_div_spared value = yes }
+			trigger_event = LR_divination.0003
+		}
+	}
+}
+
+# The sacrifice (LI ancrel.30-40, 100-102)
+LR_divination.0002 = {
+	type = character_event
+	title = LR_divination.0002.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:brother }
+				desc = LR_divination.0002.desc.brother
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:sister }
+				desc = LR_divination.0002.desc.sister
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:father }
+				desc = LR_divination.0002.desc.father
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:mother }
+				desc = LR_divination.0002.desc.mother
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:son }
+				desc = LR_divination.0002.desc.son
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:daughter }
+				desc = LR_divination.0002.desc.daughter
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:spouse }
+				desc = LR_divination.0002.desc.spouse
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:kin }
+				desc = LR_divination.0002.desc.kin
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:christian }
+				desc = LR_divination.0002.desc.christian
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:muslim }
+				desc = LR_divination.0002.desc.muslim
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:generic_2 }
+				desc = LR_divination.0002.desc.generic_2
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:generic_3 }
+				desc = LR_divination.0002.desc.generic_3
+			}
+			triggered_desc = {
+				trigger = { scope:LR_div_kind = flag:generic_4 }
+				desc = LR_divination.0002.desc.generic_4
+			}
+			desc = LR_divination.0002.desc.generic_1
+		}
+	}
+	theme = faith
+	override_background = { reference = wilderness_forest }
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:LR_div_victim
+		triggered_animation = {
+			trigger = {
+				OR = {
+					scope:LR_div_kind = flag:christian
+					scope:LR_div_kind = flag:muslim
+				}
+			}
+			animation = prayer
+		}
+		triggered_animation = {
+			trigger = { scope:LR_div_kind = flag:generic_3 }
+			animation = idle
+		}
+		triggered_animation = {
+			trigger = { scope:LR_div_kind = flag:generic_4 }
+			animation = anger
+		}
+		triggered_animation = {
+			trigger = {
+				OR = {
+					scope:LR_div_kind = flag:brother
+					scope:LR_div_kind = flag:sister
+					scope:LR_div_kind = flag:father
+					scope:LR_div_kind = flag:mother
+					scope:LR_div_kind = flag:son
+					scope:LR_div_kind = flag:daughter
+					scope:LR_div_kind = flag:spouse
+					scope:LR_div_kind = flag:kin
+				}
+			}
+			animation = sadness
+		}
+		animation = fear
+	}
+
+	trigger = {
+		exists = scope:LR_div_victim
+		scope:LR_div_victim = {
+			is_alive = yes
+			is_imprisoned_by = root
+		}
+	}
+
+	immediate = {
+		# Who is the victim? Kin first, then faith, then one of four generic scenes (as LI)
+		scope:LR_div_victim = {
+			if = {
+				limit = { is_sibling_of = root }
+				if = {
+					limit = { is_female = yes }
+					root = { save_scope_value_as = { name = LR_div_kind value = flag:sister } }
+				}
+				else = {
+					root = { save_scope_value_as = { name = LR_div_kind value = flag:brother } }
+				}
+			}
+			else_if = {
+				limit = { is_parent_of = root }
+				if = {
+					limit = { is_female = yes }
+					root = { save_scope_value_as = { name = LR_div_kind value = flag:mother } }
+				}
+				else = {
+					root = { save_scope_value_as = { name = LR_div_kind value = flag:father } }
+				}
+			}
+			else_if = {
+				limit = { is_child_of = root }
+				if = {
+					limit = { is_female = yes }
+					root = { save_scope_value_as = { name = LR_div_kind value = flag:daughter } }
+				}
+				else = {
+					root = { save_scope_value_as = { name = LR_div_kind value = flag:son } }
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						is_spouse_of = root
+						is_consort_of = root
+					}
+				}
+				root = { save_scope_value_as = { name = LR_div_kind value = flag:spouse } }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						is_close_or_extended_family_of = root
+						AND = {
+							exists = dynasty
+							exists = root.dynasty
+							dynasty = root.dynasty
+						}
+					}
+				}
+				root = { save_scope_value_as = { name = LR_div_kind value = flag:kin } }
+			}
+			else_if = {
+				limit = { faith.religion = religion:christianity_religion }
+				root = { save_scope_value_as = { name = LR_div_kind value = flag:christian } }
+			}
+			else_if = {
+				limit = { faith.religion = religion:islam_religion }
+				root = { save_scope_value_as = { name = LR_div_kind value = flag:muslim } }
+			}
+			else = {
+				root = {
+					random_list = {
+						25 = { save_scope_value_as = { name = LR_div_kind value = flag:generic_1 } }
+						25 = { save_scope_value_as = { name = LR_div_kind value = flag:generic_2 } }
+						25 = { save_scope_value_as = { name = LR_div_kind value = flag:generic_3 } }
+						25 = { save_scope_value_as = { name = LR_div_kind value = flag:generic_4 } }
+					}
+				}
+			}
+		}
+	}
+
+	# Sacrifice the prisoner
+	option = {
+		name = {
+			trigger = { scope:LR_div_kind = flag:brother }
+			text = LR_divination.0002.a.brother
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:sister }
+			text = LR_divination.0002.a.sister
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:father }
+			text = LR_divination.0002.a.father
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:mother }
+			text = LR_divination.0002.a.mother
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:son }
+			text = LR_divination.0002.a.son
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:daughter }
+			text = LR_divination.0002.a.daughter
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:spouse }
+			text = LR_divination.0002.a.spouse
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:kin }
+			text = LR_divination.0002.a.kin
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:christian }
+			text = LR_divination.0002.a.christian
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:muslim }
+			text = LR_divination.0002.a.muslim
+		}
+		name = {
+			trigger = {
+				OR = {
+					scope:LR_div_kind = flag:generic_1
+					scope:LR_div_kind = flag:generic_2
+					scope:LR_div_kind = flag:generic_3
+					scope:LR_div_kind = flag:generic_4
+				}
+			}
+			text = LR_divination.0002.a.generic
+		}
+
+		# Infidels please the gods more (LI: +50 prestige, +25 piety instead of +25/+15)
+		if = {
+			limit = {
+				OR = {
+					scope:LR_div_kind = flag:christian
+					scope:LR_div_kind = flag:muslim
+				}
+			}
+			add_prestige = medium_prestige_gain
+			add_piety = medium_piety_gain
+		}
+		else = {
+			add_prestige = minor_prestige_gain
+			add_piety = minor_piety_gain
+		}
+		# Killing close family weighs on all but the cruel
+		if = {
+			limit = {
+				OR = {
+					scope:LR_div_kind = flag:brother
+					scope:LR_div_kind = flag:sister
+					scope:LR_div_kind = flag:father
+					scope:LR_div_kind = flag:mother
+					scope:LR_div_kind = flag:son
+					scope:LR_div_kind = flag:daughter
+					scope:LR_div_kind = flag:spouse
+				}
+				NOR = {
+					has_trait = sadistic
+					has_trait = callous
+				}
+			}
+			add_stress = medium_stress_gain
+		}
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+		}
+		# Vanilla sacrifice: dread, piety, kinslaying, family opinions, death_sacrificed_to_gods
+		sacrifice_prisoner_effect = {
+			VICTIM = scope:LR_div_victim
+			EXECUTIONER = root
+		}
+		trigger_event = LR_divination.0003
+
+		ai_chance = {
+			base = 100
+			modifier = { add = -60 has_trait = compassionate }
+			modifier = {
+				add = -50
+				OR = {
+					scope:LR_div_kind = flag:father
+					scope:LR_div_kind = flag:mother
+					scope:LR_div_kind = flag:son
+					scope:LR_div_kind = flag:daughter
+					scope:LR_div_kind = flag:spouse
+				}
+			}
+		}
+	}
+
+	# Spare the prisoner
+	option = {
+		name = {
+			trigger = { scope:LR_div_kind = flag:brother }
+			text = LR_divination.0002.b.brother
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:sister }
+			text = LR_divination.0002.b.sister
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:father }
+			text = LR_divination.0002.b.father
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:mother }
+			text = LR_divination.0002.b.mother
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:son }
+			text = LR_divination.0002.b.son
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:daughter }
+			text = LR_divination.0002.b.daughter
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:spouse }
+			text = LR_divination.0002.b.spouse
+		}
+		name = {
+			trigger = { scope:LR_div_kind = flag:kin }
+			text = LR_divination.0002.b.kin
+		}
+		name = {
+			trigger = {
+				OR = {
+					scope:LR_div_kind = flag:christian
+					scope:LR_div_kind = flag:muslim
+				}
+			}
+			text = LR_divination.0002.b.infidel
+		}
+		name = {
+			trigger = {
+				OR = {
+					scope:LR_div_kind = flag:generic_1
+					scope:LR_div_kind = flag:generic_2
+					scope:LR_div_kind = flag:generic_3
+					scope:LR_div_kind = flag:generic_4
+				}
+			}
+			text = LR_divination.0002.b.generic
+		}
+
+		custom_tooltip = LR_divination.0002.b.tt
+		if = {
+			limit = {
+				OR = {
+					scope:LR_div_kind = flag:christian
+					scope:LR_div_kind = flag:muslim
+				}
+			}
+			add_piety = medium_piety_loss
+		}
+		else = {
+			add_piety = minor_piety_loss
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+			compassionate = minor_stress_impact_loss
+		}
+		custom_tooltip = LR_divination.0002.b.omens_tt
+		save_scope_value_as = { name = LR_div_spared value = yes }
+		trigger_event = LR_divination.0003
+
+		ai_chance = {
+			base = 10
+			modifier = { add = 60 has_trait = compassionate }
+			modifier = { add = -10 has_trait = zealous }
+		}
+	}
+}
+
+# The druids read the omens (hidden; LI's random_list over ancrel.60/61/64/65/66)
+LR_divination.0003 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		random_list = {
+			20 = { # Glory
+				modifier = { factor = 1.5 exists = scope:LR_div_druid }
+				modifier = { factor = 0.5 exists = scope:LR_div_spared }
+				trigger_event = { id = LR_divination.0011 days = 2 }
+			}
+			20 = { # Victory
+				modifier = { factor = 1.5 exists = scope:LR_div_druid }
+				modifier = { factor = 0.5 exists = scope:LR_div_spared }
+				trigger_event = { id = LR_divination.0012 days = 2 }
+			}
+			20 = { # Wealth
+				modifier = { factor = 1.5 exists = scope:LR_div_druid }
+				modifier = { factor = 0.5 exists = scope:LR_div_spared }
+				trigger_event = { id = LR_divination.0013 days = 2 }
+			}
+			20 = { # Loss
+				modifier = { factor = 0.5 exists = scope:LR_div_druid }
+				modifier = { factor = 1.5 exists = scope:LR_div_spared }
+				trigger_event = { id = LR_divination.0014 days = 2 }
+			}
+			20 = { # Anger
+				modifier = { factor = 0.5 exists = scope:LR_div_druid }
+				modifier = { factor = 3 exists = scope:LR_div_spared }
+				trigger_event = { id = LR_divination.0015 days = 2 }
+			}
+		}
+	}
+}
+
+# Divination Glory (LI ancrel.60)
+LR_divination.0011 = {
+	type = character_event
+	title = LR_divination.0011.t
+	desc = LR_divination.0011.desc
+	theme = faith
+	override_background = { reference = wilderness_forest }
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		trigger = {
+			exists = scope:LR_div_druid
+			NOT = { scope:LR_div_druid = root }
+		}
+		character = scope:LR_div_druid
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_divination.0011.a
+		add_prestige = major_prestige_gain
+		add_piety = medium_piety_gain
+		trigger_event = { id = LR_divination.0020 days = 1 }
+	}
+}
+
+# Divination Victory (LI ancrel.61)
+LR_divination.0012 = {
+	type = character_event
+	title = LR_divination.0012.t
+	desc = LR_divination.0012.desc
+	theme = faith
+	override_background = { reference = wilderness_forest }
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		trigger = {
+			exists = scope:LR_div_druid
+			NOT = { scope:LR_div_druid = root }
+		}
+		character = scope:LR_div_druid
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_divination.0012.a
+		custom_tooltip = LR_divination.0012.a.tt
+		add_character_modifier = {
+			modifier = LR_divination_promised_victory_modifier
+			years = 3
+		}
+		trigger_event = { id = LR_divination.0020 days = 1 }
+	}
+}
+
+# Divination Wealth (LI ancrel.64)
+LR_divination.0013 = {
+	type = character_event
+	title = LR_divination.0013.t
+	desc = LR_divination.0013.desc
+	theme = faith
+	override_background = { reference = wilderness_forest }
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		trigger = {
+			exists = scope:LR_div_druid
+			NOT = { scope:LR_div_druid = root }
+		}
+		character = scope:LR_div_druid
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_divination.0013.a
+		custom_tooltip = LR_divination.0013.a.tt
+		add_character_modifier = {
+			modifier = LR_divination_promised_riches_modifier
+			years = 3
+		}
+		trigger_event = { id = LR_divination.0020 days = 1 }
+	}
+}
+
+# Divination Loss (LI ancrel.65)
+LR_divination.0014 = {
+	type = character_event
+	title = LR_divination.0014.t
+	desc = LR_divination.0014.desc
+	theme = faith
+	override_background = { reference = wilderness_forest }
+
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		trigger = {
+			exists = scope:LR_div_druid
+			NOT = { scope:LR_div_druid = root }
+		}
+		character = scope:LR_div_druid
+		animation = worry
+	}
+
+	option = {
+		name = LR_divination.0014.a
+		add_prestige = major_prestige_loss
+		add_stress = minor_stress_gain
+		add_character_modifier = {
+			modifier = LR_divination_foreboding_modifier
+			years = 3
+		}
+		trigger_event = { id = LR_divination.0020 days = 1 }
+	}
+}
+
+# Divination Anger (LI ancrel.66)
+LR_divination.0015 = {
+	type = character_event
+	title = LR_divination.0015.t
+	desc = LR_divination.0015.desc
+	theme = faith
+	override_background = { reference = wilderness_forest }
+
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	right_portrait = {
+		trigger = {
+			exists = scope:LR_div_druid
+			NOT = { scope:LR_div_druid = root }
+		}
+		character = scope:LR_div_druid
+		animation = anger
+	}
+
+	option = {
+		name = LR_divination.0015.a
+		add_piety = medium_piety_loss
+		add_character_modifier = {
+			modifier = LR_divination_gods_displeased_modifier
+			years = 3
+		}
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+		trigger_event = { id = LR_divination.0020 days = 1 }
+	}
+}
+
+# Divination Ends (LI ancrel.62); Celtic pagan vassals who attended think well of the host (LI opinion_held_divination)
+LR_divination.0020 = {
+	type = character_event
+	title = LR_divination.0020.t
+	desc = LR_divination.0020.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	option = {
+		name = LR_divination.0020.a
+		every_vassal = {
+			limit = {
+				LR_is_celtic_pagan_trigger = yes
+				is_adult = yes
+				is_imprisoned = no
+			}
+			add_opinion = {
+				target = root
+				modifier = LR_held_divination_opinion
+			}
+		}
+	}
+}

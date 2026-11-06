@@ -16,6 +16,7 @@ LR_replace_vanilla_default_government_effect = {
 					top_liege = { government_has_flag = government_is_despotic_group }
 					top_liege = { government_has_flag = government_is_indic_group }
 					top_liege = { government_has_flag = government_is_islamic_group }
+					top_liege = { government_has_flag = government_is_sinic_group }
 					top_liege = { government_has_flag = government_is_japanese_group }
 					top_liege = { government_has_flag = government_is_sacral_group }
 				}
@@ -45,6 +46,16 @@ LR_replace_vanilla_default_government_effect = {
 			else_if = {
 				limit = { top_liege = { government_has_flag = government_is_islamic_group } }
 				change_government = iqta_administrative_government
+			}
+			else_if = {
+				limit = { top_liege = { government_has_flag = government_is_sinic_group } }
+				if = {
+					limit = { top_liege = { government_has_flag = government_is_celestial } }
+					change_government = celestial_government
+				}
+				else = {
+					change_government = meritocratic_government
+				}
 			}
 			else_if = {
 				limit = { top_liege = { government_has_flag = government_is_japanese_group } }
@@ -87,8 +98,24 @@ LR_replace_vanilla_default_government_effect = {
 				change_government = iqta_administrative_government
 			}
 			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
+				if = {
+					limit = { has_tgp_dlc_trigger = yes }
+					change_government = meritocratic_government
+				}
+				else = {
+					change_government = chinese_feudal_government
+				}
+			}
+			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
-				change_government = japan_administrative_government
+				if = {
+					limit = { has_tgp_dlc_trigger = yes }
+					change_government = japan_administrative_government
+				}
+				else = {
+					change_government = japanese_government
+				}
 			}
 		}
 	}
@@ -127,11 +154,17 @@ LR_replace_vanilla_default_government_effect = {
 			}
 			else_if = {
 				limit = { top_liege = { government_has_flag = government_is_islamic_group } }
-				change_government = iqta_dynastic_government
+				change_government = iqta_government # iqta_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
 			}
 			else_if = {
 				limit = { top_liege = { government_has_flag = government_is_sinic_group } }
-				change_government = chinese_feudal_government
+				if = {
+					limit = { top_liege = { government_has_flag = government_is_japanese_plain } }
+					change_government = japanese_government
+				}
+				else = {
+					change_government = chinese_feudal_government
+				}
 			}
 			else_if = {
 				limit = { top_liege = { government_has_flag = government_is_japanese_group } }
@@ -170,7 +203,7 @@ LR_replace_vanilla_default_government_effect = {
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
-				change_government = iqta_dynastic_government
+				change_government = iqta_government # iqta_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
@@ -178,14 +211,50 @@ LR_replace_vanilla_default_government_effect = {
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
-				add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
-				change_government = japan_feudal_government
+				if = {
+					limit = { has_tgp_dlc_trigger = yes }
+					add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
+					change_government = japan_feudal_government
+				}
+				else = {
+					change_government = japanese_government
+				}
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_barbarian } }
 				change_government = great_tribal_government
 			}
 		}
+	}
+	else_if = {
+		limit = {
+			has_government = clan_government
+			OR = {
+				AND = {
+					top_liege != this
+					top_liege = { government_has_flag = government_is_islamic_group }
+				}
+				AND = {
+					culture = { has_cultural_tradition = lux_tradition_gov_islamic }
+					OR = {
+						top_liege = this
+						top_liege = {
+							NOR = {
+								government_has_flag = government_is_classical_group
+								government_has_flag = government_is_western_group
+								government_has_flag = government_is_despotic_group
+								government_has_flag = government_is_indic_group
+								government_has_flag = government_is_sinic_group
+								government_has_flag = government_is_japanese_group
+								government_has_flag = government_is_sacral_group
+								government_has_flag = government_is_barbarian_group
+							}
+						}
+					}
+				}
+			}
+		}
+		change_government = iqta_government # iqta_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
 	}
 }
 
@@ -194,6 +263,36 @@ LR_replace_vanilla_default_government_effect = {
 # Run at game start and whenever a government changes, so decisions and events can keep setting the plain government.
 LR_normalize_dynastic_government_effect = {
 	LR_replace_vanilla_default_government_effect = yes
+	# Japanese realms: Soryo and Ritsuryo need All Under Heaven; without it they use Japanese Feudal (sinic group)
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			OR = {
+				has_government = japan_feudal_government
+				has_government = japan_administrative_government
+			}
+		}
+		change_government = japanese_government
+	}
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = yes
+			has_government = japanese_government
+		}
+		add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
+		change_government = japan_feudal_government
+	}
+	# Sinic group: Meritocratic and Celestial need All Under Heaven; without it they use Chinese Feudal
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			OR = {
+				has_government = meritocratic_government
+				has_government = celestial_government
+			}
+		}
+		change_government = chinese_feudal_government
+	}
 	# Sacral group: its DLC tiers (Soryo, Ritsuryo) need only the All Under Heaven DLC
 	if = {
 		limit = { government_has_flag = government_is_sacral_group }
@@ -239,6 +338,10 @@ LR_normalize_dynastic_government_effect = {
 			limit = { has_government = indic_feudal_government }
 			change_government = gupta_dynastic_government
 		}
+		else_if = {
+			limit = { has_government = iqta_government }
+			change_government = iqta_dynastic_government
+		}
 	}
 	else = {
 		if = {
@@ -257,6 +360,10 @@ LR_normalize_dynastic_government_effect = {
 			limit = { has_government = gupta_dynastic_government }
 			change_government = indic_feudal_government
 		}
+		else_if = {
+			limit = { has_government = iqta_dynastic_government }
+			change_government = iqta_government
+		}
 	}
 }
 
@@ -265,7 +372,22 @@ LR_normalize_dynastic_government_effect = {
 LR_change_admin_to_dynastic_effect = {
 	if = {
 		limit = { has_government = iqta_administrative_government }
-		change_government = iqta_dynastic_government
+		if = {
+			limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+			change_government = iqta_dynastic_government
+		}
+		else = {
+			change_government = iqta_government
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_government = meritocratic_government
+				has_government = celestial_government
+			}
+		}
+		change_government = chinese_feudal_government # the sinic group has no dynastic tier
 	}
 	else_if = {
 		limit = { has_government = japan_administrative_government }

@@ -1,0 +1,57 @@
+﻿# Lux Invicta druidic caste hooks, ported 2026-11-06 (events/religion_events/LR_druid_events.txt)
+
+random_yearly_playable_pulse = {
+	on_actions = { LR_druid_playable_pulse }
+}
+
+random_yearly_everyone_pulse = {
+	on_actions = {
+		LR_druid_faith_cleanup
+		LR_druid_everyone_pulse
+	}
+}
+
+on_faith_conversion = {
+	on_actions = { LR_druid_faith_cleanup }
+}
+
+# Celtic pagan rulers: no Court Druid reminder, child druid training
+LR_druid_playable_pulse = {
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+	}
+	random_events = {
+		400 = 0
+		20 = LR_druid.0001 # No Court Druid (players only)
+		15 = LR_druid.0020 # Child wishes to train with the druids
+	}
+}
+
+# Druids: may become known as wicked (ancrel.157)
+LR_druid_everyone_pulse = {
+	trigger = {
+		has_trait = LR_druid
+	}
+	random_events = {
+		200 = 0
+		10 = LR_druid.0010
+	}
+}
+
+# Remove druid traits on conversion away from the Celtic religion (ancrel.160).
+# Also run yearly, since script conversions (set_character_faith) don't fire on_faith_conversion.
+LR_druid_faith_cleanup = {
+	trigger = {
+		NOT = { LR_is_celtic_pagan_trigger = yes }
+		OR = {
+			has_trait = LR_druid
+			has_trait = LR_wicked_druid
+			has_trait = LR_druid_novice
+		}
+	}
+	effect = {
+		remove_trait = LR_druid
+		remove_trait = LR_wicked_druid
+		remove_trait = LR_druid_novice
+	}
+}

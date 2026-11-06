@@ -1,0 +1,32 @@
+﻿# Lux Invicta Manichaean content (LR_manichaean_events.txt), 2026-11-06
+# Counts as Manichaean:
+#  - faith:manichaean_faith, every rite (manichean, mingism, the Mandaean rites, mani_germanic/slavic/norse/ahriman...)
+#  - faith:sol_mani_faith (Oromasdeism: Sol Invictus worshipped in Manichaean fashion)
+#  - rite:tengri_mani (Ak-Koyash, Manichaean-Tengriism) and rite:mani_mithras (Theomachians; Lux Invicta's mani_mithra kept the Bema)
+# Not counted: rite:zal_mani (a Zalmoxian sect with only Gnostic influences), other dualists (dualism_religion faiths that are not Manichaean).
+LR_is_manichaean_trigger = {
+	OR = {
+		faith = faith:manichaean_faith
+		faith = faith:sol_mani_faith
+		rite ?= rite:tengri_mani
+		rite ?= rite:mani_mithras
+	}
+}
+
+# A courtier who could ask to join the Elect (scope: the courtier)
+LR_manichaean_elect_candidate_trigger = {
+	is_adult = yes
+	is_ruler = no
+	is_imprisoned = no
+	is_married = no
+	is_betrothed = no
+	is_concubine = no
+	LR_is_manichaean_trigger = yes
+	learning >= 8
+	NOR = {
+		has_trait = cynical
+		has_trait = LR_manichaean_elect
+		has_trait = devoted
+		has_trait = incapable
+	}
+}

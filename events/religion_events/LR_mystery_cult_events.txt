@@ -1,0 +1,268 @@
+﻿namespace = LR_mysteries
+
+# Lux Invicta's mystery cults (li_mysterycults.*): a Graeco-Roman pagan is approached by a cult and may be initiated.
+
+LR_mysteries.0010 = {
+	type = character_event
+	title = LR_mysteries.0010.t
+	desc = LR_mysteries.0010.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_adult = yes
+		is_imprisoned = no
+		is_incapable = no
+		LR_is_graeco_roman_pagan_trigger = yes
+		NOT = { LR_is_mystery_initiate_trigger = yes }
+		NOT = { has_character_flag = LR_refused_orpheus }
+		NOR = {
+			has_trait = intellect_bad
+			has_trait = inbred
+		}
+		diplomacy >= 8
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = { factor = 1.5 diplomacy >= 12 }
+		modifier = { factor = 2 has_trait = lifestyle_mystic }
+		modifier = { factor = 1.5 has_trait = zealous }
+		modifier = { factor = 0.5 has_trait = cynical }
+	}
+
+	option = {
+		name = LR_mysteries.0010.a
+		trigger_event = { id = LR_mysteries.0011 days = 3 }
+		ai_chance = { base = 25 }
+	}
+	option = {
+		name = LR_mysteries.0010.b
+		add_character_flag = LR_refused_orpheus
+		ai_chance = { base = 50 }
+	}
+}
+
+LR_mysteries.0011 = {
+	type = character_event
+	title = LR_mysteries.0010.t
+	desc = LR_mysteries.0011.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_mysteries.0011.a
+		trigger_event = LR_mysteries.0012
+	}
+}
+
+LR_mysteries.0012 = {
+	type = character_event
+	title = LR_mysteries.0010.t
+	desc = LR_mysteries.0012.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_mysteries.0012.a
+		add_trait = LR_cult_of_orpheus
+		add_piety = 50
+	}
+	option = {
+		name = LR_mysteries.0012.b
+		add_character_flag = LR_refused_orpheus
+		add_stress = 10
+	}
+}
+
+LR_mysteries.0020 = {
+	type = character_event
+	title = LR_mysteries.0020.t
+	desc = LR_mysteries.0020.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_adult = yes
+		is_imprisoned = no
+		is_incapable = no
+		LR_is_graeco_roman_pagan_trigger = yes
+		NOT = { LR_is_mystery_initiate_trigger = yes }
+		NOT = { has_character_flag = LR_refused_serapis }
+		NOR = {
+			has_trait = intellect_bad
+			has_trait = inbred
+		}
+		martial >= 8
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = { factor = 1.5 martial >= 12 }
+		modifier = { factor = 2 has_trait = lifestyle_mystic }
+		modifier = { factor = 1.5 has_trait = zealous }
+		modifier = { factor = 0.5 has_trait = cynical }
+	}
+
+	option = {
+		name = LR_mysteries.0020.a
+		trigger_event = { id = LR_mysteries.0021 days = 3 }
+		ai_chance = { base = 25 }
+	}
+	option = {
+		name = LR_mysteries.0020.b
+		add_character_flag = LR_refused_serapis
+		ai_chance = { base = 50 }
+	}
+}
+
+LR_mysteries.0021 = {
+	type = character_event
+	title = LR_mysteries.0020.t
+	desc = LR_mysteries.0021.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_mysteries.0021.a
+		add_trait = LR_cult_of_serapis
+		add_piety = 50
+	}
+}
+
+LR_mysteries.0030 = {
+	type = character_event
+	title = LR_mysteries.0030.t
+	desc = LR_mysteries.0030.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_adult = yes
+		is_imprisoned = no
+		is_incapable = no
+		LR_is_graeco_roman_pagan_trigger = yes
+		NOT = { LR_is_mystery_initiate_trigger = yes }
+		NOT = { has_character_flag = LR_refused_eleusis }
+		NOR = {
+			has_trait = intellect_bad
+			has_trait = inbred
+		}
+		stewardship >= 8
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = { factor = 1.5 stewardship >= 12 }
+		modifier = { factor = 2 has_trait = lifestyle_mystic }
+		modifier = { factor = 1.5 has_trait = zealous }
+		modifier = { factor = 0.5 has_trait = cynical }
+	}
+
+	option = {
+		name = LR_mysteries.0030.a
+		trigger_event = { id = LR_mysteries.0031 days = 3 }
+		ai_chance = { base = 25 }
+	}
+	option = {
+		name = LR_mysteries.0030.b
+		add_character_flag = LR_refused_eleusis
+		ai_chance = { base = 50 }
+	}
+}
+
+LR_mysteries.0031 = {
+	type = character_event
+	title = LR_mysteries.0030.t
+	desc = LR_mysteries.0031.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_mysteries.0031.a
+		add_trait = LR_cult_of_eleusis
+		add_piety = 50
+	}
+}
+
+LR_mysteries.0040 = {
+	type = character_event
+	title = LR_mysteries.0040.t
+	desc = LR_mysteries.0040.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_adult = yes
+		is_imprisoned = no
+		is_incapable = no
+		LR_is_graeco_roman_pagan_trigger = yes
+		NOT = { LR_is_mystery_initiate_trigger = yes }
+		NOT = { has_character_flag = LR_refused_trophonius }
+		NOR = {
+			has_trait = intellect_bad
+			has_trait = inbred
+		}
+		learning >= 8
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = { factor = 1.5 learning >= 12 }
+		modifier = { factor = 2 has_trait = lifestyle_mystic }
+		modifier = { factor = 1.5 has_trait = zealous }
+		modifier = { factor = 0.5 has_trait = cynical }
+	}
+
+	option = {
+		name = LR_mysteries.0040.a
+		trigger_event = { id = LR_mysteries.0041 days = 3 }
+		ai_chance = { base = 25 }
+	}
+	option = {
+		name = LR_mysteries.0040.b
+		add_character_flag = LR_refused_trophonius
+		ai_chance = { base = 50 }
+	}
+}
+
+LR_mysteries.0041 = {
+	type = character_event
+	title = LR_mysteries.0040.t
+	desc = LR_mysteries.0041.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_mysteries.0041.a
+		add_trait = LR_cult_of_trophonius
+		add_piety = 50
+	}
+}

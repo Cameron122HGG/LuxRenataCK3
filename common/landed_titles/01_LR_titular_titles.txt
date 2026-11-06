@@ -52,8 +52,23 @@ k_titular_morea = {
 
 k_upper_egypt = {
 	color = { 83 181 98 }
-	
+
 	capital = c_qus
+}
+
+# From 6060.1.1 k_egypt is split into k_upper_egypt and k_lower_egypt; LR_reunite_egypt_decision restores it.
+k_lower_egypt = {
+	color = { 60 110 170 }
+
+	capital = c_alexandria
+}
+
+# Titular crown of the Muslim rulers of Egypt (the Fatimid caliph from 6060.1.1), no de jure land
+k_misr = {
+	color = { 30 130 60 }
+
+	capital = c_cairo
+	ignore_titularity_for_title_weighting = yes
 }
 
 k_east_francia = {
@@ -614,6 +629,109 @@ e_scotland = {
 e_ireland = {
 	color = { 6 127 2 }
 	capital = c_dublin
+}
+# Reixath Galáthon, the eastern Celtic empire (name from a fan's custom Galatian empire campaign). Formed by
+# form_reixath_galathon_decision, which sets k_galatia and k_pontus de jure under it.
+e_reixath_galathon = {
+	color = { 20 150 70 }
+	capital = c_galatia
+
+	ai_primary_priority = {
+		if = {
+			limit = { culture = culture:galatian }
+			add = @correct_culture_primary_score
+		}
+	}
+}
+# Hunnic Empire (ported from Lux Invicta's e_huns). Titular hegemony, formed by form_hunnic_empire_decision.
+h_hunnic_empire = {
+	color = { 150 60 40 }
+	capital = c_esztergom
+	definite_form = yes
+
+	ai_primary_priority = {
+		if = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_hunnic }
+			}
+			add = @correct_culture_primary_score
+		}
+	}
+}
+# Hellenic League (ported from Lux Invicta's e_hellenic). Formed by form_hellenic_league_decision, which sets
+# k_hellas, k_sparta, k_pergamon and k_cyprus de jure under it.
+# FUTURE (republic rework): make the League a league of poleis (republican/elective) rather than a crown.
+e_hellenic_league = {
+	color = { 60 110 200 }
+	capital = c_attica
+	definite_form = yes
+
+	ai_primary_priority = {
+		if = {
+			limit = {
+				OR = {
+					culture = culture:greek
+					culture = { has_cultural_pillar = heritage_ancient_greek }
+				}
+			}
+			add = @correct_culture_primary_score
+		}
+	}
+}
+# Great Moravia (ported from Lux Invicta's e_greatmoravia). Formed by form_great_moravia_decision,
+# which moves k_bohemia, k_moravia (Nitrava) and k_sorbia de jure under it.
+e_great_moravia = {
+	color = { 170 110 40 }
+	capital = c_olomouc
+
+	ai_primary_priority = {
+		if = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_west_slavic }
+			}
+			add = @correct_culture_primary_score
+		}
+	}
+}
+# Austrgothia (ported from Lux Invicta's e_egoth). Formed by form_austrgothia_decision,
+# which moves Gothia (k_titular_crimean_gothia), k_moldavia and k_warlord_roxolania de jure under it.
+e_austrgothia = {
+	color = { 102 97 97 }
+	capital = c_perekop
+
+	ai_primary_priority = {
+		if = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_ostrogothic }
+			}
+			add = @correct_culture_primary_score
+		}
+	}
+}
+# Western Celtic Empire (ported from Lux Invicta's e_celtic). Formed by form_western_celtic_empire_decision,
+# which moves e_ireland, e_scotland and e_britons de jure under it.
+h_western_celtic_empire = {
+	color = { 5 222 31 }
+	capital = c_dublin
+	definite_form = yes
+
+	can_create = {
+		rule_title_creation_imperial_power_projection_title_creation_trigger = yes
+	}
+
+	ai_primary_priority = {
+		if = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_goidelic }
+					culture = { has_cultural_pillar = heritage_brythonic }
+					culture = culture:norsegael
+				}
+			}
+			add = @correct_culture_primary_score
+			add = @better_than_the_alternatives_score
+		}
+	}
 }
 
 k_hk_england = {

@@ -1,0 +1,51 @@
+﻿# Lux Invicta's appoint_pontifex_maximus (gen_graeco_roman_religion.py): the Roman faith gains a head of faith.
+# The ruler takes the office himself, as Augustus did, so the faith's rites become temporal-head.
+LR_become_pontifex_maximus_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = major
+	ai_check_interval = 120
+
+	desc = LR_become_pontifex_maximus_decision_desc
+	selection_tooltip = LR_become_pontifex_maximus_decision_tooltip
+	confirm_text = LR_become_pontifex_maximus_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		faith = faith:roman_faith
+		NOT = { exists = title:d_pontifex_maximus.holder }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		piety_level >= 3
+		custom_tooltip = {
+			text = LR_pontifex_rome_tt
+			title:c_roma.holder ?= { OR = { this = root target_is_liege_or_above = root } }
+		}
+		custom_tooltip = {
+			text = LR_pontifex_constantinople_tt
+			title:c_byzantion.holder ?= { OR = { this = root target_is_liege_or_above = root } }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 500
+	}
+
+	effect = {
+		show_as_tooltip = { get_title = title:d_pontifex_maximus }
+		custom_tooltip = LR_become_pontifex_maximus_effect_tt
+		hidden_effect = { LR_create_pontifex_maximus_effect = yes }
+	}
+
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}

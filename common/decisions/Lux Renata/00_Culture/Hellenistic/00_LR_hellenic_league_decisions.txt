@@ -1,0 +1,92 @@
+﻿# Form the Hellenic League
+# Ported from Lux Invicta's create_e_hellenic (CK2): a Greek league of the Aegean with no Roman claim.
+# FUTURE (republic rework): when republics are reworked, forming the League should also turn the realm into a league of
+# poleis (republican/elective government, member cities electing the hegemon) instead of a plain crown, and coastal
+# Greek republics should be able to found or join it.
+form_hellenic_league_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 0
+		hegemony = 0
+	}
+
+	desc = form_hellenic_league_decision_desc
+	selection_tooltip = form_hellenic_league_decision_tooltip
+	confirm_text = form_hellenic_league_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		OR = {
+			culture = culture:greek
+			culture = { has_cultural_pillar = heritage_ancient_greek }
+		}
+		NOT = { exists = title:e_hellenic_league.holder }
+		# Not repeatable.
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_hellenic_league
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		# A Greek league, not a Roman empire
+		custom_tooltip = {
+			text = form_hellenic_league_not_roman_tt
+			NOR = {
+				is_restored_roman_emperor_trigger = yes
+				is_decayed_roman_emperor_trigger = yes
+			}
+		}
+		highest_held_title_tier >= tier_kingdom
+		highest_held_title_tier < tier_empire
+		prestige_level >= 3
+		has_title = title:c_attica # Athens
+		completely_controls = title:c_laconia # Monemvasia
+		completely_controls = title:c_aeolis # Smyrna
+		completely_controls = title:c_nicosia # Limisol
+		completely_controls = title:c_sinope
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		piety = 350
+		prestige = 1000
+	}
+
+	effect = {
+		save_scope_as = founder
+		LR_form_hellenic_league_effect = yes
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_hellenic_league
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

@@ -1,0 +1,430 @@
+﻿# Lux Invicta Court Druid (title_court_druid), ported 2026-11-06 for Celtic pagan rulers.
+# Two flavours as in Lux Invicta; a ruler may employ only one of them. Druid events: events/religion_events/LR_druid_events.txt
+
+# Priestly Court Druid, a servant of the gods (Lux Invicta ancrel.152): piety and learning for the employer.
+LR_court_druid_priestly_court_position = {
+	sort_order = 232
+	max_available_positions = 1
+	minimum_rank = county
+	skill = learning
+
+	court_position_asset = {
+		animation = personality_zealous
+		background = "gfx/interface/illustrations/event_scenes/fp1_tribal_temple.dds"
+	}
+
+	opinion = {
+		value = ceremonial_court_position_opinion
+	}
+
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# root is the holder (or candidate)
+	aptitude = {
+		value = 1
+		add = {
+			value = learning
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_learning
+		}
+		if = {
+			limit = { LR_is_druid_trigger = yes }
+			add = {
+				value = 15
+				desc = LR_court_druid_is_druid_aptitude
+			}
+		}
+		if = {
+			limit = { has_trait = zealous }
+			add = {
+				value = 15
+				desc = court_position_zealous_trait
+			}
+		}
+		if = {
+			limit = { has_trait = just }
+			add = {
+				value = 10
+				desc = court_position_just_trait
+			}
+		}
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = 10
+				desc = court_position_patient_trait
+			}
+		}
+		if = {
+			limit = { has_trait = cynical }
+			add = {
+				value = -15
+				desc = LR_court_druid_cynical_trait
+			}
+		}
+		if = {
+			limit = { has_trait = arbitrary }
+			add = {
+				value = -10
+				desc = court_position_arbitrary_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+		add = general_aptitude_bonus
+	}
+
+	is_shown = {
+		LR_is_celtic_pagan_trigger = yes
+		is_landed_or_landless_administrative_or_theocratic = yes
+	}
+
+	valid_position = {
+		LR_is_celtic_pagan_trigger = yes
+		highest_held_title_tier >= tier_county
+		custom_tooltip = {
+			text = LR_court_druid_only_one_tt
+			NOT = { employs_court_position = LR_court_druid_diplomatic_court_position }
+		}
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			court_position_employee_shown_trigger = yes
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			base_court_position_validity_trigger = { EMPLOYER = scope:liege }
+			LR_is_celtic_pagan_trigger = yes
+			is_adult = yes
+		}
+	}
+
+	revoke_cost = {
+		prestige = {
+			value = minor_court_position_prestige_revoke_cost
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = { has_treasury = no }
+				}
+				add = minor_court_position_salary
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = { has_treasury = yes }
+				}
+				add = minor_court_position_salary
+			}
+		}
+		round = no
+	}
+
+	received_salary = {
+		gold = {
+			value = minor_court_position_salary
+		}
+		round = no
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_piety_gain_mult = 0.02
+		}
+		poor = {
+			monthly_piety_gain_mult = 0.04
+		}
+		average = {
+			monthly_piety_gain_mult = 0.06
+			learning = 1
+		}
+		good = {
+			monthly_piety_gain_mult = 0.08
+			learning = 2
+		}
+		excellent = {
+			monthly_piety_gain_mult = 0.1
+			learning = 3
+		}
+	}
+
+	modifier = {
+		monthly_learning_lifestyle_xp_gain_mult = 0.1
+		monthly_piety_gain_mult = 0.1
+	}
+
+	custom_employee_modifier_description = LR_court_druid_employee_desc
+
+	on_court_position_received = {
+		basic_gained_court_position_effect = yes
+		scope:employee = {
+			if = {
+				limit = {
+					NOT = { has_trait = LR_druid }
+					NOT = { has_trait = LR_wicked_druid }
+				}
+				remove_trait = LR_druid_novice
+				add_trait = LR_druid
+			}
+		}
+	}
+	on_court_position_revoked = {
+		basic_revoked_court_position_effect = yes
+	}
+	on_court_position_invalidated = {
+		basic_invalidated_court_position_effect = yes
+	}
+	on_court_position_vacated = {
+		court_position_vacated_event_effect = {
+			COURT_POSITION_TYPE = LR_court_druid_priestly_court_position
+		}
+	}
+
+	ai_position_score = {
+		value = 100
+		scope:liege = {
+			if = {
+				limit = { ai_zeal >= 0 }
+				add = 100
+			}
+		}
+		add = court_position_debt_considerations_value
+	}
+	ai_candidate_score = {
+		value = 50
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+		if = {
+			limit = { scope:employee = { has_trait = LR_druid } }
+			add = 50
+		}
+	}
+}
+
+# Diplomatic Court Druid, a master of law (Lux Invicta ancrel.154): vassal and county opinion for the employer.
+LR_court_druid_diplomatic_court_position = {
+	sort_order = 231
+	max_available_positions = 1
+	minimum_rank = county
+	skill = diplomacy
+
+	court_position_asset = {
+		animation = personality_rational
+		background = "gfx/interface/illustrations/event_scenes/forest.dds"
+	}
+
+	opinion = {
+		value = ceremonial_court_position_opinion
+	}
+
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# root is the holder (or candidate)
+	aptitude = {
+		value = 1
+		add = {
+			value = diplomacy
+			multiply = 1.5
+			max = 35
+			desc = court_position_skill_diplomacy
+		}
+		add = {
+			value = learning
+			max = 15
+			desc = court_position_skill_learning
+		}
+		if = {
+			limit = { LR_is_druid_trigger = yes }
+			add = {
+				value = 15
+				desc = LR_court_druid_is_druid_aptitude
+			}
+		}
+		if = {
+			limit = { has_trait = just }
+			add = {
+				value = 15
+				desc = court_position_just_trait
+			}
+		}
+		if = {
+			limit = { has_trait = honest }
+			add = {
+				value = 10
+				desc = court_position_honest_trait
+			}
+		}
+		if = {
+			limit = { has_trait = gregarious }
+			add = {
+				value = 10
+				desc = court_position_gregarious_trait
+			}
+		}
+		if = {
+			limit = { has_trait = deceitful }
+			add = {
+				value = -10
+				desc = court_position_deceitful_trait
+			}
+		}
+		if = {
+			limit = { has_trait = arbitrary }
+			add = {
+				value = -15
+				desc = court_position_arbitrary_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+		add = general_aptitude_bonus
+	}
+
+	is_shown = {
+		LR_is_celtic_pagan_trigger = yes
+		is_landed_or_landless_administrative_or_theocratic = yes
+	}
+
+	valid_position = {
+		LR_is_celtic_pagan_trigger = yes
+		highest_held_title_tier >= tier_county
+		custom_tooltip = {
+			text = LR_court_druid_only_one_tt
+			NOT = { employs_court_position = LR_court_druid_priestly_court_position }
+		}
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			court_position_employee_shown_trigger = yes
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			base_court_position_validity_trigger = { EMPLOYER = scope:liege }
+			LR_is_celtic_pagan_trigger = yes
+			is_adult = yes
+		}
+	}
+
+	revoke_cost = {
+		prestige = {
+			value = minor_court_position_prestige_revoke_cost
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = { has_treasury = no }
+				}
+				add = minor_court_position_salary
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = { has_treasury = yes }
+				}
+				add = minor_court_position_salary
+			}
+		}
+		round = no
+	}
+
+	received_salary = {
+		gold = {
+			value = minor_court_position_salary
+		}
+		round = no
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			direct_vassal_opinion = 2
+		}
+		poor = {
+			direct_vassal_opinion = 4
+			county_opinion_add = 1
+		}
+		average = {
+			direct_vassal_opinion = 6
+			county_opinion_add = 2
+		}
+		good = {
+			direct_vassal_opinion = 8
+			county_opinion_add = 3
+		}
+		excellent = {
+			direct_vassal_opinion = 10
+			county_opinion_add = 5
+		}
+	}
+
+	modifier = {
+		monthly_diplomacy_lifestyle_xp_gain_mult = 0.1
+		monthly_piety_gain_mult = 0.1
+	}
+
+	custom_employee_modifier_description = LR_court_druid_employee_desc
+
+	on_court_position_received = {
+		basic_gained_court_position_effect = yes
+		scope:employee = {
+			if = {
+				limit = {
+					NOT = { has_trait = LR_druid }
+					NOT = { has_trait = LR_wicked_druid }
+				}
+				remove_trait = LR_druid_novice
+				add_trait = LR_druid
+			}
+		}
+	}
+	on_court_position_revoked = {
+		basic_revoked_court_position_effect = yes
+	}
+	on_court_position_invalidated = {
+		basic_invalidated_court_position_effect = yes
+	}
+	on_court_position_vacated = {
+		court_position_vacated_event_effect = {
+			COURT_POSITION_TYPE = LR_court_druid_diplomatic_court_position
+		}
+	}
+
+	ai_position_score = {
+		value = 100
+		scope:liege = {
+			if = {
+				limit = { ai_zeal >= 0 }
+				add = 100
+			}
+		}
+		add = court_position_debt_considerations_value
+	}
+	ai_candidate_score = {
+		value = 50
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+		if = {
+			limit = { scope:employee = { has_trait = LR_druid } }
+			add = 50
+		}
+	}
+}

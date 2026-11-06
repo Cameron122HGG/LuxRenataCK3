@@ -1,0 +1,77 @@
+﻿# Revive Hatti
+# Ported from Lux Invicta's create_e_hittite (CK2): a Luwian ruler at Hattusa raises the empire of the Hittites again.
+# Uses the Bronze Age set's e_bronze_hatti; LR_revive_hatti_effect lays its Bronze Age layout over Anatolia.
+LR_revive_hatti_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 120
+		hegemony = 0
+	}
+
+	desc = LR_revive_hatti_decision_desc
+	selection_tooltip = LR_revive_hatti_decision_tooltip
+	confirm_text = LR_revive_hatti_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		faith.religion ?= religion:anatolian_religion
+		NOT = { exists = title:e_bronze_hatti.holder }
+		# Not repeatable.
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_revived_hatti
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		highest_held_title_tier < tier_hegemony
+		prestige_level >= 3
+		has_title = title:c_charsianon # Hattusa
+		completely_controls = title:c_mosul
+		completely_controls = title:c_samos
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		piety = 350
+		prestige = 1000
+	}
+
+	effect = {
+		save_scope_as = founder
+		LR_revive_hatti_effect = yes
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_revived_hatti
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

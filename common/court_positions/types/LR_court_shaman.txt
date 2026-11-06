@@ -1,0 +1,194 @@
+﻿# Lux Invicta Court Shaman, ported 2026-11-06 for shamanic rulers (LR_is_shamanic_trigger).
+# Travels to the Spirit World for the Ask the Ancestors for Advice decision. Events: events/religion_events/LR_shaman_events.txt
+LR_court_shaman_court_position = {
+	sort_order = 233
+	max_available_positions = 1
+	minimum_rank = county
+	skill = learning
+
+	court_position_asset = {
+		animation = ecstasy
+		background = "gfx/interface/illustrations/event_scenes/forest.dds"
+	}
+
+	opinion = {
+		value = ceremonial_court_position_opinion
+	}
+
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# root is the holder (or candidate)
+	aptitude = {
+		value = 1
+		add = {
+			value = learning
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_learning
+		}
+		if = {
+			limit = { has_trait = LR_shaman }
+			add = {
+				value = 15
+				desc = LR_court_shaman_is_shaman_aptitude
+			}
+		}
+		if = {
+			limit = { has_trait = zealous }
+			add = {
+				value = 15
+				desc = court_position_zealous_trait
+			}
+		}
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = 10
+				desc = court_position_patient_trait
+			}
+		}
+		if = {
+			limit = { has_trait = cynical }
+			add = {
+				value = -15
+				desc = LR_court_shaman_cynical_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+		add = general_aptitude_bonus
+	}
+
+	is_shown = {
+		LR_is_shamanic_trigger = yes
+		is_landed_or_landless_administrative_or_theocratic = yes
+	}
+
+	valid_position = {
+		LR_is_shamanic_trigger = yes
+		highest_held_title_tier >= tier_county
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			court_position_employee_shown_trigger = yes
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			base_court_position_validity_trigger = { EMPLOYER = scope:liege }
+			LR_is_shamanic_trigger = yes
+			is_adult = yes
+		}
+	}
+
+	revoke_cost = {
+		prestige = {
+			value = minor_court_position_prestige_revoke_cost
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = { has_treasury = no }
+				}
+				add = minor_court_position_salary
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = { has_treasury = yes }
+				}
+				add = minor_court_position_salary
+			}
+		}
+		round = no
+	}
+
+	received_salary = {
+		gold = {
+			value = minor_court_position_salary
+		}
+		round = no
+	}
+
+	# Pacifying the spirits of the realm: piety, and a calmer mind
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_piety_gain_mult = 0.02
+		}
+		poor = {
+			monthly_piety_gain_mult = 0.04
+			stress_loss_mult = 0.05
+		}
+		average = {
+			monthly_piety_gain_mult = 0.06
+			stress_loss_mult = 0.1
+		}
+		good = {
+			monthly_piety_gain_mult = 0.08
+			stress_loss_mult = 0.15
+		}
+		excellent = {
+			monthly_piety_gain_mult = 0.1
+			stress_loss_mult = 0.2
+			health = 0.1
+		}
+	}
+
+	modifier = {
+		monthly_learning_lifestyle_xp_gain_mult = 0.1
+		monthly_piety_gain_mult = 0.1
+	}
+
+	custom_employee_modifier_description = LR_court_shaman_employee_desc
+
+	on_court_position_received = {
+		basic_gained_court_position_effect = yes
+		scope:employee = {
+			if = {
+				limit = {
+					NOT = { has_trait = LR_shaman }
+				}
+				add_trait = LR_shaman
+			}
+		}
+	}
+	on_court_position_revoked = {
+		basic_revoked_court_position_effect = yes
+	}
+	on_court_position_invalidated = {
+		basic_invalidated_court_position_effect = yes
+	}
+	on_court_position_vacated = {
+		court_position_vacated_event_effect = {
+			COURT_POSITION_TYPE = LR_court_shaman_court_position
+		}
+	}
+
+	ai_position_score = {
+		value = 100
+		scope:liege = {
+			if = {
+				limit = { ai_zeal >= 0 }
+				add = 100
+			}
+		}
+		add = court_position_debt_considerations_value
+	}
+	ai_candidate_score = {
+		value = 50
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+		if = {
+			limit = { scope:employee = { has_trait = LR_shaman } }
+			add = 50
+		}
+	}
+}

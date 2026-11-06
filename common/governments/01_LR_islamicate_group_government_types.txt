@@ -1,4 +1,7 @@
-﻿iqta_dynastic_government = {
+﻿# Iqta: the Islamicate group's base tier for players without the Roads to Power and All Under Heaven DLC
+# (twin of iqta_dynastic_government). Lux Invicta parity: LI's muslim_government ("Iqta") was the base government of
+# Muslim realms, with castle and temple holdings and clan-like rule; here it is the clan mechanic.
+iqta_government = {
 	government_rules = {
 		create_cadet_branches = yes
 		rulers_should_have_dynasty = yes
@@ -67,6 +70,7 @@
 		government_uses_crown_authority
 		government_uses_domain_limit
 		government_is_iqta
+		government_is_iqta_plain
 		government_is_islamic_group
 	}
 
@@ -88,6 +92,114 @@
 	}
 
 	color = { 95 140 30 } # Olive green (was clan_government's)
+	realm_mask_offset = { 0.0 0.03 }
+	realm_mask_scale = { 1 1 }
+}
+
+iqta_dynastic_government = { # Iqta Dynastic: the Islamicate tier for players with the Roads to Power and All Under Heaven DLC (twin of iqta_administrative_government)
+	government_rules = {
+		noble_families = yes
+		house_aspirations = yes
+		use_as_base_on_landed = yes
+		use_as_base_on_rank_up = no # LR: switching between dynastic and administrative twins is by decision only, as in Japan
+		landless_playable = yes
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		legitimacy = yes
+		dynasty_named_realms = yes
+		always_use_patronym = yes
+		allow_accolades = yes
+	}
+
+	royal_court = any
+
+	primary_holding = castle_holding
+	primary_heritages = { heritage_arabic heritage_turkic }
+
+	fallback = 2
+
+	preferred_religions = { islam_religion }
+
+	valid_holdings = { temple_citadel_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+
+	house_unity = clan_house_unity
+	tax_slot_type = clan_tax_slot
+
+	vassal_contract_group = clan_vassal
+
+	ai = {
+		use_legends = yes
+	}
+
+	opinion_of_liege = {
+		scope:vassal = {
+			if = {
+				limit = {
+					is_powerful_vassal = yes
+					NOT = {
+						is_allied_to = scope:liege
+					}
+				}
+				value = clan_powerful_vassal_no_alliance_opinion_penalty_value
+			}
+		}
+	}
+	opinion_of_liege_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:vassal = {
+						NOT = {
+							is_allied_to = scope:liege
+						}
+						is_powerful_vassal = yes
+					}
+				}
+				desc = "GOVERNMENT_CLAN_NOT_ALLIED_POWERFUL"
+			}
+		}
+	}
+
+	can_get_government = {
+		LR_has_dynastic_governments_dlc_trigger = yes
+	}
+	domicile_type = islamicate_group_estate
+	compatible_government_type_succession = { iqta_administrative_government }
+
+	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
+	flags = {
+		government_is_iqta_dynastic
+		government_has_county_tier_noble_families
+		government_uses_domicile_but_not_adventurer
+		government_is_clan
+		government_has_tax_slot
+		may_appoint_viziers
+		government_is_settled
+		government_uses_crown_authority
+		government_uses_domain_limit
+		government_is_iqta
+		government_is_islamic_group
+	}
+
+	mechanic_type = clan
+	is_mechanic_type_default = no # iqta_government is the clan default
+
+	possible_grant_vassal_governments = { theocracy_government }
+
+	# Grant candidate for nomads and herders who want to settle
+	grant_vassal_ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				pam_nomad_grant_settled_government_trigger = yes
+				faith = { religion = religion:islam_religion }
+			}
+			add = 10
+		}
+	}
+
+	color = { 120 160 60 }
 	realm_mask_offset = { 0.0 0.03 }
 	realm_mask_scale = { 1 1 }
 }
@@ -127,7 +239,7 @@ iqta_administrative_government = {
 	primary_holding = castle_holding
 	valid_holdings = { city_holding temple_citadel_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
-	primary_heritages = { heritage_latin heritage_byzantine heritage_caucasian heritage_vandalic heritage_visigothic heritage_suevic heritage_ostrogothic }
+	primary_heritages = { heritage_arabic heritage_turkic } # as iqta_government and iqta_dynastic_government (was a copy of the Roman list)
 
 	vassal_contract_group = iqta_admin_vassal
 

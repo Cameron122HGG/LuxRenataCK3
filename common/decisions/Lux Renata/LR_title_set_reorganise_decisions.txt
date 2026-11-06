@@ -1,0 +1,1220 @@
+﻿# Title sets: reorganise lands between the Hellenistic and Roman sets (gen_title_set_reorganise.py,
+# LR_title_set_rules.md section 4). Vassal titles follow through LR_title_set_reorganise_realm_effect.
+
+LR_provincialise_satrapies_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = roman
+	sort_order = 890
+	desc = LR_provincialise_satrapies_decision_desc
+	selection_tooltip = LR_provincialise_satrapies_decision_tooltip
+	confirm_text = LR_provincialise_satrapies_decision_confirm
+	cooldown = { years = 5 }
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		LR_title_set_roman_native_trigger = yes
+		OR = {
+			title:k_satrapy_macedonia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_greece.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_thrace.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_bithynia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_ionia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_lydia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_cappadocia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_paphlagonia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_pontus.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_syria.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_cilicia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_mesopotamia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_egypt.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_libya.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_cyprus.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_phoenicia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_armenia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_clochis.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			title:k_satrapy_nubia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 300
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 300
+			}
+		}
+		prestige = 300
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_title_set_reorganise_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_satrapy_macedonia
+					title:k_satrapy_macedonia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_greece
+					title:k_satrapy_greece.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_thrace
+					title:k_satrapy_thrace.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_bithynia
+					title:k_satrapy_bithynia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_ionia
+					title:k_satrapy_ionia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_lydia
+					title:k_satrapy_lydia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cappadocia
+					title:k_satrapy_cappadocia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_paphlagonia
+					title:k_satrapy_paphlagonia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_pontus
+					title:k_satrapy_pontus.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_syria
+					title:k_satrapy_syria.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cilicia
+					title:k_satrapy_cilicia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_mesopotamia
+					title:k_satrapy_mesopotamia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_egypt
+					title:k_satrapy_egypt.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_libya
+					title:k_satrapy_libya.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cyprus
+					title:k_satrapy_cyprus.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_phoenicia
+					title:k_satrapy_phoenicia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_armenia
+					title:k_satrapy_armenia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_clochis
+					title:k_satrapy_clochis.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_nubia
+					title:k_satrapy_nubia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = custom_satrapy_macedonia
+			current_description = {
+				desc = custom_satrapy_macedonia_desc
+			}
+			localization = {
+				desc = custom_satrapy_macedonia_desc
+			}
+			is_shown = {
+				title:k_satrapy_macedonia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_macedonia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_greece
+			current_description = {
+				desc = custom_satrapy_greece_desc
+			}
+			localization = {
+				desc = custom_satrapy_greece_desc
+			}
+			is_shown = {
+				title:k_satrapy_greece.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_greece
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_thrace
+			current_description = {
+				desc = custom_satrapy_thrace_desc
+			}
+			localization = {
+				desc = custom_satrapy_thrace_desc
+			}
+			is_shown = {
+				title:k_satrapy_thrace.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_thrace
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_bithynia
+			current_description = {
+				desc = custom_satrapy_bithynia_desc
+			}
+			localization = {
+				desc = custom_satrapy_bithynia_desc
+			}
+			is_shown = {
+				title:k_satrapy_bithynia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_bithynia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_ionia
+			current_description = {
+				desc = custom_satrapy_ionia_desc
+			}
+			localization = {
+				desc = custom_satrapy_ionia_desc
+			}
+			is_shown = {
+				title:k_satrapy_ionia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_ionia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_lydia
+			current_description = {
+				desc = custom_satrapy_lydia_desc
+			}
+			localization = {
+				desc = custom_satrapy_lydia_desc
+			}
+			is_shown = {
+				title:k_satrapy_lydia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_lydia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_cappadocia
+			current_description = {
+				desc = custom_satrapy_cappadocia_desc
+			}
+			localization = {
+				desc = custom_satrapy_cappadocia_desc
+			}
+			is_shown = {
+				title:k_satrapy_cappadocia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cappadocia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_paphlagonia
+			current_description = {
+				desc = custom_satrapy_paphlagonia_desc
+			}
+			localization = {
+				desc = custom_satrapy_paphlagonia_desc
+			}
+			is_shown = {
+				title:k_satrapy_paphlagonia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_paphlagonia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_pontus
+			current_description = {
+				desc = custom_satrapy_pontus_desc
+			}
+			localization = {
+				desc = custom_satrapy_pontus_desc
+			}
+			is_shown = {
+				title:k_satrapy_pontus.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_pontus
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_syria
+			current_description = {
+				desc = custom_satrapy_syria_desc
+			}
+			localization = {
+				desc = custom_satrapy_syria_desc
+			}
+			is_shown = {
+				title:k_satrapy_syria.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_syria
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_cilicia
+			current_description = {
+				desc = custom_satrapy_cilicia_desc
+			}
+			localization = {
+				desc = custom_satrapy_cilicia_desc
+			}
+			is_shown = {
+				title:k_satrapy_cilicia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cilicia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_mesopotamia
+			current_description = {
+				desc = custom_satrapy_mesopotamia_desc
+			}
+			localization = {
+				desc = custom_satrapy_mesopotamia_desc
+			}
+			is_shown = {
+				title:k_satrapy_mesopotamia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_mesopotamia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_egypt
+			current_description = {
+				desc = custom_satrapy_egypt_desc
+			}
+			localization = {
+				desc = custom_satrapy_egypt_desc
+			}
+			is_shown = {
+				title:k_satrapy_egypt.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_egypt
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_libya
+			current_description = {
+				desc = custom_satrapy_libya_desc
+			}
+			localization = {
+				desc = custom_satrapy_libya_desc
+			}
+			is_shown = {
+				title:k_satrapy_libya.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_libya
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_cyprus
+			current_description = {
+				desc = custom_satrapy_cyprus_desc
+			}
+			localization = {
+				desc = custom_satrapy_cyprus_desc
+			}
+			is_shown = {
+				title:k_satrapy_cyprus.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cyprus
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_phoenicia
+			current_description = {
+				desc = custom_satrapy_phoenicia_desc
+			}
+			localization = {
+				desc = custom_satrapy_phoenicia_desc
+			}
+			is_shown = {
+				title:k_satrapy_phoenicia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_phoenicia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_armenia
+			current_description = {
+				desc = custom_satrapy_armenia_desc
+			}
+			localization = {
+				desc = custom_satrapy_armenia_desc
+			}
+			is_shown = {
+				title:k_satrapy_armenia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_armenia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_clochis
+			current_description = {
+				desc = custom_satrapy_clochis_desc
+			}
+			localization = {
+				desc = custom_satrapy_clochis_desc
+			}
+			is_shown = {
+				title:k_satrapy_clochis.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_clochis
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_nubia
+			current_description = {
+				desc = custom_satrapy_nubia_desc
+			}
+			localization = {
+				desc = custom_satrapy_nubia_desc
+			}
+			is_shown = {
+				title:k_satrapy_nubia.title_capital_county.duchy ?= { OR = { LR_title_set_hellenistic_title_trigger = yes LR_title_set_persian_title_trigger = yes LR_title_set_hebrew_title_trigger = yes } }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_nubia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_provincialise_satrapies_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:custom_satrapy_macedonia = yes }
+				LR_provincialise_k_satrapy_macedonia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_greece = yes }
+				LR_provincialise_k_satrapy_greece_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_thrace = yes }
+				LR_provincialise_k_satrapy_thrace_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_bithynia = yes }
+				LR_provincialise_k_satrapy_bithynia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_ionia = yes }
+				LR_provincialise_k_satrapy_ionia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_lydia = yes }
+				LR_provincialise_k_satrapy_lydia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_cappadocia = yes }
+				LR_provincialise_k_satrapy_cappadocia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_paphlagonia = yes }
+				LR_provincialise_k_satrapy_paphlagonia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_pontus = yes }
+				LR_provincialise_k_satrapy_pontus_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_syria = yes }
+				LR_provincialise_k_satrapy_syria_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_cilicia = yes }
+				LR_provincialise_k_satrapy_cilicia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_mesopotamia = yes }
+				LR_provincialise_k_satrapy_mesopotamia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_egypt = yes }
+				LR_provincialise_k_satrapy_egypt_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_libya = yes }
+				LR_provincialise_k_satrapy_libya_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_cyprus = yes }
+				LR_provincialise_k_satrapy_cyprus_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_phoenicia = yes }
+				LR_provincialise_k_satrapy_phoenicia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_armenia = yes }
+				LR_provincialise_k_satrapy_armenia_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_clochis = yes }
+				LR_provincialise_k_satrapy_clochis_effect = yes
+			}
+			if = {
+				limit = { scope:custom_satrapy_nubia = yes }
+				LR_provincialise_k_satrapy_nubia_effect = yes
+			}
+			LR_title_set_reorganise_realm_effect = yes
+		}
+	}
+
+	ai_potential = {
+		OR = { LR_title_set_hellenistic_outsider_trigger = yes LR_title_set_persian_outsider_trigger = yes }
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_restore_satrapies_from_provinces_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = hellenic
+	sort_order = 890
+	desc = LR_restore_satrapies_from_provinces_decision_desc
+	selection_tooltip = LR_restore_satrapies_from_provinces_decision_tooltip
+	confirm_text = LR_restore_satrapies_from_provinces_decision_confirm
+	cooldown = { years = 5 }
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		LR_title_set_hellenistic_native_trigger = yes
+		OR = {
+			title:k_satrapy_macedonia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_greece.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_thrace.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_bithynia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_ionia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_lydia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_cappadocia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_paphlagonia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_pontus.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_syria.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_cilicia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_mesopotamia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_egypt.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_libya.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_cyprus.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_phoenicia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_armenia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_clochis.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			title:k_satrapy_nubia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 300
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 300
+			}
+		}
+		prestige = 300
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_title_set_reorganise_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_satrapy_macedonia
+					title:k_satrapy_macedonia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_greece
+					title:k_satrapy_greece.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_thrace
+					title:k_satrapy_thrace.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_bithynia
+					title:k_satrapy_bithynia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_ionia
+					title:k_satrapy_ionia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_lydia
+					title:k_satrapy_lydia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cappadocia
+					title:k_satrapy_cappadocia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_paphlagonia
+					title:k_satrapy_paphlagonia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_pontus
+					title:k_satrapy_pontus.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_syria
+					title:k_satrapy_syria.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cilicia
+					title:k_satrapy_cilicia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_mesopotamia
+					title:k_satrapy_mesopotamia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_egypt
+					title:k_satrapy_egypt.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_libya
+					title:k_satrapy_libya.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_cyprus
+					title:k_satrapy_cyprus.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_phoenicia
+					title:k_satrapy_phoenicia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_armenia
+					title:k_satrapy_armenia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_clochis
+					title:k_satrapy_clochis.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_nubia
+					title:k_satrapy_nubia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = custom_satrapy_macedonia
+			current_description = {
+				desc = custom_satrapy_macedonia_desc
+			}
+			localization = {
+				desc = custom_satrapy_macedonia_desc
+			}
+			is_shown = {
+				title:k_satrapy_macedonia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_macedonia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_greece
+			current_description = {
+				desc = custom_satrapy_greece_desc
+			}
+			localization = {
+				desc = custom_satrapy_greece_desc
+			}
+			is_shown = {
+				title:k_satrapy_greece.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_greece
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_thrace
+			current_description = {
+				desc = custom_satrapy_thrace_desc
+			}
+			localization = {
+				desc = custom_satrapy_thrace_desc
+			}
+			is_shown = {
+				title:k_satrapy_thrace.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_thrace
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_bithynia
+			current_description = {
+				desc = custom_satrapy_bithynia_desc
+			}
+			localization = {
+				desc = custom_satrapy_bithynia_desc
+			}
+			is_shown = {
+				title:k_satrapy_bithynia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_bithynia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_ionia
+			current_description = {
+				desc = custom_satrapy_ionia_desc
+			}
+			localization = {
+				desc = custom_satrapy_ionia_desc
+			}
+			is_shown = {
+				title:k_satrapy_ionia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_ionia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_lydia
+			current_description = {
+				desc = custom_satrapy_lydia_desc
+			}
+			localization = {
+				desc = custom_satrapy_lydia_desc
+			}
+			is_shown = {
+				title:k_satrapy_lydia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_lydia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_cappadocia
+			current_description = {
+				desc = custom_satrapy_cappadocia_desc
+			}
+			localization = {
+				desc = custom_satrapy_cappadocia_desc
+			}
+			is_shown = {
+				title:k_satrapy_cappadocia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cappadocia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_paphlagonia
+			current_description = {
+				desc = custom_satrapy_paphlagonia_desc
+			}
+			localization = {
+				desc = custom_satrapy_paphlagonia_desc
+			}
+			is_shown = {
+				title:k_satrapy_paphlagonia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_paphlagonia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_pontus
+			current_description = {
+				desc = custom_satrapy_pontus_desc
+			}
+			localization = {
+				desc = custom_satrapy_pontus_desc
+			}
+			is_shown = {
+				title:k_satrapy_pontus.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_pontus
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_syria
+			current_description = {
+				desc = custom_satrapy_syria_desc
+			}
+			localization = {
+				desc = custom_satrapy_syria_desc
+			}
+			is_shown = {
+				title:k_satrapy_syria.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_syria
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_cilicia
+			current_description = {
+				desc = custom_satrapy_cilicia_desc
+			}
+			localization = {
+				desc = custom_satrapy_cilicia_desc
+			}
+			is_shown = {
+				title:k_satrapy_cilicia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cilicia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_mesopotamia
+			current_description = {
+				desc = custom_satrapy_mesopotamia_desc
+			}
+			localization = {
+				desc = custom_satrapy_mesopotamia_desc
+			}
+			is_shown = {
+				title:k_satrapy_mesopotamia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_mesopotamia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_egypt
+			current_description = {
+				desc = custom_satrapy_egypt_desc
+			}
+			localization = {
+				desc = custom_satrapy_egypt_desc
+			}
+			is_shown = {
+				title:k_satrapy_egypt.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_egypt
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_libya
+			current_description = {
+				desc = custom_satrapy_libya_desc
+			}
+			localization = {
+				desc = custom_satrapy_libya_desc
+			}
+			is_shown = {
+				title:k_satrapy_libya.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_libya
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_cyprus
+			current_description = {
+				desc = custom_satrapy_cyprus_desc
+			}
+			localization = {
+				desc = custom_satrapy_cyprus_desc
+			}
+			is_shown = {
+				title:k_satrapy_cyprus.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_cyprus
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_phoenicia
+			current_description = {
+				desc = custom_satrapy_phoenicia_desc
+			}
+			localization = {
+				desc = custom_satrapy_phoenicia_desc
+			}
+			is_shown = {
+				title:k_satrapy_phoenicia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_phoenicia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_armenia
+			current_description = {
+				desc = custom_satrapy_armenia_desc
+			}
+			localization = {
+				desc = custom_satrapy_armenia_desc
+			}
+			is_shown = {
+				title:k_satrapy_armenia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_armenia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_clochis
+			current_description = {
+				desc = custom_satrapy_clochis_desc
+			}
+			localization = {
+				desc = custom_satrapy_clochis_desc
+			}
+			is_shown = {
+				title:k_satrapy_clochis.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_clochis
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = custom_satrapy_nubia
+			current_description = {
+				desc = custom_satrapy_nubia_desc
+			}
+			localization = {
+				desc = custom_satrapy_nubia_desc
+			}
+			is_shown = {
+				title:k_satrapy_nubia.title_capital_county.duchy ?= { LR_title_set_roman_title_trigger = yes }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_nubia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_satrapies_from_provinces_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:custom_satrapy_macedonia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_macedonia STRATEGIA = e_strategia_europe }
+			}
+			if = {
+				limit = { scope:custom_satrapy_greece = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_greece STRATEGIA = e_strategia_europe }
+			}
+			if = {
+				limit = { scope:custom_satrapy_thrace = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_thrace STRATEGIA = e_strategia_europe }
+			}
+			if = {
+				limit = { scope:custom_satrapy_bithynia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_bithynia STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_ionia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_ionia STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_lydia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_lydia STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_cappadocia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_cappadocia STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_paphlagonia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_paphlagonia STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_pontus = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_pontus STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_syria = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_syria STRATEGIA = e_strategia_syria }
+			}
+			if = {
+				limit = { scope:custom_satrapy_cilicia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_cilicia STRATEGIA = e_strategia_syria }
+			}
+			if = {
+				limit = { scope:custom_satrapy_mesopotamia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_mesopotamia STRATEGIA = e_strategia_syria }
+			}
+			if = {
+				limit = { scope:custom_satrapy_egypt = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_egypt STRATEGIA = e_strategia_egypt }
+			}
+			if = {
+				limit = { scope:custom_satrapy_libya = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_libya STRATEGIA = e_strategia_egypt }
+			}
+			if = {
+				limit = { scope:custom_satrapy_cyprus = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_cyprus STRATEGIA = e_strategia_egypt }
+			}
+			if = {
+				limit = { scope:custom_satrapy_phoenicia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_phoenicia STRATEGIA = e_strategia_syria }
+			}
+			if = {
+				limit = { scope:custom_satrapy_armenia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_armenia STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_clochis = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_clochis STRATEGIA = e_strategia_asia }
+			}
+			if = {
+				limit = { scope:custom_satrapy_nubia = yes }
+				LR_title_set_restore_satrapy_effect = { SATRAPY = k_satrapy_nubia STRATEGIA = e_strategia_egypt }
+			}
+			LR_title_set_reorganise_realm_effect = yes
+		}
+	}
+
+	ai_potential = {
+		LR_title_set_roman_outsider_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

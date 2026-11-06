@@ -1,0 +1,20 @@
+﻿# Lux Renata: Anarchy (lux_tradition_gov_anarchy) costs, used by LR_gov_anarchy_events.txt. Character scope.
+
+# Settling on a government tradition through the Anarchy event: what the tradition costs in the culture view while in
+# Anarchy (double base cost, quartered)
+LR_anarchy_adoption_prestige_cost_value = {
+	value = -1000 # tradition_base_cost (2000, culture scope) x 2 x 0.25
+}
+
+# Putting the choice off: a medium prestige loss for every year the culture has been in Anarchy
+LR_anarchy_delay_prestige_cost_value = {
+	value = medium_prestige_value
+	multiply = -1
+	if = {
+		limit = { culture ?= { has_variable = LR_anarchy_years } }
+		multiply = {
+			value = culture.var:LR_anarchy_years
+			min = 1
+		}
+	}
+}

@@ -1,0 +1,166 @@
+﻿# Lux Invicta Celtic flavour and druidic headhunters, ported 2026-11-06
+# Events: events/religion_events/LR_celtic_flavor_events.txt and LR_celtic_headhunter_events.txt
+
+random_yearly_playable_pulse = {
+	on_actions = { LR_celtic_flavor_pulse }
+}
+
+on_title_gain = {
+	on_actions = { LR_celtic_flavor_on_title_gain }
+}
+
+on_combat_end_winner = {
+	on_actions = { LR_headhunter_combat_win }
+}
+
+# Each event checks its own trigger (Celtic pagans; St Kilda needs a sick non-pagan Celt holding the Hebrides)
+LR_celtic_flavor_pulse = {
+	random_events = {
+		1000 = 0 #no event
+		10 = LR_celtic_flavor.0001 # Meeting a Bard
+		8 = LR_celtic_flavor.0002 # The Afanc
+		8 = LR_celtic_flavor.0003 # The banshee
+		10 = LR_celtic_flavor.0004 # Bran's Voyage
+		150 = LR_celtic_flavor.0005 # Journey to St Kilda (sick, rumour of Celts on St Kilda)
+	}
+}
+
+# Y Mab Darogan: first Brythonic ruler of Britannia or the Western Celtic Empire
+LR_celtic_flavor_on_title_gain = {
+	trigger = {
+		OR = {
+			scope:title = title:e_britannia
+			scope:title = title:h_western_celtic_empire
+		}
+		NOT = { has_global_variable = LR_first_brythonic_emperor }
+		is_playable_character = yes
+		culture = { has_cultural_pillar = heritage_brythonic }
+	}
+	effect = {
+		trigger_event = {
+			id = LR_celtic_flavor.0010
+			days = 1
+		}
+	}
+}
+
+# Root = winning combat side. Celtic pagan commanders and knights may take heads, then become legends.
+LR_headhunter_combat_win = {
+	effect = {
+		every_side_commander = {
+			limit = {
+				LR_is_celtic_pagan_trigger = yes
+				is_adult = yes
+				is_imprisoned = no
+			}
+			add_to_temporary_list = LR_headhunter_candidates
+		}
+		every_side_knight = {
+			limit = {
+				LR_is_celtic_pagan_trigger = yes
+				is_adult = yes
+				is_imprisoned = no
+				NOT = { is_in_list = LR_headhunter_candidates }
+			}
+			add_to_temporary_list = LR_headhunter_candidates
+		}
+		every_in_list = {
+			list = LR_headhunter_candidates
+			limit = {
+				NOT = { has_trait = incapable }
+			}
+			if = {
+				limit = {
+					NOT = { has_trait = LR_headhunter }
+					NOT = { has_trait = LR_headhunter_legend }
+					OR = {
+						has_trait = brave
+						has_trait = wrathful
+					}
+				}
+				random = {
+					chance = 4
+					modifier = {
+						add = 4
+						has_trait = brave
+					}
+					modifier = {
+						add = 2
+						martial >= 10
+					}
+					modifier = {
+						add = 2
+						prowess >= 12
+					}
+					modifier = {
+						add = 2
+						has_trait = strong
+					}
+					modifier = {
+						factor = 0.5
+						has_trait = wounded
+					}
+					modifier = {
+						factor = 0.5
+						has_any_illness = yes
+					}
+					modifier = {
+						factor = 0.5
+						has_trait = craven
+					}
+					modifier = {
+						factor = 0.5
+						has_trait = weak
+					}
+					modifier = {
+						factor = 0.75
+						has_trait = drunkard
+					}
+					trigger_event = LR_headhunter.0001
+				}
+			}
+			else_if = {
+				limit = {
+					has_trait = LR_headhunter
+					has_trait = brave
+					OR = {
+						prowess >= 14
+						martial >= 13
+						has_trait = lifestyle_blademaster
+						has_trait = aggressive_attacker
+						has_trait = unyielding_defender
+						has_trait = organizer
+					}
+				}
+				random = {
+					chance = 2
+					modifier = {
+						add = 2
+						prowess >= 16
+					}
+					modifier = {
+						add = 1
+						martial >= 15
+					}
+					modifier = {
+						add = 1
+						has_trait = strong
+					}
+					modifier = {
+						factor = 0.5
+						has_trait = wounded
+					}
+					modifier = {
+						factor = 0.5
+						has_any_illness = yes
+					}
+					modifier = {
+						factor = 0.5
+						has_trait = weak
+					}
+					trigger_event = LR_headhunter.0002
+				}
+			}
+		}
+	}
+}

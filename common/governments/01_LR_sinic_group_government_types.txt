@@ -1,7 +1,7 @@
-﻿### Brief: feudal_government
-#
-# This is referenced in code
-#
+﻿# Sinic group: Chinese Feudal (plain tier) -> Meritocratic (administrative, All Under Heaven) -> Celestial (top tier,
+# All Under Heaven). Meritocratic and Celestial live in 00_government_types.txt and carry government_is_sinic_group.
+# Japanese Feudal is the plain tier for Japanese realms without All Under Heaven (with it they use the Japanese group).
+
 chinese_feudal_government = {
 	government_rules = {
 		create_cadet_branches = yes
@@ -31,6 +31,7 @@ chinese_feudal_government = {
 		government_is_feudal
 		government_is_sinic_group
 		government_is_chinese_feudal
+		government_is_sinic_plain
 		government_is_settled
 		may_elevate_co_monarch
 		government_uses_crown_authority
@@ -60,6 +61,63 @@ chinese_feudal_government = {
 	}
 
 	color = rgb { 17 156 70 }
+	realm_mask_offset = { 0.0 0.01 }
+	realm_mask_scale = { 1 1 }
+}
+
+japanese_government = { # Japanese Feudal: base government of Japanese realms for players without the All Under Heaven DLC (stands in for Soryo and Ritsuryo)
+	government_rules = {
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		dynasty_named_realms = yes
+		legitimacy = yes
+		disable_regnal_numbers = yes
+		allow_accolades = yes
+	}
+
+	royal_court = any
+
+	fallback = 5
+
+	primary_holding = castle_holding
+	valid_holdings = { temple_citadel_holding tribal_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+	primary_heritages = { heritage_japonic heritage_ainuic }
+
+	vassal_contract_group = feudal_vassal
+
+	# Only without the DLC; with it, Soryo (japan_feudal_government) takes its place (LR_normalize_dynastic_government_effect)
+	can_get_government = {
+		has_tgp_dlc_trigger = no
+	}
+
+	character_modifier = {
+		# Samurai, as Soryo
+		archer_cavalry_recruitment_cost_mult = -0.25
+		heavy_infantry_recruitment_cost_mult = -0.25
+	}
+
+	ai = {
+		use_legends = yes
+	}
+
+	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
+	flags = {
+		government_is_feudal
+		government_is_sinic_group
+		government_is_japanese_plain
+		government_is_settled
+		may_elevate_co_monarch
+		government_uses_crown_authority
+		government_uses_domain_limit
+	}
+
+	mechanic_type = feudal
+	is_mechanic_type_default = no
+
+	possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }
+
+	color = { 68 100 250 } # as Soryo
 	realm_mask_offset = { 0.0 0.01 }
 	realm_mask_scale = { 1 1 }
 }

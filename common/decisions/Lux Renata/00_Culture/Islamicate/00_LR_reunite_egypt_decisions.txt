@@ -1,0 +1,67 @@
+﻿# Reunite the Two Lands
+# From 6060.1.1 k_egypt has no de jure land: its duchies sit under k_upper_egypt and k_lower_egypt.
+# A ruler who completely controls both restores k_egypt over them.
+LR_reunite_egypt_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	desc = LR_reunite_egypt_decision_desc
+	selection_tooltip = LR_reunite_egypt_decision_tooltip
+	confirm_text = LR_reunite_egypt_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { exists = title:k_egypt.holder }
+		# Egypt is still split
+		title:k_lower_egypt = { any_de_jure_county = { always = yes } }
+		title:k_upper_egypt = { any_de_jure_county = { always = yes } }
+		capital_province ?= {
+			OR = {
+				geographical_region = world_africa_north_east
+				geographical_region = world_middle_east_jerusalem
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		completely_controls = title:k_lower_egypt
+		completely_controls = title:k_upper_egypt
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		save_scope_as = founder
+		LR_reunite_egypt_effect = yes
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

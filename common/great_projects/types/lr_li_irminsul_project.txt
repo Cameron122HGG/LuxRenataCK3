@@ -1,0 +1,86 @@
+﻿# Raise an Irminsul (Lux Invicta's raise_irminsul, gen_li_festivals.py). The god is chosen on completion
+# (LR_festival.0900), which gives the capital county that god's modifier. Illustration is a placeholder.
+@LR_raise_irminsul_illustration = "gfx/interface/illustrations/great_projects/dinas_emrys.dds"
+
+LR_raise_irminsul = {
+	icon = {
+		reference = "gfx/interface/icons/icon_skill_learning.dds"
+	}
+	illustration = {
+		reference = @LR_raise_irminsul_illustration
+	}
+	name = {
+		desc = great_project_type_LR_raise_irminsul
+	}
+	cost = {
+		treasury_or_gold = {
+			value = great_project_base_contribution_cost
+		}
+	}
+	ai_will_do = {
+		value = 10
+	}
+	construction_time = { value = great_project_base_construction_time }
+	invite_interaction = request_great_project_contribution_interaction
+	province_filter = capital
+	ai_province_filter = capital
+	is_shown = {
+		is_ruler = yes
+		faith.religion = religion:germanic_religion
+		NOT = { is_planning_great_project = LR_raise_irminsul }
+		NOT = { capital_county ?= { has_variable = LR_irminsul } }
+	}
+	is_valid = {
+		scope:owner.faith.religion = religion:germanic_religion
+	}
+	on_complete = {
+		scope:owner = { trigger_event = LR_festival.0900 }
+	}
+	project_contributions = {
+		LR_raise_irminsul_oak = {
+			is_required = yes
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = { value = 10 }
+		}
+		LR_raise_irminsul_carving = {
+			is_required = yes
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+				}
+				piety = {
+					value = great_project_base_contribution_cost
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = { value = 10 }
+		}
+	}
+}

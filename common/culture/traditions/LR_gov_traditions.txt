@@ -2,6 +2,7 @@
 # (plain -> dynastic -> administrative -> top tier) its rulers use. Seeded in the culture files by heritage.
 # Adopting another one replaces it and moves the culture's rulers to the same tier of the new group
 # (LR_government_tradition_on_actions.txt). The AI never adopts them on its own.
+# A culture left without one falls into Anarchy (lux_tradition_gov_anarchy, at the end of this file) until it picks one.
 
 lux_tradition_gov_classical = {
 	category = realm
@@ -24,6 +25,13 @@ lux_tradition_gov_classical = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
 	}
 
@@ -51,6 +59,13 @@ lux_tradition_gov_western = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
 	}
 
@@ -78,6 +93,13 @@ lux_tradition_gov_despotic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
 	}
 
@@ -105,6 +127,13 @@ lux_tradition_gov_indic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
 	}
 
@@ -132,6 +161,13 @@ lux_tradition_gov_islamic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
 	}
 
@@ -159,6 +195,13 @@ lux_tradition_gov_sinic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
 	}
 
@@ -186,6 +229,13 @@ lux_tradition_gov_japanese = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
 	}
 
@@ -213,7 +263,59 @@ lux_tradition_gov_barbarian = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
 		}
+	}
+
+	ai_will_do = { value = 0 }
+}
+
+# Anarchy: a culture without a government tradition. It cannot be picked; it is given to any culture that has no
+# government tradition (no heritage match, or its tradition was removed) and goes as soon as one is adopted.
+# While it lasts, government traditions cost a quarter as much and ignore the tradition cooldown (00_rules.txt), the
+# player culture head is asked every year to settle on one (LR_gov_anarchy_events.txt), and an AI-led culture settles
+# on its leading ruler's government after five years (LR_resolve_government_anarchy_effect).
+lux_tradition_gov_anarchy = {
+	category = realm
+
+	layers = {
+		0 = intrigue
+		1 = default_todo.dds
+		4 = crown.dds
+	}
+
+	is_shown = {
+		has_cultural_tradition = lux_tradition_gov_anarchy
+	}
+	can_pick = {
+		always = no
+	}
+
+	parameters = {
+		lux_government_anarchy = yes
+	}
+
+	character_modifier = {
+		vassal_opinion = -15
+		legitimacy_gain_mult = -0.25
+		domain_tax_mult = -0.15
+		levy_size = -0.15
+		monthly_prestige_gain_mult = -0.2
+	}
+
+	county_modifier = {
+		county_opinion_add = -15
+		development_growth_factor = -0.25
+	}
+
+	cost = {
+		prestige = 0
 	}
 
 	ai_will_do = { value = 0 }

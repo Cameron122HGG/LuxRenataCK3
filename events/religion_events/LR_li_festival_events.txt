@@ -1,0 +1,478 @@
+﻿namespace = LR_festival
+
+# Lux Invicta festivals (gen_li_festivals.py). # FUTURE (activities rework): consider turning this festival into a CK3 activity (a faith-specific feast with guests,
+# invitations and phases) instead of a decision with a short event chain.
+
+LR_festival.0101 = {
+	type = character_event
+	title = LR_festival.0101.t
+	desc = LR_festival.0101.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = LR_festival.0101.a
+		trigger_event = { id = LR_festival.0102 days = 3 }
+	}
+}
+
+LR_festival.0102 = {
+	type = character_event
+	title = LR_festival.0102.t
+	desc = LR_festival.0102.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_festival.0102.a
+		trigger_event = { id = LR_festival.0103 days = 3 }
+	}
+}
+
+LR_festival.0103 = {
+	type = character_event
+	title = LR_festival.0103.t
+	desc = LR_festival.0103.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0103.a
+		add_character_modifier = { modifier = LR_pagan_festival_modifier years = 5 }
+		add_piety = 100
+		every_vassal = {
+			limit = { faith = root.faith }
+			add_opinion = { target = root modifier = LR_festival_opinion years = 5 }
+		}
+	}
+}
+
+LR_festival.0201 = {
+	type = character_event
+	title = LR_festival.0201.t
+	desc = LR_festival.0201.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = LR_festival.0201.a
+		add_prestige = 100
+		trigger_event = { id = LR_festival.0202 days = 3 }
+	}
+	option = {
+		name = LR_festival.0201.b
+		add_piety = 100
+		trigger_event = { id = LR_festival.0202 days = 3 }
+	}
+	option = {
+		name = LR_festival.0201.c
+		add_prestige = 200
+		add_piety = -50
+		trigger_event = { id = LR_festival.0202 days = 3 }
+	}
+}
+
+LR_festival.0202 = {
+	type = character_event
+	title = LR_festival.0202.t
+	desc = LR_festival.0202.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_festival.0202.a
+		add_character_modifier = { modifier = LR_mithras_defense_modifier years = 5 }
+		trigger_event = { id = LR_festival.0203 days = 3 }
+	}
+	option = {
+		name = LR_festival.0202.b
+		add_character_modifier = { modifier = LR_mithras_offense_modifier years = 5 }
+		trigger_event = { id = LR_festival.0203 days = 3 }
+	}
+	option = {
+		name = LR_festival.0202.c
+		add_character_modifier = { modifier = LR_mithras_sovereignty_modifier years = 5 }
+		trigger_event = { id = LR_festival.0203 days = 3 }
+	}
+}
+
+LR_festival.0203 = {
+	type = character_event
+	title = LR_festival.0203.t
+	desc = LR_festival.0203.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0203.a
+		add_piety = 100
+		every_vassal = {
+			limit = { faith = root.faith }
+			add_opinion = { target = root modifier = LR_festival_opinion years = 5 }
+		}
+	}
+}
+
+LR_festival.0301 = {
+	type = character_event
+	title = LR_festival.0301.t
+	desc = LR_festival.0301.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = LR_festival.0301.a
+		add_piety = 200
+		remove_short_term_gold = minor_gold_value
+		trigger_event = { id = LR_festival.0302 days = 3 }
+	}
+	option = {
+		name = LR_festival.0301.b
+		add_piety = 100
+		trigger_event = { id = LR_festival.0302 days = 3 }
+	}
+	option = {
+		name = LR_festival.0301.c
+		add_piety = 25
+		trigger_event = { id = LR_festival.0302 days = 3 }
+	}
+}
+
+LR_festival.0302 = {
+	type = character_event
+	title = LR_festival.0302.t
+	desc = LR_festival.0302.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_festival.0302.a
+		add_character_modifier = { modifier = LR_saint_tyr_modifier years = 5 }
+		trigger_event = { id = LR_festival.0303 days = 3 }
+	}
+	option = {
+		name = LR_festival.0302.b
+		add_character_modifier = { modifier = LR_saint_thor_modifier years = 5 }
+		trigger_event = { id = LR_festival.0303 days = 3 }
+	}
+	option = {
+		name = LR_festival.0302.c
+		add_character_modifier = { modifier = LR_saint_freyr_modifier years = 5 }
+		trigger_event = { id = LR_festival.0303 days = 3 }
+	}
+	option = {
+		name = LR_festival.0302.d
+		add_character_modifier = { modifier = LR_saint_freyja_modifier years = 5 }
+		trigger_event = { id = LR_festival.0303 days = 3 }
+	}
+}
+
+LR_festival.0303 = {
+	type = character_event
+	title = LR_festival.0303.t
+	desc = LR_festival.0303.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0303.a
+		add_piety = 100
+		every_vassal = {
+			limit = { faith = root.faith }
+			add_opinion = { target = root modifier = LR_festival_opinion years = 5 }
+		}
+	}
+}
+
+LR_festival.0401 = {
+	type = character_event
+	title = LR_festival.0401.t
+	desc = LR_festival.0401.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = LR_festival.0401.a
+		remove_short_term_gold = medium_gold_value
+		add_piety = 300
+		trigger_event = { id = LR_festival.0402 days = 3 }
+	}
+	option = {
+		name = LR_festival.0401.b
+		remove_short_term_gold = minor_gold_value
+		add_piety = 150
+		trigger_event = { id = LR_festival.0402 days = 3 }
+	}
+	option = {
+		name = LR_festival.0401.c
+		add_piety = 50
+		trigger_event = { id = LR_festival.0402 days = 3 }
+	}
+}
+
+LR_festival.0402 = {
+	type = character_event
+	title = LR_festival.0402.t
+	desc = LR_festival.0402.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_festival.0402.a
+		add_character_modifier = { modifier = LR_sol_armies_modifier years = 5 }
+		trigger_event = { id = LR_festival.0403 days = 3 }
+	}
+	option = {
+		name = LR_festival.0402.b
+		add_character_modifier = { modifier = LR_sol_wealth_modifier years = 5 }
+		trigger_event = { id = LR_festival.0403 days = 3 }
+	}
+	option = {
+		name = LR_festival.0402.c
+		add_character_modifier = { modifier = LR_sol_watches_modifier years = 5 }
+		trigger_event = { id = LR_festival.0403 days = 3 }
+	}
+}
+
+LR_festival.0403 = {
+	type = character_event
+	title = LR_festival.0403.t
+	desc = LR_festival.0403.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0403.a
+		add_piety = 100
+		every_vassal = {
+			limit = { faith = root.faith }
+			add_opinion = { target = root modifier = LR_festival_opinion years = 5 }
+		}
+	}
+}
+
+LR_festival.0501 = {
+	type = character_event
+	title = LR_festival.0501.t
+	desc = LR_festival.0501.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = LR_festival.0501.a
+		add_gold = minor_gold_value
+		trigger_event = { id = LR_festival.0502 days = 3 }
+	}
+}
+
+LR_festival.0502 = {
+	type = character_event
+	title = LR_festival.0502.t
+	desc = LR_festival.0502.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_festival.0502.a
+		add_piety = 100
+		trigger_event = LR_yazidi.0001 # Tawusgeran blessings (LR_yazidi_events.txt)
+		trigger_event = { id = LR_festival.0503 days = 3 }
+	}
+}
+
+LR_festival.0503 = {
+	type = character_event
+	title = LR_festival.0503.t
+	desc = LR_festival.0503.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0503.a
+		add_character_modifier = { modifier = LR_tawusgeran_modifier years = 5 }
+		add_piety = 100
+		every_vassal = {
+			limit = { faith = root.faith }
+			add_opinion = { target = root modifier = LR_festival_opinion years = 5 }
+		}
+	}
+}
+
+# Irminsul (li_irminsul.500-515): fired when the LR_raise_irminsul great project completes; root is its owner.
+LR_festival.0900 = {
+	type = character_event
+	title = LR_festival.0900.t
+	desc = LR_festival.0900.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	option = {
+		name = LR_festival.0900.a
+		trigger_event = LR_festival.0901
+	}
+	option = {
+		name = LR_festival.0900.b
+		trigger_event = LR_festival.0902
+	}
+	option = {
+		name = LR_festival.0900.c
+		trigger_event = LR_festival.0903
+	}
+	option = {
+		name = LR_festival.0900.d
+		trigger_event = LR_festival.0904
+	}
+}
+
+LR_festival.0901 = {
+	type = character_event
+	title = LR_festival.0901.t
+	desc = LR_festival.0901.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0901.a
+		capital_county = {
+			add_county_modifier = { modifier = LR_irminsul_wodanaz_modifier }
+			set_variable = { name = LR_irminsul value = yes }
+		}
+		add_piety = 200
+	}
+}
+
+LR_festival.0902 = {
+	type = character_event
+	title = LR_festival.0902.t
+	desc = LR_festival.0902.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0902.a
+		capital_county = {
+			add_county_modifier = { modifier = LR_irminsul_teiwaz_modifier }
+			set_variable = { name = LR_irminsul value = yes }
+		}
+		add_piety = 200
+	}
+}
+
+LR_festival.0903 = {
+	type = character_event
+	title = LR_festival.0903.t
+	desc = LR_festival.0903.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0903.a
+		capital_county = {
+			add_county_modifier = { modifier = LR_irminsul_frijjo_modifier }
+			set_variable = { name = LR_irminsul value = yes }
+		}
+		add_piety = 200
+	}
+}
+
+LR_festival.0904 = {
+	type = character_event
+	title = LR_festival.0904.t
+	desc = LR_festival.0904.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_festival.0904.a
+		capital_county = {
+			add_county_modifier = { modifier = LR_irminsul_thunraz_modifier }
+			set_variable = { name = LR_irminsul value = yes }
+		}
+		add_piety = 200
+	}
+}
+
+# Sacrifice at the Irminsul (li_irminsul.60): root sacrifices scope:LR_irminsul_victim
+LR_festival.0950 = {
+	type = character_event
+	title = LR_festival.0950.t
+	desc = LR_festival.0950.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:LR_irminsul_victim
+		animation = fear
+	}
+
+	option = {
+		name = LR_festival.0950.a
+		add_piety = 300
+		add_character_modifier = { modifier = LR_irminsul_sacrifice_modifier years = 5 }
+		scope:LR_irminsul_victim = {
+			death = { death_reason = death_sacrificed_to_gods killer = root }
+		}
+	}
+}

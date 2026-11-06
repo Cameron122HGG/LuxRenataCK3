@@ -739,14 +739,14 @@ found_empire_of_beth_nahrain_decision = {
 		}
 		OR = {
 			custom_tooltip = {
-				text = has_title_and_completely_control_jerusalem_tt
-				has_title = title:k_jerusalem
-				completely_controls = title:k_jerusalem
+				text = completely_control_jerusalem_region_tt
+				# LR 2026-11-06: no has_title = title:k_jerusalem; that kingdom has no land at 1066
+				completely_controls_region = LR_area_k_jerusalem # its land as a county region (LR_li_formable_area_regions.txt): the title has no counties at 1066
 			}
 			custom_tooltip = {
-				text = has_title_and_completely_control_syria_tt
-				has_title = title:k_syria
-				completely_controls = title:k_syria
+				text = completely_control_syria_region_tt
+				# LR 2026-11-06: no has_title = title:k_syria; that kingdom has no land at 1066
+				completely_controls_region = LR_area_k_syria # its land as a county region (LR_li_formable_area_regions.txt): the title has no counties at 1066
 			}
 		}
 		rule_title_creation_imperial_power_projection_title_creation_trigger = yes
@@ -779,21 +779,25 @@ found_empire_of_beth_nahrain_decision = {
 
 			if = {
 				limit = {
-					has_title = title:k_jerusalem
-					completely_controls = title:k_jerusalem
+					completely_controls_region = LR_area_k_jerusalem # its land as a county region (LR_li_formable_area_regions.txt): the title has no counties at 1066
 				}
-				title:k_jerusalem = {
-					set_de_jure_liege_title = title:e_beth_nahrain
+				# LR 2026-11-06: the kingdoms that hold the region's counties join Beth Nahrain (k_jerusalem itself has no land)
+				every_county_in_region = {
+					region = LR_area_k_jerusalem
+					limit = { exists = kingdom }
+					kingdom = { set_de_jure_liege_title = title:e_beth_nahrain }
 				}
 			}
 
 			if = {
 				limit = {
-					has_title = title:k_syria
-					completely_controls = title:k_syria
+					completely_controls_region = LR_area_k_syria # its land as a county region (LR_li_formable_area_regions.txt): the title has no counties at 1066
 				}
-				title:k_syria = {
-					set_de_jure_liege_title = title:e_beth_nahrain
+				# LR 2026-11-06: the kingdoms that hold the region's counties join Beth Nahrain (k_syria itself has no land)
+				every_county_in_region = {
+					region = LR_area_k_syria
+					limit = { exists = kingdom }
+					kingdom = { set_de_jure_liege_title = title:e_beth_nahrain }
 				}
 			}
 		}

@@ -1,0 +1,204 @@
+﻿# Lux Renata: which options of convert_to_administrative_decision a ruler sees (00_LR_government_decisions.txt).
+# An independent ruler sees the administrative governments of their own group; a vassal sees only the government of
+# their administrative top liege (they join the realm's administration). In the classical group, Hellenistic-heritage
+# cultures see Alexandrian and everyone else Roman, as in LR_replace_vanilla_default_government_effect.
+
+# Character scope: the government is in none of the Lux Renata groups (vanilla Feudal or Clan)
+LR_has_no_government_group_trigger = {
+	NOR = {
+		government_has_flag = government_is_classical_group
+		government_has_flag = government_is_western_group
+		government_has_flag = government_is_despotic_group
+		government_has_flag = government_is_indic_group
+		government_has_flag = government_is_islamic_group
+		government_has_flag = government_is_sinic_group
+		government_has_flag = government_is_japanese_group
+		government_has_flag = government_is_sacral_group
+		government_has_flag = government_is_barbarian_group
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		LR_has_no_government_group_trigger = yes
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = administrative_government
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_roman_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_classical_group
+		LR_culture_is_hellenic_trigger = no # Hellenistic heritages take the Alexandrian branch
+	}
+	trigger_else = {
+		top_liege = {
+			OR = {
+				has_government = roman_administrative_government
+				has_government = roman_autocratic_government
+				has_government = roman_dominate_government
+				has_government = decayed_principate_government
+			}
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_alexandrian_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_classical_group
+		LR_culture_is_hellenic_trigger = yes # Hellenistic, Indo-Hellenic and Sino-Hellenic heritages
+	}
+	trigger_else = {
+		top_liege = {
+			OR = {
+				has_government = alexandrian_administrative_government
+				has_government = hellenistic_autocratic_government
+				has_government = hellenistic_imperial_government
+			}
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_western_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_western_group
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = western_administrative_government
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_persianate_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_despotic_group
+	}
+	trigger_else = {
+		top_liege = {
+			OR = {
+				has_government = persianate_administrative_government
+				has_government = persianate_autocratic_government
+			}
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_gupta_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_indic_group
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = gupta_administrative_government
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_iqta_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_islamic_group
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = iqta_administrative_government
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_meritocratic_trigger = {
+	has_tgp_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_sinic_group
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = meritocratic_government
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_celestial_trigger = {
+	has_tgp_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_sinic_group
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = celestial_government
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_japan_administrative_trigger = {
+	has_tgp_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_japanese_group
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = japan_administrative_government
+		}
+	}
+}
+
+# Character scope
+LR_convert_admin_sees_sacral_administrative_trigger = {
+	has_tgp_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_sacral_group
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = sacral_administrative_government
+		}
+	}
+}
+
+# Character scope: any option of convert_to_administrative_decision is open to the ruler
+LR_convert_admin_sees_any_option_trigger = {
+	OR = {
+		LR_convert_admin_sees_administrative_trigger = yes
+		LR_convert_admin_sees_roman_administrative_trigger = yes
+		LR_convert_admin_sees_alexandrian_administrative_trigger = yes
+		LR_convert_admin_sees_western_administrative_trigger = yes
+		LR_convert_admin_sees_persianate_administrative_trigger = yes
+		LR_convert_admin_sees_gupta_administrative_trigger = yes
+		LR_convert_admin_sees_iqta_administrative_trigger = yes
+		LR_convert_admin_sees_meritocratic_trigger = yes
+		LR_convert_admin_sees_celestial_trigger = yes
+		LR_convert_admin_sees_japan_administrative_trigger = yes
+		LR_convert_admin_sees_sacral_administrative_trigger = yes
+	}
+}

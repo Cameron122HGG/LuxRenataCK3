@@ -1,0 +1,49 @@
+﻿# Lux Invicta Manichaean Bema Fest (FaF_religious_decisions.txt manichean_bema_fest), 2026-11-06
+LR_keep_bema_month_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = religious
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+
+	desc = LR_keep_bema_month_decision_desc
+	selection_tooltip = LR_keep_bema_month_decision_tooltip
+	confirm_text = LR_keep_bema_month_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		LR_is_manichaean_trigger = yes
+	}
+
+	is_valid = {
+		is_at_war = no
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		NOT = { has_character_flag = LR_keeping_bema_month }
+	}
+
+	cost = {
+		gold = minor_gold_value
+	}
+
+	effect = {
+		custom_tooltip = LR_keep_bema_month_decision_effect_tt
+		add_character_flag = {
+			flag = LR_keeping_bema_month
+			days = 60
+		}
+		trigger_event = LR_manichaean.0001
+	}
+
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 25
+		modifier = { add = 25 has_trait = zealous }
+		modifier = { add = -20 has_trait = cynical }
+	}
+}

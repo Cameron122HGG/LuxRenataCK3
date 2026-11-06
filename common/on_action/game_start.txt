@@ -1349,8 +1349,8 @@ on_game_start = {
 							has_government = celestial_government
 							has_government = meritocratic_government
 							has_government = steppe_admin_government
-							has_government = japan_administrative_government
-							has_government = japan_feudal_government
+							#has_government = japan_administrative_government # LR: japanese_government below
+							#has_government = japan_feudal_government
 							#has_government = sacral_administrative_government
 							#has_government = sacral_feudal_government
 							#has_government = hellenic_khanate_government
@@ -1359,6 +1359,16 @@ on_game_start = {
 					}
 					change_government = chinese_feudal_government
 
+				}
+				# LR: Japanese realms keep a Japanese government (sinic group) without the DLC
+				else_if = {
+					limit = {
+						OR = {
+							has_government = japan_administrative_government
+							has_government = japan_feudal_government
+						}
+					}
+					change_government = japanese_government
 				}
 				else_if = {
 					limit = {

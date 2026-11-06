@@ -1,7 +1,7 @@
 ﻿# Lux Renata government traditions
 
 on_tradition_added = {
-	on_actions = { LR_government_tradition_on_tradition_added }
+	on_actions = { LR_government_tradition_on_tradition_added LR_government_anarchy_on_tradition_added }
 }
 
 on_culture_created = {
@@ -14,6 +14,14 @@ on_character_culture_change = {
 
 on_game_start = {
 	on_actions = { LR_government_tradition_on_game_start }
+}
+
+on_tradition_removed = {
+	on_actions = { LR_government_tradition_on_tradition_removed }
+}
+
+yearly_global_pulse = {
+	on_actions = { LR_government_anarchy_yearly_pulse }
 }
 
 on_vassal_change = {
@@ -103,6 +111,72 @@ LR_government_tradition_on_government_change = {
 			limit = { has_character_flag = LR_was_tribal }
 			remove_character_flag = LR_was_tribal
 			LR_apply_culture_government_group_effect = yes
+		}
+	}
+}
+
+# root = culture, scope:tradition = flag of the tradition added. Anarchy begins: the culture may reform at once
+# (vanilla puts it on tradition cooldown) and a player culture head is asked to settle on a government tradition.
+LR_government_anarchy_on_tradition_added = {
+	trigger = { scope:tradition = flag:lux_tradition_gov_anarchy }
+	effect = {
+		remove_variable = tradition_cooldown
+		set_variable = { name = LR_anarchy_years value = 0 }
+		culture_head ?= {
+			if = {
+				limit = { is_ai = no }
+				trigger_event = { id = LR_gov_anarchy.0001 days = 1 }
+			}
+		}
+	}
+}
+
+# root = culture, scope:tradition = flag of the tradition removed. A culture whose government tradition goes without a
+# replacement falls into Anarchy. Checked a day later, so replacing one government tradition with another is not caught.
+LR_government_tradition_on_tradition_removed = {
+	trigger = {
+		OR = {
+			scope:tradition = flag:lux_tradition_gov_classical
+			scope:tradition = flag:lux_tradition_gov_western
+			scope:tradition = flag:lux_tradition_gov_despotic
+			scope:tradition = flag:lux_tradition_gov_indic
+			scope:tradition = flag:lux_tradition_gov_islamic
+			scope:tradition = flag:lux_tradition_gov_sinic
+			scope:tradition = flag:lux_tradition_gov_japanese
+			scope:tradition = flag:lux_tradition_gov_barbarian
+		}
+	}
+	effect = {
+		save_scope_as = LR_anarchic_culture
+		culture_head ?= {
+			trigger_event = { id = LR_gov_anarchy.0002 days = 1 }
+		}
+		# Without a head the yearly pulse catches it
+	}
+}
+
+# Every Jan 1st: cultures without a government tradition fall into Anarchy; Anarchy deepens each year. A player culture
+# head is reminded; an AI-led culture settles on its leading ruler's government after five years.
+LR_government_anarchy_yearly_pulse = {
+	effect = {
+		every_culture_global = {
+			limit = {
+				LR_culture_has_government_tradition_trigger = no
+				NOT = { has_cultural_tradition = lux_tradition_gov_anarchy }
+			}
+			add_culture_tradition = lux_tradition_gov_anarchy
+		}
+		every_culture_global = {
+			limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+			change_variable = { name = LR_anarchy_years add = 1 }
+			if = {
+				limit = { culture_head ?= { is_ai = no } }
+				culture_head = { trigger_event = LR_gov_anarchy.0001 }
+			}
+			else_if = {
+				limit = { var:LR_anarchy_years >= 5 }
+				LR_resolve_government_anarchy_effect = yes
+			}
 		}
 	}
 }

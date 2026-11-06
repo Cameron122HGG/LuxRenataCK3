@@ -1,0 +1,80 @@
+﻿# Form Reixath Galáthon, the eastern Celtic empire (user, 2026-11-06). Counterpart to form_western_celtic_empire_decision.
+# The name comes from a fan's campaign with a custom Galatian empire. Galatians are excluded from the western empire.
+form_reixath_galathon_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 0
+		hegemony = 0
+	}
+
+	desc = form_reixath_galathon_decision_desc
+	selection_tooltip = form_reixath_galathon_decision_tooltip
+	confirm_text = form_reixath_galathon_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		culture = culture:galatian
+		NOT = { exists = title:e_reixath_galathon.holder }
+		# Not repeatable.
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_reixath_galathon
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		highest_held_title_tier < tier_empire
+		prestige_level >= 3
+		has_title = title:k_galatia
+		# The three Galatian tribes and Paphlagonia-Pontus
+		completely_controls = title:c_tectosagia_galatia # Tectosages
+		completely_controls = title:c_galatia # Tolistobogii
+		completely_controls = title:c_trocmi # Trocmi
+		completely_controls = title:c_gangra
+		completely_controls = title:c_helenopontus
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		piety = 350
+		prestige = 1000
+	}
+
+	effect = {
+		save_scope_as = founder
+		LR_form_reixath_galathon_effect = yes
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_reixath_galathon
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

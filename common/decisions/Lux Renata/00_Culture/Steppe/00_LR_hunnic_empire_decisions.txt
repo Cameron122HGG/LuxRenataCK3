@@ -1,0 +1,91 @@
+﻿# Form the Hunnic Empire
+# Ported from Lux Invicta's create_e_huns (CK2): Attila's reach from the Don to the Marne. Titular hegemony, no de jure
+# reshaping (user's choice 2026-11-06).
+form_hunnic_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 120
+		hegemony = 0
+	}
+
+	desc = form_hunnic_empire_decision_desc
+	selection_tooltip = form_hunnic_empire_decision_tooltip
+	confirm_text = form_hunnic_empire_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		culture = { has_cultural_pillar = heritage_hunnic }
+		NOT = { exists = title:h_hunnic_empire.holder }
+		# Not repeatable.
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_hunnic_empire
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier < tier_hegemony
+		prestige_level >= 4
+		has_title = title:k_titular_huns
+		completely_controls = title:c_sarkel
+		completely_controls = title:c_esztergom
+		completely_controls_region = LR_area_d_bohemia # its counties as at 1066 (LR_li_formable_area_regions.txt)
+		completely_controls = title:c_chalons
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		piety = 350
+		prestige = 1000
+	}
+
+	effect = {
+		save_scope_as = founder
+		show_as_tooltip = { get_title = title:h_hunnic_empire }
+		hidden_effect = {
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = title_change
+				add_claim_on_loss = no
+			}
+			title:h_hunnic_empire = {
+				change_title_holder = {
+					holder = root
+					change = scope:title_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:title_change
+			dynasty ?= { add_dynasty_prestige = major_dynasty_prestige_gain }
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_hunnic_empire
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

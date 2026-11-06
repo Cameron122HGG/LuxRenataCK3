@@ -1,0 +1,56 @@
+﻿# Lux Invicta Celtic changelings (events/religion_events/LR_changeling_events.txt), 2026-11-06
+
+random_yearly_playable_pulse = {
+	on_actions = {
+		LR_changeling_start_pulse
+		LR_changeling_chain_pulse
+	}
+}
+
+on_16th_birthday = {
+	on_actions = { LR_changeling_adulthood }
+}
+
+# Start: a Celtic pagan parent of a young child
+LR_changeling_start_pulse = {
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		any_child = {
+			age <= 6
+			NOT = { has_character_flag = LR_changeling_marked }
+		}
+	}
+	random_events = {
+		1000 = 0
+		15 = LR_changeling.0001 # Druid warns about child / child stolen by the Sidhe
+	}
+}
+
+# Chain steps: the parent a (supposed) changeling child lives with
+LR_changeling_chain_pulse = {
+	trigger = {
+		any_child = {
+			host = root
+			age < 16
+			OR = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_fake
+			}
+		}
+	}
+	random_events = {
+		100 = 0
+		30 = LR_changeling.0010 # Child acts strange I
+		30 = LR_changeling.0011 # Child acts strange II
+		30 = LR_changeling.0012 # Child acts strange III
+		15 = LR_changeling.0020 # Child kills courtier I
+		15 = LR_changeling.0021 # Child kills courtier II
+		15 = LR_changeling.0022 # Child kills courtier III
+		15 = LR_changeling.0030 # Druid offers to trade with the Sidhe
+	}
+}
+
+LR_changeling_adulthood = {
+	trigger = { has_character_flag = LR_changeling }
+	events = { LR_changeling.0040 }
+}

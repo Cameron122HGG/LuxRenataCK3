@@ -128,6 +128,15 @@ LR_seed_government_tradition_effect = {
 				}
 				add_culture_tradition = lux_tradition_gov_barbarian
 			}
+			# No heritage match: the culture has no way of government until it chooses one
+			else_if = {
+				limit = { NOT = { has_cultural_tradition = lux_tradition_gov_anarchy } }
+				add_culture_tradition = lux_tradition_gov_anarchy
+			}
+	}
+	else_if = {
+		limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+		remove_culture_tradition = lux_tradition_gov_anarchy # e.g. a hybrid of an anarchic culture and a settled one
 	}
 }
 
@@ -174,14 +183,22 @@ LR_keep_one_government_tradition_effect = {
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_sinic
-				scope:founder ?= { government_has_flag = government_is_sinic_group }
+				scope:founder ?= {
+					government_has_flag = government_is_sinic_group
+					NOT = { government_has_flag = government_is_japanese_plain } # Japanese Feudal belongs to the Japanese tradition
+				}
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sinic }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_japanese
-				scope:founder ?= { government_has_flag = government_is_japanese_group }
+				scope:founder ?= {
+					OR = {
+						government_has_flag = government_is_japanese_group
+						government_has_flag = government_is_japanese_plain
+					}
+				}
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_japanese }
 		}
@@ -229,8 +246,13 @@ LR_keep_one_government_tradition_effect = {
 	}
 }
 
-# Culture scope, var:LR_gov_tradition_keep = flag of the government tradition to keep: remove the others.
+# Culture scope, var:LR_gov_tradition_keep = flag of the government tradition to keep: remove the others
+# (and Anarchy, which any government tradition ends).
 LR_drop_other_government_traditions_effect = {
+	if = {
+		limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+		remove_culture_tradition = lux_tradition_gov_anarchy
+	}
 	if = {
 		limit = {
 			has_cultural_tradition = lux_tradition_gov_classical
@@ -350,7 +372,13 @@ LR_apply_culture_government_group_effect = {
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
-				change_government = chinese_feudal_government
+				if = {
+					limit = { has_tgp_dlc_trigger = yes }
+					change_government = meritocratic_government
+				}
+				else = {
+					change_government = chinese_feudal_government
+				}
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
@@ -359,7 +387,7 @@ LR_apply_culture_government_group_effect = {
 					change_government = japan_administrative_government
 				}
 				else = {
-					change_government = chinese_feudal_government
+					change_government = japanese_government
 				}
 			}
 			else_if = {
@@ -386,7 +414,7 @@ LR_apply_culture_government_group_effect = {
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
-				change_government = iqta_dynastic_government
+				change_government = iqta_government
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
@@ -396,10 +424,11 @@ LR_apply_culture_government_group_effect = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
 				if = {
 					limit = { has_tgp_dlc_trigger = yes }
+					add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
 					change_government = japan_feudal_government
 				}
 				else = {
-					change_government = chinese_feudal_government
+					change_government = japanese_government
 				}
 			}
 			else_if = {
@@ -407,5 +436,88 @@ LR_apply_culture_government_group_effect = {
 				change_government = great_tribal_government
 			}
 		}
+	}
+}
+
+# Culture scope, scope:LR_gov_model = a ruler: end Anarchy by adopting the government tradition of the model's government.
+# A government outside the groups goes to the nearest one: Mandala to the Indic group, tribal, nomadic and herder
+# governments to the great tribal confederations, anything else (vanilla Feudal, Clan, Administrative) to Feudal Custom.
+LR_adopt_government_tradition_of_model_effect = {
+	scope:LR_gov_model = {
+		if = {
+			limit = { government_has_flag = government_is_classical_group }
+			prev = { add_culture_tradition = lux_tradition_gov_classical }
+		}
+		else_if = {
+			limit = { government_has_flag = government_is_western_group }
+			prev = { add_culture_tradition = lux_tradition_gov_western }
+		}
+		else_if = {
+			limit = { government_has_flag = government_is_despotic_group }
+			prev = { add_culture_tradition = lux_tradition_gov_despotic }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					government_has_flag = government_is_indic_group
+					government_has_flag = government_is_mandala
+				}
+			}
+			prev = { add_culture_tradition = lux_tradition_gov_indic }
+		}
+		else_if = {
+			limit = { government_has_flag = government_is_islamic_group }
+			prev = { add_culture_tradition = lux_tradition_gov_islamic }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					government_has_flag = government_is_japanese_group
+					government_has_flag = government_is_japanese_plain
+				}
+			}
+			prev = { add_culture_tradition = lux_tradition_gov_japanese }
+		}
+		else_if = {
+			limit = { government_has_flag = government_is_sinic_group }
+			prev = { add_culture_tradition = lux_tradition_gov_sinic }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					government_has_flag = government_is_barbarian_group
+					government_has_flag = government_is_tribal
+					government_has_flag = government_is_nomadic
+					government_has_flag = government_is_herder
+				}
+			}
+			prev = { add_culture_tradition = lux_tradition_gov_barbarian }
+		}
+		else = {
+			prev = { add_culture_tradition = lux_tradition_gov_western }
+		}
+	}
+}
+
+# Culture scope: an AI-led culture in Anarchy settles on the government of its head, or failing one its highest-ranked ruler.
+LR_resolve_government_anarchy_effect = {
+	if = {
+		limit = { exists = culture_head }
+		culture_head = { save_scope_as = LR_gov_model }
+	}
+	else = {
+		save_scope_as = LR_anarchic_culture
+		ordered_ruler = {
+			limit = {
+				culture = scope:LR_anarchic_culture
+				is_landed = yes
+			}
+			order_by = highest_held_title_tier
+			save_scope_as = LR_gov_model
+		}
+	}
+	if = {
+		limit = { exists = scope:LR_gov_model }
+		LR_adopt_government_tradition_of_model_effect = yes
 	}
 }

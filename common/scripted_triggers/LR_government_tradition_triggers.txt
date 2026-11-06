@@ -80,10 +80,14 @@ LR_government_matches_culture_group_trigger = {
 		AND = {
 			culture = { has_cultural_tradition = lux_tradition_gov_sinic }
 			government_has_flag = government_is_sinic_group
+			NOT = { government_has_flag = government_is_japanese_plain } # Japanese Feudal belongs to the Japanese tradition
 		}
 		AND = {
 			culture = { has_cultural_tradition = lux_tradition_gov_japanese }
-			government_has_flag = government_is_japanese_group
+			OR = {
+				government_has_flag = government_is_japanese_group
+				government_has_flag = government_is_japanese_plain # Japanese Feudal: the Japanese tradition's government without All Under Heaven
+			}
 		}
 		AND = {
 			culture = { has_cultural_tradition = lux_tradition_gov_barbarian }
@@ -109,9 +113,12 @@ LR_has_group_ladder_government_trigger = {
 		has_government = indic_feudal_government
 		has_government = gupta_dynastic_government
 		has_government = gupta_administrative_government
+		has_government = iqta_government
 		has_government = iqta_dynastic_government
 		has_government = iqta_administrative_government
 		has_government = chinese_feudal_government
+		has_government = meritocratic_government
+		has_government = japanese_government
 		has_government = japan_feudal_government
 		has_government = japan_administrative_government
 		has_government = sacral_government
@@ -130,5 +137,60 @@ LR_in_sacral_kingdom_gaul_realm_trigger = {
 	OR = {
 		has_title = title:e_sacral_kingdom_gaul
 		top_liege ?= { has_title = title:e_sacral_kingdom_gaul }
+	}
+}
+
+# Character scope, $OTHER$ = another character: do both governments belong to the same government group?
+# (Japanese Feudal counts as Japanese, not sinic.) Used by the Anarchy event (LR_gov_anarchy_events.txt).
+LR_government_shares_tradition_group_trigger = {
+	OR = {
+		AND = {
+			government_has_flag = government_is_classical_group
+			$OTHER$ = { government_has_flag = government_is_classical_group }
+		}
+		AND = {
+			government_has_flag = government_is_western_group
+			$OTHER$ = { government_has_flag = government_is_western_group }
+		}
+		AND = {
+			government_has_flag = government_is_despotic_group
+			$OTHER$ = { government_has_flag = government_is_despotic_group }
+		}
+		AND = {
+			government_has_flag = government_is_indic_group
+			$OTHER$ = { government_has_flag = government_is_indic_group }
+		}
+		AND = {
+			government_has_flag = government_is_islamic_group
+			$OTHER$ = { government_has_flag = government_is_islamic_group }
+		}
+		AND = {
+			government_has_flag = government_is_barbarian_group
+			$OTHER$ = { government_has_flag = government_is_barbarian_group }
+		}
+		AND = {
+			government_has_flag = government_is_sacral_group
+			$OTHER$ = { government_has_flag = government_is_sacral_group }
+		}
+		AND = {
+			government_has_flag = government_is_sinic_group
+			NOT = { government_has_flag = government_is_japanese_plain }
+			$OTHER$ = {
+				government_has_flag = government_is_sinic_group
+				NOT = { government_has_flag = government_is_japanese_plain }
+			}
+		}
+		AND = {
+			OR = {
+				government_has_flag = government_is_japanese_group
+				government_has_flag = government_is_japanese_plain
+			}
+			$OTHER$ = {
+				OR = {
+					government_has_flag = government_is_japanese_group
+					government_has_flag = government_is_japanese_plain
+				}
+			}
+		}
 	}
 }

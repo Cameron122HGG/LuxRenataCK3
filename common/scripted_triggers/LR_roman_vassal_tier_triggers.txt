@@ -1,0 +1,17 @@
+﻿# Roman vassal tiers (user, 2026-11-05): a decayed Roman empire cannot have kingdom-tier vassals. Only a restored
+# Roman empire may have vassal kings (as a high king, empire tier) or vassal high kings (as an emperor, hegemony tier).
+
+# Character: rules a decayed Roman empire (a decayed Roman empire title or the Decayed Principate) and no restored one
+LR_is_decayed_roman_realm_trigger = {
+	is_restored_roman_emperor_trigger = no
+	OR = {
+		is_decayed_roman_emperor_trigger = yes
+		has_government = decayed_principate_government
+	}
+}
+
+# Title: a landed kingdom-tier title (landless kingdoms such as k_sol and the Roman ministries are left alone)
+LR_is_landed_kingdom_title_trigger = {
+	tier = tier_kingdom
+	is_landless_type_title = no
+}

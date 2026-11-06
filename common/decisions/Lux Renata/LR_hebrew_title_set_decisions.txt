@@ -1,0 +1,302 @@
+﻿# Hebrew title set (gen_hebrew_title_set.py): a Jewish or Israelite ruler restores a mamlakhah of Israel, or proclaims
+# Mamlekhet Yisra'el (Lux Invicta's e_jews).
+
+LR_restore_yisrael_mamlakhot_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = realm
+	sort_order = 879
+	desc = LR_restore_yisrael_mamlakhot_decision_desc
+	selection_tooltip = LR_restore_yisrael_mamlakhot_decision_tooltip
+	confirm_text = LR_restore_yisrael_mamlakhot_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		LR_title_set_hebrew_native_trigger = yes
+		highest_held_title_tier >= tier_kingdom
+		OR = {
+			LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_phoenicia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_syria }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_mesopotamia }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_babylon }
+			LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_egypt }
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_restore_yisrael_mamlakhot_decision_trigger
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_satrapy_phoenicia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_phoenicia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_syria
+					LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_syria }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_mesopotamia
+					LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_mesopotamia }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_babylon
+					LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_babylon }
+				}
+				AND = {
+					completely_controls_region = custom_satrapy_egypt
+					LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_egypt }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_restore_satrapy"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "LR_CHOOSE_SATRAPY_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = LR_mamlakhah_phoenicia
+			current_description = {
+				desc = LR_mamlakhah_phoenicia_desc
+			}
+			localization = {
+				desc = LR_mamlakhah_phoenicia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_phoenicia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_phoenicia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_mamlakhah_syria
+			current_description = {
+				desc = LR_mamlakhah_syria_desc
+			}
+			localization = {
+				desc = LR_mamlakhah_syria_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_syria }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_syria
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_mamlakhah_mesopotamia
+			current_description = {
+				desc = LR_mamlakhah_mesopotamia_desc
+			}
+			localization = {
+				desc = LR_mamlakhah_mesopotamia_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_mesopotamia }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_mesopotamia
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_mamlakhah_babylon
+			current_description = {
+				desc = LR_mamlakhah_babylon_desc
+			}
+			localization = {
+				desc = LR_mamlakhah_babylon_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_babylon }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_babylon
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = LR_mamlakhah_egypt
+			current_description = {
+				desc = LR_mamlakhah_egypt_desc
+			}
+			localization = {
+				desc = LR_mamlakhah_egypt_desc
+			}
+			is_shown = {
+				LR_satrapy_restorable_trigger = { SATRAPY = k_mamlakhah_egypt }
+			}
+			is_valid = {
+				completely_controls_region = custom_satrapy_egypt
+			}
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_yisrael_mamlakhot_decision_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { scope:LR_mamlakhah_phoenicia = yes }
+				LR_restore_mamlakhah_phoenicia_effect = yes
+			}
+			if = {
+				limit = { scope:LR_mamlakhah_syria = yes }
+				LR_restore_mamlakhah_syria_effect = yes
+			}
+			if = {
+				limit = { scope:LR_mamlakhah_mesopotamia = yes }
+				LR_restore_mamlakhah_mesopotamia_effect = yes
+			}
+			if = {
+				limit = { scope:LR_mamlakhah_babylon = yes }
+				LR_restore_mamlakhah_babylon_effect = yes
+			}
+			if = {
+				limit = { scope:LR_mamlakhah_egypt = yes }
+				LR_restore_mamlakhah_egypt_effect = yes
+			}
+			LR_title_set_reorganise_realm_effect = yes
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_proclaim_mamlekhet_yisrael_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 120
+		hegemony = 0
+	}
+
+	desc = LR_proclaim_mamlekhet_yisrael_decision_desc
+	selection_tooltip = LR_proclaim_mamlekhet_yisrael_decision_tooltip
+	confirm_text = LR_proclaim_mamlekhet_yisrael_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_title_set_hebrew_native_trigger = yes
+		NOT = { exists = title:h_mamlekhet_yisrael.holder }
+		# Not repeatable.
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_proclaimed_mamlekhet_yisrael
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		highest_held_title_tier < tier_hegemony
+		prestige_level >= 4
+		has_title = title:c_jerusalem
+		custom_tooltip = {
+			text = LR_proclaim_mamlekhet_yisrael_kenaan_tt
+			completely_controls_region = custom_satrapy_phoenicia
+		}
+		completely_controls = title:c_alexandria
+		completely_controls = title:c_baghdad
+		completely_controls = title:c_antiocheia
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		piety = 350
+		prestige = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_proclaim_mamlekhet_yisrael_decision_effect_tt
+		show_as_tooltip = { get_title = title:h_mamlekhet_yisrael }
+		hidden_effect = {
+			LR_proclaim_mamlekhet_yisrael_effect = yes
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_proclaimed_mamlekhet_yisrael
+			}
+			LR_title_set_reorganise_realm_effect = yes
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

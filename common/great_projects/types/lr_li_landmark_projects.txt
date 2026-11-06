@@ -1,0 +1,290 @@
+﻿# Lux Invicta landmarks as Great Projects (gen_li_landmarks.py). Illustrations are placeholders reused from other projects.
+
+@LR_rebuild_hattusa_illustration = "gfx/interface/illustrations/great_projects/knossos_palace.dds"
+@LR_rebuild_memphis_illustration = "gfx/interface/illustrations/great_projects/colossus_of_rhodos.dds"
+@LR_li_landmark_icon = "gfx/interface/icons/icon_skill_learning.dds"
+
+# Hattusa is c_charsianon (province 5617 = b_charsianon), the hattusa holy site.
+LR_rebuild_hattusa = {
+	icon = {
+		reference = @LR_li_landmark_icon
+	}
+	illustration = {
+		reference = @LR_rebuild_hattusa_illustration
+	}
+	name = {
+		desc = great_project_type_LR_rebuild_hattusa
+	}
+	cost = {
+		treasury_or_gold = {
+			value = great_project_base_contribution_cost
+			multiply = 2
+		}
+	}
+	ai_will_do = {
+		value = 10
+	}
+	construction_time = { value = great_project_base_construction_time }
+	invite_interaction = request_great_project_contribution_interaction
+	province_filter = geographical_region
+	ai_province_filter = geographical_region
+	province_filter_target = LR_hattusa_region
+	is_shown = {
+		NOT = { is_planning_great_project = LR_rebuild_hattusa }
+		NOT = { has_global_variable = LR_rebuild_hattusa_done }
+		is_ruler = yes
+		faith.religion ?= religion:anatolian_religion
+	}
+	can_start_planning = {
+		custom_tooltip = {
+			text = LR_rebuild_hattusa_location_tt
+			title:c_charsianon = { holder.top_liege = root.top_liege }
+		}
+	}
+	is_valid = {
+		title:c_charsianon.holder = { top_liege = scope:owner.top_liege }
+	}
+	on_start_build = {
+		scope:owner = {
+			add_piety = minor_piety_value
+		}
+	}
+	on_complete = {
+		set_global_variable = { name = LR_rebuild_hattusa_done value = yes }
+		title:c_charsianon = {
+			add_county_modifier = { modifier = LR_hattusa_restored_modifier }
+		}
+		scope:owner = {
+			add_character_modifier = { modifier = LR_restorer_of_hattusa_modifier }
+			add_prestige = major_prestige_value
+			add_piety = major_piety_value
+		}
+	}
+	project_contributions = {
+		LR_rebuild_hattusa_palace = {
+			is_required = yes
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+					multiply = 2
+				}
+				prestige = {
+					value = great_project_base_contribution_cost
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+					is_tributary_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = {
+				value = 10
+			}
+		}
+		LR_rebuild_hattusa_city = {
+			is_required = yes
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+					multiply = 2
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+					is_tributary_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = {
+				value = 10
+			}
+		}
+		LR_rebuild_hattusa_temple = {
+			is_required = no
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+					multiply = 2
+				}
+				piety = {
+					value = great_project_base_contribution_cost
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+					is_tributary_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = {
+				value = 10
+			}
+		}
+	}
+}
+
+# MEMPHIS: Lux Renata has no Memphis barony or county on the map (b_memphis exists only as localization, and the
+# Memphis holy site points at c_cairo / b_hulwan-cairo). Lux Invicta's chain needed the barony b_manusura as capital.
+# The project is therefore sited in Giza (c_giza, province 6057 = b_gizeh), the county across the Nile from the ruins.
+# If a Memphis barony/county is ever added to the map, move LR_memphis_region and the c_giza checks to it.
+LR_rebuild_memphis = {
+	icon = {
+		reference = @LR_li_landmark_icon
+	}
+	illustration = {
+		reference = @LR_rebuild_memphis_illustration
+	}
+	name = {
+		desc = great_project_type_LR_rebuild_memphis
+	}
+	cost = {
+		treasury_or_gold = {
+			value = great_project_base_contribution_cost
+			multiply = 2
+		}
+	}
+	ai_will_do = {
+		value = 10
+	}
+	construction_time = { value = great_project_base_construction_time }
+	invite_interaction = request_great_project_contribution_interaction
+	province_filter = geographical_region
+	ai_province_filter = geographical_region
+	province_filter_target = LR_memphis_region
+	is_shown = {
+		NOT = { is_planning_great_project = LR_rebuild_memphis }
+		NOT = { has_global_variable = LR_rebuild_memphis_done }
+		is_ruler = yes
+		faith.religion ?= religion:kemetic_religion
+	}
+	can_start_planning = {
+		custom_tooltip = {
+			text = LR_rebuild_memphis_location_tt
+			title:c_giza = { holder.top_liege = root.top_liege }
+		}
+	}
+	is_valid = {
+		title:c_giza.holder = { top_liege = scope:owner.top_liege }
+	}
+	on_start_build = {
+		scope:owner = {
+			add_piety = minor_piety_value
+		}
+	}
+	on_complete = {
+		set_global_variable = { name = LR_rebuild_memphis_done value = yes }
+		title:c_giza = {
+			add_county_modifier = { modifier = LR_memphis_restored_modifier }
+		}
+		scope:owner = {
+			add_character_modifier = { modifier = LR_restorer_of_memphis_modifier }
+			add_prestige = major_prestige_value
+			add_piety = major_piety_value
+		}
+	}
+	project_contributions = {
+		LR_rebuild_memphis_walls = {
+			is_required = yes
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+					multiply = 2
+				}
+				prestige = {
+					value = great_project_base_contribution_cost
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+					is_tributary_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = {
+				value = 10
+			}
+		}
+		LR_rebuild_memphis_temple = {
+			is_required = yes
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+					multiply = 2
+				}
+				piety = {
+					value = great_project_base_contribution_cost
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+					is_tributary_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = {
+				value = 10
+			}
+		}
+		LR_rebuild_memphis_necropolis = {
+			is_required = no
+			cost = {
+				treasury_or_gold = {
+					value = great_project_base_contribution_cost
+					multiply = 2
+				}
+			}
+			contributor_is_valid = {
+				OR = {
+					this = scope:owner
+					is_vassal_or_below_of = scope:owner
+					is_tributary_of = scope:owner
+				}
+			}
+			contributor_cooldown = individual_contribution_cooldown_value
+			on_contribution_funded = {
+				great_project_notify_contribution = yes
+				great_project_contribution_catalyst_effect = yes
+			}
+			ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 9 kingdom = 6 empire = 6 hegemony = 6 }
+			ai_will_do = {
+				value = 10
+			}
+		}
+	}
+}

@@ -1,0 +1,51 @@
+﻿# Roman vassal tiers (LR_roman_vassal_tier_triggers.txt): no kingdom-tier vassals under a decayed Roman empire
+
+on_title_gain = {
+	on_actions = { LR_roman_vassal_tier_on_title_gain }
+}
+yearly_playable_pulse = {
+	on_actions = { LR_roman_vassal_tier_yearly }
+}
+on_game_start_after_lobby = {
+	on_actions = { LR_roman_vassal_tier_game_start }
+}
+
+# root = the new holder, scope:title = the title. A kingdom granted or inherited below a decayed Roman empire is
+# destroyed at once; a decayed Roman emperor who gains a title (a conquest, a new empire title) is swept.
+LR_roman_vassal_tier_on_title_gain = {
+	effect = {
+		if = {
+			limit = {
+				is_independent_ruler = no
+				scope:title = { LR_is_landed_kingdom_title_trigger = yes }
+				top_liege = { LR_is_decayed_roman_realm_trigger = yes }
+			}
+			destroy_title = scope:title
+		}
+		else_if = {
+			limit = {
+				is_independent_ruler = yes
+				LR_is_decayed_roman_realm_trigger = yes
+			}
+			LR_decayed_roman_strip_vassal_kingdoms_effect = yes
+		}
+	}
+}
+
+# Kings who joined the realm another way (vassalisation, a realm merging in) lose their kingdoms within the year
+LR_roman_vassal_tier_yearly = {
+	trigger = {
+		is_independent_ruler = yes
+		LR_is_decayed_roman_realm_trigger = yes
+	}
+	effect = { LR_decayed_roman_strip_vassal_kingdoms_effect = yes }
+}
+
+LR_roman_vassal_tier_game_start = {
+	effect = {
+		every_independent_ruler = {
+			limit = { LR_is_decayed_roman_realm_trigger = yes }
+			LR_decayed_roman_strip_vassal_kingdoms_effect = yes
+		}
+	}
+}

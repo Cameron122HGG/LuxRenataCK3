@@ -922,7 +922,10 @@ can_add_tradition = {
 	custom_description = {
 		text = culture_has_tradition_cooldown
 		culture = {
-			NOT = { has_variable = tradition_cooldown }
+			OR = {
+				NOT = { has_variable = tradition_cooldown }
+				has_cultural_tradition = lux_tradition_gov_anarchy # LR: a culture in Anarchy may always reform
+			}
 		}
 	}
 }
@@ -1438,8 +1441,17 @@ can_create_title = {
 		limit = { scope:title = { LR_is_bronze_title_trigger = yes } }
 		custom_tooltip = {
 			text = LR_bronze_title_creation_tooltip
-			current_date >= 1700.1.1
-			current_date < 3800.1.1
+			OR = {
+				AND = {
+					current_date >= 1700.1.1
+					current_date < 3800.1.1
+				}
+				# LR: revived Hatti (LR_revive_hatti_decision): Luwian-faith rulers may create its titles in any age
+				AND = {
+					scope:title = { has_variable = LR_revived_hatti_title }
+					faith.religion ?= religion:anatolian_religion
+				}
+			}
 		}
 	}
 	trigger_if = {
@@ -1466,6 +1478,17 @@ can_create_title = {
 			LR_title_set_roman_native_trigger = yes
 		}
 	}
+	# LR: Roman vassal tiers (user, 2026-11-05): no kingdom-tier vassals under a decayed Roman empire
+	trigger_if = {
+		limit = {
+			scope:title = { LR_is_landed_kingdom_title_trigger = yes }
+			is_independent_ruler = no
+		}
+		custom_tooltip = {
+			text = LR_decayed_roman_no_vassal_kingdoms_tooltip
+			NOT = { top_liege = { LR_is_decayed_roman_realm_trigger = yes } }
+		}
+	}
 	# LR: title sets (gen_title_sets.py, LR_title_set_rules.md): only a set's natives may create its titles
 	trigger_if = {
 		limit = { scope:title = { LR_title_set_hellenistic_title_trigger = yes } }
@@ -1479,6 +1502,20 @@ can_create_title = {
 		custom_tooltip = {
 			text = LR_title_set_roman_creation_tooltip
 			LR_title_set_roman_native_trigger = yes
+		}
+	}
+	trigger_if = {
+		limit = { scope:title = { LR_title_set_persian_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_title_set_persian_creation_tooltip
+			LR_title_set_persian_native_trigger = yes
+		}
+	}
+	trigger_if = {
+		limit = { scope:title = { LR_title_set_hebrew_title_trigger = yes } }
+		custom_tooltip = {
+			text = LR_title_set_hebrew_creation_tooltip
+			LR_title_set_hebrew_native_trigger = yes
 		}
 	}
 }

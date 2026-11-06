@@ -1,0 +1,863 @@
+﻿##################################################################
+#
+# ANCIENT RELIGIONS
+# - Celtic changelings
+#
+# Ported from Lux Invicta events/celtic_changelings.txt (ancrel.211-244), 2026-11-06.
+# Condensed: one event per step on the parent, instead of LI's selection/AI relay pairs.
+#
+# Child flags (all hidden):
+#	LR_changeling_marked	the child has been picked for the chain (never picked again)
+#	LR_changeling			the child really is a changeling (LI changeling_child)
+#	LR_changeling_fake		the child is only thought to be one (LI changeling_child_fake)
+#	LR_changeling_strange_1/2/3, LR_changeling_kills_1/2/3, LR_changeling_trade	chain steps done
+#
+# Start: LR_changeling_start_pulse (random_yearly_playable_pulse), on a Celtic pagan parent of a child aged 0-6.
+# Steps: LR_changeling_chain_pulse (random_yearly_playable_pulse), on the parent the child lives with.
+# End: the druid's trade with the Sidhe (LR_changeling.0030-0035), or the changeling's coming of age (LR_changeling.0040).
+#
+##################################################################
+
+namespace = LR_changeling
+
+### Druidic warning
+
+# Starter (hidden): pick the child; a druid at court warns about it, otherwise the Sidhe take it unseen
+LR_changeling.0001 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		NOT = { has_character_flag = LR_changeling_parent_cooldown }
+		any_child = {
+			age <= 6
+			host = root
+			NOT = { has_character_flag = LR_changeling_marked }
+		}
+	}
+
+	immediate = {
+		add_character_flag = { flag = LR_changeling_parent_cooldown years = 20 }
+		random_child = {
+			limit = {
+				age <= 6
+				host = root
+				NOT = { has_character_flag = LR_changeling_marked }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_marked
+		}
+		if = {
+			limit = {
+				any_courtier = {
+					LR_is_druid_trigger = yes
+					NOT = { this = scope:changeling_child }
+				}
+			}
+			random_courtier = {
+				limit = {
+					LR_is_druid_trigger = yes
+					NOT = { this = scope:changeling_child }
+				}
+				save_scope_as = changeling_druid
+			}
+			trigger_event = LR_changeling.0002
+		}
+		else = {
+			# Child is stolen by the Sidhe (LI ancrel.215)
+			scope:changeling_child = {
+				random_list = {
+					50 = { add_character_flag = LR_changeling }
+					50 = { add_character_flag = LR_changeling_fake }
+				}
+			}
+		}
+	}
+}
+
+# Druid warns about child (LI ancrel.213)
+LR_changeling.0002 = {
+	type = character_event
+	title = LR_changeling.0002.t
+	desc = LR_changeling.0002.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:changeling_druid
+		animation = personality_zealous
+	}
+	lower_left_portrait = scope:changeling_child
+
+	trigger = {
+		scope:changeling_child = { is_alive = yes }
+		scope:changeling_druid = { is_alive = yes }
+	}
+
+	# Dismiss the druid: the Sidhe take the child
+	option = {
+		name = LR_changeling.0002.a
+		scope:changeling_druid = {
+			add_opinion = { target = root modifier = LR_changeling_warning_dismissed_opinion years = 1 }
+		}
+		hidden_effect = {
+			scope:changeling_child = {
+				random_list = {
+					50 = { add_character_flag = LR_changeling }
+					50 = { add_character_flag = LR_changeling_fake }
+				}
+			}
+		}
+		ai_chance = {
+			base = 50
+			modifier = { add = 30 has_trait = cynical }
+		}
+	}
+
+	# Try to appease the gods: offerings may keep the Sidhe away
+	option = {
+		name = LR_changeling.0002.b
+		remove_short_term_gold = minor_gold_value
+		add_piety = minor_piety_value
+		custom_tooltip = LR_changeling.0002.b.tt
+		hidden_effect = {
+			scope:changeling_child = {
+				random_list = {
+					35 = { }
+					35 = { add_character_flag = LR_changeling }
+					30 = { add_character_flag = LR_changeling_fake }
+				}
+			}
+		}
+		ai_chance = {
+			base = 50
+			modifier = { add = 30 has_trait = zealous }
+		}
+	}
+}
+
+### The child acts strange (real changelings only)
+
+# Child acts strange I (LI ancrel.217)
+LR_changeling.0010 = {
+	type = character_event
+	title = LR_changeling.0010.t
+	desc = LR_changeling.0010.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = idle
+	}
+
+	trigger = {
+		any_child = {
+			has_character_flag = LR_changeling
+			host = root
+			age >= 2
+			age < 16
+			NOT = { has_character_flag = LR_changeling_strange_1 }
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				has_character_flag = LR_changeling
+				host = root
+				age >= 2
+				age < 16
+				NOT = { has_character_flag = LR_changeling_strange_1 }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_strange_1
+		}
+	}
+
+	option = {
+		name = LR_changeling.0010.a
+		custom_tooltip = LR_changeling_acts_strange_tt
+		add_stress = minor_stress_gain
+	}
+}
+
+# Child acts strange II (LI ancrel.219)
+LR_changeling.0011 = {
+	type = character_event
+	title = LR_changeling.0010.t
+	desc = LR_changeling.0011.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = fear
+	}
+
+	trigger = {
+		any_child = {
+			has_character_flag = LR_changeling
+			has_character_flag = LR_changeling_strange_1
+			host = root
+			age < 16
+			NOT = { has_character_flag = LR_changeling_strange_2 }
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_strange_1
+				host = root
+				age < 16
+				NOT = { has_character_flag = LR_changeling_strange_2 }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_strange_2
+		}
+	}
+
+	option = {
+		name = LR_changeling.0011.a
+		custom_tooltip = LR_changeling_acts_strange_tt
+		add_stress = minor_stress_gain
+	}
+}
+
+# Child acts strange III (LI ancrel.221)
+LR_changeling.0012 = {
+	type = character_event
+	title = LR_changeling.0010.t
+	desc = LR_changeling.0012.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = ecstasy
+	}
+
+	trigger = {
+		any_child = {
+			has_character_flag = LR_changeling
+			has_character_flag = LR_changeling_strange_2
+			host = root
+			age < 16
+			NOT = { has_character_flag = LR_changeling_strange_3 }
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_strange_2
+				host = root
+				age < 16
+				NOT = { has_character_flag = LR_changeling_strange_3 }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_strange_3
+		}
+	}
+
+	option = {
+		name = LR_changeling.0012.a
+		custom_tooltip = LR_changeling_acts_strange_tt
+		add_stress = medium_stress_gain
+	}
+}
+
+### The child kills a courtier (real changelings that have already acted strange)
+# Victims: an adult AI courtier who is not the child's close family, the ruler's spouse or heir, a druid or a prisoner.
+
+# Child kills courtier I (LI ancrel.224)
+LR_changeling.0020 = {
+	type = character_event
+	title = LR_changeling.0020.t
+	desc = LR_changeling.0020.desc
+	theme = death
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = idle
+	}
+
+	trigger = {
+		any_child = {
+			has_character_flag = LR_changeling
+			has_character_flag = LR_changeling_strange_1
+			host = root
+			age >= 4
+			age < 16
+			NOT = { has_character_flag = LR_changeling_kills_1 }
+		}
+		any_courtier = {
+			is_ai = yes
+			age >= 13
+			is_imprisoned = no
+			NOT = { has_character_flag = LR_changeling }
+			NOT = { has_character_flag = LR_changeling_fake }
+			NOT = { is_close_family_of = root }
+			NOT = { is_spouse_of = root }
+			NOT = { is_primary_heir_of = root }
+			NOT = { LR_is_druid_trigger = yes }
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_strange_1
+				host = root
+				age >= 4
+				age < 16
+				NOT = { has_character_flag = LR_changeling_kills_1 }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_kills_1
+		}
+		random_courtier = {
+			limit = {
+				is_ai = yes
+				age >= 13
+				is_imprisoned = no
+				NOT = { has_character_flag = LR_changeling }
+				NOT = { has_character_flag = LR_changeling_fake }
+				NOT = { is_close_family_of = root }
+				NOT = { is_spouse_of = root }
+				NOT = { is_primary_heir_of = root }
+				NOT = { LR_is_druid_trigger = yes }
+			}
+			save_scope_as = changeling_victim
+		}
+	}
+
+	option = {
+		name = LR_changeling.0020.a
+		scope:changeling_victim = {
+			death = { death_reason = death_fall }
+		}
+	}
+}
+
+# Child kills courtier II (LI ancrel.227)
+LR_changeling.0021 = {
+	type = character_event
+	title = LR_changeling.0020.t
+	desc = LR_changeling.0021.desc
+	theme = death
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = idle
+	}
+
+	trigger = {
+		any_child = {
+			has_character_flag = LR_changeling
+			has_character_flag = LR_changeling_kills_1
+			host = root
+			age < 16
+			NOT = { has_character_flag = LR_changeling_kills_2 }
+		}
+		any_courtier = {
+			is_ai = yes
+			age >= 13
+			is_imprisoned = no
+			NOT = { has_character_flag = LR_changeling }
+			NOT = { has_character_flag = LR_changeling_fake }
+			NOT = { is_close_family_of = root }
+			NOT = { is_spouse_of = root }
+			NOT = { is_primary_heir_of = root }
+			NOT = { LR_is_druid_trigger = yes }
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_kills_1
+				host = root
+				age < 16
+				NOT = { has_character_flag = LR_changeling_kills_2 }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_kills_2
+		}
+		random_courtier = {
+			limit = {
+				is_ai = yes
+				age >= 13
+				is_imprisoned = no
+				NOT = { has_character_flag = LR_changeling }
+				NOT = { has_character_flag = LR_changeling_fake }
+				NOT = { is_close_family_of = root }
+				NOT = { is_spouse_of = root }
+				NOT = { is_primary_heir_of = root }
+				NOT = { LR_is_druid_trigger = yes }
+			}
+			save_scope_as = changeling_victim
+		}
+	}
+
+	option = {
+		name = LR_changeling.0021.a
+		scope:changeling_victim = {
+			death = { death_reason = death_fall }
+		}
+		add_stress = minor_stress_gain
+	}
+}
+
+# Child kills courtier III (LI ancrel.230)
+LR_changeling.0022 = {
+	type = character_event
+	title = LR_changeling.0020.t
+	desc = LR_changeling.0022.desc
+	theme = death
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = happiness
+	}
+
+	trigger = {
+		any_child = {
+			has_character_flag = LR_changeling
+			has_character_flag = LR_changeling_kills_2
+			host = root
+			age < 16
+			NOT = { has_character_flag = LR_changeling_kills_3 }
+		}
+		any_courtier = {
+			is_ai = yes
+			age >= 13
+			is_imprisoned = no
+			NOT = { has_character_flag = LR_changeling }
+			NOT = { has_character_flag = LR_changeling_fake }
+			NOT = { is_close_family_of = root }
+			NOT = { is_spouse_of = root }
+			NOT = { is_primary_heir_of = root }
+			NOT = { LR_is_druid_trigger = yes }
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_kills_2
+				host = root
+				age < 16
+				NOT = { has_character_flag = LR_changeling_kills_3 }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_kills_3
+		}
+		random_courtier = {
+			limit = {
+				is_ai = yes
+				age >= 13
+				is_imprisoned = no
+				NOT = { has_character_flag = LR_changeling }
+				NOT = { has_character_flag = LR_changeling_fake }
+				NOT = { is_close_family_of = root }
+				NOT = { is_spouse_of = root }
+				NOT = { is_primary_heir_of = root }
+				NOT = { LR_is_druid_trigger = yes }
+			}
+			save_scope_as = changeling_victim
+		}
+	}
+
+	option = {
+		name = LR_changeling.0022.a
+		scope:changeling_victim = {
+			death = { death_reason = death_drowned }
+		}
+		add_stress = medium_stress_gain
+	}
+}
+
+### The druid's trade with the Sidhe (real or supposed changelings)
+
+# Druid offers to save child (LI ancrel.233)
+LR_changeling.0030 = {
+	type = character_event
+	title = LR_changeling.0030.t
+	desc = LR_changeling.0030.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:changeling_druid
+		animation = worry
+	}
+	lower_left_portrait = scope:changeling_child
+
+	trigger = {
+		any_child = {
+			OR = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_fake
+			}
+			host = root
+			age >= 3
+			age < 16
+			NOT = { has_character_flag = LR_changeling_trade }
+		}
+		any_courtier = {
+			LR_is_druid_trigger = yes
+			NOR = {
+				has_character_flag = LR_changeling
+				has_character_flag = LR_changeling_fake
+			}
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				OR = {
+					has_character_flag = LR_changeling
+					has_character_flag = LR_changeling_fake
+				}
+				host = root
+				age >= 3
+				age < 16
+				NOT = { has_character_flag = LR_changeling_trade }
+			}
+			save_scope_as = changeling_child
+			add_character_flag = LR_changeling_trade
+		}
+		random_courtier = {
+			limit = {
+				LR_is_druid_trigger = yes
+				NOR = {
+					has_character_flag = LR_changeling
+					has_character_flag = LR_changeling_fake
+				}
+			}
+			save_scope_as = changeling_druid
+		}
+	}
+
+	# Perform the ritual
+	option = {
+		name = LR_changeling.0030.a
+		custom_tooltip = LR_changeling_trade_approved_tt
+		trigger_event = { id = LR_changeling.0031 days = 7 }
+		ai_chance = {
+			base = 60
+			modifier = { add = 30 has_trait = zealous }
+		}
+	}
+
+	# Refuse
+	option = {
+		name = LR_changeling.0030.b
+		custom_tooltip = LR_changeling_trade_denied_tt
+		scope:changeling_druid = {
+			add_opinion = { target = root modifier = LR_changeling_trade_refused_opinion years = 2 }
+		}
+		ai_chance = {
+			base = 40
+			modifier = { add = 30 has_trait = cynical }
+			modifier = { add = 20 has_trait = compassionate }
+		}
+	}
+}
+
+# Changeling trade begins (LI ancrel.234)
+LR_changeling.0031 = {
+	type = character_event
+	title = LR_changeling.0030.t
+	desc = LR_changeling.0031.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+	right_portrait = {
+		character = scope:changeling_druid
+		animation = divine_ecstasy
+	}
+
+	trigger = {
+		scope:changeling_child = { is_alive = yes }
+		scope:changeling_druid = { is_alive = yes }
+	}
+
+	option = {
+		name = LR_changeling.0031.a
+		custom_tooltip = LR_changeling_trade_begins_tt
+		hidden_effect = {
+			random_list = {
+				20 = { trigger_event = { id = LR_changeling.0032 days = 3 } }
+				20 = { trigger_event = { id = LR_changeling.0033 days = 3 } }
+				40 = { trigger_event = { id = LR_changeling.0034 days = 3 } }
+				20 = { trigger_event = { id = LR_changeling.0035 days = 3 } }
+			}
+		}
+	}
+}
+
+# Trade completed: the druid dies (LI ancrel.237)
+LR_changeling.0032 = {
+	type = character_event
+	title = LR_changeling.0030.t
+	desc = LR_changeling.0032.desc
+	theme = death
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = idle
+	}
+
+	trigger = {
+		scope:changeling_child = { is_alive = yes }
+		scope:changeling_druid = { is_alive = yes }
+	}
+
+	option = {
+		name = LR_changeling.0032.a
+		scope:changeling_druid = {
+			death = { death_reason = death_mysterious }
+		}
+		scope:changeling_child = {
+			custom_tooltip = LR_changeling_freed_tt
+			hidden_effect = {
+				remove_character_flag = LR_changeling
+				remove_character_flag = LR_changeling_fake
+			}
+		}
+	}
+}
+
+# Trade completed: the child dies (LI ancrel.238)
+LR_changeling.0033 = {
+	type = character_event
+	title = LR_changeling.0030.t
+	desc = LR_changeling.0033.desc
+	theme = death
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	right_portrait = {
+		character = scope:changeling_druid
+		animation = worry
+	}
+
+	trigger = {
+		scope:changeling_child = { is_alive = yes }
+		scope:changeling_druid = { is_alive = yes }
+	}
+
+	immediate = {
+		scope:changeling_child = {
+			death = { death_reason = death_sacrificed_to_gods }
+		}
+	}
+
+	# Execute the druid
+	option = {
+		name = LR_changeling.0033.a
+		scope:changeling_druid = {
+			death = {
+				death_reason = death_execution
+				killer = root
+			}
+		}
+		ai_chance = {
+			base = 20
+			modifier = { add = 40 has_trait = wrathful }
+		}
+	}
+
+	# Banish the druid
+	option = {
+		name = LR_changeling.0033.b
+		scope:changeling_druid = {
+			move_to_pool = yes
+		}
+		ai_chance = { base = 40 }
+	}
+
+	# It had to be done
+	option = {
+		name = LR_changeling.0033.c
+		add_piety = minor_piety_value
+		ai_chance = {
+			base = 40
+			modifier = { add = 30 has_trait = zealous }
+		}
+	}
+}
+
+# Trade completed: the child is unharmed (LI ancrel.239)
+LR_changeling.0034 = {
+	type = character_event
+	title = LR_changeling.0030.t
+	desc = LR_changeling.0034.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = personality_content
+	}
+
+	trigger = {
+		scope:changeling_child = { is_alive = yes }
+		scope:changeling_druid = { is_alive = yes }
+	}
+
+	option = {
+		name = LR_changeling.0034.a
+		scope:changeling_child = {
+			custom_tooltip = LR_changeling_freed_tt
+			hidden_effect = {
+				remove_character_flag = LR_changeling
+				remove_character_flag = LR_changeling_fake
+			}
+		}
+		scope:changeling_druid = {
+			add_opinion = { target = root modifier = LR_changeling_trade_thanks_opinion years = 5 }
+		}
+	}
+}
+
+# Trade completed: the child is hurt (LI ancrel.240)
+LR_changeling.0035 = {
+	type = character_event
+	title = LR_changeling.0030.t
+	desc = LR_changeling.0035.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:changeling_child
+		animation = sadness
+	}
+
+	trigger = {
+		scope:changeling_child = { is_alive = yes }
+		scope:changeling_druid = { is_alive = yes }
+	}
+
+	immediate = {
+		scope:changeling_child = {
+			hidden_effect = {
+				remove_character_flag = LR_changeling
+				remove_character_flag = LR_changeling_fake
+			}
+			add_trait = wounded_1
+		}
+	}
+
+	# Banish the druid
+	option = {
+		name = LR_changeling.0033.b
+		scope:changeling_druid = {
+			move_to_pool = yes
+		}
+		ai_chance = { base = 40 }
+	}
+
+	# It had to be done
+	option = {
+		name = LR_changeling.0033.c
+		ai_chance = { base = 60 }
+	}
+}
+
+### Coming of age (LI ancrel.241, on_16th_birthday)
+
+# A changeling child's true nature asserts itself
+LR_changeling.0040 = {
+	type = character_event
+	title = LR_changeling.0040.t
+	desc = LR_changeling.0040.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	trigger = {
+		has_character_flag = LR_changeling
+	}
+
+	immediate = {
+		remove_character_flag = LR_changeling
+		remove_character_flag = LR_changeling_fake
+	}
+
+	option = {
+		name = LR_changeling.0040.a
+		add_trait = LR_changeling
+		hidden_effect = {
+			random_list = {
+				50 = {	# Born of the Fomorians
+					remove_trait = compassionate
+					remove_trait = honest
+					remove_trait = content
+					remove_trait = calm
+					remove_trait = humble
+					remove_trait = trusting
+					remove_trait = shy
+					add_trait = deceitful
+					add_trait = ambitious
+					add_trait = wrathful
+					add_trait = lunatic_1
+				}
+				50 = {	# Born of the Sidhe
+					remove_trait = callous
+					remove_trait = sadistic
+					remove_trait = wrathful
+					remove_trait = impatient
+					remove_trait = honest
+					remove_trait = shy
+					remove_trait = trusting
+					add_trait = compassionate
+					add_trait = patient
+					add_trait = deceitful
+					add_trait = lunatic_1
+				}
+			}
+		}
+	}
+}

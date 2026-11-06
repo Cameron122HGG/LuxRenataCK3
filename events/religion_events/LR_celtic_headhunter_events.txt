@@ -1,0 +1,62 @@
+﻿#######################################
+#
+# ANCIENT RELIGIONS
+# - Druidic Headhunters
+#
+#######################################
+
+# Written by Patrick Marchand for Lux Invicta (CK2). Ported to CK3 Lux Renata 2026-11-06.
+# Fired from on_combat_end_winner for Celtic pagan commanders and knights on the winning side
+# (LR_headhunter_combat_win, zz00_LR_celtic_flavor_on_actions.txt), which rolls the chance.
+
+namespace = LR_headhunter
+
+# Druidic character becomes renowned headhunter
+LR_headhunter.0001 = {
+	type = character_event
+	title = LR_headhunter.0001.t
+	desc = LR_headhunter.0001.desc
+	theme = war
+
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+
+	trigger = {
+		is_alive = yes
+		LR_is_celtic_pagan_trigger = yes
+		NOT = { has_trait = LR_headhunter }
+		NOT = { has_trait = LR_headhunter_legend }
+	}
+
+	option = {
+		name = LR_headhunter.0001.a
+		add_trait = LR_headhunter
+	}
+}
+
+# Druidic character becomes legend
+LR_headhunter.0002 = {
+	type = character_event
+	title = LR_headhunter.0002.t
+	desc = LR_headhunter.0002.desc
+	theme = war
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	trigger = {
+		is_alive = yes
+		LR_is_celtic_pagan_trigger = yes
+		has_trait = LR_headhunter
+	}
+
+	option = {
+		name = LR_headhunter.0002.a
+		remove_trait = LR_headhunter
+		add_trait = LR_headhunter_legend
+	}
+}

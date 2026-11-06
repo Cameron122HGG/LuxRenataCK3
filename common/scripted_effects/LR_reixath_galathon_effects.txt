@@ -1,0 +1,59 @@
+﻿# Reixath Galáthon, the eastern Celtic empire (user, 2026-11-06; the name comes from a fan's custom Galatian empire
+# campaign). Lays the 1066 warlord k_galatia and k_pontus back over their counties (a no-op at 1066; at 1020 it takes
+# them out of the Eastern Roman themes, which the title-set refresh then dissolves) and sets both under e_reixath_galathon.
+LR_form_reixath_galathon_effect = {
+	custom_tooltip = LR_form_reixath_galathon_dejure_tt
+	hidden_effect = {
+		# k_galatia
+		title:c_galatia = { set_de_jure_liege_title = title:d_bucellaria }
+		title:c_galatia_salutaris = { set_de_jure_liege_title = title:d_bucellaria }
+		title:c_lower_galatia = { set_de_jure_liege_title = title:d_bucellaria }
+		title:c_tectosagia_galatia = { set_de_jure_liege_title = title:d_bucellaria }
+		title:d_bucellaria = { set_de_jure_liege_title = title:k_galatia }
+		title:c_cappadocia = { set_de_jure_liege_title = title:d_cappadocia }
+		title:c_garsauria = { set_de_jure_liege_title = title:d_cappadocia }
+		title:c_kyzistra = { set_de_jure_liege_title = title:d_cappadocia }
+		title:d_cappadocia = { set_de_jure_liege_title = title:k_galatia }
+		title:c_charsianon = { set_de_jure_liege_title = title:d_charsianon }
+		title:c_kaisereia = { set_de_jure_liege_title = title:d_charsianon }
+		title:c_soanda = { set_de_jure_liege_title = title:d_charsianon }
+		title:c_trocmi = { set_de_jure_liege_title = title:d_charsianon }
+		title:d_charsianon = { set_de_jure_liege_title = title:k_galatia }
+		title:k_galatia = { set_de_jure_liege_title = title:e_reixath_galathon }
+		# k_pontus
+		title:c_bythinion = { set_de_jure_liege_title = title:d_honorias }
+		title:c_hadrianopolis = { set_de_jure_liege_title = title:d_honorias }
+		title:c_honorias = { set_de_jure_liege_title = title:d_honorias }
+		title:d_honorias = { set_de_jure_liege_title = title:k_pontus }
+		title:c_amastris = { set_de_jure_liege_title = title:d_paphlagonia }
+		title:c_gangra = { set_de_jure_liege_title = title:d_paphlagonia }
+		title:c_ionopolis = { set_de_jure_liege_title = title:d_paphlagonia }
+		title:c_kimiatene = { set_de_jure_liege_title = title:d_paphlagonia }
+		title:c_pompeiopolis = { set_de_jure_liege_title = title:d_paphlagonia }
+		title:d_paphlagonia = { set_de_jure_liege_title = title:k_pontus }
+		title:c_domanitis = { set_de_jure_liege_title = title:d_helenopontus }
+		title:c_gazelonitis = { set_de_jure_liege_title = title:d_helenopontus }
+		title:c_helenopontus = { set_de_jure_liege_title = title:d_helenopontus }
+		title:c_pimolisene = { set_de_jure_liege_title = title:d_helenopontus }
+		title:c_sinope = { set_de_jure_liege_title = title:d_helenopontus }
+		title:d_helenopontus = { set_de_jure_liege_title = title:k_pontus }
+		title:k_pontus = { set_de_jure_liege_title = title:e_reixath_galathon }
+	}
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:e_reixath_galathon = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	dynasty ?= { add_dynasty_prestige = major_dynasty_prestige_gain }
+	# Theme titles left without land are dissolved
+	hidden_effect = { LR_title_set_reorganise_realm_effect = yes }
+}

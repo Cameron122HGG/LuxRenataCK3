@@ -86,3 +86,50 @@ hellenic_flavor.0001 = {
 		}
 	}
 }
+
+# Drunken Actors (Lux Invicta ancrel.2241, ported 2026-11-06)
+hellenic_flavor.0002 = {
+    type = character_event
+    title = hellenic_flavor.0002.t
+    desc = hellenic_flavor.0002.desc
+    theme = faith
+
+    left_portrait = {
+        character = root
+        animation = anger
+    }
+
+    trigger = {
+        is_landed = yes
+        is_travelling = no
+        religion = {
+            is_in_family = rf_graeco_roman
+        }
+    }
+
+    weight_multiplier = {
+        base = 1
+        modifier = { factor = 2.5 has_trait = lifestyle_poet }
+        modifier = { factor = 0.5 has_trait = cynical }
+        modifier = { factor = 3 has_trait = wrathful }
+        modifier = { factor = 1.5 has_trait = brave }
+        modifier = { factor = 2 has_trait = arrogant }
+        modifier = { factor = 0.55 has_trait = content }
+        modifier = { factor = 2 has_trait = drunkard }
+    }
+
+    option = {
+        name = hellenic_flavor.0002.a
+        add_prestige = -50
+    }
+
+    option = {
+        name = hellenic_flavor.0002.b
+        add_learning_skill = 1
+        random_list = {
+            70 = {}
+            20 = { add_trait = drunkard }
+            10 = { add_trait = lazy }
+        }
+    }
+}

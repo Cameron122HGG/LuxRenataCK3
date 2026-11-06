@@ -1,0 +1,1130 @@
+﻿###################################
+#
+# SHAMANS
+# - Court Shaman and Ask the Ancestors for Advice (Lux Invicta events/li_shamans.txt, shaman.1 - shaman.35)
+#
+###################################
+
+# Adapted for CK3 Lux Renata 2026-11-06
+# Court position: common/court_positions/types/LR_court_shaman.txt
+# Decisions: common/decisions/Lux Renata/LR_shaman_decisions.txt
+# Hooks: common/on_action/zz00_LR_shaman_on_actions.txt
+#
+# 0001 - 0002	Ruler has no Court Shaman; a Shaman arrives at court (shaman.35, shaman.34)
+# 0100 - 0106	Ask the Ancestors for Advice: worry, trance, return, fate (shaman.1 - shaman.5, shaman.32)
+# 0110 - 0112	The advice proper: good, bad, and by age (shaman.6 - shaman.31, shaman.33)
+#
+# Saved scopes through the chain: scope:shaman (the Court Shaman, or root if root is a shaman),
+# scope:shaman_worry (flag:family/realm/personal), scope:shaman_topic (flag:<topic>)
+
+namespace = LR_shaman
+
+#################################################
+# Ruler has no Court Shaman (shaman.35)
+#################################################
+LR_shaman.0001 = {
+	type = character_event
+	title = LR_shaman.0001.t
+	desc = LR_shaman.0001.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		is_ai = no
+		LR_is_shamanic_trigger = yes
+		highest_held_title_tier >= tier_county
+		is_imprisoned = no
+		NOT = { has_trait = LR_shaman }
+		NOT = { has_character_flag = LR_shaman_reminder_cooldown }
+		NOT = { has_character_flag = LR_shaman_invite_pending }
+		NOT = { employs_court_position = LR_court_shaman_court_position }
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = LR_shaman_reminder_cooldown
+			years = 5
+		}
+	}
+
+	# There's a shaman at court already
+	option = {
+		name = LR_shaman.0001.a
+		trigger = {
+			can_employ_court_position_type = LR_court_shaman_court_position
+			any_court_position_candidate = {
+				court_position_type = LR_court_shaman_court_position
+				has_trait = LR_shaman
+			}
+		}
+		random_court_position_candidate = {
+			court_position_type = LR_court_shaman_court_position
+			limit = { has_trait = LR_shaman }
+			save_scope_as = new_shaman
+		}
+		appoint_court_position = {
+			recipient = scope:new_shaman
+			court_position = LR_court_shaman_court_position
+		}
+	}
+
+	# I must find a Shaman, and soon!
+	option = {
+		name = LR_shaman.0001.b
+		trigger = { piety >= minor_piety_value }
+		add_piety = {
+			value = minor_piety_value
+			multiply = -1
+		}
+		add_character_flag = {
+			flag = LR_shaman_invite_pending
+			years = 1
+		}
+		custom_tooltip = LR_shaman.0001.b.tt
+		trigger_event = {
+			id = LR_shaman.0002
+			days = { 30 60 }
+		}
+	}
+
+	# Not now
+	option = {
+		name = LR_shaman.0001.c
+	}
+}
+
+#################################################
+# A Shaman arrives at court (shaman.34)
+#################################################
+LR_shaman.0002 = {
+	type = character_event
+	title = LR_shaman.0002.t
+	desc = LR_shaman.0002.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:new_shaman
+		animation = ecstasy
+	}
+
+	immediate = {
+		remove_character_flag = LR_shaman_invite_pending
+		create_character = {
+			location = root.capital_province
+			age = { 25 60 }
+			gender_female_chance = 30
+			culture = root.culture
+			faith = root.faith
+			trait = LR_shaman
+			trait = education_learning_2
+			learning = { 6 18 }
+			save_scope_as = new_shaman
+		}
+		add_courtier = scope:new_shaman
+		scope:new_shaman = {
+			add_opinion = {
+				target = root
+				modifier = LR_shaman_patron_opinion
+			}
+		}
+	}
+
+	# Welcome to my court, as my Court Shaman
+	option = {
+		name = LR_shaman.0002.a
+		trigger = {
+			can_employ_court_position_type = LR_court_shaman_court_position
+		}
+		appoint_court_position = {
+			recipient = scope:new_shaman
+			court_position = LR_court_shaman_court_position
+		}
+	}
+
+	# Welcome to my court.
+	option = {
+		name = LR_shaman.0002.b
+	}
+}
+
+##################################################################
+# Ask the Ancestors for Advice
+##################################################################
+
+# Many worries, many fears (shaman.1)
+LR_shaman.0100 = {
+	type = character_event
+	title = LR_shaman.0100.t
+	desc = LR_shaman.0100.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = LR_shaman.0100.a
+		custom_tooltip = LR_shaman.0100.a.tt
+		trigger_event = {
+			id = LR_shaman.0101
+			days = 3
+		}
+	}
+}
+
+# Visiting the Shaman: what are you worried about? (shaman.2)
+LR_shaman.0101 = {
+	type = character_event
+	title = LR_shaman.0101.t
+	desc = LR_shaman.0101.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = personality_rational
+	}
+
+	option = {
+		name = LR_shaman.0101.family
+		save_scope_value_as = {
+			name = shaman_worry
+			value = flag:family
+		}
+		custom_tooltip = LR_shaman.0101.family.tt
+		trigger_event = LR_shaman.0102
+	}
+
+	option = {
+		name = LR_shaman.0101.realm
+		save_scope_value_as = {
+			name = shaman_worry
+			value = flag:realm
+		}
+		custom_tooltip = LR_shaman.0101.realm.tt
+		trigger_event = LR_shaman.0102
+	}
+
+	option = {
+		name = LR_shaman.0101.personal
+		save_scope_value_as = {
+			name = shaman_worry
+			value = flag:personal
+		}
+		custom_tooltip = LR_shaman.0101.personal.tt
+		trigger_event = LR_shaman.0102
+	}
+}
+
+# The Shaman asks for details: the actual worry (LI chose it at random; here the player picks)
+LR_shaman.0102 = {
+	type = character_event
+	title = LR_shaman.0101.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:shaman_worry = flag:family }
+				desc = LR_shaman.0102.desc.family
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_worry = flag:realm }
+				desc = LR_shaman.0102.desc.realm
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_worry = flag:personal }
+				desc = LR_shaman.0102.desc.personal
+			}
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = thinking
+	}
+
+	option = {
+		name = LR_shaman.0102.marriage
+		trigger = {
+			scope:shaman_worry = flag:family
+			is_married = yes
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:marriage
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.no_spouse
+		trigger = {
+			scope:shaman_worry = flag:family
+			is_married = no
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:no_spouse
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.children
+		trigger = {
+			scope:shaman_worry = flag:family
+			any_child = { is_alive = yes }
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:children
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.no_children
+		trigger = {
+			scope:shaman_worry = flag:family
+			NOT = { any_child = { is_alive = yes } }
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:no_children
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.distant_relative
+		trigger = {
+			scope:shaman_worry = flag:family
+			exists = dynasty
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:distant_relative
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.diplomacy
+		trigger = {
+			scope:shaman_worry = flag:realm
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:diplomacy
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.martial
+		trigger = {
+			scope:shaman_worry = flag:realm
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:martial
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.stewardship
+		trigger = {
+			scope:shaman_worry = flag:realm
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:stewardship
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.intrigue
+		trigger = {
+			scope:shaman_worry = flag:realm
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:intrigue
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.learning
+		trigger = {
+			scope:shaman_worry = flag:realm
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:learning
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.personality
+		trigger = {
+			scope:shaman_worry = flag:personal
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:personality
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.health
+		trigger = {
+			scope:shaman_worry = flag:personal
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:health
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+
+	option = {
+		name = LR_shaman.0102.age
+		trigger = {
+			scope:shaman_worry = flag:personal
+		}
+		save_scope_value_as = {
+			name = shaman_topic
+			value = flag:age
+		}
+		trigger_event = {
+			id = LR_shaman.0103
+			days = 5
+		}
+	}
+}
+
+# To the Spirit World: the trance begins (shaman.3)
+LR_shaman.0103 = {
+	type = character_event
+	title = LR_shaman.0103.t
+	desc = LR_shaman.0103.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_shaman.0103.a
+		custom_tooltip = LR_shaman.0103.a.tt
+		trigger_event = {
+			id = LR_shaman.0104
+			days = 2
+		}
+	}
+}
+
+# The Shaman's Journey: patience (shaman.4)
+LR_shaman.0104 = {
+	type = character_event
+	title = LR_shaman.0104.t
+	desc = LR_shaman.0104.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = divine_ecstasy
+	}
+
+	option = {
+		name = LR_shaman.0104.a
+		custom_tooltip = LR_shaman.0104.a.tt
+		trigger_event = {
+			id = LR_shaman.0105
+			days = 1
+		}
+	}
+}
+
+# The Shaman Returns (shaman.5); the advice is good or bad, a more learned Shaman reads the spirits better
+LR_shaman.0105 = {
+	type = character_event
+	title = LR_shaman.0105.t
+	desc = LR_shaman.0105.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = idle
+	}
+
+	option = {
+		name = LR_shaman.0105.a
+		if = {
+			limit = { scope:shaman_topic = flag:age }
+			trigger_event = {
+				id = LR_shaman.0112
+				days = 2
+			}
+		}
+		else = {
+			random_list = {
+				40 = {
+					modifier = {
+						add = 10
+						scope:shaman = { learning >= 8 }
+					}
+					modifier = {
+						add = 15
+						scope:shaman = { learning >= 16 }
+					}
+					modifier = {
+						add = 10
+						scope:shaman_topic = flag:health
+						health >= 6
+					}
+					modifier = {
+						add = -10
+						scope:shaman_topic = flag:health
+						health < 3
+					}
+					trigger_event = {
+						id = LR_shaman.0110
+						days = 2
+					}
+				}
+				60 = {
+					modifier = {
+						add = -10
+						scope:shaman = { learning >= 8 }
+					}
+					modifier = {
+						add = -15
+						scope:shaman = { learning >= 16 }
+					}
+					trigger_event = {
+						id = LR_shaman.0111
+						days = 2
+					}
+				}
+			}
+		}
+	}
+}
+
+# Encouraging advice (shaman.6, .8, .10 ... .28)
+LR_shaman.0110 = {
+	type = character_event
+	title = LR_shaman.0110.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:marriage }
+				desc = LR_shaman.0110.desc.marriage
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:no_spouse }
+				desc = LR_shaman.0110.desc.no_spouse
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:children }
+				desc = LR_shaman.0110.desc.children
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:no_children }
+				desc = LR_shaman.0110.desc.no_children
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:distant_relative }
+				desc = LR_shaman.0110.desc.distant_relative
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:diplomacy }
+				desc = LR_shaman.0110.desc.diplomacy
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:martial }
+				desc = LR_shaman.0110.desc.martial
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:stewardship }
+				desc = LR_shaman.0110.desc.stewardship
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:intrigue }
+				desc = LR_shaman.0110.desc.intrigue
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:learning }
+				desc = LR_shaman.0110.desc.learning
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:personality }
+				desc = LR_shaman.0110.desc.personality
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:health }
+				desc = LR_shaman.0110.desc.health
+			}
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = personality_rational
+	}
+
+	option = {
+		name = LR_shaman.0110.a.marriage
+		trigger = { scope:shaman_topic = flag:marriage }
+		add_character_modifier = {
+			modifier = LR_shaman_good_marriage
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.no_spouse
+		trigger = { scope:shaman_topic = flag:no_spouse }
+		add_character_modifier = {
+			modifier = LR_shaman_good_no_spouse
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.children
+		trigger = { scope:shaman_topic = flag:children }
+		add_character_modifier = {
+			modifier = LR_shaman_good_children
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.no_children
+		trigger = { scope:shaman_topic = flag:no_children }
+		add_character_modifier = {
+			modifier = LR_shaman_good_no_children
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.distant_relative
+		trigger = { scope:shaman_topic = flag:distant_relative }
+		add_character_modifier = {
+			modifier = LR_shaman_good_distant_relative
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.diplomacy
+		trigger = { scope:shaman_topic = flag:diplomacy }
+		add_character_modifier = {
+			modifier = LR_shaman_good_diplomacy
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.martial
+		trigger = { scope:shaman_topic = flag:martial }
+		add_character_modifier = {
+			modifier = LR_shaman_good_martial
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.stewardship
+		trigger = { scope:shaman_topic = flag:stewardship }
+		add_character_modifier = {
+			modifier = LR_shaman_good_stewardship
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.intrigue
+		trigger = { scope:shaman_topic = flag:intrigue }
+		add_character_modifier = {
+			modifier = LR_shaman_good_intrigue
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.learning
+		trigger = { scope:shaman_topic = flag:learning }
+		add_character_modifier = {
+			modifier = LR_shaman_good_learning
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.personality
+		trigger = { scope:shaman_topic = flag:personality }
+		add_character_modifier = {
+			modifier = LR_shaman_good_personality
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0110.a.health
+		trigger = { scope:shaman_topic = flag:health }
+		add_character_modifier = {
+			modifier = LR_shaman_good_health
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+}
+
+# Discouraging advice (shaman.7, .9, .11 ... .29)
+LR_shaman.0111 = {
+	type = character_event
+	title = LR_shaman.0111.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:marriage }
+				desc = LR_shaman.0111.desc.marriage
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:no_spouse }
+				desc = LR_shaman.0111.desc.no_spouse
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:children }
+				desc = LR_shaman.0111.desc.children
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:no_children }
+				desc = LR_shaman.0111.desc.no_children
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:distant_relative }
+				desc = LR_shaman.0111.desc.distant_relative
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:diplomacy }
+				desc = LR_shaman.0111.desc.diplomacy
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:martial }
+				desc = LR_shaman.0111.desc.martial
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:stewardship }
+				desc = LR_shaman.0111.desc.stewardship
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:intrigue }
+				desc = LR_shaman.0111.desc.intrigue
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:learning }
+				desc = LR_shaman.0111.desc.learning
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:personality }
+				desc = LR_shaman.0111.desc.personality
+			}
+			triggered_desc = {
+				trigger = { scope:shaman_topic = flag:health }
+				desc = LR_shaman.0111.desc.health
+			}
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = personality_rational
+	}
+
+	option = {
+		name = LR_shaman.0111.a.marriage
+		trigger = { scope:shaman_topic = flag:marriage }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_marriage
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.no_spouse
+		trigger = { scope:shaman_topic = flag:no_spouse }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_no_spouse
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.children
+		trigger = { scope:shaman_topic = flag:children }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_children
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.no_children
+		trigger = { scope:shaman_topic = flag:no_children }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_no_children
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.distant_relative
+		trigger = { scope:shaman_topic = flag:distant_relative }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_distant_relative
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.diplomacy
+		trigger = { scope:shaman_topic = flag:diplomacy }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_diplomacy
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.martial
+		trigger = { scope:shaman_topic = flag:martial }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_martial
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.stewardship
+		trigger = { scope:shaman_topic = flag:stewardship }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_stewardship
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.intrigue
+		trigger = { scope:shaman_topic = flag:intrigue }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_intrigue
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.learning
+		trigger = { scope:shaman_topic = flag:learning }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_learning
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.personality
+		trigger = { scope:shaman_topic = flag:personality }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_personality
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0111.a.health
+		trigger = { scope:shaman_topic = flag:health }
+		add_character_modifier = {
+			modifier = LR_shaman_bad_health
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+}
+
+# Advice on age (shaman.30, .31, .33)
+LR_shaman.0112 = {
+	type = character_event
+	title = LR_shaman.0110.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { age < 30 }
+				desc = LR_shaman.0112.desc.young
+			}
+			triggered_desc = {
+				trigger = { age >= 55 }
+				desc = LR_shaman.0112.desc.old
+			}
+			desc = LR_shaman.0112.desc.medium
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = personality_rational
+	}
+
+	option = {
+		name = LR_shaman.0112.a.young
+		trigger = { age < 30 }
+		add_character_modifier = {
+			modifier = LR_shaman_young_age
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0112.a.medium
+		trigger = {
+			age >= 30
+			age < 55
+		}
+		add_character_modifier = {
+			modifier = LR_shaman_medium_age
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+
+	option = {
+		name = LR_shaman.0112.a.old
+		trigger = { age >= 55 }
+		add_character_modifier = {
+			modifier = LR_shaman_old_age
+			years = 5
+		}
+		trigger_event = {
+			id = LR_shaman.0106
+			days = 3
+		}
+	}
+}
+
+# Fate? (shaman.32)
+LR_shaman.0106 = {
+	type = character_event
+	title = LR_shaman.0106.t
+	desc = LR_shaman.0106.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		trigger = { NOT = { scope:shaman = root } }
+		character = scope:shaman
+		animation = personality_content
+	}
+
+	option = {
+		name = LR_shaman.0106.a
+		add_piety = minor_piety_value
+		scope:shaman = {
+			if = {
+				limit = { NOT = { this = root } }
+				add_opinion = {
+					target = root
+					modifier = LR_shaman_patron_opinion
+				}
+			}
+		}
+	}
+}

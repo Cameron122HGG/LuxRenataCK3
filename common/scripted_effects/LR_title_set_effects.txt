@@ -1,80 +1,165 @@
-﻿# Title sets (gen_title_sets.py): keep Foreign Administration in step with the set titles a character holds.
-# Run on title gain and loss and yearly. An outsider's set titles left without de jure land (their counties were
-# reorganised into another set by a restore decision) are dissolved first.
+﻿# Title sets (gen_title_sets.py, LR_title_set_rules.md): keep Foreign Administration in step with the set titles a
+# character holds. Run on title gain and loss, yearly, and for a whole realm after a reorganise decision.
+# Adding a set: one LR_title_set_refresh_one_effect line below, plus its triggers, modifier, opinion and loc.
 
+# Scope: a character
 LR_title_set_refresh_effect = {
-	# Hellenistic set
+	LR_title_set_refresh_one_effect = { SET = hellenistic }
+	LR_title_set_refresh_one_effect = { SET = roman }
+	LR_title_set_refresh_one_effect = { SET = themes }
+	LR_title_set_refresh_one_effect = { SET = persian }
+	LR_title_set_refresh_one_effect = { SET = hebrew }
+}
+
+# Scope: a character. For one set:
+# 1. An outsider's set titles left without de jure land (their counties went into another set) are dissolved. The
+#    holder gets the title of the same tier over the old title's capital county instead, if it is an unheld set
+#    title they may use (a vassal duke of a hyparchy becomes duke of the matching Roman province).
+# 2. An AI outsider hands its other set titles (never its primary title) to a native vassal, preferring the one
+#    holding the most of the title's counties.
+# 3. Foreign Administration and the natives' opinion follow whether set titles are still held.
+LR_title_set_refresh_one_effect = {
+	save_temporary_scope_as = LR_title_set_holder
 	if = {
-		limit = { NOT = { LR_title_set_hellenistic_native_trigger = yes } }
+		limit = { NOT = { LR_title_set_$SET$_native_trigger = yes } }
 		every_held_title = {
 			limit = {
-				LR_title_set_hellenistic_title_trigger = yes
+				LR_title_set_$SET$_title_trigger = yes
 				NOT = { any_de_jure_county = { always = yes } }
 			}
-			add_to_temporary_list = LR_title_set_dissolve
+			add_to_temporary_list = LR_title_set_dissolve_$SET$
 		}
 		every_in_list = {
-			list = LR_title_set_dissolve
+			list = LR_title_set_dissolve_$SET$
 			save_temporary_scope_as = LR_title_set_dissolved
-			root = { destroy_title = scope:LR_title_set_dissolved }
+			LR_title_set_replace_dissolved_title_effect = yes
+			scope:LR_title_set_holder = { destroy_title = scope:LR_title_set_dissolved }
 		}
 	}
 	if = {
-		limit = { LR_title_set_hellenistic_outsider_trigger = yes }
+		limit = {
+			is_ai = yes
+			LR_title_set_$SET$_outsider_trigger = yes
+		}
+		every_held_title = {
+			limit = {
+				LR_title_set_$SET$_title_trigger = yes
+				NOT = { this = scope:LR_title_set_holder.primary_title }
+			}
+			add_to_temporary_list = LR_title_set_handover_$SET$
+		}
+		every_in_list = {
+			list = LR_title_set_handover_$SET$
+			save_temporary_scope_as = LR_title_set_handover
+			if = {
+				limit = {
+					scope:LR_title_set_holder = {
+						any_vassal = { LR_title_set_$SET$_native_trigger = yes }
+					}
+				}
+				scope:LR_title_set_holder = {
+					random_vassal = {
+						limit = { LR_title_set_$SET$_native_trigger = yes }
+						weight = {
+							base = 1
+							modifier = {
+								add = 10
+								any_held_title = {
+									tier = tier_county
+									any_this_title_or_de_jure_above = { this = scope:LR_title_set_handover }
+								}
+							}
+						}
+						save_temporary_scope_as = LR_title_set_recipient
+					}
+				}
+				create_title_and_vassal_change = {
+					type = granted
+					save_scope_as = LR_title_set_change
+					add_claim_on_loss = no
+				}
+				scope:LR_title_set_handover = {
+					change_title_holder = {
+						holder = scope:LR_title_set_recipient
+						change = scope:LR_title_set_change
+					}
+				}
+				resolve_title_and_vassal_change = scope:LR_title_set_change
+			}
+		}
+	}
+	if = {
+		limit = { LR_title_set_$SET$_outsider_trigger = yes }
 		if = {
-			limit = { NOT = { has_character_modifier = LR_foreign_administration_hellenistic_modifier } }
-			add_character_modifier = LR_foreign_administration_hellenistic_modifier
+			limit = { NOT = { has_character_modifier = LR_foreign_administration_$SET$_modifier } }
+			add_character_modifier = LR_foreign_administration_$SET$_modifier
 		}
 		every_vassal = {
-			limit = { LR_title_set_hellenistic_native_trigger = yes }
-			add_opinion = { target = root modifier = LR_foreign_administration_hellenistic_opinion years = 1 }
+			limit = { LR_title_set_$SET$_native_trigger = yes }
+			add_opinion = { target = scope:LR_title_set_holder modifier = LR_foreign_administration_$SET$_opinion years = 1 }
 		}
 	}
 	else = {
 		if = {
-			limit = { has_character_modifier = LR_foreign_administration_hellenistic_modifier }
-			remove_character_modifier = LR_foreign_administration_hellenistic_modifier
+			limit = { has_character_modifier = LR_foreign_administration_$SET$_modifier }
+			remove_character_modifier = LR_foreign_administration_$SET$_modifier
 		}
 		every_vassal = {
-			limit = { has_opinion_modifier = { target = root modifier = LR_foreign_administration_hellenistic_opinion } }
-			remove_opinion = { target = root modifier = LR_foreign_administration_hellenistic_opinion }
+			limit = { has_opinion_modifier = { target = scope:LR_title_set_holder modifier = LR_foreign_administration_$SET$_opinion } }
+			remove_opinion = { target = scope:LR_title_set_holder modifier = LR_foreign_administration_$SET$_opinion }
 		}
 	}
-	# Roman set
+}
+
+# scope:LR_title_set_dissolved is about to be destroyed, scope:LR_title_set_holder holds it. Grants the holder the title
+# of the same tier over the dissolved title's capital county when that is an unheld set title they may use.
+LR_title_set_replace_dissolved_title_effect = {
+	scope:LR_title_set_dissolved.title_capital_county ?= {
+		if = {
+			limit = { scope:LR_title_set_dissolved.tier = tier_duchy }
+			duchy ?= { save_temporary_scope_as = LR_title_set_replacement }
+		}
+		else_if = {
+			limit = { scope:LR_title_set_dissolved.tier = tier_kingdom }
+			kingdom ?= { save_temporary_scope_as = LR_title_set_replacement }
+		}
+		else_if = {
+			limit = { scope:LR_title_set_dissolved.tier = tier_empire }
+			empire ?= { save_temporary_scope_as = LR_title_set_replacement }
+		}
+	}
 	if = {
-		limit = { NOT = { LR_title_set_roman_native_trigger = yes } }
-		every_held_title = {
-			limit = {
-				LR_title_set_roman_title_trigger = yes
-				NOT = { any_de_jure_county = { always = yes } }
+		limit = {
+			exists = scope:LR_title_set_replacement
+			scope:LR_title_set_replacement = {
+				NOT = { this = scope:LR_title_set_dissolved }
+				LR_is_set_title_trigger = yes
+				NOT = { exists = holder }
 			}
-			add_to_temporary_list = LR_title_set_dissolve
+			scope:LR_title_set_holder = { LR_may_use_title_set_trigger = { TITLE = scope:LR_title_set_replacement } }
 		}
-		every_in_list = {
-			list = LR_title_set_dissolve
-			save_temporary_scope_as = LR_title_set_dissolved
-			root = { destroy_title = scope:LR_title_set_dissolved }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_title_set_replace_change
+			add_claim_on_loss = no
 		}
+		scope:LR_title_set_replacement = {
+			change_title_holder = {
+				holder = scope:LR_title_set_holder
+				change = scope:LR_title_set_replace_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_title_set_replace_change
 	}
-	if = {
-		limit = { LR_title_set_roman_outsider_trigger = yes }
-		if = {
-			limit = { NOT = { has_character_modifier = LR_foreign_administration_roman_modifier } }
-			add_character_modifier = LR_foreign_administration_roman_modifier
-		}
-		every_vassal = {
-			limit = { LR_title_set_roman_native_trigger = yes }
-			add_opinion = { target = root modifier = LR_foreign_administration_roman_opinion years = 1 }
-		}
-	}
-	else = {
-		if = {
-			limit = { has_character_modifier = LR_foreign_administration_roman_modifier }
-			remove_character_modifier = LR_foreign_administration_roman_modifier
-		}
-		every_vassal = {
-			limit = { has_opinion_modifier = { target = root modifier = LR_foreign_administration_roman_opinion } }
-			remove_opinion = { target = root modifier = LR_foreign_administration_roman_opinion }
-		}
+	clear_saved_scope = LR_title_set_replacement
+}
+
+# Scope: the ruler who ran a reorganise decision. Refreshes them and every ruler below them holding a set title,
+# so vassal titles follow the counties at once instead of at the next yearly check.
+LR_title_set_reorganise_realm_effect = {
+	LR_title_set_refresh_effect = yes
+	every_vassal_or_below = {
+		limit = { any_held_title = { LR_is_set_title_trigger = yes } }
+		LR_title_set_refresh_effect = yes
 	}
 }

@@ -1,0 +1,74 @@
+﻿# Yazidi pilgrimage to Lalish, ported from Lux Invicta's yazidi_pilgrimage (decisions/LI_misc_decisions.txt, luxyazd.10163-10178)
+# Condensed for CK3 Lux Renata (2026-11-06). The ruler does not travel physically; the journey runs as delayed events.
+# Events: events/religion_events/LR_yazidi_events.txt
+
+LR_yazidi_pilgrimage_to_lalish_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = religious
+	ai_check_interval = 120
+	cooldown = { years = 10 }
+
+	desc = LR_yazidi_pilgrimage_to_lalish_decision_desc
+	selection_tooltip = LR_yazidi_pilgrimage_to_lalish_decision_tooltip
+	confirm_text = LR_yazidi_pilgrimage_to_lalish_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		faith.religion = religion:yazidi_religion
+	}
+
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_yazidi_pilgrimage_to_lalish_decision_ongoing_tt
+			NOT = { has_character_flag = LR_yazidi_on_pilgrimage }
+		}
+		custom_tooltip = {
+			text = LR_yazidi_pilgrimage_to_lalish_decision_health_tt
+			NOR = {
+				has_trait = pregnant
+				has_trait = blind
+				has_trait = consumption
+				has_trait = typhus
+				has_trait = bubonic_plague
+				has_trait = smallpox
+				has_trait = measles
+				has_trait = dysentery
+				has_trait = pneumonic
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		gold = medium_gold_value
+	}
+
+	effect = {
+		add_character_flag = {
+			flag = LR_yazidi_on_pilgrimage
+			years = 2
+		}
+		custom_tooltip = LR_yazidi_pilgrimage_to_lalish_decision_effect_tt
+		trigger_event = LR_yazidi.0101
+	}
+
+	ai_potential = {
+		is_adult = yes
+		age >= 30
+	}
+	ai_will_do = {
+		base = 2
+		modifier = { add = 10 has_trait = zealous }
+		modifier = { factor = 0.2 has_trait = pilgrim }
+		modifier = { add = -5 has_trait = cynical }
+		modifier = { factor = 0 gold < 200 }
+	}
+}
