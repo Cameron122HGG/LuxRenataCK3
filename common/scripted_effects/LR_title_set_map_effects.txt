@@ -21,12 +21,65 @@ LR_tsm_ensure_situation_effect = {
 	}
 }
 
-# Switches the view ($VIEW$ = land or rule) and repaints at once
+# Switches the view ($VIEW$ = land or rule) and repaints at once. Leaving a preview clears its palette first.
 LR_tsm_set_view_effect = {
 	LR_tsm_ensure_situation_effect = yes
 	situation:LR_title_set_map ?= {
+		if = {
+			limit = { LR_tsm_view_is_preview_trigger = yes }
+			LR_tsm_clear_all_effect = yes
+		}
 		set_variable = { name = LR_tsm_view value = flag:$VIEW$ }
 		LR_tsm_refresh_effect = yes
+	}
+}
+
+# Previews title set $SET$ (hellenistic, roman, themes, persian, hebrew or warlord) at the current preview tier
+# (kingdoms at first). The layouts are in LR_title_set_map_preview_effects.txt (tools/gen_title_set_preview.py).
+LR_tsm_set_preview_effect = {
+	LR_tsm_ensure_situation_effect = yes
+	situation:LR_title_set_map ?= {
+		set_variable = { name = LR_tsm_view value = flag:preview }
+		set_variable = { name = LR_tsm_preview_set value = flag:$SET$ }
+		if = {
+			limit = { NOT = { has_variable = LR_tsm_preview_tier } }
+			set_variable = { name = LR_tsm_preview_tier value = flag:kingdom }
+		}
+		LR_tsm_show_preview_effect = yes
+	}
+}
+
+# Changes the preview tier ($TIER$ = duchy, kingdom or empire) and repaints
+LR_tsm_set_preview_tier_effect = {
+	situation:LR_title_set_map ?= {
+		set_variable = { name = LR_tsm_preview_tier value = flag:$TIER$ }
+		LR_tsm_show_preview_effect = yes
+	}
+}
+
+# Situation scope: clears every sub-region and paints the chosen preview
+LR_tsm_show_preview_effect = {
+	save_scope_as = situation
+	LR_tsm_clear_all_effect = yes
+	LR_tsm_reset_counts_effect = yes
+	LR_tsm_paint_preview_effect = yes
+}
+
+# Situation scope: takes every county out of every sub-region (the six set regions and the preview palette)
+LR_tsm_clear_all_effect = {
+	save_scope_as = situation
+	every_county = {
+		save_temporary_scope_as = LR_tsm_county
+		LR_tsm_remove_from_all_effect = yes
+		LR_tsm_remove_from_palette_effect = yes
+	}
+}
+
+# Needs scope:situation. Puts county $COUNTY$ in palette sub-region $TO$ (the sub-regions were cleared just before).
+LR_tsm_preview_put_effect = {
+	title:$COUNTY$ = { save_temporary_scope_as = LR_tsm_county }
+	scope:situation.situation_sub_region:$TO$ = {
+		add_dejure_title_to_sub_region = scope:LR_tsm_county
 	}
 }
 

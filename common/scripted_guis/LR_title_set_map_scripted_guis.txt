@@ -19,8 +19,7 @@ LR_tsm_view_land = {
 
 	is_valid = {
 		situation:LR_title_set_map ?= {
-			has_variable = LR_tsm_view
-			NOT = { var:LR_tsm_view = flag:land }
+			NOT = { LR_tsm_view_is_land_trigger = yes }
 		}
 	}
 
@@ -34,14 +33,27 @@ LR_tsm_view_rule = {
 
 	is_valid = {
 		situation:LR_title_set_map ?= {
-			OR = {
-				NOT = { has_variable = LR_tsm_view }
-				NOT = { var:LR_tsm_view = flag:rule }
-			}
+			NOT = { LR_tsm_view_is_rule_trigger = yes }
 		}
 	}
 
 	effect = {
 		LR_tsm_set_view_effect = { VIEW = rule }
 	}
+}
+
+# Visibility checks for the window (no effect): is this view shown?
+LR_tsm_is_land = {
+	scope = character
+	is_valid = { situation:LR_title_set_map ?= { LR_tsm_view_is_land_trigger = yes } }
+}
+
+LR_tsm_is_rule = {
+	scope = character
+	is_valid = { situation:LR_title_set_map ?= { LR_tsm_view_is_rule_trigger = yes } }
+}
+
+LR_tsm_is_preview = {
+	scope = character
+	is_valid = { situation:LR_title_set_map ?= { LR_tsm_view_is_preview_trigger = yes } }
 }

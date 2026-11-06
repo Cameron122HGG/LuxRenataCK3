@@ -11,3 +11,20 @@ LR_tsm_has_foreign_administration_trigger = {
 	}
 }
 
+# Situation scope: which view is shown. No view variable yet counts as the land view.
+LR_tsm_view_is_land_trigger = {
+	OR = {
+		NOT = { has_variable = LR_tsm_view }
+		var:LR_tsm_view = flag:land
+	}
+}
+
+LR_tsm_view_is_rule_trigger = {
+	has_variable = LR_tsm_view
+	var:LR_tsm_view = flag:rule
+}
+
+LR_tsm_view_is_preview_trigger = {
+	has_variable = LR_tsm_view
+	var:LR_tsm_view = flag:preview
+}
