@@ -1,0 +1,31 @@
+﻿namespace = LR_vestal
+
+# Lux Invicta's Vestals (ancrel.2121, ancrel.2124): a Vestal retires after 30 years of service. If she was the
+# Vestalis Maxima, the College of Vesta passes to the eldest remaining Vestal, or lapses if there is none.
+LR_vestal.0001 = {
+	type = character_event
+	title = LR_vestal.0001.t
+	desc = LR_vestal.0001.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = { has_trait = LR_vestalis }
+
+	immediate = {
+		remove_trait = LR_vestalis
+		add_trait = LR_retired_vestalis
+	}
+
+	option = {
+		name = LR_vestal.0001.a
+		add_piety = 100
+		if = {
+			limit = { has_title = title:d_vestal_college }
+			custom_tooltip = LR_vestal_college_passes_tt
+			hidden_effect = { LR_pass_vestal_college_effect = yes }
+		}
+	}
+}

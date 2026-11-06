@@ -1,0 +1,78 @@
+﻿# Lux Invicta's nominate_vestalis_decision as a character interaction (gen_graeco_roman_religion.py)
+LR_nominate_vestalis_interaction = {
+	category = interaction_category_religion
+	icon = religious
+	desc = LR_nominate_vestalis_interaction_desc
+	ignores_pending_interaction_block = yes
+
+	is_shown = {
+		scope:actor = {
+			is_ruler = yes
+			faith = faith:roman_faith
+		}
+		scope:recipient = {
+			is_female = yes
+			age >= 6
+			age <= 10
+			faith = faith:roman_faith
+			OR = {
+				is_courtier_of = scope:actor
+				is_child_of = scope:actor
+			}
+			NOR = {
+				has_trait = LR_vestalis
+				has_trait = LR_retired_vestalis
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_betrothed = no
+			is_imprisoned = no
+		}
+	}
+
+	auto_accept = yes
+
+	on_accept = {
+		scope:actor = {
+			add_piety = 100
+			add_prestige = 50
+		}
+		scope:recipient = {
+			add_trait = LR_vestalis
+			# A Vestal serves thirty years before she retires (LI: ancrel.2121)
+			trigger_event = { id = LR_vestal.0001 years = 30 }
+			if = {
+				limit = { NOT = { exists = title:d_vestal_college.holder } }
+				custom_tooltip = LR_nominate_vestalis_becomes_maxima_tt
+				hidden_effect = {
+					create_title_and_vassal_change = {
+						type = created
+						save_scope_as = LR_vestal_change
+						add_claim_on_loss = no
+					}
+					title:d_vestal_college = {
+						change_title_holder = {
+							holder = scope:recipient
+							change = scope:LR_vestal_change
+						}
+					}
+					resolve_title_and_vassal_change = scope:LR_vestal_change
+				}
+			}
+		}
+	}
+
+	ai_targets = {
+		ai_recipients = courtiers
+	}
+	ai_frequency = 60
+	ai_potential = {
+		faith = faith:roman_faith
+	}
+	ai_will_do = {
+		base = 10
+	}
+}
