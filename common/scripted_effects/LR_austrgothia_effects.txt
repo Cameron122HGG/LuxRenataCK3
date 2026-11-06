@@ -1,0 +1,37 @@
+﻿# Austrgothia (form_austrgothia_decision)
+# Crimea and the Dnieper mouth leave the steppe for Gothia (k_titular_crimean_gothia); Gothia,
+# Moldavia and Roxolania leave their old empires and become de jure parts of e_austrgothia.
+LR_form_austrgothia_effect = {
+	custom_tooltip = LR_form_austrgothia_dejure_tt
+	hidden_effect = {
+		title:d_crimea = { set_de_jure_liege_title = title:k_titular_crimean_gothia }
+		title:d_yedisan = { set_de_jure_liege_title = title:k_titular_crimean_gothia }
+		title:k_titular_crimean_gothia = { set_de_jure_liege_title = title:e_austrgothia }
+		title:k_moldavia = { set_de_jure_liege_title = title:e_austrgothia }
+		title:k_warlord_roxolania = { set_de_jure_liege_title = title:e_austrgothia }
+	}
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:e_austrgothia = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	if = {
+		limit = { NOT = { exists = title:k_titular_crimean_gothia.holder } }
+		title:k_titular_crimean_gothia = {
+			change_title_holder = {
+				holder = root
+				change = scope:title_change
+			}
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	dynasty = { add_dynasty_prestige = major_dynasty_prestige_gain }
+}
