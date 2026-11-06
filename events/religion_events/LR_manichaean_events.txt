@@ -1,0 +1,621 @@
+###################################
+#
+# MANICHAEAN EVENTS
+# - Bema Fest, the Elect, alms to the Church
+#
+###################################
+
+# From Lux Invicta's FaF_manichean_events.txt, adapted for CK3 Lux Renata 2026-11-06.
+# 0001-0010: Bema Fest chain (LR_keep_bema_month_decision)
+# 0101-0102: Manichaean alms / the Archegos approves (yearly pulse)
+# 0201-0203: a courtier joins the Elect, and the Elect's later manuscripts (yearly pulse)
+
+namespace = LR_manichaean
+
+######################
+# BEMA FEST
+######################
+
+# Bema Fest month begins
+LR_manichaean.0001 = {
+	type = character_event
+	title = LR_manichaean.0001.t
+	desc = LR_manichaean.0001.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_manichaean.0001.a
+		custom_tooltip = LR_manichaean.bema_chain_tt
+		trigger_event = {
+			id = LR_manichaean.0002
+			days = 6
+		}
+	}
+}
+
+# Fasting begins
+LR_manichaean.0002 = {
+	type = character_event
+	title = LR_manichaean.0002.t
+	desc = LR_manichaean.0002.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = LR_manichaean.0002.a
+		add_piety = minor_piety_value
+		random = {
+			chance = 50
+			add_trait = zealous
+		}
+		random = {
+			chance = 25
+			add_trait = ill
+		}
+		ai_chance = {
+			base = 25
+			modifier = { add = 50 has_trait = zealous }
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0002.b
+		random = {
+			chance = 10
+			add_trait = temperate
+		}
+		ai_chance = { base = 50 }
+	}
+
+	option = {
+		name = LR_manichaean.0002.c
+		trigger = { has_trait = cynical }
+		trait = cynical
+		add_prestige = 15
+		ai_chance = { base = 50 }
+	}
+
+	after = {
+		trigger_event = {
+			id = LR_manichaean.0003
+			days = 4
+		}
+	}
+}
+
+# Visit to the local monastery
+LR_manichaean.0003 = {
+	type = character_event
+	title = LR_manichaean.0003.t
+	desc = LR_manichaean.0003.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	option = {
+		name = LR_manichaean.0003.a
+		trigger = { gold >= minor_gold_value }
+		remove_short_term_gold = minor_gold_value
+		random_list = {
+			25 = { trigger_event = LR_manichaean.0004 }
+			25 = { trigger_event = LR_manichaean.0005 }
+			50 = { trigger_event = LR_manichaean.0006 }
+		}
+		ai_chance = { base = 75 }
+	}
+
+	option = {
+		name = LR_manichaean.0003.b
+		add_piety = -10
+		ai_chance = { base = 25 }
+	}
+
+	after = {
+		trigger_event = {
+			id = LR_manichaean.0007
+			days = 8
+		}
+	}
+}
+
+# Story #1: the merchant and the gems
+LR_manichaean.0004 = {
+	type = character_event
+	title = LR_manichaean.0003.t
+	desc = LR_manichaean.0004.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	option = {
+		name = LR_manichaean.0004.a
+		add_stewardship_skill = 1
+	}
+}
+
+# Story #2: speak kindly
+LR_manichaean.0005 = {
+	type = character_event
+	title = LR_manichaean.0003.t
+	desc = LR_manichaean.0005.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	option = {
+		name = LR_manichaean.0005.a
+		add_diplomacy_skill = 1
+	}
+}
+
+# Story #3: the three poisons
+LR_manichaean.0006 = {
+	type = character_event
+	title = LR_manichaean.0003.t
+	desc = LR_manichaean.0006.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	option = {
+		name = LR_manichaean.0006.a
+		add_prestige = medium_prestige_value
+	}
+}
+
+# Confession before the Bema
+LR_manichaean.0007 = {
+	type = character_event
+	title = LR_manichaean.0007.t
+	desc = LR_manichaean.0007.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_manichaean.0007.a
+		add_prestige = -10
+		add_piety = 10
+		random = {
+			chance = 20
+			add_trait = honest
+		}
+		ai_chance = {
+			base = 50
+			modifier = { add = 50 has_trait = honest }
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0007.b
+		add_prestige = 20
+		random = {
+			chance = 20
+			add_trait = deceitful
+		}
+		ai_chance = {
+			base = 50
+			modifier = { add = 50 has_trait = deceitful }
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				any_vassal = { is_imprisoned = no }
+			}
+			trigger_event = {
+				id = LR_manichaean.0008
+				days = 10
+			}
+		}
+		else = {
+			trigger_event = {
+				id = LR_manichaean.0010
+				days = 14
+			}
+		}
+	}
+}
+
+# Hold the feast
+LR_manichaean.0008 = {
+	type = character_event
+	title = LR_manichaean.0008.t
+	desc = LR_manichaean.0008.desc
+	theme = feast_activity
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {
+		name = LR_manichaean.0008.a
+		trigger = { gold >= medium_gold_value }
+		remove_short_term_gold = medium_gold_value
+		custom_tooltip = LR_manichaean.0008.a.tt
+		hidden_effect = {
+			every_vassal = {
+				limit = {
+					is_imprisoned = no
+					is_at_war = no
+				}
+				add_opinion = {
+					target = root
+					modifier = LR_bema_feast_opinion
+					years = 1
+				}
+			}
+		}
+		trigger_event = {
+			id = LR_manichaean.0009
+			days = 3
+		}
+		ai_chance = { base = 75 }
+	}
+
+	option = {
+		name = LR_manichaean.0008.b
+		trigger_event = {
+			id = LR_manichaean.0010
+			days = 4
+		}
+		ai_chance = { base = 25 }
+	}
+}
+
+# The feast
+LR_manichaean.0009 = {
+	type = character_event
+	title = LR_manichaean.0008.t
+	desc = LR_manichaean.0009.desc
+	theme = feast_activity
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {
+		name = LR_manichaean.0009.a
+		trigger_event = {
+			id = LR_manichaean.0010
+			days = 1
+		}
+	}
+}
+
+# Bema Fest ends
+LR_manichaean.0010 = {
+	type = character_event
+	title = LR_manichaean.0010.t
+	desc = LR_manichaean.0010.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	option = {
+		name = LR_manichaean.0010.a
+		add_piety = medium_piety_value
+		add_character_modifier = {
+			modifier = LR_observed_bema_fest_modifier
+			years = 5
+		}
+		remove_character_flag = LR_keeping_bema_month
+	}
+}
+
+######################
+# ALMS
+######################
+
+# Manichaean alms
+LR_manichaean.0101 = {
+	type = character_event
+	title = LR_manichaean.0101.t
+	desc = LR_manichaean.0101.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_landed = yes
+		gold >= medium_gold_value
+		NOT = { faith.religious_head ?= root }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = { factor = 2 has_trait = generous }
+		modifier = { factor = 0.5 has_trait = greedy }
+	}
+
+	immediate = {
+		faith.religious_head ?= { save_scope_as = archegos }
+	}
+
+	option = {
+		name = LR_manichaean.0101.a
+		remove_short_term_gold = medium_gold_value
+		add_piety = medium_piety_value
+		if = {
+			limit = { exists = scope:archegos }
+			custom_tooltip = LR_manichaean.0101.a.tt
+			trigger_event = {
+				id = LR_manichaean.0102
+				days = { 5 17 }
+			}
+		}
+		ai_chance = {
+			base = 50
+			modifier = { add = 50 has_trait = generous }
+			modifier = { add = 25 has_trait = zealous }
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0101.b
+		ai_chance = {
+			base = 50
+			modifier = { add = 50 has_trait = greedy }
+		}
+	}
+}
+
+# The Archegos approves
+LR_manichaean.0102 = {
+	type = character_event
+	title = LR_manichaean.0102.t
+	desc = LR_manichaean.0102.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:archegos
+		animation = personality_content
+	}
+
+	trigger = {
+		exists = scope:archegos
+		scope:archegos = { is_alive = yes }
+	}
+
+	option = {
+		name = LR_manichaean.0102.a
+		scope:archegos = {
+			add_opinion = {
+				target = root
+				modifier = LR_manichaean_alms_opinion
+				years = 3
+			}
+		}
+		random = {
+			chance = 10
+			add_trait = generous
+		}
+	}
+}
+
+######################
+# THE ELECT
+######################
+
+# A courtier wishes to join the Elect
+LR_manichaean.0201 = {
+	type = character_event
+	title = LR_manichaean.0201.t
+	desc = LR_manichaean.0201.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:elect
+		animation = worry
+	}
+
+	trigger = {
+		is_landed = yes
+		any_courtier = { LR_manichaean_elect_candidate_trigger = yes }
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = { LR_manichaean_elect_candidate_trigger = yes }
+			weight = {
+				base = 1
+				modifier = { add = 2 has_trait = zealous }
+			}
+			save_scope_as = elect
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0201.a
+		scope:elect = {
+			add_trait = LR_manichaean_elect
+			add_opinion = {
+				target = root
+				modifier = LR_manichaean_elect_allowed_opinion
+			}
+		}
+		custom_tooltip = LR_manichaean.0201.a.tt
+		random_list = {
+			50 = {
+				trigger_event = {
+					id = LR_manichaean.0202
+					years = { 2 4 }
+				}
+			}
+			50 = {
+				trigger_event = {
+					id = LR_manichaean.0203
+					years = { 2 4 }
+				}
+			}
+		}
+		ai_chance = {
+			base = 30
+			modifier = { add = 30 has_trait = zealous }
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0201.b
+		scope:elect = {
+			add_opinion = {
+				target = root
+				modifier = LR_manichaean_elect_refused_opinion
+				years = 3
+			}
+			add_stress = medium_stress_gain
+		}
+		ai_chance = { base = 70 }
+	}
+}
+
+# The Elect's manuscript: Hammurabi's laws (Lux Invicta culture points)
+LR_manichaean.0202 = {
+	type = character_event
+	title = LR_manichaean.0202.t
+	desc = LR_manichaean.0202.desc
+	theme = learning
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:elect
+		animation = personality_rational
+	}
+
+	trigger = {
+		exists = scope:elect
+		scope:elect = {
+			is_alive = yes
+			has_trait = LR_manichaean_elect
+			is_courtier_of = root
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0202.a
+		add_learning_lifestyle_xp = medium_lifestyle_xp
+		add_character_modifier = {
+			modifier = LR_elect_babylonian_laws_modifier
+			years = 5
+		}
+		scope:elect = {
+			add_opinion = {
+				target = root
+				modifier = LR_manichaean_elect_praised_opinion
+				years = 5
+			}
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0202.b
+		add_prestige = medium_prestige_value
+		random = {
+			chance = 25
+			add_trait = arrogant
+		}
+	}
+
+	after = {
+		LR_manichaean_schedule_manuscript_effect = yes
+	}
+}
+
+# The Elect's manuscript: Sasanian taxation (Lux Invicta economy points)
+LR_manichaean.0203 = {
+	type = character_event
+	title = LR_manichaean.0203.t
+	desc = LR_manichaean.0203.desc
+	theme = stewardship
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:elect
+		animation = personality_rational
+	}
+
+	trigger = {
+		exists = scope:elect
+		scope:elect = {
+			is_alive = yes
+			has_trait = LR_manichaean_elect
+			is_courtier_of = root
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0203.a
+		add_stewardship_lifestyle_xp = medium_lifestyle_xp
+		add_character_modifier = {
+			modifier = LR_elect_sassanid_taxes_modifier
+			years = 5
+		}
+		scope:elect = {
+			add_opinion = {
+				target = root
+				modifier = LR_manichaean_elect_praised_opinion
+				years = 5
+			}
+		}
+	}
+
+	option = {
+		name = LR_manichaean.0203.b
+		add_prestige = medium_prestige_value
+		random = {
+			chance = 25
+			add_trait = arrogant
+		}
+	}
+
+	after = {
+		LR_manichaean_schedule_manuscript_effect = yes
+	}
+}
