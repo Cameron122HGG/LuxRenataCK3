@@ -346,6 +346,63 @@ LR_title_set_persian_outsider_trigger = {
 	any_held_title = { LR_title_set_persian_title_trigger = yes }
 }
 
+# Title: one of the Hebrew set's titles: Mamlekhet Yisra'el, its eretz, mamlakhot and medinot (gen_hebrew_title_set.py,
+# Lux Invicta's e_jews, user-approved 2026-11-05)
+LR_title_set_hebrew_title_trigger = {
+	OR = {
+		this = title:h_mamlekhet_yisrael
+		this = title:e_eretz_yisrael
+		this = title:e_eretz_ever_hanahar
+		this = title:e_eretz_ham
+		this = title:k_mamlakhah_phoenicia
+		this = title:d_medinah_phoinike
+		this = title:d_medinah_ioudaia
+		this = title:d_medinah_idumaia
+		this = title:d_medinah_galilaia
+		this = title:d_medinah_koile_syria
+		this = title:d_medinah_ammanitis
+		this = title:k_mamlakhah_syria
+		this = title:d_medinah_antiochis
+		this = title:d_medinah_laodikene
+		this = title:d_medinah_apamene
+		this = title:d_medinah_kyrrhestike
+		this = title:d_medinah_chalkidike
+		this = title:d_medinah_kommagene
+		this = title:d_medinah_palmyrene
+		this = title:k_mamlakhah_mesopotamia
+		this = title:d_medinah_osrhoene
+		this = title:d_medinah_mygdonia
+		this = title:d_medinah_assyria
+		this = title:d_medinah_parapotamia
+		this = title:k_mamlakhah_babylon
+		this = title:d_medinah_seleukeia
+		this = title:d_medinah_babylonia
+		this = title:d_medinah_apolloniatis
+		this = title:d_medinah_mesene
+		this = title:k_mamlakhah_egypt
+		this = title:d_medinah_alexandreia
+		this = title:d_medinah_delta
+		this = title:d_medinah_heptanomis
+		this = title:d_medinah_thebais
+		this = title:d_medinah_oasis
+		this = title:d_medinah_pelousion
+	}
+}
+
+# Character: may use the Hebrew set (the Jewish religion or Israelite heritage; user's choice 2026-11-05)
+LR_title_set_hebrew_native_trigger = {
+	OR = {
+		faith.religion ?= religion:judaism_religion
+		culture ?= { has_cultural_pillar = heritage_israelite }
+	}
+}
+
+# Character: holds a Hebrew set title without being native to the set
+LR_title_set_hebrew_outsider_trigger = {
+	NOT = { LR_title_set_hebrew_native_trigger = yes }
+	any_held_title = { LR_title_set_hebrew_title_trigger = yes }
+}
+
 # Title: belongs to any title set
 LR_is_set_title_trigger = {
 	OR = {
@@ -353,6 +410,7 @@ LR_is_set_title_trigger = {
 		LR_title_set_roman_title_trigger = yes
 		LR_title_set_themes_title_trigger = yes
 		LR_title_set_persian_title_trigger = yes
+		LR_title_set_hebrew_title_trigger = yes
 	}
 }
 
@@ -373,5 +431,9 @@ LR_may_use_title_set_trigger = {
 	trigger_if = {
 		limit = { $TITLE$ = { LR_title_set_persian_title_trigger = yes } }
 		LR_title_set_persian_native_trigger = yes
+	}
+	trigger_if = {
+		limit = { $TITLE$ = { LR_title_set_hebrew_title_trigger = yes } }
+		LR_title_set_hebrew_native_trigger = yes
 	}
 }
