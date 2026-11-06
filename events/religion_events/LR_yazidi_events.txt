@@ -1,0 +1,637 @@
+###################################
+#
+# YAZIDI EXTRAS
+# - Tawusgeran blessings (LR_yazidi.0001-0006)
+# - Pilgrimage to Lalish (LR_yazidi.0101-0134)
+#
+###################################
+
+# Ported from Lux Invicta events/luz_yazd_group_events.txt (luxyazd.221-224, luxyazd.10163-10178)
+# and decisions/LI_misc_decisions.txt (yazidi_pilgrimage). Written for Lux Invicta, condensed for CK3 Lux Renata (2026-11-06).
+# Decision: common/decisions/Lux Renata/LR_yazidi_decisions.txt
+# Modifiers: common/modifiers/LR_yazidi_modifiers.txt
+
+namespace = LR_yazidi
+
+##################################################
+# Tawusgeran blessings
+##################################################
+
+# Dispatcher: root is the ruler holding Tawusgeran. Rolls a blessing for the ruler
+# and for every adult vassal of the same faith (Lux Invicta rolled for each attendee).
+LR_yazidi.0001 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		is_alive = yes
+	}
+
+	immediate = {
+		trigger_event = LR_yazidi.0006
+		every_vassal = {
+			limit = {
+				is_adult = yes
+				is_imprisoned = no
+				faith = root.faith
+			}
+			trigger_event = LR_yazidi.0006
+		}
+	}
+}
+
+# Becomes zealous (luxyazd.221)
+LR_yazidi.0002 = {
+	type = character_event
+	title = LR_yazidi.0002.t
+	desc = LR_yazidi.0002.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = divine_ecstasy
+	}
+
+	option = {
+		name = LR_yazidi.0002.a
+		if = {
+			limit = { NOT = { has_trait = zealous } }
+			add_trait = zealous
+		}
+	}
+}
+
+# Becomes wiser (luxyazd.222)
+LR_yazidi.0003 = {
+	type = character_event
+	title = LR_yazidi.0003.t
+	desc = LR_yazidi.0003.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	option = {
+		name = LR_yazidi.0002.a
+		add_learning_skill = 1
+	}
+}
+
+# Gets possessed (luxyazd.223)
+LR_yazidi.0004 = {
+	type = character_event
+	title = LR_yazidi.0004.t
+	desc = LR_yazidi.0004.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+
+	option = {
+		name = LR_yazidi.0002.a
+		if = {
+			limit = {
+				NOT = { has_trait = possessed_1 }
+				NOT = { has_trait = possessed_genetic }
+			}
+			add_trait = possessed_1
+		}
+	}
+}
+
+# Healed by the idols (luxyazd.224)
+LR_yazidi.0005 = {
+	type = character_event
+	title = LR_yazidi.0005.t
+	desc = LR_yazidi.0005.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {
+		name = LR_yazidi.0002.a
+		if = { limit = { has_trait = ill } remove_trait = ill }
+		if = { limit = { has_trait = pneumonic } remove_trait = pneumonic }
+		if = { limit = { has_trait = great_pox } remove_trait = great_pox }
+		if = { limit = { has_trait = early_great_pox } remove_trait = early_great_pox }
+		if = { limit = { has_trait = lovers_pox } remove_trait = lovers_pox }
+		if = { limit = { has_trait = leper } remove_trait = leper }
+		if = { limit = { has_trait = consumption } remove_trait = consumption }
+		if = { limit = { has_trait = cancer } remove_trait = cancer }
+		if = { limit = { has_trait = typhus } remove_trait = typhus }
+		if = { limit = { has_trait = bubonic_plague } remove_trait = bubonic_plague }
+		if = { limit = { has_trait = smallpox } remove_trait = smallpox }
+		if = { limit = { has_trait = measles } remove_trait = measles }
+		if = { limit = { has_trait = dysentery } remove_trait = dysentery }
+		if = { limit = { has_trait = ergotism } remove_trait = ergotism }
+		if = { limit = { has_trait = gout_ridden } remove_trait = gout_ridden }
+		if = { limit = { has_trait = wounded_1 } remove_trait = wounded_1 }
+		if = { limit = { has_trait = wounded_2 } remove_trait = wounded_2 }
+		if = { limit = { has_trait = wounded_3 } remove_trait = wounded_3 }
+	}
+}
+
+# Per-character roll (Lux Invicta weights 10/10/10/5, plus a chance of nothing).
+LR_yazidi.0006 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		is_alive = yes
+	}
+
+	immediate = {
+		random_list = {
+			35 = {}
+			10 = {
+				trigger = {
+					NOT = { has_trait = zealous }
+					NOT = { has_trait = cynical }
+				}
+				trigger_event = LR_yazidi.0002
+			}
+			10 = {
+				trigger_event = LR_yazidi.0003
+			}
+			10 = {
+				trigger = {
+					NOT = { has_trait = possessed_1 }
+					NOT = { has_trait = possessed_genetic }
+				}
+				trigger_event = LR_yazidi.0004
+			}
+			5 = {
+				trigger = {
+					OR = {
+						has_trait = ill
+						has_trait = pneumonic
+						has_trait = great_pox
+						has_trait = early_great_pox
+						has_trait = lovers_pox
+						has_trait = leper
+						has_trait = consumption
+						has_trait = cancer
+						has_trait = typhus
+						has_trait = bubonic_plague
+						has_trait = smallpox
+						has_trait = measles
+						has_trait = dysentery
+						has_trait = ergotism
+						has_trait = gout_ridden
+						has_trait = wounded_1
+						has_trait = wounded_2
+						has_trait = wounded_3
+					}
+				}
+				trigger_event = LR_yazidi.0005
+			}
+		}
+	}
+}
+
+##################################################
+# Pilgrimage to Lalish
+##################################################
+
+# Setting out (luxyazd.10163 + 10164 Sheikh's Tomb)
+LR_yazidi.0101 = {
+	type = character_event
+	title = LR_yazidi.0101.t
+	desc = LR_yazidi.0101.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_yazidi.0101.a
+		custom_tooltip = LR_yazidi.0101.a.tt
+		trigger_event = { id = LR_yazidi.0110 days = { 20 40 } }
+	}
+}
+
+# Road dispatcher: one random road event.
+LR_yazidi.0110 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		is_alive = yes
+	}
+
+	immediate = {
+		random_list = {
+			20 = { trigger_event = LR_yazidi.0111 }
+			20 = { trigger_event = LR_yazidi.0114 }
+			10 = { trigger_event = LR_yazidi.0115 }
+			20 = { trigger_event = LR_yazidi.0118 }
+			15 = { trigger_event = LR_yazidi.0119 }
+			15 = { trigger_event = LR_yazidi.0120 }
+		}
+	}
+}
+
+# Bandits (luxyazd.10169)
+LR_yazidi.0111 = {
+	type = character_event
+	title = LR_yazidi.0111.t
+	desc = LR_yazidi.0111.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+
+	option = { # Fight them!
+		name = LR_yazidi.0111.a
+		random_list = {
+			50 = {
+				trigger_event = LR_yazidi.0112
+			}
+			30 = {
+				if = {
+					limit = { NOT = { has_trait = craven } }
+					add_trait = brave
+				}
+				trigger_event = LR_yazidi.0112
+			}
+			20 = {
+				increase_wounds_effect = { REASON = battle }
+				trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+			}
+		}
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = brave }
+			modifier = { factor = 0 has_trait = craven }
+		}
+	}
+	option = { # Run away!
+		name = LR_yazidi.0111.b
+		random_list = {
+			70 = {}
+			30 = {
+				if = {
+					limit = { NOT = { has_trait = brave } }
+					add_trait = craven
+				}
+			}
+		}
+		trigger_event = LR_yazidi.0113
+		ai_chance = {
+			base = 5
+			modifier = { factor = 0 has_trait = brave }
+			modifier = { add = 20 has_trait = craven }
+		}
+	}
+}
+
+# Bandits beaten (luxyazd.10170)
+LR_yazidi.0112 = {
+	type = character_event
+	title = LR_yazidi.0111.t
+	desc = LR_yazidi.0112.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {
+		name = LR_yazidi.0112.a
+		add_prestige = minor_prestige_value
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+	}
+}
+
+# Fled the bandits (luxyazd.10171)
+LR_yazidi.0113 = {
+	type = character_event
+	title = LR_yazidi.0111.t
+	desc = LR_yazidi.0113.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = LR_yazidi.0113.a
+		add_prestige = minor_prestige_loss
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+	}
+}
+
+# Oasis (luxyazd.10172)
+LR_yazidi.0114 = {
+	type = character_event
+	title = LR_yazidi.0114.t
+	desc = LR_yazidi.0114.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	option = { # We keep going
+		name = LR_yazidi.0114.a
+		add_character_modifier = { modifier = LR_desert_heat_modifier months = 3 }
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = strong }
+			modifier = { factor = 0 has_trait = ill }
+		}
+	}
+	option = { # Stay for a while
+		name = LR_yazidi.0114.b
+		add_character_modifier = { modifier = LR_fresh_water_modifier months = 3 }
+		custom_tooltip = LR_yazidi.0114.b.tt
+		trigger_event = { id = LR_yazidi.0130 days = { 120 180 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = ill }
+			modifier = { factor = 0 has_trait = strong }
+		}
+	}
+}
+
+# The stranger on the road (luxyazd.10173)
+LR_yazidi.0115 = {
+	type = character_event
+	title = LR_yazidi.0115.t
+	desc = LR_yazidi.0115.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	option = { # Drop your weapons
+		name = LR_yazidi.0115.a
+		custom_tooltip = LR_yazidi.0115.a.tt
+		trigger_event = LR_yazidi.0116
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = zealous }
+			modifier = { factor = 0 has_trait = cynical }
+		}
+	}
+	option = { # Kill the assassin!
+		name = LR_yazidi.0115.b
+		custom_tooltip = LR_yazidi.0115.b.tt
+		trigger_event = LR_yazidi.0117
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = cynical }
+			modifier = { factor = 0 has_trait = zealous }
+		}
+	}
+}
+
+# The peacock's feather (luxyazd.10174)
+LR_yazidi.0116 = {
+	type = character_event
+	title = LR_yazidi.0115.t
+	desc = LR_yazidi.0116.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = divine_ecstasy
+	}
+
+	option = {
+		name = LR_yazidi.0116.a
+		add_character_modifier = LR_peacocks_feather_modifier
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+	}
+}
+
+# The stranger vanishes (luxyazd.10175)
+LR_yazidi.0117 = {
+	type = character_event
+	title = LR_yazidi.0115.t
+	desc = LR_yazidi.0117.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = LR_yazidi.0117.a
+		add_piety = medium_piety_loss
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+	}
+}
+
+# Samaritan (luxyazd.10176)
+LR_yazidi.0118 = {
+	type = character_event
+	title = LR_yazidi.0118.t
+	desc = LR_yazidi.0118.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = { # Help him
+		name = LR_yazidi.0118.a
+		add_piety = minor_piety_value
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = compassionate }
+			modifier = { factor = 0 has_trait = sadistic }
+		}
+	}
+	option = { # Leave him
+		name = LR_yazidi.0118.b
+		add_piety = minor_piety_loss
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = sadistic }
+			modifier = { factor = 0 has_trait = compassionate }
+		}
+	}
+}
+
+# Beggar (luxyazd.10177)
+LR_yazidi.0119 = {
+	type = character_event
+	title = LR_yazidi.0119.t
+	desc = LR_yazidi.0119.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	option = { # Here you go
+		name = LR_yazidi.0119.a
+		remove_short_term_gold = minor_gold_value
+		add_piety = minor_piety_value
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = generous }
+			modifier = { factor = 0 has_trait = greedy }
+		}
+	}
+	option = { # Don't even touch me!
+		name = LR_yazidi.0119.b
+		add_prestige = minor_prestige_value
+		add_piety = minor_piety_loss
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = arrogant }
+			modifier = { factor = 0 has_trait = humble }
+		}
+	}
+}
+
+# Lost in the desert (luxyazd.10178)
+LR_yazidi.0120 = {
+	type = character_event
+	title = LR_yazidi.0120.t
+	desc = LR_yazidi.0120.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = { # We'll go back
+		name = LR_yazidi.0120.a
+		add_prestige = minor_prestige_loss
+		trigger_event = { id = LR_yazidi.0130 days = { 90 150 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = patient }
+			modifier = { factor = 0 has_trait = impatient }
+		}
+	}
+	option = { # We'll keep going
+		name = LR_yazidi.0120.b
+		add_character_modifier = { modifier = LR_desert_heat_modifier months = 3 }
+		trigger_event = { id = LR_yazidi.0130 days = { 60 120 } }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 has_trait = impatient }
+			modifier = { factor = 0 has_trait = patient }
+		}
+	}
+}
+
+# Arrival dispatcher: good or bad arrival at the Sheikh's Tomb.
+LR_yazidi.0130 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		is_alive = yes
+	}
+
+	immediate = {
+		random_list = {
+			50 = {
+				modifier = { add = 25 has_trait = zealous }
+				modifier = { add = 25 has_character_modifier = LR_peacocks_feather_modifier }
+				trigger_event = LR_yazidi.0131
+			}
+			50 = {
+				modifier = { add = 25 has_trait = cynical }
+				trigger_event = LR_yazidi.0132
+			}
+		}
+	}
+}
+
+# Good arrival (luxyazd.10165)
+LR_yazidi.0131 = {
+	type = character_event
+	title = LR_yazidi.0131.t
+	desc = LR_yazidi.0131.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	option = {
+		name = LR_yazidi.0131.a
+		custom_tooltip = LR_yazidi.0131.a.tt
+		trigger_event = { id = LR_yazidi.0133 days = { 60 90 } }
+	}
+}
+
+# Bad arrival (luxyazd.10166)
+LR_yazidi.0132 = {
+	type = character_event
+	title = LR_yazidi.0131.t
+	desc = LR_yazidi.0132.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+
+	option = {
+		name = LR_yazidi.0132.a
+		custom_tooltip = LR_yazidi.0131.a.tt
+		trigger_event = { id = LR_yazidi.0134 days = { 60 90 } }
+	}
+}
+
+# Good journey home (luxyazd.10167)
+LR_yazidi.0133 = {
+	type = character_event
+	title = LR_yazidi.0133.t
+	desc = LR_yazidi.0133.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {
+		name = LR_yazidi.0133.a
+		remove_character_flag = LR_yazidi_on_pilgrimage
+		if = {
+			limit = { NOT = { has_trait = pilgrim } }
+			add_trait = pilgrim
+		}
+		add_piety = medium_piety_value
+		add_character_modifier = { modifier = LR_lalish_pilgrim_modifier years = 5 }
+	}
+}
+
+# Bad journey home (luxyazd.10168)
+LR_yazidi.0134 = {
+	type = character_event
+	title = LR_yazidi.0133.t
+	desc = LR_yazidi.0134.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	option = {
+		name = LR_yazidi.0132.a
+		remove_character_flag = LR_yazidi_on_pilgrimage
+		if = {
+			limit = { NOT = { has_trait = pilgrim } }
+			add_trait = pilgrim
+		}
+		add_piety = medium_piety_loss
+		add_character_modifier = { modifier = LR_lalish_disillusioned_modifier years = 2 }
+	}
+}
