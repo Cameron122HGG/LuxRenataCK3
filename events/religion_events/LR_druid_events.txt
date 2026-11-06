@@ -1,0 +1,556 @@
+﻿###################################
+#
+# ANCIENT RELIGIONS
+# - Druidic Caste Events (Lux Invicta ancrel.152 - ancrel.207)
+#
+###################################
+
+# Written by Patrick Marchand, adapted for CK3 Lux Renata 2026-11-06
+# Court positions: common/court_positions/types/LR_court_druid.txt
+# Hooks: common/on_action/zz00_LR_druid_on_actions.txt
+#
+# 0001 - 0002	Ruler has no Court Druid; send for one (ancrel.153, .155, .152/.154, .159)
+# 0010			Druid becomes known as wicked (ancrel.157)
+# 0020 - 0033	Child is sent for druidic training and returns (ancrel.185 - .191, .193)
+
+namespace = LR_druid
+
+#################################################
+# Ruler has no Court Druid (ancrel.153 / .155)
+#################################################
+LR_druid.0001 = {
+	type = character_event
+	title = LR_druid.0001.t
+	desc = LR_druid.0001.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		is_ai = no
+		LR_is_celtic_pagan_trigger = yes
+		highest_held_title_tier >= tier_county
+		is_imprisoned = no
+		NOT = { has_character_flag = LR_druid_reminder_cooldown }
+		NOT = { has_character_flag = LR_druid_invite_pending }
+		NOT = { employs_court_position = LR_court_druid_priestly_court_position }
+		NOT = { employs_court_position = LR_court_druid_diplomatic_court_position }
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = LR_druid_reminder_cooldown
+			years = 5
+		}
+	}
+
+	# There's a suitable candidate at court
+	option = {
+		name = LR_druid.0001.a
+		trigger = {
+			can_employ_court_position_type = LR_court_druid_priestly_court_position
+			any_court_position_candidate = {
+				court_position = LR_court_druid_priestly_court_position
+				has_trait = LR_druid
+			}
+		}
+		random_court_position_candidate = {
+			court_position = LR_court_druid_priestly_court_position
+			limit = { has_trait = LR_druid }
+			save_scope_as = new_druid
+		}
+		appoint_court_position = {
+			recipient = scope:new_druid
+			court_position = LR_court_druid_priestly_court_position
+		}
+	}
+
+	# Send for a master of law
+	option = {
+		name = LR_druid.0001.b
+		trigger = { gold >= minor_gold_value }
+		remove_short_term_gold = minor_gold_value
+		add_character_flag = {
+			flag = LR_druid_invite_pending
+			years = 1
+		}
+		save_scope_value_as = {
+			name = druid_kind
+			value = flag:diplomatic
+		}
+		custom_tooltip = LR_druid.0001.b.tt
+		trigger_event = {
+			id = LR_druid.0002
+			days = { 30 60 }
+		}
+	}
+
+	# Bring me a servant of the gods
+	option = {
+		name = LR_druid.0001.c
+		trigger = { gold >= minor_gold_value }
+		remove_short_term_gold = minor_gold_value
+		add_character_flag = {
+			flag = LR_druid_invite_pending
+			years = 1
+		}
+		save_scope_value_as = {
+			name = druid_kind
+			value = flag:priestly
+		}
+		custom_tooltip = LR_druid.0001.c.tt
+		trigger_event = {
+			id = LR_druid.0002
+			days = { 30 60 }
+		}
+	}
+
+	# I must find a knowledgeable Druid, and fast!
+	option = {
+		name = LR_druid.0001.d
+	}
+}
+
+#################################################
+# A druid arrives at court (ancrel.152 / .154 / .159)
+#################################################
+LR_druid.0002 = {
+	type = character_event
+	title = LR_druid.0002.t
+	desc = LR_druid.0002.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:new_druid
+		animation = personality_rational
+	}
+
+	immediate = {
+		remove_character_flag = LR_druid_invite_pending
+		if = {
+			limit = { scope:druid_kind = flag:diplomatic }
+			create_character = {
+				location = root.capital_province
+				age = { 25 55 }
+				gender_female_chance = root_faith_clergy_gender_female_chance
+				culture = root.culture
+				faith = root.faith
+				trait = LR_druid
+				trait = education_diplomacy_3
+				diplomacy = { 8 18 }
+				learning = { 6 12 }
+				save_scope_as = new_druid
+			}
+		}
+		else = {
+			create_character = {
+				location = root.capital_province
+				age = { 25 55 }
+				gender_female_chance = root_faith_clergy_gender_female_chance
+				culture = root.culture
+				faith = root.faith
+				trait = LR_druid
+				trait = education_learning_3
+				learning = { 8 18 }
+				diplomacy = { 6 12 }
+				save_scope_as = new_druid
+			}
+		}
+		add_courtier = scope:new_druid
+		scope:new_druid = {
+			add_opinion = {
+				target = root
+				modifier = LR_druid_patron_opinion
+			}
+		}
+	}
+
+	# She/He shall be my new Court Druid!
+	option = {
+		name = LR_druid.0002.a
+		trigger = {
+			scope:druid_kind = flag:priestly
+			can_employ_court_position_type = LR_court_druid_priestly_court_position
+		}
+		appoint_court_position = {
+			recipient = scope:new_druid
+			court_position = LR_court_druid_priestly_court_position
+		}
+	}
+	option = {
+		name = LR_druid.0002.a
+		trigger = {
+			scope:druid_kind = flag:diplomatic
+			can_employ_court_position_type = LR_court_druid_diplomatic_court_position
+		}
+		appoint_court_position = {
+			recipient = scope:new_druid
+			court_position = LR_court_druid_diplomatic_court_position
+		}
+	}
+
+	# I will settle this matter later.
+	option = {
+		name = LR_druid.0002.b
+	}
+}
+
+#################################################
+# Druid can become known as wicked, if they can't hide their sins (ancrel.157)
+#################################################
+LR_druid.0010 = {
+	type = character_event
+	title = LR_druid.0010.t
+	desc = LR_druid.0010.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		has_trait = LR_druid
+		NOT = { has_trait = LR_wicked_druid }
+		NOT = { has_trait = incapable }
+		intrigue < 8
+		diplomacy < 8
+		OR = {
+			has_trait = deceitful
+			has_trait = callous
+			has_trait = sadistic
+			has_trait = arbitrary
+			has_trait = jealous
+			has_trait = craven
+			has_trait = lazy
+			has_trait = shy
+			has_trait = paranoid
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = 2
+			has_trait = ambitious
+		}
+	}
+
+	# May the gods have mercy on me.
+	option = {
+		name = LR_druid.0010.a
+		remove_trait = LR_druid
+		add_trait = LR_wicked_druid
+		if = {
+			limit = {
+				is_ruler = yes
+				has_any_nickname = no
+			}
+			give_nickname = nick_the_wicked
+		}
+	}
+}
+
+#################################################
+# Druidic training of children (ancrel.185 - .191, .193)
+#################################################
+
+# Your child wishes to become a druid (ancrel.187)
+LR_druid.0020 = {
+	type = character_event
+	title = LR_druid.0020.t
+	desc = LR_druid.0020.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:druid_child
+		animation = happiness
+	}
+
+	trigger = {
+		LR_is_celtic_pagan_trigger = yes
+		is_imprisoned = no
+		NOT = { has_trait = incapable }
+		any_child = {
+			age >= 10
+			age <= 14
+			is_courtier_of = root
+			is_imprisoned = no
+			LR_is_celtic_pagan_trigger = yes
+			NOT = { has_trait = LR_druid }
+			NOT = { has_trait = LR_wicked_druid }
+			NOT = { has_trait = LR_druid_novice }
+			NOT = { has_trait = cynical }
+			NOT = { has_trait = incapable }
+			NOT = { has_character_flag = LR_druid_training_asked }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = 2
+			has_trait = LR_druid
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = zealous
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				age >= 10
+				age <= 14
+				is_courtier_of = root
+				is_imprisoned = no
+				LR_is_celtic_pagan_trigger = yes
+				NOT = { has_trait = LR_druid }
+				NOT = { has_trait = LR_wicked_druid }
+				NOT = { has_trait = LR_druid_novice }
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = incapable }
+				NOT = { has_character_flag = LR_druid_training_asked }
+			}
+			weight = {
+				base = 1
+				modifier = {
+					factor = 0.25
+					is_primary_heir_of = root
+				}
+				modifier = {
+					factor = 2
+					OR = {
+						has_trait = zealous
+						has_trait = content
+						has_trait = diligent
+						has_trait = patient
+					}
+				}
+			}
+			save_scope_as = druid_child
+			add_character_flag = LR_druid_training_asked
+		}
+	}
+
+	# I will not allow it!
+	option = {
+		name = LR_druid.0020.a
+		scope:druid_child = {
+			add_opinion = {
+				target = root
+				modifier = LR_druid_training_refused_opinion
+			}
+		}
+		add_piety = minor_piety_loss
+		ai_chance = {
+			base = 30
+		}
+	}
+
+	# Yes, this will bring great honor to our family.
+	option = {
+		name = LR_druid.0020.b
+		add_piety = minor_piety_value
+		custom_tooltip = LR_druid.0020.b.tt
+		trigger_event = {
+			id = LR_druid.0021
+			days = { 3 7 }
+		}
+		ai_chance = {
+			base = 70
+		}
+	}
+}
+
+# The Path of the Druids: an old druid takes the child to the sacred grove (ancrel.185)
+LR_druid.0021 = {
+	type = character_event
+	title = LR_druid.0021.t
+	desc = LR_druid.0021.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	right_portrait = {
+		character = scope:druid_child
+		animation = personality_content
+	}
+
+	trigger = {
+		scope:druid_child = {
+			is_alive = yes
+			LR_is_celtic_pagan_trigger = yes
+		}
+	}
+
+	# Be safe my child
+	option = {
+		name = LR_druid.0021.a
+		save_scope_as = druid_parent
+		scope:druid_child = {
+			add_trait = LR_druid_novice
+			trigger_event = {
+				id = LR_druid.0030
+				years = { 4 6 }
+			}
+		}
+	}
+}
+
+# The child's training ends (hidden, on the child)
+LR_druid.0030 = {
+	hidden = yes
+
+	trigger = {
+		has_trait = LR_druid_novice
+		LR_is_celtic_pagan_trigger = yes
+	}
+
+	immediate = {
+		save_scope_as = druid_child
+		remove_trait = LR_druid_novice
+		add_trait = LR_druid
+		random_list = {
+			50 = { # Learned (ancrel.193)
+				add_learning_skill = 2
+				save_scope_value_as = {
+					name = druid_outcome
+					value = flag:learned
+				}
+			}
+			30 = { # Scarred (ancrel.189)
+				modifier = {
+					factor = 0
+					has_trait = scarred
+				}
+				add_trait = scarred
+				save_scope_value_as = {
+					name = druid_outcome
+					value = flag:scarred
+				}
+			}
+			20 = { # Maimed (ancrel.191)
+				modifier = {
+					factor = 0
+					has_trait = maimed
+				}
+				add_trait = maimed
+				save_scope_value_as = {
+					name = druid_outcome
+					value = flag:maimed
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:druid_parent
+				scope:druid_parent = { is_alive = yes }
+			}
+			scope:druid_parent = {
+				if = {
+					limit = { scope:druid_outcome = flag:learned }
+					trigger_event = LR_druid.0031
+				}
+				else_if = {
+					limit = { scope:druid_outcome = flag:scarred }
+					trigger_event = LR_druid.0032
+				}
+				else = {
+					trigger_event = LR_druid.0033
+				}
+			}
+		}
+	}
+}
+
+# The child returns learned (ancrel.193)
+LR_druid.0031 = {
+	type = character_event
+	title = LR_druid.0031.t
+	desc = LR_druid.0031.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:druid_child
+		animation = personality_zealous
+	}
+
+	# I wish to hear of these new stories!
+	option = {
+		name = LR_druid.0031.a
+		scope:druid_child = {
+			show_as_tooltip = {
+				add_trait = LR_druid
+				add_learning_skill = 2
+			}
+		}
+	}
+}
+
+# The child returns scarred but learned (ancrel.189)
+LR_druid.0032 = {
+	type = character_event
+	title = LR_druid.0032.t
+	desc = LR_druid.0032.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:druid_child
+		animation = personality_rational
+	}
+
+	# You've... changed!
+	option = {
+		name = LR_druid.0032.a
+		scope:druid_child = {
+			show_as_tooltip = {
+				add_trait = LR_druid
+				add_trait = scarred
+			}
+		}
+	}
+}
+
+# The child returns maimed (ancrel.191)
+LR_druid.0033 = {
+	type = character_event
+	title = LR_druid.0033.t
+	desc = LR_druid.0033.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	right_portrait = {
+		character = scope:druid_child
+		animation = idle
+	}
+
+	# My child, what have the gods done to you?
+	option = {
+		name = LR_druid.0033.a
+		scope:druid_child = {
+			show_as_tooltip = {
+				add_trait = LR_druid
+				add_trait = maimed
+			}
+		}
+	}
+}
