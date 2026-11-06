@@ -1,0 +1,60 @@
+﻿# Restore the Roman Empire (restore_roman_empire_decision), reworked 2026-11-06.
+# A Roman diocese counts toward the restoration if its kingdom title is held in your realm,
+# or if you completely control its lands (dioceses are often unheld, e.g. the East under the Themes).
+
+# Character scope. DIOCESE = the diocese key without k_diocese_ (its region is custom_roman_<DIOCESE>)
+LR_roman_restoration_diocese_trigger = {
+	OR = {
+		title:k_diocese_$DIOCESE$ = {
+			exists = holder
+			holder = {
+				OR = {
+					this = root
+					target_is_liege_or_above = root
+				}
+			}
+		}
+		completely_controls_region = custom_roman_$DIOCESE$
+	}
+}
+
+# Character scope: at least 6 of the 8 dioceses of the West (the ones Restore the Hegemony of the West checks)
+LR_roman_restoration_western_dioceses_trigger = {
+	calc_true_if = {
+		amount >= 6
+		LR_roman_restoration_diocese_trigger = { DIOCESE = italia_annonaria }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = italia_suburbicaria }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = illyricum }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = africa }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = mauretania }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = hispania }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = viennensis }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = lugdunensis }
+	}
+}
+
+# Character scope: at least 6 of the 8 dioceses of the East
+LR_roman_restoration_eastern_dioceses_trigger = {
+	calc_true_if = {
+		amount >= 6
+		LR_roman_restoration_diocese_trigger = { DIOCESE = thracia }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = macedonia }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = dardania }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = asia }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = pontus }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = syria }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = palestine }
+		LR_roman_restoration_diocese_trigger = { DIOCESE = aegyptus }
+	}
+}
+
+# Character scope: the county is held by you or inside your realm
+LR_roman_restoration_county_in_realm_trigger = {
+	exists = title:$COUNTY$.holder
+	title:$COUNTY$.holder = {
+		OR = {
+			this = root
+			target_is_liege_or_above = root
+		}
+	}
+}

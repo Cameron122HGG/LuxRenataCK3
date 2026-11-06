@@ -100,6 +100,7 @@ restore_roman_empire_spqr_decision = {
 	ai_check_interval = 120
 
 	is_shown = {
+		always = no # LR 2026-11-06: merged into restore_roman_empire_decision (East or West)
 		is_ruler = yes
 		is_playable_character = yes
 		has_title = title:h_western_roman_empire
@@ -403,7 +404,9 @@ restore_roman_empire_holy_decision = {
 		base = 100
 	}
 }
-#Restoring the Roman Empire (as Byzantium)
+#Restoring the Roman Empire (reworked for Lux Renata 2026-11-06)
+# One decision for both halves: the holder of a restored hegemony, East or West, founds h_roman_empire.
+# It replaces restore_roman_empire_spqr_decision (now hidden). The HRE path (restore_roman_empire_holy_decision) is separate.
 restore_roman_empire_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
@@ -417,64 +420,52 @@ restore_roman_empire_decision = {
 		county = 0
 		duchy = 0
 		kingdom = 0
-		empire = 120
-		hegemony = 0
+		empire = 0
+		hegemony = 120
 	}
 
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
+		# Restored Romans of either half (shown from the empire tier as a goal)
 		OR = {
-			OR = { has_title = title:e_byzantium has_title = title:e_eastern_roman_empire }
 			has_title = title:h_eastern_roman_empire
+			has_title = title:h_western_roman_empire
+			has_title = title:e_eastern_roman_empire
+			has_title = title:e_western_roman_empire
 		}
 		NOT = { primary_title = title:e_hre }
-		NOT = { primary_title = title:e_spqr }
-		NOT = { primary_title = title:h_western_roman_empire }
+		NOT = { exists = title:h_roman_empire.holder }
 		NOT = {  #Can only do it once.
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:flag_restored_roman_empire
 			}
 		}
-		OR = {
-			government_has_flag = government_is_feudal
-			government_has_flag = government_is_republic
-			government_has_flag = government_is_clan
-			government_has_mechanic = administrative
-		}
 	}
 
 	is_valid = {
+		custom_tooltip = {
+			text = LR_restore_roman_empire_hegemony_tt
+			OR = {
+				has_title = title:h_eastern_roman_empire
+				has_title = title:h_western_roman_empire
+			}
+		}
 		prestige_level >= very_high_prestige_level
-		custom_tooltip = { #Only available after ERE borders restored
-            text = ere_borders_restored_tt
-            is_target_in_global_variable_list = { 
-            	name = unavailable_unique_decisions
-            	target = flag:LR_restore_eastern_hegemony_decision
-        	}
-        } 	
-		completely_controls = title:d_latium
-		completely_controls = title:d_venice
-		completely_controls = title:d_flaminia
-		completely_controls = title:d_sicily
-		completely_controls = title:d_genoa
-		completely_controls = title:d_capua
-		completely_controls = title:d_apulia
-		completely_controls = title:d_thrace
-		completely_controls = title:d_antioch
-		completely_controls = title:d_palestine
-		completely_controls = title:d_alexandria
-		completely_controls = title:d_athens
-		completely_controls = title:d_tunis
-		completely_controls = title:d_croatia
-		completely_controls = title:d_thessalonika
-		completely_controls = title:d_alger
-		completely_controls = title:d_kroumerie
-		completely_controls = title:d_bejaia
-		#completely_controls = title:d_granada
-		#completely_controls = title:d_mallorca
-		#completely_controls = title:d_rif
+		custom_tooltip = {
+			text = LR_restore_roman_empire_two_capitals_tt
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma }
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
+		}
+		custom_tooltip = {
+			text = LR_restore_roman_empire_western_dioceses_tt
+			LR_roman_restoration_western_dioceses_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_restore_roman_empire_eastern_dioceses_tt
+			LR_roman_restoration_eastern_dioceses_trigger = yes
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -482,6 +473,7 @@ restore_roman_empire_decision = {
 		is_capable_adult = yes
 		is_imprisoned = no
 		is_independent_ruler = yes
+		is_at_war = no
 
 		OR = {
 			religion = { is_in_family = rf_abrahamic }
@@ -494,17 +486,10 @@ restore_roman_empire_decision = {
 	effect = {
 		custom_tooltip = LR_restore_roman_empire_decision_effect_tooltip
 		show_as_tooltip = {
-			create_ERE_roman_empire_scripted_effect = yes
+			LR_restore_roman_empire_effect = yes
 		}
-		if = {
-			limit = {
-				has_ep3_dlc_trigger = yes
-			}
-			trigger_event = ep3_roman_restoration.0100
-		}
-		else = {
-			trigger_event = roman_restoration.0001
-		}
+		# LR: no Hellenic conversion offer (vanilla's ep3_roman_restoration.0100); the plain restoration event for everyone
+		trigger_event = roman_restoration.0001
 		hidden_effect = {
 			add_to_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -518,7 +503,10 @@ restore_roman_empire_decision = {
 	}
 	
 	ai_potential = {
-		always = yes
+		OR = {
+			has_title = title:h_eastern_roman_empire
+			has_title = title:h_western_roman_empire
+		}
 	}
 
 	ai_will_do = {
