@@ -5,6 +5,7 @@ LR_is_roman_prefect_title_trigger = {
 		this = title:k_praefectus_praetorio_italia
 		this = title:k_praefectus_praetorio_gallia
 		this = title:k_praefectus_praetorio_illyricum
+		this = title:k_praefectus_praetorio_germania
 		this = title:k_praefectus_praetorio_macedonia
 		this = title:k_praefectus_praetorio_oriens
 	}
@@ -114,8 +115,6 @@ LR_roman_prefecture_gallia_available_trigger = {
 
 # Every diocese of the prefecture of Illyricum is held within root's realm, and the prefecture has no prefect
 LR_roman_prefecture_illyricum_available_trigger = {
-	exists = title:k_diocese_noricum.holder
-	title:k_diocese_noricum.holder.top_liege = root
 	exists = title:k_diocese_pannonia.holder # LR 2026-11-06: Pannonia belongs to the prefecture of Illyricum
 	title:k_diocese_pannonia.holder.top_liege = root
 	exists = title:k_diocese_illyricum.holder
@@ -123,6 +122,15 @@ LR_roman_prefecture_illyricum_available_trigger = {
 	exists = title:k_diocese_dardania.holder
 	title:k_diocese_dardania.holder.top_liege = root
 	NOT = { exists = title:k_praefectus_praetorio_illyricum.holder }
+}
+
+# LR 2026-11-06: every diocese of the fictional prefecture of Germania is held within root's realm, and it has no prefect
+LR_roman_prefecture_germania_available_trigger = {
+	exists = title:k_diocese_noricum.holder
+	title:k_diocese_noricum.holder.top_liege = root
+	exists = title:k_diocese_germania.holder
+	title:k_diocese_germania.holder.top_liege = root
+	NOT = { exists = title:k_praefectus_praetorio_germania.holder }
 }
 
 # Every diocese of the prefecture of Macedonia is held within root's realm, and the prefecture has no prefect

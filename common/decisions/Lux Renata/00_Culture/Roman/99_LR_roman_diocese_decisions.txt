@@ -37,10 +37,11 @@
 			LR_roman_restoration_prefecture_italia_trigger = yes
 		}
 		custom_tooltip = {
-			text = LR_hegemony_neighbour_gallia_illyricum_tt
+			text = LR_hegemony_neighbour_west_tt
 			OR = {
 				LR_roman_restoration_prefecture_gallia_trigger = yes
 				LR_roman_restoration_prefecture_illyricum_trigger = yes
+				LR_roman_restoration_prefecture_germania_trigger = yes # LR 2026-11-06
 			}
 		}
 	}
@@ -1449,18 +1450,6 @@ restore_illyricum_roman_provinces_decision = {
 		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
 		OR = {
 			OR = {
-				title:k_diocese_noricum = {
-					is_titular = yes
-				}
-				title:k_diocese_noricum = {
-					NOT = {
-						any_in_de_jure_hierarchy = {
-							is_titular = no
-						}
-					}
-				}
-			}
-			OR = {
 				title:k_diocese_pannonia = {
 					is_titular = yes
 				}
@@ -1530,21 +1519,6 @@ restore_illyricum_roman_provinces_decision = {
 			subject = root
 			OR = {
 				AND = {
-					completely_controls_region = custom_roman_noricum
-					OR = {
-						title:k_diocese_noricum = {
-							is_titular = yes
-						}
-						title:k_diocese_noricum = {
-							NOT = {
-								any_in_de_jure_hierarchy = {
-									is_titular = no
-								}
-							}
-						}
-					}
-				}
-				AND = {
 					completely_controls_region = custom_roman_pannonia
 					OR = {
 						title:k_diocese_pannonia = {
@@ -1605,44 +1579,6 @@ restore_illyricum_roman_provinces_decision = {
 		decision_to_second_step_button = "CHOOSE_DIOCESE_BUTTON"
 		show_from_start = yes
 
-		item = {
-			value = custom_roman_noricum
-			current_description = {
-				desc = noricum_diocese_desc
-			}
-			localization  = {
-				desc = noricum_diocese_desc
-			}
-			#icon = "gfx/interface/icons/diocese_restoration/roman_illyricum.dds"
-			is_shown = {
-				OR = {
-					title:k_diocese_noricum = {
-						is_titular = yes
-					}
-					title:k_diocese_noricum = {
-						NOT = {
-							any_in_de_jure_hierarchy = {
-								is_titular = no
-							}
-						}
-					}
-				}
-			}
-			
-			is_valid = {
-				completely_controls_region = custom_roman_noricum
-			}
-	
-			ai_chance = {
-				value = 0
-				if = { # LR 2026-11-06: was a flat 0, so the AI never restored a diocese
-					limit = {
-						completely_controls_region = custom_roman_noricum
-					}
-					add = 100
-				}
-			}
-		}
 		item = {
 			value = custom_roman_pannonia
 			current_description = {
@@ -1767,34 +1703,6 @@ restore_illyricum_roman_provinces_decision = {
 		hidden_effect = {
 			if = {
 				limit = {
-					scope:custom_roman_noricum = yes
-				}
-				create_title_and_vassal_change = {
-					type = created
-					save_scope_as = title_change
-					add_claim_on_loss = no
-				}
-				title:k_diocese_noricum = {
-					save_scope_as = title_k_diocese_noricum
-				}
-				title:k_diocese_noricum = {
-					set_de_jure_liege_title = root.primary_title
-					change_title_holder = {
-						holder = root
-						change = scope:title_change
-					}
-				}
-				resolve_title_and_vassal_change = scope:title_change
-				restore_roman_provinces_noricum_decision_effect = yes
-				change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
-				trigger_event = {
-					id = LR_roman_diocese_event.0027
-				}
-			}
-		}
-		hidden_effect = {
-			if = {
-				limit = {
 					scope:custom_roman_pannonia = yes
 				}
 				create_title_and_vassal_change = {
@@ -1890,6 +1798,302 @@ restore_illyricum_roman_provinces_decision = {
 		base = 100
 	}
 }
+
+# LR 2026-11-06 (user): the fictional Prefecture of Germania. Noricum (moved here from the Illyricum decision) and the
+# Diocese of Germania (Germania Prima and Secunda from Gallia, and Germania Tertia and Quarta beyond the Rhine).
+# Any restored Roman emperor, East or West, once their half's administration is restored.
+LR_found_germanic_prefecture_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
+	}
+	ai_check_interval = 120
+	decision_group_type = roman
+
+	desc = LR_found_germanic_prefecture_decision_desc
+	selection_tooltip = LR_found_germanic_prefecture_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			AND = {
+				is_restored_western_roman_emperor_trigger = yes
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:western_roman_diocese_restored
+				}
+			}
+			AND = {
+				is_restored_eastern_roman_emperor_trigger = yes
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:eastern_roman_diocese_restored
+				}
+			}
+		}
+		government_has_flag = government_is_classical_group # LR: a Roman government, whatever the culture
+		OR = {
+			OR = {
+				title:k_diocese_noricum = {
+					is_titular = yes
+				}
+				title:k_diocese_noricum = {
+					NOT = {
+						any_in_de_jure_hierarchy = {
+							is_titular = no
+						}
+					}
+				}
+			}
+			OR = {
+				title:k_diocese_germania = {
+					is_titular = yes
+				}
+				title:k_diocese_germania = {
+					NOT = {
+						any_in_de_jure_hierarchy = {
+							is_titular = no
+						}
+					}
+				}
+			}
+		}
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 500
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 500
+			}
+		}
+		prestige = 500
+	}
+
+	is_valid = {
+		OR = {
+			AND = {
+				is_restored_western_roman_emperor_trigger = yes
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:western_roman_diocese_restored
+				}
+			}
+			AND = {
+				is_restored_eastern_roman_emperor_trigger = yes
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:eastern_roman_diocese_restored
+				}
+			}
+		}
+		government_has_flag = government_is_classical_group
+		prestige_level >= medium_prestige_level
+		custom_description = {
+			text = LR_found_germanic_prefecture_decision_trigger_1
+			subject = root
+			OR = {
+				AND = {
+					completely_controls_region = custom_roman_noricum
+					OR = {
+						title:k_diocese_noricum = {
+							is_titular = yes
+						}
+						title:k_diocese_noricum = {
+							NOT = {
+								any_in_de_jure_hierarchy = {
+									is_titular = no
+								}
+							}
+						}
+					}
+				}
+				AND = {
+					completely_controls_region = custom_roman_germania
+					OR = {
+						title:k_diocese_germania = {
+							is_titular = yes
+						}
+						title:k_diocese_germania = {
+							NOT = {
+								any_in_de_jure_hierarchy = {
+									is_titular = no
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+	}
+
+	widget = {
+		gui = "decision_view_widget_recover_fallen_dioceses"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_DIOCESE_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = custom_roman_noricum
+			current_description = {
+				desc = noricum_diocese_desc
+			}
+			localization  = {
+				desc = noricum_diocese_desc
+			}
+			is_shown = {
+				OR = {
+					title:k_diocese_noricum = {
+						is_titular = yes
+					}
+					title:k_diocese_noricum = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_noricum
+			}
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						completely_controls_region = custom_roman_noricum
+					}
+					add = 100
+				}
+			}
+		}
+		item = {
+			value = custom_roman_germania
+			current_description = {
+				desc = germania_diocese_desc
+			}
+			localization  = {
+				desc = germania_diocese_desc
+			}
+			is_shown = {
+				OR = {
+					title:k_diocese_germania = {
+						is_titular = yes
+					}
+					title:k_diocese_germania = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_germania
+			}
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						completely_controls_region = custom_roman_germania
+					}
+					add = 100
+				}
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = LR_found_germanic_prefecture_decision_tooltip_1
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:custom_roman_noricum = yes
+				}
+				create_title_and_vassal_change = {
+					type = created
+					save_scope_as = title_change
+					add_claim_on_loss = no
+				}
+				title:k_diocese_noricum = {
+					set_de_jure_liege_title = root.primary_title
+					change_title_holder = {
+						holder = root
+						change = scope:title_change
+					}
+				}
+				resolve_title_and_vassal_change = scope:title_change
+				restore_roman_provinces_noricum_decision_effect = yes
+				if = {
+					limit = { is_restored_western_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				}
+				else = {
+					change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				}
+				trigger_event = {
+					id = LR_roman_diocese_event.0027
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:custom_roman_germania = yes
+				}
+				create_title_and_vassal_change = {
+					type = created
+					save_scope_as = title_change
+					add_claim_on_loss = no
+				}
+				title:k_diocese_germania = {
+					set_de_jure_liege_title = root.primary_title
+					change_title_holder = {
+						holder = root
+						change = scope:title_change
+					}
+				}
+				resolve_title_and_vassal_change = scope:title_change
+				restore_roman_provinces_germania_decision_effect = yes
+				if = {
+					limit = { is_restored_western_roman_emperor_trigger = yes }
+					change_global_variable = { name = num_of_provinces_restored_wre add = 1 }
+				}
+				else = {
+					change_global_variable = { name = num_of_provinces_restored_ere add = 1 }
+				}
+				trigger_event = {
+					id = LR_roman_diocese_event.0013
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
 restore_macedonia_roman_provinces_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
