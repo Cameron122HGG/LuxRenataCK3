@@ -1,0 +1,35 @@
+﻿#############################################
+# Lux Renata: the Council of Toledo
+# Triggers for the reskinned Iberian struggle (iberian_struggle).
+#############################################
+
+# An independent ruler of the Council, other than root, who swears to the reconvened crown.
+# Scope: an involved ruler of struggle:iberian_struggle. Root: the ender.
+LR_council_of_toledo_elector_trigger = {
+	this != root
+	top_liege = this
+	is_landed = yes
+	is_landless_adventurer = no
+	capital_province ?= { geographical_region = world_europe_west_iberia }
+	primary_title.tier < tier_empire
+	primary_title = {
+		is_mercenary_company = no
+		is_holy_order = no
+	}
+}
+
+# A de jure kingdom of Hispania that root completely controls. Scope: a landed title.
+LR_vandal_sea_kingdom_trigger = {
+	tier = tier_kingdom
+	de_jure_liege = title:e_spain
+	any_in_de_jure_hierarchy = { tier = tier_county }
+	root = { completely_controls = prev }
+}
+
+# The crowns of Carthage: the Vandal kingdom of Carthage and the Roman kingdom of Africa. Scope: character.
+LR_holds_crown_of_carthage_trigger = {
+	OR = {
+		has_title = title:k_kartaga
+		has_title = title:k_africa
+	}
+}

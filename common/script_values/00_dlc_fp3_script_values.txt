@@ -59,7 +59,7 @@ fp3_house_modifier_sunder_caliphate_duration = 100
 
 fp3_concession_death_countdown = {
 	value = current_year
-	subtract = 866
+	subtract = 5866
 	multiply = 1
 }
 
@@ -79,10 +79,10 @@ fp3_persia_supporter_rulers_max_value = {
 				is_landed = yes
 				highest_held_title_tier >= tier_county
 				OR = {
-					NOT = { has_title = title:d_sunni }
+					NOT = { has_title = title:e_persia }
 					OR = {
 						top_liege = this
-						is_vassal_of = title:d_sunni.holder
+						is_vassal_of = title:e_persia.holder
 					}
 				}
 			}
@@ -105,10 +105,10 @@ fp3_persia_supporter_rulers_count_value = {
 				is_landed = yes
 				highest_held_title_tier >= tier_county
 				OR = {
-					NOT = { has_title = title:d_sunni }
+					NOT = { has_title = title:e_persia }
 					OR = {
 						top_liege = this
-						is_vassal_of = title:d_sunni.holder
+						is_vassal_of = title:e_persia.holder
 					}
 				}
 				# Trigger
@@ -1113,16 +1113,16 @@ fp3_struggle_switch_sides_value = {
 		limit = {
 			has_trait = fp3_struggle_supporter
 			NAND = {
-				rite = { rite_has_doctrine = muhammad_succession_sunni_doctrine }
+				faith ?= title:e_persia.holder.faith # Lux Renata: the shah's faith (was: Sunni)
 				has_trait = zealous
 			}
-			exists = title:d_sunni.holder
+			exists = title:e_persia.holder
 			NOR = {
-				this = title:d_sunni.holder
-				has_relation_friend = title:d_sunni.holder
-				has_relation_lover = title:d_sunni.holder
+				this = title:e_persia.holder
+				has_relation_friend = title:e_persia.holder
+				has_relation_lover = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 50
 				}
 			}
@@ -1178,7 +1178,7 @@ fp3_struggle_switch_sides_value = {
 		if = {
 			limit = {
 				NOT = {
-					rite = { rite_has_doctrine = muhammad_succession_sunni_doctrine }
+					faith ?= title:e_persia.holder.faith # Lux Renata: the shah's faith (was: Sunni)
 				}
 			}
 			add = 200
@@ -1195,16 +1195,16 @@ fp3_struggle_switch_sides_value = {
 		}
 		if = {
 			limit = {
-				exists = title:d_sunni.holder
-				has_relation_rival = title:d_sunni.holder
+				exists = title:e_persia.holder
+				has_relation_rival = title:e_persia.holder
 			}
 			add = 200
 		}
 		if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -75
 				}
 			}
@@ -1212,9 +1212,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -50
 				}
 			}
@@ -1222,9 +1222,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -30
 				}
 			}
@@ -1232,9 +1232,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -10
 				}
 			}
@@ -1242,9 +1242,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= 0
 				}
 			}
@@ -1252,9 +1252,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 40
 				}
 			}
@@ -1262,9 +1262,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 30
 				}
 			}
@@ -1272,9 +1272,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 20
 				}
 			}
@@ -1282,9 +1282,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 10
 				}
 			}
@@ -1294,11 +1294,11 @@ fp3_struggle_switch_sides_value = {
 	else_if = {
 		limit = {
 			has_trait = fp3_struggle_detractor
-			exists = title:d_sunni.holder
+			exists = title:e_persia.holder
 			NOR = {
-				has_relation_rival = title:d_sunni.holder
+				has_relation_rival = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -50
 				}
 			}
@@ -1348,7 +1348,7 @@ fp3_struggle_switch_sides_value = {
 		if = {
 			limit = {
 				NOT = {
-					rite = { rite_has_doctrine = muhammad_succession_sunni_doctrine }
+					faith ?= title:e_persia.holder.faith # Lux Renata: the shah's faith (was: Sunni)
 				}
 			}
 			add = -200
@@ -1356,7 +1356,7 @@ fp3_struggle_switch_sides_value = {
 		if = {
 			limit = {
 				ai_zeal > 0
-				rite = { rite_has_doctrine = muhammad_succession_sunni_doctrine }
+				faith ?= title:e_persia.holder.faith # Lux Renata: the shah's faith (was: Sunni)
 			}
 			add = {
 				value = ai_zeal
@@ -1366,19 +1366,19 @@ fp3_struggle_switch_sides_value = {
 		}
 		if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				OR = {
-					has_relation_friend = title:d_sunni.holder
-					has_relation_lover = title:d_sunni.holder
+					has_relation_friend = title:e_persia.holder
+					has_relation_lover = title:e_persia.holder
 				}
 			}
 			add = 200
 		}
 		if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 75
 				}
 			}
@@ -1386,9 +1386,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 50
 				}
 			}
@@ -1396,9 +1396,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 30
 				}
 			}
@@ -1406,9 +1406,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value >= 10
 				}
 			}
@@ -1416,9 +1416,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -40
 				}
 			}
@@ -1426,9 +1426,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -30
 				}
 			}
@@ -1436,9 +1436,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= -20
 				}
 			}
@@ -1446,9 +1446,9 @@ fp3_struggle_switch_sides_value = {
 		}
 		else_if = {
 			limit = {
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 				opinion = {
-					target = title:d_sunni.holder
+					target = title:e_persia.holder
 					value <= 0
 				}
 			}

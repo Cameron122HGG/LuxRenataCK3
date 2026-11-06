@@ -375,15 +375,10 @@ fp3_name_read_in_friday_prayer_decision = {
 
 	is_shown = {
 		any_character_struggle = { this = struggle:persian_struggle }
-		has_religion = religion:islam_religion
 		has_fp3_dlc_trigger = yes
 	}
 
 	is_valid = {
-		custom_tooltip = {
-			text = fp3_name_read_in_friday_prayer_decision.tt.orthodox_sunnis_only
-			faith.religious_head ?= title:d_sunni.holder
-		}
 		OR = {
 			fp3_name_read_in_friday_prayer_decision_liege_requirements_trigger = yes
 			trigger_if = {
@@ -400,32 +395,27 @@ fp3_name_read_in_friday_prayer_decision = {
 		trigger_if = {
 			limit = {
 				has_trait = fp3_struggle_supporter
-				exists = title:d_sunni.holder
+				exists = title:e_persia.holder
 			}
-			NOT = { is_allied_to = title:d_sunni.holder }
+			NOT = { is_allied_to = title:e_persia.holder }
 		}
 	}
 
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
 		custom_tooltip = {
-			text = fp3_name_read_in_friday_prayer_decision.tt.orthodox_sunnis_only
-			has_religion = religion:islam_religion
-			faith.religious_head ?= title:d_sunni.holder
-		}
-		custom_tooltip = {
 			text = fp3_name_read_in_friday_prayer_decision.tt.sunni_caliph_must_exist
-			exists = title:d_sunni.holder
+			exists = title:e_persia.holder
 		}
 		custom_tooltip = {
 			text = fp3_name_read_in_friday_prayer_decision.tt.sunni_caliph_cannot_change_prayer_order
-			NOT = { has_title = title:d_sunni }
+			NOT = { has_title = title:e_persia }
 		}
 		# If you've already got the modifier, then you can't flipflop unless the caliph changes.
 		trigger_if = {
 			limit = {
 				has_variable = last_explicit_friday_prayer_caliph
-				title:d_sunni.holder ?= var:last_explicit_friday_prayer_caliph
+				title:e_persia.holder ?= var:last_explicit_friday_prayer_caliph
 				OR = {
 					has_character_modifier = fp3_name_read_in_friday_prayer_modifier
 					has_character_modifier = fp3_displayed_pious_submission_to_caliph_modifier
@@ -441,23 +431,23 @@ fp3_name_read_in_friday_prayer_decision = {
 			text = fp3_name_read_in_friday_prayer_decision.tt.require_new_caliph_or_flag_lapse
 			OR = {
 				NOT = { has_variable = last_explicit_defied_caliph }
-				NOT = { title:d_sunni.holder ?= var:last_explicit_defied_caliph }
+				NOT = { title:e_persia.holder ?= var:last_explicit_defied_caliph }
 			}
 		}
 		# If you killed the caliph at any point, you can't switch at all.
 		trigger_if = {
 			limit = {
 				has_trait = fp3_struggle_detractor
-				exists = title:d_sunni.holder
-				exists = title:d_sunni.holder.dynasty
-				NOT = { dynasty ?= title:d_sunni.holder.dynasty }
+				exists = title:e_persia.holder
+				exists = title:e_persia.holder.dynasty
+				NOT = { dynasty ?= title:e_persia.holder.dynasty }
 			}
 			custom_tooltip = {
 				text = fp3_name_read_in_friday_prayer_decision.tt.caliph_murderers_cant_become_supporters
 				NOT = {
 					any_killed_character = {
 						save_temporary_scope_as = char_temp
-						title:d_sunni = {
+						title:e_persia = {
 							any_past_holder = { this = scope:char_temp }
 						}
 					}

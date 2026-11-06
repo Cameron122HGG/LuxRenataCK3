@@ -1,0 +1,117 @@
+﻿#############################################
+# Lux Renata: the Council of Toledo
+# The Vandal Sea: Carthage's ending for the Iberian struggle.
+# Rome's ending is the reskinned secure_iberian_foothold_decision (an outside empire takes in an Iberian kingdom).
+# Carthage is a kingdom, so the Vandal Sea takes the duchies of an Iberian kingdom it controls into its own crown.
+#############################################
+
+LR_vandal_sea_decision = {
+	title = LR_vandal_sea_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	}
+	desc = LR_vandal_sea_decision_desc
+	selection_tooltip = LR_vandal_sea_decision_tooltip
+	sort_order = 80
+	decision_group_type = struggle
+
+	is_shown = {
+		LR_holds_crown_of_carthage_trigger = yes
+		# Not involved, and capital outside Hispania
+		custom_tooltip = {
+			text = fp2_struggle_uninvolved_or_external_tt
+			NOR = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = iberian_struggle
+				}
+			}
+		}
+		NOT = { has_title = title:e_spain }
+		exists = struggle:iberian_struggle
+		has_fp2_dlc_trigger = yes
+		is_landless_adventurer = no
+	}
+
+	is_valid = {
+		top_liege = this
+		custom_tooltip = {
+			text = fp2_struggle_uninvolved_or_external_tt
+			NOT = {
+				capital_province = { geographical_region = world_europe_west_iberia }
+			}
+		}
+		primary_title.tier = tier_kingdom
+		# Completely control a de jure kingdom of Hispania
+		custom_tooltip = {
+			text = LR_vandal_sea_decision_kingdom_tt
+			title:e_spain = {
+				any_in_de_jure_hierarchy = { LR_vandal_sea_kingdom_trigger = yes }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		trigger_if = {
+			limit = { exists = struggle:iberian_struggle }
+			custom_tooltip = {
+				text = fp2_struggle_phase_hostility_or_opportunity_tt
+				struggle:iberian_struggle = {
+					has_struggle_phase_parameter = unlocks_secure_iberian_foothold_decision
+				}
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = { has_dlc_feature = legends }
+			legend_seed_struggle_ending_effect = {
+				ENDER = root
+				STRUGGLE = iberian_struggle
+			}
+		}
+		if = {
+			limit = { has_ach_dlc_trigger = yes }
+			add_character_flag = ach_ended_struggle
+		}
+		# The duchies of every Iberian kingdom root controls pass to root's crown
+		title:e_spain = {
+			every_in_de_jure_hierarchy = {
+				limit = { LR_vandal_sea_kingdom_trigger = yes }
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_duchy }
+					add_to_list = LR_vandal_sea_duchies
+				}
+			}
+		}
+		every_in_list = {
+			list = LR_vandal_sea_duchies
+			set_de_jure_liege_title = root.primary_title
+		}
+		add_prestige = 1000
+		custom_tooltip = fp2_struggle_secure_iberian_foothold_ends_the_struggle_tt
+		hidden_effect = {
+			struggle:iberian_struggle = {
+				end_struggle = LR_vandal_sea_decision
+			}
+		}
+	}
+
+	cost = {}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	ai_potential = { always = yes }
+
+	ai_will_do = {
+		base = 100
+	}
+}

@@ -1,0 +1,53 @@
+﻿#############################################
+# Lux Renata: the Council of Toledo
+# Effects for the reskinned Iberian struggle (iberian_struggle).
+#############################################
+
+# Reconvene the Great Council (the Conciliation ending, fp2_struggle.0902).
+# As in 595, the Council crowns root High King of Hispania. The other independent rulers of the Council, who are all
+# root's allies by the ending's terms, swear fealty to the crown, and the crown becomes elective.
+# Root = the ender. Call while struggle:iberian_struggle still exists.
+LR_council_reconvened_effect = {
+	# The Council's crown
+	if = {
+		limit = {
+			NOT = { exists = title:e_spain.holder }
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = council_crown
+			add_claim_on_loss = no
+		}
+		title:e_spain = {
+			change_title_holder = {
+				holder = root
+				change = scope:council_crown
+			}
+		}
+		resolve_title_and_vassal_change = scope:council_crown
+	}
+	if = {
+		limit = { has_title = title:e_spain }
+		# The kings and lords of the Council swear to the crown, of whatever creed
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = council_fealty
+			add_claim_on_loss = no
+		}
+		struggle:iberian_struggle ?= {
+			every_involved_ruler = {
+				limit = { LR_council_of_toledo_elector_trigger = yes }
+				change_liege = {
+					liege = root
+					change = scope:council_fealty
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:council_fealty
+		# Elective, as in 595
+		if = {
+			limit = { government_has_flag = government_is_feudal }
+			title:e_spain = { add_title_law = feudal_elective_succession_law }
+		}
+	}
+}

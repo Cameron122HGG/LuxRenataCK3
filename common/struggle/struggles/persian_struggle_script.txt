@@ -12,44 +12,60 @@
 	##################################################
 	# Setup
 	##################################################
+	# Lux Renata: the great houses of Ērānšahr and the shah of Iran (holder of e_persia), at the 1020 and 1066 starts.
 	cultures = {
 		# Iranian
 		persian
-		kurdish
+		parthian
 		daylamite
+		kurdish
 		baloch
-		tajik
-		afghan
 		brahui
+		afghan
+		tajik
 		sogdian
 		khwarezmian
 
-		# Arabic
-		bedouin
-		levantine # "mashriqi"
-		yemeni
+		# Saka and Hephthalites of the east
+		saka
+		hepthalite
+
+		# Perso-Hellenes (the Parmenionids of Media, the Hellenes of Bactria, Sistan and Makran)
+		perso_hellenistic
+		yavanan
 	}
 	faiths = {
+		# Zoroastrian: the Sassanid church and its rivals
+		mazdayasna
+		mazdakism
+		zurvanism
+		khurmazta
+		khurramism
+		afridunism
+		gayomarthianism
+
+		# Manichaean and Mithraic
+		manichaean_faith
+		mithras
+
+		# Indo-Hellenic and Buddhist (the east)
+		indohelen
+		bud_hellenic
+		mahayana_faith
+		theravada_faith
+		zun_pagan
+
+		# Christian (the Church of the East)
+		syriac_christ_faith
+		messalian
+
 		# Islamic
 		sunni
 		shia
 		kharijite
-
-		# Zoroastrian
-		mazdayasna
-		khurmazta
-		khurramism
-		afridunism
-
-		# Buddhist
-		mahayana_faith
-
-		# Christian
-		syriac_christ_faith
 	}
 	regions = {
-		world_persian_empire
-		ghw_region_kurdistan
+		LR_region_eranshahr # Lux Renata: Iran, Media and Bactria (was: world_persian_empire, ghw_region_kurdistan); Anērān is LR_region_aneran
 	}
 
 	involvement_prerequisite_percentage = 0.5 # Easier to join the struggle due to the nature of the conflict
@@ -122,15 +138,16 @@
 							fp3_struggle_is_the_caliph = yes
 						}
 						opinion = {
-							target = title:d_sunni.holder
+							target = title:e_persia.holder
 							value >= low_positive_opinion
 						}
 					}
-					AND = {
-						rite = { rite_has_doctrine = muhammad_succession_sunni_doctrine }
-						exists = title:d_sunni.holder
+					AND = { # Lux Renata: a ruler inside the shah's realm who shares his faith (was: any Sunni); independent houses start as detractors
+						exists = title:e_persia.holder
+						top_liege = title:e_persia.holder
+						faith = title:e_persia.holder.faith
 						opinion = {
-							target = title:d_sunni.holder
+							target = title:e_persia.holder
 							value >= medium_negative_opinion
 						}
 					}
@@ -573,8 +590,8 @@
 			on_start = {
 				#this has to be run before fp3_end_persian_struggle_effect for concession effects to work
 				fp3_struggle_ending_concession_effects = yes
-				# Save Sunni caliph or previous one as scope:struggle_liege
-				fp3_save_sunni_caliph_or_previous_effect = yes
+				# Lux Renata: the shah of Iran (or the last one) is the struggle's liege (was: the Sunni caliph)
+				LR_eranshahr_save_shah_or_previous_effect = yes
 
 				fp3_end_persian_struggle_effect = {
 					ENDING = yes

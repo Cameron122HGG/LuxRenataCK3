@@ -4,6 +4,8 @@
 
 # Make it a Pious playthrough that encourage the Caliph to get support from the Muslim world
 ### Struggle Persia Ending Assertion Decision ###
+### Lux Renata: Crowning of the King of Kings (was: Strengthen the Caliphate) ###
+# The shah of Iran, in the Peace of the King of Kings, is crowned King of Kings of Ērānšahr (h_persian_empire).
 struggle_persia_ending_assertion_decision = {
 	decision_group_type = major
 	title = struggle_persia_ending_assertion
@@ -26,20 +28,17 @@ struggle_persia_ending_assertion_decision = {
 				is_struggle_phase = struggle_persia_phase_stabilisation
 			}
 		}
-		has_trait = fp3_struggle_supporter
-
 		custom_tooltip = {
-			text = struggle_persia_ending_decision_caliphate_exists_tt
-			exists = title:e_arabia.holder
-			title:d_sunni.holder ?= title:e_arabia.holder
+			text = LR_eranshahr_is_shah_tt
+			has_title = title:e_persia
 		}
-
-		# > 50% of involved rulers are supporters of the Caliph
+		top_liege = this
+		# More than half of the involved rulers support the crown
 		custom_tooltip = {
 			text = struggle_persia_ending_assertion.l
 			fp3_persia_supporter_rulers_count_value > fp3_persia_supporter_rulers_half_value
 		}
-		
+		# No independent great house of duke tier or above still defies the crown
 		custom_tooltip = {
 			text = struggle_persia_ending_assertion.2
 			struggle:persian_struggle = {
@@ -53,51 +52,25 @@ struggle_persia_ending_assertion_decision = {
 				}
 			}
 		}
-		
+		# Hold Iran, and most of Media and Bactria
 		custom_tooltip = {
-			text = struggle_persia_ending_assertion.3
-			struggle:persian_struggle = {
-				NOT = {
-					any_involved_ruler = {
-						top_liege = this
-						is_landed = yes
-						highest_held_title_tier >= tier_duchy
-						faith = {
-							NOT = {
-								has_doctrine = muhammad_succession_sunni_doctrine
-							}
-						}
-					}
-				}
-			}
+			text = LR_eranshahr_holds_persia_tt
+			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_persia PERCENT = 0.75 }
 		}
-		
-
-		# They need to be super pious
-		piety_level >= very_high_piety_level
-
-		# Specific to the caliph themselves
-		trigger_if = {
-			limit = { fp3_struggle_is_the_caliph = yes }
-			# They need to fully control the abbasids empire
-			completely_controls = title:e_arabia
+		custom_tooltip = {
+			text = LR_eranshahr_holds_media_tt
+			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_media PERCENT = 0.5 }
 		}
-		trigger_else = {
-			custom_tooltip = {
-				text = struggle_persia_strengthen_decision_right_hof_tt
-				faith.religious_head = title:d_sunni.holder
-			}
-			custom_tooltip = {
-				text = struggle_persia_strengthen_decision_alliance_tt
-				any_ally = {
-					this = title:e_arabia.holder
-				}
-			}
+		custom_tooltip = {
+			text = LR_eranshahr_holds_bactria_tt
+			LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_bactria PERCENT = 0.5 }
 		}
+		prestige_level >= high_prestige_level
 	}
 
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
+		is_at_war = no
 	}
 
 	effect = {
@@ -112,27 +85,12 @@ struggle_persia_ending_assertion_decision = {
 			limit = { has_ach_dlc_trigger = yes }
 			add_character_flag = ach_ended_struggle
 		}
-		show_as_tooltip = {
-			fp3_ending_effects_assertion = yes
-		}
-		trigger_event = fp3_struggle.0071
-		
-		if = { # If you can adopt admin government, show a tooltip to explain it - Actual effect is executed in the event
-			limit = {
-				has_dlc_feature = roads_to_power
-				fp3_struggle_is_the_caliph = yes
-				NOT = { government_has_flag = government_is_administrative }
-			}
-			custom_tooltip = adopt_admin_government_tt
-		}
-
-		title:d_sunni = { remove_variable = struggle_block_dissolution_faction }
-		title:e_arabia = { remove_variable = struggle_block_dissolution_faction }
-
-		# Silk Road bonus towards prosperity if and when Persia's turmoil comes to an end
-		tgp_silk_road_iranian_intermezzo_ending_effect = yes
+		show_as_tooltip = { LR_eranshahr_crowning_effect = yes }
+		custom_tooltip = LR_eranshahr_greater_victory_tt
+		custom_tooltip = LR_eranshahr_ends_struggle_tt
+		trigger_event = LR_eranshahr.0001
 	}
-	
+
 	ai_check_interval_by_tier = {
 		barony = 0
 		county = 0
@@ -151,6 +109,8 @@ struggle_persia_ending_assertion_decision = {
 ###################################
 
 ### Struggle Persia Ending Foundation Decision ###
+### Lux Renata: The Old Blood (was: Tempering the Caliphate) ###
+# In the Revolt of the Houses, a great house that holds most of one of Ērānšahr's three empires takes its crown.
 struggle_persia_ending_foundation_decision = {
 	decision_group_type = major
 	title = struggle_persia_ending_foundation
@@ -163,297 +123,37 @@ struggle_persia_ending_foundation_decision = {
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
 	is_invisible = yes
 	sort_order = 80
-	
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-		# Independent
-		top_liege = this
-		# Muslim
-		custom_tooltip = {
-			text = struggle_persia_ending_decision_caliphate_muslim_tt
-			religion = religion:islam_religion
-		}
-		trigger_if = {
-			limit = { exists = title:d_sunni.holder }
-			NOT = { title:d_sunni.holder = root }
-		}
-		trigger_else = {
-			custom_tooltip = {
-				text = struggle_persia_strengthen_decision_right_hof_tt
-				faith.religious_head = title:d_sunni.holder
-			}
-		}
-		
-		# HERE GOES THE SPECIFIC TRIGGERS FOR EACH OPTION - It goes here to make the buttons selectable (UI issue workaround)
-		trigger_if = { # CHALLENGER
-			limit = {  scope:struggle_persia_ending_foundation_decision_option_shia = yes }
-			# Only valid if faith permits HoF
-			custom_tooltip = {
-				text = struggle_persia_ending_foundation_decision_option_hof_tt
-				NOT = {
-					faith = { has_doctrine = doctrine_no_head }
-				}
-			}
-		}
-	}
 
-	is_valid = { # We can skip some of the more elementary checks due to this being struggle-only
-		# Involved & Unrest phase
+	is_valid = {
 		custom_tooltip = {
-			text = struggle_persia_ending_anarchy_decision_correct_phase_tt
+			text = LR_eranshahr_revolt_phase_tt
 			any_character_struggle = {
 				involvement = involved
 				is_struggle_type = persian_struggle
 				is_struggle_phase = struggle_persia_phase_unrest
 			}
 		}
-		# Detractor
 		has_trait = fp3_struggle_detractor
-		trigger_if = { # CHALLENGER
-			limit = {  scope:struggle_persia_ending_foundation_decision_option_shia = yes }
-			# Only valid if not Ashari
-			custom_tooltip = {
-				text = struggle_persia_ending_foundation_decision_option_succession_tt
-				NOT = {
-					faith = { has_doctrine = muhammad_succession_sunni_doctrine }
-				}
-			}
+		top_liege = this
+		custom_tooltip = {
+			text = LR_eranshahr_not_shah_tt
+			NOT = { has_title = title:e_persia }
 		}
-		# King or above
-		highest_held_title_tier >= tier_kingdom
-		# Realm must be bigger than the Caliphate
-		trigger_if = {
-			limit = {
-				exists = title:d_sunni.holder
-			}
-			custom_tooltip = {
-				text = larger_realm_than_caliph
-				sub_realm_size >= title:d_sunni.holder.realm_size
-			}
-		}
-		# At least 2 king tier allies
-		OR = {
-			custom_tooltip = {
-				text = struggle_persia_ending_foundation_decision_nb_ally_tt
-				any_ally = {
-					count >= 2
-					highest_held_title_tier >= tier_kingdom
-				}
-			}
-			sub_realm_size >= 50
-		}
-
-		# HERE GOES THE SPECIFIC TRIGGERS FOR EACH OPTION - It goes here to make the buttons selectable (UI issue workaround)
-		trigger_if = {
-			# CHALLENGER - if you change this, also change the `ai_chance = {}` of the specific widget option below!
-			limit = {  scope:struggle_persia_ending_foundation_decision_option_shia = yes }
+		# Hold most of one of the three empires of Ērānšahr
+		custom_tooltip = {
+			text = LR_eranshahr_holds_one_empire_tt
 			OR = {
-				any_realm_province = {
-					OR = {
-						custom_tooltip = {
-							text = holy_site_of_root_faith_tt
-							barony = {
-								is_holy_site_of = root.faith
-							}
-						}
-						has_building_or_higher = the_friday_mosque_01
-						has_building_or_higher = house_of_wisdom_01
-						has_building_or_higher = holy_site_great_mosque_of_samarra_01
-						trigger_if = {
-							limit = {
-								root.faith = {
-									has_doctrine = muhammad_succession_shia_doctrine
-								}
-							}
-							has_building_or_higher = holy_site_imam_ali_mosque_01
-						}
-						trigger_if = {
-							limit = {
-								root.faith = {
-									has_doctrine = muhammad_succession_shia_doctrine
-								}
-							}
-							has_building_or_higher = imam_reza_shrine_01
-						}
-					}
-				}
-			}
-			# Muhakkima
-			trigger_if = {
-				limit = {
-					faith = { has_doctrine = muhammad_succession_muhakkima_doctrine }
-				}
-				fp3_valid_muhakkima_head = yes
-			}
-			# Shia/Zandaqa
-			trigger_else = { fp3_valid_shia_head = yes }
-			# HoF does not already exist, or isn't of your faith
-			OR = {
-				custom_tooltip = {
-					text = hof_must_not_exist_tt
-					NOT = { exists = faith.religious_head }
-				}
-				custom_tooltip = {
-					text = hof_must_not_be_your_faith_tt
-					faith.religious_head.faith != root.faith
-				}
-				faith.religious_head = root
+				LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_persia PERCENT = 0.5 }
+				LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_media PERCENT = 0.5 }
+				LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_bactria PERCENT = 0.5 }
 			}
 		}
-		trigger_if = { # VASSALIZE - if you change this, also change the `ai_chance = {}` of the specific widget option below!
-			limit = { scope:struggle_persia_ending_foundation_decision_option_vassalize = yes }
-			# Sunni Caliph still holds Arabia
-			custom_tooltip = {
-				text = struggle_persia_ending_decision_caliphate_exists_tt
-				exists = title:d_sunni.holder
-				exists = title:e_arabia.holder
-				title:d_sunni.holder = title:e_arabia.holder
-			}
-			# Piety
-			prestige_level >= high_piety_level
-			# Control historic capital of Caliph
-			completely_controls = title:d_samarra
-			custom_tooltip = {
-				text = fp3_struggle_ending_vassalize_caliph_control_samarra_tt
-				title:c_samarra = {
-					title_held_years >= 5
-					holder = root
-				}
-			}
-			OR = {
-				custom_tooltip = {
-					text = fp3_struggle_ending_vassalize_caliph_control_baghdad_tt
-					title:c_baghdad.holder = root
-				}
-				title:d_sunni.holder = { is_imprisoned_by = root }
-				has_strong_hook = title:d_sunni.holder
-			}
-		}
+		prestige_level >= high_prestige_level
 	}
 
-	widget = {
-		gui = "decision_view_widget_fp3_foundation_ending"
-		controller = decision_option_list_controller
-		decision_to_second_step_button = "struggle_persia_ending_foundation_button_text"
-		show_from_start = yes
-
-		item = { # SHIA CALIPHATE
-			value = struggle_persia_ending_foundation_decision_option_shia
-
-			current_description = struggle_persia_ending_foundation_decision_option_shia_desc
-			localization = struggle_persia_ending_foundation_decision_option_shia
-			icon = "gfx/interface/icons/faith/shia.dds"
-
-			# ADD THE OPTION-SPECIFIC REQUIREMENTS FOR THE OPTION - This makes the AI actually be select the 'second' option if it is available
-            # ALSO - This also fixes alerts for Players, since their default option will be the one with the highest score
-			ai_chance = {
-				value = ai_zeal
-
-				if = { # CHALLENGER - if you change this, also change the `is_valid = {}` of the decision!
-	                limit = {
-	                    OR = {
-	                        any_realm_province = {
-	                            OR = {
-	                                custom_tooltip = {
-	                                    text = holy_site_of_root_faith_tt
-	                                    barony = {
-	                                        is_holy_site_of = root.faith
-	                                    }
-	                                }
-	                                has_building_or_higher = the_friday_mosque_01
-	                                has_building_or_higher = house_of_wisdom_01
-	                                has_building_or_higher = holy_site_great_mosque_of_samarra_01
-	                                trigger_if = {
-	                                    limit = {
-	                                        root.faith = {
-	                                            has_doctrine = muhammad_succession_shia_doctrine
-	                                        }
-	                                    }
-	                                    has_building_or_higher = holy_site_imam_ali_mosque_01
-	                                }
-	                                trigger_if = {
-	                                    limit = {
-	                                        root.faith = {
-	                                            has_doctrine = muhammad_succession_shia_doctrine
-	                                        }
-	                                    }
-	                                    has_building_or_higher = imam_reza_shrine_01
-	                                }
-	                            }
-	                        }
-	                    }
-	                    # Muhakkima
-	                    trigger_if = {
-	                        limit = {
-	                            faith = { has_doctrine = muhammad_succession_muhakkima_doctrine }
-	                        }
-	                        fp3_valid_muhakkima_head = yes
-	                    }
-	                    # Shia/Zandaqa
-	                    trigger_else = { fp3_valid_shia_head = yes }
-	                    # HoF does not already exist, or isn't of your faith
-	                    OR = {
-	                        custom_tooltip = {
-	                            text = hof_must_not_exist_tt
-	                            NOT = { exists = faith.religious_head }
-	                        }
-	                        custom_tooltip = {
-	                            text = hof_must_not_be_your_faith_tt
-	                            faith.religious_head.faith != root.faith
-	                        }
-	                        faith.religious_head = root
-	                    }
-	                }
-	                add = 100
-	            }
-			}
- 		}
-
-		item = { # VASSALIZE THE CALIPH
-			value = struggle_persia_ending_foundation_decision_option_vassalize
-
-			current_description = struggle_persia_ending_foundation_decision_option_vassalize_desc
-			localization = struggle_persia_ending_foundation_decision_option_vassalize
-			icon = "gfx/interface/icons/faith/sunni.dds"
-
-			# ADD THE OPTION-SPECIFIC REQUIREMENTS FOR THE OPTION - This makes the AI actually be select the 'second' option if it is available
-       		# ALSO - This also fixes alerts for Players, since their default option will be the one with the highest score
-			ai_chance = {
-				value = ai_zeal
-
-	            if = { # VASSALIZE - if you change this, also change the `is_valid = {}` of the decision!
-                    limit = {
-                        # Sunni Caliph still holds Arabia
-                        custom_tooltip = {
-                            text = struggle_persia_ending_decision_caliphate_exists_tt
-                            exists = title:d_sunni.holder
-                            exists = title:e_arabia.holder
-                            title:d_sunni.holder = title:e_arabia.holder
-                        }
-                        # Piety
-                        prestige_level >= high_piety_level
-                        # Control historic capital of Caliph
-                        completely_controls = title:d_samarra
-                        custom_tooltip = {
-                            text = fp3_struggle_ending_vassalize_caliph_control_samarra_tt
-                            title:c_samarra = {
-                                title_held_years >= 5
-                                holder = root
-                            }
-                        }
-                        OR = {
-                            custom_tooltip = {
-                                text = fp3_struggle_ending_vassalize_caliph_control_baghdad_tt
-                                title:c_baghdad.holder = root
-                            }
-                            title:d_sunni.holder = { is_imprisoned_by = root }
-                            has_strong_hook = title:d_sunni.holder
-                        }
-                    }
-                    add = 100
-                }
-			}
-		}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
 	}
 
 	effect = {
@@ -468,48 +168,16 @@ struggle_persia_ending_foundation_decision = {
 			limit = { has_ach_dlc_trigger = yes }
 			add_character_flag = ach_ended_struggle
 		}
-		if = { # Shia Caliphate
-			limit = { scope:struggle_persia_ending_foundation_decision_option_shia = yes }
-			custom_tooltip = struggle_persia_ending_foundation_decision_option.t.shia
-
-			trigger_event = fp3_struggle.0095
-
-			show_as_tooltip = {
-				fp3_struggle_ending_shia_caliphate_effects = yes
-				struggle:persian_struggle = { end_struggle = yes }
-			}
-		}
-		else_if = { # Vassalize Caliphate
-			limit = { scope:struggle_persia_ending_foundation_decision_option_vassalize = yes }
-			custom_tooltip = struggle_persia_ending_foundation_decision_option.t.vassalize
-
-			trigger_event = fp3_struggle.0100
-
-			show_as_tooltip = {
-				fp3_struggle_ending_vassalize_caliph_effects = yes
-				struggle:persian_struggle = { end_struggle = yes }
-			}
-		}
-		else = {
-			custom_tooltip = struggle_persia_ending_foundation_decision_option.t_selected_foundation.none # QoL addition
-			assert_if = { # Just in case
-				limit = { always = yes }
-				text = "Persian Struggle ended with foundation ending but had an invalid or missing widget item value!"
-			}
-		}
-
-		title:d_sunni = { remove_variable = struggle_block_dissolution_faction }
-		title:e_arabia = { remove_variable = struggle_block_dissolution_faction }
-		
-		# Silk Road bonus towards prosperity if and when Persia's turmoil comes to an end
-		tgp_silk_road_iranian_intermezzo_ending_effect = yes
+		show_as_tooltip = { LR_eranshahr_old_blood_effect = yes }
+		custom_tooltip = LR_eranshahr_greater_victory_tt
+		custom_tooltip = LR_eranshahr_ends_struggle_tt
+		trigger_event = LR_eranshahr.0011
 	}
-	
-	# Kingdom+ only
+
 	ai_check_interval_by_tier = {
 		barony = 0
 		county = 0
-		duchy = 0
+		duchy = 36
 		kingdom = 36
 		empire = 36
 		hegemony = 36
@@ -523,6 +191,9 @@ struggle_persia_ending_foundation_decision = {
 ###################################
 
 ### Struggle Persia Ending Rekindle Iran Decision ###
+### Lux Renata: The Three Crowns (was: Rekindle Iran) ###
+# In the Revolt of the Houses, a great house that holds most of Media or Bactria takes that crown, and Ērānšahr is
+# never restored.
 struggle_persia_ending_rekindle_iran_decision = {
 	decision_group_type = major
 	title = struggle_persia_ending_rekindle_iran
@@ -536,99 +207,40 @@ struggle_persia_ending_rekindle_iran_decision = {
 	is_invisible = yes
 	sort_order = 80
 
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-		# Independent
-		top_liege = this
-	}
-
-	is_valid = { # We can skip some of the more elementary checks due to this being struggle-only
-		# Involved
+	is_valid = {
 		custom_tooltip = {
-			text = struggle_ending_decision_correct_involvement_tt
+			text = LR_eranshahr_revolt_phase_tt
 			any_character_struggle = {
 				involvement = involved
 				is_struggle_type = persian_struggle
+				is_struggle_phase = struggle_persia_phase_unrest
 			}
 		}
-		# Iranian
+		has_trait = fp3_struggle_detractor
+		top_liege = this
 		custom_tooltip = {
-			text = struggle_persia_ending_rekindle_iran_decision_heritage_tt
-			culture = { has_cultural_pillar = heritage_iranian }
+			text = LR_eranshahr_not_shah_tt
+			NOT = { has_title = title:e_persia }
 		}
-		# At least a king
-		highest_held_title_tier >= tier_kingdom
-		# Famed
-		prestige_level >= very_high_prestige_level
-		# Control enough of Persia
+		# Hold most of Media or Bactria, and its crown is free
 		custom_tooltip = {
-			text = struggle_persia_ending_rekindle_iran_decision_region_control_tt
-			any_county_in_region = {
-				region = world_persian_empire
-				percent >= fp3_persia_owned_for_rekindle_persia_decimal_value
-				holder.top_liege = root
-			}
-		}
-		OR = {
-			# Iranian allies
-			custom_tooltip = {
-				text = struggle_persia_ending_rekindle_iran_decision_nb_ally_tt
-				any_ally = {
-					count >= 2
-					top_liege = this
-					primary_title = { is_mercenary_company = no }
-					primary_title = { is_holy_order = no }
-					highest_held_title_tier = tier_kingdom
-					culture = { has_cultural_pillar = heritage_iranian }
+			text = LR_eranshahr_holds_media_or_bactria_tt
+			OR = {
+				AND = {
+					NOT = { exists = title:e_media.holder }
+					LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_media PERCENT = 0.6 }
 				}
-			}
-			custom_tooltip = {
-				text = struggle_persia_ending_rekindle_iran_decision_iranian_sub_realm_counties_tt
-				any_sub_realm_county = {
-					count >= 40
-					culture = { has_cultural_pillar = heritage_iranian }
+				AND = {
+					NOT = { exists = title:e_bactria.holder }
+					LR_eranshahr_realm_holds_empire_trigger = { EMPIRE = e_bactria PERCENT = 0.6 }
 				}
-			}
-		}
-		# Iranian rulers
-		custom_tooltip = {
-			text = struggle_persia_ending_rekindle_iran_decision_iranian_rulers_tt
-			fp3_persia_iranian_rulers_count_value >= fp3_persia_all_rulers_requirement_value
-		}
-
-		trigger_if = {
-			limit = { scope:struggle_persia_ending_rekindle_iran_decision_option_secret_faith = yes }
-			custom_tooltip = {
-				text = struggle_persia_ending_rekindle_iran_decision_secret_tt
-				any_secret = { type = secret_crypto_religionist }
 			}
 		}
 	}
 
-	widget = {
-		gui = "decision_view_widget_fp3_foundation_ending"
-		controller = decision_option_list_controller
-		decision_to_second_step_button = "struggle_persia_ending_rekindle_iran_button_text"
-
-		item = { # PUBLIC FAITH
-			value = struggle_persia_ending_rekindle_iran_decision_option_public_faith
-
-			current_description = struggle_persia_ending_rekindle_iran_decision_option_public_faith_desc
-			localization = struggle_persia_ending_rekindle_iran_decision_option_public_faith
-			icon = "gfx/interface/icons/character_interactions/religious.dds"
-			ai_chance = { value = ai_zeal }
- 		}
-
-		item = { # SECRET FAITH
-			value = struggle_persia_ending_rekindle_iran_decision_option_secret_faith
-			is_valid = {
-				exists = secret_faith
-			}
-			current_description = struggle_persia_ending_rekindle_iran_decision_option_secret_faith_desc
-			localization = struggle_persia_ending_rekindle_iran_decision_option_secret_faith
-			icon = "gfx/interface/icons/character_interactions/icon_scheme_crypto_religion.dds"
-			ai_chance = { value = ai_zeal }
-		}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
 	}
 
 	effect = {
@@ -643,38 +255,16 @@ struggle_persia_ending_rekindle_iran_decision = {
 			limit = { has_ach_dlc_trigger = yes }
 			add_character_flag = ach_ended_struggle
 		}
-		if = {
-			limit = { scope:struggle_persia_ending_rekindle_iran_decision_option_secret_faith = yes }
-			if = {
-				limit = { exists = secret_faith }
-				secret_faith = { save_scope_as = propagated_faith }
-			}
-			else = {
-				faith =  { save_scope_as = propagated_faith }
-			}
-		}
-		else = {
-			faith =  { save_scope_as = propagated_faith }
-		}
-		trigger_event = fp3_struggle.0091
-		show_as_tooltip = { # Fake effects, custom-made to be readable (and also a summary of what happens across several events for OOP/UX reasons)
-			struggle:persian_struggle = { end_struggle = yes }
-
-			fp3_struggle_rekindle_iran_effects = yes
-		}
-
-		title:d_sunni = { remove_variable = struggle_block_dissolution_faction }
-		title:e_arabia = { remove_variable = struggle_block_dissolution_faction }
-		
-		# Silk Road bonus towards prosperity if and when Persia's turmoil comes to an end
-		tgp_silk_road_iranian_intermezzo_ending_effect = yes
+		show_as_tooltip = { LR_eranshahr_three_crowns_effect = yes }
+		custom_tooltip = LR_eranshahr_never_restored_tt
+		custom_tooltip = LR_eranshahr_ends_struggle_tt
+		trigger_event = LR_eranshahr.0021
 	}
 
-	# Kingdom+ only
 	ai_check_interval_by_tier = {
 		barony = 0
 		county = 0
-		duchy = 0
+		duchy = 36
 		kingdom = 36
 		empire = 36
 		hegemony = 36

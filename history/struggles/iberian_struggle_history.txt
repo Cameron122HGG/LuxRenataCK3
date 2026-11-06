@@ -1,9 +1,9 @@
-﻿######################
-# The Fate of Iberia #
-######################
+﻿#########################################
+# The Fate of Iberia: the Council of Toledo (Lux Renata)
+#########################################
 
-##Set Start date beyond the games scope to disable it for now
-20000.1.1 = { # Conclusion of the initial wave of Islamic conquest, so we settle in for the struggle. #was 718.1.1
+# 910: the Council of Toledo can no longer meet and the crown of Hispania (e_spain) falls vacant. The Empty Throne.
+5910.1.2 = {
 	effect = {
 		if = {
 			limit = { has_dlc_feature = the_fate_of_iberia }
@@ -11,6 +11,19 @@
 				struggle_type = iberian_struggle
 				start_phase = struggle_iberia_phase_opportunity
 			}
-		}		
+		}
+	}
+}
+
+# 1009: the Fitna of al-Andalus begins, and Hispania falls into the Wars of Anathema. It is still in them at the
+# 1020 and 1066 starts.
+6009.2.15 = {
+	effect = {
+		struggle:iberian_struggle ?= {
+			change_struggle_phase = {
+				struggle_phase = struggle_iberia_phase_hostility
+				with_transition = no
+			}
+		}
 	}
 }

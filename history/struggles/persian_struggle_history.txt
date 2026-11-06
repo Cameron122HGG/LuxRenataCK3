@@ -1,24 +1,29 @@
-﻿#######################
-# IRANIAN INTERMEZZO  #
-#######################
+﻿#########################################
+# The struggle for Ērānšahr (Lux Renata; vanilla Iranian Intermezzo)
+#########################################
 
-##Set Start date beyond the games scope to disable it for now
-9865.1.1 = { #was 865.1.1
+# 1016: Hormazd takes the throne of Iran. The great houses still serve the shah: the Peace of the King of Kings.
+6016.1.1 = {
 	effect = {
 		if = {
 			limit = { has_fp3_dlc_trigger = yes }
 			start_struggle = {
 				struggle_type = persian_struggle
-				start_phase = struggle_persia_phase_unrest
+				start_phase = struggle_persia_phase_stabilisation
 			} # Global var can be found on game start file (setting it here may result in data loss)
-		}		
+		}
 	}
 }
-9970.1.1 = { #was 970.1.1
+
+# 1060: the great houses break from the shah (Media, Fars, Rayy, Tabaristan, Kirman, Sistan and others crown
+# themselves). The Revolt of the Houses; still on at the 1066 start.
+6060.1.1 = {
 	effect = {
-		if = { 
-			limit = { exists = struggle:persian_struggle }
-			struggle:persian_struggle = { end_struggle = yes }
+		struggle:persian_struggle ?= {
+			change_struggle_phase = {
+				struggle_phase = struggle_persia_phase_unrest
+				with_transition = no
+			}
 		}
 	}
 }

@@ -1,0 +1,39 @@
+﻿#############################################
+# Lux Renata: Ērānšahr, the Persian struggle (persian_struggle)
+# The shah of Iran (holder of e_persia) and the great houses contend for h_persian_empire.
+#############################################
+
+# Root's realm holds at least $PERCENT$ of the de jure counties of title:$EMPIRE$. Scope: any. Root: the ruler checked.
+LR_eranshahr_realm_holds_empire_trigger = {
+	title:$EMPIRE$ = {
+		any_de_jure_county = {
+			percent >= $PERCENT$
+			holder.top_liege ?= root
+		}
+	}
+}
+
+# A ruler who swears to the new King of Kings: an independent involved supporter, other than root, with a capital in
+# the struggle region, below hegemony tier. Scope: an involved ruler of struggle:persian_struggle. Root: the ender.
+LR_eranshahr_swears_to_crown_trigger = {
+	this != root
+	top_liege = this
+	is_landed = yes
+	is_landless_adventurer = no
+	has_trait = fp3_struggle_supporter
+	primary_title.tier < tier_hegemony
+	primary_title = {
+		is_mercenary_company = no
+		is_holy_order = no
+	}
+	capital_province ?= { geographical_region = LR_region_eranshahr }
+}
+
+# Ērān and Anērān: root's realm holds at least half of the counties of Anērān (Mesopotamia, the Jazira, Transoxiana).
+LR_eranshahr_holds_aneran_trigger = {
+	any_county_in_region = {
+		region = LR_region_aneran
+		percent >= 0.5
+		holder.top_liege ?= root
+	}
+}
