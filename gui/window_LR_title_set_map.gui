@@ -480,6 +480,45 @@ window = {
 					}
 				}
 
+				### Title list of the preview ###
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetScriptedGui( 'LR_tsm_is_preview' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					margin = { 15 10 }
+					spacing = 6
+
+					background = {
+						using = Background_Area
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "LR_TSM_PREVIEW_LIST"
+						align = nobaseline
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						min_height = 160
+
+						blockoverride "scrollbox_content"
+						{
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								datamodel = "[Situation.MakeScope.GetList( 'LR_tsm_preview_list' )]"
+
+								item = {
+									hbox_LR_tsm_title_row = {
+										datacontext = "[Scope.Title]"
+									}
+								}
+							}
+						}
+					}
+				}
+
 				### Map modes & participants ###
 				hbox = {
 					layoutpolicy_horizontal = expanding
@@ -561,6 +600,80 @@ types LRTitleSetMap
 			block "count" {}
 			align = nobaseline
 		}
+	}
+
+	# One title of a preview: map colour (title variable LR_tsm_pcol), coat of arms and name. The name and the coat of
+	# arms give the title's usual tooltip; clicking the coat of arms opens the title.
+	type hbox_LR_tsm_title_row = hbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 8
+		margin = { 2 1 }
+
+		widget = {
+			size = { 14 22 }
+			# exactly one swatch is visible
+			hbox = {
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)1' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.90 0.47 0.20 1 }
+									}
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)2' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.27 0.51 0.78 1 }
+									}
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)3' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.47 0.71 0.31 1 }
+									}
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)4' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.78 0.27 0.55 1 }
+									}
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)5' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.94 0.80 0.27 1 }
+									}
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)6' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.35 0.75 0.75 1 }
+									}
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)7' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.59 0.39 0.78 1 }
+									}
+									icon = {
+										visible = "[EqualTo_CFixedPoint( Title.MakeScope.Var( 'LR_tsm_pcol' ).GetValue, '(CFixedPoint)8' )]"
+										size = { 14 22 }
+										texture = "gfx/interface/colors/white.dds"
+										color = { 0.73 0.55 0.37 1 }
+									}
+			}
+		}
+
+		coa_title_tiny_crown = {}
+
+		text_single = {
+			text = "[Title.GetName]"
+			align = nobaseline
+			max_width = 380
+			fontsize_min = 12
+		}
+
+		expand = {}
 	}
 
 	# A view button: disabled while it is the current view

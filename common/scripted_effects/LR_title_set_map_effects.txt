@@ -28,6 +28,7 @@ LR_tsm_set_view_effect = {
 		if = {
 			limit = { LR_tsm_view_is_preview_trigger = yes }
 			LR_tsm_clear_all_effect = yes
+			clear_variable_list = LR_tsm_preview_list
 		}
 		set_variable = { name = LR_tsm_view value = flag:$VIEW$ }
 		LR_tsm_refresh_effect = yes
@@ -201,4 +202,11 @@ LR_tsm_remove_from_effect = {
 			remove_dejure_title_from_sub_region = scope:LR_tsm_county
 		}
 	}
+}
+
+# Situation scope. Adds title $TITLE$ to the window's title list, tagged with its map colour $COLOUR$ (1-8, the
+# palette sub-region LR_tsm_p<COLOUR>) for the list's swatch.
+LR_tsm_preview_list_add_effect = {
+	title:$TITLE$ = { set_variable = { name = LR_tsm_pcol value = $COLOUR$ } }
+	add_to_variable_list = { name = LR_tsm_preview_list target = title:$TITLE$ }
 }
