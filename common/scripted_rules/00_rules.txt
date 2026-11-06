@@ -1438,8 +1438,17 @@ can_create_title = {
 		limit = { scope:title = { LR_is_bronze_title_trigger = yes } }
 		custom_tooltip = {
 			text = LR_bronze_title_creation_tooltip
-			current_date >= 1700.1.1
-			current_date < 3800.1.1
+			OR = {
+				AND = {
+					current_date >= 1700.1.1
+					current_date < 3800.1.1
+				}
+				# LR: revived Hatti (LR_revive_hatti_decision): Luwian-faith rulers may create its titles in any age
+				AND = {
+					scope:title = { has_variable = LR_revived_hatti_title }
+					faith.religion ?= religion:anatolian_religion
+				}
+			}
 		}
 	}
 	trigger_if = {
