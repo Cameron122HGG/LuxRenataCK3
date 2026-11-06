@@ -174,14 +174,22 @@ LR_keep_one_government_tradition_effect = {
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_sinic
-				scope:founder ?= { government_has_flag = government_is_sinic_group }
+				scope:founder ?= {
+					government_has_flag = government_is_sinic_group
+					NOT = { government_has_flag = government_is_japanese_plain } # Japanese Feudal belongs to the Japanese tradition
+				}
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sinic }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_japanese
-				scope:founder ?= { government_has_flag = government_is_japanese_group }
+				scope:founder ?= {
+					OR = {
+						government_has_flag = government_is_japanese_group
+						government_has_flag = government_is_japanese_plain
+					}
+				}
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_japanese }
 		}

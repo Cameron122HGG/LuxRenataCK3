@@ -80,10 +80,14 @@ LR_government_matches_culture_group_trigger = {
 		AND = {
 			culture = { has_cultural_tradition = lux_tradition_gov_sinic }
 			government_has_flag = government_is_sinic_group
+			NOT = { government_has_flag = government_is_japanese_plain } # Japanese Feudal belongs to the Japanese tradition
 		}
 		AND = {
 			culture = { has_cultural_tradition = lux_tradition_gov_japanese }
-			government_has_flag = government_is_japanese_group
+			OR = {
+				government_has_flag = government_is_japanese_group
+				government_has_flag = government_is_japanese_plain # Japanese Feudal: the Japanese tradition's government without All Under Heaven
+			}
 		}
 		AND = {
 			culture = { has_cultural_tradition = lux_tradition_gov_barbarian }
