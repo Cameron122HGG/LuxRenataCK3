@@ -1,6 +1,7 @@
 ﻿# Lux Renata: which options of convert_to_administrative_decision a ruler sees (00_LR_government_decisions.txt).
 # An independent ruler sees the administrative governments of their own group; a vassal sees only the government of
-# their administrative top liege (they join the realm's administration).
+# their administrative top liege (they join the realm's administration). In the classical group, Hellenistic-heritage
+# cultures see Alexandrian and everyone else Roman, as in LR_replace_vanilla_default_government_effect.
 
 # Character scope: the government is in none of the Lux Renata groups (vanilla Feudal or Clan)
 LR_has_no_government_group_trigger = {
@@ -37,6 +38,7 @@ LR_convert_admin_sees_roman_administrative_trigger = {
 	trigger_if = {
 		limit = { top_liege = this }
 		government_has_flag = government_is_classical_group
+		LR_culture_is_hellenic_trigger = no # Hellenistic heritages take the Alexandrian branch
 	}
 	trigger_else = {
 		top_liege = {
@@ -56,6 +58,7 @@ LR_convert_admin_sees_alexandrian_administrative_trigger = {
 	trigger_if = {
 		limit = { top_liege = this }
 		government_has_flag = government_is_classical_group
+		LR_culture_is_hellenic_trigger = yes # Hellenistic, Indo-Hellenic and Sino-Hellenic heritages
 	}
 	trigger_else = {
 		top_liege = {
