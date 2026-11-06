@@ -350,7 +350,13 @@ LR_apply_culture_government_group_effect = {
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
-				change_government = chinese_feudal_government
+				if = {
+					limit = { has_tgp_dlc_trigger = yes }
+					change_government = meritocratic_government
+				}
+				else = {
+					change_government = chinese_feudal_government
+				}
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
@@ -359,7 +365,7 @@ LR_apply_culture_government_group_effect = {
 					change_government = japan_administrative_government
 				}
 				else = {
-					change_government = chinese_feudal_government
+					change_government = japanese_government
 				}
 			}
 			else_if = {
@@ -386,7 +392,7 @@ LR_apply_culture_government_group_effect = {
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
-				change_government = iqta_dynastic_government
+				change_government = iqta_government
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
@@ -396,10 +402,11 @@ LR_apply_culture_government_group_effect = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
 				if = {
 					limit = { has_tgp_dlc_trigger = yes }
+					add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
 					change_government = japan_feudal_government
 				}
 				else = {
-					change_government = chinese_feudal_government
+					change_government = japanese_government
 				}
 			}
 			else_if = {
