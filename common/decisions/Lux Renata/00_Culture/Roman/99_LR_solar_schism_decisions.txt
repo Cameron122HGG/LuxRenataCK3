@@ -1,0 +1,137 @@
+﻿# LR 2026-11-06: the Solar Imperial West/East split (LR_solar_imperial_schism_prep.md in the working folder)
+
+# Convene a Solar Council: before the split it draws the two rites together; after it, once both heads answer to
+# you, it reunites the faith.
+LR_convene_solar_council_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = religious
+	desc = LR_convene_solar_council_decision_desc
+	selection_tooltip = LR_convene_solar_council_decision_tooltip
+	cooldown = { years = 20 }
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_is_solar_imperial_trigger = yes
+		highest_held_title_tier >= tier_kingdom
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		piety_level >= 2
+		trigger_if = {
+			limit = { LR_solar_schism_is_split_trigger = yes }
+			custom_tooltip = {
+				text = LR_solar_heads_reconciled_tt
+				LR_solar_heads_reconciled_trigger = yes
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = LR_solar_schism_progress_tt
+				exists = global_var:LR_solar_schism_progress
+				global_var:LR_solar_schism_progress > 0
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		piety = 500
+		gold = 300
+	}
+
+	effect = {
+		if = {
+			limit = { LR_solar_schism_is_split_trigger = yes }
+			custom_tooltip = LR_solar_council_mend_tt
+			hidden_effect = {
+				LR_solar_schism_mend_effect = yes
+				every_player = {
+					limit = { LR_is_solar_imperial_trigger = yes }
+					trigger_event = LR_solar_schism.0002
+				}
+			}
+		}
+		else = {
+			custom_tooltip = LR_solar_council_heal_tt
+			hidden_effect = {
+				change_global_variable = { name = LR_solar_schism_progress add = -25 }
+				clamp_global_variable = { name = LR_solar_schism_progress min = 0 max = 100 }
+			}
+		}
+		add_prestige = 300
+	}
+
+	ai_potential = {
+		LR_is_solar_imperial_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 10
+	}
+}
+
+# Reunite the Sun: one emperor of a restored Rome holding Rome and Constantinople heals the split.
+LR_reunite_solar_faith_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	decision_group_type = roman
+	desc = LR_reunite_solar_faith_decision_desc
+	selection_tooltip = LR_reunite_solar_faith_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_solar_schism_is_split_trigger = yes
+		has_title = title:h_roman_empire
+		LR_is_solar_imperial_trigger = yes
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_restore_roman_empire_two_capitals_tt
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma }
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
+		}
+		piety_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_solar_council_mend_tt
+		hidden_effect = {
+			LR_solar_schism_mend_effect = yes
+			LR_sync_helios_autokrator_effect = yes
+			every_player = {
+				limit = { LR_is_solar_imperial_trigger = yes }
+				trigger_event = LR_solar_schism.0002
+			}
+		}
+		add_prestige = 1000
+	}
+
+	ai_potential = {
+		has_title = title:h_roman_empire
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

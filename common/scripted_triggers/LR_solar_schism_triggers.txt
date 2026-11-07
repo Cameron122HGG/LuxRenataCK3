@@ -1,0 +1,56 @@
+﻿# LR 2026-11-06: the Solar Imperial West/East split (LR_solar_imperial_schism_prep.md in the working folder)
+
+# Character: follows one of the three Solar Imperial faiths (before or after the split)
+LR_is_solar_imperial_trigger = {
+	faith ?= {
+		OR = {
+			this = faith:solar_imperial_faith
+			this = faith:helios_autokrator_faith
+			this = faith:sol_invictus_faith
+		}
+	}
+}
+
+# Character: may be the incarnate Sun, the head of the Eastern rite
+LR_is_sun_emperor_candidate_trigger = {
+	rite ?= rite:solar_imperial_rite
+}
+
+# None scope: the Solar schism has happened and not been mended
+LR_solar_schism_is_split_trigger = {
+	has_global_variable = LR_solar_schism_happened
+}
+
+# None scope: a Western and an Eastern emperor reign side by side
+LR_solar_two_emperors_trigger = {
+	OR = {
+		exists = title:h_western_roman_empire.holder
+		exists = title:e_western_roman_empire.holder
+	}
+	OR = {
+		exists = title:h_eastern_roman_empire.holder
+		exists = title:e_eastern_roman_empire.holder
+		exists = title:e_byzantium.holder
+	}
+	NOT = { exists = title:h_roman_empire.holder }
+}
+
+# Character: both heads of the Solar faith are you or inside your realm (the Pontifex may be vacant)
+LR_solar_heads_reconciled_trigger = {
+	exists = title:k_helios_autokrator.holder
+	title:k_helios_autokrator.holder = {
+		OR = {
+			this = root
+			target_is_liege_or_above = root
+		}
+	}
+	trigger_if = {
+		limit = { exists = title:d_pontifex_solis_invicti.holder }
+		title:d_pontifex_solis_invicti.holder = {
+			OR = {
+				this = root
+				target_is_liege_or_above = root
+			}
+		}
+	}
+}

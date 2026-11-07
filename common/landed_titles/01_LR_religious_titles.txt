@@ -1370,3 +1370,34 @@ d_pontifex_maximus = { # Head of the Roman faith (LR_become_pontifex_maximus_dec
 	always_follows_primary_heir = yes
 	de_jure_drift_disabled = yes
 }
+# LR 2026-11-06: the Solar Imperial West/East split (LR_solar_imperial_schism_prep.md in the working folder)
+# Head of the Eastern Solar rite: always held by the Eastern emperor, the incarnate Sun (LR_sync_helios_autokrator_effect)
+k_helios_autokrator = {
+	color = { 243 209 23 }
+	landless = yes
+	capital = c_byzantion
+
+	definite_form = yes
+	ruler_uses_title_name = no
+	ai_primary_priority = {
+		add = -1000 # never the emperor's primary title
+	}
+	no_automatic_claims = yes
+	can_be_named_after_dynasty = no
+}
+
+# Head of the Western Solar rite: the priestly Pontifex of Sol Invictus at Rome (duchy tier, so a king can be his liege)
+d_pontifex_solis_invicti = {
+	color = { 230 150 20 }
+	landless = yes
+	capital = c_roma
+
+	definite_form = yes
+	ruler_uses_title_name = no
+	ai_primary_priority = {
+		add = @always_primary_score
+	}
+	no_automatic_claims = yes
+	always_follows_primary_heir = yes
+	destroy_if_invalid_heir = yes
+}

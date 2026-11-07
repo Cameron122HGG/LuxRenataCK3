@@ -1,0 +1,52 @@
+﻿# LR 2026-11-06: the Solar Imperial West/East split (LR_solar_imperial_schism_prep.md in the working folder)
+
+on_game_start = {
+	on_actions = { LR_solar_schism_on_game_start }
+}
+
+on_title_gain = {
+	on_actions = { LR_solar_schism_on_title_gain }
+}
+
+yearly_global_pulse = {
+	on_actions = { LR_solar_schism_yearly_pulse }
+}
+
+LR_solar_schism_on_game_start = {
+	effect = {
+		# The Solar schism has already happened by this date (PLACEHOLDER date, 6000 = 1000 AD: set it from the lore).
+		# The 1066 start has the two faiths; the 936 start has the single Solar Imperial faith.
+		if = {
+			limit = {
+				current_date >= 6000.1.1
+				NOT = { has_global_variable = LR_solar_schism_happened }
+			}
+			LR_solar_schism_split_effect = yes
+		}
+		LR_sync_helios_autokrator_effect = yes
+	}
+}
+
+# The incarnate Sun follows the imperial title
+LR_solar_schism_on_title_gain = {
+	trigger = {
+		scope:title = {
+			OR = {
+				this = title:h_roman_empire
+				this = title:h_eastern_roman_empire
+				this = title:e_eastern_roman_empire
+				this = title:e_byzantium
+			}
+		}
+	}
+	effect = {
+		LR_sync_helios_autokrator_effect = yes
+	}
+}
+
+LR_solar_schism_yearly_pulse = {
+	effect = {
+		LR_sync_helios_autokrator_effect = yes
+		LR_solar_schism_yearly_effect = yes
+	}
+}
