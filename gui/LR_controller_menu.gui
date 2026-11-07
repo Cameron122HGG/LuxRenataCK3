@@ -1,0 +1,246 @@
+######################################################
+############### LR CONTROLLER MENU ###################
+######################################################
+# LR 2026-11-06: a quick menu for gamepad play. CK3 PC ignores gamepad button names in shortcuts.shortcuts
+# (tested 11-06), so a Steam Input layout maps the pad to keys and this menu gathers the main windows,
+# map modes and time controls into big buttons that the engine's stick cursor + A can hit.
+# Toggled by the vanilla modder key "_insert" (Insert); Steam Input puts Insert on one button.
+# Both types are placed at the top level of hud.gui (search "LR CONTROLLER MENU").
+# Steam Input mapping: LR_controller_steam_input_guide.md in the mod root.
+
+types LR_controller_menu
+{
+	# Always-present invisible button so the Insert shortcut works whether or not the menu is open
+	type LR_controller_menu_hotkey = widget {
+		size = { 0 0 }
+		visible = "[Not( IsPauseMenuShown )]"
+
+		button = {
+			size = { 0 0 }
+			onclick = "[GetVariableSystem.Toggle( 'lr_controller_menu' )]"
+			shortcut = "_insert"
+		}
+	}
+
+	# A big menu button; keeps the menu open (map modes, time)
+	type LR_cm_button = button_standard_big {
+		size = { 230 48 }
+	}
+
+	# A big menu button for actions that should close the menu (windows); each instance adds the Clear onclick
+	type LR_cm_button_close = button_standard_big {
+		size = { 230 48 }
+	}
+
+	type LR_cm_section_header = text_single {
+		layoutpolicy_horizontal = expanding
+		margin = { 0 4 }
+		align = center|nobaseline
+		default_format = "#T"
+		using = Font_Size_Medium
+	}
+
+	type LR_controller_menu_window = window {
+		name = "LR_controller_menu_window"
+		datacontext = "[GetPlayer]"
+		visible = "[And( GetVariableSystem.Exists( 'lr_controller_menu' ), Not( IsPauseMenuShown ) )]"
+		parentanchor = center
+		widgetanchor = center
+		layer = top
+		movable = no
+
+		using = Window_Background
+		using = Window_Decoration
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+		}
+
+		vbox = {
+			set_parent_size_to_minimum = yes
+			margin = { 20 0 }
+			margin_bottom = 20
+			spacing = 6
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "LR_CM_TITLE"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					shortcut = "close_window"
+				}
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				align = center|nobaseline
+				default_format = "#weak"
+				text = "LR_CM_HINT"
+			}
+
+			hbox = {
+				spacing = 16
+				layoutpolicy_horizontal = expanding
+
+				### WINDOWS ###
+				vbox = {
+					layoutpolicy_vertical = expanding
+					spacing = 6
+
+					LR_cm_section_header = { text = "LR_CM_WINDOWS" }
+
+					LR_cm_button_close = {
+						text = "LR_CM_CHARACTER"
+						onclick = "[ToggleGameViewData( 'character', GetPlayer.GetID )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_REALM"
+						onclick = "[ToggleGameView( 'my_realm' )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_MILITARY"
+						onclick = "[ToggleGameViewData( 'military', GetPlayer.GetID )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_COUNCIL"
+						visible = "[Not( IsLandlessAdventurer( GetPlayer ) )]"
+						onclick = "[ToggleGameViewData( 'council_window', GetPlayer.GetID )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_COURT"
+						onclick = "[ToggleGameViewData( 'court_window', GetPlayer.GetID )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_INTRIGUE"
+						onclick = "[ToggleGameViewData( 'intrigue_window', GetPlayer.GetID )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_FACTIONS"
+						onclick = "[ToggleGameView( 'factions_window' )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_DECISIONS"
+						onclick = "[ToggleGameView( 'decisions' )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_ACTIVITIES"
+						onclick = "[ToggleGameView( 'activity_list_window' )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_SITUATIONS"
+						onclick = "[ToggleGameView( 'situations' )]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+
+					expand = {}
+				}
+
+				### MAP MODES ###
+				vbox = {
+					layoutpolicy_vertical = expanding
+					spacing = 6
+
+					LR_cm_section_header = { text = "LR_CM_MAP_MODES" }
+
+					LR_cm_button = {
+						text = "LR_CM_MAP_REALMS"
+						onclick = "[SetMapMode( 'realms' )]"
+						onclick = "[ClearExploredRealms]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_DUCHIES"
+						onclick = "[SetMapMode( 'dejure_duchies' )]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_KINGDOMS"
+						onclick = "[SetMapMode( 'dejure_kingdoms' )]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_EMPIRES"
+						onclick = "[SetMapMode( 'dejure_empires' )]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_HEGEMONIES"
+						onclick = "[SetMapMode( 'dejure_hegemonies' )]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_CULTURES"
+						onclick = "[SetMapMode( 'cultures' )]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_FAITHS"
+						onclick = "[SetMapMode( 'religions' )]"
+						onclick = "[ClearExploredFaiths]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_HOUSES"
+						onclick = "[SetMapMode( 'houses' )]"
+						onclick = "[ClearExploredHouses]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_TERRAIN"
+						onclick = "[SetMapMode( 'terrain' )]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_MAP_DEVELOPMENT"
+						onclick = "[SetMapMode( 'county_development' )]"
+					}
+
+					expand = {}
+				}
+
+				### TIME & CAMERA ###
+				vbox = {
+					layoutpolicy_vertical = expanding
+					spacing = 6
+
+					LR_cm_section_header = { text = "LR_CM_TIME" }
+
+					LR_cm_button = {
+						text = "LR_CM_PAUSE"
+						enabled = "[Not( GameHasMultiplePlayers )]"
+						onclick = "[OnPause]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_FASTER"
+						onclick = "[OnIncreaseGameSpeed]"
+					}
+					LR_cm_button = {
+						text = "LR_CM_SLOWER"
+						onclick = "[OnDecreaseGameSpeed]"
+					}
+					LR_cm_button_close = {
+						text = "LR_CM_CAPITAL"
+						onclick = "[OnGoToPlayerCapital]"
+						onclick = "[GetVariableSystem.Clear( 'lr_controller_menu' )]"
+					}
+
+					expand = {}
+				}
+			}
+		}
+	}
+}
