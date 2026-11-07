@@ -614,7 +614,7 @@ destroy_papacy_scripted_effect = {
 
 form_switzerland_scripted_effect = {
 	save_scope_as = scoped_ruler
-	title:e_hre.holder = { save_scope_as = scoped_emperor }
+	LR_save_holy_roman_emperor_effect = { NAME = scoped_emperor }
 	title:d_savoie = { save_scope_as = savoy }
 	title:k_switzerland = { save_scope_as = switzerland }
 	#De jure shifts.
@@ -655,7 +655,7 @@ form_switzerland_scripted_effect = {
 form_austria_scripted_effect = {
 	#Grab scopes for loc and such.
 	save_scope_as = scoped_ruler
-	title:e_hre.holder = { save_scope_as = scoped_emperor }
+	LR_save_holy_roman_emperor_effect = { NAME = scoped_emperor }
 	title:d_carinthia = { save_scope_as = carinthia }
 	title:d_krain = {save_scope_as = krain }
 	title:d_istria = { save_scope_as = istria }
@@ -795,9 +795,9 @@ form_austria_scripted_effect = {
 	#Check to see if we're using that strong hook!
 	if = {
 		limit = {
-			NOT = { dynasty = title:e_hre.holder.dynasty }
+			NOT = { dynasty = liege.dynasty }
 		}
-		use_hook = title:e_hre.holder
+		use_hook = liege # LR: the emperor (imperial immediacy)
 	}
 }
 
@@ -892,7 +892,7 @@ decision_restore_carantania_effect = {
 
 form_carolingian_empire_scripted_effect = {
 	save_scope_as = scoped_ruler
-	title:e_hre.holder ?= { save_scope_as = scoped_emperor }
+	title:e_hre.holder ?= { save_scope_as = scoped_emperor } # LR: only the Carolingian-successor e_hre is undone here, never the h_hre hegemony
 	#De jure shifts.
 	hidden_effect = {
 		title:k_france = { set_de_jure_liege_title = title:e_france }
@@ -2822,7 +2822,8 @@ hre_elector_list_save_effect = {
 		check_range_bounds = yes
 		order_by = tier
 		save_temporary_scope_as = hre_elector_title
-		title:e_hre = {
+		LR_save_holy_roman_crown_effect = yes
+		scope:LR_hre_crown = {
 			if = {
 				limit = { NOT = { has_variable = hre_elector_1 } }
 				set_variable = { name = hre_elector_1 value = scope:hre_elector_title }
@@ -3457,7 +3458,13 @@ create_kingdom_of_saxony_effect = {
 		}
 	}
 	title:k_saxony = { set_coa = k_saxon_electorate }
-	title:k_saxony = { set_de_jure_liege_title = title:e_hre }
+	if = {
+		limit = { exists = title:h_hre.holder }
+		title:k_saxony = { set_de_jure_liege_title = title:e_germany }
+	}
+	else = {
+		title:k_saxony = { set_de_jure_liege_title = title:e_hre }
+	}
 	create_title_and_vassal_change = {
 		type = created
 		save_scope_as = title_change
@@ -3465,7 +3472,7 @@ create_kingdom_of_saxony_effect = {
 	}
 	if = {
 		limit = {
-			has_title = title:e_hre
+			LR_is_holy_roman_emperor_trigger = yes
 		}
 		hidden_effect = {
 			title:k_saxony = {
@@ -3523,12 +3530,13 @@ create_kingdom_of_saxony_effect = {
 			limit = {
 				this != prev
 				or = {
-					is_vassal_or_below_of = title:e_hre.holder
+					top_liege ?= { LR_is_holy_roman_emperor_trigger = yes }
 					AND = {
 						exists = title:e_west_slavia
 						is_vassal_or_below_of = title:e_west_slavia.holder
 					}
 					title:e_hre = { is_neighbor_to_realm = prev }
+				title:h_hre = { is_neighbor_to_realm = prev }
 					primary_title = {
 						title:e_west_slavia = { is_de_jure_liege_or_above_target = prev }
 					}

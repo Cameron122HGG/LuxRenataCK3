@@ -929,8 +929,7 @@ task_promote_culture = {
 				}
 			}
 			NAND = { # Princes in the HRE tend to not convert each other's cultures
-				exists = title:e_hre.holder
-				scope:councillor_liege.top_liege = title:e_hre.holder
+				scope:councillor_liege.top_liege ?= { LR_is_holy_roman_emperor_trigger = yes }
 				OR = {
 					scope:councillor_liege.culture = culture:czech
 					scope:councillor_liege.culture = { has_cultural_pillar = heritage_central_germanic }
@@ -1013,7 +1012,7 @@ task_promote_culture = {
 						# German rulers want to convert the polabians
 						culture = { has_cultural_pillar = heritage_central_germanic }
 						scope:county.culture = culture:polabian
-						NOT = { scope:councillor_liege.primary_title = title:e_hre }
+						NOT = { scope:councillor_liege.primary_title ?= { LR_is_holy_roman_title_trigger = yes } }
 					}
 
 					AND = {
@@ -1086,7 +1085,7 @@ task_promote_culture = {
 						# German rulers want to convert the polabians
 						culture = { has_cultural_pillar = heritage_central_germanic }
 						scope:county.culture = culture:polabian
-						NOT = { scope:councillor_liege.primary_title = title:e_hre }
+						NOT = { scope:councillor_liege.primary_title ?= { LR_is_holy_roman_title_trigger = yes } }
 					}
 					AND = {
 						# Japanese rulers should convert Emishi counties
@@ -1145,7 +1144,7 @@ task_promote_culture = {
 					# German rulers want to convert the polabians
 					scope:councillor_liege.culture = { has_cultural_pillar = heritage_central_germanic }
 					scope:county.culture = culture:polabian
-					NOT = { scope:councillor_liege.primary_title = title:e_hre }
+					NOT = { scope:councillor_liege.primary_title ?= { LR_is_holy_roman_title_trigger = yes } }
 				}
 				AND = {
 					# Japanese rulers should convert Emishi counties
@@ -1271,7 +1270,7 @@ task_promote_culture = {
 						}
 						AND = {
 							culture = { has_cultural_pillar = heritage_central_germanic }
-							top_liege.primary_title = title:e_hre
+							top_liege.primary_title ?= { LR_is_holy_roman_title_trigger = yes }
 							OR = {
 								capital_county.kingdom = title:k_sorbia
 								capital_county.kingdom = title:k_east_francia
@@ -1734,7 +1733,7 @@ task_accept_culture = {
 					# German rulers want to convert the polabians
 					scope:councillor_liege.culture = { has_cultural_pillar = heritage_central_germanic }
 					scope:county.culture = culture:polabian
-					NOT = { scope:councillor_liege.primary_title = title:e_hre }
+					NOT = { scope:councillor_liege.primary_title ?= { LR_is_holy_roman_title_trigger = yes } }
 				}
 				NAND = {
 					# Japanese rulers should convert Emishi counties

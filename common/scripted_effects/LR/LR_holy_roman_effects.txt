@@ -82,6 +82,27 @@ LR_found_holy_roman_hegemony_effect = {
 		limit = { has_title = title:e_carolingian_empire }
 		destroy_title = title:e_carolingian_empire
 	}
+	# The Electors: keep the ones the papal route chose, or pick them now (the Karling route chooses none), and
+	# write them onto h_hre for the tooltip (the old variables were on the destroyed e_hre)
+	if = {
+		limit = { NOT = { has_global_variable_list = hre_elector_list } }
+		hre_assign_dynamic_prince_electors_effect = yes
+	}
+	else = {
+		hre_elector_list_save_effect = yes
+	}
+}
+
+# LR 2026-11-06: saves the Holy Roman emperor (holder of h_hre, else of e_hre) as scope:$NAME$. Any scope.
+LR_save_holy_roman_emperor_effect = {
+	if = {
+		limit = { exists = title:h_hre.holder }
+		title:h_hre.holder = { save_scope_as = $NAME$ }
+	}
+	else_if = {
+		limit = { exists = title:e_hre.holder }
+		title:e_hre.holder = { save_scope_as = $NAME$ }
+	}
 }
 
 # Title scope (a kingdom): Gaulish kingdoms to the Sacral Kingdom of Gaul, the rest to Germany
@@ -94,5 +115,16 @@ LR_hre_sort_kingdom_effect = {
 	}
 	else = {
 		set_de_jure_liege_title = title:e_germany
+	}
+}
+
+# LR 2026-11-06: scope:LR_hre_crown is the live Holy Roman crown, h_hre if held, else e_hre. Any scope.
+LR_save_holy_roman_crown_effect = {
+	if = {
+		limit = { exists = title:h_hre.holder }
+		title:h_hre = { save_scope_as = LR_hre_crown }
+	}
+	else = {
+		title:e_hre = { save_scope_as = LR_hre_crown }
 	}
 }

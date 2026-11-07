@@ -31,7 +31,7 @@ reform_carolingian_empire_decision = {
 		top_liege = this
 		culture = { has_cultural_pillar = heritage_frankish }
 		capital_province = { geographical_region = world_europe_west }
-		NOT = { has_title = title:e_hre } #HRE title holders can't Restore Carolingian Borders as the decision requires the HRE to serve as an "antagonist"
+		NOT = { LR_is_holy_roman_emperor_trigger = yes } #HRE title holders can't Restore Carolingian Borders as the decision requires the HRE to serve as an "antagonist"
 	}
 
 	is_valid = {
@@ -239,7 +239,7 @@ restore_holy_roman_empire_decision = {
 				count = 7
 				random_vassal = {
 					limit = {
-						capital_province.empire = title:e_hre # must be de-jure vassal of empire
+						capital_province ?= { LR_de_jure_holy_roman_trigger = yes } # must be de-jure vassal of empire
 						OR = { # prince-bishopric or duchy
 							AND = {
 								government_has_flag = government_is_theocracy
@@ -393,18 +393,18 @@ establish_the_electorate_of_saxony_decision = {
 		}
 		# Is in the HRE or is the Emperor
 		OR = {
-			liege = title:e_hre.holder
-			has_primary_title = title:e_hre
+			liege ?= { LR_is_holy_roman_emperor_trigger = yes }
+			primary_title ?= { LR_is_holy_roman_title_trigger = yes }
 		}
 	}
 
 	is_valid = {
 		OR = {
-			has_primary_title = title:e_hre
+			primary_title ?= { LR_is_holy_roman_title_trigger = yes }
 			# Avoid some funky tooltips.
 			AND = {
 				highest_held_title_tier <= tier_kingdom
-				top_liege = { has_title = title:e_hre }
+				top_liege = { LR_is_holy_roman_emperor_trigger = yes }
 			}
 		}
 		custom_tooltip = {
@@ -427,7 +427,7 @@ establish_the_electorate_of_saxony_decision = {
 				count >= 12
 				OR = {
 					culture = root.culture
-					culture = title:e_hre.holder.culture
+					culture = root.top_liege.culture
 				}
 			}
 		}
@@ -440,14 +440,14 @@ establish_the_electorate_of_saxony_decision = {
 				target = flag:flag_formed_saxony
 			}
 			save_scope_as = founder
-			title:e_hre.holder = { save_scope_as = hre_emperor_scope }
+			LR_save_holy_roman_emperor_effect = { NAME = hre_emperor_scope }
 			trigger_event =  middle_europe_decisions.0017
 		}
 		show_as_tooltip = {
 			create_kingdom_of_saxony_effect = { CHARACTER = root }
 		}
 		if = {
-			limit = { has_title = title:e_hre }
+			limit = { LR_is_holy_roman_emperor_trigger = yes }
 			custom_tooltip = middle_europe_decision.0017.tt
 		}
 	}

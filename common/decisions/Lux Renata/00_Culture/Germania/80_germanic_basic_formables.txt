@@ -133,7 +133,7 @@ form_austria_kingdom_decision = {
 		highest_held_title_tier <= tier_duchy
 		top_liege != this
 		#Must be within the HRE, else the bid & flavour make no sense.
-		top_liege ?= { has_title = title:e_hre }
+		top_liege ?= { LR_is_holy_roman_emperor_trigger = yes }
 		#Must hold land within the relevant areas directly.
 		any_held_title = {
 			title_tier = county
@@ -146,7 +146,7 @@ form_austria_kingdom_decision = {
 
 	is_valid = {
 		#Must enjoy imperial immediacy.
-		liege = title:e_hre.holder
+		liege ?= { LR_is_holy_roman_emperor_trigger = yes }
 		#Must be suitably prestigious.
 		prestige_level >= high_prestige_level
 		#Must control core Austria
@@ -154,10 +154,10 @@ form_austria_kingdom_decision = {
 		#Must not be of the ruling dynasty
 		custom_description = {
 			text = "form_austria_hre_dynasty_trigger"
-			NOT = { dynasty = title:e_hre.holder.dynasty }
+			NOT = { dynasty = liege.dynasty } # LR: the emperor is the liege (imperial immediacy)
 		}
 		#Must have a hook on the emperor
-		has_strong_usable_hook = title:e_hre.holder
+		has_strong_usable_hook = liege # LR: the emperor (see above)
 		#Must not be too early
 		OR = { 
 			has_realm_law = crown_authority_2
@@ -261,7 +261,7 @@ unify_burgundy_kingdom_decision = {
 			OR = {
 				has_title = title:k_france
 				has_title = title:e_sacral_kingdom_gaul
-				has_title = title:e_hre
+				LR_is_holy_roman_emperor_trigger = yes
 			}
 		}
 		capital_province = { geographical_region = custom_burgundy }
