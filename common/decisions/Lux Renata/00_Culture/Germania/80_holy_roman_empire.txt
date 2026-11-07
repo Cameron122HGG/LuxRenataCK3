@@ -121,10 +121,9 @@ restore_holy_roman_empire_decision = {
 		is_landed_or_landless_administrative = yes
 		exists = dynasty # Everyone should have a dynasty, but in case they don't...
 		NOT = { has_global_variable = flag_restored_roman_empire } # Not if Rome already exists (prevent Rome from restoring HRE)
-		NOR = {	#Title existence cnditions.
-			exists = title:e_hre.holder	#Well, that'd be redundant.
-			#highest_held_title_tier = tier_empire	#Existing emperors likewise should not be giving up their empire.
-		}
+		# LR 2026-11-06 (user): the papal route to the Holy Roman hegemony, for the holder of e_hre
+		has_title = title:e_hre
+		NOT = { exists = title:h_hre.holder }
 		NOR = { #It doesn't make sense for these competing empires.
 			is_roman_emperor_trigger = yes
 			mpo_has_gok_mongol_empire_trigger = yes
@@ -158,35 +157,13 @@ restore_holy_roman_empire_decision = {
 			prestige_level >= high_prestige_level
 		}
 		#Title ownership conditions.
-		OR = { #Gotta be King of a core Carolingian Kingdom.
-			has_title = title:k_east_francia
-			has_title = title:k_bavaria
-			has_title = title:k_france
-			has_title = title:k_lombardy
-			has_title = title:k_lotharingia
-			any_vassal = {
-				OR = {
-					has_title = title:k_east_francia
-					has_title = title:k_bavaria
-					has_title = title:k_france
-					has_title = title:k_lombardy
-					has_title = title:k_lotharingia
-				}
-			}
-		}
-		trigger_if = {
-			limit = {
-				is_ai = no
-			}
-			custom_description = {	#And have some additional royal dignity for good measure.
-				text = decision_refound_hre_own_three_kingdoms.tt
-				any_held_title = {
-					title_tier = kingdom
-					count >= 3
-				}
-			}
-		}
-		sub_realm_size >= 120	#Plus your various kingdoms should be ruling something.
+		# LR 2026-11-06 (user): the Carolingian lands
+		completely_controls_region = custom_carolingian_francia
+		completely_controls_region = custom_frisia
+		completely_controls_region = custom_lotharingia
+		completely_controls_region = custom_bavaria
+		completely_controls_region = custom_carolingian_germany
+		completely_controls_region = custom_northern_italy
 		#HoF preference conditions.
 		trigger_if = {
 			limit = {
@@ -221,6 +198,7 @@ restore_holy_roman_empire_decision = {
 		gain_heroic_legend_seed_tooltip_effect = yes
 		save_scope_as = founder
 		faith.religious_head = { save_scope_as = founder_hof }
+		faith.religious_head = { save_scope_as = hre_blessing_authority } # LR 2026-11-06: the 'blessed' coronation text and hook use this; nothing set it before
 		if = {
 			limit = {
 				faith.religious_head = { is_playable_character = yes }
@@ -499,6 +477,117 @@ establish_the_electorate_of_saxony_decision = {
 		always = yes
 	}
 
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+# LR 2026-11-06 (user): the HRE as a hegemony of translatio imperii, after the Lux Invicta / Lux Renata lore
+# Step 1: the Carolingian Empire becomes the Holy Roman Empire with the core alone (Aachen, Lotharingia, Germany).
+LR_proclaim_holy_roman_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	}
+	decision_group_type = major
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 0
+	}
+	desc = LR_proclaim_holy_roman_empire_decision_desc
+	selection_tooltip = LR_proclaim_holy_roman_empire_decision_tooltip
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		has_title = title:e_carolingian_empire
+		NOT = { exists = title:e_hre.holder }
+		NOT = { exists = title:h_hre.holder }
+	}
+	is_valid = {
+		top_liege = this
+		prestige_level >= high_prestige_level
+		completely_controls_region = custom_lotharingia # with Aachen
+		completely_controls_region = custom_carolingian_germany
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+	effect = {
+		show_as_tooltip = { LR_proclaim_holy_roman_empire_effect = yes }
+		hidden_effect = {
+			LR_proclaim_holy_roman_empire_effect = yes
+			add_prestige = 1000
+		}
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# Step 2, the Karling route: the holder of the Royal Throne of Aachen restores the empire by the right of Karolus's
+# blood, with no coronation by the head of faith (user 2026-11-06). The papal route is restore_holy_roman_empire_decision.
+LR_karling_restoration_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	}
+	decision_group_type = major
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 120
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 0
+	}
+	desc = LR_karling_restoration_decision_desc
+	selection_tooltip = LR_karling_restoration_decision_tooltip
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		has_title = title:k_karls_throne
+		NOT = { exists = title:h_hre.holder }
+	}
+	is_valid = {
+		top_liege = this
+		prestige_level >= high_prestige_level
+		completely_controls_region = custom_carolingian_francia
+		completely_controls_region = custom_frisia
+		completely_controls_region = custom_lotharingia
+		completely_controls_region = custom_bavaria
+		completely_controls_region = custom_carolingian_germany
+		completely_controls_region = custom_northern_italy
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+	effect = {
+		show_as_tooltip = { LR_found_holy_roman_hegemony_effect = yes }
+		gain_heroic_legend_seed_tooltip_effect = yes
+		save_scope_as = founder
+		capital_province = { save_scope_as = ceremony_locale }
+		trigger_event = {
+			id = middle_europe_decisions.0015 # the coronation, unblessed: no head of faith is involved
+		}
+		every_player = {
+			limit = {
+				this != root
+				is_within_diplo_range = { CHARACTER = root }
+			}
+			trigger_event = middle_europe_decisions.0016
+		}
+	}
+	ai_potential = {
+		always = yes
+	}
 	ai_will_do = {
 		base = 100
 	}

@@ -1,0 +1,34 @@
+﻿# LR 2026-11-06 (user): the Holy Roman crown is either the empire e_hre (the Carolingian successor, step 1) or the
+# hegemony h_hre (translatio imperii, step 2). Vanilla content keyed on e_hre uses these so it sees both.
+
+# Character: holds the Holy Roman crown
+LR_is_holy_roman_emperor_trigger = {
+	OR = {
+		has_title = title:e_hre
+		has_title = title:h_hre
+	}
+}
+
+# Title: is the Holy Roman crown
+LR_is_holy_roman_title_trigger = {
+	OR = {
+		this = title:e_hre
+		this = title:h_hre
+	}
+}
+
+# Any scope: someone holds the Holy Roman crown
+LR_holy_roman_emperor_exists_trigger = {
+	OR = {
+		exists = title:e_hre.holder
+		exists = title:h_hre.holder
+	}
+}
+
+# Province, county or title: de jure inside the Holy Roman crown
+LR_de_jure_holy_roman_trigger = {
+	OR = {
+		empire ?= title:e_hre
+		hegemony ?= title:h_hre
+	}
+}

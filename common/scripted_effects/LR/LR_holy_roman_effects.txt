@@ -1,0 +1,98 @@
+﻿# LR 2026-11-06 (user): the HRE as a hegemony of translatio imperii, after the Lux Invicta / Lux Renata lore
+# FUTURE (user 2026-11-06): the Sacred Roman Empire stays separate from the Roman World for now; a translatio imperii
+# mechanic tying it to the Roman World (and later its own title set) is to come.
+
+# The Carolingian Empire becomes the Holy Roman Empire (e_hre). Character scope (the emperor).
+LR_proclaim_holy_roman_empire_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_hre = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		copy_title_history = title:e_carolingian_empire
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = {
+		title:e_carolingian_empire = {
+			every_in_de_jure_hierarchy = {
+				continue = { tier >= tier_empire }
+				limit = { tier = tier_kingdom }
+				set_de_jure_liege_title = title:e_hre
+			}
+		}
+		set_primary_title_to = title:e_hre
+	}
+	if = {
+		limit = { has_title = title:e_carolingian_empire }
+		destroy_title = title:e_carolingian_empire
+	}
+}
+
+# The Holy Roman Empire as a hegemony (h_hre). e_hre (and a held Carolingian Empire) is dissolved into it: its Gaulish
+# kingdoms go to the Sacral Kingdom of Gaul and the rest to Germany, the two empires under the hegemony.
+# Character scope (the new emperor).
+LR_found_holy_roman_hegemony_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:h_hre = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		if = {
+			limit = { exists = title:e_hre.holder }
+			copy_title_history = title:e_hre
+		}
+		add_title_law = princely_elective_succession_law # the Electors, as the old e_hre had
+	}
+	resolve_title_and_vassal_change = scope:change
+	custom_tooltip = LR_found_holy_roman_hegemony_dejure_tt
+	hidden_effect = {
+		title:e_hre = {
+			every_in_de_jure_hierarchy = {
+				continue = { tier >= tier_empire }
+				limit = { tier = tier_kingdom }
+				LR_hre_sort_kingdom_effect = yes
+			}
+		}
+		title:e_carolingian_empire = {
+			every_in_de_jure_hierarchy = {
+				continue = { tier >= tier_empire }
+				limit = { tier = tier_kingdom }
+				LR_hre_sort_kingdom_effect = yes
+			}
+		}
+		title:e_sacral_kingdom_gaul = { set_de_jure_liege_title = title:h_hre }
+		title:e_germany = { set_de_jure_liege_title = title:h_hre }
+		set_primary_title_to = title:h_hre
+	}
+	if = {
+		limit = { has_title = title:e_hre }
+		destroy_title = title:e_hre
+	}
+	if = {
+		limit = { has_title = title:e_carolingian_empire }
+		destroy_title = title:e_carolingian_empire
+	}
+}
+
+# Title scope (a kingdom): Gaulish kingdoms to the Sacral Kingdom of Gaul, the rest to Germany
+LR_hre_sort_kingdom_effect = {
+	if = {
+		limit = {
+			title_capital_county ?= { title_province = { geographical_region = LR_world_europe_gaul } }
+		}
+		set_de_jure_liege_title = title:e_sacral_kingdom_gaul
+	}
+	else = {
+		set_de_jure_liege_title = title:e_germany
+	}
+}

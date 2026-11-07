@@ -2641,23 +2641,11 @@ form_brunei_empire_decision_scripted_effect = {
 	custom_tooltip = form_brunei_empire_decision_effects_de_jure_tt_c
 }
 
+# LR 2026-11-06 (user): the HRE as a hegemony of translatio imperii, after the Lux Invicta / Lux Renata lore
+# Run by middle_europe_decisions.0015 for both routes; the old e_hre creation and its vanilla de jure merges are gone.
 restore_holy_roman_empire_decision_scripted_effect = {
 	save_scope_as = founder
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = title_change
-		add_claim_on_loss = no
-	}
-	title:e_hre = {
-		change_title_holder = {
-			holder = root
-			change = scope:title_change
-		}
-	}
-	resolve_title_and_vassal_change = scope:title_change
-	set_primary_title_to = title:e_hre
-
-	# Consume a hook only when it supplied the authority's blessing.
+	# Consume a hook only when it supplied the authority's blessing (papal route).
 	if = {
 		limit = {
 			exists = scope:hre_blessing_authority
@@ -2674,21 +2662,8 @@ restore_holy_roman_empire_decision_scripted_effect = {
 		}
 		use_hook = scope:hre_blessing_authority
 	}
-
-	#Make Germany inalienable.
-	if = {
-		limit = {
-			any_vassal = { has_title = title:k_east_francia }
-		}
-		destroy_title = title:k_east_francia
-	}
-	else_if = {
-		limit = { has_title = title:k_east_francia }
-		hidden_effect = { destroy_title = title:k_east_francia } # hidden as included in other tooltips
-	}
-	#Sort title laws.
-	title:e_hre = {
-		add_title_law = princely_elective_succession_law
+	LR_found_holy_roman_hegemony_effect = yes
+	title:h_hre = {
 		if = {	#Add Salic law.
 			limit = {
 				root = {
@@ -2700,13 +2675,11 @@ restore_holy_roman_empire_decision_scripted_effect = {
 			}
 			add_title_law = male_only_law
 		}
-		if = {	#Ignore Salic law.
-			limit = {
-				root = { has_realm_law = equal_law }
-			}
+		if = {
+			limit = { root = { has_realm_law = equal_law } }
 			add_title_law = equal_law
 		}
-		if = {	#Invert Salic law. Take that, Clovis, y'big nerd.
+		if = {
 			limit = {
 				root = {
 					OR = {
@@ -2718,139 +2691,6 @@ restore_holy_roman_empire_decision_scripted_effect = {
 			add_title_law = female_only_law
 		}
 	}
-
-	#Add de jures.
-	hidden_effect = {
-		if = {	#If Germania is nae a thing, merge it into the HRE.
-			limit = {
-				OR = {
-					has_title = title:k_east_francia
-					has_title = title:k_bavaria
-					has_title = title:k_lotharingia
-					has_title = title:k_frisia
-					any_vassal = {
-						OR = {
-							has_title = title:k_east_francia
-							has_title = title:k_bavaria
-							has_title = title:k_lotharingia
-							has_title = title:k_frisia
-						}
-					}
-				}
-				OR = {
-					NOT = { exists = title:e_germany.holder }
-					title:e_germany.holder ?= root
-				}
-			}
-			title:e_germany = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_kingdom }
-					set_de_jure_liege_title = title:e_hre
-				}
-			}
-		}
-		every_held_title = {
-			title_tier = kingdom
-			limit = {
-				NOT = {	#The Pope retains vague dibs on Italy.
-					any_this_title_or_de_jure_above = { this = title:e_italy }
-				}
-				save_temporary_scope_as = this_title
-				#root = { completely_controls = scope:this_title }
-			}
-			set_de_jure_liege_title = title:e_hre
-		}
-		every_vassal = {
-			every_held_title = {
-				title_tier = kingdom
-				limit = {
-					NOT = {	#The Pope retains vague dibs on Italy.
-						any_this_title_or_de_jure_above = { this = title:e_italy }
-					}
-					save_temporary_scope_as = this_title
-					#prev = { completely_controls = scope:this_title }
-				}
-				set_de_jure_liege_title = title:e_hre
-			}
-		}
-		if = { # Merge Francia into the HRE under certain conditions
-			limit = {
-				OR = {
-					NOT = { exists = title:e_france.holder }
-					title:e_france.holder ?= root
-				}
-				OR = {
-					title:k_france = { # If core West Francia is part of the HRE
-						target_is_de_jure_liege_or_above = title:e_hre
-					}
-					calc_true_if = { # Or 2+ of the other francian Kingdoms
-						amount >= 2
-						title:k_burgundy = {
-							target_is_de_jure_liege_or_above = title:e_hre
-						}
-						title:k_aquitaine = {
-							target_is_de_jure_liege_or_above = title:e_hre
-						}
-						title:k_brittany = {
-							target_is_de_jure_liege_or_above = title:e_hre
-						}
-					}
-				}
-			}
-			title:e_france = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_kingdom }
-					set_de_jure_liege_title = title:e_hre
-				}
-			}
-		}
-		# Destroy vassals' kingdoms
-		every_vassal = {
-			limit = { is_ai = yes }
-			every_held_title = {
-				title_tier = kingdom
-				root = {
-					destroy_title = prev
-					add_character_flag = {
-						flag = hre_kingdom_destroyed
-						weeks = 1
-					}
-				}
-			}
-		}
-		# Destroy ruler's other kingdoms and empires
-		every_held_title = {
-			title_tier >= kingdom
-			limit = {
-				NOT = { this = title:e_hre }
-				save_temporary_scope_as = this_title
-			}
-			root = { destroy_title = prev }
-		}
-	}
-	if = {
-		limit = {
-			any_vassal = {
-				is_ai = yes
-				highest_held_title_tier = tier_kingdom
-			}
-		}
-		custom_tooltip = restore_holy_roman_empire_decision_effects_kingdoms_dissolve.tt
-	}
-	if = {
-		limit = {
-			title:e_italy ?= {
-				any_in_de_jure_hierarchy = {
-					NOT = { this = title:e_italy }
-				}
-			}
-		}
-		custom_tooltip = restore_holy_roman_empire_decision_effects_de_jure.tt
-	}
-	else = { custom_tooltip = restore_holy_roman_empire_decision_effects_de_jure_no_italia.tt }
-	custom_tooltip = restore_holy_roman_empire_decision_effects_destroy_other_kingdom_plus_titles.tt
-	#And add a bit of prestige for the trouble.
-	add_prestige = massive_prestige_value
 }
 
 found_kingdom_of_bosnia_decision_scripted_effect = {
