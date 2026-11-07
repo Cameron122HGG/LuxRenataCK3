@@ -156,3 +156,11 @@ LR_roman_restoration_prefecture_germania_trigger = {
 	LR_roman_restoration_diocese_held_trigger = { DIOCESE = noricum }
 	LR_roman_restoration_diocese_held_trigger = { DIOCESE = germania }
 }
+
+# Title scope: a landed kingdom whose capital county is now de jure inside the diocese DIOCESE (k_diocese_*)
+LR_kingdom_absorbed_by_diocese_trigger = {
+	tier = tier_kingdom
+	is_landless_type_title = no
+	NOT = { this = title:$DIOCESE$ }
+	title_capital_county ?= { kingdom ?= title:$DIOCESE$ }
+}

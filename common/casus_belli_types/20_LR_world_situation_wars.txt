@@ -1,0 +1,524 @@
+﻿# LR 2026-11-06: the casus belli of the Roman World and Hellenistic World situations
+# (LR_roman_hellenistic_world_situations_workshop.md in the working folder)
+#   LR_claim_the_purple_cb      - Crisis: a Roman official or duke takes his emperor's throne and deposes him
+#   LR_seize_the_diocese_cb     - Anarchy: a warlord takes a rival's land in a kingdom; the diocese title only if allowed
+#   LR_war_of_the_successors_cb - Wars of the Successors: a diadochi line holder takes a rival line's top title
+
+### Claim the Purple
+LR_claim_the_purple_cb = {
+	icon = claim_cb
+	group = independence # vassal against liege, like vanilla's independence_war
+	allow_hostages = no
+	target_titles = none
+	ai_only_against_liege = yes
+
+	allowed_for_character = {
+		scope:attacker = {
+			is_independent_ruler = no
+			LR_rw_capital_in_phase_trigger = { PHASE = rw_crisis }
+			OR = {
+				highest_held_title_tier >= tier_duchy
+				any_held_title = {
+					OR = {
+						LR_title_set_roman_title_trigger = yes
+						LR_is_roman_office_title_trigger = yes
+					}
+				}
+			}
+		}
+	}
+
+	allowed_against_character = {
+		scope:attacker = { liege = scope:defender }
+		scope:defender = {
+			OR = {
+				has_title = title:h_roman_empire
+				has_title = title:h_western_roman_empire
+				has_title = title:h_eastern_roman_empire
+				has_title = title:e_western_roman_empire
+				has_title = title:e_eastern_roman_empire
+			}
+		}
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = 500
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	should_invalidate = {
+		NOT = {
+			scope:defender = {
+				OR = {
+					has_title = title:h_roman_empire
+					has_title = title:h_western_roman_empire
+					has_title = title:h_eastern_roman_empire
+					has_title = title:e_western_roman_empire
+					has_title = title:e_eastern_roman_empire
+				}
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_invalidate_war_title
+	on_invalidated = {
+	}
+
+	on_victory_desc = {
+		desc = LR_claim_the_purple_cb_victory_desc
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
+
+		# The usurper leaves his liege's realm first...
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = independence
+			add_claim_on_loss = no
+		}
+		scope:attacker = { becomes_independent = { change = scope:independence } }
+		resolve_title_and_vassal_change = scope:independence
+
+		# ...then takes every title and vassal of the deposed emperor (user 2026-11-06: take the throne, depose)
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+		scope:defender = {
+			every_held_title = {
+				change_title_holder = {
+					holder = scope:attacker
+					change = scope:change
+				}
+			}
+			every_vassal = {
+				limit = { NOT = { this = scope:attacker } }
+				change_liege = {
+					liege = scope:attacker
+					change = scope:change
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		scope:attacker = {
+			imprison = {
+				target = scope:defender
+				type = dungeon
+			}
+			add_prestige = 500
+		}
+		hidden_effect = { LR_rw_update_effect = yes }
+	}
+
+	on_white_peace_desc = {
+		desc = LR_claim_the_purple_cb_white_peace_desc
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		add_truce_white_peace_effect = yes
+	}
+
+	on_defeat_desc = {
+		desc = LR_claim_the_purple_cb_defeat_desc
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 5
+			}
+			add_prestige = -500
+		}
+		add_truce_attacker_defeat_effect = yes
+	}
+
+	on_primary_attacker_death = invalidate
+	on_primary_defender_death = inherit
+
+	transfer_behavior = transfer
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "LR_CLAIM_THE_PURPLE_WAR_NAME"
+	war_name_base = "LR_CLAIM_THE_PURPLE_WAR_NAME_BASE"
+	cb_name = "LR_CLAIM_THE_PURPLE_CB_NAME"
+	interface_priority = 96
+
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+}
+
+### Seize the Diocese
+LR_seize_the_diocese_cb = {
+	icon = de_jure_cb
+	group = de_jure
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+
+	allowed_for_character = {
+		scope:attacker = {
+			is_independent_ruler = yes
+			highest_held_title_tier >= tier_county
+			LR_rw_capital_in_phase_trigger = { PHASE = rw_anarchy }
+		}
+	}
+
+	allowed_against_character = {
+		NOR = {
+			scope:defender = { target_is_liege_or_above = scope:attacker }
+			scope:attacker = { target_is_liege_or_above = scope:defender }
+		}
+	}
+
+	target_titles = all
+	target_title_tier = kingdom
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+	ai_only_against_neighbors = yes
+
+	valid_to_start = {
+		scope:target = {
+			# A kingdom of the anarchic half: a restored diocese or a warlord kingdom
+			title_capital_county ?= {
+				any_county_situation_sub_region = { sub_region_current_phase = rw_anarchy }
+			}
+			# The defender's realm holds land in it
+			any_in_de_jure_hierarchy = {
+				tier = tier_county
+				holder ?= {
+					OR = {
+						this = scope:defender
+						target_is_liege_or_above = scope:defender
+					}
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = 300
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					holder ?= {
+						OR = {
+							this = scope:defender
+							target_is_liege_or_above = scope:defender
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_invalidate_war_title
+	on_invalidated = {
+	}
+
+	on_victory_desc = {
+		desc = LR_seize_the_diocese_cb_victory_desc
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+		every_in_list = {
+			list = target_titles
+			save_temporary_scope_as = target
+		}
+		# The defender's land in the kingdom
+		setup_de_jure_cb = {
+			attacker = scope:attacker
+			defender = scope:defender
+			change = scope:change
+			title = scope:target
+		}
+		# The diocese title itself only if the warlord may hold Roman titles (user 2026-11-06)
+		scope:target = {
+			if = {
+				limit = {
+					is_roman_diocese_title_trigger = yes
+					scope:attacker = { LR_title_set_roman_native_trigger = yes }
+					holder ?= {
+						OR = {
+							this = scope:defender
+							target_is_liege_or_above = scope:defender
+						}
+					}
+				}
+				change_title_holder = {
+					holder = scope:attacker
+					change = scope:change
+				}
+			}
+		}
+		custom_tooltip = LR_seize_the_diocese_cb_title_tt
+		resolve_title_and_vassal_change = scope:change
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:attacker
+			LOSER = scope:defender
+			FAME_BASE = scope:cb_prestige_factor
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = 10
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 100
+			LOSER_ALLY_FAME_SCALE = 100
+		}
+		add_truce_attacker_victory_effect = yes
+	}
+
+	on_white_peace_desc = {
+		desc = LR_seize_the_diocese_cb_white_peace_desc
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		every_in_list = {
+			list = target_titles
+			save_temporary_scope_as = target
+		}
+		setup_de_jure_cb = {
+			attacker = scope:attacker
+			defender = scope:defender
+			victory = no
+			title = scope:target
+		}
+		add_truce_white_peace_effect = yes
+	}
+
+	on_defeat_desc = {
+		desc = LR_seize_the_diocese_cb_defeat_desc
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 5
+			}
+		}
+		every_in_list = {
+			list = target_titles
+			save_temporary_scope_as = target
+		}
+		setup_de_jure_cb = {
+			attacker = scope:attacker
+			defender = scope:defender
+			victory = no
+			title = scope:target
+		}
+		add_truce_attacker_defeat_effect = yes
+	}
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	transfer_behavior = transfer
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "LR_SEIZE_THE_DIOCESE_WAR_NAME"
+	war_name_base = "LR_SEIZE_THE_DIOCESE_WAR_NAME_BASE"
+	cb_name = "LR_SEIZE_THE_DIOCESE_CB_NAME"
+	interface_priority = 95
+
+	attacker_wargoal_percentage = 0.8
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+	max_ai_diplo_distance_to_title = 500
+}
+
+### War of the Successors
+LR_war_of_the_successors_cb = {
+	icon = claim_cb
+	group = claim
+
+	combine_into_one = yes
+	mutually_exclusive_titles = { always = yes }
+
+	allowed_for_character = {
+		scope:attacker = {
+			LR_holds_diadochi_line_title_trigger = yes
+			LR_hw_in_phase_trigger = { PHASE = hw_wars }
+		}
+	}
+
+	allowed_against_character = {
+		scope:defender = { LR_holds_diadochi_line_title_trigger = yes }
+		NOR = {
+			scope:defender = { target_is_liege_or_above = scope:attacker }
+			scope:attacker = { target_is_liege_or_above = scope:defender }
+		}
+	}
+
+	target_titles = all
+	target_de_jure_regions_above = no
+	ignore_effect = change_title_holder
+
+	valid_to_start = {
+		scope:target = {
+			LR_is_diadochi_line_title_trigger = yes
+			holder = scope:defender
+			# The rival line's top title: the defender holds no higher-tier line title
+			NOT = {
+				scope:defender = {
+					any_held_title = {
+						LR_is_diadochi_line_title_trigger = yes
+						tier > scope:target.tier
+					}
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = 500
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				holder ?= scope:defender
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_invalidate_war_title
+	on_invalidated = {
+	}
+
+	on_victory_desc = {
+		desc = LR_war_of_the_successors_cb_victory_desc
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+		every_in_list = {
+			list = target_titles
+			save_temporary_scope_as = target
+		}
+		# The rival line's top title, and the defender's vassals based inside it (user 2026-11-06)
+		scope:target = {
+			change_title_holder = {
+				holder = scope:attacker
+				change = scope:change
+			}
+		}
+		scope:defender = {
+			every_vassal = {
+				limit = {
+					capital_county ?= {
+						any_this_title_or_de_jure_above = { this = scope:target }
+					}
+				}
+				change_liege = {
+					liege = scope:attacker
+					change = scope:change
+				}
+			}
+		}
+		custom_tooltip = LR_war_of_the_successors_cb_vassals_tt
+		resolve_title_and_vassal_change = scope:change
+
+		scope:attacker = { add_prestige = 300 }
+		add_truce_attacker_victory_effect = yes
+		hidden_effect = { LR_hw_update_effect = yes }
+	}
+
+	on_white_peace_desc = {
+		desc = LR_war_of_the_successors_cb_white_peace_desc
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		add_truce_white_peace_effect = yes
+	}
+
+	on_defeat_desc = {
+		desc = LR_war_of_the_successors_cb_defeat_desc
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 5
+			}
+			add_prestige = -300
+		}
+		add_truce_attacker_defeat_effect = yes
+	}
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	transfer_behavior = transfer
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "LR_WAR_OF_THE_SUCCESSORS_WAR_NAME"
+	war_name_base = "LR_WAR_OF_THE_SUCCESSORS_WAR_NAME_BASE"
+	cb_name = "LR_WAR_OF_THE_SUCCESSORS_CB_NAME"
+	interface_priority = 96
+
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+	max_ai_diplo_distance_to_title = 800
+}

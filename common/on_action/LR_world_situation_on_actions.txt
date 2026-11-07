@@ -1,0 +1,142 @@
+﻿# LR 2026-11-06: the Roman World and Hellenistic World situations (LR_roman_hellenistic_world_situations_workshop.md)
+
+on_game_start = {
+	on_actions = { LR_world_situations_on_game_start }
+}
+yearly_global_pulse = {
+	on_actions = { LR_world_situations_yearly_pulse }
+}
+on_title_gain = {
+	on_actions = { LR_world_situations_on_title_gain }
+}
+on_death = {
+	on_actions = { LR_world_situations_on_death }
+}
+
+LR_world_situations_on_game_start = {
+	effect = { LR_world_situations_start_effect = yes }
+}
+
+LR_world_situations_yearly_pulse = {
+	effect = {
+		LR_rw_yearly_effect = yes
+		LR_greek_east_yearly_effect = yes
+		LR_rw_update_effect = yes
+		LR_hw_update_effect = yes
+	}
+}
+
+# root = the new holder, scope:title = the title
+LR_world_situations_on_title_gain = {
+	effect = {
+		# Roman World
+		if = {
+			limit = {
+				scope:title = {
+					OR = {
+						this = title:h_roman_empire
+						this = title:h_western_roman_empire
+						this = title:h_eastern_roman_empire
+						this = title:e_western_roman_empire
+						this = title:e_eastern_roman_empire
+					}
+				}
+			}
+			LR_rw_update_effect = yes
+		}
+		if = {
+			limit = { scope:title = { is_roman_diocese_title_trigger = yes } }
+			LR_rw_catalyst_at_county_effect = { COUNTY = scope:title.title_capital_county CATALYST = catalyst_rw_diocese_restored }
+		}
+		if = {
+			limit = {
+				scope:title = {
+					OR = {
+						this = title:h_western_roman_empire
+						this = title:h_eastern_roman_empire
+					}
+					NOT = { has_variable = LR_rw_counted }
+				}
+			}
+			scope:title = { set_variable = LR_rw_counted }
+			LR_rw_catalyst_at_county_effect = { COUNTY = scope:title.title_capital_county CATALYST = catalyst_rw_hegemony_restored }
+		}
+		# Hellenistic World
+		if = {
+			limit = {
+				scope:title = {
+					OR = {
+						this = title:k_antigonid_kingdom
+						this = title:k_antipatrid_kingdom
+						this = title:k_attalid_kingdom
+						this = title:k_eumenid_kingdom
+						this = title:k_graeco_bactrian_kingdom
+						this = title:k_lysimachid_kingdom
+						this = title:k_mithridatid_kingdom
+						this = title:k_peithonid_kingdom
+						this = title:k_ptolemaic_kingdom
+						this = title:k_seleukid_kingdom
+					}
+				}
+			}
+			LR_hw_catalyst_effect = { CATALYST = catalyst_hw_line_kingdom }
+		}
+		if = {
+			limit = {
+				scope:title = {
+					tier = tier_kingdom
+					LR_title_set_hellenistic_title_trigger = yes
+				}
+			}
+			LR_hw_catalyst_effect = { CATALYST = catalyst_hw_satrapy_restored }
+		}
+		if = {
+			limit = {
+				scope:title = {
+					OR = {
+						this = title:h_hellenistic_empire
+						this = title:h_antigonid_hegemony
+						this = title:h_antipatrid_hegemony
+						this = title:h_argead_hegemony
+						this = title:h_attalid_hegemony
+						this = title:h_eumenid_hegemony
+						this = title:h_graeco_bactrian_hegemony
+						this = title:h_lysimachid_hegemony
+						this = title:h_mithridatid_hegemony
+						this = title:h_peithonid_hegemony
+						this = title:h_ptolemaic_hegemony
+						this = title:h_seleukid_hegemony
+					}
+					NOT = { has_variable = LR_hw_counted }
+				}
+			}
+			scope:title = { set_variable = LR_hw_counted }
+			LR_greek_east_change_effect = { ADD = 15 } # a Hellenistic hegemony founded
+		}
+		if = {
+			limit = { scope:title = { tier >= tier_empire } }
+			LR_hw_update_effect = yes
+		}
+	}
+}
+
+# root = the dead character
+LR_world_situations_on_death = {
+	effect = {
+		if = {
+			limit = {
+				is_restored_roman_emperor_trigger = yes
+				NOT = { exists = primary_heir }
+				exists = capital_county
+			}
+			LR_rw_catalyst_at_county_effect = { COUNTY = root.capital_county CATALYST = catalyst_rw_emperor_heirless_death }
+		}
+		if = {
+			limit = {
+				LR_holds_diadochi_line_title_trigger = yes
+				NOT = { exists = primary_heir }
+			}
+			LR_hw_catalyst_effect = { CATALYST = catalyst_hw_line_extinct }
+		}
+	}
+}

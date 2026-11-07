@@ -47,6 +47,7 @@ LR_provincialise_satrapies_decision = {
 				limit = { has_treasury = yes }
 				add = 300
 			}
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_twilight } } multiply = 0.75 } # LR 2026-11-06: hw_twilight
 		}
 		gold = {
 			value = 0
@@ -54,8 +55,12 @@ LR_provincialise_satrapies_decision = {
 				limit = { has_treasury = no }
 				add = 300
 			}
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_twilight } } multiply = 0.75 } # LR 2026-11-06: hw_twilight
 		}
-		prestige = 300
+		prestige = {
+			value = 300
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_twilight } } multiply = 0.75 } # LR 2026-11-06: hw_twilight
+		}
 	}
 
 	is_valid = {
@@ -520,6 +525,10 @@ LR_provincialise_satrapies_decision = {
 
 	effect = {
 		custom_tooltip = LR_provincialise_satrapies_decision_effect_tt
+		hidden_effect = { # LR 2026-11-06: the Greek East meter and the Hellenistic World
+			LR_greek_east_change_effect = { ADD = -10 }
+			LR_hw_catalyst_effect = { CATALYST = catalyst_hw_satrapy_provincialised }
+		}
 		hidden_effect = {
 			if = {
 				limit = { scope:custom_satrapy_macedonia = yes }
@@ -656,6 +665,8 @@ LR_restore_satrapies_from_provinces_decision = {
 				limit = { has_treasury = yes }
 				add = 300
 			}
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_revival } } multiply = 0.7 } # LR 2026-11-06: hw_revival
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_balance } } multiply = 0.75 } # LR 2026-11-06: hw_balance
 		}
 		gold = {
 			value = 0
@@ -663,8 +674,14 @@ LR_restore_satrapies_from_provinces_decision = {
 				limit = { has_treasury = no }
 				add = 300
 			}
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_revival } } multiply = 0.7 } # LR 2026-11-06: hw_revival
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_balance } } multiply = 0.75 } # LR 2026-11-06: hw_balance
 		}
-		prestige = 300
+		prestige = {
+			value = 300
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_revival } } multiply = 0.7 } # LR 2026-11-06: hw_revival
+			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_balance } } multiply = 0.75 } # LR 2026-11-06: hw_balance
+		}
 	}
 
 	is_valid = {
@@ -1129,6 +1146,9 @@ LR_restore_satrapies_from_provinces_decision = {
 
 	effect = {
 		custom_tooltip = LR_restore_satrapies_from_provinces_decision_effect_tt
+		hidden_effect = { # LR 2026-11-06: the Greek East meter and the Hellenistic World
+			LR_greek_east_change_effect = { ADD = 10 }
+		}
 		hidden_effect = {
 			if = {
 				limit = { scope:custom_satrapy_macedonia = yes }

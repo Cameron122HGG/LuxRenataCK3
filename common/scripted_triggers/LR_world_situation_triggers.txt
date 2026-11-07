@@ -1,0 +1,89 @@
+﻿# LR 2026-11-06: the Roman World and Hellenistic World situations (LR_roman_hellenistic_world_situations_workshop.md)
+
+# Character (in a Roman World participant group, with scope:situation_sub_region): rules that half as its emperor.
+# The West is the half holding Rome, the East the half holding Constantinople.
+LR_rw_is_emperor_of_half_trigger = {
+	OR = {
+		has_title = title:h_roman_empire
+		AND = {
+			scope:situation_sub_region = { situation_sub_region_has_county = title:c_roma }
+			OR = {
+				has_title = title:h_western_roman_empire
+				has_title = title:e_western_roman_empire
+			}
+		}
+		AND = {
+			scope:situation_sub_region = { situation_sub_region_has_county = title:c_byzantion }
+			OR = {
+				has_title = title:h_eastern_roman_empire
+				has_title = title:e_eastern_roman_empire
+			}
+		}
+	}
+}
+
+# None scope: the West / East has an independent restored emperor
+LR_rw_west_has_emperor_trigger = {
+	OR = {
+		title:h_roman_empire.holder ?= { is_independent_ruler = yes }
+		title:h_western_roman_empire.holder ?= { is_independent_ruler = yes }
+		title:e_western_roman_empire.holder ?= { is_independent_ruler = yes }
+	}
+}
+LR_rw_east_has_emperor_trigger = {
+	OR = {
+		title:h_roman_empire.holder ?= { is_independent_ruler = yes }
+		title:h_eastern_roman_empire.holder ?= { is_independent_ruler = yes }
+		title:e_eastern_roman_empire.holder ?= { is_independent_ruler = yes }
+	}
+}
+
+# Character: your capital lies in a Roman World half that is in phase PHASE
+LR_rw_capital_in_phase_trigger = {
+	capital_county ?= {
+		any_county_situation_sub_region = { sub_region_current_phase = $PHASE$ }
+	}
+}
+
+# None scope: the Hellenistic World is in phase PHASE
+LR_hw_in_phase_trigger = {
+	situation:LR_hellenistic_world ?= {
+		any_situation_sub_region = { sub_region_current_phase = $PHASE$ }
+	}
+}
+
+# Character: holds a diadochi hegemony or the Hellenistic Empire
+LR_hw_holds_hellenistic_hegemony_trigger = {
+	OR = {
+		has_title = title:h_hellenistic_empire
+		has_title = title:h_antigonid_hegemony
+		has_title = title:h_antipatrid_hegemony
+		has_title = title:h_argead_hegemony
+		has_title = title:h_attalid_hegemony
+		has_title = title:h_eumenid_hegemony
+		has_title = title:h_graeco_bactrian_hegemony
+		has_title = title:h_lysimachid_hegemony
+		has_title = title:h_mithridatid_hegemony
+		has_title = title:h_peithonid_hegemony
+		has_title = title:h_ptolemaic_hegemony
+		has_title = title:h_seleukid_hegemony
+	}
+}
+
+# CB groups (de_jure, claim, conquest): no Roman-against-Roman wars in Pax Romana (user 2026-11-06). Blocks a war
+# when both sides are inside the Augustus's realm and the attacker's half is in Pax Romana.
+LR_rw_pax_romana_war_ban_trigger = {
+	trigger_if = {
+		limit = {
+			exists = scope:defender
+			exists = title:h_roman_empire.holder
+			scope:attacker ?= { LR_rw_capital_in_phase_trigger = { PHASE = rw_pax } }
+			scope:attacker.top_liege ?= title:h_roman_empire.holder
+			scope:defender.top_liege ?= title:h_roman_empire.holder
+		}
+		custom_tooltip = {
+			text = LR_rw_pax_romana_war_ban_tt
+			always = no
+		}
+	}
+}

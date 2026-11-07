@@ -1,0 +1,358 @@
+﻿# LR 2026-11-06: the Roman World and Hellenistic World situations (LR_roman_hellenistic_world_situations_workshop.md)
+# Unique; started at game start when the All Under Heaven DLC is active (user 2026-11-06).
+# Two sub-regions, each with its own phase: Imperium, Crisis, Anarchy, Restoration; both enter Pax Romana together.
+# Anarchy and Pax Romana are set by LR_rw_update_effect; the rest move on catalyst points.
+LR_roman_world = {
+	is_unique = yes
+	gui_window_name = "window_situation"
+	gui_participation_window_name = "window_situation_participation"
+	illustration = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	situation_group_type = major
+	map_mode = sub_regions
+
+	sub_regions = {
+		rw_west = {
+			map_color = rgb { 200 40 50 }
+			geographical_regions = { custom_theodosian_wre } # Italia, Gallia, Illyricum, Germania
+		}
+		rw_east = {
+			map_color = rgb { 120 30 130 }
+			geographical_regions = { custom_theodosian_ere } # Macedonia (and Pontica), Oriens
+		}
+	}
+
+	on_yearly = {
+		LR_rw_update_effect = yes
+	}
+
+	participant_groups = {
+		# The emperors of the half: a restored Western or Eastern emperor, or the Augustus of a restored Rome
+		rw_augusti = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_emperor.dds"
+			require_realm_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				LR_rw_is_emperor_of_half_trigger = yes
+			}
+			map_color = hsv { 0.0 0.85 0.75 }
+		}
+		rw_decayed = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_pro.dds"
+			require_realm_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				is_decayed_roman_emperor_trigger = yes
+			}
+			map_color = hsv { 0.08 0.7 0.6 }
+		}
+		rw_officeholders = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_independent.dds"
+			require_realm_in_sub_region = yes
+			is_character_valid = {
+				any_held_title = {
+					OR = {
+						LR_title_set_roman_title_trigger = yes
+						LR_is_roman_office_title_trigger = yes
+					}
+				}
+			}
+			map_color = hsv { 0.6 0.6 0.7 }
+		}
+		rw_clients = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_expand.dds"
+			require_realm_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				is_independent_ruler = no
+				highest_held_title_tier >= tier_kingdom
+				top_liege = { is_restored_roman_emperor_trigger = yes }
+			}
+			map_color = hsv { 0.3 0.6 0.6 }
+		}
+		rw_outsiders = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_independent.dds"
+			require_capital_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				is_independent_ruler = yes
+				highest_held_title_tier >= tier_county
+			}
+			map_color = hsv { 0.75 0.4 0.5 }
+		}
+	}
+
+	start_phase = rw_imperium
+
+	phases = {
+		rw_imperium = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_advancement.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0001
+					}
+				}
+			}
+			future_phases = {
+				rw_crisis = {
+					takeover_type = points
+					takeover_points = 100
+					catalysts = {
+						catalyst_rw_emperor_heirless_death = 60
+						catalyst_rw_civil_war = 40
+						catalyst_rw_capital_lost = 60
+						catalyst_rw_low_legitimacy = 20
+						catalyst_rw_greek_east_hellenic = 15
+					}
+				}
+				rw_anarchy = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_restoration = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_pax = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_rw_imperium_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
+					rw_augusti = {
+						character_modifier = {
+							monthly_legitimacy_add = 0.2
+							monthly_county_control_growth_factor = 0.1
+							vassal_opinion = 5
+						}
+					}
+					rw_officeholders = {
+						character_modifier = {
+							monthly_prestige_gain_mult = 0.1
+						}
+					}
+				}
+			}
+		}
+		rw_crisis = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_instability.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_corruption.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0002
+					}
+				}
+			}
+			future_phases = {
+				rw_imperium = {
+					takeover_type = points
+					takeover_points = 100
+					catalysts = {
+						catalyst_rw_quiet_year = 15
+						catalyst_rw_heir_secured = 30
+						catalyst_rw_greek_east_roman = 10
+					}
+				}
+				rw_anarchy = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_restoration = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_pax = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_rw_crisis_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_character.dds"
+					rw_augusti = {
+						character_modifier = {
+							monthly_legitimacy_add = -0.3
+							vassal_opinion = -10
+						}
+					}
+					rw_officeholders = {
+						character_modifier = {
+							levy_size = 0.1
+						}
+					}
+				}
+			}
+		}
+		rw_anarchy = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_chaos.dds"
+			illustration = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0003
+					}
+				}
+				# The East's Anarchy is the old Eastern Anarchy situation, now run by the Roman World (user 2026-11-06)
+				if = {
+					limit = {
+						scope:situation_sub_region = { situation_sub_region_has_county = title:c_byzantion }
+						NOT = { exists = situation:LR_eastern_anarchy }
+					}
+					LR_start_eastern_anarchy_effect = yes
+				}
+			}
+			on_end = {
+				if = {
+					limit = {
+						scope:situation_sub_region = { situation_sub_region_has_county = title:c_byzantion }
+						exists = situation:LR_eastern_anarchy
+					}
+					situation:LR_eastern_anarchy = { end_situation = yes }
+				}
+			}
+			future_phases = {
+				rw_imperium = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_crisis = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_restoration = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_pax = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_rw_anarchy_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_military.dds"
+					rw_decayed = {
+						character_modifier = {
+							levy_size = 0.15
+							men_at_arms_maintenance = -0.15
+						}
+					}
+					rw_outsiders = {
+						character_modifier = {
+							levy_size = 0.15
+							men_at_arms_maintenance = -0.1
+						}
+						county_modifier = {
+							development_growth_factor = -0.1
+						}
+					}
+				}
+			}
+		}
+		rw_restoration = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_advancement.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0004
+					}
+				}
+			}
+			future_phases = {
+				rw_imperium = {
+					takeover_type = points
+					takeover_points = 100
+					catalysts = {
+						catalyst_rw_diocese_restored = 35
+						catalyst_rw_hegemony_restored = 100
+						catalyst_rw_quiet_year = 5
+						catalyst_rw_greek_east_roman = 15
+					}
+				}
+				rw_crisis = {
+					takeover_type = points
+					takeover_points = 100
+					catalysts = {
+						catalyst_rw_emperor_heirless_death = 60
+						catalyst_rw_civil_war = 40
+						catalyst_rw_capital_lost = 60
+						catalyst_rw_low_legitimacy = 20
+						catalyst_rw_greek_east_hellenic = 15
+					}
+				}
+				rw_anarchy = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_pax = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_rw_restoration_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
+					rw_augusti = {
+						county_modifier = {
+							monthly_county_control_growth_factor = 0.15
+						}
+					}
+					rw_officeholders = {
+						county_modifier = {
+							monthly_county_control_growth_factor = 0.1
+						}
+					}
+				}
+			}
+		}
+		rw_pax = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_advancement.dds"
+			illustration = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0005
+					}
+				}
+			}
+			future_phases = {
+				rw_imperium = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_crisis = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_anarchy = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				rw_restoration = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_rw_pax_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
+					rw_augusti = {
+						character_modifier = {
+							monthly_legitimacy_add = 0.4
+							monthly_prestige_gain_mult = 0.15
+						}
+					}
+					all = {
+						county_modifier = {
+							development_growth_factor = 0.1
+						}
+					}
+				}
+			}
+		}
+	}
+}

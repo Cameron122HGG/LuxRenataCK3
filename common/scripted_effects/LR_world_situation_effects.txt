@@ -1,0 +1,381 @@
+﻿# LR 2026-11-06: the Roman World and Hellenistic World situations (LR_roman_hellenistic_world_situations_workshop.md)
+
+# ---------- starting ----------
+# Game start: both situations (they require All Under Heaven, user 2026-11-06), and the Greek East meter
+LR_world_situations_start_effect = {
+	if = {
+		limit = { NOT = { has_global_variable = LR_greek_east } }
+		set_global_variable = { name = LR_greek_east value = 30 }
+	}
+	if = {
+		limit = {
+			has_dlc_feature = all_under_heaven # LR 2026-11-06 (user): the world situations require All Under Heaven
+			NOT = { exists = situation:LR_roman_world }
+		}
+		start_situation = {
+			type = LR_roman_world
+			start_phase = rw_imperium
+		}
+		LR_rw_update_effect = yes
+	}
+	if = {
+		limit = {
+			has_dlc_feature = all_under_heaven # LR 2026-11-06 (user): the world situations require All Under Heaven
+			NOT = { exists = situation:LR_hellenistic_world }
+		}
+		start_situation = {
+			type = LR_hellenistic_world
+			start_phase = hw_twilight
+		}
+		LR_hw_update_effect = yes
+	}
+}
+
+# The old Eastern Anarchy, started by the Roman World's East entering Anarchy; each of its regions in a phase of its own
+LR_start_eastern_anarchy_effect = {
+	start_situation = {
+		type = LR_eastern_anarchy
+		start_phase = situation_phase_eastern_anarchy_peace
+	}
+	situation:LR_eastern_anarchy = {
+		every_situation_sub_region = {
+			random_list = {
+				4 = { } # Stay in the Uneasy Peace
+				2 = { change_phase = { phase = situation_phase_eastern_anarchy_tension } }
+				1 = { change_phase = { phase = situation_phase_eastern_anarchy_war } }
+			}
+		}
+	}
+}
+
+# ---------- Roman World ----------
+# Sets Pax Romana and Anarchy from the state of the empire, and leaves them when that state ends. None scope.
+LR_rw_update_effect = {
+	situation:LR_roman_world ?= {
+		situation_sub_region:rw_west = {
+			if = {
+				limit = { exists = title:h_roman_empire.holder }
+				if = {
+					limit = { NOT = { sub_region_current_phase = rw_pax } }
+					change_phase = { phase = rw_pax }
+				}
+			}
+			else_if = {
+				limit = { NOT = { LR_rw_west_has_emperor_trigger = yes } }
+				if = {
+					limit = { NOT = { sub_region_current_phase = rw_anarchy } }
+					change_phase = { phase = rw_anarchy }
+				}
+			}
+			else_if = {
+				limit = { sub_region_current_phase = rw_pax }
+				change_phase = { phase = rw_imperium } # Rome cleaved (or fallen with the halves still ruled)
+			}
+			else_if = {
+				limit = { sub_region_current_phase = rw_anarchy }
+				change_phase = { phase = rw_restoration }
+			}
+		}
+		situation_sub_region:rw_east = {
+			if = {
+				limit = { exists = title:h_roman_empire.holder }
+				if = {
+					limit = { NOT = { sub_region_current_phase = rw_pax } }
+					change_phase = { phase = rw_pax }
+				}
+			}
+			else_if = {
+				limit = { NOT = { LR_rw_east_has_emperor_trigger = yes } }
+				if = {
+					limit = { NOT = { sub_region_current_phase = rw_anarchy } }
+					change_phase = { phase = rw_anarchy }
+				}
+			}
+			else_if = {
+				limit = { sub_region_current_phase = rw_pax }
+				change_phase = { phase = rw_imperium } # Rome cleaved (or fallen with the halves still ruled)
+			}
+			else_if = {
+				limit = { sub_region_current_phase = rw_anarchy }
+				change_phase = { phase = rw_restoration }
+			}
+		}
+	}
+}
+
+# Yearly catalysts from each half's emperor, and the Greek East meter's pull. None scope.
+LR_rw_yearly_effect = {
+	if = {
+		limit = { exists = situation:LR_roman_world }
+	# west: catalysts from the emperor's state
+		if = {
+			limit = { LR_rw_west_has_emperor_trigger = yes }
+			if = {
+				limit = { exists = title:h_roman_empire.holder }
+				title:h_roman_empire.holder = { save_scope_as = rw_emperor }
+			}
+			else_if = {
+				limit = { exists = title:h_western_roman_empire.holder }
+				title:h_western_roman_empire.holder = { save_scope_as = rw_emperor }
+			}
+			else = {
+				title:e_western_roman_empire.holder ?= { save_scope_as = rw_emperor }
+			}
+			situation:LR_roman_world = { situation_sub_region:rw_west = {
+				if = {
+					limit = { scope:rw_emperor = { any_vassal_or_below = { is_at_war_with = scope:rw_emperor } } }
+					trigger_sub_region_catalyst = catalyst_rw_civil_war
+				}
+				if = {
+					limit = {
+						NOT = {
+							title:c_roma.holder ?= {
+								OR = {
+									this = scope:rw_emperor
+									target_is_liege_or_above = scope:rw_emperor
+								}
+							}
+						}
+					}
+					trigger_sub_region_catalyst = catalyst_rw_capital_lost
+				}
+				if = {
+					limit = { scope:rw_emperor = { has_legitimacy = yes legitimacy_level <= 1 } }
+					trigger_sub_region_catalyst = catalyst_rw_low_legitimacy
+				}
+				if = {
+					limit = { scope:rw_emperor = { is_at_war = no } }
+					trigger_sub_region_catalyst = catalyst_rw_quiet_year
+				}
+				if = {
+					limit = { scope:rw_emperor = { exists = primary_heir } }
+					trigger_sub_region_catalyst = catalyst_rw_heir_secured
+				}
+			} }
+		}
+		# east: catalysts from the emperor's state
+		if = {
+			limit = { LR_rw_east_has_emperor_trigger = yes }
+			if = {
+				limit = { exists = title:h_roman_empire.holder }
+				title:h_roman_empire.holder = { save_scope_as = rw_emperor }
+			}
+			else_if = {
+				limit = { exists = title:h_eastern_roman_empire.holder }
+				title:h_eastern_roman_empire.holder = { save_scope_as = rw_emperor }
+			}
+			else = {
+				title:e_eastern_roman_empire.holder ?= { save_scope_as = rw_emperor }
+			}
+			situation:LR_roman_world = { situation_sub_region:rw_east = {
+				if = {
+					limit = { scope:rw_emperor = { any_vassal_or_below = { is_at_war_with = scope:rw_emperor } } }
+					trigger_sub_region_catalyst = catalyst_rw_civil_war
+				}
+				if = {
+					limit = {
+						NOT = {
+							title:c_byzantion.holder ?= {
+								OR = {
+									this = scope:rw_emperor
+									target_is_liege_or_above = scope:rw_emperor
+								}
+							}
+						}
+					}
+					trigger_sub_region_catalyst = catalyst_rw_capital_lost
+				}
+				if = {
+					limit = { scope:rw_emperor = { has_legitimacy = yes legitimacy_level <= 1 } }
+					trigger_sub_region_catalyst = catalyst_rw_low_legitimacy
+				}
+				if = {
+					limit = { scope:rw_emperor = { is_at_war = no } }
+					trigger_sub_region_catalyst = catalyst_rw_quiet_year
+				}
+				if = {
+					limit = { scope:rw_emperor = { exists = primary_heir } }
+					trigger_sub_region_catalyst = catalyst_rw_heir_secured
+				}
+			} }
+		}
+		}
+}
+
+# Fires CATALYST in the Roman World half that holds the county COUNTY (a title scope). None scope.
+LR_rw_catalyst_at_county_effect = {
+	situation:LR_roman_world ?= {
+		every_situation_sub_region = {
+			limit = { situation_sub_region_has_county = $COUNTY$ }
+			trigger_sub_region_catalyst = $CATALYST$
+		}
+	}
+}
+
+# ---------- Hellenistic World ----------
+# Works out the world's phase from the diadochi lines and keeps every sub-region in it. None scope.
+LR_hw_update_effect = {
+	situation:LR_hellenistic_world ?= {
+		title:e_antigonid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_antigonid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_antipatrid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_antipatrid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_argead_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_argead_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_attalid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_attalid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_eumenid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_eumenid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_graeco_bactrian_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_graeco_bactrian_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_lysimachid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_lysimachid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_mithridatid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_mithridatid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_peithonid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_peithonid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_ptolemaic_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_ptolemaic_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:e_seleukid_empire.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		title:h_seleukid_hegemony.holder ?= { if = { limit = { NOT = { is_in_list = LR_hw_line_rulers } } add_to_temporary_list = LR_hw_line_rulers } }
+		if = {
+			limit = { any_in_list = { list = LR_hw_line_rulers any_war_enemy = { is_in_list = LR_hw_line_rulers } } }
+			set_global_variable = { name = LR_hw_last_successor_war value = current_year }
+		}
+		if = {
+			limit = {
+				OR = {
+					exists = title:h_hellenistic_empire.holder
+				exists = title:h_antigonid_hegemony.holder
+				exists = title:h_antipatrid_hegemony.holder
+				exists = title:h_argead_hegemony.holder
+				exists = title:h_attalid_hegemony.holder
+				exists = title:h_eumenid_hegemony.holder
+				exists = title:h_graeco_bactrian_hegemony.holder
+				exists = title:h_lysimachid_hegemony.holder
+				exists = title:h_mithridatid_hegemony.holder
+				exists = title:h_peithonid_hegemony.holder
+				exists = title:h_ptolemaic_hegemony.holder
+				exists = title:h_seleukid_hegemony.holder
+				}
+			}
+			LR_hw_set_phase_effect = { PHASE = hw_hegemony }
+		}
+		else_if = {
+			limit = { LR_hw_lines_held_value >= 2 }
+			if = {
+				limit = {
+					has_global_variable = LR_hw_last_successor_war
+					global_var:LR_hw_last_successor_war >= { value = current_year subtract = 5 }
+				}
+				LR_hw_set_phase_effect = { PHASE = hw_wars } # war, or less than 5 years of peace since one
+			}
+			else = {
+				LR_hw_set_phase_effect = { PHASE = hw_balance }
+			}
+		}
+		else_if = {
+			limit = {
+				any_situation_sub_region = {
+					OR = {
+						sub_region_current_phase = hw_balance
+						sub_region_current_phase = hw_wars
+						sub_region_current_phase = hw_hegemony
+					}
+				}
+			}
+			LR_hw_set_phase_effect = { PHASE = hw_twilight } # the lines have fallen
+		}
+	}
+}
+
+# Situation scope (LR_hellenistic_world): puts every sub-region in PHASE
+LR_hw_set_phase_effect = {
+	every_situation_sub_region = {
+		limit = { NOT = { sub_region_current_phase = $PHASE$ } }
+		change_phase = { phase = $PHASE$ }
+	}
+}
+
+# Fires CATALYST on the whole Hellenistic World. None scope.
+LR_hw_catalyst_effect = {
+	situation:LR_hellenistic_world ?= {
+		every_situation_sub_region = { trigger_sub_region_catalyst = $CATALYST$ }
+	}
+}
+
+# ---------- Greek East meter ----------
+# 0 = the Greek East looks to Rome, 100 = to the diadochi (start 30). None scope.
+LR_greek_east_change_effect = {
+	if = {
+		limit = { NOT = { has_global_variable = LR_greek_east } }
+		set_global_variable = { name = LR_greek_east value = 30 }
+	}
+	change_global_variable = { name = LR_greek_east add = $ADD$ }
+	clamp_global_variable = { name = LR_greek_east min = 0 max = 100 }
+}
+
+# Yearly: drift from who holds Constantinople, Alexandria and Antioch, and the pull of the meter's ends. None scope.
+LR_greek_east_yearly_effect = {
+	title:c_byzantion.holder.top_liege ?= {
+		if = {
+			limit = { is_restored_roman_emperor_trigger = yes }
+			LR_greek_east_change_effect = { ADD = -1 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					culture ?= { has_cultural_pillar = heritage_hellenistic }
+					LR_holds_diadochi_line_title_trigger = yes
+				}
+			}
+			LR_greek_east_change_effect = { ADD = 1 }
+		}
+	}
+	title:c_alexandria.holder.top_liege ?= {
+		if = {
+			limit = { is_restored_roman_emperor_trigger = yes }
+			LR_greek_east_change_effect = { ADD = -1 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					culture ?= { has_cultural_pillar = heritage_hellenistic }
+					LR_holds_diadochi_line_title_trigger = yes
+				}
+			}
+			LR_greek_east_change_effect = { ADD = 1 }
+		}
+	}
+	title:c_antiocheia.holder.top_liege ?= {
+		if = {
+			limit = { is_restored_roman_emperor_trigger = yes }
+			LR_greek_east_change_effect = { ADD = -1 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					culture ?= { has_cultural_pillar = heritage_hellenistic }
+					LR_holds_diadochi_line_title_trigger = yes
+				}
+			}
+			LR_greek_east_change_effect = { ADD = 1 }
+		}
+	}
+	if = {
+		limit = {
+			has_global_variable = LR_greek_east
+			global_var:LR_greek_east <= 20
+		}
+		situation:LR_roman_world ?= { situation_sub_region:rw_east = { trigger_sub_region_catalyst = catalyst_rw_greek_east_roman } }
+		LR_hw_catalyst_effect = { CATALYST = catalyst_hw_greek_east_roman }
+	}
+	else_if = {
+		limit = {
+			has_global_variable = LR_greek_east
+			global_var:LR_greek_east >= 80
+		}
+		situation:LR_roman_world ?= { situation_sub_region:rw_east = { trigger_sub_region_catalyst = catalyst_rw_greek_east_hellenic } }
+		LR_hw_catalyst_effect = { CATALYST = catalyst_hw_greek_east_hellenic }
+	}
+}

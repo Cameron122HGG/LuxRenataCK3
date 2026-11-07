@@ -1,0 +1,329 @@
+﻿# LR 2026-11-06: the Roman World and Hellenistic World situations (LR_roman_hellenistic_world_situations_workshop.md)
+# Unique; one world-wide cycle. Its six sub-regions are kept in the same phase by LR_hw_update_effect (they are for
+# the map); catalysts are fired on all of them together.
+LR_hellenistic_world = {
+	is_unique = yes
+	gui_window_name = "window_situation"
+	gui_participation_window_name = "window_situation_participation"
+	illustration = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	situation_group_type = major
+	map_mode = sub_regions
+
+	sub_regions = {
+		hw_hellas = {
+			map_color = rgb { 40 90 200 }
+			geographical_regions = { custom_roman_macedonia custom_roman_thracia }
+		}
+		hw_anatolia = {
+			map_color = rgb { 60 160 200 }
+			geographical_regions = { custom_roman_asia custom_roman_pontus }
+		}
+		hw_syria = {
+			map_color = rgb { 200 160 40 }
+			geographical_regions = { custom_roman_syria custom_roman_palestine }
+		}
+		hw_egypt = {
+			map_color = rgb { 220 200 90 }
+			geographical_regions = { custom_roman_aegyptus custom_roman_cyrenaica }
+		}
+		hw_iran = {
+			map_color = rgb { 160 60 60 }
+			geographical_regions = { custom_roman_mesopotamia world_persia }
+		}
+		hw_bactria = {
+			map_color = rgb { 90 150 70 }
+			geographical_regions = { custom_bactria }
+		}
+	}
+
+	on_yearly = {
+		LR_hw_update_effect = yes
+	}
+
+	participant_groups = {
+		hw_hegemon = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_emperor.dds"
+			require_realm_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				LR_hw_holds_hellenistic_hegemony_trigger = yes
+			}
+			map_color = hsv { 0.12 0.9 0.8 }
+		}
+		hw_line_holders = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_pro.dds"
+			require_realm_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				LR_holds_diadochi_line_title_trigger = yes
+			}
+			map_color = hsv { 0.6 0.7 0.75 }
+		}
+		hw_satraps = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_independent.dds"
+			require_realm_in_sub_region = yes
+			is_character_valid = {
+				any_held_title = { LR_title_set_hellenistic_title_trigger = yes }
+			}
+			map_color = hsv { 0.55 0.5 0.7 }
+		}
+		hw_hellenes = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_expand.dds"
+			require_capital_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				highest_held_title_tier >= tier_county
+				culture ?= { has_cultural_pillar = heritage_hellenistic }
+			}
+			map_color = hsv { 0.5 0.6 0.8 }
+		}
+		hw_outsiders = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_group_independent.dds"
+			require_capital_in_sub_region = yes
+			is_character_valid = {
+				is_landed = yes
+				is_independent_ruler = yes
+				highest_held_title_tier >= tier_county
+			}
+			map_color = hsv { 0.0 0.0 0.5 }
+		}
+	}
+
+	start_phase = hw_twilight
+
+	phases = {
+		hw_twilight = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_instability.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_corruption.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0011
+					}
+				}
+			}
+			future_phases = {
+				hw_revival = {
+					takeover_type = points
+					takeover_points = 100
+					catalysts = {
+						catalyst_hw_line_kingdom = 40
+						catalyst_hw_satrapy_restored = 25
+						catalyst_hw_greek_east_hellenic = 20
+					}
+				}
+				hw_balance = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_wars = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_hegemony = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_hw_twilight_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_character.dds"
+					hw_line_holders = {
+						character_modifier = {
+							monthly_prestige_gain_mult = -0.1
+						}
+					}
+					hw_hellenes = {
+						character_modifier = {
+							monthly_prestige_gain_mult = -0.1
+						}
+					}
+				}
+			}
+		}
+		hw_revival = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_advancement.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0012
+					}
+				}
+			}
+			future_phases = {
+				hw_twilight = {
+					takeover_type = points
+					takeover_points = 100
+					catalysts = {
+						catalyst_hw_satrapy_provincialised = 30
+						catalyst_hw_line_extinct = 40
+						catalyst_hw_greek_east_roman = 20
+					}
+				}
+				hw_balance = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_wars = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_hegemony = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_hw_revival_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
+					hw_line_holders = {
+						character_modifier = {
+							monthly_prestige_gain_mult = 0.1
+						}
+						county_modifier = {
+							development_growth_factor = 0.05
+						}
+					}
+					hw_hellenes = {
+						character_modifier = {
+							monthly_prestige_gain_mult = 0.05
+						}
+					}
+				}
+			}
+		}
+		hw_balance = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_advancement.dds"
+			illustration = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0013
+					}
+				}
+			}
+			future_phases = {
+				hw_twilight = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_revival = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_wars = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_hegemony = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_hw_balance_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
+					hw_line_holders = {
+						character_modifier = {
+							diplomacy = 1
+							monthly_prestige_gain_mult = 0.1
+						}
+					}
+					hw_satraps = {
+						character_modifier = {
+							tax_mult = 0.05
+						}
+					}
+				}
+			}
+		}
+		hw_wars = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_chaos.dds"
+			illustration = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0014
+					}
+				}
+			}
+			future_phases = {
+				hw_twilight = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_revival = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_balance = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_hegemony = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_hw_wars_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_military.dds"
+					hw_hegemon = {
+						character_modifier = {
+							levy_size = 0.1
+						}
+					}
+					hw_line_holders = {
+						character_modifier = {
+							levy_size = 0.15
+							monthly_prestige_gain_mult = 0.1
+						}
+					}
+				}
+			}
+		}
+		hw_hegemony = {
+			icon = "gfx/interface/icons/dynastic_cycle/dynastic_cycle_phase_advancement.dds"
+			illustration = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_world_situation.0015
+					}
+				}
+			}
+			future_phases = {
+				hw_twilight = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_revival = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_balance = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+				hw_wars = {
+					takeover_type = untyped # set by script (LR_rw/LR_hw update effects)
+				}
+			}
+
+			modifier_sets = {
+				LR_hw_hegemony_phase_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
+					hw_hegemon = {
+						character_modifier = {
+							monthly_legitimacy_add = 0.3
+							monthly_prestige_gain_mult = 0.2
+						}
+					}
+					hw_line_holders = {
+						character_modifier = {
+							monthly_prestige_gain_mult = -0.05
+						}
+					}
+				}
+			}
+		}
+	}
+}

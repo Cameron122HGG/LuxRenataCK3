@@ -709,47 +709,6 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_gallic_empire }
 		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_gallic_empire }
 	}
-	# Destroy useless kingdoms
-	if = {
-		limit = { exists = title:k_aquitaine.holder }
-		destroy_title = title:k_aquitaine
-	}
-	if = {
-		limit = { exists = title:k_burgundy.holder }
-		destroy_title = title:k_burgundy
-	}
-	if = {
-		limit = { exists = title:k_france.holder }
-		destroy_title = title:k_france
-	}
-	if = {
-		limit = { exists = title:k_brittany.holder }
-		destroy_title = title:k_brittany
-	}
-	if = {
-		limit = { exists = title:k_lotharingia.holder }
-		destroy_title = title:k_lotharingia
-	}
-	if = {
-		limit = { exists = title:k_neustria.holder }
-		destroy_title = title:k_neustria
-	}
-	if = {
-		limit = { exists = title:k_savoie.holder }
-		destroy_title = title:k_savoie
-	}
-	if = {
-		limit = { exists = title:k_septimania.holder }
-		destroy_title = title:k_septimania
-	}
-	if = {
-		limit = { exists = title:k_arles.holder }
-		destroy_title = title:k_arles
-	}
-	if = {
-		limit = { exists = title:k_sacral_king_gaul_throne.holder }
-		destroy_title = title:k_sacral_king_gaul_throne
-	}
 
 	hidden_effect = {
 		if = {
@@ -828,7 +787,11 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 		title:k_septimania = { 
 			set_de_jure_liege_title = title:e_sacral_kingdom_gaul
 		}
-	}	
+	}
+	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
+	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_lugdunensis }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_viennensis }
 }
 
 # Moves root from OLD empire title to NEW: creates NEW with OLD's history, capital,
