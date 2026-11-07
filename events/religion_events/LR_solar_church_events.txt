@@ -1,0 +1,354 @@
+﻿namespace = LR_solar_church
+
+# LR 2026-11-06 (user): events of the Solar Church (LR_solar_church), after PAM's pam_the_christian_church events.
+# The split and mend notices stay in LR_solar_schism_events.txt (LR_solar_schism.0001 / .0002).
+
+# 0001 - A new phase of the Solar Church (to participating players)
+LR_solar_church.0001 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_divided_light } }
+				desc = LR_solar_church.0001.t.sc_divided_light
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_eclipse } }
+				desc = LR_solar_church.0001.t.sc_eclipse
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_rising_sun } }
+				desc = LR_solar_church.0001.t.sc_rising_sun
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_reform } }
+				desc = LR_solar_church.0001.t.sc_reform
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_radiant_crown } }
+				desc = LR_solar_church.0001.t.sc_radiant_crown
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_sacred_war } }
+				desc = LR_solar_church.0001.t.sc_sacred_war
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_concord } }
+				desc = LR_solar_church.0001.t.sc_concord
+			}
+			desc = LR_solar_church.0001.t
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_divided_light } }
+				desc = LR_solar_church.0001.desc.sc_divided_light
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_eclipse } }
+				desc = LR_solar_church.0001.desc.sc_eclipse
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_rising_sun } }
+				desc = LR_solar_church.0001.desc.sc_rising_sun
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_reform } }
+				desc = LR_solar_church.0001.desc.sc_reform
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_radiant_crown } }
+				desc = LR_solar_church.0001.desc.sc_radiant_crown
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_sacred_war } }
+				desc = LR_solar_church.0001.desc.sc_sacred_war
+			}
+			triggered_desc = {
+				trigger = { situation:LR_solar_church ?= { situation_current_phase = sc_concord } }
+				desc = LR_solar_church.0001.desc.sc_concord
+			}
+			desc = LR_solar_church.0001.desc
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	trigger = { LR_sc_exists_trigger = yes }
+
+	option = {
+		name = LR_solar_church.0001.a
+	}
+}
+
+# 0010 - The schism threshold is reached: the next Eclipse will decide (to participating players)
+LR_solar_church.0010 = {
+	type = character_event
+	title = LR_solar_church.0010.t
+	desc = LR_solar_church.0010.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		trigger = { exists = title:d_pontifex_solis_invicti.holder }
+		character = title:d_pontifex_solis_invicti.holder
+		animation = anger
+	}
+	lower_right_portrait = {
+		trigger = { exists = title:k_helios_autokrator.holder }
+		character = title:k_helios_autokrator.holder
+	}
+
+	option = {
+		name = LR_solar_church.0010.a
+	}
+}
+
+# 0020 - The Eclipse: take a stance on the schism (to Solar rulers in the Solar Church)
+LR_solar_church.0020 = {
+	type = character_event
+	title = LR_solar_church.0020.t
+	desc = LR_solar_church.0020.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		trigger = { exists = title:d_pontifex_solis_invicti.holder }
+		character = title:d_pontifex_solis_invicti.holder
+		animation = personality_zealous
+	}
+	lower_right_portrait = {
+		trigger = { exists = title:k_helios_autokrator.holder }
+		character = title:k_helios_autokrator.holder
+	}
+
+	# With the West: Sol Invictus and the priests of Rome
+	option = {
+		name = LR_solar_church.0020.a
+		set_variable = { name = sc_schism_stance value = flag:west }
+		custom_tooltip = LR_sc_stance_west_tt
+		if = {
+			limit = { LR_is_western_solar_trigger = yes }
+			add_piety = 100
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 100
+				LR_is_western_solar_trigger = yes
+			}
+		}
+	}
+
+	# With the East: Helios Autokrator, the incarnate Sun
+	option = {
+		name = LR_solar_church.0020.b
+		set_variable = { name = sc_schism_stance value = flag:east }
+		custom_tooltip = LR_sc_stance_east_tt
+		if = {
+			limit = { LR_is_eastern_solar_trigger = yes }
+			add_piety = 100
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 100
+				LR_is_eastern_solar_trigger = yes
+			}
+		}
+	}
+
+	# One Sun: no schism
+	option = {
+		name = LR_solar_church.0020.c
+		set_variable = { name = sc_schism_stance value = flag:no_schism }
+		custom_tooltip = LR_sc_stance_no_schism_tt
+		add_prestige = 100
+		ai_chance = {
+			base = 50
+			ai_value_modifier = {
+				ai_zeal = -0.5
+				ai_compassion = 0.5
+			}
+		}
+	}
+}
+
+# 0022 - The schism is averted (to Solar players)
+LR_solar_church.0022 = {
+	type = character_event
+	title = LR_solar_church.0022.t
+	desc = LR_solar_church.0022.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:sc_peacemaker
+		animation = personality_honorable
+	}
+
+	option = {
+		name = LR_solar_church.0022.a
+	}
+}
+
+# 0030 - Shape the Solar Church: push toward one of the phases the Church can move to next
+LR_solar_church.0030 = {
+	type = character_event
+	title = LR_solar_church.0030.t
+	desc = LR_solar_church.0030.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = LR_solar_church.0030.sc_divided_light
+		trigger = {
+			situation:LR_solar_church ?= {
+				OR = {
+					situation_current_phase = sc_eclipse
+					situation_current_phase = sc_rising_sun
+					situation_current_phase = sc_radiant_crown
+					situation_current_phase = sc_sacred_war
+					situation_current_phase = sc_concord
+				}
+			}
+		}
+		custom_tooltip = LR_solar_church.0030.sc_divided_light.tt
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_shaped_divided_light }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = {
+		name = LR_solar_church.0030.sc_eclipse
+		trigger = {
+			situation:LR_solar_church ?= {
+				OR = {
+					situation_current_phase = sc_divided_light
+					situation_current_phase = sc_reform
+				}
+			}
+		}
+		custom_tooltip = LR_solar_church.0030.sc_eclipse.tt
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_shaped_eclipse }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = {
+		name = LR_solar_church.0030.sc_rising_sun
+		trigger = {
+			situation:LR_solar_church ?= {
+				OR = {
+					situation_current_phase = sc_eclipse
+					situation_current_phase = sc_concord
+				}
+			}
+		}
+		custom_tooltip = LR_solar_church.0030.sc_rising_sun.tt
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_shaped_rising_sun }
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				LR_sc_is_solar_head_trigger = yes
+			}
+		}
+	}
+
+	option = {
+		name = LR_solar_church.0030.sc_reform
+		trigger = {
+			situation:LR_solar_church ?= {
+				OR = {
+					situation_current_phase = sc_eclipse
+					situation_current_phase = sc_rising_sun
+					situation_current_phase = sc_radiant_crown
+					situation_current_phase = sc_sacred_war
+					situation_current_phase = sc_concord
+				}
+			}
+		}
+		custom_tooltip = LR_solar_church.0030.sc_reform.tt
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_shaped_reform }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = {
+		name = LR_solar_church.0030.sc_radiant_crown
+		trigger = {
+			situation:LR_solar_church ?= {
+				OR = {
+					situation_current_phase = sc_divided_light
+					situation_current_phase = sc_reform
+				}
+			}
+		}
+		custom_tooltip = LR_solar_church.0030.sc_radiant_crown.tt
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_shaped_radiant_crown }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = {
+		name = LR_solar_church.0030.sc_sacred_war
+		trigger = {
+			situation:LR_solar_church ?= {
+				OR = {
+					situation_current_phase = sc_eclipse
+					situation_current_phase = sc_concord
+				}
+			}
+		}
+		custom_tooltip = LR_solar_church.0030.sc_sacred_war.tt
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_shaped_sacred_war }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = {
+		name = LR_solar_church.0030.sc_concord
+		trigger = {
+			situation:LR_solar_church ?= {
+				OR = {
+					situation_current_phase = sc_divided_light
+					situation_current_phase = sc_rising_sun
+					situation_current_phase = sc_reform
+					situation_current_phase = sc_sacred_war
+				}
+			}
+		}
+		custom_tooltip = LR_solar_church.0030.sc_concord.tt
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_shaped_concord }
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				LR_sc_is_solar_head_trigger = yes
+			}
+		}
+	}
+
+	option = {
+		name = LR_solar_church.0030.leave
+		ai_chance = { base = 1 }
+	}
+}

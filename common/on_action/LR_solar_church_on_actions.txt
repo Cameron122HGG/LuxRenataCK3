@@ -1,0 +1,159 @@
+﻿# LR 2026-11-06 (user): hooks that fire the Solar Church's catalysts and move the Solar schism
+# (LR_solar_church_effects.txt). Each does nothing while the Solar Church doesn't run, except schism progress.
+
+on_death = {
+	on_actions = { LR_sc_on_death }
+}
+on_imprison = {
+	on_actions = { LR_sc_on_imprison }
+}
+on_war_started = {
+	on_actions = { LR_sc_on_war_started }
+}
+on_county_faith_change = {
+	on_actions = { LR_sc_on_county_faith_change }
+}
+on_county_rite_change = {
+	on_actions = { LR_sc_on_county_rite_change }
+}
+on_title_gain = {
+	on_actions = { LR_sc_on_holy_city_gain }
+}
+
+# A head of the Solar faith is killed
+LR_sc_on_death = {
+	trigger = {
+		LR_sc_is_solar_head_trigger = yes
+		exists = scope:killer
+	}
+	effect = {
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_head_murdered }
+		if = {
+			limit = { LR_sc_opposite_rites_trigger = { FIRST = root SECOND = scope:killer } }
+			LR_sc_change_schism_progress_effect = { VALUE = 10 }
+		}
+	}
+}
+
+# A head of the Solar faith is thrown in a dungeon
+LR_sc_on_imprison = {
+	trigger = {
+		LR_sc_is_solar_head_trigger = yes
+		exists = scope:imprisoner
+	}
+	effect = {
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_head_imprisoned }
+		if = {
+			limit = { LR_sc_opposite_rites_trigger = { FIRST = root SECOND = scope:imprisoner } }
+			LR_sc_change_schism_progress_effect = { VALUE = 5 }
+		}
+	}
+}
+
+# Wars between Solar rulers, or on them
+LR_sc_on_war_started = {
+	trigger = {
+		scope:defender ?= { LR_is_solar_imperial_trigger = yes }
+	}
+	effect = {
+		if = {
+			limit = { LR_sc_opposite_rites_trigger = { FIRST = scope:attacker SECOND = scope:defender } }
+			LR_sc_catalyst_effect = { CATALYST = catalyst_sc_rite_war }
+			LR_sc_change_schism_progress_effect = { VALUE = 5 }
+		}
+		else_if = {
+			limit = { scope:attacker = { LR_is_solar_imperial_trigger = yes } }
+			LR_sc_catalyst_effect = { CATALYST = catalyst_sc_solar_war }
+		}
+		else_if = {
+			limit = { scope:defender = { is_independent_ruler = yes } }
+			LR_sc_catalyst_effect = { CATALYST = catalyst_sc_war_on_solar }
+		}
+	}
+}
+
+# A county joins or leaves the Solar faiths
+LR_sc_on_county_faith_change = {
+	effect = {
+		if = {
+			limit = {
+				faith = { LR_sc_is_solar_faith_trigger = yes }
+				NOT = { scope:old_faith ?= { LR_sc_is_solar_faith_trigger = yes } }
+			}
+			LR_sc_catalyst_effect = { CATALYST = catalyst_sc_county_converted_to }
+		}
+		else_if = {
+			limit = {
+				NOT = { faith = { LR_sc_is_solar_faith_trigger = yes } }
+				scope:old_faith ?= { LR_sc_is_solar_faith_trigger = yes }
+			}
+			LR_sc_catalyst_effect = { CATALYST = catalyst_sc_county_converted_from }
+		}
+	}
+}
+
+# A county crosses between the Western and Eastern rites
+LR_sc_on_county_rite_change = {
+	trigger = {
+		faith = { LR_sc_is_solar_faith_trigger = yes }
+		OR = {
+			AND = {
+				rite ?= rite:sol_invictus_rite
+				scope:old_rite ?= rite:solar_imperial_rite
+			}
+			AND = {
+				rite ?= rite:solar_imperial_rite
+				scope:old_rite ?= rite:sol_invictus_rite
+			}
+		}
+	}
+	effect = {
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_rite_crossed }
+		LR_sc_change_schism_progress_effect = { VALUE = 1 }
+	}
+}
+
+# Rome or Constantinople changes hands
+LR_sc_on_holy_city_gain = {
+	trigger = {
+		OR = {
+			scope:title = title:c_roma
+			scope:title = title:c_byzantion
+		}
+		exists = scope:previous_holder
+	}
+	effect = {
+		if = {
+			limit = {
+				top_liege = { LR_is_solar_imperial_trigger = yes }
+				NOT = { scope:previous_holder = { LR_is_solar_imperial_trigger = yes } }
+			}
+			LR_sc_catalyst_effect = { CATALYST = catalyst_sc_holy_city_reclaimed }
+		}
+		else_if = {
+			limit = {
+				NOT = { top_liege = { LR_is_solar_imperial_trigger = yes } }
+				scope:previous_holder = { LR_is_solar_imperial_trigger = yes }
+			}
+			LR_sc_catalyst_effect = { CATALYST = catalyst_sc_holy_city_lost }
+		}
+		# Rome taken by the East, or Constantinople by the West, deepens the schism
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						scope:title = title:c_roma
+						top_liege = { LR_is_eastern_solar_trigger = yes }
+						scope:previous_holder = { LR_is_western_solar_trigger = yes }
+					}
+					AND = {
+						scope:title = title:c_byzantion
+						top_liege = { LR_is_western_solar_trigger = yes }
+						scope:previous_holder = { LR_is_eastern_solar_trigger = yes }
+					}
+				}
+			}
+			LR_sc_change_schism_progress_effect = { VALUE = 10 }
+		}
+	}
+}

@@ -1,0 +1,36 @@
+﻿###################
+# THE SOLAR CHURCH  #
+###################
+# LR 2026-11-06 (user): a re-themed copy of the Christian Church (pam_the_christian_church_history.txt), same DLC gate.
+
+-1.1.1 = {
+	effect = {
+		if = {
+			limit = { has_pam_dlc_trigger = yes }
+			start_situation = {
+				type = LR_solar_church
+			}
+		}
+	}
+}
+
+# The schism brewing before 1000: Rome and Constantinople already read the Sun differently (tune from play)
+5900.1.1 = {
+	effect = {
+		if = {
+			limit = { NOT = { has_global_variable = LR_solar_schism_happened } }
+			set_global_variable = { name = LR_solar_schism_progress value = 40 }
+		}
+	}
+}
+
+# The Great Solar Schism (user 2026-11-06: 6000.1.1). Applies to every start from this date, with or without the DLC.
+6000.1.1 = {
+	effect = {
+		if = {
+			limit = { NOT = { has_global_variable = LR_solar_schism_happened } }
+			LR_solar_schism_split_effect = yes
+			set_global_variable = { name = LR_sc_schism_decided value = yes }
+		}
+	}
+}

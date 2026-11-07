@@ -1,0 +1,198 @@
+﻿# LR 2026-11-06 (user): decisions of the Solar Church (LR_solar_church), after PAM's Shape the Christian Church and
+# Prevent / Cause the Great Schism. Situation decisions; LR_solar_church_effects.txt has the effects.
+
+# Shape the Solar Church: push the Church toward one of the phases it can move to next (event LR_solar_church.0030)
+LR_shape_the_solar_church_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/pam_decision_shape_the_christian_church.dds"
+	}
+	decision_group_type = religious
+	desc = LR_shape_the_solar_church_decision_desc
+	selection_tooltip = LR_shape_the_solar_church_decision_tooltip
+	cooldown = { years = 10 }
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_sc_exists_trigger = yes
+		LR_is_solar_imperial_trigger = yes
+		LR_sc_is_participant_trigger = yes
+	}
+
+	is_valid = {
+		OR = {
+			LR_sc_is_solar_head_trigger = yes
+			highest_held_title_tier >= tier_kingdom
+		}
+		piety_level >= 2
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 300
+	}
+
+	effect = {
+		custom_tooltip = LR_shape_the_solar_church_decision_effect_tt
+		trigger_event = LR_solar_church.0030
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 60
+		hegemony = 60
+	}
+	ai_potential = {
+		LR_is_solar_imperial_trigger = yes
+	}
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 20
+			LR_sc_is_solar_head_trigger = yes
+		}
+	}
+}
+
+# Prevent the Solar Schism: a head of the faith, or a great ruler, settles the Eclipse's quarrel peacefully
+LR_prevent_solar_schism_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/pam_decision_shape_the_christian_church.dds"
+	}
+	decision_group_type = religious
+	desc = LR_prevent_solar_schism_decision_desc
+	selection_tooltip = LR_prevent_solar_schism_decision_tooltip
+
+	is_shown = {
+		LR_sc_progress_can_change_trigger = yes
+		situation:LR_solar_church ?= { var:sc_schism_status ?= flag:ongoing }
+		LR_is_solar_imperial_trigger = yes
+		LR_sc_is_participant_trigger = yes
+	}
+
+	is_valid = {
+		OR = {
+			LR_sc_is_solar_head_trigger = yes
+			highest_held_title_tier >= tier_kingdom
+		}
+		calc_true_if = {
+			amount >= 2
+			LR_sc_is_solar_head_trigger = yes
+			piety_level >= very_high_piety_level
+			custom_tooltip = {
+				text = LR_sc_holds_a_holy_city_tt
+				OR = {
+					LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma }
+					LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
+				}
+			}
+			custom_tooltip = {
+				text = LR_sc_stance_no_schism_tt
+				var:sc_schism_stance ?= flag:no_schism
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_prevent_solar_schism_decision_effect_tt
+		hidden_effect = { LR_sc_prevent_schism_effect = yes }
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 0
+	}
+	ai_will_do = { base = 0 } # as PAM: the AI lets the Eclipse decide
+}
+
+# Cause the Solar Schism: break with the other rite now, without waiting for the Eclipse to end
+LR_cause_solar_schism_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/pam_decision_send_legatine_mission.dds"
+	}
+	decision_group_type = religious
+	desc = LR_cause_solar_schism_decision_desc
+	selection_tooltip = LR_cause_solar_schism_decision_tooltip
+
+	is_shown = {
+		LR_sc_progress_can_change_trigger = yes
+		situation:LR_solar_church ?= { var:sc_schism_status ?= flag:ongoing }
+		LR_is_solar_imperial_trigger = yes
+		LR_sc_is_participant_trigger = yes
+	}
+
+	is_valid = {
+		OR = {
+			LR_sc_is_solar_head_trigger = yes
+			highest_held_title_tier >= tier_kingdom
+		}
+		calc_true_if = {
+			amount >= 2
+			LR_sc_is_solar_head_trigger = yes
+			piety_level >= very_high_piety_level
+			custom_tooltip = {
+				text = LR_sc_holds_a_holy_city_tt
+				OR = {
+					LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma }
+					LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
+				}
+			}
+			custom_tooltip = {
+				text = LR_sc_stance_schism_tt
+				OR = {
+					var:sc_schism_stance ?= flag:west
+					var:sc_schism_stance ?= flag:east
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 500
+	}
+
+	effect = {
+		custom_tooltip = LR_cause_solar_schism_decision_effect_tt
+		hidden_effect = {
+			LR_sc_create_schism_effect = yes
+			situation:LR_solar_church ?= {
+				change_top_phase = { phase = sc_reform }
+			}
+		}
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 0
+	}
+	ai_will_do = { base = 0 }
+}

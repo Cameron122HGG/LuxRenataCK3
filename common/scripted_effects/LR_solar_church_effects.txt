@@ -1,0 +1,203 @@
+﻿# LR 2026-11-06 (user): the Solar Church situation (LR_solar_church), a re-themed copy of PAM's Christian Church.
+# The schism progress stays in global_var:LR_solar_schism_progress (0-100) so the old path still works without the DLC:
+# - without the Solar Church, 100 splits the faith at once (LR_solar_schism_yearly_effect, as before);
+# - with it, 100 only marks the threshold; the next Eclipse offers stances, and the faith splits when the Eclipse ends,
+#   unless a Solar head or great ruler prevents it (or causes it early) by decision.
+# situation var:sc_schism_status = flag:threshold_reached, then flag:ongoing (during the Eclipse).
+
+# Fires CATALYST on the Solar Church if it runs and its current phase can use it. Any scope.
+LR_sc_catalyst_effect = {
+	situation:LR_solar_church ?= {
+		if = {
+			limit = { situation_top_has_catalyst = $CATALYST$ }
+			trigger_situation_catalyst = $CATALYST$
+		}
+	}
+}
+
+# Moves the schism progress by VALUE (negative heals) and handles the threshold. Any scope.
+LR_sc_change_schism_progress_effect = {
+	if = {
+		limit = { LR_sc_progress_can_change_trigger = yes }
+		if = {
+			limit = { NOT = { has_global_variable = LR_solar_schism_progress } }
+			set_global_variable = { name = LR_solar_schism_progress value = 0 }
+		}
+		change_global_variable = { name = LR_solar_schism_progress add = $VALUE$ }
+		clamp_global_variable = { name = LR_solar_schism_progress min = 0 max = 100 }
+		LR_sc_check_schism_threshold_effect = yes
+	}
+}
+
+# At 100: the Solar Church marks the threshold and pushes toward the Eclipse; without it, the faith splits at once.
+LR_sc_check_schism_threshold_effect = {
+	if = {
+		limit = {
+			LR_sc_progress_can_change_trigger = yes
+			global_var:LR_solar_schism_progress >= 100
+		}
+		if = {
+			limit = { LR_sc_exists_trigger = yes }
+			situation:LR_solar_church = {
+				if = {
+					limit = { NOT = { has_variable = sc_schism_status } }
+					set_variable = { name = sc_schism_status value = flag:threshold_reached }
+					every_situation_participant = {
+						limit = { is_ai = no }
+						trigger_event = LR_solar_church.0010
+					}
+				}
+				LR_sc_refire_schism_catalyst_effect = yes
+			}
+		}
+		else = {
+			LR_sc_create_schism_effect = yes
+		}
+	}
+}
+
+# Situation scope: keep pushing the Eclipse while the threshold stands
+LR_sc_refire_schism_catalyst_effect = {
+	if = {
+		limit = {
+			var:sc_schism_status ?= flag:threshold_reached
+			situation_top_has_catalyst = catalyst_sc_schism
+		}
+		trigger_situation_catalyst = catalyst_sc_schism
+	}
+}
+
+# Situation scope: on start, a progress already at 100 counts as the threshold
+LR_sc_on_start_effect = {
+	if = {
+		limit = {
+			LR_sc_progress_can_change_trigger = yes
+			has_global_variable = LR_solar_schism_progress
+			global_var:LR_solar_schism_progress >= 100
+		}
+		set_variable = { name = sc_schism_status value = flag:threshold_reached }
+	}
+}
+
+# Situation scope: each phase start tells the players and keeps the schism pushing
+LR_sc_phase_start_effect = {
+	every_situation_participant = {
+		limit = { is_ai = no }
+		trigger_event = LR_solar_church.0001
+	}
+	LR_sc_refire_schism_catalyst_effect = yes
+}
+
+# Character (on_join): a player joining the Solar Church for the first time sees the current phase
+LR_sc_phase_event_for_new_player_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_variable = sc_seen_solar_church }
+		}
+		set_variable = sc_seen_solar_church
+		trigger_event = LR_solar_church.0001
+	}
+}
+
+# Situation scope (Eclipse on_start): the threshold becomes the schism; every Solar ruler takes a stance
+LR_sc_eclipse_start_effect = {
+	if = {
+		limit = {
+			LR_sc_progress_can_change_trigger = yes
+			var:sc_schism_status ?= flag:threshold_reached
+		}
+		set_variable = { name = sc_schism_status value = flag:ongoing }
+		every_situation_participant = {
+			limit = { is_ruler = yes }
+			trigger_event = LR_solar_church.0020
+		}
+	}
+}
+
+# Situation scope (Eclipse on_end): an unsettled schism lands
+LR_sc_eclipse_end_effect = {
+	if = {
+		limit = {
+			LR_sc_progress_can_change_trigger = yes
+			var:sc_schism_status ?= flag:ongoing
+		}
+		LR_sc_create_schism_effect = yes
+	}
+}
+
+# The Great Solar Schism happens. Any scope.
+LR_sc_create_schism_effect = {
+	set_global_variable = { name = LR_sc_schism_decided value = yes }
+	LR_solar_schism_split_effect = yes
+	LR_sync_helios_autokrator_effect = yes
+	situation:LR_solar_church ?= {
+		remove_variable = sc_schism_status
+	}
+	every_player = {
+		limit = { LR_is_solar_imperial_trigger = yes }
+		trigger_event = LR_solar_schism.0001
+	}
+}
+
+# The schism is averted (Prevent the Solar Schism). Character scope (the peacemaker).
+LR_sc_prevent_schism_effect = {
+	set_global_variable = { name = LR_sc_schism_decided value = yes }
+	set_global_variable = { name = LR_solar_schism_progress value = 0 }
+	save_scope_as = sc_peacemaker
+	give_nickname = nick_the_concordant
+	add_piety = 1000
+	situation:LR_solar_church ?= {
+		remove_variable = sc_schism_status
+		change_top_phase = { phase = sc_concord }
+	}
+	every_player = {
+		limit = { LR_is_solar_imperial_trigger = yes }
+		trigger_event = LR_solar_church.0022
+	}
+}
+
+# After a mend (Solar Council or Reunite the Sun), the schism may brew again. None scope.
+LR_sc_reopen_schism_effect = {
+	remove_global_variable = LR_sc_schism_decided
+}
+
+# Situation scope (on_yearly): the standing catalysts of the emperors and the two heads
+LR_sc_yearly_effect = {
+	if = {
+		limit = { LR_solar_two_emperors_trigger = yes }
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_two_emperors }
+	}
+	if = {
+		limit = { exists = title:h_roman_empire.holder }
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_one_emperor }
+	}
+	if = {
+		limit = {
+			exists = title:k_helios_autokrator.holder
+			exists = title:d_pontifex_solis_invicti.holder
+			title:k_helios_autokrator.holder.top_liege = title:d_pontifex_solis_invicti.holder.top_liege
+		}
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_heads_reconciled }
+	}
+	if = {
+		limit = { title:c_roma.holder.top_liege ?= { LR_is_eastern_solar_trigger = yes } }
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_rome_held_by_east }
+	}
+	LR_sc_refire_schism_catalyst_effect = yes
+}
+
+# Character scope (the excommunicator); scope:target_character the excommunicated. From excommunicate_character.
+LR_sc_excommunication_effect = {
+	if = {
+		limit = {
+			LR_is_solar_imperial_trigger = yes
+			scope:target_character ?= { LR_is_solar_imperial_trigger = yes }
+		}
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_excommunication }
+		if = {
+			limit = { LR_sc_opposite_rites_trigger = { FIRST = this SECOND = scope:target_character } }
+			LR_sc_change_schism_progress_effect = { VALUE = 5 }
+		}
+	}
+}

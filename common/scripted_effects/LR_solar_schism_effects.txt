@@ -68,6 +68,7 @@ LR_solar_schism_mend_effect = {
 	remove_global_variable = LR_solar_schism_happened
 	set_global_variable = { name = LR_solar_schism_progress value = 0 }
 	set_global_variable = { name = LR_solar_schism_mended value = yes }
+	LR_sc_reopen_schism_effect = yes # LR: the Solar Church may brew a new schism
 	rite:solar_imperial_rite = {
 		set_parent_faith = {
 			target = faith:solar_imperial_faith
@@ -84,37 +85,25 @@ LR_solar_schism_mend_effect = {
 }
 
 # Yearly, before the split: two emperors and a Western-rite Rome facing an Eastern-rite Constantinople drive the
-# schism on; one restored Rome draws it back. At 100 the faith splits. None scope.
+# schism on; one restored Rome draws it back. At 100 the faith splits, or, with the Solar Church, the Eclipse decides
+# (LR_sc_change_schism_progress_effect, LR_solar_church_effects.txt). None scope.
 LR_solar_schism_yearly_effect = {
 	if = {
-		limit = { NOT = { LR_solar_schism_is_split_trigger = yes } }
-		if = {
-			limit = { NOT = { has_global_variable = LR_solar_schism_progress } }
-			set_global_variable = { name = LR_solar_schism_progress value = 0 }
-		}
+		limit = { LR_sc_progress_can_change_trigger = yes }
 		if = {
 			limit = { LR_solar_two_emperors_trigger = yes }
-			change_global_variable = { name = LR_solar_schism_progress add = 3 }
+			LR_sc_change_schism_progress_effect = { VALUE = 3 }
 		}
 		if = {
 			limit = {
 				title:c_roma.holder.top_liege ?= { rite ?= rite:sol_invictus_rite }
 				title:c_byzantion.holder.top_liege ?= { rite ?= rite:solar_imperial_rite }
 			}
-			change_global_variable = { name = LR_solar_schism_progress add = 2 }
+			LR_sc_change_schism_progress_effect = { VALUE = 2 }
 		}
 		if = {
 			limit = { exists = title:h_roman_empire.holder }
-			change_global_variable = { name = LR_solar_schism_progress add = -5 }
-		}
-		clamp_global_variable = { name = LR_solar_schism_progress min = 0 max = 100 }
-		if = {
-			limit = { global_var:LR_solar_schism_progress >= 100 }
-			LR_solar_schism_split_effect = yes
-			every_player = {
-				limit = { LR_is_solar_imperial_trigger = yes }
-				trigger_event = LR_solar_schism.0001
-			}
+			LR_sc_change_schism_progress_effect = { VALUE = -5 }
 		}
 	}
 }

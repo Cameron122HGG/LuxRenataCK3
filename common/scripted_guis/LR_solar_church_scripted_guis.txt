@@ -1,0 +1,40 @@
+﻿# LR 2026-11-06: what the Solar Church window's schism panel shows (gui/window_LR_solar_church.gui)
+
+# The schism is brewing: progress below the threshold
+LR_sc_schism_brewing_gui = {
+	is_shown = {
+		LR_sc_progress_can_change_trigger = yes
+		NOT = { situation:LR_solar_church ?= { has_variable = sc_schism_status } }
+	}
+}
+
+# The threshold is reached: the next Eclipse decides
+LR_sc_schism_threshold_gui = {
+	is_shown = {
+		LR_sc_progress_can_change_trigger = yes
+		situation:LR_solar_church ?= { var:sc_schism_status ?= flag:threshold_reached }
+	}
+}
+
+# The Eclipse is deciding the schism now
+LR_sc_schism_ongoing_gui = {
+	is_shown = {
+		LR_sc_progress_can_change_trigger = yes
+		situation:LR_solar_church ?= { var:sc_schism_status ?= flag:ongoing }
+	}
+}
+
+# The faith is split into West and East
+LR_sc_schism_split_gui = {
+	is_shown = {
+		LR_solar_schism_is_split_trigger = yes
+	}
+}
+
+# The schism was averted and the faith is one
+LR_sc_schism_averted_gui = {
+	is_shown = {
+		NOT = { LR_solar_schism_is_split_trigger = yes }
+		has_global_variable = LR_sc_schism_decided
+	}
+}

@@ -1,0 +1,79 @@
+﻿# LR 2026-11-06 (user): the Solar Church situation, a re-themed copy of PAM's Christian Church
+# (LR_solar_imperial_schism_prep.md section 7 in the working folder)
+
+# Character: follows the Western Solar rite (Sol Invictus), before or after the split
+LR_is_western_solar_trigger = {
+	LR_is_solar_imperial_trigger = yes
+	rite ?= rite:sol_invictus_rite
+}
+
+# Character: follows Solar Imperial but not the Western rite (the Eastern side, Helios Autokrator)
+LR_is_eastern_solar_trigger = {
+	LR_is_solar_imperial_trigger = yes
+	NOT = { rite ?= rite:sol_invictus_rite }
+}
+
+# Character: a priestly ruler for the Solar Church's clergy groups
+LR_sc_is_clergy_trigger = {
+	OR = {
+		AND = {
+			government_is_religious_trigger = yes
+			highest_held_title_tier >= tier_county
+		}
+		has_title = title:d_pontifex_solis_invicti
+	}
+}
+
+# Character: a secular ruler for the Solar Church's ruler groups
+LR_sc_is_secular_ruler_trigger = {
+	government_is_religious_trigger = no
+	highest_held_title_tier >= tier_county
+	NOT = { has_title = title:d_pontifex_solis_invicti }
+}
+
+# Character: one of the two heads of the Solar faith
+LR_sc_is_solar_head_trigger = {
+	OR = {
+		has_title = title:k_helios_autokrator
+		has_title = title:d_pontifex_solis_invicti
+	}
+}
+
+# None scope: the Solar Church runs (it needs the DLC that runs the Christian Church)
+LR_sc_exists_trigger = {
+	exists = situation:LR_solar_church
+}
+
+# None scope: the schism can still move (not split, not settled by a decision)
+LR_sc_progress_can_change_trigger = {
+	NOT = { LR_solar_schism_is_split_trigger = yes }
+	NOT = { has_global_variable = LR_sc_schism_decided }
+}
+
+# Two characters on opposite Solar rites (West against East). FIRST, SECOND = characters
+LR_sc_opposite_rites_trigger = {
+	OR = {
+		AND = {
+			$FIRST$ = { LR_is_western_solar_trigger = yes }
+			$SECOND$ = { LR_is_eastern_solar_trigger = yes }
+		}
+		AND = {
+			$FIRST$ = { LR_is_eastern_solar_trigger = yes }
+			$SECOND$ = { LR_is_western_solar_trigger = yes }
+		}
+	}
+}
+
+# Character: is in the Solar Church (any of its groups)
+LR_sc_is_participant_trigger = {
+	any_character_situation = { situation_type = LR_solar_church }
+}
+
+# Faith scope: one of the three Solar Imperial faiths
+LR_sc_is_solar_faith_trigger = {
+	OR = {
+		this = faith:solar_imperial_faith
+		this = faith:helios_autokrator_faith
+		this = faith:sol_invictus_faith
+	}
+}

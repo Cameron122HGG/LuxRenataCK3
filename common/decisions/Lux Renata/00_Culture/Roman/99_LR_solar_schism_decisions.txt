@@ -44,7 +44,10 @@ LR_convene_solar_council_decision = {
 	}
 
 	cost = {
-		piety = 500
+		piety = {
+			value = 500
+			if = { limit = { situation:LR_solar_church ?= { has_situation_top_phase_parameter = LR_sc_cheaper_solar_council } } multiply = 0.5 } # LR: the Solar Church
+		}
 		gold = 300
 	}
 
@@ -54,6 +57,7 @@ LR_convene_solar_council_decision = {
 			custom_tooltip = LR_solar_council_mend_tt
 			hidden_effect = {
 				LR_solar_schism_mend_effect = yes
+				LR_sc_catalyst_effect = { CATALYST = catalyst_sc_faith_reunited } # LR: the Solar Church
 				every_player = {
 					limit = { LR_is_solar_imperial_trigger = yes }
 					trigger_event = LR_solar_schism.0002
@@ -63,11 +67,11 @@ LR_convene_solar_council_decision = {
 		else = {
 			custom_tooltip = LR_solar_council_heal_tt
 			hidden_effect = {
-				change_global_variable = { name = LR_solar_schism_progress add = -25 }
-				clamp_global_variable = { name = LR_solar_schism_progress min = 0 max = 100 }
+				LR_sc_change_schism_progress_effect = { VALUE = -25 }
 			}
 		}
 		add_prestige = 300
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_council_convened } # LR: the Solar Church
 	}
 
 	ai_potential = {
@@ -128,6 +132,7 @@ LR_reunite_solar_faith_decision = {
 			}
 		}
 		add_prestige = 1000
+		LR_sc_catalyst_effect = { CATALYST = catalyst_sc_faith_reunited } # LR: the Solar Church
 	}
 
 	ai_potential = {

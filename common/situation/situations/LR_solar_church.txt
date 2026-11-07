@@ -1,0 +1,722 @@
+﻿# LR 2026-11-06 (user): the Solar Church, a re-themed copy of PAM's Christian Church (the_christian_church) for
+# Solar Imperial and its two split faiths. Design: LR_solar_imperial_schism_prep.md section 7 in the working folder.
+# - Seven phases on catalyst points; the Eclipse is where the Solar schism lands (LR_solar_church_effects.txt).
+# - Four groups by rite (West = Sol Invictus, East = Helios Autokrator), so they hold before and after the split.
+# - Started by history/situations/LR_solar_church_history.txt when the DLC behind the Christian Church is active.
+# - The Christian Church's own systems (College, antipopes, investiture council, bulls...) are not copied; phases
+#   give character modifiers instead. Window: gui/window_LR_solar_church.gui (vanilla window plus the schism panel).
+
+@sc_phase_points = 1000
+
+LR_solar_church = {
+	gui_window_name = "window_LR_solar_church"
+	gui_participation_window_name = "window_situation_participation"
+	gui_tooltip_group_focused = yes
+	illustration = "gfx/interface/illustrations/event_story/pam_the_christian_church_instability.dds"
+	situation_group_type = major
+
+	is_unique = yes
+	keep_full_history = yes
+
+	sub_regions = {
+		sc_core = {
+			icon = "gfx/interface/icons/faith_tenets/tenet_christian_syncretism.dds"
+		}
+	}
+
+	on_yearly = {
+		LR_sc_yearly_effect = yes
+	}
+
+	participant_groups = {
+		sc_western_clergy = {
+			icon = "gfx/interface/icons/the_christian_church/participant_groups/clerical_main.dds"
+			require_realm_in_sub_region = no
+			is_character_valid = {
+				LR_is_western_solar_trigger = yes
+				LR_sc_is_clergy_trigger = yes
+			}
+			on_join = {
+				LR_sc_phase_event_for_new_player_effect = yes
+			}
+			on_leave = {
+			}
+			map_color = hsv{ 0.10 0.85 0.85 }
+		}
+		sc_western_rulers = {
+			icon = "gfx/interface/icons/the_christian_church/participant_groups/regular_main.dds"
+			gui_tags = { secular_ruler }
+			require_realm_in_sub_region = no
+			is_character_valid = {
+				LR_is_western_solar_trigger = yes
+				LR_sc_is_secular_ruler_trigger = yes
+			}
+			on_join = {
+				LR_sc_phase_event_for_new_player_effect = yes
+			}
+			on_leave = {
+			}
+			map_color = hsv{ 0.08 0.80 0.70 }
+		}
+		sc_eastern_clergy = {
+			icon = "gfx/interface/icons/the_christian_church/participant_groups/clerical_secondary.dds"
+			require_realm_in_sub_region = no
+			is_character_valid = {
+				LR_is_eastern_solar_trigger = yes
+				LR_sc_is_clergy_trigger = yes
+			}
+			on_join = {
+				LR_sc_phase_event_for_new_player_effect = yes
+			}
+			on_leave = {
+			}
+			map_color = hsv{ 0.78 0.70 0.80 }
+		}
+		sc_eastern_rulers = {
+			icon = "gfx/interface/icons/the_christian_church/participant_groups/regular_secondary.dds"
+			gui_tags = { secular_ruler }
+			require_realm_in_sub_region = no
+			is_character_valid = {
+				LR_is_eastern_solar_trigger = yes
+				LR_sc_is_secular_ruler_trigger = yes
+			}
+			on_join = {
+				LR_sc_phase_event_for_new_player_effect = yes
+			}
+			on_leave = {
+			}
+			map_color = hsv{ 0.75 0.65 0.70 }
+		}
+	}
+
+	start_phase = sc_divided_light
+
+	on_start = {
+		LR_sc_on_start_effect = yes
+	}
+
+	phases = {
+		sc_divided_light = { # INSTABILITY
+			icon = "gfx/interface/icons/the_christian_church/phase_type_icons/fragile_unity.dds"
+			texture = "gfx/interface/icons/the_christian_church/phase_type_illustrations_wide/fragile.dds"
+			illustration = "gfx/interface/icons/the_christian_church/phase_type_illustrations/fragile.dds"
+
+			on_start = {
+				LR_sc_phase_start_effect = yes
+			}
+
+			parameters = {
+			}
+
+			modifier_sets = {
+				LR_sc_divided_light_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_faith.dds"
+					sc_western_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.1
+						}
+					}
+					sc_western_rulers = {
+						character_modifier = {
+							same_faith_opinion = -5
+							monthly_prestige_gain_mult = 0.05
+						}
+					}
+					sc_eastern_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.1
+						}
+					}
+					sc_eastern_rulers = {
+						character_modifier = {
+							same_faith_opinion = -5
+							monthly_prestige_gain_mult = 0.05
+						}
+					}
+				}
+			}
+
+			future_phases = {
+				sc_eclipse = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_schism = 750
+						catalyst_sc_head_murdered = 250
+						catalyst_sc_head_imprisoned = 150
+						catalyst_sc_holy_city_lost = 150
+						catalyst_sc_rite_war = 100
+						catalyst_sc_excommunication = 60
+						catalyst_sc_solar_war = 40
+						catalyst_sc_two_emperors = 30
+						catalyst_sc_shaped_eclipse = 300
+					}
+				}
+				sc_radiant_crown = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_head_imprisoned = 250
+						catalyst_sc_excommunication = 80
+						catalyst_sc_rome_held_by_east = 40
+						catalyst_sc_two_emperors = 20
+						catalyst_sc_shaped_radiant_crown = 300
+					}
+				}
+				sc_concord = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_faith_reunited = 1000
+						catalyst_sc_council_convened = 300
+						catalyst_sc_holy_city_reclaimed = 200
+						catalyst_sc_one_emperor = 40
+						catalyst_sc_heads_reconciled = 30
+						catalyst_sc_county_converted_to = 10
+						catalyst_sc_shaped_concord = 300
+					}
+				}
+			}
+		}
+		sc_eclipse = { # CRISIS
+			icon = "gfx/interface/icons/the_christian_church/phase_type_icons/saeculum_obscurum.dds"
+			texture = "gfx/interface/icons/the_christian_church/phase_type_illustrations_wide/saeculum_obscurum.dds"
+			illustration = "gfx/interface/icons/the_christian_church/phase_type_illustrations/saeculum_obscurum.dds"
+
+			on_start = {
+				LR_sc_phase_start_effect = yes
+				LR_sc_eclipse_start_effect = yes
+			}
+			on_end = {
+				LR_sc_eclipse_end_effect = yes
+			}
+
+			parameters = {
+				LR_sc_cheaper_solar_council = yes
+				LR_sc_schism_can_land = yes
+			}
+
+			modifier_sets = {
+				LR_sc_eclipse_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_character.dds"
+					sc_western_clergy = {
+						character_modifier = {
+							monthly_income_mult = 0.15
+							monthly_piety_gain_mult = -0.15
+						}
+					}
+					sc_western_rulers = {
+						character_modifier = {
+							clergy_opinion = -10
+							monthly_piety_gain_mult = -0.1
+						}
+					}
+					sc_eastern_clergy = {
+						character_modifier = {
+							monthly_income_mult = 0.15
+							monthly_piety_gain_mult = -0.15
+						}
+					}
+					sc_eastern_rulers = {
+						character_modifier = {
+							clergy_opinion = -10
+							monthly_piety_gain_mult = -0.1
+						}
+					}
+				}
+			}
+
+			future_phases = {
+				sc_reform = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_council_convened = 200
+						catalyst_sc_excommunication = 40
+						catalyst_sc_rite_crossed = 15
+						catalyst_sc_county_converted_from = 10
+						catalyst_sc_shaped_reform = 300
+					}
+				}
+				sc_divided_light = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_head_murdered = 100
+						catalyst_sc_rite_war = 80
+						catalyst_sc_solar_war = 40
+						catalyst_sc_two_emperors = 30
+						catalyst_sc_rite_crossed = 10
+						catalyst_sc_shaped_divided_light = 300
+					}
+				}
+				sc_rising_sun = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_holy_city_reclaimed = 150
+						catalyst_sc_one_emperor = 20
+						catalyst_sc_county_converted_to = 15
+						catalyst_sc_shaped_rising_sun = 300
+					}
+				}
+				sc_sacred_war = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_holy_city_lost = 250
+						catalyst_sc_war_on_solar = 60
+						catalyst_sc_county_converted_from = 15
+						catalyst_sc_shaped_sacred_war = 300
+					}
+				}
+			}
+		}
+		sc_rising_sun = { # ZEAL
+			icon = "gfx/interface/icons/the_christian_church/phase_type_icons/conversion.dds"
+			texture = "gfx/interface/icons/the_christian_church/phase_type_illustrations_wide/conversion.dds"
+			illustration = "gfx/interface/icons/the_christian_church/phase_type_illustrations/conversion.dds"
+
+			on_start = {
+				LR_sc_phase_start_effect = yes
+			}
+
+			parameters = {
+			}
+
+			modifier_sets = {
+				LR_sc_rising_sun_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_faith.dds"
+					sc_western_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.2
+						}
+					}
+					sc_western_rulers = {
+						character_modifier = {
+							faith_conversion_piety_cost_mult = -0.2
+							holy_order_hire_cost_mult = -0.2
+						}
+					}
+					sc_eastern_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.2
+						}
+					}
+					sc_eastern_rulers = {
+						character_modifier = {
+							faith_conversion_piety_cost_mult = -0.2
+							holy_order_hire_cost_mult = -0.2
+						}
+					}
+				}
+			}
+
+			future_phases = {
+				sc_divided_light = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_head_murdered = 100
+						catalyst_sc_rite_war = 80
+						catalyst_sc_solar_war = 40
+						catalyst_sc_two_emperors = 30
+						catalyst_sc_rite_crossed = 10
+						catalyst_sc_shaped_divided_light = 300
+					}
+				}
+				sc_reform = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_council_convened = 200
+						catalyst_sc_excommunication = 40
+						catalyst_sc_rite_crossed = 15
+						catalyst_sc_county_converted_from = 10
+						catalyst_sc_shaped_reform = 300
+					}
+				}
+				sc_concord = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_faith_reunited = 1000
+						catalyst_sc_council_convened = 300
+						catalyst_sc_holy_city_reclaimed = 200
+						catalyst_sc_one_emperor = 40
+						catalyst_sc_heads_reconciled = 30
+						catalyst_sc_county_converted_to = 10
+						catalyst_sc_shaped_concord = 300
+					}
+				}
+			}
+		}
+		sc_reform = { # INSTABILITY
+			icon = "gfx/interface/icons/the_christian_church/phase_type_icons/reform.dds"
+			texture = "gfx/interface/icons/the_christian_church/phase_type_illustrations_wide/reform.dds"
+			illustration = "gfx/interface/icons/the_christian_church/phase_type_illustrations/reform.dds"
+
+			on_start = {
+				LR_sc_phase_start_effect = yes
+			}
+
+			parameters = {
+				LR_sc_cheaper_solar_council = yes
+			}
+
+			modifier_sets = {
+				LR_sc_reform_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_faith.dds"
+					sc_western_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.1
+							monthly_income_mult = -0.1
+						}
+					}
+					sc_western_rulers = {
+						character_modifier = {
+							clergy_opinion = 5
+							tax_mult = -0.05
+						}
+					}
+					sc_eastern_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.1
+							monthly_income_mult = -0.1
+						}
+					}
+					sc_eastern_rulers = {
+						character_modifier = {
+							clergy_opinion = 5
+							tax_mult = -0.05
+						}
+					}
+				}
+			}
+
+			future_phases = {
+				sc_radiant_crown = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_head_imprisoned = 250
+						catalyst_sc_excommunication = 80
+						catalyst_sc_rome_held_by_east = 40
+						catalyst_sc_two_emperors = 20
+						catalyst_sc_shaped_radiant_crown = 300
+					}
+				}
+				sc_eclipse = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_schism = 750
+						catalyst_sc_head_murdered = 250
+						catalyst_sc_head_imprisoned = 150
+						catalyst_sc_holy_city_lost = 150
+						catalyst_sc_rite_war = 100
+						catalyst_sc_excommunication = 60
+						catalyst_sc_solar_war = 40
+						catalyst_sc_two_emperors = 30
+						catalyst_sc_shaped_eclipse = 300
+					}
+				}
+				sc_concord = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_faith_reunited = 1000
+						catalyst_sc_council_convened = 300
+						catalyst_sc_holy_city_reclaimed = 200
+						catalyst_sc_one_emperor = 40
+						catalyst_sc_heads_reconciled = 30
+						catalyst_sc_county_converted_to = 10
+						catalyst_sc_shaped_concord = 300
+					}
+				}
+			}
+		}
+		sc_radiant_crown = { # CRISIS
+			icon = "gfx/interface/icons/the_christian_church/phase_type_icons/investiture.dds"
+			texture = "gfx/interface/icons/the_christian_church/phase_type_illustrations_wide/crisis.dds"
+			illustration = "gfx/interface/icons/the_christian_church/phase_type_illustrations/crisis.dds"
+
+			on_start = {
+				LR_sc_phase_start_effect = yes
+			}
+
+			parameters = {
+			}
+
+			modifier_sets = {
+				LR_sc_radiant_crown_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_subject.dds"
+					sc_western_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.15
+							monthly_income_mult = -0.1
+						}
+					}
+					sc_western_rulers = {
+						character_modifier = {
+							clergy_opinion = 5
+							vassal_opinion = -5
+						}
+					}
+					sc_eastern_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = -0.1
+						}
+					}
+					sc_eastern_rulers = {
+						character_modifier = {
+							monthly_legitimacy_add = 0.2
+							clergy_opinion = -10
+						}
+					}
+				}
+			}
+
+			future_phases = {
+				sc_reform = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_council_convened = 200
+						catalyst_sc_excommunication = 40
+						catalyst_sc_rite_crossed = 15
+						catalyst_sc_county_converted_from = 10
+						catalyst_sc_shaped_reform = 300
+					}
+				}
+				sc_divided_light = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_head_murdered = 100
+						catalyst_sc_rite_war = 80
+						catalyst_sc_solar_war = 40
+						catalyst_sc_two_emperors = 30
+						catalyst_sc_rite_crossed = 10
+						catalyst_sc_shaped_divided_light = 300
+					}
+				}
+			}
+		}
+		sc_sacred_war = { # ZEAL
+			icon = "gfx/interface/icons/the_christian_church/phase_type_icons/crusade.dds"
+			texture = "gfx/interface/icons/the_christian_church/phase_type_illustrations_wide/crusade.dds"
+			illustration = "gfx/interface/icons/the_christian_church/phase_type_illustrations/crusade.dds"
+
+			on_start = {
+				LR_sc_phase_start_effect = yes
+			}
+
+			parameters = {
+			}
+
+			modifier_sets = {
+				LR_sc_sacred_war_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_military.dds"
+					sc_western_clergy = {
+						character_modifier = {
+							holy_order_hire_cost_mult = -0.3
+						}
+					}
+					sc_western_rulers = {
+						character_modifier = {
+							knight_effectiveness_mult = 0.1
+							levy_size = 0.1
+							monthly_piety_gain_mult = 0.1
+						}
+					}
+					sc_eastern_clergy = {
+						character_modifier = {
+							holy_order_hire_cost_mult = -0.3
+						}
+					}
+					sc_eastern_rulers = {
+						character_modifier = {
+							knight_effectiveness_mult = 0.1
+							levy_size = 0.1
+							monthly_piety_gain_mult = 0.1
+						}
+					}
+				}
+			}
+
+			future_phases = {
+				sc_reform = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_council_convened = 200
+						catalyst_sc_excommunication = 40
+						catalyst_sc_rite_crossed = 15
+						catalyst_sc_county_converted_from = 10
+						catalyst_sc_shaped_reform = 300
+					}
+				}
+				sc_divided_light = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_head_murdered = 100
+						catalyst_sc_rite_war = 80
+						catalyst_sc_solar_war = 40
+						catalyst_sc_two_emperors = 30
+						catalyst_sc_rite_crossed = 10
+						catalyst_sc_shaped_divided_light = 300
+					}
+				}
+				sc_concord = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_faith_reunited = 1000
+						catalyst_sc_council_convened = 300
+						catalyst_sc_holy_city_reclaimed = 200
+						catalyst_sc_one_emperor = 40
+						catalyst_sc_heads_reconciled = 30
+						catalyst_sc_county_converted_to = 10
+						catalyst_sc_shaped_concord = 300
+					}
+				}
+			}
+		}
+		sc_concord = { # STABILITY
+			icon = "gfx/interface/icons/the_christian_church/phase_type_icons/concord.dds"
+			texture = "gfx/interface/icons/the_christian_church/phase_type_illustrations_wide/concord.dds"
+			illustration = "gfx/interface/icons/the_christian_church/phase_type_illustrations/concord.dds"
+
+			on_start = {
+				LR_sc_phase_start_effect = yes
+			}
+
+			parameters = {
+				LR_sc_cheaper_solar_council = yes
+			}
+
+			modifier_sets = {
+				LR_sc_concord_effects = {
+					icon = "gfx/interface/icons/situations/situation_modifier_faith.dds"
+					sc_western_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.15
+							monthly_income_mult = 0.1
+						}
+					}
+					sc_western_rulers = {
+						character_modifier = {
+							build_gold_cost = -0.1
+							development_growth_factor = 0.1
+							clergy_opinion = 10
+						}
+					}
+					sc_eastern_clergy = {
+						character_modifier = {
+							monthly_piety_gain_mult = 0.15
+							monthly_income_mult = 0.1
+						}
+					}
+					sc_eastern_rulers = {
+						character_modifier = {
+							build_gold_cost = -0.1
+							development_growth_factor = 0.1
+							clergy_opinion = 10
+						}
+					}
+				}
+			}
+
+			future_phases = {
+				sc_reform = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_council_convened = 200
+						catalyst_sc_excommunication = 40
+						catalyst_sc_rite_crossed = 15
+						catalyst_sc_county_converted_from = 10
+						catalyst_sc_shaped_reform = 300
+					}
+				}
+				sc_divided_light = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_head_murdered = 100
+						catalyst_sc_rite_war = 80
+						catalyst_sc_solar_war = 40
+						catalyst_sc_two_emperors = 30
+						catalyst_sc_rite_crossed = 10
+						catalyst_sc_shaped_divided_light = 300
+					}
+				}
+				sc_rising_sun = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_holy_city_reclaimed = 150
+						catalyst_sc_one_emperor = 20
+						catalyst_sc_county_converted_to = 15
+						catalyst_sc_shaped_rising_sun = 300
+					}
+				}
+				sc_sacred_war = {
+					takeover_type = points
+					takeover_points = @sc_phase_points
+					catalysts = {
+						catalyst_sc_holy_city_lost = 250
+						catalyst_sc_war_on_solar = 60
+						catalyst_sc_county_converted_from = 15
+						catalyst_sc_shaped_sacred_war = 300
+					}
+				}
+			}
+		}
+	}
+
+	situation_decisions = {
+		LR_shape_the_solar_church_decision
+		LR_prevent_solar_schism_decision
+		LR_cause_solar_schism_decision
+		LR_convene_solar_council_decision
+		LR_reunite_solar_faith_decision
+	}
+
+	icon = {
+		trigger = { situation_current_phase = sc_divided_light }
+		reference = "gfx/interface/icons/the_christian_church/phase_type_icons/fragile_unity.dds"
+	}
+
+	icon = {
+		trigger = { situation_current_phase = sc_eclipse }
+		reference = "gfx/interface/icons/the_christian_church/phase_type_icons/saeculum_obscurum.dds"
+	}
+
+	icon = {
+		trigger = { situation_current_phase = sc_rising_sun }
+		reference = "gfx/interface/icons/the_christian_church/phase_type_icons/conversion.dds"
+	}
+
+	icon = {
+		trigger = { situation_current_phase = sc_reform }
+		reference = "gfx/interface/icons/the_christian_church/phase_type_icons/reform.dds"
+	}
+
+	icon = {
+		trigger = { situation_current_phase = sc_radiant_crown }
+		reference = "gfx/interface/icons/the_christian_church/phase_type_icons/investiture.dds"
+	}
+
+	icon = {
+		trigger = { situation_current_phase = sc_sacred_war }
+		reference = "gfx/interface/icons/the_christian_church/phase_type_icons/crusade.dds"
+	}
+
+	icon = {
+		trigger = { situation_current_phase = sc_concord }
+		reference = "gfx/interface/icons/the_christian_church/phase_type_icons/concord.dds"
+	}
+}
