@@ -536,6 +536,8 @@ pam_auspicious_birthright_birth_on_action = {
 #	- changed_tenets_or_doctrines (county and character are still matching faith but the faith doesn't support clerical regions anymore)
 on_clerical_region_faith_mismatch = {
 	# TIT-75963 player choice when capital converts; TIT-75964 other succession cases
+	# LR 2026-11-06: skip while the history-time Solar schism splits the faith (stripping/destroying titles mid-history crashed the game)
+	trigger = { NOT = { has_global_variable = LR_solar_schism_history_split } }
 	events = {
 		# Capital converted; both Faiths have Clerical Regions (player)
 		pam_clergy_events.0051

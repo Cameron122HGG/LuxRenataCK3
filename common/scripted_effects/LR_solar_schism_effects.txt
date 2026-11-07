@@ -63,6 +63,14 @@ LR_solar_schism_split_effect = {
 	faith:sol_invictus_faith = { set_religious_head_title = title:d_pontifex_solis_invicti }
 }
 
+# History-time split (LR_solar_church_history.txt, 6000.1.1). The guard variable stops on_clerical_region_faith_mismatch
+# (pam_on_actions.txt) from firing pam_clergy_events mid-history, which crashed the game (2026-11-06). None scope.
+LR_solar_schism_history_split_effect = {
+	set_global_variable = { name = LR_solar_schism_history_split value = yes }
+	LR_solar_schism_split_effect = yes
+	remove_global_variable = LR_solar_schism_history_split
+}
+
 # Healing the schism: both rites return to Solar Imperial, headed by the incarnate Sun. None scope.
 LR_solar_schism_mend_effect = {
 	remove_global_variable = LR_solar_schism_happened
