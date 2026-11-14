@@ -2,7 +2,11 @@
 
 # Gives k_helios_autokrator to the senior Eastern emperor who follows the Eastern Solar rite: the emperor of a restored
 # Rome, else the Eastern hegemon, else the Eastern Roman emperor, else decayed Byzantium. None scope.
+# TEMP 2026-11-14 (user): switched off. Holding the head-of-faith title made the 1066 emperor Ecclesiastical, so for now
+# a Solar patriarch holds k_helios_autokrator as the emperor's vassal (history). Remove the always = no to restore.
 LR_sync_helios_autokrator_effect = {
+	if = {
+		limit = { always = no }
 	if = {
 		limit = { title:h_roman_empire.holder ?= { LR_is_sun_emperor_candidate_trigger = yes } }
 		title:h_roman_empire.holder = { save_scope_as = sun_emperor }
@@ -39,6 +43,7 @@ LR_sync_helios_autokrator_effect = {
 			resolve_title_and_vassal_change = scope:change
 		}
 	}
+	} # TEMP 2026-11-14: end of the always = no wrapper
 }
 
 # The Great Solar Schism: the rites move into the waiting faiths (as pam_apply_great_schism_creation_effect). None scope.
