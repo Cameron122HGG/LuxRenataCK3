@@ -1,0 +1,117 @@
+﻿# Dynastic realm names (game rule lr_dynastic_realm_names)
+#
+# The engine's own dynasty-named realms (house_based_map_names + dynasty_named_realms) show only the
+# house name on the map, and no loc key wraps it. So for kingdom+ realms we name the primary title
+# "<House> <Tier>" ourselves with set_title_name_dynamic (loc key LR_dynastic_realm_name), and turn
+# off the engine naming on that title so our name shows.
+#
+# Double tier words: the UI shows titles as "<Tier> of <Name>" (TITLE_TIERED_NAME), which would read
+# "Caliphate of Abbasid Caliphate". So named rulers get the character flag LR_dynastic_realm_name_flag,
+# and the title flavors in common/flavorization/default/07_LR_dynastic_realm_names.txt swap the UI tier
+# word for "Realm" ("Realm of Abbasid Caliphate"). The flag is lifted while the name is built, so
+# GetTierAsName still gives the real tier word. Side effect: other kingdom+ titles the same ruler holds
+# also read "Realm of X".
+#
+# Variable LR_dynastic_realm_name on a title = we named it (value = the house). LR_dynastic_realm_name_culture
+# and _faith hold the culture and faith the name was built with; the title is only renamed when one of the
+# three changes (or after LR_dynastic_realm_names_force_refresh_effect), so the yearly refresh is cheap.
+# Titles that already had a custom name from another system are left alone.
+
+# root = a ruler (the name loc reads ROOT, so this must run with the ruler as root)
+LR_dynastic_realm_names_refresh_effect = {
+	# Titles we named that are no longer this ruler's primary title go back to their own names
+	every_held_title = {
+		limit = {
+			has_variable = LR_dynastic_realm_name
+			NOT = { this = root.primary_title }
+		}
+		LR_dynastic_realm_names_reset_title_effect = yes
+	}
+	if = {
+		limit = {
+			LR_dynastic_realm_name_valid_trigger = yes
+			primary_title = {
+				OR = {
+					has_variable = LR_dynastic_realm_name
+					has_custom_title_name = no
+				}
+			}
+		}
+		# Rename only when the house, culture or faith behind the name has changed
+		if = {
+			limit = {
+				primary_title = {
+					NOT = { LR_dynastic_realm_name_up_to_date_trigger = yes }
+				}
+			}
+			# lift the flag so GetTierAsName gives the real tier word, not "Realm"
+			if = {
+				limit = { has_character_flag = LR_dynastic_realm_name_flag }
+				remove_character_flag = LR_dynastic_realm_name_flag
+			}
+			primary_title = {
+				set_title_name_dynamic = LR_dynastic_realm_name
+				set_can_be_named_after_dynasty = no
+				set_variable = {
+					name = LR_dynastic_realm_name
+					value = root.house
+				}
+				set_variable = {
+					name = LR_dynastic_realm_name_culture
+					value = root.culture
+				}
+				set_variable = {
+					name = LR_dynastic_realm_name_faith
+					value = root.faith
+				}
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_character_flag = LR_dynastic_realm_name_flag }
+			}
+			add_character_flag = LR_dynastic_realm_name_flag
+		}
+	}
+	else = {
+		if = {
+			limit = { has_character_flag = LR_dynastic_realm_name_flag }
+			remove_character_flag = LR_dynastic_realm_name_flag
+		}
+		if = {
+			limit = {
+				exists = primary_title
+				primary_title = { has_variable = LR_dynastic_realm_name }
+			}
+			primary_title = { LR_dynastic_realm_names_reset_title_effect = yes }
+		}
+	}
+}
+
+# root = a ruler. Forces their realm name to be rebuilt on the next refresh
+# (government changes can change the tier word without changing house, culture or faith)
+LR_dynastic_realm_names_force_refresh_effect = {
+	if = {
+		limit = {
+			exists = primary_title
+			primary_title = { has_variable = LR_dynastic_realm_name_culture }
+		}
+		primary_title = { remove_variable = LR_dynastic_realm_name_culture }
+	}
+	LR_dynastic_realm_names_refresh_effect = yes
+}
+
+# scope = a title we named
+LR_dynastic_realm_names_reset_title_effect = {
+	reset_title_name = yes
+	set_can_be_named_after_dynasty = yes
+	remove_variable = LR_dynastic_realm_name
+	if = {
+		limit = { has_variable = LR_dynastic_realm_name_culture }
+		remove_variable = LR_dynastic_realm_name_culture
+	}
+	if = {
+		limit = { has_variable = LR_dynastic_realm_name_faith }
+		remove_variable = LR_dynastic_realm_name_faith
+	}
+}

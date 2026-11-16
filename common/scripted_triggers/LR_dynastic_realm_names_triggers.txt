@@ -1,0 +1,119 @@
+﻿# Dynastic realm names (game rule lr_dynastic_realm_names)
+# Realms of kingdom tier and above are named "<House> <Tier>" on the map, e.g. "Abbasid Caliphate".
+# See common/scripted_effects/LR_dynastic_realm_names_effects.txt.
+
+# The culture uses one of the name lists that have house_based_map_names = yes
+# (the vanilla dynastic cultures: Arabic, Berber, Iranian, Turkic, Indo-Aryan, Dravidian, Mongolic...).
+# Keep in step with house_based_map_names in common/culture/name_lists.
+LR_dynastic_realm_name_culture_trigger = {
+	culture = {
+		OR = {
+			has_name_list = name_list_afghan
+			has_name_list = name_list_akan
+			has_name_list = name_list_andalusian
+			has_name_list = name_list_assamese
+			has_name_list = name_list_avar
+			has_name_list = name_list_baloch
+			has_name_list = name_list_bashkir
+			has_name_list = name_list_bedouin
+			has_name_list = name_list_bengali
+			has_name_list = name_list_bolghar
+			has_name_list = name_list_buryat
+			has_name_list = name_list_chuvash
+			has_name_list = name_list_cuman
+			has_name_list = name_list_daylamite
+			has_name_list = name_list_egyptian
+			has_name_list = name_list_emishi
+			has_name_list = name_list_gond
+			has_name_list = name_list_guan
+			has_name_list = name_list_gujarati
+			has_name_list = name_list_hindustani
+			has_name_list = name_list_jurchen
+			has_name_list = name_list_kannada
+			has_name_list = name_list_karluk
+			has_name_list = name_list_kerait
+			has_name_list = name_list_khazar
+			has_name_list = name_list_khitan
+			has_name_list = name_list_khwarezmian
+			has_name_list = name_list_kimek
+			has_name_list = name_list_kipchak
+			has_name_list = name_list_kirghiz
+			has_name_list = name_list_kru
+			has_name_list = name_list_kurdish
+			has_name_list = name_list_laktan
+			has_name_list = name_list_levantine
+			has_name_list = name_list_maghrebi
+			has_name_list = name_list_malvi
+			has_name_list = name_list_mohe
+			has_name_list = name_list_mongol
+			has_name_list = name_list_naiman
+			has_name_list = name_list_oirat
+			has_name_list = name_list_ongud
+			has_name_list = name_list_oriya
+			has_name_list = name_list_pecheneg
+			has_name_list = name_list_persian
+			has_name_list = name_list_punjabi
+			has_name_list = name_list_rajput
+			has_name_list = name_list_saka
+			has_name_list = name_list_samoyed
+			has_name_list = name_list_sarmatian
+			has_name_list = name_list_shatuo
+			has_name_list = name_list_sindhi
+			has_name_list = name_list_sogdian
+			has_name_list = name_list_tajik
+			has_name_list = name_list_tamil
+			has_name_list = name_list_telugu
+			has_name_list = name_list_tocharian
+			has_name_list = name_list_turkish
+			has_name_list = name_list_tuyuhun
+			has_name_list = name_list_uriankhai
+			has_name_list = name_list_vietnamese
+			has_name_list = name_list_yamato
+			has_name_list = name_list_yemeni
+			has_name_list = name_list_zaghawa
+		}
+	}
+}
+
+# Governments that never get a house-named realm in the "all realms" mode
+LR_dynastic_realm_name_excluded_government_trigger = {
+	OR = {
+		government_has_flag = government_is_theocracy
+		government_has_flag = government_is_republic
+		government_has_flag = government_is_landless_adventurer
+		government_has_flag = government_is_nomadic
+		government_has_flag = government_is_herder
+		government_has_flag = government_is_holy_order
+		government_has_flag = government_is_mercenary
+	}
+}
+
+# root = a ruler. Should their primary title carry the house name?
+LR_dynastic_realm_name_valid_trigger = {
+	NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
+	is_alive = yes
+	exists = house
+	exists = primary_title
+	primary_title = { tier >= tier_kingdom }
+	OR = {
+		AND = {
+			has_game_rule = lr_dynastic_realm_names_dynastic
+			government_allows = dynasty_named_realms
+			LR_dynastic_realm_name_culture_trigger = yes
+		}
+		AND = {
+			has_game_rule = lr_dynastic_realm_names_all
+			NOT = { LR_dynastic_realm_name_excluded_government_trigger = yes }
+		}
+	}
+}
+
+# scope = a title we named, root = its ruler. Is the stored name still right?
+LR_dynastic_realm_name_up_to_date_trigger = {
+	has_variable = LR_dynastic_realm_name
+	has_variable = LR_dynastic_realm_name_culture
+	has_variable = LR_dynastic_realm_name_faith
+	var:LR_dynastic_realm_name = root.house
+	var:LR_dynastic_realm_name_culture = root.culture
+	var:LR_dynastic_realm_name_faith = root.faith
+}

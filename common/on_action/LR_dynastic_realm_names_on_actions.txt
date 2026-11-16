@@ -1,0 +1,86 @@
+﻿# Dynastic realm names (game rule lr_dynastic_realm_names): see common/scripted_effects/LR_dynastic_realm_names_effects.txt
+
+on_game_start_after_lobby = {
+	on_actions = { LR_dynastic_realm_names_game_start }
+}
+on_title_gain = {
+	on_actions = { LR_dynastic_realm_names_on_title_change }
+}
+on_title_lost = {
+	on_actions = { LR_dynastic_realm_names_on_title_change }
+}
+yearly_playable_pulse = {
+	on_actions = { LR_dynastic_realm_names_yearly }
+}
+on_government_change = {
+	on_actions = { LR_dynastic_realm_names_on_government_change }
+}
+on_character_culture_change = {
+	on_actions = { LR_dynastic_realm_names_on_belief_change }
+}
+on_faith_conversion = {
+	on_actions = { LR_dynastic_realm_names_on_belief_change }
+}
+
+LR_dynastic_realm_names_game_start = {
+	trigger = {
+		NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
+	}
+	effect = {
+		every_ruler = {
+			limit = { highest_held_title_tier >= tier_kingdom }
+			# run as an on_action so the ruler is root for the name loc
+			trigger_event = { on_action = LR_dynastic_realm_names_refresh }
+		}
+	}
+}
+
+# root = the new or old holder, scope:title = the title
+LR_dynastic_realm_names_on_title_change = {
+	trigger = {
+		NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
+		scope:title = { tier >= tier_kingdom }
+	}
+	effect = { LR_dynastic_realm_names_refresh_effect = yes }
+}
+
+# Catches house changes (cadet branches) and anything the title on_actions miss
+LR_dynastic_realm_names_yearly = {
+	trigger = {
+		NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			has_character_flag = LR_dynastic_realm_name_flag
+		}
+	}
+	effect = { LR_dynastic_realm_names_refresh_effect = yes }
+}
+
+# root = a ruler
+LR_dynastic_realm_names_refresh = {
+	effect = { LR_dynastic_realm_names_refresh_effect = yes }
+}
+
+# root = the ruler. The tier word can follow government, so rebuild the name
+LR_dynastic_realm_names_on_government_change = {
+	trigger = {
+		NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			has_character_flag = LR_dynastic_realm_name_flag
+		}
+	}
+	effect = { LR_dynastic_realm_names_force_refresh_effect = yes }
+}
+
+# root = the ruler. Culture and faith are compared by the refresh itself
+LR_dynastic_realm_names_on_belief_change = {
+	trigger = {
+		NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			has_character_flag = LR_dynastic_realm_name_flag
+		}
+	}
+	effect = { LR_dynastic_realm_names_refresh_effect = yes }
+}
