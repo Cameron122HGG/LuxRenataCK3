@@ -936,6 +936,30 @@ restore_gallia_roman_provinces_decision = {
 					}
 				}
 			}
+			OR = {
+				title:k_diocese_hibernia = {
+					is_titular = yes
+				}
+				title:k_diocese_hibernia = {
+					NOT = {
+						any_in_de_jure_hierarchy = {
+							is_titular = no
+						}
+					}
+				}
+			}
+			OR = {
+				title:k_diocese_caledonia = {
+					is_titular = yes
+				}
+				title:k_diocese_caledonia = {
+					NOT = {
+						any_in_de_jure_hierarchy = {
+							is_titular = no
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -1036,6 +1060,50 @@ restore_gallia_roman_provinces_decision = {
 								}
 							}
 						}
+					}
+				}
+			}
+			AND = {
+				completely_controls_region = custom_roman_hibernia
+				OR = {
+					title:k_diocese_hibernia = {
+						is_titular = yes
+					}
+					title:k_diocese_hibernia = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
+					text = LR_britannia_first_restore_tt
+					OR = {
+						has_title = title:k_diocese_britannia
+						any_vassal = { has_title = title:k_diocese_britannia }
+					}
+				}
+			}
+			AND = {
+				completely_controls_region = custom_roman_caledonia
+				OR = {
+					title:k_diocese_caledonia = {
+						is_titular = yes
+					}
+					title:k_diocese_caledonia = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
+					text = LR_britannia_first_restore_tt
+					OR = {
+						has_title = title:k_diocese_britannia
+						any_vassal = { has_title = title:k_diocese_britannia }
 					}
 				}
 			}
@@ -1295,6 +1363,100 @@ restore_gallia_roman_provinces_decision = {
 			}
 		}
 
+		item = { # LR 2026-11-16
+			value = custom_roman_hibernia
+			current_description = {
+				desc = hibernia_diocese_desc
+			}
+			localization = {
+				desc = hibernia_diocese_desc
+			}
+			is_shown = {
+				OR = {
+					title:k_diocese_hibernia = {
+						is_titular = yes
+					}
+					title:k_diocese_hibernia = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_hibernia
+				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
+					text = LR_britannia_first_restore_tt
+					OR = {
+						has_title = title:k_diocese_britannia
+						any_vassal = { has_title = title:k_diocese_britannia }
+					}
+				}
+			}
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						completely_controls_region = custom_roman_hibernia
+						OR = {
+							has_title = title:k_diocese_britannia
+							any_vassal = { has_title = title:k_diocese_britannia }
+						}
+					}
+					add = 100
+				}
+			}
+		}
+
+		item = { # LR 2026-11-16
+			value = custom_roman_caledonia
+			current_description = {
+				desc = caledonia_diocese_desc
+			}
+			localization = {
+				desc = caledonia_diocese_desc
+			}
+			is_shown = {
+				OR = {
+					title:k_diocese_caledonia = {
+						is_titular = yes
+					}
+					title:k_diocese_caledonia = {
+						NOT = {
+							any_in_de_jure_hierarchy = {
+								is_titular = no
+							}
+						}
+					}
+				}
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_caledonia
+				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
+					text = LR_britannia_first_restore_tt
+					OR = {
+						has_title = title:k_diocese_britannia
+						any_vassal = { has_title = title:k_diocese_britannia }
+					}
+				}
+			}
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						completely_controls_region = custom_roman_caledonia
+						OR = {
+							has_title = title:k_diocese_britannia
+							any_vassal = { has_title = title:k_diocese_britannia }
+						}
+					}
+					add = 100
+				}
+			}
+		}
+
 
 	}
 
@@ -1424,6 +1586,30 @@ restore_gallia_roman_provinces_decision = {
 				}
 				trigger_event = {
 					id = LR_roman_diocese_event.0001
+				}
+			}
+		}
+
+		hidden_effect = { # LR 2026-11-16
+			if = {
+				limit = {
+					scope:custom_roman_hibernia = yes
+				}
+				restore_roman_provinces_hibernia_decision_effect = yes
+				trigger_event = {
+					id = LR_roman_diocese_event.0011
+				}
+			}
+		}
+
+		hidden_effect = { # LR 2026-11-16
+			if = {
+				limit = {
+					scope:custom_roman_caledonia = yes
+				}
+				restore_roman_provinces_caledonia_decision_effect = yes
+				trigger_event = {
+					id = LR_roman_diocese_event.0012
 				}
 			}
 		}

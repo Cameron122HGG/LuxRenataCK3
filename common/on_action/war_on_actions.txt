@@ -2032,6 +2032,24 @@ on_war_won_attacker = { # As in, won BY attacker. Only one of the two on_actions
 				trigger_event = tgp_japan_decision.9961
 			}
 		}
+		# LR 2026-11-16: the same follow-up for Gaul's sacral feudal (ported soryo) rulers
+		if = {
+			limit = {
+				scope:war = {
+					using_cb = domination_cb
+				}
+				scope:winner = {
+					government_has_flag = government_is_sacral_feudal
+				}
+			}
+			every_in_list = {
+				list = target_titles
+				save_scope_as = title_scope
+			}
+			scope:winner = {
+				trigger_event = LR_tgp_sacral_gaul_decision.9961
+			}
+		}
 
 		#allies befriending the war leader if they contributed, moved from join_war_interaction on_accept
 		allies_progress_towards_friendship_effect = yes
@@ -2448,6 +2466,24 @@ on_war_won_defender = {
 			}
 			scope:loser = {
 				trigger_event = tgp_japan_decision.9962
+			}
+		}
+		# LR 2026-11-16: the same follow-up for Gaul's sacral feudal (ported soryo) rulers
+		if = {
+			limit = {
+				scope:war = {
+					using_cb = domination_cb
+				}
+				scope:loser = {
+					government_has_flag = government_is_sacral_feudal
+				}
+			}
+			every_in_list = {
+				list = target_titles
+				save_scope_as = title_scope
+			}
+			scope:loser = {
+				trigger_event = LR_tgp_sacral_gaul_decision.9962
 			}
 		}
 		#allies befriending the war leader if they contributed, moved from join_war_interaction on_accept

@@ -820,6 +820,74 @@ restore_roman_provinces_britannia_decision_effect = {
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_britannia }
 }
 
+# LR 2026-11-16: Hibernia was never Roman; the Western emperor (or a regional empire) extends the empire from a
+# restored Britannia. Same steps as restore_roman_provinces_britannia_decision_effect.
+restore_roman_provinces_hibernia_decision_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:k_diocese_hibernia = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	title:k_diocese_hibernia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	if = {
+		limit = { has_title = title:e_western_roman_empire }
+		title:k_diocese_hibernia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		title:k_diocese_hibernia = { set_de_jure_liege_title = root.primary_title }
+	}
+
+	hidden_effect = {
+		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_hibernia DIOCESE = k_diocese_hibernia }
+	}
+
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hibernia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_hibernia }
+}
+
+# LR 2026-11-16: Caledonia was never Roman; the Western emperor (or a regional empire) extends the empire from a
+# restored Britannia. Same steps as restore_roman_provinces_britannia_decision_effect.
+restore_roman_provinces_caledonia_decision_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:k_diocese_caledonia = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	title:k_diocese_caledonia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	if = {
+		limit = { has_title = title:e_western_roman_empire }
+		title:k_diocese_caledonia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		title:k_diocese_caledonia = { set_de_jure_liege_title = root.primary_title }
+	}
+
+	hidden_effect = {
+		LR_move_region_duchies_to_diocese_effect = { REGION = custom_roman_caledonia DIOCESE = k_diocese_caledonia }
+	}
+
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_caledonia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_caledonia }
+}
+
 
 
 LR_restore_eastern_hegemony_decision_effect = {
