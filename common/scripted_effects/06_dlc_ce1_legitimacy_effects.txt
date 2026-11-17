@@ -113,6 +113,23 @@ add_legitimacy_attacker_victory_effect = {
 		WINNER = scope:attacker
 		LOSER = scope:defender
 	}
+
+	# Handling for Republics losing their last county to an Attacker - needs to go before transfer of land
+	scope:defender ?= {
+		if = {
+			limit = {
+				gdp_holds_republic_title_trigger = yes
+				NOT = {
+					any_held_county = {
+						is_landless_type_title = no
+						is_noble_family_title = no
+						NOT = { is_in_list = target_titles } # all landed counties lost
+					}
+				}
+			}
+			gdp_republic_patricians_become_merchants_warning_effect = { DESTROYER = scope:attacker }
+		}
+	}
 }
 
 add_legitimacy_attacker_defeat_effect = {
@@ -318,13 +335,27 @@ faction_war_end_defeat_legitimacy_effect = {
 faction_war_end_victory_legitimacy_effect = {
 	scope:defender = {
 		if = {
-			limit = { is_valid_for_legitimacy_change = yes }
+			limit = {
+				is_valid_for_legitimacy_change = yes
+				# Crushing the same rebel again and again is not increasingly legitimising.
+				scope:attacker = {
+					NOT = { has_variable = recently_lost_war_for_legitimacy }
+				}
+			}
 			send_interface_toast = {
 				type = msg_legitimacy_gain
 				title = legitimacy_gain_toast
 				left_icon = scope:attacker
 				right_icon = scope:defender
 				add_legitimacy = minor_legitimacy_gain
+			}
+			hidden_effect = {
+				scope:attacker = {
+					set_variable = {
+						name = recently_lost_war_for_legitimacy
+						years = faction_war_defeat_cooldown
+					}
+				}
 			}
 		}
 	}
@@ -411,6 +442,7 @@ base_legitimacy_intent_reward = {
 	if = {
 		limit = {
 			has_activity_intent = legitimacy_intent
+			has_legitimacy = yes
 		}
 		add_legitimacy = minor_legitimacy_gain
 	}

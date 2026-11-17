@@ -45,6 +45,14 @@ grant_vassal_interaction = {
 			}
 		}
 		scope:recipient.highest_held_title_tier > tier_barony
+		scope:actor = {
+			trigger_if = {
+				limit = {
+					government_has_flag = government_is_republic
+				}
+				is_landed = yes
+			}
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -266,7 +274,7 @@ grant_vassal_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:puppet_or_actor
 			TARGET = scope:recipient
 			VALUE = miniscule_unity_gain
@@ -424,7 +432,7 @@ grant_vassal_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:recipient
 			TARGET = scope:puppet_or_actor
 			VALUE = miniscule_unity_loss
@@ -515,6 +523,15 @@ retract_vassal_interaction = {
 			}
 			trigger_else_if = {
 				limit = {
+					government_has_flag = government_is_republic
+				}
+				custom_description = {
+					text = "has_law_allowing_vassal_retraction_republic"
+					has_realm_law_flag = vassal_retraction_allowed
+				}
+			}
+			trigger_else_if = {
+				limit = {
 					realm_law_use_church_authority = yes
 				}
 				custom_description = {
@@ -596,10 +613,17 @@ retract_vassal_interaction = {
 
 	on_decline = {
 		scope:puppet_or_actor = { vassal_revocation_tyranny_effect = yes }
-		war_for_retraction_effect = {
-			LIEGE = scope:puppet_or_actor
-			REBEL = scope:recipient
-			SUBVASSAL = scope:secondary_recipient
+		if = {
+			limit = {
+				scope:puppet_or_actor = {
+					NOT = { has_realm_law_flag = republic_vassal_refusal_allowed }
+				}
+			}
+			war_for_retraction_effect = {
+				LIEGE = scope:puppet_or_actor
+				REBEL = scope:recipient
+				SUBVASSAL = scope:secondary_recipient
+			}
 		}
 		scope:recipient = {
 			add_opinion = {
@@ -909,6 +933,15 @@ retract_vassal_interaction = {
 			}
 			desc = VASSALS_REFUSAL_indomitable_azatani
 		}
+		#GG modifier
+		modifier = {
+			add = -50
+			OR = {
+				gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:actor SECOND = scope:recipient }
+				scope:recipient = { is_gg_undecided_trigger = yes }
+			}
+			desc = RECIPIENT_IS_NOT_YOUR_GG
+		}
 	}
 
 	#Use hook
@@ -1161,9 +1194,7 @@ retract_vassal_interaction = {
 			scope:puppet_or_actor = {
 				OR = {
 					has_relation_friend = scope:recipient
-					has_relation_best_friend = scope:recipient
 					has_relation_lover = scope:recipient
-					has_relation_soulmate = scope:recipient
 					is_heir_of = scope:recipient
 				}
 			}
@@ -1223,6 +1254,13 @@ retract_vassal_interaction = {
 					highest_held_title_tier = tier_barony
 				}
 			}
+		}
+
+		modifier = {
+			scope:actor = {
+				gg_hre_causes_additional_tyranny_trigger = { TARGET = scope:recipient }
+			}
+			factor = 0
 		}
 	}
 }
@@ -1382,6 +1420,12 @@ create_claimant_faction_against_interaction = {
 			text = "faction_can_join_create_in_another_faction"
 			is_a_faction_member = no
 		}
+		trigger_if = {
+			limit = {
+				government_has_flag = government_is_republic
+			}
+			is_landed = yes
+		}
 	}
 
 	is_shown = {
@@ -1485,7 +1529,7 @@ create_claimant_faction_against_interaction = {
 		trigger_if = {
 			limit = {
 				exists = scope:landed_title
-				scope:actor.top_liege.primary_title.var:administrative_ui_special_title ?= scope:landed_title
+				scope:actor.ceremonial_liege_title ?= scope:landed_title
 			}
 			scope:recipient = {
 				tgp_is_in_ceremonial_house_trigger = yes
@@ -1611,9 +1655,7 @@ invite_to_council_position_interaction = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					scope:recipient = {
-						is_councillor_of = scope:actor
-					}
+					scope:recipient = { is_councillor_of = scope:actor }
 				}
 				desc = liege_offer_council_position_exchange
 			}
@@ -1641,9 +1683,7 @@ invite_to_council_position_interaction = {
 			}
 			triggered_desc = {
 				trigger = {
-					scope:recipient = {
-						is_powerful_vassal_of = scope:actor
-					}
+					scope:recipient = { is_powerful_vassal_of = scope:actor }
 				}
 				desc = liege_offer_council_position_powerful
 			}
@@ -1666,14 +1706,13 @@ invite_to_council_position_interaction = {
 	}
 
 	is_valid_showing_failures_only = {
+		scope:recipient.liege = scope:actor
 		ALL_FALSE = {
 			scope:recipient.council_task = scope:target
 			scope:actor = { is_at_war_with = scope:recipient }
 		}
 		trigger_if = {
-			limit = {
-				exists = scope:target.councillor
-			}
+			limit = { exists = scope:target.councillor }
 			scope:target = { can_fire_position = yes }
 			NOT = {
 				scope:target.councillor = {
@@ -1715,7 +1754,7 @@ invite_to_council_position_interaction = {
 		# If we're a clan this interaction affects unity
 		#if = {
 		#	limit = { scope:actor = { NOT = { has_character_flag = fp3_consulted_house } } }
-		#	add_clan_unity_interaction_effect = {
+		#	add_house_unity_interaction_effect = {
 		#		CHARACTER = scope:actor
 		#		TARGET = scope:recipient
 		#		VALUE = miniscule_unity_gain
@@ -1904,7 +1943,7 @@ force_onto_council = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
@@ -2138,8 +2177,6 @@ force_onto_council = {
 				OR = {
 					has_relation_friend = scope:recipient
 					has_relation_lover = scope:recipient
-					has_relation_best_friend = scope:recipient
-					has_relation_soulmate = scope:recipient
 				}
 			}
 		}
@@ -2251,7 +2288,7 @@ stop_attacker_vassal_war_interaction = {
 					exists = scope:actor.house
 					scope:recipient.house != scope:actor.house
 				}
-				add_clan_unity_interaction_effect = {
+				add_house_unity_interaction_effect = {
 					CHARACTER = scope:actor
 					TARGET = scope:target.primary_defender
 					VALUE = medium_unity_gain
@@ -2265,7 +2302,7 @@ stop_attacker_vassal_war_interaction = {
 					exists = scope:target.primary_defender.house
 					scope:target.primary_defender.house != scope:actor.house
 				}
-				add_clan_unity_interaction_effect = {
+				add_house_unity_interaction_effect = {
 					CHARACTER = scope:actor
 					TARGET = scope:recipient
 					VALUE = medium_unity_loss
@@ -2387,7 +2424,7 @@ stop_defender_vassal_war_interaction = {
 					exists = scope:target.primary_attacker.house
 					scope:target.primary_attacker.house != scope:actor.house
 				}
-				add_clan_unity_interaction_effect = {
+				add_house_unity_interaction_effect = {
 					CHARACTER = scope:actor
 					TARGET = scope:recipient
 					VALUE = medium_unity_loss
@@ -2401,7 +2438,7 @@ stop_defender_vassal_war_interaction = {
 					exists = scope:recipient.house
 					scope:recipient.house != scope:actor.house
 				}
-				add_clan_unity_interaction_effect = {
+				add_house_unity_interaction_effect = {
 					CHARACTER = scope:actor
 					TARGET = scope:target.primary_attacker
 					VALUE = medium_unity_gain
@@ -2558,7 +2595,7 @@ ask_for_pardon_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
@@ -2616,7 +2653,7 @@ ask_for_pardon_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:recipient
 			TARGET = scope:actor
 			VALUE = minor_unity_loss
@@ -2990,7 +3027,7 @@ pardon_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:puppet_or_actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
@@ -3022,9 +3059,7 @@ pardon_interaction = {
 			scope:recipient = {
 				OR = {
 					has_relation_friend = scope:puppet_or_actor
-					has_relation_best_friend = scope:puppet_or_actor
 					has_relation_lover = scope:puppet_or_actor
-					has_relation_soulmate = scope:puppet_or_actor
 					is_primary_heir_of = scope:puppet_or_actor
 				}
 			}
@@ -3114,6 +3149,12 @@ vassal_claim_liege_title_interaction = {
 
 		scope:puppet_or_actor ?= {
 			is_physically_able_adult = yes
+			trigger_if = {
+				limit = {
+					government_has_flag = government_is_republic
+				}
+				is_landed = yes
+			}
 		}
 
 		scope:recipient = scope:puppet_or_actor.liege
@@ -3383,7 +3424,7 @@ vassal_claim_liege_title_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:puppet_or_actor
 			TARGET = scope:recipient
 			VALUE = major_unity_loss
@@ -3444,10 +3485,7 @@ vassal_claim_liege_title_interaction = {
 		modifier = {
 			add = 25
 			scope:recipient = {
-				OR = {
-					has_relation_rival = scope:puppet_or_actor
-					has_relation_nemesis = scope:puppet_or_actor
-				}
+				has_relation_rival = scope:puppet_or_actor
 			}
 		}
 
@@ -3572,7 +3610,6 @@ vassal_claim_liege_title_interaction = {
 			scope:recipient = {
 				OR = {
 					has_relation_friend = scope:puppet_or_actor
-					has_relation_best_friend = scope:puppet_or_actor
 					has_relation_soulmate = scope:puppet_or_actor
 				}
 			}
@@ -3624,7 +3661,7 @@ give_vassal_directive_interaction = {
 	}
 
 	send_option = {
-		flag = improve_development
+		flag = improve_prosperity
 		is_shown = {
 			scope:recipient = {
 				government_has_mechanic = administrative
@@ -3816,7 +3853,7 @@ give_vassal_directive_interaction = {
 				text = has_any_directive
 				scope:recipient = {
 					has_variable = {
-						name = vassal_directive_improve_development
+						name = vassal_directive_improve_prosperity
 						name = vassal_directive_train_commanders
 						name = vassal_directive_build_maa
 						name = vassal_directive_convert_faith
@@ -3840,7 +3877,7 @@ give_vassal_directive_interaction = {
 			if = {
 				limit = {
 					has_variable = {
-						name = vassal_directive_improve_development
+						name = vassal_directive_improve_prosperity
 						name = vassal_directive_train_commanders
 						name = vassal_directive_build_maa
 						name = vassal_directive_convert_faith
@@ -3863,11 +3900,11 @@ give_vassal_directive_interaction = {
 			switch = {
 				trigger = yes
 
-				scope:improve_development ?= {
+				scope:improve_prosperity ?= {
 					custom_tooltip = {
-						text = vassal_directive_improve_development
+						text = vassal_directive_improve_prosperity
 						remove_vassal_directives = yes
-						add_character_flag = vassal_directive_improve_development
+						add_character_flag = vassal_directive_improve_prosperity
 					}
 				}
 
@@ -3990,11 +4027,11 @@ give_vassal_directive_interaction = {
 
 		modifier = {
 			add = 100
-			scope:improve_development ?= yes
+			scope:improve_prosperity ?= yes
 			scope:recipient = {
 				has_none_of_variables = {
 					name = vassal_directive_building_focus_economy
-					name = vassal_directive_improve_development
+					name = vassal_directive_improve_prosperity
 				}
 				OR = {
 					vassal_contract_has_flag = admin_theme_civilian
@@ -4009,7 +4046,7 @@ give_vassal_directive_interaction = {
 			scope:recipient = {
 				has_none_of_variables = {
 					name = vassal_directive_building_focus_economy
-					name = vassal_directive_improve_development
+					name = vassal_directive_improve_prosperity
 				}
 				OR = {
 					vassal_contract_has_flag = admin_theme_civilian

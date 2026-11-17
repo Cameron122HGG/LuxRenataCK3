@@ -638,11 +638,15 @@ restore_ceremonial_liege_faction = {
 			}
 		}
 		
-		set_special_title = scope:faction_leader_scope.top_liege.primary_title.var:administrative_ui_special_title
-		set_special_character = scope:faction_leader_scope.top_liege.primary_title.var:administrative_ui_special_title.holder
+		if = {
+			limit = { exists = scope:faction_leader_scope }
+			set_special_title = scope:faction_leader_scope.ceremonial_liege_title
+			set_special_character = scope:faction_leader_scope.ceremonial_liege
+		}
 
 		if = {
 			limit = {
+				exists = scope:faction_leader_scope
 				any_player = {
 					is_landless_adventurer = yes
 					is_within_diplo_range = { CHARACTER = scope:faction.faction_target }
@@ -899,7 +903,7 @@ ceremonial_claimant_faction = {
 		}
 
 		ceremonial_claimant_faction_blockers = {
-			FACTION_TARGET = scope:target.top_liege.primary_title.var:administrative_ui_special_title.holder
+			FACTION_TARGET = scope:target.ceremonial_liege
 			FACTION_CLAIMANT = scope:claimant
 		}
 
@@ -915,7 +919,7 @@ ceremonial_claimant_faction = {
 		}
 
 		ceremonial_claimant_faction_modifiers = {
-			FACTION_TARGET = scope:target.top_liege.primary_title.var:administrative_ui_special_title.holder
+			FACTION_TARGET = scope:target.ceremonial_liege
 			FACTION_CLAIMANT = scope:claimant
 			FACTION_TITLE = scope:title
 		}
@@ -948,9 +952,9 @@ ceremonial_claimant_faction = {
 		}
 
 		ceremonial_claimant_faction_modifiers = {
-			FACTION_TARGET = scope:faction.faction_target.top_liege.primary_title.var:administrative_ui_special_title.holder
+			FACTION_TARGET = scope:faction.faction_target.ceremonial_liege
 			FACTION_CLAIMANT = scope:faction.special_character
-			FACTION_TITLE = scope:faction.faction_target.top_liege.primary_title.var:administrative_ui_special_title
+			FACTION_TITLE = scope:faction.faction_target.ceremonial_liege_title
 		}
 
 		admin_faction_modifiers = {
@@ -1022,7 +1026,7 @@ ceremonial_claimant_faction = {
 				scope:faction.faction_target.culture != this.title_province.culture
 				scope:faction.special_character.culture = this.title_province.culture 
 			}
-			value = county_opinion
+			value = popular_opinion
 			multiplier = -2.0
 		}
 		compare_modifier = {
@@ -1031,7 +1035,7 @@ ceremonial_claimant_faction = {
 				NOT = { this.title_province.culture = { has_same_culture_heritage = scope:faction.faction_target.culture } }
 				this.title_province.culture = { has_same_culture_heritage = scope:faction.special_character.culture }
 			}
-			value = county_opinion
+			value = popular_opinion
 			multiplier = -2.0
 		}
 
@@ -1045,7 +1049,7 @@ ceremonial_claimant_faction = {
 					}
 				}
 			}
-			value = county_opinion
+			value = popular_opinion
 			multiplier = {
 				value = 0.0
 				if = {

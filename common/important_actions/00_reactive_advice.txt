@@ -85,7 +85,7 @@ action_reactive_advice_protecting_against_hostile_schemes = {
 		if = {
 			limit = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_protecting_against_hostile_schemes }
-				months_from_game_start >= 52 # Reactive Advice Queue, Position 13
+				months_from_game_start >= 56 # Reactive Advice Queue, Position 14
 				OR = {
 					any_targeting_scheme = {
 						is_scheme_category = hostile
@@ -168,7 +168,11 @@ action_reactive_advice_county_control = {
 				any_held_title = {
 					title_tier = county
 					is_landless_type_title = no
-					county_control < 80
+					county_control < low_county_control
+					OR = {
+						county_control < county_control_baseline
+						has_county_corruption_trigger = yes
+					}
 				}
 			}
 			try_create_important_action = {
@@ -191,7 +195,9 @@ action_reactive_advice_bankruptcy = {
 		if = {
 			limit = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_bankruptcy }
+				is_landed = yes
 				gold < 0
+				NOT = { government_has_flag = government_has_merchant_company }
 			}
 			try_create_important_action = {
 				important_action_type = action_reactive_advice_bankruptcy
@@ -213,7 +219,7 @@ action_reactive_advice_rightful_liege = {
 		if = {
 			limit = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_rightful_liege }
-				months_from_game_start >= 40 # Reactive Advice Queue, Position 10
+				months_from_game_start >= 44 # Reactive Advice Queue, Position 11
 				is_at_war = no
 				any_vassal = {
 					highest_held_title_tier > 1
@@ -279,7 +285,7 @@ action_reactive_advice_bishop_endorsement = {
 		if = {
 			limit = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_bishop_endorsement }
-				months_from_game_start >= 48 # Reactive Advice Queue, Position 12
+				months_from_game_start >= 52 # Reactive Advice Queue, Position 13
 				rite = { rite_has_doctrine = doctrine_theocracy_temporal }
 				exists = cp:councillor_court_chaplain
 				cp:councillor_court_chaplain = {
@@ -376,7 +382,7 @@ action_reactive_advice_dynamic_culture = {
 
 						OR = {
 							is_widgetid_open = culture_window
-							months_from_game_start >= 16 # Reactive Advice Queue, Position 3
+							months_from_game_start >= 16 # Reactive Advice Queue, Position 4
 						}
 
 					}
@@ -486,7 +492,7 @@ action_reactive_advice_education = {
 	check_create_action = {
 		if = {
 			limit = {
-				months_from_game_start >= 56 # Reactive Advice Queue, Position 14
+				months_from_game_start >= 60 # Reactive Advice Queue, Position 15
 
 				should_show_tutorial_alert = { LESSON = reactive_advice_education }
 				is_at_war = no
@@ -611,7 +617,7 @@ action_reactive_advice_court_positions = {
 				OR = {
 					OR = {
 						is_widgetid_open = court_positions_subtab_tutorial_uses_this
-						months_from_game_start >= 32 # Reactive Advice Queue, Position 8
+						months_from_game_start >= 36 # Reactive Advice Queue, Position 9
 					}
 					has_character_flag = force_court_positions_tutorial # For the Quick Tutorial
 				}
@@ -640,7 +646,7 @@ action_reactive_advice_artifact_inventory = {
 
 				OR = {
 					is_widgetid_open = inventory_view
-					months_from_game_start >= 36 # Reactive Advice Queue, Position 9
+					months_from_game_start >= 40 # Reactive Advice Queue, Position 10
 				}
 
 				any_character_artifact = {
@@ -701,7 +707,7 @@ action_reactive_advice_regency_for_liege = {
 				has_active_diarchy = yes
 				OR = {
 					is_widgetid_open = diarchy_window
-					months_from_game_start >= 28 # Reactive Advice Queue, Position 7
+					months_from_game_start >= 32 # Reactive Advice Queue, Position 8
 				}
 			}
 			try_create_important_action = {
@@ -727,7 +733,7 @@ action_reactive_advice_regency_for_regent = {
 				is_diarch = yes
 				OR = {
 					is_widgetid_open = diarchy_window
-					months_from_game_start >= 28 # Reactive Advice Queue, Position 7
+					months_from_game_start >= 32 # Reactive Advice Queue, Position 8
 				}
 			}
 			try_create_important_action = {
@@ -752,7 +758,7 @@ action_reactive_advice_set_future_regent = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_set_future_regent }	
 				OR = {
 					is_widgetid_open = diarchy_window
-					months_from_game_start >= 64 # Reactive Advice Queue, Position 16
+					months_from_game_start >= 68 # Reactive Advice Queue, Position 17
 				}
 				has_active_diarchy = no
 				is_landless_adventurer = no
@@ -769,32 +775,6 @@ action_reactive_advice_set_future_regent = {
 	}
 }
 
-action_reactive_advice_travel_planning = {
-	type = tutorial
-	icon = generic_reactive_advice
-	soundeffect = "event:/SFX/UI/Notifications/TopBar/sfx_ui_notifications_topbar_reactive_advice"
-	check_create_action = {
-		if = {
-			limit = {
-				should_show_tutorial_alert = { LESSON = reactive_advice_travel_planning }	
-				is_travelling = no
-				OR = {
-					is_widgetid_open = "travel_planning_tutorial_uses_this_1"
-					is_widgetid_open = "travel_planning_tutorial_uses_this_2"
-				}
-			}
-			try_create_important_action = {
-				important_action_type = action_reactive_advice_travel_planning
-				actor = root
-			}
-		}
-	}
-
-	effect = {
-		start_tutorial_lesson = reactive_advice_travel_planning
-	}
-}
-
 action_reactive_advice_house_unity = {
 	type = tutorial
 	icon = generic_reactive_advice
@@ -802,10 +782,11 @@ action_reactive_advice_house_unity = {
 	check_create_action = {
 		if = {
 			limit = {
+				NOT = { government_has_flag = government_is_merchant }
 				should_show_tutorial_alert = { LESSON = reactive_advice_house_unity }	
 				OR = {
 					is_widgetid_open = dynasty_house_view
-					months_from_game_start >= 24 # Reactive Advice Queue, Position 7
+					months_from_game_start >= 32 # Reactive Advice Queue, Position 8
 				}
 
 				house ?= { has_house_unity = yes }
@@ -832,7 +813,7 @@ action_reactive_advice_tax_collector = {
 			limit = {
 				OR = {
 					is_widgetid_open = window_manage_tax_slots
-					months_from_game_start >= 20 # Reactive Advice Queue, Position 5
+					months_from_game_start >= 24 # Reactive Advice Queue, Position 6
 				}
 
 				should_show_tutorial_alert = { LESSON = reactive_advice_tax_collector }
@@ -861,7 +842,7 @@ action_reactive_advice_legitimacy = {
 				has_legitimacy = yes
 				should_show_tutorial_alert = { LESSON = reactive_advice_legitimacy }
 				NOT = { has_global_variable = tutorial_current_situation_gradual_reveal_3 }
-				months_from_game_start >= 44 # Reactive Advice Queue, Position 11
+				months_from_game_start >= 48 # Reactive Advice Queue, Position 12
 			}
 
 			try_create_important_action = {
@@ -985,7 +966,7 @@ action_reactive_advice_favorite_child = {
 	check_create_action = {
 		if = {
 			limit = {
-				months_from_game_start >= 68 # Reactive Advice Queue, Position 17
+				months_from_game_start >= 72 # Reactive Advice Queue, Position 18
 				should_show_tutorial_alert = { LESSON = reactive_advice_favorite_child }
 				NOT = {
 					any_relation = { type = favorite_child }
@@ -1023,10 +1004,12 @@ action_reactive_advice_army_automation = {
 		if = {
 			limit = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_army_automation }
+
+				NOT = { government_has_flag = government_has_merchant_company }
 				
 				max_military_strength > 0
 				OR = {
-					months_from_game_start >= 60 # Reactive Advice Queue, Position 15
+					months_from_game_start >= 64 # Reactive Advice Queue, Position 16
 					participated_wars >= 2 # you are starting your 2nd war
 				}
 
@@ -1161,7 +1144,7 @@ action_reactive_advice_laamp_contract_move = {
 	check_create_action = {
 		if = {
 			limit = {
-				has_ep3_dlc_trigger = yes
+				has_playable_adventurer_dlc_trigger = yes
 				government_has_flag = government_is_landless_adventurer
 				is_travelling = no
 				domicile ?= { provisions >= 250 }
@@ -1293,7 +1276,7 @@ action_reactive_advice_tributaries = {
 					months_from_game_start >= 12 # Reactive Advice Queue
 					is_widgetid_open = "my_realm_window"
 					any_tributary = {
-						count >= 1
+						NOT = { government_has_flag = government_is_merchant }
 					}
 				}
 								
@@ -1547,7 +1530,7 @@ action_reactive_advice_christian_situation = {
 
 				OR = {
 					is_widgetid_open = window_pam_christian_church
-					months_from_game_start >= 18 # Reactive Advice Queue, Position 4
+					months_from_game_start >= 20 # Reactive Advice Queue, Position 5
 				}
 			}
 			try_create_important_action = {
@@ -1574,7 +1557,7 @@ action_reactive_advice_puppets = {
 				OR = {
 					is_theological_agent_puppet_trigger = yes
 					is_widgetid_open = vbox_puppet_section
-					months_from_game_start >= 20 # Reactive Advice Queue, Position 5
+					months_from_game_start >= 28 # Reactive Advice Queue, Position 7
 				}
 			}
 			try_create_important_action = {
@@ -1606,7 +1589,7 @@ action_reactive_advice_clerical_regions = {
 						any_held_county = {
 							exists = clerical_region_title
 						}
-						months_from_game_start >= 22 # Reactive Advice Queue, Position 6
+						months_from_game_start >= 32 # Reactive Advice Queue, Position 8
 					}
 				}
 				
@@ -1636,7 +1619,7 @@ action_reactive_advice_personal_beliefs = {
 
 				OR = {
 					is_widgetid_open = window_personal_beliefs
-					months_from_game_start >= 20 # Reactive Advice Queue, Position 5
+					months_from_game_start >= 24 # Reactive Advice Queue, Position 6
 				}
 			}
 			try_create_important_action = {

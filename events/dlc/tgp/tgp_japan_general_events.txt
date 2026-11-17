@@ -698,7 +698,15 @@ tgp_japan_general.9100 = {
 tgp_japan_general.9120 = {
 	type = character_event
 	title = tgp_japan_general.9120.t
-	desc = tgp_japan_general.9120.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { take_vows_available_trigger = no }
+				desc = tgp_japan_general.9120.desc_no_vows
+			}
+			desc = tgp_japan_general.9120.desc
+		}
+	}
 	theme = crown
 	left_portrait = {
 		character = root
@@ -731,12 +739,20 @@ tgp_japan_general.9120 = {
 
 	# Become Cloistered Emperor
 	option = {
-		name = tgp_japan_general.9120.a
+		name = {
+			trigger = { take_vows_available_trigger = yes }
+			text = tgp_japan_general.9120.a
+		}
+		name = {
+			trigger = { take_vows_available_trigger = no }
+			text = tgp_japan_general.9120.a_no_vows
+		}
 		japan_clear_flavour_flags_effect = yes
 		add_character_flag = joko_flag
 		change_influence = major_influence_gain
 		if = {
 			limit = {
+				take_vows_available_trigger = yes
 				NOT = { has_trait = devoted }
 			}
 			add_trait = devoted
@@ -962,7 +978,7 @@ scripted_effect tgp_japan_soryo_eradicate_cb_heir_go_to_savior = {
 				NOT = {
 				 	exists = scope:loser.domicile
 				}
-				has_dlc_feature = roads_to_power
+				has_playable_adventurer_dlc_trigger = yes
 			}
 			create_landless_adventurer_title_effect = {
 				REASON = flag:eradicate
@@ -986,7 +1002,7 @@ scripted_effect tgp_japan_soryo_eradicate_cb_loser_go_to_savior = {
 			NOT = {
 			 	exists = scope:loser.domicile
 			}
-			has_dlc_feature = roads_to_power
+			has_playable_adventurer_dlc_trigger = yes
 		}
 		create_landless_adventurer_title_effect = {
 			REASON = flag:eradicate
@@ -1488,13 +1504,11 @@ tgp_japan_general.9551 = {
 			#make loser_heir and nemesis or rival friends
 			if = {
 				limit = {
-					can_set_relation_nemesis_trigger = {
-						CHARACTER = scope:winner
-					}
+					can_set_relation_nemesis_trigger = { CHARACTER = scope:winner }
 				}
-				set_relation_nemesis = {
-					reason = nemesis_killed_family
-					target = scope:winner
+				set_relation_nemesis_effect = {
+					TARGET = scope:winner
+					REASON = nemesis_killed_family
 				}
 			}
 			else_if = {
@@ -1503,9 +1517,9 @@ tgp_japan_general.9551 = {
 						CHARACTER = scope:winner
 					}
 				}
-				set_relation_rival = {
-					reason = nemesis_killed_family
-					target = scope:winner
+				set_relation_rival_effect = {
+					TARGET = scope:winner
+					REASON = nemesis_killed_family
 				}
 			}
 			#make loser_heir and savior friends

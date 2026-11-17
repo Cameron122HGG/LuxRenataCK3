@@ -167,9 +167,9 @@ mpo_greatest_of_khans.0100 = {
 					}
 				}
 			}
-			set_relation_rival = {
-				target = scope:primary_coalition_defender
-				reason = rival_led_coalition_against_me
+			set_relation_rival_effect = {
+				TARGET = scope:primary_coalition_defender
+				REASON = rival_led_coalition_against_me
 			}
 		}
 		#Memory for Gurkhan
@@ -1864,8 +1864,8 @@ mpo_greatest_of_khans.0030 = {
 		}
 		add_internal_flag = dangerous
 		custom_tooltip = gok_counties_become_nomad_counties_tt
-		custom_tooltip = gok_new_nomad_counties_lose_development_tt
-		custom_tooltip = gok_other_counties_lose_development_tt
+		custom_tooltip = gok_new_nomad_counties_lose_prosperity_tt
+		custom_tooltip = gok_other_counties_lose_prosperity_tt
 		hidden_effect = {
 			every_in_list = {
 				list = burned_to_nomadism
@@ -1875,18 +1875,18 @@ mpo_greatest_of_khans.0030 = {
 				}
 				if = {
 					limit = {
-						development_level > 1
+						prosperity_level > 1
 					}
 					save_scope_value_as = {
 						name = dev_reduction
 						value = {
-							add = development_level
+							add = prosperity_level
 							multiply = -1
 							add = 1
 						}
 					}
 				}
-				change_development_level = scope:dev_reduction
+				change_prosperity_level = scope:dev_reduction
 				change_county_control = -100
 			}
 			#damage the rest a bit too
@@ -1904,10 +1904,10 @@ mpo_greatest_of_khans.0030 = {
 							is_ai = no
 						}
 					}
-					development_level > 1
+					prosperity_level > 1
 				}
-				change_development_level = {
-					add = development_level
+				change_prosperity_level = {
+					add = prosperity_level
 					divide = 10
 					floor = yes
 					multiply = -1

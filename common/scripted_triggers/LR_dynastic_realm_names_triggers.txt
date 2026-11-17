@@ -1,5 +1,7 @@
 ﻿# Dynastic realm names (game rule lr_dynastic_realm_names)
 # Realms of kingdom tier and above are named "<House> <Tier>" on the map, e.g. "Abbasid Caliphate".
+# In the "all realms" mode, realms whose culture doesn't name realms after houses get "<Tier> of <Title>"
+# on the map instead, e.g. "Kingdom of France".
 # See common/scripted_effects/LR_dynastic_realm_names_effects.txt.
 
 # The culture uses one of the name lists that have house_based_map_names = yes
@@ -88,7 +90,24 @@ LR_dynastic_realm_name_excluded_government_trigger = {
 	}
 }
 
-# root = a ruler. Should their primary title carry the house name?
+# root = a ruler. Are they the head of their own faith (a temporal head like the caliph)?
+# Their realm is then named after the head of faith title's word ("Abbasid Caliphate"), even though
+# the head of faith title (e.g. d_sunni) is usually lower tier than their secular primary title.
+LR_dynastic_realm_name_temporal_head_trigger = {
+	faith = {
+		exists = religious_head
+		religious_head = root
+	}
+}
+
+# root = a ruler. Does the realm name follow the house ("Abbasid Caliphate")?
+# Otherwise (only in the "all realms" mode) it is "<Tier> of <Title>" ("Kingdom of France").
+LR_dynastic_realm_name_house_form_trigger = {
+	government_allows = dynasty_named_realms
+	LR_dynastic_realm_name_culture_trigger = yes
+}
+
+# root = a ruler. Should their primary title get a dynastic or tiered realm name?
 LR_dynastic_realm_name_valid_trigger = {
 	NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
 	is_alive = yes
@@ -98,8 +117,7 @@ LR_dynastic_realm_name_valid_trigger = {
 	OR = {
 		AND = {
 			has_game_rule = lr_dynastic_realm_names_dynastic
-			government_allows = dynasty_named_realms
-			LR_dynastic_realm_name_culture_trigger = yes
+			LR_dynastic_realm_name_house_form_trigger = yes
 		}
 		AND = {
 			has_game_rule = lr_dynastic_realm_names_all
@@ -116,4 +134,15 @@ LR_dynastic_realm_name_up_to_date_trigger = {
 	var:LR_dynastic_realm_name = root.house
 	var:LR_dynastic_realm_name_culture = root.culture
 	var:LR_dynastic_realm_name_faith = root.faith
+	# named as head of faith <=> still head of faith
+	OR = {
+		AND = {
+			has_variable = LR_dynastic_realm_name_hof
+			root = { LR_dynastic_realm_name_temporal_head_trigger = yes }
+		}
+		AND = {
+			NOT = { has_variable = LR_dynastic_realm_name_hof }
+			root = { NOT = { LR_dynastic_realm_name_temporal_head_trigger = yes } }
+		}
+	}
 }

@@ -16,6 +16,7 @@
  activity_coronation_province_desc: "The Coronation will be held in [ROOT.Province.GetName]"
  activity_coronation_capital_province: "\n#p + Capital#!"
  activity_coronation_holy_site_province: "\n#p + Holy Site#!"
+ activity_coronation_royal_chapel_province: "\n#p + $building_type_royal_chapel_1$#!"
  activity_coronation_tradition_province: "\n#p + Traditional Coronation Location#!"
  activity_coronation_long_tradition_province: "\n#p ++ Traditional Coronation Location#!"
  activity_coronation_ancient_tradition_province: "\n#p +++ Traditional Coronation Location#!"
@@ -95,6 +96,8 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  doctrine_parameter_theocratic_coronation: "[characters|E] have access to the [coronation_anointment|E] [activity_option|E]"
  doctrine_parameter_imperial_anointment: "[characters|E] of [empire|E] [title_tier|E] or higher must use the [coronation_anointment|E] [activity_option|E] to receive the [GetLaw('crowned_emperor').GetName] [law|E], so long as their [rite|E] has a [head_of_faith|E] or clergy [head_of_rite|E]"
  doctrine_parameter_coronation_artifact: "[characters|E] of this [faith|E] must have a [FAITH.Custom('CoronationRequiresArtifact')] [artifact|E] to access additional [activity_options|E]"
+ doctrine_parameter_no_anointment_coronation_cost_discount: "The base cost of a [GetActivityType( 'activity_coronation' ).GetName] is reduced by #P [EmptyScope.ScriptValue('coronation_no_anointment_cost_discount')|%0]#!"
+ doctrine_parameter_imperial_anointment_piety_bonus: "[piety_i][piety|E] from the [coronation_anointment|E] ceremony is increased by #P [EmptyScope.ScriptValue('coronation_imperial_anointment_piety_bonus')|+%0]#!"
  coronation_custom_crown_artifact: "Crown"
  coronation_custom_regalia_artifact: "Regalia"
  coronation_custom_crown_or_regalia_artifact: "Crown or Regalia"
@@ -111,7 +114,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  coronation_pope_not_anointment: "[head_of_faith|E] will only join an [coronation_anointment|E] [coronation|E]: $VALUE|=+0$"
  coronation_liege_value: "[vassal|E]'s coronation: $VALUE|=+0$"
  coronation_suzerain_value: "[tributary|E]'s coronation: $VALUE|=+0$"
- coronation_tributary_value: "[suzerain|E]'s coronation: $VALUE|=+0$"
+ coronation_tributary_value: "[GetSuzerainRelationship(GetPlayer)]'s coronation: $VALUE|=+0$"
  coronation_hof_supported_anointment: "Religious Authority Supports [anointment|E]: $VALUE|=+0$"
 
  # Laws for Coronation
@@ -147,7 +150,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  coronation_offer_support: "Offer Support"
  coronation_offer_support_desc: "By giving staunch support to the crown, you hope to gain [opinion|E], a [relation|E], or an [alliance|E] with its wearer."
  coronation_advocate_domain: "Advocate Domain"
- coronation_advocate_domain_desc: "You press your sovereign for policies that foster [development|E], [control|E] and [county_opinion|E] in your sub-[realm|E]."
+ coronation_advocate_domain_desc: "You press your sovereign for policies that foster [prosperity|E], [control|E] and [popular_opinion|E] in your sub-[realm|E]."
  coronation_profess_rights: "Profess Rights"
  coronation_profess_rights_desc: "You stand proudly resolute, demanding a Favor [hook|E] or [vassal_contract|E] improvement from your liege."
  coronation_disrupt_loyalists: "Disrupt Loyalists"
@@ -253,13 +256,13 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  oath_mend_the_fracture_county: "A Fracture Mended by the Oathsworn Sovereign"
  oath_provide_for_the_warriors: "Provided for the Warriors"
  oath_provide_for_the_warriors_province: "A Warrior's Oath Fulfilled"
- oath_provide_for_the_warriors_province_desc: "Unlocks the construction of [GetBuilding('oath_warriors_building_04').GetName] [building|E] in this [barony|E]"
+ oath_provide_for_the_warriors_province_desc: "Unlocks the construction of [GetBuildingType('oath_warriors_building_04').GetName] [building|E] in this [barony|E]"
  oath_provide_for_the_faithful: "Provided for the Faithful"
  oath_provide_for_the_faithful_province: "A Faithful's Oath Fulfilled"
- oath_provide_for_the_faithful_province_desc: "Unlocks the construction of [GetBuilding('oath_faithful_building_04').GetName] [building|E] in this [barony|E]"
+ oath_provide_for_the_faithful_province_desc: "Unlocks the construction of [GetBuildingType('oath_faithful_building_04').GetName] [building|E] in this [barony|E]"
  oath_provide_for_the_poor: "Provided for the Poor"
  oath_provide_for_the_poor_province: "A Poor's Oath Fulfilled"
- oath_provide_for_the_poor_province_desc: "Unlocks the construction of [GetBuilding('oath_poor_building_04').GetName] [building|E] in this [barony|E]"
+ oath_provide_for_the_poor_province_desc: "Unlocks the construction of [GetBuildingType('oath_poor_building_04').GetName] [building|E] in this [barony|E]"
  oath_repent: "Repentance"
  oath_peaceful_ai_modifier: "$motto_peaceful$"
  oath_warlike_ai_modifier: "$game_concept_ai_warlike_personality$"
@@ -416,16 +419,17 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  oath_reconquest_tooltip: "[completely_control|E] [de_jure|E] [THIS.Var('oath_reconquest_title').Title.GetName] #low ([root_scope.MakeScope.ScriptValue('oath_reconquest_value_1')]/[root_scope.MakeScope.ScriptValue('oath_reconquest_value_2')])#!"
  martial_oath_2_tooltip: "I swear an [oath|E] to #V Expand the Realm#!:\n\t$EFFECT_LIST_BULLET$The [realm|E] needs to at least have a size of [host.MakeScope.ScriptValue('oath_conquest_value_1')|V0] #low (Currently [host.MakeScope.ScriptValue('oath_conquest_value_2')|V0])#!\n$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n$EFFECT_LIST_BULLET$Choose between a boon to the [capital|E] and [de_jure|E] shifting [titles|E]\n$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], and [GetModifier('oath_of_conquest').GetNameWithTooltip]"
  ## Stewardship
- stewardship_oath_1_tooltip: "I swear an [oath|E] to #V Ensure Peace#!:\n\t$EFFECT_LIST_BULLET$Need to have at least #V 5 Years#! of continuous peace\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 50 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [development_i][development|E], and [GetModifier('oath_of_peace').GetNameWithTooltip]"
- stewardship_oath_2_tooltip: "I swear an [oath|E] to #V Shape the Realm#!:\n\t$EFFECT_LIST_BULLET$Need to construct or upgrade at least #V 8#! [buildings|E]\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [development_i][development|E], and [GetModifier('oath_of_buildings').GetNameWithTooltip]"
+ stewardship_oath_1_tooltip: "I swear an [oath|E] to #V Ensure Peace#!:\n\t$EFFECT_LIST_BULLET$Need to have at least #V 5 Years#! of continuous peace\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 50 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [prosperity_i][prosperity|E], and [GetModifier('oath_of_peace').GetNameWithTooltip]"
+ stewardship_oath_2_tooltip: "I swear an [oath|E] to #V Shape the Realm#!:\n\t$EFFECT_LIST_BULLET$Need to construct or upgrade at least #V 8#! [buildings|E]\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [prosperity_i][prosperity|E], and [GetModifier('oath_of_buildings').GetNameWithTooltip]"
  ## Intrigue
 
  ## Learning
- learning_oath_1_tooltip: "I swear an [oath|E] to #V Foster Enlightenment#!:\n\t$EFFECT_LIST_BULLET$Need to have at least #V [learning_oath_temp_cost]#! [gold_i][gold|E]\n\t$EFFECT_LIST_BULLET$Need to fulfill #V 1#! of the following requirements:\n\t\t\t$EFFECT_LIST_BULLET$Have a fifth level [education_trait|E]\n\t\t\t$EFFECT_LIST_BULLET$Each [councillor|E] has a skill of #V 20#! or higher for their role\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 50 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], and [SelectLocalization( GreaterThan_CFixedPoint( GetPlayer.MakeScope.Var('learning_oath_1_university_exists').GetValue, '(CFixedPoint)0' ), 'learning_oath_1_tooltip_university', 'learning_oath_1_tooltip_no_university' )]"
+ learning_oath_1_tooltip: "I swear an [oath|E] to #V Foster Enlightenment#!:[SelectLocalization( GreaterThan_CFixedPoint( GetPlayer.MakeScope.Var('learning_oath_1_university_exists').GetValue, '(CFixedPoint)0' ), 'learning_oath_1_tooltip_need_university', 'learning_oath_1_tooltip_need_prosperity' )]\n\t$EFFECT_LIST_BULLET$Need to have at least #V [learning_oath_temp_cost]#! [gold_i][gold|E]\n\t$EFFECT_LIST_BULLET$Need to fulfill #V 1#! of the following requirements:\n\t\t\t$EFFECT_LIST_BULLET$Have a fifth level [education_trait|E]\n\t\t\t$EFFECT_LIST_BULLET$Each [councillor|E] has a skill of #V 20#! or higher for their role\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 50 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], and [SelectLocalization( GreaterThan_CFixedPoint( GetPlayer.MakeScope.Var('learning_oath_1_university_exists').GetValue, '(CFixedPoint)0' ), 'learning_oath_1_tooltip_university', 'learning_oath_1_tooltip_no_university' )]"
  learning_oath_1_tooltip_university: "[GetModifier('oath_university_county').GetNameWithTooltip]"
- learning_oath_1_tooltip_no_university: "a [GetBuilding('generic_university').GetName]"
- learning_oath_1_tooltip_need_university: "\n\t$EFFECT_LIST_BULLET$Need a [county|E] with a [GetBuilding('generic_university').GetName] and a [development_i][development|E] of #V 30#! or higher"
+ learning_oath_1_tooltip_no_university: "a [GetBuildingType('generic_university').GetName]"
+ learning_oath_1_tooltip_need_university: "\n\t$EFFECT_LIST_BULLET$Need a [county|E] with a [GetBuildingType('generic_university').GetName] and a [prosperity_i][prosperity|E] of #V 30#! or higher"
  learning_oath_1_tooltip_need_development: "\n\t$EFFECT_LIST_BULLET$Need a [county|E] with a [development_i][development|E] of #V 30#! or higher"
+ learning_oath_1_tooltip_need_prosperity: "\n\t$EFFECT_LIST_BULLET$Need a [county|E] with a [prosperity_i][prosperity|E] of #V 30#! or higher"
 
  #Purge Pretenders
  purge_pretenders_oath_tooltip: "I swear an [oath|E] to #V Purge Pretenders#!:\n\t$EFFECT_LIST_BULLET$No [claimant|E] for your [primary_title|E] except your [children|E] can exists\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 50 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], and [GetModifier('oath_of_purge_pretenders').GetNameWithTooltip].\n\t$EFFECT_LIST_BULLET$[SelectLocalization(GetPlayer.GetGovernment.IsType('nomad_government'), 'purge_pretenders_oath_nomad', '')][SelectLocalization(GetPlayer.GetGovernment.IsType('administrative_government'), 'purge_pretenders_oath_admin', '')][SelectLocalization(Not(Or(GetPlayer.GetGovernment.IsType('nomad_government'), GetPlayer.GetGovernment.IsType('administrative_government'))), 'purge_pretenders_oath_default', '')]"
@@ -446,11 +450,11 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  # Mend the Fracture
  mend_the_fracture_oath_tooltip: "I swear an [oath|E] to #V Mend the Fracture#!:\n\t$EFFECT_LIST_BULLET$Need to have at least #V 70#! [cultural_acceptance|E] with a [culture|E] that takes more than #V 40%#! of my [realm|E].\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_mend_the_fracture').GetNameWithTooltip], and both cultures gain the [GetCultureTradition('oath_mend_the_fracture_tradition').GetName] [culture_tradition|E]."
  # Provide for the Warriors
- provide_for_the_warriors_oath_tooltip: "I swear an [oath|E] to #V Provide for the Warriors#!:\n\t$EFFECT_LIST_BULLET$Need to construct at least #V 3#! [GetBuilding('oath_warriors_building_02').GetName]. Unlocks the access to this line of [buildings|E] while this [oath|E] is active.\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_provide_for_the_warriors').GetNameWithTooltip], and unlocks the final upgrade: [GetBuilding('oath_warriors_building_04').GetName]."
+ provide_for_the_warriors_oath_tooltip: "I swear an [oath|E] to #V Provide for the Warriors#!:\n\t$EFFECT_LIST_BULLET$Need to construct at least #V 3#! [GetBuildingType('oath_warriors_building_02').GetName]. Unlocks the access to this line of [buildings|E] while this [oath|E] is active.\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_provide_for_the_warriors').GetNameWithTooltip], and unlocks the final upgrade: [GetBuildingType('oath_warriors_building_04').GetName]."
  # Provide for the Faithful
- provide_for_the_faithful_oath_tooltip: "I swear an [oath|E] to #V Provide for the Faithful#!:\n\t$EFFECT_LIST_BULLET$Need to construct at least #V 3#! [GetBuilding('oath_faithful_building_02').GetName]. Unlocks the access to this line of [buildings|E] while this [oath|E] is active.\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_provide_for_the_faithful').GetNameWithTooltip], and unlocks the final upgrade: [GetBuilding('oath_faithful_building_04').GetName]."
+ provide_for_the_faithful_oath_tooltip: "I swear an [oath|E] to #V Provide for the Faithful#!:\n\t$EFFECT_LIST_BULLET$Need to construct at least #V 3#! [GetBuildingType('oath_faithful_building_02').GetName]. Unlocks the access to this line of [buildings|E] while this [oath|E] is active.\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_provide_for_the_faithful').GetNameWithTooltip], and unlocks the final upgrade: [GetBuildingType('oath_faithful_building_04').GetName]."
  # Provide for the Poor
- provide_for_the_poor_oath_tooltip: "I swear an [oath|E] to #V Provide for the Poor#!:\n\t$EFFECT_LIST_BULLET$Need to construct at least #V 3#! [GetBuilding('oath_poor_building_02').GetName]. Unlocks the access to this line of [buildings|E] while this [oath|E] is active.\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_provide_for_the_poor').GetNameWithTooltip], and unlocks the final upgrade: [GetBuilding('oath_poor_building_04').GetName]."
+ provide_for_the_poor_oath_tooltip: "I swear an [oath|E] to #V Provide for the Poor#!:\n\t$EFFECT_LIST_BULLET$Need to construct at least #V 3#! [GetBuildingType('oath_poor_building_02').GetName]. Unlocks the access to this line of [buildings|E] while this [oath|E] is active.\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_provide_for_the_poor').GetNameWithTooltip], and unlocks the final upgrade: [GetBuildingType('oath_poor_building_04').GetName]."
  # Repent
  repent_oath_tooltip: "I swear an [oath|E] to #V Repent#!:\n\t$EFFECT_LIST_BULLET$Needs to complete at least #V 4#! [pilgrimages|E] and have [GetModifier( 'piety_level_3' ).GetNameWithTooltip|L]\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [GetModifier('oath_repent').GetNameWithTooltip], and removes any [sinful|E] [traits|E] and replaces them with [virtuous|E] [traits|E]."
 
@@ -717,7 +721,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  provide_for_the_warriors_oath_decision_timer: "\t#weak ([RemainingTime('provide_for_the_warriors_oath_timer')])#!"
  provide_for_the_warriors_oath_decision_desc: "I have sworn to provide for the [ROOT.Char.Custom('KnightCulturePluralNoTooltipLowercase')] and [ROOT.Char.Custom('GetFighterTermPlural')] of [ROOT.Char.GetPrimaryTitle.GetNameNoTier], lavishing reward upon them so they may be armed well for struggles to come. $provide_for_the_warriors_oath_decision_desc_extra$"
  provide_for_the_warriors_oath_decision_desc_extra: "\n\n@alert_icon!#alert_trial [RemainingTime('provide_for_the_warriors_oath_timer')] remain to complete the [oath|E]#![IsOngoingCoronationOath('provide_for_the_warriors_oath')]"
- provide_for_the_warriors_oath_decision_tooltip: "Build #V 3#! [GetBuilding('oath_warriors_building_02').GetName] [buildings|E]."
+ provide_for_the_warriors_oath_decision_tooltip: "Build #V 3#! [GetBuildingType('oath_warriors_building_02').GetName] [buildings|E]."
  provide_for_the_warriors_oath_decision_confirm: "Their might is my right to rule"
 
  # Provide for the Faithful
@@ -725,7 +729,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  provide_for_the_faithful_oath_decision_timer: "\t#weak ([RemainingTime('provide_for_the_faithful_oath_timer')])#!"
  provide_for_the_faithful_oath_decision_desc: "I have sworn my patronage towards the [ROOT.Char.GetPrimaryTitle.GetAdjective] faithful, and to build new pious institutions in the land. $provide_for_the_faithful_oath_decision_desc_extra$"
  provide_for_the_faithful_oath_decision_desc_extra: "\n\n@alert_icon!#alert_trial [RemainingTime('provide_for_the_faithful_oath_timer')] remain to complete the [oath|E]#![IsOngoingCoronationOath('provide_for_the_faithful_oath')]"
- provide_for_the_faithful_oath_decision_tooltip: "Build #V 3#! [GetBuilding('oath_faithful_building_02').GetName] [buildings|E]."
+ provide_for_the_faithful_oath_decision_tooltip: "Build #V 3#! [GetBuildingType('oath_faithful_building_02').GetName] [buildings|E]."
  provide_for_the_faithful_oath_decision_confirm: "Faith is our strength"
 
  # Provide for the Poor
@@ -733,7 +737,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  provide_for_the_poor_oath_decision_timer: "\t#weak ([RemainingTime('provide_for_the_poor_oath_timer')])#!"
  provide_for_the_poor_oath_decision_desc: "I have sworn to provide for the poor of [ROOT.Char.GetPrimaryTitle.GetNameNoTier], as their kindly and charitable sovereign. $provide_for_the_poor_oath_decision_desc_extra$"
  provide_for_the_poor_oath_decision_desc_extra: "\n\n@alert_icon!#alert_trial [RemainingTime('provide_for_the_poor_oath_timer')] remain to complete the [oath|E]#![IsOngoingCoronationOath('provide_for_the_poor_oath')]"
- provide_for_the_poor_oath_decision_tooltip: "Build #V 3#! [GetBuilding('oath_poor_building_02').GetName] [buildings|E]."
+ provide_for_the_poor_oath_decision_tooltip: "Build #V 3#! [GetBuildingType('oath_poor_building_02').GetName] [buildings|E]."
  provide_for_the_poor_oath_decision_confirm: "The needy no longer suffer"
 
   # Repent
@@ -848,7 +852,7 @@ coronation_events.0310.g.crit_success: "#P [host.MakeScope.Var('reward_tier_plus
 coronation_events.0310.g.success: "#P [host.MakeScope.Var('reward_tier_plus_one').GetValue]#! #V Coronation Supporters#! will be affected"
 coronation_events.0310.g.no_improvement: "#P [host.MakeScope.Var('reward_tier').GetValue]#! #V Coronation Supporters#! will be affected"
 coronation_events.0310.h: "Lands loyal to the crown shall flourish!"
-coronation_events.0310.h.reward.tooltip: "#V Coronation Supporters#! will get the [GetModifier('ach_intent_vassal_development_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
+coronation_events.0310.h.reward.tooltip: "#V Coronation Supporters#! will get the [GetModifier('ach_intent_vassal_prosperity_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
 coronation_events.0310.h.crit_success: "$coronation_events.0310.g.crit_success$"
 coronation_events.0310.h.success: "$coronation_events.0310.g.success$"
 coronation_events.0310.h.no_improvement: "$coronation_events.0310.g.no_improvement$"
@@ -862,7 +866,7 @@ coronation_events.0310.j.reward.tooltip: "#V Your [artifacts|E] will get a #P po
 coronation_events.0310.j.crit_success: "#P [host.MakeScope.Var('reward_tier_plus_two').GetValue]#! #V of your [artifacts|E] will be improved#!"
 coronation_events.0310.j.success: "#P [host.MakeScope.Var('reward_tier_plus_one').GetValue]#! #V of your [artifacts|E] will be improved#!"
 coronation_events.0310.j.no_improvement: "#P [host.MakeScope.Var('reward_tier').GetValue]#! #V of your [artifacts|E] will be improved#!"
-coronation_events.0310.k.reward.tooltip: "[counties|E] in your [domain|E] will get the [GetModifier('ach_intent_development_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years"
+coronation_events.0310.k.reward.tooltip: "[counties|E] in your [domain|E] will get the [GetModifier('ach_intent_prosperity_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years"
 coronation_events.0310.k.crit_success: "#P [host.MakeScope.Var('reward_tier_plus_two').GetValue]#! #V of your [counties|E] will be be affected#!"
 coronation_events.0310.k.success: "#P [host.MakeScope.Var('reward_tier_plus_one').GetValue]#! #V of your [counties|E] will be be affected#!"
 coronation_events.0310.k.no_improvement: "#P [host.MakeScope.Var('reward_tier').GetValue]#! #V of your [counties|E] will be be affected#!"
@@ -890,6 +894,7 @@ coronation_events.0312.a: "The reign of [host.GetTitledFirstNameNoTooltip] has b
 coronation_events.0312.cultural_acceptance: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Impress Attendees#! [intent|E] the [cultural_acceptance|E] between [ROOT.Char.GetCulture.GetName] and [host.GetCulture.GetName] has increased."
 coronation_events.0312.better_councillors: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Embrace Supporters#! [intent|E], you have gained [GetModifier('ach_intent_better_councillors_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
 coronation_events.0312.vassal_development_boost: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Embrace Supporters#! [intent|E] you have gained [GetModifier('ach_intent_vassal_development_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
+coronation_events.0312.vassal_prosperity_boost: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Embrace Supporters#! [intent|E] you have gained [GetModifier('ach_intent_vassal_prosperity_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
 coronation_events.0312.vassal_defensive_boost: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Embrace Supporters#! [intent|E] you have gained [GetModifier('ach_intent_vassal_defensive_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
 
 coronation_events.0400.desc: "I have considered your request, and decided you are worthy of my blessing, the most sacred mark of [ROOT.Char.GetFaith.HighGodNamePossessive] favor for the faithful."
@@ -903,9 +908,11 @@ coronation_easier_imprisonment_reward_tt: "The following #V Detractors#! gain [G
 coronation_stress_reward_tt: "The following #V Detractors#! gain a #V massive#! amount of [stress|E]:"
 coronation_better_councillors_reward_tt: "The following #V Supporters#! gain [GetModifier('ach_intent_better_councillors_modifier').GetNameWithTooltip] [modifier|E]:"
 coronation_vassal_development_boost_reward_tt: "The following #V Supporters#! gain [GetModifier('ach_intent_vassal_development_boost_modifier').GetNameWithTooltip] [modifier|E]:"
+coronation_vassal_prosperity_boost_reward_tt: "The following #V Supporters#! gain [GetModifier('ach_intent_vassal_prosperity_boost_modifier').GetNameWithTooltip] [modifier|E]:"
 coronation_vassal_defensive_boost_reward_tt: "The following #V Supporters#! gain [GetModifier('ach_intent_vassal_defensive_boost_modifier').GetNameWithTooltip] [modifier|E]:"
 coronation_artifact_boost_reward_tt: "The following [artifacts|E] gain a #P positive#! [modifier|E]:"
 coronation_host_development_boost_reward_tt: "The following [counties|E] gain [GetModifier('ach_intent_development_boost_modifier').GetNameWithTooltip] [modifier|E]:"
+coronation_host_prosperity_boost_reward_tt: "The following [counties|E] gain [GetModifier('ach_intent_prosperity_boost_modifier').GetNameWithTooltip] [modifier|E]:"
 coronation_host_defense_boost_reward_tt: "The following [counties|E] gain [GetModifier('ach_intent_defense_boost_modifier').GetNameWithTooltip] [modifier|E]:"
 coronation_host_reward_tier_one_tt: "Affected: [first_reward_target.GetName]"
 coronation_host_reward_tier_two_tt: "Affected: [first_reward_target.GetName] and [second_reward_target.GetName]"
@@ -927,10 +934,14 @@ ach_intent_better_councillors_modifier: "Embrace Supporters: Councilors"
 ach_intent_better_councillors_modifier_desc: "This character was a staunch supporter of the newly crowned sovereign and is especially eager to prove themselves as a councilor."
 ach_intent_vassal_development_boost_modifier: "Embrace Supporters: Development"
 ach_intent_vassal_development_boost_modifier_desc: "Flourishing crops, freshly cut wood and stone for construction: the lands of this character are graced with an economic upturn, thanks to its newly crowned sovereign."
+ach_intent_vassal_prosperity_boost_modifier: "Embrace Supporters: Prosperity"
+ach_intent_vassal_prosperity_boost_modifier_desc: "Flourishing crops, freshly cut wood and stone for construction: the lands of this character are graced with an economic upturn, thanks to its newly crowned sovereign."
 ach_intent_vassal_defensive_boost_modifier: "Embrace Supporters: Defense"
 ach_intent_vassal_defensive_boost_modifier_desc: "$ach_intent_defense_boost_modifier_desc$"
 ach_intent_development_boost_modifier: "Exalt Crown: Development"
 ach_intent_development_boost_modifier_desc: "Flourishing crops, freshly cut wood and stone for construction: the lands of this character are experiencing an economic upturn, thanks to its newly crowned sovereign."
+ach_intent_prosperity_boost_modifier: "Exalt Crown: Prosperity"
+ach_intent_prosperity_boost_modifier_desc: "Flourishing crops, freshly cut wood and stone for construction: the lands of this character are experiencing an economic upturn, thanks to its newly crowned sovereign."
 ach_intent_defense_boost_modifier: "Exalt Crown: Defenses"
 ach_intent_defense_boost_modifier_desc: "From reinforced gates come roving guards. This county has been fortified as per the wish of its newly crowned sovereign."
 
@@ -957,6 +968,8 @@ coronation_tribal_reg: "[GetGovernment('tribal_government').GetNameNoTooltip] or
 coronation_nomadic_reg: "[GetGovernment('nomad_government').GetNameNoTooltip]"
 coronation_tribal_nomadic_reg: "[GetGovernment('tribal_government').GetNameNoTooltip], [GetGovernment('wanua_government').GetNameNoTooltip] or [GetGovernment('nomad_government').GetNameNoTooltip]"
 coronation_discount_reg: "From Event"
+ coronation_no_anointment_cost_desc: "$doctrine_no_anointment_name$"
+HOF_is_ai_tt: "[head_of_faith|E] $IS_LOCAL_PLAYER_TRIGGER|l$"
 coronation_conclusion_summary_desc_crown: "[host.GetTitledFirstNameNicknamedRegnal] is now crowned as [host.GetPrimaryTitle.GetNameNoTierPossessive] rightful [host.GetTitleAsNameNoTooltip], and charged with the safekeeping of the realm."
 coronation_conclusion_summary_desc: "[host.GetTitledFirstNameNicknamedRegnal] is now enthroned as [host.GetPrimaryTitle.GetNameNoTierPossessive] rightful [host.GetTitleAsNameNoTooltip], and entrusted with the welfare of the realm."
 coronation_supporters_pledge_total: "\n\n[activity.MakeScope.Var('supporters_pledge_var').GetValue|0V] [vassals|E] ([coronation_supporters|E]) swore loyalty with true conviction"

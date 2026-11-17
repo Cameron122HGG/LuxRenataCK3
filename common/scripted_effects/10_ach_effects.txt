@@ -230,8 +230,8 @@ coronation_set_oath_alternatives_effect = {
 				is_ai = no
 				NOT = { has_variable = learning_oath_1 }
 				any_realm_county = {
-					title_province = { has_special_building = no }
-					development_level >= 25
+					title_province = { has_special_district = no }
+					prosperity_level >= 25
 				}
 			}
 			coronation_set_oath_effect = { OATH = learning_oath_1 }
@@ -419,7 +419,9 @@ coronation_set_oath_alternatives_effect = {
 				}
 				any_directly_owned_province = {
 					count >= 3
-					free_building_slots >= 1
+					holding_district ?= {
+						free_building_slots >= 1
+					}
 					NOT = {
 						has_building_or_higher = oath_warriors_building_01
 					}
@@ -443,7 +445,9 @@ coronation_set_oath_alternatives_effect = {
 				}
 				any_directly_owned_province = {
 					count >= 3
-					free_building_slots >= 1
+					holding_district ?= {
+						free_building_slots >= 1
+					}
 					NOT = {
 						has_building_or_higher = oath_faithful_building_01
 					}
@@ -467,7 +471,9 @@ coronation_set_oath_alternatives_effect = {
 				}
 				any_directly_owned_province = {
 					count >= 3
-					free_building_slots >= 1
+					holding_district ?= {
+						free_building_slots >= 1
+					}
 					NOT = {
 						has_building_or_higher = oath_poor_building_01
 					}
@@ -1219,7 +1225,7 @@ coronation_ceremony_piety_effect = {
 						}
 					}
 				}
-				multiply = 1.5
+				multiply = coronation_anointment_piety_mult_value
 			}
 		}
 	}
@@ -1238,7 +1244,7 @@ coronation_ceremony_piety_effect = {
 						}
 					}
 				}
-				multiply = 1.5
+				multiply = coronation_anointment_piety_mult_value
 			}
 		}
 	}
@@ -1257,7 +1263,7 @@ coronation_ceremony_piety_effect = {
 						}
 					}
 				}
-				multiply = 1.5
+				multiply = coronation_anointment_piety_mult_value
 			}
 		}
 	}
@@ -1276,7 +1282,7 @@ coronation_ceremony_piety_effect = {
 						}
 					}
 				}
-				multiply = 1.5
+				multiply = coronation_anointment_piety_mult_value
 			}
 		}
 	}
@@ -1295,7 +1301,7 @@ coronation_ceremony_piety_effect = {
 						}
 					}
 				}
-				multiply = 1.5
+				multiply = coronation_anointment_piety_mult_value
 			}
 		}
 	}
@@ -1424,6 +1430,18 @@ coronation_ceremony_piety_effect = {
 		}
 		custom_tooltip = coronation_piety_harmed_by_piety_level
 	}
+	if = {
+		limit = {
+			coronation_clergy_approval_value >= -1
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = coronation_type_anointment
+				}
+			}
+		}
+		custom_tooltip = coronation_piety_improved_by_anointment
+	}
 }
 
 #For flavor and adjusting prestige in coronation ceremony the vassals' approval event
@@ -1527,6 +1545,7 @@ coronation_ceremony_prestige_effect = {
 				has_trait = legitimized_bastard
 				has_trait = gallivanter
 				has_trait = disinherited
+				has_trait = adopted_no_inheritance
 				has_trait = bastard_founder
 				has_trait = disloyal
 			}
@@ -1664,10 +1683,18 @@ coronation_ceremony_legitimacy_effect = {
 	if = {
 		limit = {
 			location.county = {
-				county_opinion >= 25
+				popular_opinion >= 25
 			}
 		}
-		custom_tooltip = coronation_legit_improved_by_county_opinion
+		custom_tooltip = coronation_legit_improved_by_popular_opinion
+	}
+	if = {
+		limit = {
+			involved_activity ?= {
+				activity_location = { has_building_or_higher = royal_chapel_1 }
+			}
+		}
+		custom_tooltip = coronation_legit_improved_by_royal_chapel
 	}
 	if = {
 		limit = {
@@ -1683,7 +1710,7 @@ coronation_ceremony_legitimacy_effect = {
 	if = {
 		limit = {
 			location.county = {
-				county_opinion < 0
+				popular_opinion < 0
 				holder = {
 					OR = {
 						this = root
@@ -1694,7 +1721,7 @@ coronation_ceremony_legitimacy_effect = {
 				}
 			}
 		}
-		custom_tooltip = coronation_legit_harmed_by_county_opinion
+		custom_tooltip = coronation_legit_harmed_by_popular_opinion
 	}
 	if = {
 		limit = {
@@ -2211,7 +2238,7 @@ coronation_save_crowning_artifact_effect = {
 			limit = {
 				artifact_slot_type = helmet
 				has_variable = artifact_succession_title
-				var:artifact_succession_title = {
+				var:artifact_succession_title ?= { # The title can have been destroyed
 					this = $HOST$.primary_title
 				}
 			}
@@ -2231,7 +2258,7 @@ coronation_save_crowning_artifact_effect = {
 			limit = {
 				artifact_slot_type = regalia
 				has_variable = artifact_succession_title
-				var:artifact_succession_title = {
+				var:artifact_succession_title ?= {
 					this = $HOST$.primary_title
 				}
 			}
@@ -2829,7 +2856,7 @@ coronation_disburse_rewards_effect = {
 						}
 					}
 					save_scope_as = unity_character
-					add_clan_unity_interaction_effect = {
+					add_house_unity_interaction_effect = {
 						CHARACTER = scope:unity_character
 						TARGET = scope:host
 						VALUE = scope:clan_unity_gain
@@ -3351,8 +3378,8 @@ ach_host_intent_rewards_tooltip_effect = {
 				flag:better_councillors = {
 					custom_tooltip = coronation_better_councillors_reward_tt
 				}
-				flag:vassal_development_boost = {
-					custom_tooltip = coronation_vassal_development_boost_reward_tt
+				flag:vassal_prosperity_boost = {
+					custom_tooltip = coronation_vassal_prosperity_boost_reward_tt
 				}
 				flag:vassal_defensive_boost = {
 					custom_tooltip = coronation_vassal_defensive_boost_reward_tt
@@ -3360,8 +3387,8 @@ ach_host_intent_rewards_tooltip_effect = {
 				flag:artifact_boost = {
 					custom_tooltip = coronation_artifact_boost_reward_tt
 				}
-				flag:host_development_boost = {
-					custom_tooltip = coronation_host_development_boost_reward_tt
+				flag:host_prosperity_boost = {
+					custom_tooltip = coronation_host_prosperity_boost_reward_tt
 				}
 				flag:host_defense_boost = {
 					custom_tooltip = coronation_host_defense_boost_reward_tt
@@ -3417,8 +3444,8 @@ ach_host_intent_rewards_effect = {
 			flag:better_councillors = {
 				ach_better_councillors_host_reward_effect = yes
 			}
-			flag:vassal_development_boost = {
-				ach_vassal_development_boost_host_reward_effect = yes
+			flag:vassal_prosperity_boost = {
+				ach_vassal_prosperity_boost_host_reward_effect = yes
 			}
 			flag:vassal_defensive_boost = {
 				ach_vassal_defensive_boost_host_reward_effect = yes
@@ -3426,8 +3453,8 @@ ach_host_intent_rewards_effect = {
 			flag:artifact_boost = {
 				root = { ach_artifact_boost_host_reward_effect = yes }
 			}
-			flag:host_development_boost = {
-				root = { ach_host_development_boost_host_reward_effect = yes }
+			flag:host_prosperity_boost = {
+				root = { ach_host_prosperity_boost_host_reward_effect = yes }
 			}
 			flag:host_defense_boost = {
 				root = { ach_host_defense_boost_host_reward_effect = yes }
@@ -5017,7 +5044,7 @@ ach_better_councillors_host_reward_effect = {
 	}
 }
 
-ach_vassal_development_boost_host_reward_effect = {
+ach_vassal_prosperity_boost_host_reward_effect = {
 	switch = {
 		trigger = scope:activity.activity_host.var:reward_tier
 		1 = {
@@ -5234,7 +5261,7 @@ ach_vassal_development_boost_host_reward_effect = {
 	every_in_list = {
 		list = faction_rewards
 		add_character_modifier = {
-			modifier = ach_intent_vassal_development_boost_modifier
+			modifier = ach_intent_vassal_prosperity_boost_modifier
 			years = 20
 		}
 	}
@@ -5695,13 +5722,13 @@ ach_artifact_boost_host_reward_effect = {
 	}
 }
 
-ach_host_development_boost_host_reward_effect = {
+ach_host_prosperity_boost_host_reward_effect = {
 	switch = {
 		trigger = scope:activity.activity_host.var:reward_tier
 		1 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -5711,7 +5738,7 @@ ach_host_development_boost_host_reward_effect = {
 		2 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -5719,7 +5746,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5732,7 +5759,7 @@ ach_host_development_boost_host_reward_effect = {
 		3 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -5740,7 +5767,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5751,7 +5778,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5765,7 +5792,7 @@ ach_host_development_boost_host_reward_effect = {
 		4 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -5773,7 +5800,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5784,7 +5811,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5796,7 +5823,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5811,7 +5838,7 @@ ach_host_development_boost_host_reward_effect = {
 		5 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -5819,7 +5846,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5830,7 +5857,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5842,7 +5869,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5855,7 +5882,7 @@ ach_host_development_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5877,7 +5904,7 @@ ach_host_development_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {
@@ -5896,7 +5923,7 @@ ach_host_development_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {
@@ -5916,7 +5943,7 @@ ach_host_development_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {
@@ -5937,7 +5964,7 @@ ach_host_development_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {
@@ -5953,9 +5980,9 @@ ach_host_development_boost_host_reward_effect = {
 	}
 	every_in_list = {
 		list = county_rewards
-		change_development_level = 2
+		change_prosperity_level = 2
 		add_county_modifier = {
-			modifier = ach_intent_development_boost_modifier
+			modifier = ach_intent_prosperity_boost_modifier
 			years = 20
 		}
 	}
@@ -5967,7 +5994,7 @@ ach_host_defense_boost_host_reward_effect = {
 		1 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -5977,7 +6004,7 @@ ach_host_defense_boost_host_reward_effect = {
 		2 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -5985,7 +6012,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -5998,7 +6025,7 @@ ach_host_defense_boost_host_reward_effect = {
 		3 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -6006,7 +6033,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6017,7 +6044,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6031,7 +6058,7 @@ ach_host_defense_boost_host_reward_effect = {
 		4 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -6039,7 +6066,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6050,7 +6077,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6062,7 +6089,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6077,7 +6104,7 @@ ach_host_defense_boost_host_reward_effect = {
 		5 = {
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				save_scope_as = first_reward_target
@@ -6085,7 +6112,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6096,7 +6123,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6108,7 +6135,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6121,7 +6148,7 @@ ach_host_defense_boost_host_reward_effect = {
 			}
 			ordered_held_county = {
 				order_by = {
-					value = development_level
+					value = prosperity_level
 					multiply = -1
 				}
 				limit = {
@@ -6143,7 +6170,7 @@ ach_host_defense_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {
@@ -6162,7 +6189,7 @@ ach_host_defense_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {
@@ -6182,7 +6209,7 @@ ach_host_defense_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {
@@ -6203,7 +6230,7 @@ ach_host_defense_boost_host_reward_effect = {
 		}
 		ordered_realm_county = {
 			order_by = {
-				value = development_level
+				value = prosperity_level
 				multiply = -1
 			}
 			limit = {

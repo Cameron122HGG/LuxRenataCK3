@@ -3,7 +3,10 @@
 # The engine's own dynasty-named realms (house_based_map_names + dynasty_named_realms) show only the
 # house name on the map, and no loc key wraps it. So for kingdom+ realms we name the primary title
 # "<House> <Tier>" ourselves with set_title_name_dynamic (loc key LR_dynastic_realm_name), and turn
-# off the engine naming on that title so our name shows.
+# off the engine naming on that title so our name shows. In the "all realms" mode, realms of other
+# cultures get "<Tier> of <Title>" (loc key LR_tiered_realm_name), e.g. "Kingdom of France"; the user
+# accepted that this also shows in the UI ("Realm of Kingdom of France") and in ruler names
+# ("King Philip of Kingdom of France").
 #
 # Double tier words: the UI shows titles as "<Tier> of <Name>" (TITLE_TIERED_NAME), which would read
 # "Caliphate of Abbasid Caliphate". So named rulers get the character flag LR_dynastic_realm_name_flag,
@@ -50,8 +53,47 @@ LR_dynastic_realm_names_refresh_effect = {
 				remove_character_flag = LR_dynastic_realm_name_flag
 			}
 			primary_title = {
-				set_title_name_dynamic = LR_dynastic_realm_name
+				# back to the title's own name first, so the tiered form never wraps an old custom name
+				if = {
+					limit = { has_variable = LR_dynastic_realm_name }
+					reset_title_name = yes
+				}
 				set_can_be_named_after_dynasty = no
+				# A temporal head of faith (the caliph) takes the word from their faith ("Caliphate")
+				# instead of their primary title's tier
+				if = {
+					limit = {
+						root = { LR_dynastic_realm_name_house_form_trigger = yes }
+					}
+					if = {
+						limit = {
+							root = { LR_dynastic_realm_name_temporal_head_trigger = yes }
+						}
+						set_title_name_dynamic = LR_dynastic_realm_name_hof
+					}
+					else = {
+						set_title_name_dynamic = LR_dynastic_realm_name
+					}
+				}
+				else_if = {
+					limit = {
+						root = { LR_dynastic_realm_name_temporal_head_trigger = yes }
+					}
+					set_title_name_dynamic = LR_tiered_realm_name_hof
+				}
+				else = {
+					set_title_name_dynamic = LR_tiered_realm_name
+				}
+				if = {
+					limit = {
+						root = { LR_dynastic_realm_name_temporal_head_trigger = yes }
+					}
+					set_variable = LR_dynastic_realm_name_hof
+				}
+				else_if = {
+					limit = { has_variable = LR_dynastic_realm_name_hof }
+					remove_variable = LR_dynastic_realm_name_hof
+				}
 				set_variable = {
 					name = LR_dynastic_realm_name
 					value = root.house
@@ -113,5 +155,9 @@ LR_dynastic_realm_names_reset_title_effect = {
 	if = {
 		limit = { has_variable = LR_dynastic_realm_name_faith }
 		remove_variable = LR_dynastic_realm_name_faith
+	}
+	if = {
+		limit = { has_variable = LR_dynastic_realm_name_hof }
+		remove_variable = LR_dynastic_realm_name_hof
 	}
 }

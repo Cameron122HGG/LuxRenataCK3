@@ -954,10 +954,7 @@ mpo_friendship_setup_positive_modifiers_value = {
 			scope:friendship_target = {
 				OR = {
 					has_relation_friend = root
-					has_relation_best_friend = root
-					has_relation_soulmate = root
 					has_relation_lover = root
-					has_relation_blood_brother = root
 				}
 			}
 		}
@@ -1735,42 +1732,48 @@ obedience_value = {
 			
 			# Relationships
 			if = {
-				limit = { has_relation_blood_brother = obedience_target }
-				add = { value = 1250 desc = obedience_value_blood_brother }
-			}
-			else_if = {
-				limit = { has_relation_best_friend = obedience_target }
-				add = { value = 1000 desc = obedience_value_best_friend }
-			}
-			else_if = {
-				limit = { has_relation_friend = obedience_target }
-				add = { value = 100 desc = obedience_value_friend }
-			}
-			else_if = {
-				limit = { has_relation_ward = obedience_target }
-				add = { value = 50 desc = obedience_value_ward }
-			}
-			else_if = {
-				limit = { has_relation_guardian = obedience_target }
-				add = { value = 50 desc = obedience_value_guardian }
-			}
-			else_if = {
-				limit = { has_relation_rival = obedience_target }
-				add = { value = -100 desc = obedience_value_rival }
-			}
-			else_if = {
-				limit = { has_relation_nemesis = obedience_target }
-				add = { value = -1000 desc = obedience_value_nemesis }
-			}
-			else_if = {
-				limit = {
-					NOR = {
-						has_relation_lover = obedience_target
-						has_relation_potential_lover = obedience_target
-						has_relation_crush = obedience_target
-						has_relation_potential_friend = obedience_target
-					}
+				limit = { has_any_scripted_relation = obedience_target }
+				if = {
+					limit = { has_relation_blood_brother = obedience_target }
+					add = { value = 1250 desc = obedience_value_blood_brother }
 				}
+				else_if = {
+					limit = { has_relation_best_friend = obedience_target }
+					add = { value = 1000 desc = obedience_value_best_friend }
+				}
+				else_if = {
+					limit = { has_relation_friend = obedience_target }
+					add = { value = 100 desc = obedience_value_friend }
+				}
+				else_if = {
+					limit = { has_relation_ward = obedience_target }
+					add = { value = 50 desc = obedience_value_ward }
+				}
+				else_if = {
+					limit = { has_relation_guardian = obedience_target }
+					add = { value = 50 desc = obedience_value_guardian }
+				}
+				else_if = {
+					limit = { has_relation_rival = obedience_target }
+					add = { value = -100 desc = obedience_value_rival }
+				}
+				else_if = {
+					limit = { has_relation_nemesis = obedience_target }
+					add = { value = -1000 desc = obedience_value_nemesis }
+				}
+				else_if = {
+					limit = {
+						NOR = {
+							has_relation_lover = obedience_target
+							has_relation_potential_lover = obedience_target
+							has_relation_crush = obedience_target
+							has_relation_potential_friend = obedience_target
+						}
+					}
+					add = { value = -50 desc = obedience_value_not_good_relationship }
+				}
+			}
+			else = {
 				add = { value = -50 desc = obedience_value_not_good_relationship }
 			}
 
@@ -1787,6 +1790,7 @@ obedience_value = {
 					NOT = {
 						is_councillor_of = obedience_target
 					}
+					obedience_target = { is_kurultai_trigger = yes }
 					can_be_any_kurultai_trigger = { COURT_OWNER = obedience_target }
 				}
 				add = { value = -25 desc = obedience_value_no_kurultai }
@@ -1803,19 +1807,15 @@ obedience_value = {
 				}
 				add = { value = 25 desc = obedience_value_court_astrologer }
 			}
-			else_if = { # Or are they employed by you in any other way?
-				limit = {
-					is_courtier_of = obedience_target
-					has_any_court_position = yes
+			else_if = {
+				limit = { is_courtier_of = obedience_target }
+				if = { # Or are they employed by you in any other way?
+					limit = { has_any_court_position = yes }
+					add = { value = 15 desc = obedience_value_court_position }
 				}
-				add = { value = 15 desc = obedience_value_court_position }
-			}
-			else_if = { # You don't employ them
-				limit = {
-					is_courtier_of = obedience_target
-					has_any_court_position = no
+				else = { # You don't employ them
+					add = { value = -15 desc = obedience_value_no_court_position }
 				}
-				add = { value = -15 desc = obedience_value_no_court_position }
 			}
 			
 			# Legitimacy
@@ -2031,8 +2031,8 @@ age_plus_ten = {
 	add = 10
 }
 
-settlement_issue_control_reward = 25
-settlement_issue_control_penalty = -25
+settlement_issue_control_reward = minor_county_control_gain
+settlement_issue_control_penalty = minor_county_control_loss
 settlement_issue_herd_reward = minor_herd_value_static
 settlement_issue_fertility_reward = tiny_county_fertility_level_gain
 
@@ -2507,7 +2507,7 @@ sent_herd_opinion_value = {
 		limit = {
 			scope:actor = { has_perk = thoughtful_perk }
 		}
-		multiply = 2
+		multiply = 1.25
 	}
 }
 
@@ -2531,6 +2531,12 @@ herd_gift_value = {
 					has_dynasty_perk = fp1_adventure_legacy_2
 				}
 			}
+		}
+		multiply = 0.5
+	}
+	if = {
+		limit = {
+			scope:actor = { has_perk = thoughtful_perk }
 		}
 		multiply = 0.5
 	}
@@ -2560,12 +2566,12 @@ mpo_current_disobedient_kurultai_value = {
 				limit = {
 					age >= define:NKurultai|KURULTAI_SUCCESSION_CHILD_MINIMUM_AGE
 					obedience_target = root
-					NOT = { root.primary_heir ?= this }
 				}
 				if = {
 					limit = {
 						NOR = {
 							is_obedient_to = root
+							root.primary_heir ?= this
 							root.cp:councillor_kurultai_1 ?= this
 							root.cp:councillor_kurultai_2 ?= this
 							root.cp:councillor_kurultai_3 ?= this
@@ -2584,12 +2590,12 @@ mpo_current_disobedient_kurultai_value = {
 				limit = {
 					age >= define:NKurultai|KURULTAI_SUCCESSION_CHILD_MINIMUM_AGE
 					obedience_target = root
-					NOT = { root.primary_heir ?= this }
 				}
 				if = {
 					limit = {
 						NOR = {
 							is_obedient_to = root
+							root.primary_heir ?= this
 							root.cp:councillor_kurultai_1 ?= this
 							root.cp:councillor_kurultai_2 ?= this
 							root.cp:councillor_kurultai_3 ?= this
@@ -2608,12 +2614,12 @@ mpo_current_disobedient_kurultai_value = {
 				limit = {
 					age >= define:NKurultai|KURULTAI_SUCCESSION_CHILD_MINIMUM_AGE
 					obedience_target = root
-					NOT = { root.primary_heir ?= this }
 				}
 				if = {
 					limit = {
 						NOR = {
 							is_obedient_to = root
+							root.primary_heir ?= this
 							root.cp:councillor_kurultai_1 ?= this
 							root.cp:councillor_kurultai_2 ?= this
 							root.cp:councillor_kurultai_3 ?= this
@@ -2632,12 +2638,12 @@ mpo_current_disobedient_kurultai_value = {
 				limit = {
 					age >= define:NKurultai|KURULTAI_SUCCESSION_CHILD_MINIMUM_AGE
 					obedience_target = root
-					NOT = { root.primary_heir ?= this }
 				}
 				if = {
 					limit = {
 						NOR = {
 							is_obedient_to = root
+							root.primary_heir ?= this
 							root.cp:councillor_kurultai_1 ?= this
 							root.cp:councillor_kurultai_2 ?= this
 							root.cp:councillor_kurultai_3 ?= this
@@ -2656,12 +2662,12 @@ mpo_current_disobedient_kurultai_value = {
 				limit = {
 					age >= define:NKurultai|KURULTAI_SUCCESSION_CHILD_MINIMUM_AGE
 					obedience_target = root
-					NOT = { root.primary_heir ?= this }
 				}
 				if = {
 					limit = {
 						NOR = {
 							is_obedient_to = root
+							root.primary_heir ?= this
 							root.cp:councillor_kurultai_1 ?= this
 							root.cp:councillor_kurultai_2 ?= this
 							root.cp:councillor_kurultai_3 ?= this
@@ -2915,7 +2921,7 @@ gok_retribution_gold_value = {
 	every_in_list = {
 		list = devastation_area
 		add = {
-			add = development_level
+			add = prosperity_level
 			multiply = 3
 		}
 	}

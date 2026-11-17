@@ -304,9 +304,14 @@ tgp_leave_house_bloc_effect = {
 							}
 							every_in_list = {
 								list = truce_targets
+								limit = { # The lists persist across calls for several leaving houses
+									house != scope:leaver
+									house.house_confederation ?= scope:bloc
+								}
 								save_temporary_scope_as = truce_target_temp
 								every_in_list = {
 									list = truce_getters
+									limit = { house = scope:leaver }
 									add_truce_one_way = {
 										character = scope:truce_target_temp
 										years = tgp_leave_house_bloc_truce_years_value
@@ -384,7 +389,7 @@ tgp_find_new_house_bloc_leader_effect = {
 #
 tgp_set_house_bloc_leading_house_effect = {
 	save_scope_as = bloc
-	leading_house = { save_scope_as = old_leader }
+	leading_house ?= { save_scope_as = old_leader } # Unset when a bloc lost its leader
 	$LEADER$ ?= {
 		save_scope_as = leader
 		save_scope_as = bloc_creator # for bloc name
@@ -398,34 +403,43 @@ tgp_set_house_bloc_leading_house_effect = {
 				scope:old_leader != scope:leader
 			}
 		}
-		custom_description = {
-			text = change_house_bloc_leader_effect
-			subject = scope:leader.house_head
-			object = scope:old_leader.house_head
-			scope:bloc ?= {
-				set_leading_house = scope:leader
-				hidden_effect = {
-					set_coa = scope:leader
-					set_confederation_name = "CONFEDERATION_HOUSE_NAME"
-					if = {
-						limit = { exists = scope:old_leader }
-						set_variable = {
-							name = recent_leader_change
-							value = scope:old_leader
-							years = 5
-						}
+		if = {
+			limit = { exists = scope:old_leader }
+			custom_description = {
+				text = change_house_bloc_leader_effect
+				subject = scope:leader.house_head
+				object = scope:old_leader.house_head
+				scope:bloc ?= { set_leading_house = scope:leader }
+			}
+		}
+		else = {
+			scope:bloc ?= { set_leading_house = scope:leader }
+		}
+		scope:bloc ?= {
+			hidden_effect = {
+				set_coa = scope:leader
+				set_confederation_name = "CONFEDERATION_HOUSE_NAME"
+				if = {
+					limit = { exists = scope:old_leader }
+					set_variable = {
+						name = recent_leader_change
+						value = scope:old_leader
+						years = 5
 					}
-					every_player = {
-						limit = {
-							top_liege ?= scope:leader.house_head.top_liege
-							tgp_uses_house_blocs_trigger = yes
-						}
-						send_interface_message = {
-							type = msg_house_bloc_leader
-							title = msg_bloc_new_leading_house
-							desc = msg_bloc_new_leading_house_desc
-							left_icon = scope:leader.house_head
-							right_icon = scope:leader
+				}
+				every_player = {
+					limit = {
+						top_liege ?= scope:leader.house_head.top_liege
+						tgp_uses_house_blocs_trigger = yes
+					}
+					send_interface_message = {
+						type = msg_house_bloc_leader
+						title = msg_bloc_new_leading_house
+						desc = msg_bloc_new_leading_house_desc
+						left_icon = scope:leader.house_head
+						right_icon = scope:leader
+						if = {
+							limit = { exists = scope:old_leader }
 							custom_description = {
 								text = change_house_bloc_leader_effect
 								subject = scope:leader.house_head
@@ -886,6 +900,11 @@ tgp_on_member_house_joined_shared_effect = {
 	}
 	every_in_list = {
 		list = joining_vassal_houses
+		limit = {
+			NOT = {
+				house_confederation ?= scope:bloc # because of nested logic, you might've already joined by this point, which can cause problems
+			}
+		}
 		save_temporary_scope_as = vassal_house_temp
 		if = {
 			limit = { exists = house_confederation }

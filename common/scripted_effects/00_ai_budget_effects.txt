@@ -43,7 +43,7 @@ ai_budget_manipulation_effect = {
 					}
 				}
 				OR = {
-					primary_title.title_capital_county = {
+					primary_title.title_capital_county ?= {
 						holder != root
 						holder = {
 							current_military_strength < root.current_military_strength
@@ -51,9 +51,7 @@ ai_budget_manipulation_effect = {
 							NOR = {
 								vassal_contract_has_flag = vassal_contract_cannot_revoke_titles
 								has_relation_friend = root
-								has_relation_best_friend = root
 								has_relation_lover = root
-								has_relation_soulmate = root
 								is_child_of = root
 								is_grandchild_of = root
 								is_great_grandchild_of = root
@@ -71,9 +69,7 @@ ai_budget_manipulation_effect = {
 								NOR = {
 									vassal_contract_has_flag = vassal_contract_cannot_revoke_titles
 									has_relation_friend = root
-									has_relation_best_friend = root
 									has_relation_lover = root
-									has_relation_soulmate = root
 									is_child_of = root
 									is_grandchild_of = root
 									is_great_grandchild_of = root
@@ -82,6 +78,7 @@ ai_budget_manipulation_effect = {
 						}
 					}
 					any_sub_realm_county = {
+						exists = root.primary_title.title_capital_county.duchy
 						holder != root
 						title_province = { has_holding_type = castle_holding }
 						this != root.primary_title.title_capital_county
@@ -91,9 +88,7 @@ ai_budget_manipulation_effect = {
 							NOR = {
 								vassal_contract_has_flag = vassal_contract_cannot_revoke_titles
 								has_relation_friend = root
-								has_relation_best_friend = root
 								has_relation_lover = root
-								has_relation_soulmate = root
 								is_child_of = root
 								is_grandchild_of = root
 								is_great_grandchild_of = root
@@ -188,6 +183,20 @@ ai_budget_manipulation_effect = {
 			move_budget_gold = { gold = long_term_gold from = budget_long_term to = budget_short_term }
 			move_budget_gold = { gold = war_chest_gold from = budget_war_chest to = budget_short_term }
 		}
+		else_if = { # Merchants and landless republic rulers only need short term gold outside of wars
+			limit = {
+				OR = {
+					government_has_flag = government_is_merchant
+					AND = {
+						government_has_flag = government_is_republic
+						is_landless_ruler = yes
+					}
+				}
+				is_at_war = no
+			}
+			move_budget_gold = { gold = long_term_gold from = budget_long_term to = budget_short_term }
+			move_budget_gold = { gold = war_chest_gold from = budget_war_chest to = budget_short_term }
+		}
 		else = {
 			if = {
 				limit = {
@@ -226,9 +235,6 @@ ai_budget_manipulation_effect = {
 				# Chance to make an AI boom its economy if they do not fall into an archetype
 				if = {
 					limit = {
-						ai_has_builder_or_pious_builder_personality = no
-						ai_has_warlike_personality = no
-						ai_has_cautious_personality = no
 						NOT = {
 							has_character_flag = ai_boom_cooldown
 						}
@@ -249,8 +255,15 @@ ai_budget_manipulation_effect = {
 								add = 4
 							}
 						}
-						add_character_flag = { flag = ai_boom years = 15 }
-						add_character_flag = { flag = ai_boom_cooldown years = 30 } # To balance the AI out
+						if = {
+							limit = {
+								ai_has_builder_or_pious_builder_personality = no
+								ai_has_warlike_personality = no
+								ai_has_cautious_personality = no
+							}
+							add_character_flag = { flag = ai_boom years = 15 }
+							add_character_flag = { flag = ai_boom_cooldown years = 30 } # To balance the AI out
+						}
 					}
 				}
 				
@@ -522,8 +535,8 @@ ai_budget_manipulation_effect = {
 						NOT = {
 							government_has_flag = government_is_nomadic
 						}
-						capital_county.title_province = {
-							free_building_slots <= 0
+						capital_county ?= {
+							title_province = { free_building_slots <= 0 }
 						}
 						days_of_continuous_peace >= 2555 # 7 years
 					}
@@ -659,7 +672,7 @@ ai_budget_manipulation_effect = {
 						NOT = {
 							government_has_flag = government_is_tribal
 						}
-						capital_province = {
+						capital_province ?= {
 							has_holding_type = tribal_holding
 							save_temporary_scope_as = target
 						}
@@ -687,6 +700,19 @@ ai_budget_manipulation_effect = {
 					}
 				}
 			}
+		}
+	}
+}
+
+purge_excess_baron_gold_effect = {
+	if = {
+		limit = {
+			highest_held_title_tier = tier_barony
+			gold > major_gold_max_value
+		}
+		random = {
+			chance = 50
+			remove_short_term_gold = ai_baron_excess_gold_purge_amount
 		}
 	}
 }

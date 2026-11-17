@@ -151,23 +151,6 @@ court_brewmaster_multiplier = {
 	}
 }
 
-brewery_counter_value = {
-	value = current_year
-
-	scope:brewery_county ?= {
-		subtract = var:brewery_counter_var
-	}
-}
-
-brewery_counter_25 = {
-	value = current_year
-	subtract = var:brewery_counter_var
-
-	divide = 25
-	floor = yes
-	multiply = 25
-}
-
 church_investment_value = {
 	value = current_year
 
@@ -245,6 +228,16 @@ camp_pavillion_level = {
 			domicile ?= { has_domicile_building_or_higher = camp_main_04 }
 		}
 		add = 1
+	}
+}
+
+survey_cooldown_value = {
+	value = 3
+	if = {
+		limit = {
+			has_perk = local_inspection_perk
+		}
+		multiply = 0.5
 	}
 }
 

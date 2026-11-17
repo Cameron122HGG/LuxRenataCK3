@@ -71,67 +71,73 @@
 	}
 
 	on_monthly = {
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
 		random = {
-			chance = {
-				value = 1
-				add = {
-					value = "aptitude(grand_mentor_court_position)"
-					multiply = 4
+			chance = 20
+			random = {
+				chance = {
+					value = 1
+					add = {
+						value = "aptitude(grand_mentor_court_position)"
+						multiply = 4
+					}
+					multiply = 5
 				}
-			}
-			liege_or_court_owner = {
-				save_scope_as = target_character
-			}
-			if = {
-				limit = {
-					exists = scope:target_character
+				liege_or_court_owner = {
+					save_scope_as = target_character
 				}
-				random_list = {
-					5 = { # Martial
-						trigger = {
-							scope:target_character.martial < root.martial
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = martial }
+				if = {
+					limit = {
+						exists = scope:target_character
 					}
-					5 = { # Diplomacy
-						trigger = {
-							scope:target_character.diplomacy < root.diplomacy
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = diplomacy }
-					}
-					5 = { # Stewardship
-						trigger = {
-							scope:target_character.stewardship < root.stewardship
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = stewardship }
-					}
-					5 = { # Learning
-						trigger = {
-							scope:target_character.learning < root.learning
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = learning }
-					}
-					5 = { # Intrigue
-						trigger = {
-							scope:target_character.intrigue < root.intrigue
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = intrigue }
-					}
-					25 = { # Governor trait
-						trigger = {
-							scope:target_character = {
-								has_trait = governor
+					random_list = {
+						5 = { # Martial
+							trigger = {
+								scope:target_character.martial < root.martial
 							}
+							grand_mentor_mentoring_skill_effect = { SKILL = martial }
 						}
-						grand_mentor_mentoring_trait_xp_effect = { TRAIT = governor }
-					}
-					25 = { # Confucian Education trait
-						trigger = {
-							scope:target_character = {
-								has_trait = confucian_education
+						5 = { # Diplomacy
+							trigger = {
+								scope:target_character.diplomacy < root.diplomacy
 							}
+							grand_mentor_mentoring_skill_effect = { SKILL = diplomacy }
 						}
-						grand_mentor_mentoring_trait_xp_effect = { TRAIT = confucian_education }
+						5 = { # Stewardship
+							trigger = {
+								scope:target_character.stewardship < root.stewardship
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = stewardship }
+						}
+						5 = { # Learning
+							trigger = {
+								scope:target_character.learning < root.learning
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = learning }
+						}
+						5 = { # Intrigue
+							trigger = {
+								scope:target_character.intrigue < root.intrigue
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = intrigue }
+						}
+						25 = { # Governor trait
+							trigger = {
+								scope:target_character = {
+									has_trait = governor
+								}
+							}
+							grand_mentor_mentoring_trait_xp_effect = { TRAIT = governor }
+						}
+						25 = { # Confucian Education trait
+							trigger = {
+								scope:target_character = {
+									has_trait = confucian_education
+								}
+							}
+							grand_mentor_mentoring_trait_xp_effect = { TRAIT = confucian_education }
+						}
 					}
 				}
 			}
@@ -221,87 +227,93 @@ grand_mentor_court_position_task_edify_heirs = {
 	}
 
 	on_monthly = {
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
 		random = {
-			chance = {
-				value = 1
-				add = {
-					value = "aptitude(grand_mentor_court_position)"
-					multiply = 4
-				}
-			}
-			random_list = {
-				1 = {
-					liege_or_court_owner = {
-						random_vassal = {
-							limit = {
-								NOT = { this = root }
-								house = top_liege.house
-							}
-						}
+			chance = 20
+			random = {
+				chance = {
+					value = 1
+					add = {
+						value = "aptitude(grand_mentor_court_position)"
+						multiply = 4
 					}
-				}
-				1 = {
-					liege_or_court_owner = {
-						random_courtier = {
-							limit = { 
-								NOT = { this = root }
-								house = top_liege.house
-							}
-							save_scope_as = target_character
-						}
-					}
-				}
-			}
-			if = {
-				limit = {
-					exists = scope:target_character
+					multiply = 5
 				}
 				random_list = {
-					5 = { # Martial
-						trigger = {
-							scope:target_character.martial < root.martial
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = martial }
-					}
-					5 = { # Diplomacy
-						trigger = {
-							scope:target_character.diplomacy < root.diplomacy
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = diplomacy }
-					}
-					5 = { # Stewardship
-						trigger = {
-							scope:target_character.stewardship < root.stewardship
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = stewardship }
-					}
-					5 = { # Learning
-						trigger = {
-							scope:target_character.learning < root.learning
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = learning }
-					}
-					5 = { # Intrigue
-						trigger = {
-							scope:target_character.intrigue < root.intrigue
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = intrigue }
-					}
-					25 = { # Governor trait
-						trigger = {
-							scope:target_character = {
-								has_trait = governor
+					1 = {
+						liege_or_court_owner = {
+							random_vassal = {
+								limit = {
+									NOT = { this = root }
+									house = top_liege.house
+								}
 							}
 						}
-						grand_mentor_mentoring_trait_xp_effect = { TRAIT = governor }
 					}
-					25 = { # Confucian Education trait
-						trigger = {
-							scope:target_character = {
-								has_trait = confucian_education
+					1 = {
+						liege_or_court_owner = {
+							random_courtier = {
+								limit = { 
+									NOT = { this = root }
+									house = top_liege.house
+								}
+								save_scope_as = target_character
 							}
 						}
-						grand_mentor_mentoring_trait_xp_effect = { TRAIT = confucian_education }
+					}
+				}
+				if = {
+					limit = {
+						exists = scope:target_character
+					}
+					random_list = {
+						5 = { # Martial
+							trigger = {
+								scope:target_character.martial < root.martial
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = martial }
+						}
+						5 = { # Diplomacy
+							trigger = {
+								scope:target_character.diplomacy < root.diplomacy
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = diplomacy }
+						}
+						5 = { # Stewardship
+							trigger = {
+								scope:target_character.stewardship < root.stewardship
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = stewardship }
+						}
+						5 = { # Learning
+							trigger = {
+								scope:target_character.learning < root.learning
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = learning }
+						}
+						5 = { # Intrigue
+							trigger = {
+								scope:target_character.intrigue < root.intrigue
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = intrigue }
+						}
+						25 = { # Governor trait
+							trigger = {
+								scope:target_character = {
+									has_trait = governor
+								}
+							}
+							grand_mentor_mentoring_trait_xp_effect = { TRAIT = governor }
+						}
+						25 = { # Confucian Education trait
+							trigger = {
+								scope:target_character = {
+									has_trait = confucian_education
+								}
+							}
+							grand_mentor_mentoring_trait_xp_effect = { TRAIT = confucian_education }
+						}
 					}
 				}
 			}
@@ -386,98 +398,104 @@ grand_mentor_court_position_task_train_officials = {
 	}
 
 	on_monthly = {
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
 		random = {
-			chance = {
-				value = 1
-				add = {
-					value = "aptitude(grand_mentor_court_position)"
-					multiply = 4
-				}
-			}
-			random_list = {
-				1 = {
-					liege_or_court_owner = {
-						random_vassal = {
-							limit = {
-								NOR = { 
-									this = root
-									house = top_liege.house
-								}
-							}
-							save_scope_as = target_character
-						}
+			chance = 20
+			random = {
+				chance = {
+					value = 1
+					add = {
+						value = "aptitude(grand_mentor_court_position)"
+						multiply = 4
 					}
-				}
-				1 = {
-					liege_or_court_owner = {
-						random_court_position_holder = {
-							limit = { 
-								NOR = {
-									this = root
-									house = top_liege.house
-								}
-							}
-							save_scope_as = target_character
-						}
-					}
-				}
-			}
-			if = {
-				limit = {
-					exists = scope:target_character
+					multiply = 5
 				}
 				random_list = {
-					5 = { # Martial
-						trigger = {
-							scope:target_character.martial < root.martial
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = martial }
-					}
-					5 = { # Diplomacy
-						trigger = {
-							scope:target_character.diplomacy < root.diplomacy
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = diplomacy }
-					}
-					5 = { # Stewardship
-						trigger = {
-							scope:target_character.stewardship < root.stewardship
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = stewardship }
-					}
-					5 = { # Learning
-						trigger = {
-							scope:target_character.learning < root.learning
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = learning }
-					}
-					5 = { # Intrigue
-						trigger = {
-							scope:target_character.intrigue < root.intrigue
-						}
-						grand_mentor_mentoring_skill_effect = { SKILL = intrigue }
-					}
-					25 = { # Governor trait
-						trigger = {
-							scope:target_character = {
-								has_trait = governor
+					1 = {
+						liege_or_court_owner = {
+							random_vassal = {
+								limit = {
+									NOR = { 
+										this = root
+										house = top_liege.house
+									}
+								}
+								save_scope_as = target_character
 							}
 						}
-						grand_mentor_mentoring_trait_xp_effect = { TRAIT = governor }
 					}
-					25 = { # Confucian Education trait
-						trigger = {
-							scope:target_character = {
-								has_trait = confucian_education
+					1 = {
+						liege_or_court_owner = {
+							random_court_position_holder = {
+								limit = { 
+									NOR = {
+										this = root
+										house = top_liege.house
+									}
+								}
+								save_scope_as = target_character
 							}
 						}
-						grand_mentor_mentoring_trait_xp_effect = { TRAIT = confucian_education }
 					}
-					25 = { # Merit gain
-						trigger = {
-							merit >= monumental_merit_value
+				}
+				if = {
+					limit = {
+						exists = scope:target_character
+					}
+					random_list = {
+						5 = { # Martial
+							trigger = {
+								scope:target_character.martial < root.martial
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = martial }
 						}
-						grand_mentor_mentoring_merit_effect = yes
+						5 = { # Diplomacy
+							trigger = {
+								scope:target_character.diplomacy < root.diplomacy
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = diplomacy }
+						}
+						5 = { # Stewardship
+							trigger = {
+								scope:target_character.stewardship < root.stewardship
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = stewardship }
+						}
+						5 = { # Learning
+							trigger = {
+								scope:target_character.learning < root.learning
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = learning }
+						}
+						5 = { # Intrigue
+							trigger = {
+								scope:target_character.intrigue < root.intrigue
+							}
+							grand_mentor_mentoring_skill_effect = { SKILL = intrigue }
+						}
+						25 = { # Governor trait
+							trigger = {
+								scope:target_character = {
+									has_trait = governor
+								}
+							}
+							grand_mentor_mentoring_trait_xp_effect = { TRAIT = governor }
+						}
+						25 = { # Confucian Education trait
+							trigger = {
+								scope:target_character = {
+									has_trait = confucian_education
+								}
+							}
+							grand_mentor_mentoring_trait_xp_effect = { TRAIT = confucian_education }
+						}
+						25 = { # Merit gain
+							trigger = {
+								merit >= monumental_merit_value
+							}
+							grand_mentor_mentoring_merit_effect = yes
+						}
 					}
 				}
 			}

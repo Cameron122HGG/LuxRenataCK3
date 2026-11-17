@@ -36,10 +36,16 @@ LR_dynastic_realm_names_game_start = {
 }
 
 # root = the new or old holder, scope:title = the title
+# Head of faith titles (e.g. the caliphate, a duchy) count too: they change the realm's word
 LR_dynastic_realm_names_on_title_change = {
 	trigger = {
 		NOT = { has_game_rule = lr_dynastic_realm_names_vanilla }
-		scope:title = { tier >= tier_kingdom }
+		scope:title = {
+			OR = {
+				tier >= tier_kingdom
+				is_head_of_faith = yes
+			}
+		}
 	}
 	effect = { LR_dynastic_realm_names_refresh_effect = yes }
 }

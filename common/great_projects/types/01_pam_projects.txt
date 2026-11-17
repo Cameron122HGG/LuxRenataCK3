@@ -22,7 +22,7 @@ pam_cathedral_01 = {
 	illustration = { reference = @great_project_cathedral_illustration }
 
 	name = {
-		desc = building_great_project_cathedral_01
+		desc = great_project_cathedral_01
 	}
 
 	is_shown = {
@@ -79,10 +79,17 @@ pam_cathedral_01 = {
 				}
 			}
 			piety_level >= 2
-			cp:councillor_court_chaplain ?= {
-				opinion = {
-					target = root
-					value > 0
+			custom_tooltip = {
+				text = pam_decision_confession_sp_court_chaplain
+				exists = cp:councillor_court_chaplain
+			}
+			trigger_if = {
+				limit = { exists = cp:councillor_court_chaplain }
+				cp:councillor_court_chaplain = {
+					opinion = {
+						target = root
+						value > 0
+					}
 				}
 			}
 			custom_tooltip = {
@@ -154,10 +161,6 @@ pam_cathedral_01 = {
 	contributor_cooldown = standard_contributor_cooldown_value
 
 	on_start_build = {
-		custom_tooltip = cathedral_under_construction_building_tt
-		scope:province ?= {
-			set_great_building = great_project_cathedral_under_construction
-		}
 		cathedral_great_project_funded_started_event_sender_effect = yes
 		# One mid-build flavor pulse; tiers 2/3 use the yearly 5-year pace instead.
 		hidden_effect = {
@@ -203,6 +206,7 @@ pam_cathedral_01 = {
 	}
 
 	on_complete = {
+#		custom_tooltip = cathedral_founder_on_start_gain_tt
 		if = {
 			limit = {
 				exists = scope:province
@@ -247,8 +251,8 @@ pam_cathedral_01 = {
 		hidden_effect = {
 			cathedral_great_project_completed_event_sender_effect = yes
 			scope:province = {
-				remove_building = great_project_cathedral_under_construction
-				set_great_building = great_project_cathedral_01
+				set_great_district = great_project_cathedral_01_district
+
 				custom_tooltip = {
 					text = cathedral_county_poi_bonus
 					scope:province = {
@@ -276,15 +280,6 @@ pam_cathedral_01 = {
 		}
 	}
 
-	on_cancel = {
-		scope:province ?= {
-			if = {
-				limit = { has_building = great_project_cathedral_under_construction }
-				remove_building = great_project_cathedral_under_construction
-			}
-		}
-	}
-
 	project_contributions = {
 		#Mandatory
 		stone = {
@@ -304,54 +299,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_08
+									has_building_or_higher = stone_resource_building_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_quarries_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_quarries_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_quarries_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_quarries_5
 						}
 					}
@@ -360,12 +313,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_04
+									has_building_or_higher = stone_resource_building_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_quarries_4
 						}
 					}
@@ -374,12 +327,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_03
+									has_building_or_higher = stone_resource_building_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_quarries_3
 						}
 					}
@@ -388,7 +341,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_02
+									has_building_or_higher = stone_resource_building_2
 								}
 							}
 						}
@@ -402,7 +355,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_01
+									has_building_or_higher = stone_resource_building_1
 								}
 							}
 						}
@@ -425,7 +378,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_01
+									has_building_or_higher = stone_resource_building_1
 								}
 							}
 						}
@@ -490,54 +443,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -546,12 +457,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -560,12 +471,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -574,7 +485,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -588,7 +499,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -611,7 +522,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -708,54 +619,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_08
+									has_building_or_higher = blacksmiths_guild_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_smiths_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_smiths_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_smiths_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_smiths_5
 						}
 					}
@@ -764,12 +633,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_04
+									has_building_or_higher = blacksmiths_guild_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_smiths_4
 						}
 					}
@@ -778,12 +647,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_03
+									has_building_or_higher = blacksmiths_guild_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_smiths_3
 						}
 					}
@@ -792,7 +661,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_02
+									has_building_or_higher = blacksmiths_guild_2
 								}
 							}
 						}
@@ -806,7 +675,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_01
+									has_building_or_higher = blacksmiths_guild_1
 								}
 							}
 						}
@@ -829,7 +698,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_01
+									has_building_or_higher = blacksmiths_guild_1
 								}
 							}
 						}
@@ -1018,7 +887,7 @@ pam_cathedral_01 = {
 			cost = {
 				piety = {
 					value = {
-						value = great_project_base_contribution_cost
+						value = great_project_base_piety_contribution_cost
 						multiply = 1.33
 						desc = great_project_base_contribution_cost_desc
 					}
@@ -1028,54 +897,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_08
+									has_building_or_higher = scriptorium_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.3
-							desc = cathedral_discount_scriptorium_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.35
-							desc = cathedral_discount_scriptorium_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.4
-							desc = cathedral_discount_scriptorium_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
 							desc = cathedral_discount_scriptorium_5
 						}
 					}
@@ -1084,12 +911,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_04
+									has_building_or_higher = scriptorium_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.5
+							add = 0.4
 							desc = cathedral_discount_scriptorium_4
 						}
 					}
@@ -1098,12 +925,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_03
+									has_building_or_higher = scriptorium_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.55
+							add = 0.5
 							desc = cathedral_discount_scriptorium_3
 						}
 					}
@@ -1112,7 +939,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_02
+									has_building_or_higher = scriptorium_2
 								}
 							}
 						}
@@ -1126,7 +953,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -1148,54 +975,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_08
+									has_building_or_higher = scriptorium_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.3
-							desc = cathedral_discount_scriptorium_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.35
-							desc = cathedral_discount_scriptorium_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.4
-							desc = cathedral_discount_scriptorium_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
 							desc = cathedral_discount_scriptorium_5
 						}
 					}
@@ -1204,12 +989,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_04
+									has_building_or_higher = scriptorium_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.5
+							add = 0.4
 							desc = cathedral_discount_scriptorium_4
 						}
 					}
@@ -1218,12 +1003,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_03
+									has_building_or_higher = scriptorium_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.55
+							add = 0.5
 							desc = cathedral_discount_scriptorium_3
 						}
 					}
@@ -1232,7 +1017,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_02
+									has_building_or_higher = scriptorium_2
 								}
 							}
 						}
@@ -1246,7 +1031,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -1269,7 +1054,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -1331,54 +1116,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -1387,12 +1130,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -1401,12 +1144,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -1415,7 +1158,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -1429,7 +1172,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -1441,7 +1184,7 @@ pam_cathedral_01 = {
 				}
 				piety = {
 					value = {
-						value = great_project_base_contribution_cost
+						value = great_project_base_piety_contribution_cost
 						multiply = 0.67
 						desc = great_project_base_contribution_cost_desc
 					}
@@ -1451,54 +1194,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -1507,12 +1208,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -1521,12 +1222,12 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -1535,7 +1236,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -1549,7 +1250,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -1572,7 +1273,7 @@ pam_cathedral_01 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -1821,7 +1522,7 @@ pam_cathedral_02 = {
 	illustration = { reference = @great_project_cathedral_illustration }
 
 	name = {
-		desc = building_great_project_cathedral_02
+		desc = great_project_type_pam_cathedral_02
 	}
 
 	is_shown = {
@@ -1871,10 +1572,17 @@ pam_cathedral_02 = {
 				}
 			}
 			piety_level >= 2
-			cp:councillor_court_chaplain ?= {
-				opinion = {
-					target = root
-					value > 0
+			custom_tooltip = {
+				text = pam_decision_confession_sp_court_chaplain
+				exists = cp:councillor_court_chaplain
+			}
+			trigger_if = {
+				limit = { exists = cp:councillor_court_chaplain }
+				cp:councillor_court_chaplain = {
+					opinion = {
+						target = root
+						value > 0
+					}
 				}
 			}
 			custom_tooltip = {
@@ -1943,10 +1651,6 @@ pam_cathedral_02 = {
 	contributor_cooldown = standard_contributor_cooldown_value
 
 	on_start_build = {
-		custom_tooltip = cathedral_under_construction_building_tt
-		scope:province ?= {
-			set_great_building = great_project_cathedral_under_construction
-		}
 		cathedral_great_project_funded_started_event_sender_effect = yes
 		scope:founder = {
 			if = {
@@ -1965,6 +1669,7 @@ pam_cathedral_02 = {
 	}
 
 	on_complete = {
+#		custom_tooltip = cathedral_tier_2_founder_on_start_gain_tt
 		if = {
 			limit = {
 				exists = scope:province
@@ -2011,10 +1716,8 @@ pam_cathedral_02 = {
 
 		hidden_effect ?= {
 			cathedral_great_project_completed_event_sender_effect = yes
-			scope:province ?= {
-				remove_building = great_project_cathedral_under_construction
-				remove_building = great_project_cathedral_01
-				set_great_building = great_project_cathedral_02
+			scope:province = {
+				great_district ?= { upgrade_building_effect = great_project_cathedral_01 }
 				set_variable = {
 					name = grand_cathedral_tier
 					value = 2
@@ -2051,15 +1754,6 @@ pam_cathedral_02 = {
 		}
 	}
 
-	on_cancel = {
-		scope:province ?= {
-			if = {
-				limit = { has_building = great_project_cathedral_under_construction }
-				remove_building = great_project_cathedral_under_construction
-			}
-		}
-	}
-
 	project_contributions = {
 		#Mandatory
 		stone = {
@@ -2079,54 +1773,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_08
+									has_building_or_higher = stone_resource_building_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_quarries_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_quarries_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_quarries_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_quarries_5
 						}
 					}
@@ -2135,12 +1787,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_04
+									has_building_or_higher = stone_resource_building_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_quarries_4
 						}
 					}
@@ -2149,12 +1801,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_03
+									has_building_or_higher = stone_resource_building_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_quarries_3
 						}
 					}
@@ -2163,7 +1815,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_02
+									has_building_or_higher = stone_resource_building_2
 								}
 							}
 						}
@@ -2177,7 +1829,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_01
+									has_building_or_higher = stone_resource_building_1
 								}
 							}
 						}
@@ -2200,7 +1852,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_01
+									has_building_or_higher = stone_resource_building_1
 								}
 							}
 						}
@@ -2265,54 +1917,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -2321,12 +1931,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -2335,12 +1945,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -2349,7 +1959,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -2363,7 +1973,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -2386,7 +1996,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -2446,8 +2056,7 @@ pam_cathedral_02 = {
 						}
 						create_character = {
 							template = master_mason_character
-							# Root is dead or unlanded in this branch, so the mason joins the dynast who gets them
-							location = dynasty.dynast.capital_province
+							location = root.capital_province
 							dynasty = none
 							save_scope_as = mason
 						}
@@ -2484,54 +2093,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_08
+									has_building_or_higher = blacksmiths_guild_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_smiths_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_smiths_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_smiths_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_smiths_5
 						}
 					}
@@ -2540,12 +2107,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_04
+									has_building_or_higher = blacksmiths_guild_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_smiths_4
 						}
 					}
@@ -2554,12 +2121,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_03
+									has_building_or_higher = blacksmiths_guild_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_smiths_3
 						}
 					}
@@ -2568,7 +2135,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_02
+									has_building_or_higher = blacksmiths_guild_2
 								}
 							}
 						}
@@ -2582,7 +2149,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_01
+									has_building_or_higher = blacksmiths_guild_1
 								}
 							}
 						}
@@ -2605,7 +2172,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_01
+									has_building_or_higher = blacksmiths_guild_1
 								}
 							}
 						}
@@ -2658,11 +2225,7 @@ pam_cathedral_02 = {
 								}
 								custom = custom.every_christian_courtier
 								add_stress = medium_stress_loss
-								# Only playable characters have spiritual fulfillment
-								if = {
-									limit = { is_playable_character = yes }
-									change_spiritual_fulfillment = medium_spiritual_fulfillment_value
-								}
+								change_spiritual_fulfillment = medium_spiritual_fulfillment_value
 							}
 						}
 					}
@@ -2706,7 +2269,32 @@ pam_cathedral_02 = {
 
 		facade = {
 			contributor_is_valid = {
-				is_valid_cathedral_facade_contributor_trigger = yes
+				OR = {
+					learning >= extremely_high_skill_rating
+					trigger_if = {
+						limit = {
+							#AI founders cheat so cathedrals can actually happen
+							OR = {
+								is_ai = no
+								scope:founder != this
+							}
+							has_ep1_court_positions_dlc_trigger = yes
+						}
+						AND = {
+							highest_held_title_tier >= tier_kingdom
+							custom_tooltip = {
+								text = has_good_royal_architect_tt
+								any_court_position_holder = {
+									type = royal_architect_court_position
+									aptitude = { court_position = royal_architect_court_position value >= 3 }
+								}
+							}
+						}
+					}
+					trigger_else = {
+						highest_held_title_tier >= tier_kingdom
+					}
+				}
 			}
 			is_shown = {
 				NOT = {
@@ -2793,7 +2381,7 @@ pam_cathedral_02 = {
 			cost = {
 				piety = {
 					value = {
-						value = great_project_base_contribution_cost
+						value = great_project_base_piety_contribution_cost
 						multiply = 2
 						desc = great_project_base_contribution_cost_desc
 					}
@@ -2803,54 +2391,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_08
+									has_building_or_higher = scriptorium_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.3
-							desc = cathedral_discount_scriptorium_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.35
-							desc = cathedral_discount_scriptorium_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.4
-							desc = cathedral_discount_scriptorium_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
 							desc = cathedral_discount_scriptorium_5
 						}
 					}
@@ -2859,12 +2405,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_04
+									has_building_or_higher = scriptorium_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.5
+							add = 0.4
 							desc = cathedral_discount_scriptorium_4
 						}
 					}
@@ -2873,12 +2419,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_03
+									has_building_or_higher = scriptorium_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.55
+							add = 0.5
 							desc = cathedral_discount_scriptorium_3
 						}
 					}
@@ -2887,7 +2433,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_02
+									has_building_or_higher = scriptorium_2
 								}
 							}
 						}
@@ -2901,7 +2447,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -2923,54 +2469,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_08
+									has_building_or_higher = scriptorium_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.3
-							desc = cathedral_discount_scriptorium_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.35
-							desc = cathedral_discount_scriptorium_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.4
-							desc = cathedral_discount_scriptorium_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
 							desc = cathedral_discount_scriptorium_5
 						}
 					}
@@ -2979,12 +2483,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_04
+									has_building_or_higher = scriptorium_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.5
+							add = 0.4
 							desc = cathedral_discount_scriptorium_4
 						}
 					}
@@ -2993,12 +2497,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_03
+									has_building_or_higher = scriptorium_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.55
+							add = 0.5
 							desc = cathedral_discount_scriptorium_3
 						}
 					}
@@ -3007,7 +2511,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_02
+									has_building_or_higher = scriptorium_2
 								}
 							}
 						}
@@ -3021,7 +2525,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -3044,7 +2548,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -3106,54 +2610,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -3162,12 +2624,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -3176,12 +2638,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -3190,7 +2652,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -3204,7 +2666,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -3216,7 +2678,7 @@ pam_cathedral_02 = {
 				}
 				piety = {
 					value = {
-						value = great_project_base_contribution_cost
+						value = great_project_base_piety_contribution_cost
 						multiply = 1
 						desc = great_project_base_contribution_cost_desc
 					}
@@ -3226,54 +2688,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -3282,12 +2702,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -3296,12 +2716,12 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -3310,7 +2730,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -3324,7 +2744,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -3347,7 +2767,7 @@ pam_cathedral_02 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -3407,7 +2827,7 @@ pam_cathedral_02 = {
 						limit = {
 							is_clergy = no
 							NOT = {
-								government_has_flag = government_has_influence
+								government_has_mechanic = administrative
 							}
 						}
 						add = medium_prestige_value
@@ -3417,7 +2837,7 @@ pam_cathedral_02 = {
 					value = 0
 					if = {
 						limit = {
-							government_has_flag = government_has_influence
+							government_has_mechanic = administrative
 						}
 						add = medium_influence_value
 					}
@@ -3483,7 +2903,7 @@ pam_cathedral_02 = {
 						limit = {
 							is_clergy = no
 							NOT = {
-								government_has_flag = government_has_influence
+								government_has_mechanic = administrative
 							}
 						}
 						add = medium_prestige_value
@@ -3493,7 +2913,7 @@ pam_cathedral_02 = {
 					value = 0
 					if = {
 						limit = {
-							government_has_flag = government_has_influence
+							government_has_mechanic = administrative
 						}
 						add = medium_influence_value
 					}
@@ -3596,7 +3016,7 @@ pam_cathedral_03 = {
 	illustration = { reference = @great_project_cathedral_illustration }
 
 	name = {
-		desc = building_great_project_cathedral_03
+		desc = great_project_type_pam_cathedral_03
 	}
 
 	is_shown = {
@@ -3636,7 +3056,7 @@ pam_cathedral_03 = {
 		}
 		culture = {
 			has_innovation = innovation_manorialism
-			has_innovation = innovation_development_03
+			has_innovation = innovation_prosperity_03
 		}
 		#secular rulers can only build inside their realm
 		trigger_if = {
@@ -3647,10 +3067,17 @@ pam_cathedral_03 = {
 				}
 			}
 			piety_level >= 2
-			cp:councillor_court_chaplain ?= {
-				opinion = {
-					target = root
-					value > 0
+			custom_tooltip = {
+				text = pam_decision_confession_sp_court_chaplain
+				exists = cp:councillor_court_chaplain
+			}
+			trigger_if = {
+				limit = { exists = cp:councillor_court_chaplain }
+				cp:councillor_court_chaplain = {
+					opinion = {
+						target = root
+						value > 0
+					}
 				}
 			}
 			custom_tooltip = {
@@ -3719,10 +3146,6 @@ pam_cathedral_03 = {
 	contributor_cooldown = standard_contributor_cooldown_value
 
 	on_start_build = {
-		custom_tooltip = cathedral_under_construction_building_tt
-		scope:province ?= {
-			set_great_building = great_project_cathedral_under_construction
-		}
 		cathedral_great_project_funded_started_event_sender_effect = yes
 		scope:founder = {
 			if = {
@@ -3741,6 +3164,7 @@ pam_cathedral_03 = {
 	}
 
 	on_complete = {
+#		custom_tooltip = cathedral_tier_3_founder_on_start_gain_tt
 		if = {
 			limit = {
 				exists = scope:province
@@ -3787,10 +3211,8 @@ pam_cathedral_03 = {
 
 		hidden_effect = {
 			cathedral_great_project_completed_event_sender_effect = yes
-			scope:province ?= {
-				remove_building = great_project_cathedral_under_construction
-				remove_building = great_project_cathedral_02
-				set_great_building = great_project_cathedral_03
+			scope:province = {
+				great_district ?= { upgrade_building_effect = great_project_cathedral_02 }
 				set_variable = {
 					name = grand_cathedral_tier
 					value = 3
@@ -3827,15 +3249,6 @@ pam_cathedral_03 = {
 		}
 	}
 
-	on_cancel = {
-		scope:province ?= {
-			if = {
-				limit = { has_building = great_project_cathedral_under_construction }
-				remove_building = great_project_cathedral_under_construction
-			}
-		}
-	}
-
 	project_contributions = {
 		#Mandatory
 		stone = {
@@ -3855,54 +3268,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_08
+									has_building_or_higher = stone_resource_building_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_quarries_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_quarries_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_quarries_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = quarries_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_quarries_5
 						}
 					}
@@ -3911,12 +3282,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_04
+									has_building_or_higher = stone_resource_building_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_quarries_4
 						}
 					}
@@ -3925,12 +3296,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_03
+									has_building_or_higher = stone_resource_building_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_quarries_3
 						}
 					}
@@ -3939,7 +3310,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_02
+									has_building_or_higher = stone_resource_building_2
 								}
 							}
 						}
@@ -3953,7 +3324,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_01
+									has_building_or_higher = stone_resource_building_1
 								}
 							}
 						}
@@ -3976,7 +3347,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = quarries_01
+									has_building_or_higher = stone_resource_building_1
 								}
 							}
 						}
@@ -4041,54 +3412,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -4097,12 +3426,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -4111,12 +3440,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -4125,7 +3454,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -4139,7 +3468,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -4162,7 +3491,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -4222,8 +3551,7 @@ pam_cathedral_03 = {
 						}
 						create_character = {
 							template = master_mason_character
-							# Root is dead or unlanded in this branch, so the mason joins the dynast who gets them
-							location = dynasty.dynast.capital_province
+							location = root.capital_province
 							dynasty = none
 							save_scope_as = mason
 						}
@@ -4260,54 +3588,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_08
+									has_building_or_higher = blacksmiths_guild_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_smiths_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_smiths_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_smiths_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = smiths_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_smiths_5
 						}
 					}
@@ -4316,12 +3602,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_04
+									has_building_or_higher = blacksmiths_guild_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_smiths_4
 						}
 					}
@@ -4330,12 +3616,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_03
+									has_building_or_higher = blacksmiths_guild_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_smiths_3
 						}
 					}
@@ -4344,7 +3630,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_02
+									has_building_or_higher = blacksmiths_guild_2
 								}
 							}
 						}
@@ -4358,7 +3644,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_01
+									has_building_or_higher = blacksmiths_guild_1
 								}
 							}
 						}
@@ -4381,7 +3667,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = smiths_01
+									has_building_or_higher = blacksmiths_guild_1
 								}
 							}
 						}
@@ -4434,11 +3720,7 @@ pam_cathedral_03 = {
 								}
 								custom = custom.every_christian_courtier
 								add_stress = medium_stress_loss
-								# Only playable characters have spiritual fulfillment
-								if = {
-									limit = { is_playable_character = yes }
-									change_spiritual_fulfillment = medium_spiritual_fulfillment_value
-								}
+								change_spiritual_fulfillment = medium_spiritual_fulfillment_value
 							}
 						}
 					}
@@ -4482,7 +3764,32 @@ pam_cathedral_03 = {
 
 		facade = {
 			contributor_is_valid = {
-				is_valid_cathedral_facade_contributor_trigger = yes
+				OR = {
+					learning >= extremely_high_skill_rating
+					trigger_if = {
+						limit = {
+							#AI founders cheat so cathedrals can actually happen
+							OR = {
+								is_ai = no
+								scope:founder != this
+							}
+							has_ep1_court_positions_dlc_trigger = yes
+						}
+						AND = {
+							highest_held_title_tier >= tier_kingdom
+							custom_tooltip = {
+								text = has_good_royal_architect_tt
+								any_court_position_holder = {
+									type = royal_architect_court_position
+									aptitude = { court_position = royal_architect_court_position value >= 3 }
+								}
+							}
+						}
+					}
+					trigger_else = {
+						highest_held_title_tier >= tier_kingdom
+					}
+				}
 			}
 			is_shown = {
 				NOT = {
@@ -4569,7 +3876,7 @@ pam_cathedral_03 = {
 			cost = {
 				piety = {
 					value = {
-						value = great_project_base_contribution_cost
+						value = great_project_base_piety_contribution_cost
 						multiply = 3
 						desc = great_project_base_contribution_cost_desc
 					}
@@ -4579,54 +3886,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_08
+									has_building_or_higher = scriptorium_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.3
-							desc = cathedral_discount_scriptorium_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.35
-							desc = cathedral_discount_scriptorium_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.4
-							desc = cathedral_discount_scriptorium_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
 							desc = cathedral_discount_scriptorium_5
 						}
 					}
@@ -4635,12 +3900,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_04
+									has_building_or_higher = scriptorium_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.5
+							add = 0.4
 							desc = cathedral_discount_scriptorium_4
 						}
 					}
@@ -4649,12 +3914,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_03
+									has_building_or_higher = scriptorium_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.55
+							add = 0.5
 							desc = cathedral_discount_scriptorium_3
 						}
 					}
@@ -4663,7 +3928,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_02
+									has_building_or_higher = scriptorium_2
 								}
 							}
 						}
@@ -4677,7 +3942,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -4699,54 +3964,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_08
+									has_building_or_higher = scriptorium_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.3
-							desc = cathedral_discount_scriptorium_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.35
-							desc = cathedral_discount_scriptorium_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.4
-							desc = cathedral_discount_scriptorium_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = scriptorium_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
 							desc = cathedral_discount_scriptorium_5
 						}
 					}
@@ -4755,12 +3978,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_04
+									has_building_or_higher = scriptorium_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.5
+							add = 0.4
 							desc = cathedral_discount_scriptorium_4
 						}
 					}
@@ -4769,12 +3992,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_03
+									has_building_or_higher = scriptorium_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.55
+							add = 0.5
 							desc = cathedral_discount_scriptorium_3
 						}
 					}
@@ -4783,7 +4006,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_02
+									has_building_or_higher = scriptorium_2
 								}
 							}
 						}
@@ -4797,7 +4020,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -4820,7 +4043,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = scriptorium_01
+									has_building_or_higher = scriptorium_1
 								}
 							}
 						}
@@ -4882,54 +4105,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -4938,12 +4119,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -4952,12 +4133,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -4966,7 +4147,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -4980,7 +4161,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -4992,7 +4173,7 @@ pam_cathedral_03 = {
 				}
 				piety = {
 					value = {
-						value = great_project_base_contribution_cost
+						value = great_project_base_piety_contribution_cost
 						multiply = 1
 						desc = great_project_base_contribution_cost_desc
 					}
@@ -5002,54 +4183,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_08
+									has_building_or_higher = guild_builders_5
 								}
 							}
 						}
 						multiply = {
 							add = 0.4
-							desc = cathedral_discount_guild_halls_8
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_07
-								}
-							}
-						}
-						multiply = {
-							add = 0.45
-							desc = cathedral_discount_guild_halls_7
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_06
-								}
-							}
-						}
-						multiply = {
-							add = 0.5
-							desc = cathedral_discount_guild_halls_6
-						}
-					}
-					else_if = {
-						limit = {
-							any_held_title = {
-								tier = tier_county
-								any_county_province = {
-									has_building_or_higher = guild_halls_05
-								}
-							}
-						}
-						multiply = {
-							add = 0.55
 							desc = cathedral_discount_guild_halls_5
 						}
 					}
@@ -5058,12 +4197,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_04
+									has_building_or_higher = guild_builders_4
 								}
 							}
 						}
 						multiply = {
-							add = 0.6
+							add = 0.5
 							desc = cathedral_discount_guild_halls_4
 						}
 					}
@@ -5072,12 +4211,12 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_03
+									has_building_or_higher = guild_builders_3
 								}
 							}
 						}
 						multiply = {
-							add = 0.65
+							add = 0.6
 							desc = cathedral_discount_guild_halls_3
 						}
 					}
@@ -5086,7 +4225,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_02
+									has_building_or_higher = guild_builders_2
 								}
 							}
 						}
@@ -5100,7 +4239,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -5123,7 +4262,7 @@ pam_cathedral_03 = {
 							any_held_title = {
 								tier = tier_county
 								any_county_province = {
-									has_building_or_higher = guild_halls_01
+									has_building_or_higher = guild_builders_1
 								}
 							}
 						}
@@ -5183,7 +4322,7 @@ pam_cathedral_03 = {
 						limit = {
 							is_clergy = no
 							NOT = {
-								government_has_flag = government_has_influence
+								government_has_mechanic = administrative
 							}
 						}
 						add = medium_prestige_value
@@ -5193,7 +4332,7 @@ pam_cathedral_03 = {
 					value = 0
 					if = {
 						limit = {
-							government_has_flag = government_has_influence
+							government_has_mechanic = administrative
 						}
 						add = medium_influence_value
 					}
@@ -5259,7 +4398,7 @@ pam_cathedral_03 = {
 						limit = {
 							is_clergy = no
 							NOT = {
-								government_has_flag = government_has_influence
+								government_has_mechanic = administrative
 							}
 						}
 						add = medium_prestige_value
@@ -5269,7 +4408,7 @@ pam_cathedral_03 = {
 					value = 0
 					if = {
 						limit = {
-							government_has_flag = government_has_influence
+							government_has_mechanic = administrative
 						}
 						add = medium_influence_value
 					}
@@ -5646,7 +4785,7 @@ pam_mass_rite_conversion = {
 			}
 		}
 		piety = {
-			value = great_project_base_starting_cost
+			value = great_project_base_piety_starting_cost
 			if = { # Cheaper during the Conversion phase
 				limit = {
 					pam_mass_rite_conversion_conversion_phase_trigger = yes

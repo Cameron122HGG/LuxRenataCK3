@@ -34,6 +34,7 @@
 			}
 		}
 		min = 1
+		divide = 4
 	}
 }
 
@@ -129,6 +130,7 @@ starting_treasury = {
 				multiply = 4.5
 			}
 		}
+		divide = 3
 	}
 }
 
@@ -582,6 +584,8 @@ culture_acceptance_baseline = {
 		if = {
 			limit = {
 				has_same_culture_ethos = scope:culture
+				# The pluralistic check below reuses this proximity result
+				save_temporary_scope_as = proximity_checked
 				OR = {
 					cultures_share_relevant_region_trigger = yes
 					#In case cultures are bordering each other in two different regions
@@ -591,6 +595,7 @@ culture_acceptance_baseline = {
 						}
 					}
 				}
+				save_temporary_scope_as = proximity_shared
 			}
 			add = {
 				value = 10
@@ -701,12 +706,18 @@ culture_acceptance_baseline = {
 						}
 					}
 				}
-				OR = {
-					cultures_share_relevant_region_trigger = yes
-					#In case cultures are bordering each other in two different regions
-					any_culture_county = {
-						any_neighboring_county = {
-							culture = scope:culture
+				trigger_if = {
+					limit = { exists = scope:proximity_checked }
+					exists = scope:proximity_shared
+				}
+				trigger_else = {
+					OR = {
+						cultures_share_relevant_region_trigger = yes
+						#In case cultures are bordering each other in two different regions
+						any_culture_county = {
+							any_neighboring_county = {
+								culture = scope:culture
+							}
 						}
 					}
 				}

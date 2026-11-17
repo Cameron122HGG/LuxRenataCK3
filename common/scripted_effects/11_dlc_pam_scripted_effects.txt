@@ -26,6 +26,7 @@ convert_to_rite_with_consequences_effect = {
 	}
 	if = {
 		limit = {
+			is_adult = yes
 			knows_rite_level = {
 				target = $RITE$
 				value < 0.6
@@ -47,6 +48,7 @@ convert_to_rite_with_consequences_effect = {
 	}
 	else_if = {
 		limit = {
+			is_adult = yes
 			knows_rite_level = {
 				target = $RITE$
 				value < 0.8
@@ -63,7 +65,8 @@ convert_to_rite_with_consequences_effect = {
 			years = 5
 		}
 	}
-	else = {
+	else_if = {
+		limit = { is_adult = yes }
 		add_piety = {
 			value = piety
 			multiply = -0.5
@@ -84,12 +87,13 @@ convert_to_rite_with_consequences_effect = {
 	if = {
 		limit = {
 			has_character_flag = recent_convert
+			save_temporary_scope_as = baptism_convert # root is not the convert on every call path
 		#Does the archbishopric they reside in have a baptistery? 
 			liege.capital_county.clerical_region_title.holder ?= { 
 				domicile ?= {
 					has_domicile_parameter = estate_baptistery
 				}
-				rite = root.rite
+				rite = scope:baptism_convert.rite
 			}
 			#Does their liege have a baptistery? 
 			liege.domicile ?= { has_domicile_parameter = estate_baptistery }

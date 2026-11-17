@@ -146,7 +146,7 @@ on_set_relation_lover = {
 					}
 				}
 			}
-			add_clan_unity_interaction_effect = {
+			add_house_unity_interaction_effect = {
 				CHARACTER = root
 				TARGET = scope:target.primary_spouse
 				VALUE = medium_unity_loss
@@ -164,7 +164,7 @@ on_set_relation_lover = {
 					}
 				}
 			}
-			add_clan_unity_interaction_effect = {
+			add_house_unity_interaction_effect = {
 				CHARACTER = root
 				TARGET = scope:target
 				VALUE = minor_unity_gain
@@ -294,7 +294,7 @@ on_set_relation_soulmate = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = root
 			TARGET = scope:target
 			VALUE = minor_unity_gain
@@ -534,7 +534,7 @@ on_set_relation_friend = {
 		#relation_increase_harrying_stats_effect = { STAT = pacification }
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = root
 			TARGET = scope:target
 			VALUE = miniscule_unity_gain
@@ -852,7 +852,7 @@ on_set_relation_best_friend = {
 		#relation_increase_harrying_stats_effect = { STAT = pacification }
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = root
 			TARGET = scope:target
 			VALUE = minor_unity_gain
@@ -1020,7 +1020,6 @@ rival_relation_changes = {
 
 on_set_relation_rival = {
 	effect = {
-
 		every_character_struggle = {
 			involvement = involved
 			limit = {
@@ -1083,7 +1082,7 @@ on_set_relation_rival = {
 		#relation_increase_harrying_stats_effect = { STAT = resistance }
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = root
 			TARGET = scope:target
 			VALUE = medium_unity_loss
@@ -1151,6 +1150,8 @@ on_set_relation_rival = {
 				}
 			}
 		}
+		#GG Prelude Catalyst/s
+		gg_relation_catalyst_effect = { ACTOR = root RECIPIENT = scope:target CATALYST = catalyst_rival_hre_pope }
 	}
 }
 
@@ -1218,14 +1219,14 @@ on_set_relation_nemesis = {
 		#relation_increase_harrying_stats_effect = { STAT = resistance }
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = root
 			TARGET = scope:target
 			VALUE = medium_unity_loss
 			DESC = clan_unity_become_nemesis.desc
 			REVERSE_NON_HOUSE_TARGET = no
 		}
-		# If there's any grudges on either side, clear 'em.
+		# If there are any grudges on either side, clear 'em.
 		clear_grudges_effect = {
 			CHAR_1 = root
 			CHAR_2 = scope:target
@@ -1247,6 +1248,8 @@ on_set_relation_nemesis = {
 				}
 			}
 		}
+		#GG Prelude Catalyst/s
+		gg_relation_catalyst_effect = { ACTOR = root RECIPIENT = scope:target CATALYST = catalyst_nemesis_hre_pope }
 	}
 }
 
@@ -1259,6 +1262,8 @@ on_set_relation_grudge = {
 				grudge = scope:target
 			}
 		}
+		#GG Prelude Catalyst/s
+		gg_relation_catalyst_effect = { ACTOR = root RECIPIENT = scope:target CATALYST = catalyst_grudge_hre_pope }
 	}
 }
 
@@ -1697,7 +1702,6 @@ on_death_relation_nursed_child = {
 							value >= medium_positive_opinion
 						}
 						has_relation_friend = root
-						has_relation_best_friend = root
 					}
 				}
 				scope:target = { save_scope_as = nursed_child }
@@ -1848,7 +1852,7 @@ on_set_relation_blood_brother = {
 		#relation_increase_harrying_stats_effect = { STAT = pacification }
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = root
 			TARGET = scope:target
 			VALUE = minor_unity_gain

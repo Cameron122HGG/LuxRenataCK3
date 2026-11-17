@@ -77,13 +77,22 @@ NGraphics = {
 	SURROUND_MAP_SHADOWCOLOR = { 0.2 0.0 0.0 }
 
 	WINTER_GRAPHICS_DEFAULT_FADE_SPEED = 0.1				# Snow fade speed of game snow, used when the game is paused
-	WINTER_GRAPHICS_FADE_SPEEDS = { 0.2 0.2 0.2 0.3 0.34 } 		# Snow fade speed of game snow based on the current game speed if the game is unpaused. If 0 is defined for a speed, it will use WINTER_GRAPHICS_DEFAULT_FADE_SPEED instead
+	WINTER_GRAPHICS_FADE_SPEEDS = { 0.2 0.2 0.2 0.3 0.34 } 	# Snow fade speed of game snow based on the current game speed if the game is unpaused. If 0 is defined for a speed, it will use WINTER_GRAPHICS_DEFAULT_FADE_SPEED instead
 	WINTER_GRAPHICS_NEW_FADE_SPEED = 0.2					# Snow fade speed of hemisphere mask based snow
 	WINTER_GRAPHICS_SNOW_START_DAY = 273					# Day where hemisphere snow starts to build up ( Min: day 183 )
 	WINTER_GRAPHICS_SNOW_PEAK_DAY = 365						# Day where hemisphere snow reaches maximum build up ( Nax: day 365 )
 	WINTER_GRAPHICS_WINTER_LEVELS = { 0.0 0.3 0.6 1.0 }		# The levels of snow correspond to different intensities
 
+	AUTUMN_START_DAY = 244									# Day where tree autumn colors start ( 0 before this day and from 1 Jan )
+	AUTUMN_PEAK_DAY = 305									# Day where tree autumn colors are at full strength, held until 31 Dec
+	AUTUMN_FADE_SPEED = 0.2									# Fade speed of tree autumn colors toward the date-based target
+
 	ERRORHOOF_DIVISOR = 100
+
+	ROAD_TIER_WIDTH = { 0 2 2.3 2.8 3.3 3.8 } # Land road strip width per tier, in spline style width units
+	ROAD_PLANNER_TIER_WIDTH = { 0 5 6 7 8 9 } # Land road strip width per tier, in trade route planner mode.
+
+	ROAD_JUNCTION_BLEND_RADIUS = 20 # How far along the road one style fades into the next, in world units. A province is about 30 across, and 0 turns blending off
 }
 
 NTerrainCulling = {
@@ -121,7 +130,7 @@ NDomicile = {
 	UPGRADE_TREE_DISTANCE_TO_SIBLING = 1.3					# Distance between sibling nodes
 	TEMPERAMENT_ANIMATION_LOW = "menacing"					# Animation used by featured character of low group
 	TEMPERAMENT_ANIMATION_NEUTRAL = "drink"					# Animation used by featured character of neutral group
-	TEMPERAMENT_ANIMATION_HIGH = "lute_active"		# Animation used by featured character of high group
+	TEMPERAMENT_ANIMATION_HIGH = "lute_active"				# Animation used by featured character of high group
 }
 
 NBarbershop = {
@@ -212,6 +221,8 @@ NMapColors = {
 	IMPASSABLE_LAND_MAP_COLOR = { 0.0 0.0 0.0 }
 
 	HOLDING_HIGHLIGHT_COLOR = { 0 0 1 }
+	TRADE_MARKET_HIGHLIGHT_COLOR = { 1 0.85 0.25 } # Highlight color when hovering a trade market. Needs contrast against the Markets map mode, which already paints each province in its own market's color
+	GEOGRAPHICAL_REGION_HIGHLIGHT_COLOR = { 0.2 0.75 1.0 } # When a text link to a region is clicked, this is the color we use
 	MAP_HIGHLIGHT_ALPHA = 0.1		# Transparency of the map highlight color overlay
 	MAP_HIGHLIGHT_ALPHA_FLAT_MAP = 1	# Transparency of the map highlight color overlay when zoomed out to see the flat map
 	MAP_SELECTION_HIGHLIGHT_ALPHA = 1 # Transparency of the map highlight color overlay for selection items
@@ -348,10 +359,27 @@ NTravelRouteGraphics = {
 	UNIT_IDLE_ANGLE_RADIANS = 0.5f # Angle the Travel unit will orient to when Idle (use negative value to orient in arrow direction)
 	UNIT_NO_TITLE_PRIMARY_COLOR = { 0.3 0.3 0.3 1.0 } # Default travel unit primary color, if the travel unit owner does not have a title to get colors from
 	UNIT_NO_TITLE_SECONDARY_COLOR = { 0.2 0.3 0.3 1.0 } # Default travel unit secondary color, if the travel unit owner does not have a title to get colors from
-	UNIT_SCALE_PER_ZOOM_STEP = { 1.0 1.0 1.1 1.2  1.4  1.6  1.8  2.0 2.2  2.4  2.6  2.8  2.1  1.4  0.7  0.0  0.0  0.0  0.0  0.0 } # Scale of the travel unit at specific zoom steps
+	UNIT_SCALE_PER_ZOOM_STEP = { 1.0 1.0 1.1 1.2 1.2 1.2 1.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 } # Scale of the travel unit at specific zoom steps
 	UNIT_MOVEMENT_SPEED = 24 # Speed of the travel unit when animating between daily steps
 	UNIT_MOVEMENT_CATCHUP_DISTANCE = 50 # If the travel unit movement animation is "behind" the actual location by this distance, use UNIT_MOVEMENT_CATCHUP_SPEED instead
 	UNIT_MOVEMENT_CATCHUP_SPEED = 120 # "Faster" animation movement speed to catch up if behind a lot
+}
+
+NTradeRouteGraphics = {
+	# At this zoom step or further out, trade route entities are hidden
+	ENTITY_HIDE_ZOOM_STEP = 8
+
+	# Number of routes not owned by the local player that show moving entities at once, picked from the highest-tier roads in view
+	OTHER_ENTITY_MAX_ROUTES = 10
+	# Only roads of this tier or higher show moving entities for routes not owned by the local player
+	OTHER_ENTITY_MIN_ROAD_TIER = 1
+	# Map distance past the screen edge within which part of an entity can still be seen
+	OTHER_ENTITY_VIEW_MARGIN = 10.0
+
+	# How many entries the route planner's "more goods tradeable on this route" panel shows
+	TRADE_POSSIBLE_TRADES_TO_SHOW = 3
+	# How many entries the route planner's debug "best trades in range" panel shows
+	TRADE_BEST_TRADES_TO_SHOW = 5
 }
 
 NCombatInterface = {
@@ -397,7 +425,7 @@ NGrantTitleInterface = {
 }
 
 NMapModes = {
-	OTHER_REALM_COLOR = { 0.25 0.25 0.2 1.0 } 	# Outside of Realm
+	OTHER_REALM_COLOR = { 0.29 0.25 0.2 1.0 } 	# Outside of Realm
 	MY_COLOR = { 0.05 0.05 1 1.0 }				# My Realm (international)
 	MY_REALM_COLOR = { 0.3 0.3 0.45 1.0 }		# My Realm (internal, when interacting with a vassal)
 	INVALID_COLOR = { 0.7 0.05 0.05 1.0 }
@@ -419,8 +447,8 @@ NMapModes = {
 	# Baronies with income larger than this percentile will get high income color
 	# Tune the value to prevent outliers like Constantinople and gold mines from forcing every other barony to show as poor
 	ECONOMY_INCOME_PERCENTILE = 0.998
-	COUNCIL_DEVELOPMENT_LOW = { .4 0 0.2 1 } # map color for 0-development county
-	COUNCIL_DEVELOPMENT_HIGH = { 0.9 0.9 0 1 } # map color for max development county
+	COUNCIL_PROSPERITY_LOW = { .4 0 0.2 1 } # map color for 0-prosperity county
+	COUNCIL_PROSPERITY_HIGH = { 0.9 0.9 0 1 } # map color for max prosperity county
 	COUNCIL_FABRICATE_CLAIM_COLOR_ADJACENT = { 0.2 0.8 0.2 1 }
 	COUNCIL_FABRICATE_CLAIM_COLOR_DISTANT = { 0.6 0.6 0.2 1 }
 	COUNCIL_FABRICATE_CLAIM_COLOR_HAS_CLAIM = { 0.9 0.3 0.9 1 }
@@ -501,10 +529,53 @@ NMapModes = {
 	DEBUG_DUCHY_BUILDING_COLOR = { 1.0 0.5 0 1 } # Building a duchy building
 	DEBUG_SPECIAL_BUILDING_COLOR = { 1.0 0.0 0.5 1 } # Building a special building
 	DEBUG_GREAT_PROJECT_BUILDING_COLOR = { 0.0 1.0 1.0 1 } # Building a great-project building
+	DEBUG_RESOURCE_BUILDING_COLOR = { 1.0 0.0 1.0 1 } # Building a resource building
+	DEBUG_TRADE_POST_BUILDING_COLOR = { 0.025 0.5 1.0 1 } # Building a trade post building
+	DEBUG_ENTREPOT_BUILDING_COLOR = { 0.5 0.75 0.0 1 } # Building an entrepot building
 
 	FAITH_SHOW_RITE_ZOOM_STEP = 27 # The zoom level (more zoomed in) to automatically show Rites in the Faith map mode of the selected faith
 	RITE_DIVERGENCE_MAP_PROVINCE_EFFECT = "divergent_rites" # Which province effect to use for heretical rites on the map
 	RITE_DIVERGENCE_MAP_PROVINCE_EFFECT_FLAT_MAP = "divergent_rites" # Which province effect to use for heretical rites on the map
+
+	TRADE_GOOD_OUT_OF_RANGE_FACTOR = 0.8
+
+	TRADE_GOOD_DEFAULT = { 0.5 0.5 0.5 1 }
+
+	TRADE_GOOD_SURPLUS_LOW    = { 0.70 0.88 0.90 1 } # map color for small surplus (can buy)
+	TRADE_GOOD_SURPLUS_MEDIUM = { 0.25 0.7 0.75 1 }
+	TRADE_GOOD_SURPLUS_HIGH   = { 0.00 0.32 0.55 1 } # map color for large surplus (can buy)
+
+	TRADE_GOOD_NEED_LOW       = { 0.90 0.86 0.70 1 } # map color for small need (can sell)
+	TRADE_GOOD_NEED_MEDIUM    = { 0.89 0.59 0.06 1 }
+	TRADE_GOOD_NEED_HIGH      = { 0.55 0.18 0.00 1 } # map color for large need (can sell)
+
+	TRADE_GOOD_POTENTIAL      = { 0.92 0.80 0.20 1 } # map color for a province whose county could produce the focused good
+	TRADE_GOOD_NOT_PRODUCING  = { 0.22 0.22 0.22 1 } # map color when nothing relevant is produced
+	TRADE_GOOD_START_MARKET   = { 0.35 0.72 0.30 1 } # map color for markets a profit route can start from
+
+	TRADE_GOOD_PRODUCTION_RAMP_MIDPOINT = 0.15 # Share of the largest producer that reads as the medium surplus color; 0.5 spreads the ramp evenly
+
+	TRADE_MONOPOLY_COLOR = { 0.1 0.1 0.1 1 }
+
+	TRADE_GOOD_SURPLUS_FADE_FACTOR = 0.8 # In distribution mode, how far a small buyable surplus fades toward grey. 1 is fully grey and 0 is full teal, so tiny surpluses keep a faint teal
+	TRADE_GOOD_PROFIT_BASE_PRICE_SHARE = 0.1 # In profit mode, this share of base price is added to each market's price difference from base, so volume still counts at base price. 0 means volume adds nothing at base price
+
+	POPULAR_OPINION_COLORS = {   #Should match size of POPULAR_OPINION_THRESHOLDS
+		1.00 0.00 0.00 1.0 # Level 0 - Hated
+		1.00 0.18 0.02 1.0 # Level 1 - Despised
+		1.00 0.37 0.03 1.0 # Level 2 - Disliked
+		1.00 0.55 0.05 1.0 # Level 3 - Unpopular
+		0.50 0.50 0.50 1.0 # Level 4 - Neutral
+		0.60 0.90 0.05 1.0 # Level 5 - Appreciated
+		0.40 0.93 0.03 1.0 # Level 6 - Well-Liked
+		0.20 0.97 0.02 1.0 # Level 7 - Popular
+		0.00 1.00 0.00 1.0 # Level 8 - Beloved
+	}
+
+	SETTLEMENT_SIZE_EMPTY = { 0.5 0.5 0.5 1 }
+	SETTLEMENT_SIZE_SMALL = { 0.2 0.1 0.1 1 }
+	SETTLEMENT_SIZE_MEDIUM = { 0.8 0.8 0.1 1 }
+	SETTLEMENT_SIZE_LARGE = { 0.1 1.0 0.1 1 }
 }
 
 NTravel = {
@@ -517,7 +588,7 @@ NTravel = {
 	DANGER_TYPE_COLOR_OCCUPIED = { 0 1 1 }
 	DANGER_TYPE_COLOR_EPIDEMIC = { 0 0 0 }
 	DANGER_TYPE_COLOR_COUNTY_CONTROL = { 0.7 0.5 0.15 }
-	DANGER_TYPE_COLOR_COUNTY_OPINION = { 0.93 0.8 0.6 }
+	DANGER_TYPE_COLOR_POPULAR_OPINION = { 0.93 0.8 0.6 }
 	DANGER_TYPE_COLOR_PROVINCE_OWNER_OPINION = { 0.93 0.8 0.6 }
 
 	DANGER_TYPE_ICON_FILE_NAMES = {
@@ -615,11 +686,11 @@ NGui = {
 		"my_realm_window"
 		"military_window"
 		"council_window"
+		"trade_window"
 		"court_window"
 		"intrigue_window"
 		"factions_window"
 		"decision_window"
-		"activity_list_window"
 		"encyclopedia"
 	}
 
@@ -627,7 +698,9 @@ NGui = {
 	MAX_MS_FOR_FIND_TITLE_LOOKUP = 10	# How much time should we spend ecah frame on updating the title lookup for Find Title after opening it
 
 	MAX_PRISONER_COUNT_GRID = 4 	# The maximum amount of prisoners to display in the grid view (before switching over to the list view, when this grows beyond what is set here)
+	MAX_INLINE_BUILDING_TRACK_LENGTH = 8 	# Longest building upgrade track that still fits beside the building name in the holding view. Longer tracks move to their own row below
 	MAX_WAR_PARTICIPANTS_IN_TOOLTIP = 6 # If a war side has more than this number of people, we cap the list and say "and x more"
+	MAX_MODIFIER_STACKS_IN_TOOLTIP = 10 # If a stacking modifier has more stacks than this, we cap the list and say "+x more"
 
 	DECISION_DETAILS_VIEW_POSITION_DEFAULT = { -650 110 }
 	DECISION_DETAILS_VIEW_POSITION_COURT = { -20 110 }
@@ -690,8 +763,17 @@ NMapIcon = {
 	NATURAL_DISASTERS_VISIBLE_ZOOM_STEPS = { 0 19 }
 	RITE_CAPITALS_VISIBLE_ZOOM_STEPS = { 0 25 }
 	CLERICAL_REGIONS_ELECTORS_VISIBLE_ZOOM_STEPS = { 0 25 }
+	TRADE_MARKET_VISIBLE_ZOOM_STEPS = { 0 20 }
+	TRADE_MARKET_SMALL_VISIBLE_ZOOM_STEPS = { 0 12 }
+	TOP_PRODUCED_GOOD_VISIBLE_ZOOM_STEPS = { 0 19 }
 	CLERICAL_REGION_CONVERSION_PROGRESS_VISIBLE_ZOOM_STEPS = { 0 21 }
 	RELIGIOUS_HEADS_VISIBLE_ZOOM_STEPS = { 0 27 }
+
+	### brief: MAP_ICON_CULL_SCREEN_MARGIN
+	# Screen-space margin in pixels added around the camera frustum when culling map icons per province.
+	# Keeps larger icons near the screen edges from popping in when zoomed out.
+	#
+	MAP_ICON_CULL_SCREEN_MARGIN = 100
 
 	### brief: DETAILED_RAID_VISIBLE_ZOOM_STEPS
 	# At what zoom levels should the raidable holdings icons be
@@ -784,6 +866,8 @@ NGameIcons = {
 	TRAVEL_DANGER_TYPE_ICON_PATH = "gfx/interface/icons/travel_danger_types"
 	TRAVEL_OPTION_ICON_PATH = "gfx/interface/icons/travel_options"
 	VASSAL_STANCE_ICON_PATH = "gfx/interface/icons/vassal_stances"
+	TRADE_GOOD_TYPE_ICON_PATH = "gfx/interface/icons/trade/trade_goods"
+	TRADE_GOOD_CATEGORY_TYPE_ICON_PATH = "gfx/interface/icons/trade/trade_good_categories"
 
 	REGIMENTYPE_HORIZONTAL_IMAGE_PATH = "gfx/interface/illustrations/men_at_arms_big/"
 	REGIMENTYPE_VERTICAL_IMAGE_PATH = "gfx/interface/illustrations/men_at_arms_small/"
@@ -826,6 +910,8 @@ NGameIcons = {
 		"gfx/interface/icons/building_types/building_level_06.dds"
 		"gfx/interface/icons/building_types/building_level_07.dds"
 		"gfx/interface/icons/building_types/building_level_08.dds"
+		"gfx/interface/icons/building_types/building_level_09.dds"
+		"gfx/interface/icons/building_types/building_level_10.dds"
 	}
 	HEALTH_STATE_LEVELS_ICON_FRAMES = {
 		4
@@ -911,7 +997,7 @@ NProvincePositions = {
 	ACTIVITY_OFFSET = { 4 0 -2.5 }
 }
 NHoldingGraphics = {
-	MAX_ACTIVE_SOUND_EFFECTS = 5
+	MAX_ACTIVE_SOUND_EFFECTS = 30
 	FLAG_MESHES = {
 		"western_flag_01_mesh"
 	}
@@ -1119,6 +1205,23 @@ NIntrigue = {
 
 NHouseUnity = {
 	NUM_HISTORY_ITEMS_DISPLAYED = 5 # How many house unity history items that should be shown in the tooltip
+}
+
+NHoldingSprawl = {
+	SPRAWL_BASE_VALUE = -10.0 # All holdings will start with this value
+	SPRAWL_SPAWN_THRESHOLD = 10.0 # Start spawning sprawl around holding if population exceeds this value
+	CAPITAL_HOLDING_SPRAWL_BONUS = 10.0 # Add this as a bonus to capital holdings
+	SPRAWL_PROSPERITY_INTENSITY = 0.2 # Percentage of prosperity that should transform into population (1.0 = 100%)
+	SPRAWL_POPULATION_PER_SIZE = { 0.0 8.0 16.0 24.0 32.0 40.0 48.0 56.0 64.0 72.0 80.0 } # Add sprawl per size level of the province
+	MESH_SCALE = 1.0		# Scale all meshes by this
+	SPRAWL_BORDER_PADDING = 2 # Disallow any placement of sprawl within border pad
+	SPRAWL_SLOPE_SAMPLE_DISTANCE = 1.0 # How far to sample for slopes - higher = faster but less accurate - expected range 1-10
+	SPRAWL_SLOPE_MAX = 0.5 # Maximum delta allowed to place sprawl
+	SPRAWL_BASE_HOLDING_RADIUS = 0.4 # Multiplication of boundingsphere to exclude sprawl placement inside
+	SPRAWL_RESOURCE_BUILDING_COUNT = 1 # Amount of building-cells reserved for resource buildings in sprawl
+	SPRAWL_RESOURCE_AVOIDANCE_RADIUS_MULT = 0.7 # Multiplication of resource building boundingsphere to exclude other sprawl placement inside
+	SPRAWL_DISTRICT_AVOIDANCE_RADIUS_MULT = 0.55 # Multiplication of special and entrepot district boundingsphere to exclude sprawl placement inside
+	SPRAWL_SETTINGS_BUILD_MAX_VALUES = { 5 15 } # If holding sprawl settings not set to high - cap sprawl to these values
 }
 
 NEpidemic = {

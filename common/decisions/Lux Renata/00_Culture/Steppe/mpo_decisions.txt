@@ -4452,8 +4452,8 @@ mpo_gok_world_conquest_decision = {
 		}
 		custom_tooltip = gok_super_nomad_dread_and_gold_tt
 		custom_tooltip = gok_counties_become_nomad_counties_tt
-		custom_tooltip = gok_new_nomad_counties_lose_development_tt
-		custom_tooltip = gok_other_counties_lose_development_tt
+		custom_tooltip = gok_new_nomad_counties_lose_prosperity_tt
+		custom_tooltip = gok_other_counties_lose_prosperity_tt
 		custom_tooltip = gok_non_nomads_become_nomad_tt
 		custom_tooltip = gok_city_state_creation
 
@@ -4476,7 +4476,7 @@ mpo_gok_world_conquest_decision = {
 				}
 			}
 			ordered_realm_county = {
-				order_by = development_level
+				order_by = prosperity_level
 				limit = {
 					culture = {
 						has_cultural_era_or_later = culture_era_early_medieval
@@ -4502,7 +4502,7 @@ mpo_gok_world_conquest_decision = {
 				}
 			}
 			ordered_realm_county = {
-				order_by = development_level
+				order_by = prosperity_level
 				limit = {
 					trigger_if = {
 						limit = {
@@ -4537,7 +4537,7 @@ mpo_gok_world_conquest_decision = {
 				}
 			}
 			ordered_realm_county = {
-				order_by = development_level
+				order_by = prosperity_level
 				limit = {
 					culture = {
 						trigger_if = {
@@ -4703,7 +4703,7 @@ settle_people_decision = {
 			add_to_list = potential_new_capitals
 		}
 		ordered_in_list = {
-			order_by = development_level
+			order_by = prosperity_level
 			list = potential_new_capitals
 			save_scope_as = new_capital
 		}
@@ -5485,7 +5485,7 @@ settle_people_decision = {
 				title_province = {
 					NOT = { has_holding_type = nomad_holding }
 				}
-				development_level >= root.capital_county.development_level
+				prosperity_level >= root.capital_county.prosperity_level
 			}
 		}
 
@@ -5662,7 +5662,7 @@ step_away_from_the_steppe_decision = {
 			add_to_list = potential_new_capitals
 		}
 		ordered_in_list = {
-			order_by = development_level
+			order_by = prosperity_level
 			list = potential_new_capitals
 			save_scope_as = new_capital
 		}
@@ -6062,7 +6062,7 @@ step_away_from_the_steppe_decision = {
 				title_province = {
 					NOT = { has_holding_type = nomad_holding }
 				}
-				development_level >= root.capital_county.development_level
+				prosperity_level >= root.capital_county.prosperity_level
 			}
 		}
 
@@ -6585,7 +6585,7 @@ settle_the_steppe_decision = {
 			value = domicile.herd
 		}
 		save_scope_value_as = {
-			name = development_herd_value
+			name = prosperity_herd_value
 			value = domicile.herd
 		}
 		nomad_domicile_refund_effect = yes
@@ -6615,7 +6615,7 @@ settle_the_steppe_decision = {
 		custom_tooltip = nomad_holdings_convert_tt
 		custom_tooltip = nomad_vassals_convert_tt
 		custom_tooltip = buildings_based_on_herd_tt
-		custom_tooltip = development_based_on_herd_tt
+		custom_tooltip = prosperity_based_on_herd_tt
 		
 		hidden_effect = {
 			#Nuke tribal authorities.
@@ -6864,7 +6864,7 @@ settle_the_steppe_decision = {
 				}
 				while = {
 					limit = {
-						scope:development_herd_value >= 2000
+						scope:prosperity_herd_value >= 2000
 					}
 					random_sub_realm_county = {
 						weight = {
@@ -6884,12 +6884,12 @@ settle_the_steppe_decision = {
 								is_coastal_county = yes
 							}
 						}
-						change_development_level = 1
+						change_prosperity_level = 1
 					}
 					save_scope_value_as = {
-						name = development_herd_value
+						name = prosperity_herd_value
 						value = {
-							add = scope:development_herd_value
+							add = scope:prosperity_herd_value
 							subtract = 2000
 						}
 					}
@@ -6898,7 +6898,7 @@ settle_the_steppe_decision = {
 			else = {
 				while = {
 					limit = {
-						scope:development_herd_value >= 1000
+						scope:prosperity_herd_value >= 1000
 					}
 					random_sub_realm_county = {
 						weight = {
@@ -6918,12 +6918,12 @@ settle_the_steppe_decision = {
 								is_coastal_county = yes
 							}
 						}
-						change_development_level = 1
+						change_prosperity_level = 1
 					}
 					save_scope_value_as = {
-						name = development_herd_value
+						name = prosperity_herd_value
 						value = {
-							add = scope:development_herd_value
+							add = scope:prosperity_herd_value
 							subtract = 1000
 						}
 					}

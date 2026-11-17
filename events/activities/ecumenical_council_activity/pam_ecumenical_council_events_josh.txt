@@ -91,11 +91,13 @@ ecumenical_council_events_josh.0001 = {
         					scope:murder_target = {
             					NOR = {
                 					has_relation_rival = root
-               						has_relation_nemesis = root
            						}
         					}
     					}
-						set_relation_rival = scope:murder_target
+						set_relation_rival_effect = {
+							TARGET = scope:murder_target
+							REASON = rival_murder_compline
+						}
 					}
     			}
 			}
@@ -420,7 +422,9 @@ ecumenical_council_events_josh.0011 = {
 		change_spiritual_fulfillment = minor_spiritual_fulfillment_value
 		involved_activity = {
 		    every_attending_character = {
+		        limit = { this != root }
 		        custom = every_guest_scope_tt
+		        limit = { this != root }
 		        add_opinion = {
 		            target = ROOT
 		            modifier = thankful_opinion
@@ -788,6 +792,7 @@ ecumenical_council_events_josh.0012 = {
 
 	option = { # Get a strong hook on them.
 		name = ecumenical_council_events_josh.0012.c
+		trigger = { exists = scope:bishoplover_homosexual_secret }
 		add_hook = { 
 			type = strong_blackmail_hook
 			target = scope:guest_bishoplover
@@ -1265,10 +1270,22 @@ ecumenical_council_events_josh.0021 = {
 			limit = {
 				is_clergy = yes
 			}
-			pam_boost_clerical_appointment_score_effect = { CHARACTER = this VALUE = 50 }
+			pam_boost_clerical_appointment_score_effect = { CHARACTER = root VALUE = 50 }
+		}
+		else_if = {
+			limit = {
+				exists = puppet:theological_agent_puppet
+			}
+			puppet:theological_agent_puppet = {
+				save_scope_as = theological_agent_puppet
+				pam_boost_clerical_appointment_score_effect = { CHARACTER = scope:theological_agent_puppet VALUE = 50 }
+			}
 		}
 		else = {
-			pam_boost_clerical_appointment_score_effect = { CHARACTER = puppet:theological_agent_puppet VALUE = 50 }
+			puppet:external_theological_agent_puppet ?= {
+				save_scope_as = theological_agent_puppet
+				pam_boost_clerical_appointment_score_effect = { CHARACTER = scope:theological_agent_puppet VALUE = 50 }
+			}
 		}
 		
 		ai_chance = {
@@ -1660,6 +1677,15 @@ ecumenical_council_events_josh.0024 = {
 				ecumenical_shareable_unknown_tenet_for_root_trigger = yes
 				save_temporary_scope_as = ecumenical_tenet_teacher_b
 				any_character_tenet = {
+					knowledge_filter = known
+					save_temporary_scope_as = ecumenical_tenet_candidate
+					NOT = { root = { knows_tenet = scope:ecumenical_tenet_candidate } }
+					root.faith.main_rite = {
+						has_tenet_status = {
+							tenet = scope:ecumenical_tenet_candidate
+							status = unknown
+						}
+					}
 					NOT = {
 						this = scope:tenet_a_temp
 					}
@@ -1705,6 +1731,18 @@ ecumenical_council_events_josh.0024 = {
 						this = scope:tenet_target_a
 					}
 					ecumenical_shareable_unknown_tenet_for_root_trigger = yes
+					any_character_tenet = {
+						knowledge_filter = known
+						save_temporary_scope_as = ecumenical_tenet_candidate
+						NOT = { root = { knows_tenet = scope:ecumenical_tenet_candidate } }
+						root.faith.main_rite = {
+							has_tenet_status = {
+								tenet = scope:ecumenical_tenet_candidate
+								status = unknown
+							}
+						}
+						NOT = { this = scope:tenet_target_a_shareable_tenet }
+					}
 				}
 				save_scope_as = tenet_target_b
 				random_character_tenet = {
@@ -1809,6 +1847,7 @@ ecumenical_council_events_josh.0024 = {
 	# That book seems interesting.
 	option = {
 		name = ecumenical_council_events_josh.0024.b
+		trigger = { exists = scope:tenet_target_b_shareable_tenet } # Their only shareable tenet can be the one already picked for the other guest
 		add_known_tenet = scope:tenet_target_b_shareable_tenet	
 		scope:tenet_target_b = {
 			add_opinion = {

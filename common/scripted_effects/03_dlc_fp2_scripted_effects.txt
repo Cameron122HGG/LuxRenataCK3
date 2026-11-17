@@ -1587,9 +1587,10 @@ fp2_lyonese_monk_cancel_chain_effect = {
 
 fp2_border_raid_damage_effect = {
 	change_county_control = fp2_border_raid_control_change_value
-	change_development_level = fp2_border_raid_development_change_value
-	scope:raid_province ?= { 
-		show_as_tooltip = { destroy_random_building_effect = yes }
+	change_prosperity_level = fp2_border_raid_prosperity_change_value
+	if = {
+		limit = { scope:raid_province.county ?= this }
+		scope:raid_province = { destroy_random_building_effect = yes }
 	}
 	scope:attacker = { add_gold = fp2_border_raid_gold_change_value }
 }
@@ -2207,4 +2208,64 @@ fp2_struggle_conciliation_tooltip_effect = {
 	custom_tooltip = fp2_struggle_conciliation_join_war_tt
 	# Caravanserai line of buildings unlocked for Iberia
 	custom_tooltip = fp2_struggle_conciliation_caravanserai_unlock_tt
+}
+
+fp2_border_raid_effect = {
+	every_in_list = {
+		list = target_titles
+		save_scope_as = raid_county
+		# Set raided province modifier
+		title_province = {
+			add_province_modifier = {
+				modifier = recently_looted_modifier
+				years = 5
+			}
+		}
+		show_as_tooltip = {
+			every_in_list = {
+				list = target_titles
+				fp2_border_raid_damage_effect = yes
+			}
+		}
+		# Find province for building destruction
+		ordered_county_province = {
+			order_by = num_buildings
+			random = {
+				chance = 25
+				modifier = { factor = destroy_building_soldier_multiplier_value } # chance increases with more soldiers
+				modifier = { add = destroy_building_prosperity_multiplier_value } # chance increases with development
+				destroy_random_building_variable_effect = yes
+				if = {
+					limit = { exists = scope:destroyed_building_district }
+					custom_tooltip = destroy_random_building_tt
+					save_scope_as = raid_province
+				}
+			}
+		}
+	}
+
+	hidden_effect = {
+		scope:attacker = {
+			send_interface_message = {
+				type = event_raid_good
+				title = border_raid_message_title
+				show_as_tooltip = {
+					every_in_list = {
+						list = target_titles
+						fp2_border_raid_damage_effect = yes
+					}
+				}
+			}
+		}
+		scope:defender = {
+			send_interface_message = {
+				type = event_raid_bad
+				title = border_raid_message_title
+				every_in_list = {
+					list = target_titles
+					fp2_border_raid_damage_effect = yes
+				}
+			}
+		}
+	}
 }
