@@ -1531,6 +1531,7 @@ holy_site_great_mosque_of_mecca_01 = {
 # Great Mosque of Cordoba
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 holy_site_great_mosque_of_cordoba_01 = {
 	effect_desc = {
 		triggered_desc = {
@@ -1543,10 +1544,8 @@ holy_site_great_mosque_of_cordoba_01 = {
 
 	type_icon = "special_buildings/great_mosque_of_cordoba.dds"
 	
-	asset = {
-		type = pdxmesh
-		name = "monument_mezquita_de_cordoba_mesh"
-	}
+	asset = { type = pdxmesh name = great_mosque_of_cordoba_mesh }
+	asset = { type = pdxmesh name = great_cathedral_of_cordoba_mesh graphical_faiths = { "catholic_gfx" "orthodox_gfx" } }
 
 	can_construct_potential = {
 		building_requirement_tribal = no
@@ -3305,7 +3304,10 @@ iron_pillar_of_delhi_01 = {
 # Iron Pillar of Dhar
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 iron_pillar_of_dhar_01 = {
+	asset = { type = pdxmesh name = iron_pillar_dhar_mesh }
+
 	construction_time = very_slow_construction_time
 
 	type_icon = "special_buildings/iron_pillar_of_dhar.dds"
@@ -4097,6 +4099,7 @@ house_of_wisdom_01 = {
 # The Tower of London
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 the_tower_of_london_01 = {
 
 	effect_desc = {
@@ -4112,7 +4115,7 @@ the_tower_of_london_01 = {
 	
 	asset = {
 		type = pdxmesh
-		name = "building_special_tower_of_london_mesh"
+		name = "sprawl_london_tower_mesh"
 	}
 
 	can_construct_potential = {
@@ -4218,7 +4221,13 @@ the_tower_of_london_01 = {
 # London Bridge
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 london_bridge_01 = {
+	asset = {
+		type = pdxmesh
+		name = "sprawl_london_bridge_mesh"
+	}
+
 
 	construction_time = very_slow_construction_time
 
@@ -4405,6 +4414,7 @@ notre_dame_01 = {
 # Brihadeeswarar Temple
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 brihadeeswarar_temple_01 = {
 	effect_desc = {
 		triggered_desc = {
@@ -4419,7 +4429,7 @@ brihadeeswarar_temple_01 = {
 	
 	asset = {
 		type = pdxmesh
-		name = "building_special_brihadeeswarar_temple_mesh"
+		name = "brihadeeswarar_temple_mesh"
 	}
 
 	can_construct_potential = {
@@ -4775,7 +4785,13 @@ the_friday_mosque_01 = {
 # Khajuraho
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 khajuraho_01 = {
+	asset = {
+		type = pdxmesh
+		name = "khajuraho_mesh"
+	}
+
 	construction_time = very_slow_construction_time
 
 	type_icon = "special_buildings/khajuraho_temples.dds"
@@ -4847,6 +4863,7 @@ khajuraho_01 = {
 # Palace of Aachen
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 palace_of_aachen_01 = {
 	effect_desc = palace_of_aachen_effect_desc
 
@@ -4856,7 +4873,7 @@ palace_of_aachen_01 = {
 	
 	asset = {
 		type = pdxmesh
-		name = "building_special_palace_of_aachen_mesh"
+		name = "aachen_palace_mesh"
 	}
 
 	can_construct_potential = {
@@ -4924,7 +4941,10 @@ palace_of_aachen_01 = {
 # Hagia Sophia
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 hagia_sophia_01 = {
+	can_construct = { christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder } }
+
 	effect_desc = {
 		triggered_desc = {
 			trigger = { has_dlc_feature = legends_of_the_dead }
@@ -4938,21 +4958,14 @@ hagia_sophia_01 = {
 	
 	asset = {
 		type = pdxmesh
-		name = "building_special_hagia_sophia_mesh"
+		name = "hagia_sophia_mesh"
 	}
 
 	can_construct_potential = {
 		building_requirement_tribal = no
 	}
 	
-	is_enabled = {
-		custom_description = {
-			text = holy_site_building_trigger
-			barony = {
-				is_holy_site_of = scope:holder.faith
-			}
-		}
-	}
+	is_enabled = { christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder } }
 	
 	show_disabled = yes
 	
@@ -5041,7 +5054,10 @@ hagia_sophia_01 = {
 	flag = religious_studies_location
 }
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 hagia_sophia_02 = {
+	type_icon = "special_buildings/hagia_sophia.dds"
+
 	effect_desc = {
 		triggered_desc = {
 			trigger = { has_dlc_feature = legends_of_the_dead }
@@ -5054,7 +5070,7 @@ hagia_sophia_02 = {
 	
 	asset = {
 		type = pdxmesh
-		name = "building_special_hagia_sophia_minarets_mesh"
+		name = "hagia_sophia_minarets_mesh"
 	}
 
 	can_construct_potential = {
@@ -5066,20 +5082,7 @@ hagia_sophia_02 = {
 	
 	can_construct = { islam_or_syncretic_with_islam_trigger = { CHARACTER = scope:holder } building_stonework_high_medieval_trigger = yes }
 	
-	is_enabled = {
-		custom_description = {
-			text = holy_site_muslim_or_holy_site_trigger
-			OR = {
-				islam_or_syncretic_with_islam_trigger = { CHARACTER = scope:holder }
-				custom_description = {
-					text = holy_site_building_trigger
-					barony = {
-						is_holy_site_of = scope:holder.faith
-					}
-				}
-			}
-		}
-	}
+	is_enabled = { islam_or_syncretic_with_islam_trigger = { CHARACTER = scope:holder } }
 	
 	show_disabled = yes
 	
@@ -5168,7 +5171,15 @@ hagia_sophia_02 = {
 # Dome of the Rock / Temple in Jerusalem
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 dome_of_the_rock_01 = {
+	asset = { type = pdxmesh name = dome_of_the_rock_mesh }
+	
+	triggered_name = { #NOTE: added by MA to give a flavour name to the Rock if Christian-held
+		trigger = { county.holder.faith ?= { religion_tag = christianity_religion } }
+		reference = "MA_templum_domini"
+	}
+
 	effect_desc = {
 		triggered_desc = {
 			trigger = { has_dlc_feature = legends_of_the_dead }
@@ -5191,7 +5202,7 @@ dome_of_the_rock_01 = {
 			}
 		}
 		NOT = { 
-			judaism_or_syncretic_with_judaism_trigger = { CHARACTER = scope:holder }
+			scope:holder.religion = religion:judaism_religion
 		}
 	}
 	
@@ -5267,7 +5278,10 @@ dome_of_the_rock_01 = {
 	flag = holy_building_islam
 }
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 temple_in_jerusalem_01 = {
+	asset = { type = pdxmesh name = temple_in_jerusalem_mesh }
+
 	effect_desc = {
 		triggered_desc = {
 			trigger = { has_dlc_feature = legends_of_the_dead }
@@ -5293,7 +5307,7 @@ temple_in_jerusalem_01 = {
 				is_holy_site_of = scope:holder.faith
 			}
 		}
-		judaism_or_syncretic_with_judaism_trigger = { CHARACTER = scope:holder }
+		scope:holder.religion = religion:judaism_religion
 		building_monument_tribal_trigger = yes
 	}
 	
@@ -5307,7 +5321,7 @@ temple_in_jerusalem_01 = {
 						is_holy_site_of = scope:holder.faith
 					}
 				}
-				judaism_or_syncretic_with_judaism_trigger = { CHARACTER = scope:holder }
+				scope:holder.religion = religion:judaism_religion
 			}
 		}
 	}
@@ -6281,7 +6295,10 @@ hotin_fort_02 = {
 # Golden Gate of Kiev
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 golden_gate_of_kiev_01 = {
+	asset = { type = pdxmesh name = golden_gate_kyiv_mesh }
+	
 	construction_time = very_slow_construction_time
 	
 	type_icon = "special_buildings/golden_gate_of_kiev.dds"
@@ -10171,7 +10188,10 @@ cattolica_stilo = {
 ##########
 # Hosios Loukas
 ##########
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 hosios_loukas = {
+	asset = { type = pdxmesh name = hosios_loukas_mesh }
+
 	construction_time = slow_construction_time
 
 	type_icon = "special_buildings/hosios_loukas.dds"
@@ -13234,6 +13254,7 @@ sunday_bazaar_02 = {
 # Mount Fuji
 ##########
 
+# LR: modified version, merged in from zzz_base_special_buildings.txt (2026-11-18)
 mount_fuji_01 = {
 	construction_time = very_slow_construction_time
 	
@@ -13241,7 +13262,7 @@ mount_fuji_01 = {
 
 	asset = {
 		type = pdxmesh
-		name = "tgp_building_special_mt_fuji_mesh"
+		name = "mount_fuji_mesh"
 	}
 
 	is_enabled = {
