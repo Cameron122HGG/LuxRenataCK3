@@ -4,5 +4,11 @@
 
 ##################
 #SETUP ON_ACTIONS#
-#on_game_start = { on_actions = { MA_setup_world } }
-#MA_setup_world = { effect = { set_global_variable = MA_active_global_variable MA_monuments_setup_effect = yes } }
+on_game_start = { on_actions = { MA_setup_world } }
+MA_setup_world = {
+    effect = {
+        set_global_variable = MA_active_global_variable
+        if = { limit = { exists = global_var:MA_active_global_variable } }
+        MA_monuments_setup_effect = yes
+    }
+}

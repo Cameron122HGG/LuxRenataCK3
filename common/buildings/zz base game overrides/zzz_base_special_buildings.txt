@@ -1,0 +1,1249 @@
+﻿#Here be buildings from the base game that I modified slightly
+
+golden_gate_of_kiev_01 = {
+	asset = { type = pdxmesh name = golden_gate_kyiv_mesh }
+	
+	construction_time = very_slow_construction_time
+	
+	type_icon = "special_buildings/golden_gate_of_kiev.dds"
+	
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	can_construct = {
+		scope:holder.culture = {
+			has_innovation = innovation_battlements
+		}
+	}
+	
+	cost_gold = 1000
+	
+	character_modifier = {
+		monthly_prestige_gain_mult = 0.1
+		monthly_piety_gain_mult = 0.1
+	}
+	max_garrison = good_building_max_garrison_tier_1
+	province_modifier = {
+		fort_level = good_building_fort_level_tier_1
+		defender_holding_advantage = normal_building_advantage_tier_1
+		travel_danger = -20
+	}
+	county_modifier = {
+		civic_tax_mult = 0.1
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	market_modifier = {
+		trade_good_honey_sell_price_mult = special_building_need_sell_price
+	}
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		culture_likely_to_fortify_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	trade_good_need = {
+		trade_good = trade_good_honey
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_medium
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_wonder
+}
+
+the_tower_of_london_01 = {
+
+	effect_desc = {
+		triggered_desc = {
+			trigger = { has_playable_adventurer_dlc_trigger = yes }
+			desc = tower_of_london_pacification_effect
+		}
+	}
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/tower_of_london.dds"
+	
+	asset = {
+		type = pdxmesh
+		name = "sprawl_london_tower_mesh"
+	}
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+		scope:holder.culture = {
+			has_innovation = innovation_battlements
+		}
+	}
+	
+	cost_gold = 1000
+
+	on_complete = {
+		if = {
+			limit = {
+				NOT = { scope:character ?= { is_alive = yes } }
+			}
+			county.holder = { save_scope_as = character }
+		}
+		if = {
+			limit = {
+				scope:character.culture ?= culture:norman
+				has_global_variable = harrying_of_the_north
+				exists = global_var:harrying_of_the_north.var:pacification
+			}
+			global_var:harrying_of_the_north = { save_scope_as = story }
+			hidden_effect = {
+				scope:character = {
+					ep3_increase_pacification_large_effect = yes
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		dread_gain_mult = 0.3
+	}
+	max_garrison = good_building_max_garrison_tier_3
+	province_modifier = {
+		defender_holding_advantage = normal_building_advantage_tier_3
+		fort_level = good_building_fort_level_tier_3
+		stationed_maa_damage_mult = normal_maa_damage_tier_2
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_2
+		stationed_siege_weapon_siege_value_mult = normal_maa_siege_value_tier_2
+		travel_danger = -20
+		province_size_baseline_add = special_building_province_size_baseline
+		monthly_civic_tax = 0.5
+	}
+	market_modifier = {
+		trade_good_stone_sell_price_mult = special_building_need_sell_price
+		trade_good_wool_sell_price_mult = special_building_need_sell_price
+	}
+	
+	ai_value = {
+		base = 9
+		culture_likely_to_fortify_modifier = yes
+		modifier = {
+			factor = 5
+			scope:holder = {
+				culture = {
+					has_cultural_parameter = ai_more_likely_to_castle
+				}
+			}
+		}
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	trade_good_need = {
+		trade_good = trade_good_stone
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				control_baseline_add = special_building_need_control
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_wool
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_medium
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_martial
+}
+
+london_bridge_01 = {
+	asset = {
+		type = pdxmesh
+		name = "sprawl_london_bridge_mesh"
+	}
+
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/london_bridge.dds"
+	
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+		scope:holder.culture = {
+			has_innovation = innovation_prosperity_03
+		}
+	}
+	
+	cost_gold = 1000
+
+	character_modifier = {
+		cultural_head_fascination_mult = 0.10
+		parochial_opinion = 5
+		legitimacy_gain_mult = 0.1
+	}
+	province_modifier = {
+		travel_danger = -30
+	}
+	county_modifier = {
+		civic_tax_mult = 0.1
+		popular_opinion_add = building_minor_popular_opinion_gain
+	}
+	
+	market_modifier = {
+		trade_good_stone_sell_price_mult = special_building_need_sell_price
+	}
+	ai_value = {
+		base = 10
+		ai_opinion_baseline_building_modifier = { VALUE = 10 }
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_popular_opinion_need_modifier = yes
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+
+
+	trade_good_need = {
+		trade_good = trade_good_stone
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_medium
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_learning
+}
+
+hosios_loukas = {
+	asset = { type = pdxmesh name = hosios_loukas_mesh }
+
+	construction_time = slow_construction_time
+
+	type_icon = "special_buildings/hosios_loukas.dds"
+
+	cost_gold = 1000
+
+	can_construct = {
+		christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder }
+	}
+	
+	is_enabled = {
+		christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder }
+	}
+
+	character_modifier = {
+		monthly_piety = 0.2
+		religious_vassal_opinion = 5
+		zealot_opinion = 5
+		clergy_opinion = 5
+		monthly_prestige = 0.3
+		monthly_influence = 0.2
+		negate_health_penalty_add = 0.05
+	}
+	
+	county_modifier = {
+		religious_tax_mult = 0.4
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_high
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_christianity
+}
+
+hagia_sophia_01 = {
+	can_construct = { christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder } }
+
+	effect_desc = {
+		triggered_desc = {
+			trigger = { has_dlc_feature = legends_of_the_dead }
+			desc = building_funeral_effect_desc
+		}
+	}
+	
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/hagia_sophia.dds"
+	
+	asset = {
+		type = pdxmesh
+		name = "hagia_sophia_mesh"
+	}
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	is_enabled = { christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder } }
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+
+	character_modifier = {
+		monthly_piety_gain_per_knight_add = 0.1
+		intrigue_per_prestige_level = 2
+		learning = 2
+		knight_limit = 2
+		knight_effectiveness_mult = 0.2
+		monthly_dynasty_prestige_mult = 0.05
+	}
+	
+	county_modifier = {
+
+	}
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+		trade_category_precious_metals_sell_price_mult = special_building_need_sell_price
+		trade_good_jewelry_sell_price_mult = special_building_need_sell_price
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+	}
+	province_modifier = {
+		trade_good_books_paper_production_add = special_building_books_output
+		province_size_baseline_add = 50
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+	next_building = hagia_sophia_02
+	
+
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = basic_resource_need
+
+		modifiers = {
+			character_modifier = {
+				monthly_piety = 0.05
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good_category = trade_category_precious_metals
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_jewelry
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+		not_rite_parameter = luxury_forbidden
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_christianity
+	flag = religious_studies_location
+}
+
+hagia_sophia_02 = {
+	type_icon = "special_buildings/hagia_sophia.dds"
+
+	effect_desc = {
+		triggered_desc = {
+			trigger = { has_dlc_feature = legends_of_the_dead }
+			desc = building_funeral_effect_desc
+		}
+	}
+
+	construction_time = very_slow_construction_time
+
+	
+	asset = {
+		type = pdxmesh
+		name = "hagia_sophia_minarets_mesh"
+	}
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	can_construct_showing_failures_only = {
+		holding_district_level_2_trigger = yes
+	}
+	
+	can_construct = { islam_or_syncretic_with_islam_trigger = { CHARACTER = scope:holder } building_stonework_high_medieval_trigger = yes }
+	
+	is_enabled = { islam_or_syncretic_with_islam_trigger = { CHARACTER = scope:holder } }
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+	cost_piety = 1000
+
+	character_modifier = {
+		monthly_piety_gain_per_knight_add = 0.1
+		intrigue_per_prestige_level = 2
+		learning = 2
+		knight_limit = 2
+		knight_effectiveness_mult = 0.2
+		monthly_dynasty_prestige_mult = 0.05
+	}
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+		trade_category_precious_metals_sell_price_mult = special_building_need_sell_price
+		trade_good_jewelry_sell_price_mult = special_building_need_sell_price
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+	}
+	province_modifier = {
+		trade_good_books_paper_production_add = special_building_books_output
+		province_size_baseline_add = 50
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 2 }
+	}
+	
+
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = basic_resource_need
+
+		modifiers = {
+			character_modifier = {
+				monthly_piety = 0.05
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good_category = trade_category_precious_metals
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_jewelry
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+		not_rite_parameter = luxury_forbidden
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_christianity
+	flag = holy_building_islam
+	flag = religious_studies_location
+}
+
+dome_of_the_rock_01 = {
+	asset = { type = pdxmesh name = dome_of_the_rock_mesh }
+	
+	triggered_name = { #NOTE: added by MA to give a flavour name to the Rock if Christian-held
+		trigger = { county.holder.faith ?= { religion_tag = christianity_religion } }
+		reference = "MA_templum_domini"
+	}
+
+	effect_desc = {
+		triggered_desc = {
+			trigger = { has_dlc_feature = legends_of_the_dead }
+			desc = building_funeral_effect_desc
+		}
+	}
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/dome_of_the_rock.dds"
+	
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	is_enabled = {
+		custom_description = {
+			text = holy_site_building_trigger
+			barony = {
+				is_holy_site_of = scope:holder.faith
+			}
+		}
+		NOT = { 
+			scope:holder.religion = religion:judaism_religion
+		}
+	}
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+
+	character_modifier = {
+		monthly_piety_gain_per_knight_mult = 0.03
+		monthly_dynasty_prestige_mult = 0.05
+		character_capital_county_monthly_control_change_add = 0.1
+		martial_per_piety_level = 1
+		knight_effectiveness_mult = 0.2
+	}
+	
+	county_modifier = {
+		religious_tax_mult = 0.3
+	}
+
+	province_modifier = {
+		province_size_baseline_add = 40
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+	next_building = temple_in_jerusalem_01
+	
+
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+		trade_good_oil_sell_price_mult = special_building_need_sell_price
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_high
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_oil
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_christianity
+	flag = holy_building_islam
+}
+
+temple_in_jerusalem_01 = {
+	asset = { type = pdxmesh name = temple_in_jerusalem_mesh }
+
+	effect_desc = {
+		triggered_desc = {
+			trigger = { has_dlc_feature = legends_of_the_dead }
+			desc = building_funeral_effect_desc
+		}
+	}
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/temple_in_jerusalem.dds"
+	
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	can_construct_showing_failures_only = {
+		holding_district_level_2_trigger = yes
+	}
+	
+	can_construct = {
+
+		custom_description = {
+			text = holy_site_building_trigger
+			barony = {
+				is_holy_site_of = scope:holder.faith
+			}
+		}
+		scope:holder.religion = religion:judaism_religion
+		building_monument_tribal_trigger = yes
+	}
+	
+	is_enabled = {
+		custom_description = {
+			text = holy_site_jewish_or_holy_site_trigger
+			OR = {
+				custom_description = {
+					text = holy_site_building_trigger
+					barony = {
+						is_holy_site_of = scope:holder.faith
+					}
+				}
+				scope:holder.religion = religion:judaism_religion
+			}
+		}
+	}
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+	cost_piety = 1000
+
+	character_modifier = {
+		monthly_piety_gain_per_knight_mult = 0.03
+		monthly_dynasty_prestige_mult = 0.05
+		character_capital_county_monthly_control_change_add = 0.1
+		martial_per_piety_level = 1
+		learning_per_prestige_level = 1
+		knight_effectiveness_mult = 0.2
+		same_faith_opinion = 5
+	}
+	
+	county_modifier = {
+		religious_tax_mult = 0.3
+	}
+
+	province_modifier = {
+		province_size_baseline_add = 40
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 2 }
+	}
+	
+
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+		trade_good_oil_sell_price_mult = special_building_need_sell_price
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_high
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_oil
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_judaism
+	flag = religious_studies_location
+}
+
+khajuraho_01 = {
+	asset = {
+		type = pdxmesh
+		name = "khajuraho_mesh"
+	}
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/khajuraho_temples.dds"
+	
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	can_construct = { building_monument_tribal_trigger = yes }
+	
+	is_enabled = {
+		custom_description = {
+			text = buddhas_of_bamian_trigger
+			eastern_or_syncretic_with_eastern_trigger = { CHARACTER = scope:holder }
+		}
+	}
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+
+	character_modifier = {
+		different_faith_opinion = 10
+		faith_conversion_piety_cost_mult = -0.2
+		monthly_piety_gain_per_happy_powerful_vassal_mult = 0.05
+	}
+	county_modifier = {
+		religious_tax_mult = 0.2
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_high
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_hinduism
+	flag = religious_studies_location
+}
+
+brihadeeswarar_temple_01 = {
+	effect_desc = {
+		triggered_desc = {
+			trigger = { has_dlc_feature = legends_of_the_dead }
+			desc = building_funeral_effect_desc
+		}
+	}
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/brihadeeswarar_temple.dds"
+	
+	asset = {
+		type = pdxmesh
+		name = "brihadeeswarar_temple_mesh"
+	}
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	can_construct = {
+		scope:holder = {
+			culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+	}
+	
+	is_enabled = {
+		custom_description = {
+			text = buddhas_of_bamian_trigger
+			eastern_or_syncretic_with_eastern_trigger = { CHARACTER = scope:holder }
+		}
+	}
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+
+	character_modifier = {
+		monthly_piety = 0.25
+		monthly_dynasty_prestige_mult = 0.05
+		same_faith_opinion = 5
+		stewardship_per_piety_level = 1
+	}
+	
+	county_modifier = {
+		religious_tax_mult = 0.2
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_high
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_hinduism
+	flag = religious_studies_location
+}
+
+mount_fuji_01 = {
+	construction_time = very_slow_construction_time
+	
+	type_icon = "special_buildings/mount_apo.dds"
+
+	asset = {
+		type = pdxmesh
+		name = "mount_fuji_mesh"
+	}
+
+	is_enabled = {
+		custom_description = {
+			text = holy_site_shinto_or_holy_site_trigger
+			OR = {
+				scope:holder.religion = religion:shintoism_religion
+				custom_description = {
+					text = holy_site_building_trigger
+					barony = { is_holy_site_of = scope:holder.faith }
+				}
+				scope:holder.faith = { has_doctrine = special_doctrine_immaterial_harmony }
+			}
+		}
+	}
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+	
+	character_modifier = {
+		monthly_piety = 0.25
+		monthly_dynasty_prestige_mult = 0.05
+		stress_loss_mult = 0.1
+	}
+	
+	county_modifier = {
+		religious_tax_mult = 0.15
+		travel_danger = -30
+	}
+	
+
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = basic_resource_need
+
+		modifiers = {
+			character_modifier = {
+				monthly_piety = 0.05
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = is_mountain
+	flag = holy_building
+}
+
+palace_of_aachen_01 = {
+	effect_desc = palace_of_aachen_effect_desc
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/palace_of_achen.dds"
+	
+	asset = {
+		type = pdxmesh
+		name = "aachen_palace_mesh"
+	}
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+
+	character_modifier = {
+		powerful_vassal_opinion = 5
+		clergy_opinion = 5
+		monthly_prestige_gain_per_happy_powerful_vassal_add = 0.1
+		tyranny_gain_mult = -0.2
+		monthly_dynasty_prestige_mult = 0.05
+	}
+
+	province_modifier = {
+		province_size_baseline_add = special_building_province_size_baseline
+	}
+	
+	market_modifier = {
+		trade_category_precious_metals_sell_price_mult = special_building_need_sell_price
+		trade_good_wine_sell_price_mult = special_building_need_sell_price
+	}
+	
+	ai_value = {
+		base = 10
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	trade_good_need = {
+		trade_good_category = trade_category_precious_metals
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_medium
+			}
+		}
+	}
+	trade_good_need = {
+		trade_good = trade_good_wine
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_diplomatic
+}
+
+holy_site_great_mosque_of_cordoba_01 = {
+	effect_desc = {
+		triggered_desc = {
+			trigger = { has_dlc_feature = legends_of_the_dead }
+			desc = building_funeral_effect_desc
+		}
+	}
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/great_mosque_of_cordoba.dds"
+	
+	asset = { type = pdxmesh name = great_mosque_of_cordoba_mesh }
+	asset = { type = pdxmesh name = great_cathedral_of_cordoba_mesh graphical_faiths = { "catholic_gfx" "orthodox_gfx" } }
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	is_enabled = {
+		custom_description = {
+			text = holy_site_muslim_christian_or_holy_site_trigger
+			OR = {
+				islam_or_syncretic_with_islam_trigger = { CHARACTER = scope:holder }
+				christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder }
+				custom_description = {
+					text = holy_site_building_trigger
+					barony = {
+						is_holy_site_of = scope:holder.faith
+					}
+				}
+			}
+		}
+	}
+	
+	cost_gold = 1000
+
+	character_modifier = {
+		different_culture_opinion = 5
+		monthly_piety = 0.5
+		monthly_dynasty_prestige_mult = 0.05
+	}
+	
+	county_modifier = {
+		religious_tax_mult = 0.15
+		levy_size = 0.15
+	}
+	
+	province_modifier = {
+		province_size_baseline_add = 40
+	}
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+		trade_category_books_sell_price_mult = special_building_need_sell_price
+		trade_good_leather_sell_price_mult = special_building_need_sell_price
+	}
+
+	on_complete = {
+		#Regular Mandala Boon
+		mandala_built_piety_duchy_building_t3_effect = yes
+	}
+	
+	ai_value = {
+		base = 10
+		ai_pious_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity_high
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good_category = trade_category_books
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_leather
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_religious
+	flag = holy_building
+	flag = holy_building_islam
+	flag = religious_studies_location
+	market_rite_modifier = {
+		parameter = can_go_on_pilgrimage
+		trade_good_incense_sell_price_mult = holy_site_pilgrim_sell_price_mult
+		trade_good_oil_sell_price_mult = holy_site_pilgrim_sell_price_mult
+		trade_good_honey_sell_price_mult = holy_site_pilgrim_sell_price_mult
+		trade_good_ceramics_sell_price_mult = holy_site_pilgrim_sell_price_mult
+	}
+	market_rite_modifier = {
+		parameter = mandatory_pilgrimage
+		trade_good_incense_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+		trade_good_oil_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+		trade_good_honey_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+		trade_good_ceramics_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+	}
+	market_rite_modifier = {
+		parameter = mandatory_hajj
+		trade_good_incense_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+		trade_good_oil_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+		trade_good_honey_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+		trade_good_ceramics_sell_price_mult = holy_site_mandatory_pilgrimage_sell_price_mult
+	}
+}
+
+iron_pillar_of_dhar_01 = {
+	asset = { type = pdxmesh name = iron_pillar_dhar_mesh }
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "special_buildings/iron_pillar_of_dhar.dds"
+	
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	can_construct = { building_monument_tribal_trigger = yes }
+	
+	cost_gold = 2000
+
+	character_modifier = {
+		advantage = 5
+		monthly_dynasty_prestige_mult = 0.05
+	}
+	
+	county_modifier = {
+		levy_size = 0.15
+	}
+	
+	market_modifier = {
+		trade_good_iron_sell_price_mult = special_building_need_sell_price
+	}
+	ai_value = {
+		base = 10
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+		ai_special_district_modifier = { LEVEL = 1 }
+	}
+	
+
+	trade_good_need = {
+		trade_good = trade_good_iron
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_modifier = {
+				prosperity_growth_factor = special_building_need_prosperity
+			}
+		}
+	}
+
+	flag = travel_point_of_interest_economic
+}

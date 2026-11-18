@@ -1,0 +1,41 @@
+﻿# No Walls
+walls_00 = {
+    is_graphical_background = yes
+
+    asset = {
+        type = pdxmesh
+        name = "western_walls_00_mesh"
+    }
+
+    is_enabled = {
+        OR = {
+            fort_level < 1
+            AND = {
+                fort_level > 0
+                NOR = {
+                    has_building_or_higher = "tribe_01"
+                    has_building_or_higher = "pb_walls_01"
+                }
+            }
+            # Using the no_wall holding graphics for cities with special walls so that they don't have double walls
+            has_building_or_higher = "city_wall_of_toledo_01"			
+            has_building_or_higher = "roman_wall_of_lugo_01"
+            has_building_or_higher = "kano_walls_01"
+            has_building_or_higher = "jaisalmer_fort_01"
+            has_building_or_higher = "temples_angkor_01" #NOTE: the model gives its own unique set of walls to Angkor
+            has_building_or_higher = "MA_dover_castle"
+            has_building_or_higher = "MA_chateau_gaillard"
+            has_building_or_higher = "MA_nikaea_walls"
+            has_building_or_higher = "MA_sarkel"
+            this = title:b_thessaloniki.title_province
+            this = title:b_dali_1.title_province
+            this = title:b_castletown.title_province
+            this = title:b_vaticano.title_province
+            this = title:b_baghdad.title_province
+            # Herders shouldn't have walls
+            scope:holder = {
+                government_has_flag = government_is_herder
+            }
+        }
+    }
+}
