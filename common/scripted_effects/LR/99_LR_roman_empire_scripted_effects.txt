@@ -144,20 +144,20 @@ create_roman_empire_spqr_scripted_effect = {
 	}
 	if = { #Automatically move capital to Rome.
 		limit = {
-			NOT = { capital_county = { this = title:c_roma } }
+			NOT = { capital_county = { this = title:c_roma_urbs } }
 			exists = title:h_roman_empire.holder
 		}
 		hidden_effect = {
 			if = { #Usurp if not held personally.
 				limit = {
-					NOT = { title:c_roma.holder = { this = root } }
+					NOT = { title:c_roma_urbs.holder = { this = root } }
 				}
 				create_title_and_vassal_change = {
 					type = returned
 					save_scope_as = change
 					add_claim_on_loss = no
 				}
-				title:c_roma = {
+				title:c_roma_urbs = {
 					change_title_holder = {
 						holder = root
 						change = scope:change
@@ -166,7 +166,7 @@ create_roman_empire_spqr_scripted_effect = {
 				resolve_title_and_vassal_change = scope:change
 			}
 		}
-		title:h_roman_empire.holder = { set_realm_capital = title:c_roma }
+		title:h_roman_empire.holder = { set_realm_capital = title:c_roma_urbs }
 	}
 	hidden_effect = {
 		create_story = restoring_roman_provinces_story
@@ -284,20 +284,20 @@ create_roman_empire_holy_scripted_effect = {
 
 	if = { #Automatically move capital to Rome.
 		limit = {
-			NOT = { capital_county = { this = title:c_roma } }
+			NOT = { capital_county = { this = title:c_roma_urbs } }
 			exists = title:h_roman_empire.holder
 		}
 		hidden_effect = {
 			if = { #Usurp if not held personally.
 				limit = {
-					NOT = { title:c_roma.holder = { this = root } }
+					NOT = { title:c_roma_urbs.holder = { this = root } }
 				}
 				create_title_and_vassal_change = {
 					type = returned
 					save_scope_as = change
 					add_claim_on_loss = no
 				}
-				title:c_roma = {
+				title:c_roma_urbs = {
 					change_title_holder = {
 						holder = root
 						change = scope:change
@@ -306,7 +306,7 @@ create_roman_empire_holy_scripted_effect = {
 				resolve_title_and_vassal_change = scope:change
 			}
 		}
-		title:h_roman_empire.holder = { set_realm_capital = title:c_roma }
+		title:h_roman_empire.holder = { set_realm_capital = title:c_roma_urbs }
 	}
 	hidden_effect = {
 		create_story = restoring_roman_provinces_story
@@ -731,7 +731,9 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 			title:c_velay = { set_de_jure_liege_title = title:d_dauphine }
 			#To Savoie
 			title:c_viennois = { set_de_jure_liege_title = title:d_savoie }
+			title:c_graisivaudan = { set_de_jure_liege_title = title:d_savoie } # Lux Renata 1.21: new county carved from c_viennois
 			title:c_valentinois = { set_de_jure_liege_title = title:d_savoie }
+			title:c_diois = { set_de_jure_liege_title = title:d_savoie } # Lux Renata 1.21: new county carved from c_valentinois
 			title:c_viviers = { set_de_jure_liege_title = title:d_savoie }
 			#To Flanders
 			title:c_zeeland = { set_de_jure_liege_title = title:d_flanders }

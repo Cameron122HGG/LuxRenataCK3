@@ -36,8 +36,8 @@ LR_restore_roman_empire_effect = {
 		title:h_roman_empire = { set_capital_county = title:c_byzantion }
 	}
 	else_if = {
-		limit = { capital_county = { this = title:c_roma } }
-		title:h_roman_empire = { set_capital_county = title:c_roma }
+		limit = { capital_county = { this = title:c_roma_urbs } }
+		title:h_roman_empire = { set_capital_county = title:c_roma_urbs }
 	}
 
 	create_title_and_vassal_change = {
@@ -156,7 +156,7 @@ LR_restore_roman_empire_effect = {
 	# Move the realm capital to Constantinople (Byzantine heritage) or Rome (everyone else), unless it is already at one
 	if = {
 		limit = {
-			NOT = { capital_county = { this = title:c_roma } }
+			NOT = { capital_county = { this = title:c_roma_urbs } }
 			NOT = { capital_county = { this = title:c_byzantion } }
 			culture = { has_cultural_pillar = heritage_byzantine }
 		}
@@ -181,18 +181,18 @@ LR_restore_roman_empire_effect = {
 	}
 	else_if = {
 		limit = {
-			NOT = { capital_county = { this = title:c_roma } }
+			NOT = { capital_county = { this = title:c_roma_urbs } }
 			NOT = { capital_county = { this = title:c_byzantion } }
 		}
 		hidden_effect = {
 			if = {
-				limit = { NOT = { this = title:c_roma.holder } }
+				limit = { NOT = { this = title:c_roma_urbs.holder } }
 				create_title_and_vassal_change = {
 					type = returned
 					save_scope_as = change
 					add_claim_on_loss = no
 				}
-				title:c_roma = {
+				title:c_roma_urbs = {
 					change_title_holder = {
 						holder = root
 						change = scope:change
@@ -201,7 +201,7 @@ LR_restore_roman_empire_effect = {
 				resolve_title_and_vassal_change = scope:change
 			}
 		}
-		set_realm_capital = title:c_roma
+		set_realm_capital = title:c_roma_urbs
 	}
 
 	hidden_effect = {
@@ -516,7 +516,7 @@ LR_cleave_empire_full_effect = {
 			OTHER = h_western_roman_empire
 			OTHER_EMPIRE = e_western_roman_empire
 			OTHER_REGION = custom_theodosian_wre
-			OTHER_CAPITAL = c_roma
+			OTHER_CAPITAL = c_roma_urbs
 		}
 	}
 	else = {
@@ -569,7 +569,7 @@ LR_cleave_empire_junior_effect = {
 		LR_cleave_empire_junior_inner_effect = {
 			OTHER_EMPIRE = e_western_roman_empire
 			OTHER_REGION = custom_theodosian_wre
-			OTHER_CAPITAL = c_roma
+			OTHER_CAPITAL = c_roma_urbs
 		}
 	}
 	else = {

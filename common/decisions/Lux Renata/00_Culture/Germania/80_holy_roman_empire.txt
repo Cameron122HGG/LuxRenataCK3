@@ -8,35 +8,105 @@ reform_carolingian_empire_decision = {
 	desc = reform_carolingian_empire_decision_desc
 	selection_tooltip = reform_carolingian_empire_decision_tooltip
 	decision_group_type = major
+	sort_order = 130
 
 	ai_check_interval_by_tier = {
 		barony = 0
 		county = 0
 		duchy = 0
-		kingdom = 120
+		kingdom = 0
 		empire = 120
 		hegemony = 0
 	}
 
 	is_shown = {
-		faith.religion = faith:catholic.religion #Christian
+		faith.religion ?= faith:catholic.religion #Christian
 		is_ruler = yes
 		is_playable_character = yes
+		NOT = { government_has_flag = government_is_theocracy }
 		NOT = {  #Can only do it once.
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:flag_reformed_carolingian_empire
 			}
 		}
-		top_liege = this
-		culture = { has_cultural_pillar = heritage_frankish }
-		capital_province = { geographical_region = world_europe_west }
+		top_liege ?= this
+		culture = {
+			OR = {
+				has_cultural_pillar = heritage_frankish
+				has_cultural_pillar = heritage_central_germanic
+			}
+		}
+		capital_province ?= { geographical_region = world_europe_west }
 		NOT = { LR_is_holy_roman_emperor_trigger = yes } #HRE title holders can't Restore Carolingian Borders as the decision requires the HRE to serve as an "antagonist"
 	}
 
 	is_valid = {
-		prestige_level >= high_prestige_level
+		OR = {
+			prestige_level >= 5
+			trigger_if = {
+				limit = {
+					has_legitimacy = yes
+				}
+				legitimacy_level >= 5
+			}
+		}
 		has_title = title:e_sacral_kingdom_gaul
+		# No competing Carolingian emperor may exist — hold them or leave them without a claimant (LR: no e_hre check, the HRE stays the antagonist)
+		trigger_if = {
+			limit = {
+				title:e_france ?= {
+					is_titular = no
+					exists = holder
+				}
+			}
+			title:e_france = {
+				save_temporary_scope_as = current_title_check
+			}
+			custom_tooltip = {
+				text = carolingian_border_other_empires_check
+				OR = {
+					has_title = title:e_france
+					NOT = { exists = title:e_france.holder }
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				title:e_germany ?= {
+					is_titular = no
+					exists = holder
+				}
+			}
+			title:e_germany = {
+				save_temporary_scope_as = current_title_check
+			}
+			custom_tooltip = {
+				text = carolingian_border_other_empires_check
+				OR = {
+					has_title = title:e_germany
+					NOT = { exists = title:e_germany.holder }
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				title:e_italy ?= {
+					is_titular = no
+					exists = holder
+				}
+			}
+			title:e_italy = {
+				save_temporary_scope_as = current_title_check
+			}
+			custom_tooltip = {
+				text = carolingian_border_other_empires_check
+				OR = {
+					has_title = title:e_italy
+					NOT = { exists = title:e_italy.holder }
+				}
+			}
+		}
 		#All of starting e_france
 		completely_controls_region = custom_carolingian_francia
 		#Frisia
@@ -60,11 +130,16 @@ reform_carolingian_empire_decision = {
 		is_at_war = no
 	}
 
+	cost = {
+		gold = {
+			value = 1000
+		}
+	}
+
 	effect = {
-		gain_heroic_legend_seed_tooltip_effect = yes
 		custom_tooltip = reform_carolingian_empire_decision_effect_tooltip
 		show_as_tooltip = {
-			form_carolingian_empire_scripted_effect = yes
+			form_carolingian_hegemony_gdp_scripted_effect = yes
 		}
 		trigger_event = {
 			id = middle_europe_decisions.0005
@@ -79,6 +154,7 @@ reform_carolingian_empire_decision = {
 				value = root
 			}
 		}
+		gain_heroic_legend_seed_tooltip_effect = yes
 	}
 	
 	ai_potential = {
@@ -104,6 +180,7 @@ restore_holy_roman_empire_decision = {
 		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
 	}
 	decision_group_type = major
+	sort_order = 120
 
 	ai_check_interval_by_tier = {
 		barony = 0

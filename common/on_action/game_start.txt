@@ -551,7 +551,7 @@ on_game_start = {
 	        #title:b_vaticano.title_province = { remove_building = holy_site_cathedral_01 } # LR 1.21: add_special_district below replaces it #2577
 			
 			#always exists
-	        title:b_vaticano.title_province = { add_special_district = holy_site_st_peters_basilica_01_district } #2577
+	        title:b_vaticano.title_province = { if = { limit = { has_special_district = no } add_special_district = holy_site_st_peters_basilica_01_district } } #2577 # LR 1.21: province history may already have it
 	        title:b_kathmandu.title_province = { add_special_district = boudhanath_01_district } #9116
 	        title:b_sanchi.title_province = { add_special_district = sanchi_stupa_01_district } #3323
 			title:b_avranches.title_province = { add_special_district = mont_st_michel_01_district } #2167
@@ -2327,7 +2327,7 @@ on_game_start = {
 					enter_realm_event = ep3_emperor_yearly.2000
 				}
 			}
-			title:c_roma = { # Roma
+			title:c_roma_urbs = { # Roma
 				set_important_location = {
 					title = title:e_byzantium
 					enter_realm_event = ep3_emperor_yearly.2000
@@ -2961,7 +2961,7 @@ on_game_start = {
 		add_to_global_variable_list = { name = flood_region_list target = geographical_region:yellow_river_region }
 		##### HISTORICAL HOUSE RELATIONS - deliberately placed above blocs
 		tgp_setup_historical_house_relation_effect = yes
-		gdp_setup_historical_house_relation_effect = yes
+		#gdp_setup_historical_house_relation_effect = yes # Lux Renata 1.21: vanilla's 1066 rivalries (Frangipani-Pierleoni, Awkalid-Taherti) have no members in LR
 		#####  TGP JAPAN #####
 		if = {
 			limit = { has_tgp_dlc_trigger = yes }
@@ -3068,27 +3068,27 @@ on_game_start = {
 		##### GDP Historical Companies #####
 		if = {
 			limit = { has_gdp_dlc_trigger = yes }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_kongo_gumi FOUNDED = 578 CATEGORY = carpentry_supplies }
-			#Lux Renata TBA: gdp_historical_company_expertise_effect = { TITLE = c_merchant_kongo_gumi FOUNDED = 578 CATEGORY = stone SHARE = 0.5 }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_genda_shigyo FOUNDED = 771 CATEGORY = books }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_tanaka_iga FOUNDED = 885 CATEGORY = incense }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_anjuvannam FOUNDED = 849 CATEGORY = luxury_consumption }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_rabban FOUNDED = 849 CATEGORY = luxury_consumption }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_manigramam FOUNDED = 849 CATEGORY = luxury_consumption }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_ayyavole FOUNDED = 900 CATEGORY = jewelry_materials }
-			#Lux Renata TBA: gdp_historical_company_expertise_effect = { TITLE = c_merchant_ayyavole FOUNDED = 900 CATEGORY = beasts_of_burden SHARE = 0.5 }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_nakamura_shaji FOUNDED = 970 CATEGORY = carpentry_supplies }
-			#Lux Renata TBA: gdp_historical_company_expertise_effect = { TITLE = c_merchant_nakamura_shaji FOUNDED = 970 CATEGORY = stone SHARE = 0.5 }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_chateau_de_goulaine FOUNDED = 1000 CATEGORY = alcohol }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_fonderia_marinelli FOUNDED = 1040 CATEGORY = base_metals }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_comite_maurone FOUNDED = 1040 CATEGORY = luxury_items }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_karimi FOUNDED = 1100 CATEGORY = luxury_consumption }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_ivans_hundred FOUNDED = 1135 CATEGORY = comforts }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_ricasoli FOUNDED = 1141 CATEGORY = alcohol }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_sudo_honke FOUNDED = 1141 CATEGORY = alcohol }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_ma_yu_ching FOUNDED = 1153 CATEGORY = meat }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_tsuen FOUNDED = 1160 CATEGORY = comforts }
-			#Lux Renata TBA: gdp_historical_company_setup_effect = { TITLE = c_merchant_gorobee_ame FOUNDED = 1177 CATEGORY = cereals }
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_kongo_gumi FOUNDED = 5578 CATEGORY = carpentry_supplies } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_expertise_effect = { TITLE = c_merchant_kongo_gumi FOUNDED = 5578 CATEGORY = stone SHARE = 0.5 } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_genda_shigyo FOUNDED = 5771 CATEGORY = books } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_tanaka_iga FOUNDED = 5885 CATEGORY = incense } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_anjuvannam FOUNDED = 5849 CATEGORY = luxury_consumption } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_rabban FOUNDED = 5849 CATEGORY = luxury_consumption } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_manigramam FOUNDED = 5849 CATEGORY = luxury_consumption } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_ayyavole FOUNDED = 5900 CATEGORY = jewelry_materials } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_expertise_effect = { TITLE = c_merchant_ayyavole FOUNDED = 5900 CATEGORY = beasts_of_burden SHARE = 0.5 } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_nakamura_shaji FOUNDED = 5970 CATEGORY = carpentry_supplies } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_expertise_effect = { TITLE = c_merchant_nakamura_shaji FOUNDED = 5970 CATEGORY = stone SHARE = 0.5 } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_chateau_de_goulaine FOUNDED = 6000 CATEGORY = alcohol } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_fonderia_marinelli FOUNDED = 6040 CATEGORY = base_metals } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_comite_maurone FOUNDED = 6040 CATEGORY = luxury_items } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_karimi FOUNDED = 6100 CATEGORY = luxury_consumption } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_ivans_hundred FOUNDED = 6135 CATEGORY = comforts } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_ricasoli FOUNDED = 6141 CATEGORY = alcohol } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_sudo_honke FOUNDED = 6141 CATEGORY = alcohol } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_ma_yu_ching FOUNDED = 6153 CATEGORY = meat } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_tsuen FOUNDED = 6160 CATEGORY = comforts } # Lux Renata: FOUNDED +5000
+			gdp_historical_company_setup_effect = { TITLE = c_merchant_gorobee_ame FOUNDED = 6177 CATEGORY = cereals } # Lux Renata: FOUNDED +5000
 		}
 		# Post-schism starts: top the College up if history left it under the vacancy floor
 		if = {

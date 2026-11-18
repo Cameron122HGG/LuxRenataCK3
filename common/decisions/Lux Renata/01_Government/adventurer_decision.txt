@@ -32,8 +32,9 @@ become_landless_adventurer_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/ep3_decision_laamp_neutral_mountain.dds"
 	}
-	sort_order = 82
-	
+	sort_order = 41
+	decision_group_type = realm
+
 	ai_check_interval_by_tier = {
 		barony = 0
 		county = 120
@@ -47,78 +48,101 @@ become_landless_adventurer_decision = {
 	selection_tooltip = become_landless_adventurer_decision_tooltip
 
 	is_shown = {
-		#DLC check.
-		has_ep3_dlc_trigger = yes
-		OR = {
-			ai_can_valid_to_create_laamp_trigger = yes
-			is_ai = no
-		}
 		#Standard filter checks.
 		OR = {
 			is_landed = yes
 			AND = {
 				is_ai = no
 				government_has_mechanic = administrative
-				top_liege = this
+				top_liege ?= this
 				is_landed = no
 			}
+			government_has_flag = government_is_merchant
 		}
 		# Relevant cultures/faiths
 		OR = {
-			culture = { has_cultural_parameter = unlock_voluntary_laampdom }
-			faith = { has_doctrine_parameter = unlock_voluntary_laampdom_faith }
-			has_trait = nomadic_philosophy
-			has_character_modifier = tgp_gave_up_modifier
+			government_has_flag = government_is_merchant
+			rite ?= { rite_has_parameter = unlock_voluntary_laampdom_faith }
+			culture ?= { has_cultural_parameter = unlock_voluntary_laampdom }
+			has_personal_tenet_flag = unlock_voluntary_laampdom_faith
 			AND = {
 				is_ai = no
 				government_has_mechanic = administrative
-				top_liege = this
+				top_liege ?= this
 				is_landed = no
 			}
+			has_character_modifier = tgp_gave_up_modifier
+			has_trait = nomadic_philosophy
 		}
 		save_temporary_scope_as = potential_laamp_temp
-		can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:potential_laamp_temp } # Registered fighting license
+		OR = {
+			ai_can_valid_to_create_laamp_trigger = yes
+			is_ai = no
+		}
+		#DLC check.
+		has_playable_adventurer_dlc_trigger = yes
+		# Players may become adventurers regardless of their culture's martial gender
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:potential_laamp_temp } # Registered fighting license
+		}
 	}
 
 	is_valid = {
-		is_valid_for_laampdom = yes
-		# Is not HOF
-		custom_tooltip = {
-			text = become_landless_adventurer_decision_hof_tt
-			faith.religious_head_title.holder != root
-		}
-		# Counts and dukes only
-		custom_tooltip = {
-			text = become_landless_adventurer_decision_tier_tt
-			highest_held_title_tier >= tier_county
-			highest_held_title_tier <= tier_duchy
-		}
-		# Not too big
-		custom_tooltip = {
-			text = become_landless_adventurer_decision_domain_size_tt
-			domain_size <= 3
-		}
-		# Relevant cultures/faiths
-		trigger_if = {
+		trigger_if = { # Triggers for non-merchants
 			limit = {
-				NAND = {
-					is_ai = no
-					government_has_mechanic = administrative
-					top_liege = this
-					is_landed = no
-				}
+				NOT = { government_has_flag = government_is_merchant }
 			}
-			OR = {
-				culture = { has_cultural_parameter = unlock_voluntary_laampdom }
-				faith = { has_doctrine_parameter = unlock_voluntary_laampdom_faith }
-				has_trait = nomadic_philosophy
-				custom_tooltip = {
-					text = nomadic_government_tt
-					government_has_flag = government_is_nomadic
+			is_valid_for_laampdom = yes
+			# Is not HOF
+			custom_tooltip = {
+				text = become_landless_adventurer_decision_hof_tt
+				faith.religious_head_title.holder != root
+			}
+			# Counts and dukes only
+			custom_tooltip = {
+				text = become_landless_adventurer_decision_tier_tt
+				highest_held_title_tier >= tier_county
+				highest_held_title_tier <= tier_duchy
+			}
+			# Not too big
+			custom_tooltip = {
+				text = become_landless_adventurer_decision_domain_size_tt
+				domain_size <= 3
+			}
+			# Relevant cultures/faiths
+			trigger_if = {
+				limit = {
+					NAND = {
+						is_ai = no
+						government_has_mechanic = administrative
+						top_liege = this
+						is_landed = no
+					}
 				}
-				has_character_modifier = tgp_gave_up_modifier
+				OR = {
+					culture = { has_cultural_parameter = unlock_voluntary_laampdom }
+					rite = { rite_has_parameter = unlock_voluntary_laampdom_faith }
+					has_personal_tenet_flag = unlock_voluntary_laampdom_faith
+					has_trait = nomadic_philosophy
+					custom_tooltip = {
+						text = nomadic_government_tt
+						government_has_flag = government_is_nomadic
+					}
+					has_character_modifier = tgp_gave_up_modifier
+				}
 			}
 		}
+		# Triggers for merchants
+		trigger_else = {
+			custom_tooltip = {
+				text = gdp_recently_became_merchant_decision_cooldown_tt
+				NOT = { exists = var:gdp_recently_became_merchant_cooldown }
+			}
+		}
+
 	}
 
 	is_valid_showing_failures_only = {
@@ -126,15 +150,24 @@ become_landless_adventurer_decision = {
 		is_alive = yes
 		is_available_adult = yes
 		has_contagious_deadly_disease_trigger = no
+		custom_tooltip = {
+			text = is_antipope_blocked_tt
+			pam_is_antipope_trigger = no
+		}
 	}
 
 	effect = {
 		save_scope_as = adventurer
+		set_variable = {
+			name = gdp_recently_became_adventurer_cooldown
+			years = 5
+		}
 		if = {
 			limit = {
 				player_heir ?= {
 					this != root
 					is_adult = yes
+					is_ruler = no
 				}
 			}
 			player_heir = {
@@ -144,7 +177,26 @@ become_landless_adventurer_decision = {
 			}
 		}
 		else_if = {
-			limit = { top_liege != this }
+			limit = {
+				primary_heir ?= {
+					this != root
+					is_adult = yes
+				}
+			}
+			primary_heir = {
+				save_scope_as = laamp_heir
+				save_scope_as = laamp_inheritor
+				custom_tooltip = become_landless_adventurer_decision_title_scope_tt
+			}
+		}
+		else_if = {
+			limit = {
+				liege != this
+				any_held_title = {
+					count = all
+					is_landless_type_title = no
+				}
+			}
 			liege = {
 				save_scope_as = laamp_liege
 				save_scope_as = laamp_inheritor
@@ -162,6 +214,7 @@ become_landless_adventurer_decision = {
 						template = laamp_inheritor_template
 						culture = root.capital_county.culture
 						faith = root.capital_county.faith
+						rite = root.capital_county.rite
 						dynasty = generate
 						location = root.capital_province
 						after_creation = {
@@ -174,11 +227,28 @@ become_landless_adventurer_decision = {
 		}
 		create_landless_adventurer_title_tooltip_effect = yes
 		show_as_tooltip = {
-			add_prestige = medium_prestige_gain
+			if = {
+				limit = {
+					NOT = { government_has_flag = government_is_merchant }
+				}
+				add_prestige = medium_prestige_gain
+			}
 			add_character_modifier = {
 				modifier = ep3_voluntary_laamp_character_modifier
 				years = 5
 			}
+		}
+		if = {
+			limit = {
+				any_in_list = { variable = owes_me_money }
+			}
+			custom_tooltip = gdp_become_adventurer_debtors_to_contracts_tt
+		}
+		if = {
+			limit = {
+				any_owned_story = { story_type = story_cycle_loan }
+			}
+			custom_tooltip = gdp_become_adventurer_debts_transferred_tt
 		}
 		trigger_event = { id = ep3_laamps.0030 }
 		# Debug tracking
@@ -203,7 +273,7 @@ become_landless_adventurer_decision = {
 			debug_log = "AI became adventurer voluntarily"
 			debug_log_scopes = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			craven = minor_stress_impact_gain
 			content = minor_stress_impact_gain
 			lazy = minor_stress_impact_gain
@@ -267,17 +337,17 @@ wipe_slate_decision = {
 
 	is_shown = {
 		# DLC check.
-		has_ep3_dlc_trigger = yes
+		has_playable_adventurer_dlc_trigger = yes
 		# Plus, we must have the actual trait.
 		has_trait = gallowsbait
 	}
 
 	cost = {
 		gold = {
-			value = 100
+			value = 50
 			add = {
 				value = highest_held_title_tier
-				multiply = 25
+				multiply = 12
 			}
 		}
 		prestige = {
@@ -303,6 +373,7 @@ wipe_slate_decision = {
 		gui = "decision_view_widget_option_list_generic"
 		controller = decision_option_list_controller
 		decision_to_second_step_button = "WIPE_SLATE_DECISION_NEXT_STEP_BUTTON"
+		show_from_start = yes
 		item = {
 			value = track_bandit
 			is_valid = {
@@ -527,7 +598,7 @@ wipe_slate_decision = {
 			}
 		}
 	}
-	
+
 	ai_potential = {
 		government_has_flag = government_is_landless_adventurer
 		ai_honor > 0
@@ -563,7 +634,7 @@ adopt_a_kennel_dog = {
 	cooldown = { years = 5 }
 	is_shown = {
 		#DLC check.
-		has_ep3_dlc_trigger = yes
+		has_playable_adventurer_dlc_trigger = yes
 		#Standard filter checks.
 		domicile ?= { has_domicile_parameter = camp_unlocks_adopt_a_kennel_dog_decision }
 		NOT = {
@@ -635,7 +706,7 @@ treasure_hunting_contract_decision = {
 
 	is_shown = {
 		#DLC check.
-		has_ep3_dlc_trigger = yes
+		has_playable_adventurer_dlc_trigger = yes
 
 		any_character_active_contract = {
 			task_contract_type = laamp_treasure_hunting_contract
@@ -656,13 +727,14 @@ treasure_hunting_contract_decision = {
 		gui = "decision_view_widget_option_list_generic"
 		controller = decision_option_list_controller
 		decision_to_second_step_button = "TREASURE_HUNTING_CONTRACT_DECISION_NEXT_STEP_BUTTON"
-		#cover world regions, have to be the same as in get_adventure_inspiration_start_location 
+		show_from_start = yes
+		#cover world regions, have to be the same as in get_adventure_inspiration_start_location
 		item = {
 			value = search_europe_north
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe
 							geographical_region = world_steppe_west
@@ -681,7 +753,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe
 							geographical_region = world_africa_north
@@ -700,11 +772,11 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe
 							geographical_region = world_steppe_west
-							geographical_region = world_asia_minor		
+							geographical_region = world_asia_minor
 						}
 					}
 				}
@@ -720,7 +792,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe
 							geographical_region = world_steppe_west
@@ -741,7 +813,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe_south
 							geographical_region = world_europe_west
@@ -763,7 +835,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe_south
 							geographical_region = world_africa
@@ -782,7 +854,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe_south
 							geographical_region = world_asia_minor
@@ -804,7 +876,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe_south
 							geographical_region = world_asia_minor
@@ -826,7 +898,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe_south
 							geographical_region = world_middle_east
@@ -847,7 +919,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe_south
 							geographical_region = world_middle_east
@@ -868,7 +940,7 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_europe_south
 							geographical_region = world_middle_east
@@ -891,12 +963,12 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_middle_east
 							geographical_region = world_india
 							geographical_region = world_steppe_west
-							geographical_region = world_burma
+							geographical_region = world_asia_southeast_mainland
 						}
 					}
 				}
@@ -912,12 +984,12 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_middle_east
 							geographical_region = world_india
 							geographical_region = world_steppe_west
-							geographical_region = world_burma
+							geographical_region = world_asia_southeast_mainland
 						}
 					}
 				}
@@ -933,12 +1005,12 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
 							geographical_region = world_middle_east
 							geographical_region = world_india
 							geographical_region = world_steppe_west
-							geographical_region = world_burma
+							geographical_region = world_asia_southeast_mainland
 						}
 					}
 				}
@@ -950,20 +1022,22 @@ treasure_hunting_contract_decision = {
 			}
 		}
 		item = {
-			value = search_burma
+			value = search_siberia
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
-							geographical_region = world_india
-							geographical_region = world_tibet
+							geographical_region = world_steppe_west
+							geographical_region = world_steppe_central
+							geographical_region = world_steppe_east
+							geographical_region = world_siberia
 						}
 					}
 				}
 			}
-			localization = treasure_hunting_contract_decision_option_search_burma
-			icon = "gfx/interface/icons/terrain_types/floodplains.dds"
+			localization = treasure_hunting_contract_decision_option_search_siberia
+			icon = "gfx/interface/icons/terrain_types/taiga.dds"
 			ai_chance = {
 				value = 50
 			}
@@ -973,10 +1047,14 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
-							geographical_region = world_india
-							geographical_region = world_steppe
+							geographical_region = world_asia_china
+							geographical_region = world_burma
+							geographical_region = world_middle_east_persia
+							geographical_region = world_steppe_tarim
+							geographical_region = world_india_bengal
+							geographical_region = world_india_rajastan
 						}
 					}
 				}
@@ -992,11 +1070,13 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
-							geographical_region = world_india
+							geographical_region = world_asia_china
+							geographical_region = world_india_rajastan
+							geographical_region = world_middle_east_persia
+							geographical_region = world_steppe_central
 							geographical_region = world_tibet
-							geographical_region = world_steppe
 						}
 					}
 				}
@@ -1012,14 +1092,12 @@ treasure_hunting_contract_decision = {
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
-							geographical_region = world_india
-							geographical_region = world_tibet
-							geographical_region = world_steppe
+							geographical_region = world_steppe_central
 							geographical_region = world_europe_east
-							geographical_region = world_europe_north
 							geographical_region = world_asia_minor
+							geographical_region = world_siberia
 						}
 					}
 				}
@@ -1031,16 +1109,40 @@ treasure_hunting_contract_decision = {
 			}
 		}
 		item = {
+			value = search_steppe_central
+			is_valid = {
+				custom_description = {
+					text = treasure_hunting_contract_decision_limit
+					capital_province ?= {
+						OR = {
+							geographical_region = world_asia_minor
+							geographical_region = world_middle_east_persia
+							geographical_region = world_india
+							geographical_region = world_tibet
+							geographical_region = world_steppe
+							geographical_region = world_siberia
+						}
+					}
+				}
+			}
+			localization = treasure_hunting_contract_decision_option_search_steppe_central
+			icon = "gfx/interface/icons/terrain_types/steppe.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
+		item = {
 			value = search_steppe_east
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
+					capital_province ?= {
 						OR = {
-							geographical_region = world_india
-							geographical_region = world_tibet
-							geographical_region = world_steppe
 							geographical_region = world_asia_china
+							geographical_region = world_asia_north_east
+							geographical_region = world_siberia
+							geographical_region = world_steppe_central
+							geographical_region = world_steppe_tarim
 						}
 					}
 				}
@@ -1052,33 +1154,151 @@ treasure_hunting_contract_decision = {
 			}
 		}
 		item = {
-			value = search_east_asia
+			value = search_southeast_asia_islands
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
-						geographical_region = world_asia_east
+					capital_province ?= {
+						OR = {
+							geographical_region = world_asia_southeast
+							geographical_region = world_asia_china
+						}
 					}
 				}
 			}
-			localization = treasure_hunting_contract_decision_option_search_east_asia
+			localization = treasure_hunting_contract_decision_option_search_southeast_asia_islands
+			icon = "gfx/interface/icons/terrain_types/jungle.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
+		item = {
+			value = search_southeast_asia_mainland
+			is_valid = {
+				custom_description = {
+					text = treasure_hunting_contract_decision_limit
+					capital_province ?= {
+						OR = {
+							geographical_region = world_tibet
+							geographical_region = world_india
+							geographical_region = world_asia_southeast
+							geographical_region = world_asia_china
+						}
+					}
+				}
+			}
+			localization = treasure_hunting_contract_decision_option_search_southeast_asia_mainland
+			icon = "gfx/interface/icons/terrain_types/jungle.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
+		item = {
+			value = search_north_east_asia
+			is_valid = {
+				custom_description = {
+					text = treasure_hunting_contract_decision_limit
+					capital_province ?= {
+						OR = {
+							geographical_region = world_asia_north_east
+							geographical_region = world_steppe_east
+							geographical_region = world_asia_korea
+							geographical_region = world_asia_sakhalin_hokkaido
+						}
+					}
+				}
+			}
+			localization = treasure_hunting_contract_decision_option_search_north_east_asia
 			icon = "gfx/interface/icons/terrain_types/mountains.dds"
 			ai_chance = {
 				value = 50
 			}
 		}
 		item = {
-			value = search_east_southeast_asia
+			value = search_china
 			is_valid = {
 				custom_description = {
 					text = treasure_hunting_contract_decision_limit
-					capital_province = {
-						geographical_region = world_asia_southeast
+					capital_province ?= {
+						OR = {
+							geographical_region = world_asia_china
+							geographical_region = world_asia_korea
+							geographical_region = world_asia_japan
+							geographical_region = world_asia_north_east
+							geographical_region = world_asia_philippines
+							geographical_region = world_asia_southeast_mainland
+							geographical_region = world_steppe_east
+							geographical_region = world_steppe_tarim
+							geographical_region = world_tibet
+						}
 					}
 				}
 			}
-			localization = treasure_hunting_contract_decision_option_search_east_southeast_asia
-			icon = "gfx/interface/icons/terrain_types/mountains.dds"
+			localization = treasure_hunting_contract_decision_option_search_china
+			icon = "gfx/interface/icons/terrain_types/hills.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
+		item = {
+			value = search_japan
+			is_valid = {
+				custom_description = {
+					text = treasure_hunting_contract_decision_limit
+					capital_province ?= {
+						OR = {
+							geographical_region = world_asia_china
+							geographical_region = world_asia_korea
+							geographical_region = world_asia_philippines
+							geographical_region = world_asia_north_east
+							geographical_region = world_asia_sakhalin_hokkaido
+						}
+					}
+				}
+			}
+			localization = treasure_hunting_contract_decision_option_search_japan
+			icon = "gfx/interface/icons/terrain_types/coastal_sea.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
+		item = {
+			value = search_korea
+			is_valid = {
+				custom_description = {
+					text = treasure_hunting_contract_decision_limit
+					capital_province ?= {
+						OR = {
+							geographical_region = world_asia_east
+							geographical_region = world_asia_north_east
+							geographical_region = world_steppe_east
+							geographical_region = world_asia_southeast_islands
+						}
+					}
+				}
+			}
+			localization = treasure_hunting_contract_decision_option_search_korea
+			icon = "gfx/interface/icons/terrain_types/hills.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
+		item = {
+			value = search_sakhalin_hokkaido
+			is_valid = {
+				custom_description = {
+					text = treasure_hunting_contract_decision_limit
+					capital_province ?= {
+						OR = {
+							geographical_region = world_asia_north_east
+							geographical_region = world_asia_japan
+							geographical_region = world_asia_korea
+						}
+					}
+				}
+			}
+			localization = treasure_hunting_contract_decision_option_search_sakhalin_hokkaido
+			icon = "gfx/interface/icons/terrain_types/wetlands.dds"
 			ai_chance = {
 				value = 50
 			}
@@ -1093,17 +1313,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:africa_north
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_africa_west = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:africa_west
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
 				}
 			}
 			scope:search_africa_east = {
@@ -1111,17 +1325,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:africa_east
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_europe_north = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:europe_north
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
 				}
 			}
 			scope:search_europe_west = {
@@ -1129,17 +1337,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:europe_west
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_europe_east = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:europe_east
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
 				}
 			}
 			scope:search_europe_south = {
@@ -1147,17 +1349,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:europe_south
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_middle_east_jerusalem = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:middle_east_jerusalem
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
 				}
 			}
 			scope:search_middle_east_arabia = {
@@ -1165,17 +1361,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:middle_east_arabia
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_middle_east_persia = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:middle_east_persia
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
 				}
 			}
 			scope:search_india_deccan = {
@@ -1183,17 +1373,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:india_deccan
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_india_bengal = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:india_bengal
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
 				}
 			}
 			scope:search_india_rajastan = {
@@ -1201,17 +1385,17 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:india_rajastan
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_steppe_west = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:steppe_west
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
+			}
+			scope:search_steppe_central = {
+				set_variable = {
+					name = adventure_destination
+					value = flag:steppe_central
 				}
 			}
 			scope:search_steppe_east = {
@@ -1219,17 +1403,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:steppe_east
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
 			scope:search_steppe_tarim = {
 				set_variable = {
 					name = adventure_destination
 					value = flag:steppe_tarim
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
 				}
 			}
 			scope:search_asia_minor = {
@@ -1237,17 +1415,11 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:asia_minor
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
-			scope:search_burma = {
+			scope:search_siberia = {
 				set_variable = {
 					name = adventure_destination
-					value = flag:burma
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
+					value = flag:siberia
 				}
 			}
 			scope:search_tibet = {
@@ -1255,34 +1427,58 @@ treasure_hunting_contract_decision = {
 					name = adventure_destination
 					value = flag:tibet
 				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
-				}
 			}
-			scope:search_east_asia = {
+			scope:search_china = {
 				set_variable = {
 					name = adventure_destination
-					value = flag:east_asia
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
+					value = flag:china
 				}
 			}
-			scope:search_east_southeast_asia = {
+			scope:search_japan = {
 				set_variable = {
 					name = adventure_destination
-					value = flag:southeast_asia
-				}
-				get_adventure_inspiration_start_location = {
-					ADVENTURER = root
+					value = flag:japan
 				}
 			}
+			scope:search_korea = {
+				set_variable = {
+					name = adventure_destination
+					value = flag:korea
+				}
+			}
+			scope:search_sakhalin_hokkaido = {
+				set_variable = {
+					name = adventure_destination
+					value = flag:sakhalin_hokkaido
+				}
+			}
+			scope:search_southeast_asia_islands = {
+				set_variable = {
+					name = adventure_destination
+					value = flag:southeast_asia_islands
+				}
+			}
+			scope:search_southeast_asia_mainland = {
+				set_variable = {
+					name = adventure_destination
+					value = flag:southeast_asia_mainland
+				}
+			}
+			scope:search_north_east_asia = {
+				set_variable = {
+					name = adventure_destination
+					value = flag:north_east_asia
+				}
+			}
+		}
+		get_adventure_inspiration_start_location = {
+			ADVENTURER = root
 		}
 		random_character_task_contract = {
 			task_contract_type = laamp_treasure_hunting_contract
 			save_scope_as = task_contract
 		}
-		scope:location.county = {
+		scope:location.county ?= {
 			random_county_province = {
 				save_scope_as = task_contract_destination
 			}
@@ -1325,7 +1521,7 @@ visit_local_settlement_decision = {
 
 	is_shown = {
 		#DLC check.
-		has_ep3_dlc_trigger = yes
+		has_playable_adventurer_dlc_trigger = yes
 		has_government = landless_adventurer_government
 	}
 
@@ -1336,7 +1532,7 @@ visit_local_settlement_decision = {
 		root.location = {
 			has_holding = yes
 			is_occupied = no
-			is_raided = no	
+			is_raided = no
 		}
 		custom_description = {
 			text = "visit_local_settlement_decision_sieged"
@@ -1355,7 +1551,7 @@ visit_local_settlement_decision = {
 			NOT = { has_variable = ep3_laamp_decision_1000_is_visiting }
 		}
 	}
-	
+
 	effect = {
 		if = {
 			limit = {
@@ -1365,7 +1561,7 @@ visit_local_settlement_decision = {
 						has_holding_type = tribal_holding
 						has_holding_type = nomad_holding
 						has_holding_type = herder_holding
-					} 
+					}
 				}
 			}
 			#The base tooltip
@@ -1405,13 +1601,13 @@ visit_local_settlement_decision = {
 			player = root
 		}
 	}
-	
+
 	ai_check_interval = 0
 
 	ai_potential = {
 		always = no
 	}
-	
+
 	ai_will_do = {
 		base = 0
 	}
@@ -1437,20 +1633,20 @@ treasure_map_contract_decision = {
 	decision_group_type = adventurer_minor
 
 	is_shown = {
-		#DLC check.
-		has_ep3_dlc_trigger = yes
 		any_character_active_contract = { task_contract_type = laamp_treasure_map_contract }
+		#DLC check.
+		has_playable_adventurer_dlc_trigger = yes
 		any_character_artifact = { has_variable = 1025_treasure_map }
 	}
 
-	is_valid_showing_failures_only = { 
-		is_available_allow_travelling = yes
+	is_valid_showing_failures_only = {
+		is_available = yes
 		custom_description = {
 			text = "decision_already_excavating_treasure"
 			subject = root
-			NOR = { 
-				has_variable = ep3_laamp_decision_1000_is_planning_excavation_trip
-				has_variable = ep3_laamp_decision_1000_is_excavating 
+			has_none_of_variables = {
+				name = ep3_laamp_decision_1000_is_planning_excavation_trip
+				name = ep3_laamp_decision_1000_is_excavating
 			}
 		}
 	}
@@ -1463,7 +1659,23 @@ treasure_map_contract_decision = {
 		gui = "decision_view_widget_option_list_generic"
 		controller = decision_option_list_controller
 		decision_to_second_step_button = "TREASURE_MAP_CONTRACT_DECISION_NEXT_STEP_BUTTON"
+		show_from_start = yes
 		item = {
+			is_valid = {
+				custom_tooltip = {
+					text = can_move_domicile_camp_exile.tt
+					any_character_task_contract = {
+						has_variable = contract_treasure_location
+						save_temporary_scope_as = task_contract
+						NOT = {
+							is_laamp_exiled_from_province_trigger = {
+								PROVINCE = scope:task_contract.var:contract_treasure_location
+								LAAMP = root
+							}
+						}
+					}
+				}
+			}
 			value = travel_with_camp
 			localization = option_travel_with_camp
 			icon = "gfx/interface/icons/travel/icon_travel_hud_placeholder.dds"
@@ -1483,7 +1695,17 @@ treasure_map_contract_decision = {
 
 	effect = {
 		random_character_task_contract = {
-			limit = { has_variable = contract_treasure_location }
+			limit = {
+				has_variable = contract_treasure_location
+				save_temporary_scope_as = task_contract
+				NOT = {
+					is_laamp_exiled_from_province_trigger = {
+						PROVINCE = scope:task_contract.var:contract_treasure_location
+						LAAMP = root
+					}
+				}
+			}
+			alternative_limit = { has_variable = contract_treasure_location }
 			save_scope_as = task_contract
 		}
 		switch = {
@@ -2094,6 +2316,35 @@ bandit_king_decision = {
 		has_ep3_dlc_trigger = yes
 		government_has_flag = government_is_landless_adventurer
 		NOT = { has_character_flag = bandit_king_var }
+		OR = {
+			has_trait = ambitious
+			has_trait = schemer
+			has_trait_xp = {
+				trait = gallowsbait
+				track = bandit
+				value >= 40
+			}
+			has_trait_xp = {
+				trait = gallowsbait
+				track = thief
+				value >= 40
+			}
+			has_trait_xp = {
+				trait = gallowsbait
+				track = poacher
+				value >= 40
+			}
+			has_trait_xp = {
+				trait = gallowsbait
+				track = marauder
+				value >= 40
+			}
+			has_trait_xp = {
+				trait = gallowsbait
+				track = trickster
+				value >= 40
+			}
+		}
 	}
 
 	is_valid = {
@@ -2137,10 +2388,10 @@ bandit_king_decision = {
 	}
 
 	cost = {
-		gold = 500
+		gold = 250
 		prestige = 2000
 	}
-	
+
 	ai_check_interval_by_tier = {
 		barony = 0
 		county = 0
@@ -2149,11 +2400,11 @@ bandit_king_decision = {
 		empire = 0
 		hegemony = 0
 	}
-	
+
 	ai_potential = {
 		government_has_flag = government_is_landless_adventurer
 	}
-	
+
 	ai_will_do = {
 		base = 100
 	}
@@ -2183,7 +2434,7 @@ gather_provisions_decision = {
 
 	is_shown = {
 		#DLC check.
-		has_ep3_dlc_trigger = yes
+		has_playable_adventurer_dlc_trigger = yes
 		has_government = landless_adventurer_government
 	}
 
@@ -2877,7 +3128,7 @@ butcher_animals_decision = {
 
 	is_shown = {
 		# DLC check.
-		has_ep3_dlc_trigger = yes
+		has_playable_adventurer_dlc_trigger = yes
 		# Standard filters.
 		has_government = landless_adventurer_government
 		# Flavour checks.
@@ -2909,6 +3160,7 @@ butcher_animals_decision = {
 		gui = "decision_view_widget_option_list_generic"
 		controller = decision_option_list_controller
 		decision_to_second_step_button = "BUTCHER_ANIMALS_DECISION_NEXT_STEP_BUTTON"
+		show_from_start = yes
 		item = {
 			value = butcher_dogs
 			is_valid = {
@@ -3023,18 +3275,18 @@ humiliate_the_stooge_decision = {
 	}
 	sort_order = 150
 	decision_group_type = adventurer_minor
-	
+
 	cooldown = { years = 2 }
-	
+
 	ai_potential = {
 		stress > 0
 	}
 
 	is_shown = {
-		has_ep3_dlc_trigger = yes
+		has_playable_adventurer_dlc_trigger = yes
 		has_government = landless_adventurer_government
 	}
-	
+
 	is_valid = {
 		employs_court_position = stooge_camp_officer
 	}
@@ -3046,7 +3298,7 @@ humiliate_the_stooge_decision = {
 			is_incapable = yes
 		}
 	}
-	
+
 	cost = {
 		prestige = 20
 	}

@@ -302,7 +302,8 @@ convert_to_administrative_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/ep3_cerimonial_decision.dds"
 	}
-	decision_group_type = major
+	decision_group_type = realm
+	sort_order = 40
 	title = {
 		first_valid = {
 			triggered_desc = {
@@ -363,6 +364,10 @@ convert_to_administrative_decision = {
 			government_has_flag = government_is_chinese_feudal
 			government_has_flag = government_is_japanese_plain
 			government_has_flag = government_is_indic_group
+			AND = { # Republic doges may become admin
+				government_has_flag = government_is_republic
+				highest_liege_matching_rule:uses_assembly = this
+			}
 		}
 		trigger_if = {
 			limit = { top_liege != this }
@@ -423,6 +428,7 @@ convert_to_administrative_decision = {
 			limit = {
 				top_liege = this
 				is_ai = no
+				NOT = { government_has_flag = government_is_republic }
 			}
 			custom_tooltip = {
 				text = all_powerful_vassals_required_tt
@@ -434,6 +440,12 @@ convert_to_administrative_decision = {
 					}
 				}
 			}
+		}
+		trigger_if = { # Republics have to be despots
+			limit = {
+				government_has_flag = government_is_republic
+			}
+			has_realm_law = republican_despot_succession_law
 		}
 		trigger_if = {
 			limit = { is_ai = yes }
@@ -984,7 +996,8 @@ convert_to_feudalism_from_administrative_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	}
-	decision_group_type = major
+	decision_group_type = realm
+	sort_order = 40
 	desc = convert_to_feudalism_from_administrative_decision_desc
 
 	is_shown = {
@@ -1018,87 +1031,88 @@ convert_to_feudalism_from_administrative_decision = {
 	is_valid = {
 		is_landed = yes
 		trigger_if = {
-			limit = {
-				is_independent_ruler = no
-			}
-			top_liege ?= {
-				trigger_if = {
-					limit = {
-						has_realm_law_in_group = imperial_bureaucracy
+			limit = { is_independent_ruler = no }
+			custom_tooltip = {
+				text = liege_has_realm_law_authority_0_tt
+				top_liege ?= {
+					trigger_if = {
+						limit = {
+							has_realm_law_in_group = imperial_bureaucracy
+						}
+						has_realm_law = imperial_bureaucracy_0 
 					}
-					has_realm_law = imperial_bureaucracy_0 
-				}
-				trigger_if = {
-					limit = {
-						has_realm_law_in_group = celestial_bureaucracy
+					trigger_if = {
+						limit = {
+							has_realm_law_in_group = celestial_bureaucracy
+						}
+						has_realm_law = celestial_bureaucracy_0 
 					}
-					has_realm_law = celestial_bureaucracy_0 
-				}
-				trigger_if = {
-					limit = {
-						has_realm_law_in_group = meritocratic_bureaucracy
+					trigger_if = {
+						limit = {
+							has_realm_law_in_group = meritocratic_bureaucracy
+						}
+						has_realm_law = meritocratic_bureaucracy_0 
 					}
-					has_realm_law = meritocratic_bureaucracy_0 
-				}
-				trigger_if = {
-					limit = {
-						has_realm_law_in_group = japanese_bureaucracy
+					trigger_if = {
+						limit = {
+							has_realm_law_in_group = japanese_bureaucracy
+						}
+						has_realm_law = japanese_bureaucracy_0 
 					}
-					has_realm_law = japanese_bureaucracy_0 
-				}
-				trigger_if = {
-					limit = {
-						has_realm_law_in_group = roman_bureaucracy
+					trigger_if = {
+						limit = {
+							has_realm_law_in_group = roman_bureaucracy
+						}
+						has_realm_law = roman_bureaucracy_0 
 					}
-					has_realm_law = roman_bureaucracy_0 
-				}
-				trigger_if = {
-					limit = {
-						has_realm_law_in_group = roman_autocratic_bureaucracy
+					trigger_if = {
+						limit = {
+							has_realm_law_in_group = roman_autocratic_bureaucracy
+						}
+						has_realm_law = roman_autocratic_bureaucracy_0 
 					}
-					has_realm_law = roman_autocratic_bureaucracy_0 
-				}
-				trigger_if = { # LR
-					limit = {
-						has_realm_law_in_group = alexandrian_bureaucracy
+					trigger_if = { # LR
+						limit = {
+							has_realm_law_in_group = alexandrian_bureaucracy
+						}
+						has_realm_law = alexandrian_bureaucracy_0
 					}
-					has_realm_law = alexandrian_bureaucracy_0
-				}
-				trigger_if = { # LR
-					limit = {
-						has_realm_law_in_group = gupta_bureaucracy
+					trigger_if = { # LR
+						limit = {
+							has_realm_law_in_group = gupta_bureaucracy
+						}
+						has_realm_law = gupta_bureaucracy_0
 					}
-					has_realm_law = gupta_bureaucracy_0
-				}
-				trigger_if = { # LR
-					limit = {
-						has_realm_law_in_group = iqta_bureaucracy
+					trigger_if = { # LR
+						limit = {
+							has_realm_law_in_group = iqta_bureaucracy
+						}
+						has_realm_law = iqta_bureaucracy_0
 					}
-					has_realm_law = iqta_bureaucracy_0
-				}
-				trigger_if = { # LR
-					limit = {
-						has_realm_law_in_group = persianate_bureaucracy
+					trigger_if = { # LR
+						limit = {
+							has_realm_law_in_group = persianate_bureaucracy
+						}
+						has_realm_law = persianate_bureaucracy_0
 					}
-					has_realm_law = persianate_bureaucracy_0
-				}
-				trigger_if = { # LR
-					limit = {
-						has_realm_law_in_group = carolingian_bureaucracy
+					trigger_if = { # LR
+						limit = {
+							has_realm_law_in_group = carolingian_bureaucracy
+						}
+						has_realm_law = carolingian_bureaucracy_0
 					}
-					has_realm_law = carolingian_bureaucracy_0
-				}
-				trigger_if = { # LR
-					limit = {
-						has_realm_law_in_group = hellenistic_bureaucracy
+					trigger_if = { # LR
+						limit = {
+							has_realm_law_in_group = hellenistic_bureaucracy
+						}
+						has_realm_law = hellenistic_bureaucracy_0
 					}
-					has_realm_law = hellenistic_bureaucracy_0
-				}
-				trigger_if = { # LR
-					limit = {
-						has_realm_law_in_group = persianate_imperial_bureaucracy
+					trigger_if = { # LR
+						limit = {
+							has_realm_law_in_group = persianate_imperial_bureaucracy
+						}
+						has_realm_law = persianate_imperial_bureaucracy_0
 					}
-					has_realm_law = persianate_imperial_bureaucracy_0
 				}
 			}
 			custom_tooltip = {

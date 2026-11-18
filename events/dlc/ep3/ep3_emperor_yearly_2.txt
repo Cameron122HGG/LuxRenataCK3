@@ -89,7 +89,7 @@ ep3_emperor_yearly.2000 = {
 			}
 			triggered_desc = {
 				trigger = {
-					scope:county = title:c_roma # Roma + Vaticano
+					scope:county = title:c_roma_urbs # Roma + Vaticano
 				}
 				desc = ep3_emperor_yearly.2000.desc_rome
 			}
@@ -219,11 +219,11 @@ ep3_emperor_yearly.2000 = {
 			limit = {
 				OR = {
 					scope:county = title:c_roma # Vaticano
-					scope:county = title:c_roma # Roma
+					scope:county = title:c_roma_urbs # Roma
 				}
 			}
 			title:c_roma.holder.top_liege = root.top_liege # Vaticano
-			title:c_roma.holder.top_liege = root.top_liege # Roma
+			title:c_roma_urbs.holder.top_liege = root.top_liege # Roma
 			NOT = { exists = global_var:ep3_reconquered_roma }
 		}
 		trigger_else_if = {
@@ -276,7 +276,7 @@ ep3_emperor_yearly.2000 = {
 	immediate = {
 		if = { # Must have both Roma + Vaticano, use Roma for loc
 			limit = { scope:county = title:c_roma } # Vaticano
-			title:c_roma = { save_scope_as = county } # Roma
+			title:c_roma_urbs = { save_scope_as = county } # Roma
 		}
 		switch = {
 			trigger = scope:county
@@ -301,7 +301,7 @@ ep3_emperor_yearly.2000 = {
 			title:c_siracusa = {
 				set_global_variable = ep3_reconquered_siracusa
 			}
-			title:c_roma = { # Roma + Vaticano
+			title:c_roma_urbs = { # Roma + Vaticano
 				set_global_variable = ep3_reconquered_roma
 			}
 			title:c_ravenna = {
@@ -340,7 +340,7 @@ ep3_emperor_yearly.2000 = {
 	option = {
 		name = ep3_emperor_yearly.2000.a
 		if = { # Roma + Vaticano
-			limit = { scope:county = title:c_roma } # Roma
+			limit = { scope:county = title:c_roma_urbs } # Roma
 			title:c_roma = { # Vaticano
 				add_county_modifier = {
 					modifier = ep3_restored_pentarchy_seat_county_modifier

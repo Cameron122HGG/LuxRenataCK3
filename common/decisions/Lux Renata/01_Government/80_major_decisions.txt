@@ -1561,40 +1561,40 @@ adopt_special_succession_decision = {
 	}
 
 	is_shown = {
+		OR = {	#Must be eligible for a special succession type.
+			special_succession_witengamot_trigger = yes
+			special_succession_thing_trigger = yes
+			special_succession_tanistry_trigger = yes
+			special_succession_jirga_trigger = yes
+		}
 		AND = {
+			is_landed_or_landless_administrative_or_theocratic = yes
 			highest_held_title_tier >= tier_kingdom
 			has_realm_law_flag = partition_succession_law
 			any_held_title = {
 				title_tier >= kingdom
 				NOR = {
-					has_title_law_flag = elective_succession_law
 					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
 				}
 			}
-			is_landed_or_landless_administrative_or_theocratic = yes
 		}
-		OR = {	#Must be eligible for a special succession type.
-			special_succession_tanistry_trigger = yes
-			special_succession_thing_trigger = yes
-			special_succession_witengamot_trigger = yes
-			special_succession_jirga_trigger = yes
-		}
+		current_date < 6100.1.1	#Curtail special succession types as the centuries wear on. Ever on.
+
 		trigger_if = { # Prevent Norway from essentially giving England back to the Anglo-Saxons
 			limit = {
+				is_ai = yes
+				special_succession_thing_trigger = yes
 				any_held_title = {
 					this = title:k_england
 				}
-				special_succession_thing_trigger = yes
 				NAND = { # If they're on the isle itself, it's fine
 					primary_title = title:k_england
 					capital_county.kingdom = title:k_england
 				}
-				is_ai = yes
 			}
 			always = no
 		}
-
-		current_date < 6100.1.1	#Curtail special succession types as the centuries wear on. Ever on.
 	}
 
 	is_valid = {
