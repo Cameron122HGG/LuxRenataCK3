@@ -2,9 +2,13 @@
 	exists = this
 	OR = {
 		this.culture = culture:roman
+		this.culture = culture:western_roman
 		this.culture = {
 			any_parent_culture = { #not "any_parent_culture_or_above" because otherwise the culture strays too far from Roman
-				this = culture:roman
+				OR = {
+					this = culture:roman
+					this = culture:western_roman
+				}
 			}
 			OR = { #only descendant cultures with the correct heritage
 				has_cultural_pillar = heritage_latin
