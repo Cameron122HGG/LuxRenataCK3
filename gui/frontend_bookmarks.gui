@@ -3407,30 +3407,23 @@ types BookmarkPortraits
 				texture = "[Bookmark.GetButtonIcon]"
 			}
 
+			# LR: no bm_mask cut, so the tab is a rectangle like the bookmark group tabs on the left
 			modify_texture = {
-				texture = "gfx/interface/bookmarks/bm_mask.dds"
-				blend_mode = alphamultiply
-				spritetype = corneredTiled
-				spriteborder = { 40 40 }
-				texture_density = 2
-			}
-
-			modify_texture = {
-				texture = "gfx/interface/bookmarks/bm_overlay.dds"
+				texture = "gfx/interface/buttons/button_stone_glass_overlay.dds" # LR: as the group tabs (was bm_overlay)
 				blend_mode = overlay
 				texture_density = 2
 			}
 
 			modify_texture = {
 				name = "tab_glow"
-				texture = "gfx/interface/bookmarks/bm_glow.dds"
+				texture = "gfx/interface/buttons/button_stone_glass_glow.dds" # LR: as the group tabs (was bm_glow)
 				blend_mode = colordodge
 				alpha = 0
 			}
 
 			modify_texture = {
 				name = "tab_glow_selected"
-				texture = "gfx/interface/bookmarks/bm_glow.dds"
+				texture = "gfx/interface/buttons/button_stone_glass_glow.dds" # LR: as the group tabs (was bm_glow)
 				blend_mode = colordodge
 				alpha = 0
 			}
@@ -3562,13 +3555,19 @@ types BookmarkPortraits
 				}
 			}
 
+			# LR: dark fade under the name, as the group tabs
+			icon = {
+				parentanchor = bottom|hcenter
+				size = { 100% 100% }
+				alwaystransparent = yes
+				texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+				color = { 0.1 0.1 0.1 0.5 }
+			}
+
 			widget= {
 				size = {100% 100%}
 
-				background = {
-					texture = "gfx/interface/bookmarks/bm_shadow.dds"
-					alpha = 0.5
-				}
+				# LR: tab-shaped bm_shadow dropped (the tabs are rectangles now)
 
 				hbox = {
 					margin = { 5 0 }
@@ -3614,12 +3613,14 @@ types BookmarkPortraits
 			}
 		}
 
+		# LR: same fade and frame as the bookmark group tabs (widget_bookmark_group_button), was bookmark_tab_frame.dds
 		icon = {
-			size = { 100% 100% }
-			parentanchor = bottom|hcenter
-			background = {
-				texture = "gfx/interface/icons/bookmark_buttons/bookmark_tab_frame.dds"
-			}
+			size = { 105% 113% }
+			alwaystransparent = yes
+			spriteborder = { 30 30 }
+			spriteType = corneredStretched
+			texture = "gfx/interface/component_tiles/tile_frame_subwindow_01.dds"
+			parentanchor = center
 		}
 	}
 

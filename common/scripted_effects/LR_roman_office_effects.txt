@@ -39,6 +39,11 @@ LR_roman_office_holder_setup_effect = {
 			NOT = { government_has_flag = government_is_roman_imperial }
 			top_liege ?= { government_has_flag = government_is_roman_imperial }
 		}
+		# TEMP LR 11-18: find the office holder the game refuses roman_dominate_government ("illegal government"). Remove once fixed.
+		debug_log = "LR office government: roman_dominate"
+		if = { limit = { NOT = { exists = house } } debug_log = "LR office government: holder has no house" }
+		if = { limit = { is_ruler = no } debug_log = "LR office government: holder is not a ruler" }
+		debug_log_scopes = yes
 		change_government = roman_dominate_government
 	}
 	else_if = { # LR: officers of a regional (Roman Autocratic) empire
