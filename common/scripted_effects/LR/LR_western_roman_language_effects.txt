@@ -1,0 +1,22 @@
+﻿# Lux Renata 2026-11-18 (user's request): the Western Romans speak their evolved language (language_western_roman), but
+# at the game start every royal court of Western Roman heritage (culture western_roman or one descended from it) keeps
+# classical Latin as its court language. Called from game_start.txt (on_game_start), after the papal Latin court.
+LR_western_roman_latin_court_effect = {
+	every_ruler = {
+		limit = {
+			has_royal_court = yes
+			culture = {
+				OR = {
+					this = culture:western_roman
+					any_parent_culture_or_above = { this = culture:western_roman }
+				}
+			}
+			NOT = { has_court_language = language_latin }
+		}
+		set_court_language = language_latin
+		if = {
+			limit = { NOT = { knows_court_language_of = this } }
+			learn_court_language_of = this
+		}
+	}
+}
