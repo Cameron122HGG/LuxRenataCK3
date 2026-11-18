@@ -652,11 +652,24 @@ widget = {
 					vbox = {
 						spacing = 5
 
-						text_single = {
+						hbox = {
 							layoutpolicy_horizontal = expanding
-							margin_left = 5
-							text = "SINGLE_PLAYER"
-							default_format = "#clickable;italic;glow_color:{0.1,0.1,0.1,1}" # LR: gold like the menu buttons
+
+							text_single = {
+								margin = { 12 3 }
+								text = "SINGLE_PLAYER"
+								default_format = "#clickable;italic;glow_color:{0.1,0.1,0.1,1}" # LR: gold like the menu buttons
+								# LR: dark strip like the menu buttons, so the gold reads on the plaster
+								background = {
+									texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+									spriteType = Corneredtiled
+									spriteborder = { 20 20 }
+									color = { 0 0 0 0.75 }
+									texture_density = 2
+								}
+							}
+
+							expand = {}
 						}
 
 						vbox = {
@@ -833,11 +846,24 @@ widget = {
 					}
 
 					vbox = {
-						text_single = {
+						hbox = {
 							layoutpolicy_horizontal = expanding
-							margin_left = 5
-							text = "MULTI_PLAYER"
-							default_format = "#clickable;italic;glow_color:{0.1,0.1,0.1,1}" # LR: gold like the menu buttons
+
+							text_single = {
+								margin = { 12 3 }
+								text = "MULTI_PLAYER"
+								default_format = "#clickable;italic;glow_color:{0.1,0.1,0.1,1}" # LR: gold like the menu buttons
+								# LR: dark strip like the menu buttons, so the gold reads on the plaster
+								background = {
+									texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+									spriteType = Corneredtiled
+									spriteborder = { 20 20 }
+									color = { 0 0 0 0.75 }
+									texture_density = 2
+								}
+							}
+
+							expand = {}
 						}
 
 						spacer = {
@@ -1256,7 +1282,7 @@ widget = {
 
 		parentanchor = vcenter|right
 		position = { -20 -100 }
-		size = { 400 744 }
+		size = { 480 744 } # LR: was 400 wide
 
 		widget = {
 			position = { 0 -40 }
@@ -1371,7 +1397,7 @@ widget = {
 			position = { -24 164 }
 			spriteType = Corneredtiled
 			spriteborder = { 100 0 }
-			size = { 448 20 }
+			size = { 528 20 } # LR: was 448, panel widened
 			texture_density = 2
 		}
 
@@ -1472,7 +1498,7 @@ widget = {
 								layoutpolicy_horizontal = expanding
 								spacing = 5
 								text_single = {
-									max_width = 140
+									max_width = 180
 									layoutpolicy_horizontal = expanding
 									text = "BOOKMARK_CHARACTER_CULTURE"
 									autoresize = no
@@ -1480,7 +1506,7 @@ widget = {
 								}
 
 								text_single = {
-									max_width = 140
+									max_width = 180
 									layoutpolicy_horizontal = expanding
 									text = "BOOKMARK_CHARACTER_RELIGION"
 									autoresize = no
@@ -1497,7 +1523,7 @@ widget = {
 								spacing = 5
 
 								text_single = {
-									max_width = 140
+									max_width = 180
 									layoutpolicy_horizontal = expanding
 									text = "BOOKMARK_CHARACTER_GOVERNMENT"
 									autoresize = no
@@ -1505,7 +1531,7 @@ widget = {
 								}
 
 								text_single = {
-									max_width = 140
+									max_width = 180
 									layoutpolicy_horizontal = expanding
 									text = "BOOKMARK_CHARACTER_REALM"
 									autoresize = no
@@ -1582,13 +1608,25 @@ widget = {
 						margin_bottom = 12
 					}
 
-					text_multi = {
-						name = "character_text"
-						text = "[BookmarkCharacter.GetDescription]"
-						size = { 330 250 }
-						margin_bottom = 16
-						align = left|top
-						autoresize = no
+					# LR: long descriptions scroll instead of being cut off
+					scrollbox = {
+						name = "character_text_scroll"
+						size = { 420 250 }
+
+						blockoverride "scrollbox_background" {}
+						blockoverride "scrollbox_background_fade" {}
+
+						blockoverride "scrollbox_content" {
+							text_multi = {
+								name = "character_text"
+								text = "[BookmarkCharacter.GetDescription]"
+								max_width = 395
+								min_width = 395
+								autoresize = yes
+								align = left|top
+								margin_bottom = 16 # LR: spacing below the last line (scrollarea has no margin_bottom)
+							}
+						}
 					}
 
 					expand = {}
@@ -1658,7 +1696,7 @@ widget = {
 			position = { -20 10 }
 			spriteType = Corneredtiled
 			spriteborder = { 100 0 }
-			size = { 440 20 }
+			size = { 520 20 } # LR: was 440, panel widened
 			texture_density = 2
 		}
 	}
