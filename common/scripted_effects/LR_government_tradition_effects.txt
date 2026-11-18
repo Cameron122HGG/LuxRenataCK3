@@ -311,9 +311,41 @@ LR_drop_other_government_traditions_effect = {
 	}
 }
 
-# Culture scope, scope:tradition = flag of the government tradition just added: drop the culture's other one.
+# Culture scope, scope:tradition = the government tradition just added (a culture_tradition, not a flag):
+# drop the culture's other one. The keep variable holds a flag, so translate the tradition first.
 LR_replace_government_tradition_effect = {
-	set_variable = { name = LR_gov_tradition_keep value = scope:tradition }
+	if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_classical }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_classical }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_western }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_western }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_despotic }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_despotic }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_indic }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_indic }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_islamic }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_islamic }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_sinic }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sinic }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_japanese }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_japanese }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_barbarian }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_barbarian }
+	}
 	LR_drop_other_government_traditions_effect = yes
 	remove_variable = LR_gov_tradition_keep
 }

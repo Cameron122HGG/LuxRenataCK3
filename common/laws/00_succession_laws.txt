@@ -3169,3 +3169,195 @@ same_faith_succession_law = {
 	}
 }
 
+# LR sacral (Gaul) succession laws, restored 2026-11-18 (dropped in the 1.21 merge)
+sacral_regency_succession_law = {
+	law_group_type = succession_order_laws
+	index = 42  # LR: was 28; 1.21 vanilla took 28-31
+
+	can_keep = {
+		LR_tgp_can_have_sacral_regency_succession_law_trigger = yes
+	}
+	can_pass = {
+		LR_tgp_can_have_sacral_regency_succession_law_trigger = yes
+	}
+	can_have = {
+		LR_tgp_can_have_sacral_regency_succession_law_trigger = yes
+	}
+	can_title_have = {
+		exists = var:administrative_ui_special_title
+	}
+	should_show_for_title = { # Never show this in the UI, just apply it through script
+		always = no
+	}
+	can_remove_from_title = {
+		always = no
+	}
+	should_start_with = {
+		always = no
+	}
+	succession = {
+		order_of_succession = appointment
+		appointment_type = sacral_majordomo
+	}
+	flag = advanced_succession_law
+	flag = can_designate_heirs
+	flag = appointment_type_succession
+	pass_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+	ai_will_do = {
+		if = {
+			limit = { has_realm_law = confederate_partition_succession_law }
+			value = 1
+		}
+	}
+	potential = {
+		government_has_flag = government_is_sacral_administrative
+	}
+}
+
+sacral_appointment_succession_law = {
+	law_group_type = succession_order_laws
+	index = 43  # LR: was 29; 1.21 vanilla took 28-31
+
+	can_keep = {
+		can_keep_sacral_appointment_succession_law_trigger = yes
+		custom_tooltip = {
+			text = celestial_military_appointment_allowed_desc
+			NOT = { vassal_contract_has_flag = sacral_administrative_military_appointment }
+		}
+	}
+	can_pass = {
+		can_change_sacral_appointment_succession_law_trigger = yes
+		custom_tooltip = {
+			text = celestial_military_appointment_allowed_desc
+			NOT = { vassal_contract_has_flag = sacral_administrative_military_appointment }
+		}
+	}
+	can_have = {
+		can_have_sacral_appointment_succession_law_trigger = yes
+		custom_tooltip = {
+			text = celestial_military_appointment_allowed_desc
+			NOT = { vassal_contract_has_flag = sacral_administrative_military_appointment }
+		}
+	}
+	should_start_with = {
+		government_has_flag = government_is_sacral_administrative
+		is_independent_ruler = no
+		NOT = { has_title = title:k_chrysanthemum_throne }
+		NOT = { vassal_contract_has_flag = sacral_administrative_military_appointment }
+	}
+	succession = {
+		order_of_succession = appointment
+		appointment_type = sacral_governor
+	}
+	flag = advanced_succession_law
+	flag = appointment_type_succession
+	modifier = {
+		glory_hound_opinion = -10
+		parochial_opinion = -5
+		player_heir_opinion = 20
+		eligible_child_except_player_heir_opinion = -5
+	}
+	pass_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+	revoke_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+
+	ai_will_do = {
+		if = {
+			limit = {
+				OR = {
+					has_realm_law = confederate_partition_succession_law
+					has_realm_law = partition_succession_law
+					has_realm_law = high_partition_succession_law
+				}
+			}
+			value = 3
+		}
+	}
+
+	potential = {
+		government_has_flag = government_is_sacral_administrative
+		is_independent_ruler = no
+	}
+}
+
+sacral_military_appointment_succession_law = {
+	law_group_type = succession_order_laws
+	index = 44  # LR: was 30; 1.21 vanilla took 28-31
+
+	can_keep = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+		custom_tooltip = {
+			text = celestial_military_appointment_allowed_desc
+			vassal_contract_has_flag = sacral_administrative_military_appointment
+		}
+		# Vassal Contract allows it
+		custom_description = {
+			text = succession_laws_must_not_be_forced_partition
+			NAND = {
+				is_independent_ruler = no
+				vassal_contract_has_flag = locked_to_partition
+			}
+		}
+	}
+	can_have = {
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+		vassal_contract_has_flag = sacral_administrative_military_appointment
+	}
+	can_pass = {
+		can_change_succession_law_trigger = yes
+		government_has_mechanic = administrative
+		is_independent_ruler = no
+		vassal_contract_has_flag = sacral_administrative_military_appointment
+	}
+	should_start_with = {
+		government_has_flag = government_is_sacral_administrative
+		is_independent_ruler = no
+		custom_tooltip = {
+			text = celestial_military_appointment_allowed_desc
+			vassal_contract_has_flag = sacral_administrative_military_appointment
+		}
+	}
+	succession = {
+		order_of_succession = appointment
+		appointment_type = sacral_military_governor
+	}
+	flag = advanced_succession_law
+	flag = appointment_type_succession
+	modifier = {
+		glory_hound_opinion = 5
+		courtly_opinion = -10
+		player_heir_opinion = 20
+		eligible_child_except_player_heir_opinion = -5
+	}
+	pass_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+	revoke_cost = {
+		prestige = change_succession_law_prestige_cost
+	}
+
+	ai_will_do = {
+		if = {
+			limit = {
+				OR = {
+					has_realm_law = confederate_partition_succession_law
+					has_realm_law = partition_succession_law
+					has_realm_law = high_partition_succession_law
+				}
+			}
+			value = 3
+		}
+	}
+
+	potential = {
+		government_has_flag = government_is_sacral_administrative
+		is_independent_ruler = no
+	}
+}
