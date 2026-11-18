@@ -2177,7 +2177,8 @@ types Lists
 		}
 
 		widget = {
-			visible = "[And( SubjectContractGroup.IsType('admin_vassal'), Character.IsPlayerInteractionValid('admin_liege_modify_vassal_contract_interaction') ) ]"
+			# LR: also every LR admin contract group (modify_contract_layout = admin), not only admin_vassal
+			visible = "[And( Or( SubjectContractGroup.IsType('admin_vassal'), SubjectContract.HasModifyContractLayout( 'admin' ) ), Character.IsPlayerInteractionValid('admin_liege_modify_vassal_contract_interaction') ) ]"
 			size = { 40 40 }
 
 			button_round = {
@@ -2283,7 +2284,8 @@ types Lists
 		}
 
 		button_round = {
-			visible = "[Or( Or( SubjectContractGroup.IsType('celestial_vassal'), SubjectContractGroup.IsType('meritocratic_vassal') ), SubjectContractGroup.IsType('japan_administrative_vassal') )]"
+			# LR: also every LR eastern-style admin contract group (modify_contract_layout = eastern_admin)
+			visible = "[Or( Or( Or( SubjectContractGroup.IsType('celestial_vassal'), SubjectContractGroup.IsType('meritocratic_vassal') ), SubjectContractGroup.IsType('japan_administrative_vassal') ), SubjectContract.HasModifyContractLayout( 'eastern_admin' ) )]"
 			enabled = "[Character.IsPlayerInteractionValid('admin_liege_modify_vassal_contract_interaction')]"
 			onclick = "[Character.OpenPlayerInteraction('admin_liege_modify_vassal_contract_interaction')]"
 			tooltip = "[Character.GetPlayerInteractionTooltip('admin_liege_modify_vassal_contract_interaction')]"
