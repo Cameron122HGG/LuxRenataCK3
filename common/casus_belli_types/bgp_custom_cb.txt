@@ -614,8 +614,15 @@
 				change_title_holder = { holder = scope:claimant change = scope:title_change }
 				resolve_title_and_vassal_change = scope:title_change
 			}
-			scope:rebel_leader = {
-				set_employer = scope:claimant
+			# LR: the rebel leader is the attacker (Georgi Voiteh, slavic_unrest); scope:rebel_leader was never set
+			scope:attacker = {
+				if = {
+					limit = {
+						this != scope:claimant
+						is_landed = no
+					}
+					set_employer = scope:claimant
+				}
 			}
 			title:e_byzantium.holder = {
 				trigger_event = {
