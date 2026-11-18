@@ -49965,7 +49965,11 @@ japanese_minamoto_uda_13 = {
 	}
 	6053.1.1 = {
 		effect = {
-			create_betrothal = character:japanese_fujiwara_457 # Michiko
+			# History effects are replayed after every death has been applied, so from 6055 on this would betroth him to a corpse
+			if = { # LR 11-18: guard from vanilla 1.21
+				limit = { character:japanese_fujiwara_457 = { is_alive = yes } }
+				create_betrothal = character:japanese_fujiwara_457 # Michiko
+			}
 		}
 	}
 	6071.7.5 = {

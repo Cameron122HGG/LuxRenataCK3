@@ -1,0 +1,15 @@
+﻿# Lux Renata (11-18): Western Roman heritage portraits.
+# The western_roman culture and its Latin-heritage descendants (Italians, Gallo-Romans, Vlachs...) shave more
+# often than the bearded Greek East. Used by has_no_beard in gfx/portraits/portrait_modifiers/01_beards_base.txt.
+# scope:culture is the portrait's culture (also set when no character exists, e.g. culture previews).
+portrait_western_roman_heritage_trigger = {
+	scope:culture ?= {
+		OR = {
+			this = culture:western_roman
+			AND = {
+				any_parent_culture_or_above = { this = culture:western_roman }
+				has_cultural_pillar = heritage_latin
+			}
+		}
+	}
+}
