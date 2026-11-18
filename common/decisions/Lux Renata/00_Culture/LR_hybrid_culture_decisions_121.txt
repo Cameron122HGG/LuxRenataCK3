@@ -1,0 +1,561 @@
+﻿# New 1.21 hybrid-culture decisions, ported 2026-11-17 from vanilla 1.21.0:
+#   establish_italo_norman_culture_decision (80_major_decisions_middle_europe.txt)
+#   establish_norse_gael_culture_decision (80_major_decisions_british_isles.txt) -> LR's own culture:norsegael
+#   establish_novgorodian_culture_decision (00_major_decisions_east_europe.txt)
+# LR empties those vanilla files (its versions live under Lux Renata/), so these were lost in the 1.21 merge.
+# Keys are unchanged so vanilla's localization applies. Untested in game.
+
+establish_italo_norman_culture_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	sort_order = 100
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	desc = establish_italo_norman_culture_decision_desc
+	selection_tooltip = establish_italo_norman_culture_decision_tooltip
+
+	is_shown = {
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_italo_norman_decision
+			}
+		}
+		any_sub_realm_county = {
+			OR = {
+				target_is_de_jure_liege_or_above = title:d_sicily
+				target_is_de_jure_liege_or_above = title:d_apulia
+			}
+			culture ?= culture:sicilian
+		}
+		culture ?= culture:norman
+	}
+
+	is_valid = {
+		culture = culture:norman
+		completely_controls = title:d_sicily
+		completely_controls = title:d_apulia
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	effect = {
+		hidden_effect = {
+			title:d_sicily = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = italo_norman_counties
+				}
+			}
+			title:d_apulia = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = italo_norman_counties
+				}
+			}
+			every_sub_realm_title = {
+				limit = {
+					tier = tier_county
+				}
+				if = {
+					limit = {
+						title_province = { geographical_region = custom_sicily }
+						OR = {
+							culture = culture:norman
+							culture = culture:sicilian
+						}
+					}
+					add_to_list = italo_norman_counties
+				}
+			}
+
+			every_in_list = {
+				list = italo_norman_counties
+				merge_cultures_in_region_effect = {
+					OLD_CULTURE_1 = culture:norman
+					OLD_CULTURE_2 = culture:sicilian
+					NEW_CULTURE = culture:italo_norman
+					REGION = custom_sicily
+				}
+			}
+
+			# Notify players the same way a dynamic hybrid culture does (see on_culture_created)
+			save_scope_as = founder
+			culture:norman = { save_scope_as = old_culture_1 save_scope_as = parent_1 }
+			culture:sicilian = { save_scope_as = old_culture_2 save_scope_as = parent_2 }
+			culture:italo_norman = {
+				reset_culture_creation_date = yes
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+				save_scope_as = new_culture
+			}
+			every_player = {
+				if = {
+					limit = {
+						OR = {
+							culture = scope:new_culture
+							culture = scope:parent_1
+							culture = scope:parent_2
+						}
+					}
+					trigger_event = {
+						id = culture_notification.1011
+						days = 0
+					}
+				}
+				else_if = {
+					limit = {
+						in_diplomatic_range = scope:founder
+					}
+					trigger_event = {
+						id = culture_notification.1001
+						days = 0
+					}
+				}
+			}
+		}
+
+		# Player changes culture
+		set_culture = culture:italo_norman
+		add_character_flag = converted_culture_this_lifetime
+		hidden_effect = {
+			every_in_list = {
+				list = italo_norman_counties
+				limit = {
+					holder.capital_county = { is_in_list = italo_norman_counties }
+				}
+				holder = {
+					add_to_list = mass_melting_pot_list
+					every_courtier = { add_to_list = mass_melting_pot_list }
+					every_courtier_away = { add_to_list = mass_melting_pot_list }
+				}
+				every_in_list = {
+					list = mass_melting_pot_list
+					limit = {
+						OR = {
+							culture = culture:norman
+							culture = culture:sicilian
+						}
+					}
+					set_culture = culture:italo_norman
+				}
+			}
+		}
+
+		show_as_tooltip = {
+			custom_tooltip = establish_italo_norman_culture_decision_effect.tt
+			culture:italo_norman = {
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+			}
+		}
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:flag_formed_italo_norman_decision
+		}
+	}
+
+	cost = {
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 0
+
+		modifier = {
+			add = 100
+			any_sub_realm_county = {
+				percent >= 0.5
+				culture = culture:sicilian
+			}
+		}
+	}
+}
+
+establish_norse_gael_culture_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	sort_order = 100
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	desc = establish_norse_gael_culture_decision_desc
+	selection_tooltip = establish_norse_gael_culture_decision_tooltip
+
+	is_shown = {
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_norse_gael_decision
+			}
+		}
+		any_sub_realm_county = {
+			OR = {
+				target_is_de_jure_liege_or_above = title:d_the_isles
+				target_is_de_jure_liege_or_above = title:d_western_isles
+			}
+			culture ?= culture:gaelic
+		}
+		culture ?= culture:norse
+	}
+
+	is_valid = {
+		culture = culture:norse
+		completely_controls = title:d_the_isles
+		completely_controls = title:d_western_isles
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	effect = {
+		hidden_effect = {
+			title:d_the_isles = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = norse_gael_counties
+				}
+			}
+			title:d_western_isles = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = norse_gael_counties
+				}
+			}
+			every_sub_realm_title = {
+				limit = {
+					tier = tier_county
+				}
+				if = {
+					limit = {
+						title_province = { geographical_region = custom_the_isles_and_adjacent }
+						OR = {
+							culture = culture:norse
+							culture = culture:gaelic
+						}
+					}
+					add_to_list = norse_gael_counties
+				}
+			}
+
+			every_in_list = {
+				list = norse_gael_counties
+				merge_cultures_in_region_effect = {
+					OLD_CULTURE_1 = culture:norse
+					OLD_CULTURE_2 = culture:gaelic
+					NEW_CULTURE = culture:norsegael
+					REGION = custom_the_isles_and_adjacent
+				}
+			}
+
+			# Notify players the same way a dynamic hybrid culture does (see on_culture_created)
+			save_scope_as = founder
+			culture:norse = { save_scope_as = old_culture_1 save_scope_as = parent_1 }
+			culture:gaelic = { save_scope_as = old_culture_2 save_scope_as = parent_2 }
+			culture:norsegael = {
+				reset_culture_creation_date = yes
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+				save_scope_as = new_culture
+			}
+			every_player = {
+				if = {
+					limit = {
+						OR = {
+							culture = scope:new_culture
+							culture = scope:parent_1
+							culture = scope:parent_2
+						}
+					}
+					trigger_event = {
+						id = culture_notification.1011
+						days = 0
+					}
+				}
+				else_if = {
+					limit = {
+						in_diplomatic_range = scope:founder
+					}
+					trigger_event = {
+						id = culture_notification.1001
+						days = 0
+					}
+				}
+			}
+		}
+
+		set_culture = culture:norsegael
+		add_character_flag = converted_culture_this_lifetime
+		hidden_effect = {
+			every_in_list = {
+				list = norse_gael_counties
+				limit = {
+					holder.capital_county = { is_in_list = norse_gael_counties }
+				}
+				holder = {
+					add_to_list = mass_melting_pot_list
+					every_courtier = { add_to_list = mass_melting_pot_list }
+					every_courtier_away = { add_to_list = mass_melting_pot_list }
+				}
+				every_in_list = {
+					list = mass_melting_pot_list
+					limit = {
+						OR = {
+							culture = culture:norse
+							culture = culture:gaelic
+						}
+					}
+					set_culture = culture:norsegael
+				}
+			}
+		}
+
+		show_as_tooltip = {
+			custom_tooltip = establish_norse_gael_culture_decision_effect.tt
+			culture:norsegael = {
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+			}
+		}
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:flag_formed_norse_gael_decision
+		}
+	}
+
+	cost = {
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 0
+
+		modifier = {
+			add = 100
+			any_sub_realm_county = {
+				percent >= 0.5
+				culture = culture:gaelic
+			}
+		}
+	}
+}
+
+establish_novgorodian_culture_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	sort_order = 100
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	desc = establish_novgorodian_culture_decision_desc
+	selection_tooltip = establish_novgorodian_culture_decision_tooltip
+
+	is_shown = {
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_novgorodian_decision
+			}
+		}
+		OR = {
+			AND = {
+				culture ?= culture:ilmenian
+				any_sub_realm_county = {
+					target_is_de_jure_liege_or_above = title:k_novgorod
+					culture ?= culture:russian
+				}
+			}
+			AND = {
+				culture ?= culture:russian
+				any_sub_realm_county = {
+					target_is_de_jure_liege_or_above = title:k_novgorod
+					culture ?= culture:ilmenian
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {
+			culture = culture:ilmenian
+			culture = culture:russian
+		}
+		completely_controls = title:d_novgorod
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	effect = {
+		hidden_effect = {
+			title:d_novgorod = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = novgorodian_counties
+				}
+			}
+			every_sub_realm_title = {
+				limit = {
+					tier = tier_county
+				}
+				if = {
+					limit = {
+						title_province = { geographical_region = custom_novgorod_and_adjacent }
+						OR = {
+							culture = culture:ilmenian
+							culture = culture:russian
+						}
+					}
+					add_to_list = novgorodian_counties
+				}
+			}
+
+			every_in_list = {
+				list = novgorodian_counties
+				merge_cultures_in_region_effect = {
+					OLD_CULTURE_1 = culture:ilmenian
+					OLD_CULTURE_2 = culture:russian
+					NEW_CULTURE = culture:novgorodian
+					REGION = custom_novgorod_and_adjacent
+				}
+			}
+			save_scope_as = founder
+			culture:ilmenian = { save_scope_as = old_culture_1 save_scope_as = parent_1 }
+			culture:russian = { save_scope_as = old_culture_2 save_scope_as = parent_2 }
+			culture:novgorodian = {
+				reset_culture_creation_date = yes
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+				save_scope_as = new_culture
+			}
+			every_player = {
+				if = {
+					limit = {
+						OR = {
+							culture = scope:new_culture
+							culture = scope:parent_1
+							culture = scope:parent_2
+						}
+					}
+					trigger_event = {
+						id = culture_notification.1011
+						days = 0
+					}
+				}
+				else_if = {
+					limit = {
+						in_diplomatic_range = scope:founder
+					}
+					trigger_event = {
+						id = culture_notification.1001
+						days = 0
+					}
+				}
+			}
+		}
+
+		set_culture = culture:novgorodian
+		add_character_flag = converted_culture_this_lifetime
+		hidden_effect = {
+			every_in_list = {
+				list = novgorodian_counties
+				limit = {
+					holder.capital_county = { is_in_list = novgorodian_counties }
+				}
+				holder = {
+					add_to_list = mass_melting_pot_list
+					every_courtier = { add_to_list = mass_melting_pot_list }
+					every_courtier_away = { add_to_list = mass_melting_pot_list }
+				}
+				every_in_list = {
+					list = mass_melting_pot_list
+					limit = {
+						OR = {
+							culture = culture:ilmenian
+							culture = culture:russian
+						}
+					}
+					set_culture = culture:novgorodian
+				}
+			}
+		}
+
+		show_as_tooltip = {
+			custom_tooltip = establish_novgorodian_culture_decision_effect.tt
+			culture:novgorodian = {
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+			}
+		}
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:flag_formed_novgorodian_decision
+		}
+	}
+
+	cost = {
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 0
+
+		modifier = {
+			add = 100
+			any_sub_realm_county = {
+				percent >= 0.5
+				OR = {
+					culture = culture:ilmenian
+					culture = culture:russian
+				}
+			}
+		}
+	}
+}

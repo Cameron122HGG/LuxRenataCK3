@@ -1,12 +1,128 @@
-﻿# LR Roman Republic effects (Silk & Silver / 1.21). SKELETON, comments only (2026-11-16).
-#
-# LR_restore_western_roman_republic_effect / LR_restore_eastern_roman_republic_effect (or one effect with a $HALF$ parameter):
-#   - create_title / get the title (check: 1.21 create_dynamic_title "type", or a static title made by decision)
-#   - set it as primary title, capital Rome / Constantinople
-#   - Republic Tier Law to Empire (check the law key and how it reacts to holding an empire title)
-#   - Republic Administration law: the Roman one (vanilla key from 1.21)
-#   - Assembly Structure: Roman Senate, and Senate size from the assembly members (copy vanilla's effect)
-#   - Roman Censor court position: unlocked by the vanilla flag/variable?
-#   - sort the restored prefectures/dioceses under it, as LR_sort_existing_western/eastern_dioceses_effect do for the hegemonies
-#     (LR_roman_restoration_effects.txt)
-#   - global variable flag_restored_western/eastern_roman_republic = root
+﻿# LR Roman Republic effects (Silk & Silver / 1.21), written 2026-11-17.
+# Adapted from vanilla gdp_restore_the_roman_republic_effect (common/scripted_effects/gdp_republic_effects.txt).
+# Differences from vanilla:
+#   - The title is LR's e_western_roman_republic / e_eastern_roman_republic (empire tier), not h_roman_republic.
+#   - The old primary title is only destroyed when it is a titular empire (the dynamic title from ranking up to the
+#     Empire tier law; 1.21 has no is_dynamic trigger). A kingdom such as k_pisa, or a de jure empire, is kept.
+#   - The Republic Tier Law is set to Empire, so the tier law's can_keep accepts the new title.
+#   - The restored prefectures/dioceses are not re-sorted under the title yet (see LR_sort_existing_*_dioceses_effect).
+
+# Character scope (the restorer). HALF = western / eastern (title e_<HALF>_roman_republic)
+LR_restore_roman_republic_effect = {
+	save_scope_as = roman_republic_ruler
+	primary_title = { save_scope_as = old_primary_title }
+
+	# Appoint current assembly members as senators so the senate is not empty
+	hidden_effect = {
+		scope:old_primary_title = {
+			every_full_assembly_member = {
+				limit = {
+					this != scope:roman_republic_ruler
+					government_has_flag = government_is_republic
+				}
+				add_to_list = assembly_member_list
+				add_character_flag = republic_appointed_senator
+			}
+		}
+	}
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_$HALF$_roman_republic = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	# Laws: Roman administration and senate (vanilla), plus the Empire tier
+	if = {
+		limit = { NOT = { has_realm_law = republic_tier_empire } }
+		add_realm_law_skip_effects = republic_tier_empire
+	}
+	add_realm_law_skip_effects = republic_type_roman
+	add_realm_law_skip_effects = republic_assembly_composition_roman_senate
+	custom_tooltip = assembly_members_appointed_as_senators_desc
+
+	hidden_effect = {
+		if = {
+			limit = {
+				any_in_list = {
+					list = assembly_member_list
+					count > { value = republic_senate_size_2_value multiply = 1.5 }
+				}
+			}
+			add_realm_law_skip_effects = republic_senate_size_3
+		}
+		else_if = {
+			limit = {
+				any_in_list = {
+					list = assembly_member_list
+					count > { value = republic_senate_size_1_value multiply = 1.5 }
+				}
+			}
+			add_realm_law_skip_effects = republic_senate_size_2
+		}
+
+		if = {
+			limit = {
+				scope:old_primary_title = {
+					tier = tier_empire
+					is_titular = yes
+					NOT = { LR_is_roman_republic_title_trigger = yes }
+				}
+			}
+			if = {
+				limit = {
+					scope:old_primary_title = { any_title_maa_regiment = { } }
+				}
+				scope:old_primary_title = { transfer_title_maa_ownership = title:e_$HALF$_roman_republic }
+			}
+			destroy_title = scope:old_primary_title
+		}
+
+		update_assembly = yes
+
+		set_global_variable = {
+			name = flag_restored_$HALF$_roman_republic
+			value = root
+		}
+	}
+}
+
+# Character scope. COUNTY = the half's capital county (c_roma / c_byzantion)
+# Vanilla's event option: take the county if it is in the realm but not ours, move the capital, add a Great Plaza.
+LR_roman_republic_take_capital_effect = {
+	if = {
+		limit = {
+			exists = title:$COUNTY$.holder
+			title:$COUNTY$.holder != root
+		}
+		create_title_and_vassal_change = {
+			type = revoked
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:$COUNTY$ = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+	if = {
+		limit = { capital_county != title:$COUNTY$ }
+		set_realm_capital = title:$COUNTY$
+	}
+	title:$COUNTY$.title_province = {
+		if = {
+			limit = { has_great_district = no }
+			add_great_district = republic_great_plaza_district
+		}
+	}
+}

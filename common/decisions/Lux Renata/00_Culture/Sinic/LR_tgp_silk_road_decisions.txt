@@ -21,9 +21,15 @@ visit_silk_road_market_decision = {
 	is_shown = {
 		exists = situation:silk_road_situation
 		OR = {
-			any_character_situation = { situation_type = silk_road_situation }
 			is_ai = no
+			any_character_situation = { situation_type = silk_road_situation }
 		}
+		OR = {
+			has_tgp_dlc_trigger = yes # All Under Heaven
+			has_gdp_dlc_trigger = yes # Silk & Silver
+		}
+		is_playable_character = yes
+
 		#There is no point in showing this decision if you cannot benefit from going at all:
 		OR = {
 			silk_road_valid_market_to_visit_trigger = { SUB_REGION = china }
@@ -33,20 +39,20 @@ visit_silk_road_market_decision = {
 			silk_road_valid_market_to_visit_trigger = { SUB_REGION = transcaspia }
 			silk_road_valid_market_to_visit_trigger = { SUB_REGION = occident }
 		}
-		is_playable_character = yes
-
-		has_tgp_dlc_trigger = yes
 	}
 
 	is_valid = {
 		is_adult = yes
-		gold >= major_gold_value
 	}	
 
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
 		is_playable_character = yes
 		is_incapable = no
+	}
+
+	cost = {
+		gold = major_gold_value
 	}
 
 	widget = {
@@ -62,8 +68,8 @@ visit_silk_road_market_decision = {
 			is_valid = {
 				custom_tooltip = {
 					text = no_building_at_silk_road_market_desc
-					title:c_jingzhao = { # Chang'an
-						any_county_province = { has_building_with_flag = silk_road_node }
+					title:b_zhouzhi.title_province = { # Chang'an
+						has_building_with_flag = silk_road_node
 					}
 				}
 				custom_tooltip = {
@@ -116,8 +122,8 @@ visit_silk_road_market_decision = {
 			is_valid = {
 				custom_tooltip = {
 					text = no_building_at_silk_road_market_desc
-					title:c_lhasa = {
-						any_county_province = { has_building_with_flag = silk_road_node }
+					title:b_potala.title_province = { # Lhasa
+						has_building_with_flag = silk_road_node
 					}
 	            }
 				custom_tooltip = {
@@ -170,8 +176,8 @@ visit_silk_road_market_decision = {
 			is_valid = {
 				custom_tooltip = {
 					text = no_building_at_silk_road_market_desc
-					title:c_lahur = {
-						any_county_province = { has_building_with_flag = silk_road_node }
+					title:b_lahur.title_province = { # Lahur
+						has_building_with_flag = silk_road_node
 					}
 	            }
 				custom_tooltip = {
@@ -224,8 +230,8 @@ visit_silk_road_market_decision = {
 			is_valid = {
 				custom_tooltip = {
 					text = no_building_at_silk_road_market_desc
-					title:c_shazhou = { # Dunhuang
-						any_county_province = { has_building_with_flag = silk_road_node }
+					title:b_dunhuang_2.title_province = { # Dunhuang
+						has_building_with_flag = silk_road_node
 					}
 	            }
 				custom_tooltip = {
@@ -272,14 +278,14 @@ visit_silk_road_market_decision = {
 				}
 			}
 		}
-		item = { # Khiva
-			value = c_khiva
+		item = { # Gurganj
+			value = c_gurganj
 			is_shown = { always = yes }
 			is_valid = {
 				custom_tooltip = {
 					text = no_building_at_silk_road_market_desc
-					title:c_khiva = {
-						any_county_province = { has_building_with_flag = silk_road_node }
+					title:b_gurganj.title_province = { # Gurganj
+						has_building_with_flag = silk_road_node
 					}
 	            }
 				custom_tooltip = {
@@ -287,7 +293,7 @@ visit_silk_road_market_decision = {
 					silk_road_valid_market_to_visit_trigger = { SUB_REGION = transcaspia }
 	            }
 			}
-			localization = visit_silk_road_market_decision_khiva
+			localization = visit_silk_road_market_decision_gurganj
 			icon = "gfx/interface/icons/travel/icon_travel_silk_road_marketplace.dds"
 			ai_chance = {
 				value = 1
@@ -295,7 +301,7 @@ visit_silk_road_market_decision = {
 					limit = {
 						root.location = {
 							squared_distance = {
-								target = title:c_khiva.title_province
+								target = title:c_gurganj.title_province
 								value <= squared_distance_small
 							}
 						}
@@ -306,7 +312,7 @@ visit_silk_road_market_decision = {
 					limit = {
 						root.location = {
 							squared_distance = {
-								target = title:c_khiva.title_province
+								target = title:c_gurganj.title_province
 								value <= squared_distance_large
 							}
 						}
@@ -317,7 +323,7 @@ visit_silk_road_market_decision = {
 					limit = {
 						root.location = {
 							squared_distance = {
-								target = title:c_khiva.title_province
+								target = title:c_gurganj.title_province
 								value > squared_distance_huge
 							}
 						}
@@ -326,14 +332,14 @@ visit_silk_road_market_decision = {
 				}
 			}
 		}
-		item = { # Dvin
-			value = c_dvin
+		item = { # Tabriz
+			value = c_tabriz
 			is_shown = { always = yes }
 			is_valid = {
 				custom_tooltip = {
 					text = no_building_at_silk_road_market_desc
-					title:c_dvin = {
-						any_county_province = { has_building_with_flag = silk_road_node }
+					title:b_tabriz.title_province = { # Tabriz
+						has_building_with_flag = silk_road_node
 					}
 	            }
 				custom_tooltip = {
@@ -341,7 +347,7 @@ visit_silk_road_market_decision = {
 					silk_road_valid_market_to_visit_trigger = { SUB_REGION = occident }
 	            }
 			}
-			localization = visit_silk_road_market_decision_dvin
+			localization = visit_silk_road_market_decision_tabriz
 			icon = "gfx/interface/icons/travel/icon_travel_silk_road_marketplace.dds"
 			ai_chance = {
 				value = 1
@@ -349,7 +355,7 @@ visit_silk_road_market_decision = {
 					limit = {
 						root.location = {
 							squared_distance = {
-								target = title:c_dvin.title_province
+								target = title:c_tabriz.title_province
 								value <= squared_distance_small
 							}
 						}
@@ -360,7 +366,7 @@ visit_silk_road_market_decision = {
 					limit = {
 						root.location = {
 							squared_distance = {
-								target = title:c_dvin.title_province
+								target = title:c_tabriz.title_province
 								value <= squared_distance_large
 							}
 						}
@@ -371,7 +377,7 @@ visit_silk_road_market_decision = {
 					limit = {
 						root.location = {
 							squared_distance = {
-								target = title:c_dvin.title_province
+								target = title:c_tabriz.title_province
 								value > squared_distance_huge
 							}
 						}
@@ -383,11 +389,10 @@ visit_silk_road_market_decision = {
 	}
 
 	effect = {
-		remove_short_term_gold = major_gold_value
 		switch = {
 			trigger = yes
-			scope:c_dvin = { # Dvin
-				title:c_dvin = { tgp_silk_road_decision_scope_effect = yes }
+			scope:c_tabriz = { # Tabriz
+				title:c_tabriz = { tgp_silk_road_decision_scope_effect = yes }
 			}
 			scope:c_jingzhao = { # Chang'an
 				title:c_jingzhao = { tgp_silk_road_decision_scope_effect = yes }
@@ -401,8 +406,8 @@ visit_silk_road_market_decision = {
 			scope:c_lhasa = { # Lhasa
 				title:c_lhasa = { tgp_silk_road_decision_scope_effect = yes }
 			}
-			scope:c_khiva = { # Khiva
-				title:c_khiva = { tgp_silk_road_decision_scope_effect = yes }
+			scope:c_gurganj = { # Gurganj
+				title:c_gurganj = { tgp_silk_road_decision_scope_effect = yes }
 			}
 		}
 		if = {
@@ -419,16 +424,22 @@ visit_silk_road_market_decision = {
 					on_arrival_event = tgp_silk_road_events.0010
 					travel_with_domicile = no
 					return_trip = yes
-					on_travel_planner_cancel_on_action = silk_road_market_visit_travel_planner_cancel_on_action # here comes the refund!
+					on_travel_planner_cancel_event = tgp_silk_road_events.0011
 					players_use_planner = yes
 					#on_arrival_destinations = last
 				}
 			}
 			if = {
-				limit = { exists = scope:innovation_temp }
-				custom_tooltip = potential_innovation_at_silk_road_market_desc
+				limit = { government_has_flag = government_is_merchant }
+				custom_tooltip = visit_silk_road_market_merchant_rewards_tt
 			}
-			custom_tooltip = travel_silk_road_market_innovation_warning_tt
+			else = {
+				if = {
+					limit = { exists = scope:innovation_temp }
+					custom_tooltip = potential_innovation_at_silk_road_market_desc
+				}
+				custom_tooltip = travel_silk_road_market_innovation_warning_tt
+			}
 			if = {
 				limit = {
 					root.location = {

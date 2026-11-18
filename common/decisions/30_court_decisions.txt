@@ -33,6 +33,7 @@ pay_homage_decision = {
 		reference = "gfx/interface/illustrations/decisions/decision_knight_kneeling.dds"
 	}
 	decision_group_type = major
+	sort_order = 20
 
 	cost = {
 		prestige = standard_activity_base_cost
@@ -349,7 +350,23 @@ pay_homage_decision = {
 	}
 	
 	ai_potential = {
+		liege ?= { has_royal_court = yes }
+		top_liege != this
+		OR = {
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_clan
+		}
 		is_at_war = no
+		NOT = {
+			liege = { has_variable = pay_homage_cooldown }
+		}
+		trigger_if = {
+			limit = {
+				has_variable = pay_homage_grace
+				exists = liege
+			}
+			NOT = { var:pay_homage_grace = liege }
+		}
 	}
 
 	ai_will_do = {

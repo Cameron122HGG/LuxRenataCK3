@@ -4,7 +4,7 @@
 
 decision_solve_the_journals = {
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+		reference = "gfx/interface/illustrations/decisions/decision_erudition.dds"
 	}
 	decision_group_type = major
 	ai_check_interval_by_tier = {
@@ -221,7 +221,7 @@ deceitful_progress_hostile_schemes_decision = {
 
 #Diligent overwork
 ### Develop Capital ###
-diligent_development_focus_decision = {
+diligent_prosperity_focus_decision = {
 	ai_check_interval = 0
 
 	picture = {
@@ -245,20 +245,21 @@ diligent_development_focus_decision = {
 	}
 	sort_order = 60
 
-	desc = diligent_development_focus_decision_desc
+	desc = diligent_prosperity_focus_decision_desc
 
-	selection_tooltip = diligent_development_focus_decision_tooltip
+	selection_tooltip = diligent_prosperity_focus_decision_tooltip
 
 	cooldown = { days = @diligent_prosperity_focus_cooldown_time }
 
 	is_shown = {
+		is_landed = yes
 		OR = {
 			has_trait = diligent
+			has_personal_tenet_flag = tenet_ora_et_labora_diligent_work_decision
 			top_participant_group:dynastic_cycle ?= {
 				participant_group_type = advancement_movement
 			}
 		}
-		is_landed = yes
 		NOT = { government_has_flag = government_is_nomadic } # They use develop_fertility_decision
 	}
 
@@ -271,7 +272,7 @@ diligent_development_focus_decision = {
 
 		send_interface_toast = {
 			type = event_toast_effect_neutral
-			title = msg_diligent_development_focus
+			title = msg_diligent_prosperity_focus
 			left_icon = root
 			
 			if = {
@@ -291,19 +292,22 @@ diligent_development_focus_decision = {
 			limit = {
 				has_trait = diligent
 			}
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				diligent = medium_stress_impact_gain
 			}
 		}
 		else = {
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				base = medium_stress_impact_gain
 			}
 		}
 	}
 	
 	ai_potential = {
-		has_trait = diligent
+		OR = {
+			has_trait = diligent
+			has_personal_tenet_flag = tenet_ora_et_labora_diligent_work_decision
+		}
 		NOT = {
 			has_trait = temperate
 		}
@@ -345,6 +349,7 @@ impatient_rushing_all_schemes_decision = {
 
 	is_shown = {
 		has_trait = impatient
+		any_scheme = { count >= 1 }
 	}
 
 	is_valid_showing_failures_only = {
@@ -361,7 +366,7 @@ impatient_rushing_all_schemes_decision = {
 	effect = {
 		if = {
 			limit = {
-				any_scheme = { }
+				any_scheme = { count >= 1 }
 			}
 			send_interface_toast = {
 				type = event_toast_effect_neutral

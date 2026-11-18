@@ -1,0 +1,117 @@
+﻿# Found the Hellenic League (Silk & Silver / 1.21 trade league), written 2026-11-17.
+# Copy of vanilla found_the_hanseatic_league_decision (common/decisions/dlc_decisions/gdp/gdp_hanseatic_decisions.txt)
+# for an Aegean trade league. Vanilla's Baltic Hanse stays as it is.
+# The League also gets vanilla's is_hanseatic_league variable, because the league mechanics (kontors, the burgher CB,
+# member modifiers) are keyed on it; is_hellenic_league marks it as the Hellenic one.
+# Separate from form_hellenic_league_decision (00_LR_hellenic_league_decisions.txt), the Lux Invicta crown e_hellenic_league.
+# FUTURE: let the leader of this trade league centralise it into e_hellenic_league (the league-to-crown path).
+
+LR_found_hellenic_trade_league_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/gdp_republic_trade_ships.dds"
+	}
+	decision_group_type = major
+	sort_order = 100
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 120
+		duchy = 60
+		kingdom = 30
+		empire = 30
+		hegemony = 30
+	}
+
+	desc = LR_found_hellenic_trade_league_decision_desc
+	selection_tooltip = LR_found_hellenic_trade_league_decision_tooltip
+	confirm_text = LR_found_hellenic_trade_league_decision_confirm
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		confederation ?= {
+			confederation_type = confederation_type:trade_league
+			has_leading_title = yes
+			leading_title = root.primary_title
+			NOT = { has_variable = is_hanseatic_league }
+		}
+		capital_province ?= {
+			OR = {
+				geographical_region = aegean_coastal
+				geographical_region = ghw_region_greece
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_founded_hellenic_trade_league
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		custom_tooltip = {
+			text = found_the_hanseatic_league_cohesion_tt
+			confederation ?= {
+				cohesion >= 95
+			}
+		}
+		custom_tooltip = {
+			text = found_the_hanseatic_league_members_tt
+			confederation ?= {
+				any_confederation_member = { count >= 4 }
+			}
+		}
+	}
+
+	cost = {
+		gold = massive_gold_value
+		prestige = massive_prestige_value
+	}
+
+	effect = {
+		save_scope_as = hanse_founder
+		primary_title = { save_scope_as = hanse_lead_town }
+
+		confederation = {
+			set_variable = is_hanseatic_league
+			set_variable = is_hellenic_league
+			set_coa = e_hellenic_league
+			set_confederation_name = LR_HELLENIC_LEAGUE_NAME
+		}
+
+		hanseatic_elevate_all_members_effect = { LEAGUE = root.confederation }
+
+		add_prestige = major_prestige_gain
+
+		hanseatic_ask_personal_monopoly_holders_effect = { LEAGUE = root.confederation }
+
+		every_player = {
+			limit = {
+				is_member_of_confederation = root.confederation
+			}
+			send_interface_message = {
+				type = event_generic_good_text
+				title = LR_found_hellenic_trade_league_message_title
+				desc = LR_found_hellenic_trade_league_message_desc
+				left_icon = root
+			}
+		}
+
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_founded_hellenic_trade_league
+			}
+		}
+	}
+
+	ai_potential = {
+		is_ai = yes
+		is_ruler = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

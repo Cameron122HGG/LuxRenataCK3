@@ -31,6 +31,13 @@ e_my_empire = {
 # titles inside this database.
 k_my_title = {
 
+	### Brief: Explicit title type for this title ( title_type_key )
+	# Optional. Any properties defined after this 'type = bla' definition will override the title type's properties.
+	# Default: 'title_type_default_static'
+	# NOTE: the 'prefix' within a title key can also automatically assign a title type.
+	# (example: '_nf_' = title_type_noble_family) See the 'common/title_types' database.
+	type = title_type_key
+
 	### Brief: color ( jomini color )
 	# Map color of the title.
 	color = { 255 255 255 }
@@ -148,6 +155,21 @@ k_my_title = {
 	### Brief: capital ( string )
 	# Which county title contains the preferred capital province of this title.
 	capital = c_roma
+
+	### Brief: market_capital ( string )
+	# Duchies only. Changes which Barony is used as the Market Capital
+	# for the specified Duchy.
+	#
+	# Must be a Barony with a holding, in a County that is a de jure vassal of the Duchy
+	# once history has run. Applies to every bookmark. Markets are placed when a new game starts, so existing
+	# saves keep their markets as-is.
+	#
+	# Both end points of every road must be a market capital, so if you change market capitals,
+	# be sure to change the roads to match. Roads not ending at a market capital will
+	# error on startup.
+	#
+	# Default: the capital barony of the duchy's de jure capital county at game start
+	market_capital = b_roma
 
 	### Brief: de_jure_drift_disabled ( bool )
 	# Does this title cause other titles to drift into it?

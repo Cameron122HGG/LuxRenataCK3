@@ -1614,7 +1614,10 @@ reject_inheritance_decision = {
 					# They have children with you.
 					any_child = {
 						count >= 1
-						NOT = { has_trait = disinherited }
+						NOR = { 
+							has_trait = disinherited 
+							has_trait = adopted_no_inheritance
+						}
 						any_parent = { this = root }
 					}
 					# Or thought they might.
@@ -1969,6 +1972,12 @@ embrace_responsibilities_decision = {
 ### Change Election Candidacy Status ###
 change_election_candidacy_status_decision = {
 	# Everyone else's picture.
+	picture = {
+		trigger = {
+			government_has_flag = government_is_republic
+		}
+		reference = "gfx/interface/illustrations/decisions/fractious.dds"
+	}
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
 	desc = {
 		first_valid = {
@@ -2230,14 +2239,14 @@ seasoned_visitor_decision = {
 		custom_tooltip = {
 			text = seasoned_visitor_decision_not_enough_poi
 			has_variable = poi_visited
-			var:poi_visited >= 26 #1066 all poi in India. If you change the value here, please also change the value in loc string above
+			var:poi_visited >= 35
 		}
 		calc_true_if = {
 			amount >= 2
 			custom_tooltip = {
 				text = seasoned_visitor_decision_not_enough_poi_advanced
 				has_variable = poi_visited
-				var:poi_visited >= 42 #1066 all poi in two Indias. If you change the value here, please also change the value in loc string above
+				var:poi_visited >= 60
 			}
 			prestige_level >= 4
 			has_trait_xp = {
@@ -2255,8 +2264,8 @@ seasoned_visitor_decision = {
 	}
 
 	cost = {
-		prestige = 1500
-		gold = 500
+		prestige = 500
+		gold = 250
 	}
 
 	effect = {

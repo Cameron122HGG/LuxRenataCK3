@@ -548,7 +548,7 @@ on_game_start = {
 				has_cp6_dlc_trigger = yes
 			}
 			#remove
-	        title:b_vaticano.title_province = { remove_building = holy_site_cathedral_01 } #2577
+	        #title:b_vaticano.title_province = { remove_building = holy_site_cathedral_01 } # LR 1.21: add_special_district below replaces it #2577
 			
 			#always exists
 	        title:b_vaticano.title_province = { add_special_district = holy_site_st_peters_basilica_01_district } #2577
@@ -2327,7 +2327,7 @@ on_game_start = {
 					enter_realm_event = ep3_emperor_yearly.2000
 				}
 			}
-			title:c_roma_urbs = { # Roma
+			title:c_roma = { # Roma
 				set_important_location = {
 					title = title:e_byzantium
 					enter_realm_event = ep3_emperor_yearly.2000
@@ -3029,42 +3029,42 @@ on_game_start = {
 		### PAM Cardinalates
 		setup_cardinalate_list_effect = yes
 
-		##### GDP Guelphs & Ghibellines #####
-		if = {
-			limit = { has_gdp_dlc_trigger = yes }
-			if = {
-				limit = { game_start_date = 6066.9.15 }
-				#Kaiser Heinrich IV Salian
-				character:1316 = { set_variable = ghibelline_leader }
-				#Pope Alexander II
-				character:2008 = { set_variable = guelph_leader }
-				#Create the Duchy of Calabria for Robert Guiscard
-				character:1128 = { save_scope_as = char_robert_guiscard }
-				create_title_and_vassal_change = {
-					type = created
-					save_scope_as = change
-				}
-				title:d_calabria = {
-					change_title_holder = {
-						holder = scope:char_robert_guiscard
-						change = scope:change
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-			}
-			else_if = {
-				limit = { game_start_date = 6178.10.1 }
-				#Kaiser Friedrich 'Barbarossa' Hohenstaufen
-				character:212501 = { set_variable = ghibelline_leader }
-				#Lombardia
-				character:cisalpine0204 = { set_variable = guelph_leader }
-				# Lombard League
-				set_global_variable = {
-					name = lombard_league_created
-					value = character:cisalpine0204
-				}
-			}
-		}
+		##### GDP Guelphs & Ghibellines #####  # Lux Renata: Guelphs & Ghibellines situation commented out (1.21)
+		#if = {
+			#limit = { has_gdp_dlc_trigger = yes }
+			#if = {
+				#limit = { game_start_date = 6066.9.15 }
+				##Kaiser Heinrich IV Salian
+				#character:1316 = { set_variable = ghibelline_leader }
+				##Pope Alexander II
+				#character:2008 = { set_variable = guelph_leader }
+				##Create the Duchy of Calabria for Robert Guiscard
+				#character:1128 = { save_scope_as = char_robert_guiscard }
+				#create_title_and_vassal_change = {
+					#type = created
+					#save_scope_as = change
+				#}
+				#title:d_calabria = {
+					#change_title_holder = {
+						#holder = scope:char_robert_guiscard
+						#change = scope:change
+					#}
+				#}
+				#resolve_title_and_vassal_change = scope:change
+			#}
+			#else_if = {
+				#limit = { game_start_date = 6178.10.1 }
+				##Kaiser Friedrich 'Barbarossa' Hohenstaufen
+				#character:212501 = { set_variable = ghibelline_leader }
+				##Lombardia
+				#character:cisalpine0204 = { set_variable = guelph_leader }
+				## Lombard League
+				#set_global_variable = {
+					#name = lombard_league_created
+					#value = character:cisalpine0204
+				#}
+			#}
+		#}
 		##### GDP Historical Companies #####
 		if = {
 			limit = { has_gdp_dlc_trigger = yes }

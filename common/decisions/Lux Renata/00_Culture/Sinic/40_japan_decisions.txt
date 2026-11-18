@@ -366,7 +366,7 @@ petition_ceremonial_liege_decision = {
 	title = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { exists = top_liege.primary_title.var:administrative_ui_special_title.holder }
+				trigger = { exists = ceremonial_liege }
 				desc = petition_ceremonial_liege_decision_title
 			}
 			desc = petition_ceremonial_liege_decision
@@ -450,10 +450,10 @@ petition_ceremonial_liege_decision = {
 				government_has_mechanic = administrative
 				is_independent_ruler = no
 				trigger_if = {
-					limit = { exists = top_liege.primary_title.var:administrative_ui_special_title.holder }
+					limit = { exists = ceremonial_liege }
 					custom_tooltip = {
 						text = petition_ceremonial_liege_regent_already_given_tt
-						NOT = { var:petition_liege_regent_support ?= top_liege.primary_title.var:administrative_ui_special_title.holder }
+						NOT = { var:petition_liege_regent_support ?= ceremonial_liege }
 					}
 				}
 				trigger_else = { always = no }
@@ -494,7 +494,7 @@ petition_ceremonial_liege_decision = {
 	}
 
 	effect = {
-		top_liege.primary_title.var:administrative_ui_special_title.holder = { save_scope_as = ceremonial_liege }
+		ceremonial_liege = { save_scope_as = ceremonial_liege }
 		custom_tooltip = petition_ceremonial_liege_decision_effects
 		if = {
 			limit = {
