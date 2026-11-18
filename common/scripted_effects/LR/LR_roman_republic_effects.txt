@@ -5,7 +5,8 @@
 #   - The old primary title is only destroyed when it is a titular empire (the dynamic title from ranking up to the
 #     Empire tier law; 1.21 has no is_dynamic trigger). A kingdom such as k_pisa, or a de jure empire, is kept.
 #   - The Republic Tier Law is set to Empire, so the tier law's can_keep accepts the new title.
-#   - The restored prefectures/dioceses are not re-sorted under the title yet (see LR_sort_existing_*_dioceses_effect).
+#   - The half's dioceses are granted to the restorer (republics cannot create titles); they are not re-sorted
+#     under the title yet (see LR_sort_existing_*_dioceses_effect).
 
 # Character scope (the restorer). HALF = western / eastern (title e_<HALF>_roman_republic)
 LR_restore_roman_republic_effect = {
@@ -47,6 +48,9 @@ LR_restore_roman_republic_effect = {
 	add_realm_law_skip_effects = republic_type_roman
 	add_realm_law_skip_effects = republic_assembly_composition_roman_senate
 	custom_tooltip = assembly_members_appointed_as_senators_desc
+
+	# LR 11-18: the prefecture's dioceses go to the republic (after the Empire tier law, so the tier law keeps them)
+	LR_roman_republic_grant_$HALF$_dioceses_effect = yes
 
 	hidden_effect = {
 		if = {
@@ -123,6 +127,94 @@ LR_roman_republic_take_capital_effect = {
 		if = {
 			limit = { has_great_district = no }
 			add_great_district = republic_great_plaza_district
+		}
+	}
+}
+
+# LR 11-18: grant the half's dioceses to the new republic (republics cannot create titles).
+# Character scope. DIOCESE = diocese key. A diocese held inside the realm is left with its holder.
+LR_roman_republic_grant_diocese_effect = {
+	if = {
+		limit = {
+			NOT = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = $DIOCESE$ } }
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = diocese_change
+			add_claim_on_loss = no
+		}
+		title:k_diocese_$DIOCESE$ = {
+			change_title_holder = {
+				holder = root
+				change = scope:diocese_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:diocese_change
+	}
+}
+
+LR_roman_republic_grant_western_dioceses_effect = {
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = italia_annonaria }
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = italia_suburbicaria }
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = africa }
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = mauretania }
+}
+
+LR_roman_republic_grant_eastern_dioceses_effect = {
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = thracia }
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = macedonia }
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = pontus }
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = asia }
+	LR_roman_republic_grant_diocese_effect = { DIOCESE = armenia }
+}
+
+# LR 11-18: the united Res Publica. Character scope: holds e_western_roman_republic and e_eastern_roman_republic.
+# Creates h_roman_republic and puts both halves under it de jure; the halves stay held as empire titles.
+LR_unite_roman_republic_effect = {
+	save_scope_as = roman_republic_ruler
+	primary_title = { save_scope_as = old_primary_title }
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:h_roman_republic = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	title:e_western_roman_republic = { set_de_jure_liege_title = title:h_roman_republic }
+	title:e_eastern_roman_republic = { set_de_jure_liege_title = title:h_roman_republic }
+
+	# Laws, in case a half was gained without its restore decision
+	if = {
+		limit = { NOT = { has_realm_law = republic_tier_empire } }
+		add_realm_law_skip_effects = republic_tier_empire
+	}
+	if = {
+		limit = { NOT = { has_realm_law = republic_type_roman } }
+		add_realm_law_skip_effects = republic_type_roman
+	}
+	if = {
+		limit = { NOT = { has_realm_law = republic_assembly_composition_roman_senate } }
+		add_realm_law_skip_effects = republic_assembly_composition_roman_senate
+	}
+
+	hidden_effect = {
+		if = {
+			limit = {
+				scope:old_primary_title = { any_title_maa_regiment = { } }
+			}
+			scope:old_primary_title = { transfer_title_maa_ownership = title:h_roman_republic }
+		}
+		update_assembly = yes
+		set_global_variable = {
+			name = flag_united_roman_republic
+			value = root
 		}
 	}
 }

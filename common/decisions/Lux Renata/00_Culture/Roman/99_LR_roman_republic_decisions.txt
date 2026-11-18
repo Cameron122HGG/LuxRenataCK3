@@ -6,10 +6,11 @@
 # Requirements, mirroring Restore the Hegemony of the West / East:
 #   - a republic (Republic Tier Law kingdom or higher), independent, not at war, prestige level 4
 #   - the half's capital county (Rome / Constantinople) in the realm
-#   - the half's core prefecture: Italia (West) / Macedonia (East), each diocese held in the realm
+#   - the half's core prefecture: Italia (West) / Macedonia (East): each diocese's land controlled, or the diocese held
+#     in the realm (LR 11-18: republics cannot create titles); the effect grants the dioceses
 # Effect: event LR_roman_republic.0001 / 0002 runs LR_restore_roman_republic_effect.
 #
-# LATER (after the tier cap code is understood): a united Res Publica step for one republic holding both halves.
+# United Res Publica (LR 11-18): LR_unite_roman_republic_decision, at the end of this file.
 
 LR_restore_western_roman_republic_decision = {
 	picture = {
@@ -36,6 +37,7 @@ LR_restore_western_roman_republic_decision = {
 			OR = {
 				has_cultural_tradition = tradition_republican_legacy
 				has_cultural_pillar = heritage_latin
+				any_parent_culture_or_above = { this = culture:roman } # LR 11-18: as vanilla's Restore the Roman Republic
 			}
 		}
 	}
@@ -43,10 +45,13 @@ LR_restore_western_roman_republic_decision = {
 	is_valid = {
 		LR_roman_republic_tier_ready_trigger = yes
 		prestige_level >= 4
-		LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma_urbs }
+		custom_tooltip = {
+			text = LR_restore_roman_republic_rome_in_realm_tt
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma_urbs }
+		}
 		custom_tooltip = {
 			text = LR_restore_roman_republic_prefecture_italia_tt
-			LR_roman_restoration_prefecture_italia_trigger = yes
+			LR_roman_republic_prefecture_italia_trigger = yes
 		}
 	}
 
@@ -114,7 +119,9 @@ LR_restore_eastern_roman_republic_decision = {
 			OR = {
 				has_cultural_tradition = tradition_republican_legacy
 				has_cultural_pillar = heritage_latin
+				any_parent_culture_or_above = { this = culture:roman } # LR 11-18: as vanilla's Restore the Roman Republic
 				has_cultural_pillar = heritage_hellenistic
+				has_cultural_pillar = heritage_byzantine # LR 11-18: Greek culture's heritage
 			}
 		}
 	}
@@ -122,10 +129,13 @@ LR_restore_eastern_roman_republic_decision = {
 	is_valid = {
 		LR_roman_republic_tier_ready_trigger = yes
 		prestige_level >= 4
-		LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
+		custom_tooltip = {
+			text = LR_restore_roman_republic_constantinople_in_realm_tt
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
+		}
 		custom_tooltip = {
 			text = LR_restore_roman_republic_prefecture_macedonia_tt
-			LR_roman_restoration_prefecture_macedonia_trigger = yes
+			LR_roman_republic_prefecture_macedonia_trigger = yes
 		}
 	}
 
@@ -155,6 +165,96 @@ LR_restore_eastern_roman_republic_decision = {
 			add_to_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:flag_restored_eastern_roman_republic
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# LR 11-18: the united Res Publica. One republic holding both halves forms h_roman_republic (hegemony tier;
+# vanilla 1.21 gives its own restored Roman Republic this hegemony, and republic_tier_empire keeps it).
+# Effect: event LR_roman_republic.0010 runs LR_unite_roman_republic_effect.
+LR_unite_roman_republic_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_unite_roman_republic_decision_desc
+	selection_tooltip = LR_unite_roman_republic_decision_tooltip
+	confirm_text = LR_unite_roman_republic_decision_confirm
+	decision_group_type = roman
+	sort_order = 106
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 36
+		hegemony = 0
+	}
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		is_ruler = yes
+		is_playable_character = yes
+		government_has_flag = government_is_republic
+		OR = {
+			has_title = title:e_western_roman_republic
+			has_title = title:e_eastern_roman_republic
+		}
+		NOT = { exists = title:h_roman_republic.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_united_roman_republic
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:e_western_roman_republic
+		has_title = title:e_eastern_roman_republic
+		prestige_level >= max_prestige_level
+		custom_tooltip = {
+			text = LR_restore_roman_republic_rome_in_realm_tt
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma_urbs }
+		}
+		custom_tooltip = {
+			text = LR_restore_roman_republic_constantinople_in_realm_tt
+			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 2000
+	}
+
+	effect = {
+		show_as_tooltip = {
+			LR_unite_roman_republic_effect = yes
+		}
+		custom_tooltip = LR_unite_roman_republic_choose_seat_tt
+		trigger_event = LR_roman_republic.0010
+
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_united_roman_republic
 			}
 		}
 	}

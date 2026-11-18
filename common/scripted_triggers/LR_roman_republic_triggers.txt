@@ -26,6 +26,7 @@ LR_roman_republic_restorer_shown_trigger = {
 	is_playable_character = yes
 	government_has_flag = government_is_republic
 	NOT = { exists = title:e_$HALF$_roman_republic.holder }
+	NOT = { exists = title:h_roman_republic.holder } # LR 11-18: no separate half once the Res Publica is united
 	NOT = { has_global_variable = flag_restored_$HALF$_roman_republic }
 	NOT = {
 		is_target_in_global_variable_list = {
@@ -41,4 +42,31 @@ LR_roman_republic_tier_ready_trigger = {
 		has_realm_law = republic_tier_kingdom
 		has_realm_law = republic_tier_empire
 	}
+}
+
+# LR 11-18 (user): republics cannot create titles, so a diocese counts when its land is controlled,
+# not only when the k_diocese title is held. The restore effect then grants the dioceses.
+# Character scope. DIOCESE = diocese key (region custom_roman_<DIOCESE>, title k_diocese_<DIOCESE>)
+LR_roman_republic_diocese_ready_trigger = {
+	OR = {
+		LR_roman_restoration_diocese_held_trigger = { DIOCESE = $DIOCESE$ }
+		completely_controls_region = custom_roman_$DIOCESE$
+	}
+}
+
+# Character scope: the land of the Prefecture of Italia
+LR_roman_republic_prefecture_italia_trigger = {
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = italia_annonaria }
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = italia_suburbicaria }
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = africa }
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = mauretania }
+}
+
+# Character scope: the land of the Prefecture of Macedonia
+LR_roman_republic_prefecture_macedonia_trigger = {
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = thracia }
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = macedonia }
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = pontus }
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = asia }
+	LR_roman_republic_diocese_ready_trigger = { DIOCESE = armenia }
 }

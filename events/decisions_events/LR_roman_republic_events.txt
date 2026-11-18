@@ -1,6 +1,7 @@
 ﻿# LR Roman Republic events (Silk & Silver / 1.21), written 2026-11-17.
 # Structure copied from vanilla republic_event.0100 (events/dlc/gdp/gdp_republic_events.txt).
 # LR_roman_republic.0001: the Western Republic restored. LR_roman_republic.0002: the Eastern Republic restored.
+# LR_roman_republic.0010: the united Res Publica (h_roman_republic).
 # TODO: LR_roman_republic.0003, a notification for other Roman claimants.
 
 namespace = LR_roman_republic
@@ -48,5 +49,34 @@ LR_roman_republic.0002 = {
 
 	option = {
 		name = LR_roman_republic.0002.b
+	}
+}
+
+# LR 11-18: the united Res Publica (LR_unite_roman_republic_decision)
+LR_roman_republic.0010 = {
+	type = character_event
+	window = fullscreen_event
+	title = LR_roman_republic.0010.t
+	desc = LR_roman_republic.0010.desc
+	theme = republic
+	override_background = { reference = ep3_triumph }
+	queue_icon = "gfx/interface/icons/laws/republic_type_roman_small.dds"
+
+	immediate = {
+		LR_unite_roman_republic_effect = yes
+	}
+
+	option = {
+		name = LR_roman_republic.0010.a
+		LR_roman_republic_take_capital_effect = { COUNTY = c_roma_urbs }
+	}
+
+	option = {
+		name = LR_roman_republic.0010.b
+		LR_roman_republic_take_capital_effect = { COUNTY = c_byzantion }
+	}
+
+	option = {
+		name = LR_roman_republic.0010.c
 	}
 }
