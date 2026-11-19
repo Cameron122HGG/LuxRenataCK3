@@ -1,0 +1,66 @@
+﻿# Roman title names: see common/scripted_effects/LR/LR_roman_title_names_effects.txt
+
+# scope = a title. Is it a Roman title whose name this system controls?
+LR_roman_named_title_trigger = {
+	OR = {
+		this = title:e_byzantium
+		this = title:e_eastern_roman_empire
+		this = title:h_eastern_roman_empire
+		this = title:e_eastern_roman_republic
+		this = title:h_eastern_roman_republic
+		this = title:e_constantinid
+		this = title:e_spqr
+		this = title:e_western_roman_empire
+		this = title:h_western_roman_empire
+		this = title:e_western_roman_republic
+		this = title:h_western_roman_republic
+		this = title:e_syagria
+		this = title:h_roman_empire
+		this = title:h_roman_republic
+		this = title:k_roman_kingdom
+		this = title:e_southern_roman_empire
+		this = title:h_southern_roman_empire
+		this = title:e_tadmor
+		this = title:e_palmyrene_empire
+		this = title:h_palmyrene_empire
+	}
+}
+
+# scope = a title. Eastern imperial titles (name_of_byzantium can override them)
+LR_roman_named_title_east_trigger = {
+	OR = {
+		this = title:e_eastern_roman_empire
+		this = title:h_eastern_roman_empire
+	}
+}
+
+# scope = a title. Western imperial titles (name_of_spqr can override them)
+LR_roman_named_title_west_trigger = {
+	OR = {
+		this = title:e_western_roman_empire
+		this = title:h_western_roman_empire
+	}
+}
+
+# scope = a character. Latin style: the Roman cultures, or a Latin-speaking culture
+LR_roman_title_name_latin_style_trigger = {
+	culture ?= {
+		OR = {
+			this = culture:roman
+			this = culture:western_roman
+			has_cultural_pillar = language_latin
+			has_cultural_pillar = language_western_roman
+		}
+	}
+}
+
+# scope = a character. Greek style: Byzantine or Hellenistic heritage, or a Greek-speaking culture
+LR_roman_title_name_greek_style_trigger = {
+	culture ?= {
+		OR = {
+			has_cultural_pillar = heritage_byzantine
+			has_cultural_pillar = heritage_hellenistic
+			has_cultural_pillar = language_greek
+		}
+	}
+}

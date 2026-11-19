@@ -113,7 +113,11 @@ LR_dynastic_realm_name_valid_trigger = {
 	is_alive = yes
 	exists = house
 	exists = primary_title
-	primary_title = { tier >= tier_kingdom }
+	primary_title = {
+		tier >= tier_kingdom
+		# Roman titles are named by LR_roman_title_names_effects.txt
+		NOT = { LR_roman_named_title_trigger = yes }
+	}
 	OR = {
 		AND = {
 			has_game_rule = lr_dynastic_realm_names_dynastic
