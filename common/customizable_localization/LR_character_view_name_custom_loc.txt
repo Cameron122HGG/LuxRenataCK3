@@ -1,0 +1,33 @@
+﻿# Character window header for rulers whose realm has a dynastic or tiered realm name (lr_dynastic_realm_names).
+# The engine's ruler name is "$TIER$ $NAME$ of $TITLE$" with no article, which reads "Basileus X of Basileia of
+# Pergamon". No script effect can give a title an article (set_title_prefix is the culture-prefix form, and
+# definite_form is static), so the header is rebuilt here: "Basileus X of the Basileia of Pergamon". User, 11-19.
+# Patronym cultures keep the engine name (no data function gives the patronym). Used by CHARACTER_VIEW_NAME
+# and the character tooltip header (CHARACTER_TT_NAME, CHARACTER_TT_NAME_AGE), all in
+# localization/replace/english/LR_dynastic_realm_names_replace_l_english.yml.
+LR_character_view_name = {
+	type = character
+
+	text = {
+		trigger = {
+			has_character_flag = LR_dynastic_realm_name_flag
+			exists = primary_title
+			exists = house
+			NOT = { LR_character_name_patronym_trigger = yes }
+			LR_character_name_house_first_trigger = yes
+		}
+		localization_key = LR_character_view_name_realm_house_first
+	}
+	text = {
+		trigger = {
+			has_character_flag = LR_dynastic_realm_name_flag
+			exists = primary_title
+			NOT = { LR_character_name_patronym_trigger = yes }
+		}
+		localization_key = LR_character_view_name_realm
+	}
+	text = {
+		fallback = yes
+		localization_key = LR_character_view_name_default
+	}
+}

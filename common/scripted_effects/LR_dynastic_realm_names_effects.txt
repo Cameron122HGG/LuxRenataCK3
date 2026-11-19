@@ -30,6 +30,20 @@ LR_dynastic_realm_names_refresh_effect = {
 		}
 		LR_dynastic_realm_names_reset_title_effect = yes
 	}
+	# 11-19 cleanup: an earlier build set the prefix "the " on named titles; put their own prefix back once
+	if = {
+		limit = {
+			exists = primary_title
+			primary_title = {
+				has_variable = LR_dynastic_realm_name
+				NOT = { has_variable = LR_dynastic_realm_prefix_reset }
+			}
+		}
+		primary_title = {
+			reset_title_prefix = yes
+			set_variable = LR_dynastic_realm_prefix_reset
+		}
+	}
 	if = {
 		limit = {
 			LR_dynastic_realm_name_valid_trigger = yes
@@ -84,8 +98,8 @@ LR_dynastic_realm_names_refresh_effect = {
 				else = {
 					set_title_name_dynamic = LR_tiered_realm_name
 				}
-				# "the" before the name, so rulers read "King Philip of the Kingdom of France" (user, 11-19)
-				set_title_prefix = LR_realm_name_prefix
+				# No set_title_prefix here: a title's prefix is its compound form for culture divergence and hybrid
+				# names ("Neo-X"), not an article. The "the" in ruler names is in the character view loc instead.
 				if = {
 					limit = {
 						root = { LR_dynastic_realm_name_temporal_head_trigger = yes }
@@ -162,5 +176,9 @@ LR_dynastic_realm_names_reset_title_effect = {
 	if = {
 		limit = { has_variable = LR_dynastic_realm_name_hof }
 		remove_variable = LR_dynastic_realm_name_hof
+	}
+	if = {
+		limit = { has_variable = LR_dynastic_realm_prefix_reset }
+		remove_variable = LR_dynastic_realm_prefix_reset
 	}
 }
