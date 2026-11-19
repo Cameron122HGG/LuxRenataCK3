@@ -254,7 +254,6 @@ LR_reform_into_dominate_effect = {
 			limit = { NOT = { has_realm_law = LR_dominate_ceremonial_senate_law } }
 			add_realm_law_skip_effects = LR_dominate_ceremonial_senate_law
 		}
-		update_assembly = yes
 	}
 	add_prestige = major_prestige_gain
 	add_character_modifier = {
@@ -328,7 +327,6 @@ LR_adopt_roman_dominate_effect = {
 			limit = { NOT = { has_realm_law = LR_dominate_ceremonial_senate_law } }
 			add_realm_law_skip_effects = LR_dominate_ceremonial_senate_law
 		}
-		update_assembly = yes
 	}
 	add_prestige = major_prestige_gain
 	add_character_modifier = {
@@ -396,5 +394,45 @@ LR_restore_roman_principate_effect = {
 			}
 		}
 		update_assembly = yes
+	}
+}
+
+# Debug (LR_universal_debug_decisions.txt): root leaves a decayed Roman title for its restored successor, so the Dominate or
+# the Principate can be taken. Uses the restorations' own title transfer (LR_transfer_empire_title_effect).
+LR_debug_leave_decayed_roman_title_effect = {
+	if = {
+		limit = {
+			has_title = title:e_spqr
+			NOT = { exists = title:e_western_roman_empire.holder }
+		}
+		LR_transfer_empire_title_effect = { OLD = e_spqr NEW = e_western_roman_empire }
+	}
+	if = {
+		limit = {
+			has_title = title:e_byzantium
+			NOT = { exists = title:e_eastern_roman_empire.holder }
+		}
+		LR_transfer_empire_title_effect = { OLD = e_byzantium NEW = e_eastern_roman_empire }
+	}
+	if = {
+		limit = {
+			has_title = title:e_syagria
+			NOT = { exists = title:e_gallic_empire.holder }
+		}
+		LR_transfer_empire_title_effect = { OLD = e_syagria NEW = e_gallic_empire }
+	}
+	if = {
+		limit = {
+			has_title = title:e_tadmor
+			NOT = { exists = title:e_palmyrene_empire.holder }
+		}
+		LR_transfer_empire_title_effect = { OLD = e_tadmor NEW = e_palmyrene_empire }
+	}
+	if = {
+		limit = {
+			has_title = title:e_constantinid
+			NOT = { exists = title:e_brittanic_empire.holder }
+		}
+		LR_transfer_empire_title_effect = { OLD = e_constantinid NEW = e_brittanic_empire }
 	}
 }

@@ -1276,6 +1276,9 @@ restore_roman_provinces_noricum_decision_effect = {
 				has_title = title:h_roman_empire
 				has_title = title:h_western_roman_empire
 				has_title = title:h_eastern_roman_empire
+				has_title = title:h_roman_republic # LR 2026-11-19: the Republic twins
+				has_title = title:h_western_roman_republic
+				has_title = title:h_eastern_roman_republic
 			}
 		}
 		title:k_diocese_noricum = { set_de_jure_liege_title = title:e_praetorian_prefecture_germania }
@@ -1369,19 +1372,41 @@ LR_split_pontic_prefecture_effect = {
 # and the prefecture under that hegemony. Before that the restoration effects keep it under the Eastern or
 # Western Empire. Character scope. HALF = h_western_roman_empire or h_eastern_roman_empire
 LR_sort_diocese_into_hegemony_effect = {
+	# LR 2026-11-19: the Republic twins too (a Princeps holds h_roman_republic / h_western_roman_republic / h_eastern_roman_republic)
 	if = {
 		limit = {
 			OR = {
 				has_title = title:h_roman_empire
+				has_title = title:h_roman_republic
 				has_title = title:$HALF$
+				AND = {
+					title:$HALF$ = title:h_western_roman_empire
+					has_title = title:h_western_roman_republic
+				}
+				AND = {
+					title:$HALF$ = title:h_eastern_roman_empire
+					has_title = title:h_eastern_roman_republic
+				}
 			}
 		}
 		if = {
 			limit = { has_title = title:h_roman_empire }
 			title:h_roman_empire = { save_scope_as = diocese_hegemony }
 		}
-		else = {
+		else_if = {
+			limit = { has_title = title:h_roman_republic }
+			title:h_roman_republic = { save_scope_as = diocese_hegemony }
+		}
+		else_if = {
+			limit = { has_title = title:$HALF$ }
 			title:$HALF$ = { save_scope_as = diocese_hegemony }
+		}
+		else_if = {
+			limit = { has_title = title:h_western_roman_republic }
+			title:h_western_roman_republic = { save_scope_as = diocese_hegemony }
+		}
+		else = {
+			title:h_eastern_roman_republic = { save_scope_as = diocese_hegemony }
 		}
 		title:$DIOCESE$ = { set_de_jure_liege_title = title:$PREFECTURE$ }
 		title:$PREFECTURE$ = { set_de_jure_liege_title = scope:diocese_hegemony }
@@ -1504,6 +1529,9 @@ restore_roman_provinces_germania_decision_effect = {
 				has_title = title:h_roman_empire
 				has_title = title:h_western_roman_empire
 				has_title = title:h_eastern_roman_empire
+				has_title = title:h_roman_republic # LR 2026-11-19: the Republic twins
+				has_title = title:h_western_roman_republic
+				has_title = title:h_eastern_roman_republic
 			}
 		}
 		title:k_diocese_germania = { set_de_jure_liege_title = title:e_praetorian_prefecture_germania }
@@ -1518,7 +1546,12 @@ restore_roman_provinces_germania_decision_effect = {
 # (either half may restore it). Character scope.
 LR_sort_germanic_diocese_effect = {
 	if = {
-		limit = { has_title = title:h_eastern_roman_empire }
+		limit = {
+			OR = {
+				has_title = title:h_eastern_roman_empire
+				has_title = title:h_eastern_roman_republic # LR 2026-11-19
+			}
+		}
 		LR_sort_diocese_into_hegemony_effect = { DIOCESE = $DIOCESE$ PREFECTURE = e_praetorian_prefecture_germania HALF = h_eastern_roman_empire }
 	}
 	else = {

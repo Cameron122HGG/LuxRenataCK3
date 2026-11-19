@@ -1,0 +1,103 @@
+﻿#################
+##### Debug #####
+#################
+
+# LR 2026-11-19 (user): one-click tests of the two universal governments (debug mode only). Hand-written; kept out of
+# LR_roman_debug_decisions.txt, which gen_roman_debug_decisions.py regenerates.
+#   - Debug: Become Princeps  -> the Roman Principate (as Restore the Principate)
+#   - Debug: Become Dominus   -> the Roman Dominate (as Reform into the Dominate from the Principate, else Establish the Dominate)
+# Both first take you out of a decayed Roman title (LR_debug_leave_decayed_roman_title_effect), since a decayed empire can't
+# hold either government, and add prestige for the follow-up decisions. No hegemony or region requirements.
+
+LR_debug_become_princeps_decision = {
+	decision_group_type = debug
+
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+
+	desc = LR_debug_become_princeps_decision_desc
+	selection_tooltip = LR_debug_become_princeps_decision_tooltip
+	confirm_text = LR_debug_become_princeps_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = principate_government }
+	}
+
+	is_valid = {
+		LR_has_roman_evolution_dlc_trigger = yes
+	}
+
+	effect = {
+		LR_debug_leave_decayed_roman_title_effect = yes
+		LR_restore_roman_principate_effect = yes
+		add_prestige = 3000
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+LR_debug_become_dominus_decision = {
+	decision_group_type = debug
+
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+
+	desc = LR_debug_become_dominus_decision_desc
+	selection_tooltip = LR_debug_become_dominus_decision_tooltip
+	confirm_text = LR_debug_become_dominus_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = roman_dominate_government }
+	}
+
+	is_valid = {
+		LR_has_roman_evolution_dlc_trigger = yes
+	}
+
+	effect = {
+		LR_debug_leave_decayed_roman_title_effect = yes
+		if = { # Principate -> Dominate: ministers and senators carry over
+			limit = { has_government = principate_government }
+			LR_reform_into_dominate_effect = yes
+		}
+		else = {
+			LR_adopt_roman_dominate_effect = yes
+			# Roman Administrative and other classical-group great vassals take the Dominate too
+			hidden_effect = {
+				every_vassal_or_below = {
+					limit = {
+						highest_held_title_tier >= tier_duchy
+						government_has_flag = government_is_classical_group
+						NOT = { government_has_flag = government_is_republic }
+						NOT = { has_government = roman_dominate_government }
+						LR_can_have_upgraded_roman_government_trigger = yes
+					}
+					change_government = roman_dominate_government
+				}
+			}
+		}
+		add_prestige = 3000
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
