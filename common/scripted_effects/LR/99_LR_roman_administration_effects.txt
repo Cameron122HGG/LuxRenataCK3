@@ -13,10 +13,11 @@ LR_restore_roman_administration_effect = {
 
 	# Government (LR 2026-11-19, user): Roman Autocratic, the least complex Roman imperial government, for the restorer and
 	# their great Roman vassals, as the regional restorations. The Dominate and the Principate come only at the hegemony
-	# tier (LR_adopt_roman_dominate_decision, LR_restore_roman_principate_decision). Roman Autocratic needs All Under
-	# Heaven; without it, Roman Administrative. A ruler already on the Dominate keeps it.
+	# tier (LR_adopt_roman_dominate_decision, LR_restore_roman_principate_decision). Roman Autocratic needs Roads to Power and
+	# All Under Heaven; with Roads to Power alone, Roman (the Roads-to-Power-only tier, LR 2026-11-19 user); without Roads to
+	# Power, Classical. A ruler already on the Dominate keeps it.
 	if = {
-		limit = { has_tgp_dlc_trigger = yes }
+		limit = { LR_has_dynastic_governments_dlc_trigger = yes }
 		if = {
 			limit = {
 				NOR = {
@@ -40,20 +41,17 @@ LR_restore_roman_administration_effect = {
 			change_government = roman_autocratic_government
 		}
 	}
+	else_if = { # LR 2026-11-19: Roads to Power without All Under Heaven (great vassals follow their liege's administration)
+		limit = { LR_has_rtp_governments_dlc_trigger = yes }
+		if = {
+			limit = { NOT = { has_government = roman_rtp_government } }
+			change_government = roman_rtp_government
+		}
+	}
 	else = {
 		if = {
-			limit = { NOT = { government_has_mechanic = administrative } }
-			change_government = roman_administrative_government
-		}
-		every_vassal_or_below = {
-			custom = LR_proclaim_roman_empire_vassals_custom
-			limit = {
-				highest_held_title_tier >= tier_duchy
-				government_has_flag = government_is_classical_group
-				NOT = { government_has_flag = government_is_republic }
-				NOT = { government_has_mechanic = administrative }
-			}
-			change_government = roman_administrative_government
+			limit = { NOT = { has_government = classical_government } }
+			change_government = classical_government
 		}
 	}
 

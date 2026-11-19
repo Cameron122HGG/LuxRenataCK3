@@ -73,20 +73,20 @@ LR_principate_align_vassal_effect = {
 # history), the Principate to a plain republic. Called first in LR_normalize_dynastic_government_effect and on title gain.
 LR_downgrade_upgraded_roman_government_effect = {
 	# LR 2026-11-19 (user): without Roads to Power, Silk & Silver and All Under Heaven there is no Dominate or Principate. The Dominate
-	# falls back to Roman Autocratic (All Under Heaven), else Roman Administrative (Roads to Power), else Classical; the Principate to a
-	# plain republic (Silk & Silver), else Classical.
+	# falls back to Roman Autocratic (Roads to Power + All Under Heaven), else Roman (the Roads-to-Power-only tier, LR 2026-11-19
+	# user), else Classical; the Principate to a plain republic (Silk & Silver), else Roman, else Classical.
 	if = {
 		limit = {
 			has_government = roman_dominate_government
 			LR_has_roman_evolution_dlc_trigger = no
 		}
 		if = {
-			limit = { has_tgp_dlc_trigger = yes }
+			limit = { LR_has_dynastic_governments_dlc_trigger = yes }
 			change_government = roman_autocratic_government
 		}
 		else_if = {
-			limit = { has_ep3_dlc_trigger = yes }
-			change_government = roman_administrative_government
+			limit = { LR_has_rtp_governments_dlc_trigger = yes }
+			change_government = roman_rtp_government
 		}
 		else = {
 			change_government = classical_government
@@ -100,6 +100,10 @@ LR_downgrade_upgraded_roman_government_effect = {
 		if = {
 			limit = { has_gdp_dlc_trigger = yes }
 			change_government = republic_government
+		}
+		else_if = {
+			limit = { LR_has_rtp_governments_dlc_trigger = yes }
+			change_government = roman_rtp_government
 		}
 		else = {
 			change_government = classical_government
@@ -133,7 +137,10 @@ LR_become_princeps_effect = {
 	}
 	# The shadowed republic laws would switch most of these on their own (can_keep / should_start_with);
 	# set them here so the tooltip shows them and nothing waits for the next law check.
-	add_realm_law_skip_effects = principate_succession_law
+	if = {
+		limit = { NOT = { has_realm_law = principate_succession_law } }
+		add_realm_law_skip_effects = principate_succession_law
+	}
 	if = {
 		limit = { NOT = { has_realm_law = republic_type_roman } }
 		add_realm_law_skip_effects = republic_type_roman

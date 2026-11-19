@@ -1,0 +1,26 @@
+﻿# LR 2026-11-19 (user): TEST, not for release. At the bm_test_universal_6066 start (6066.1.2, the 1066 world a day later)
+# both Universal governments are set up at their height, through the hegemony debug effects (LR_principate_effects.txt):
+#   - the West: the holder of e_spqr leaves it for e_western_roman_empire, forms h_western_roman_empire and takes the
+#     Roman Dominate (Establish the Dominate)
+#   - the East: the holder of e_byzantium leaves it for e_eastern_roman_empire, forms h_eastern_roman_empire and takes the
+#     Roman Principate (Restore the Principate)
+# After the lobby, so every game-start normalizer has run first. Needs Roads to Power, Silk & Silver and All Under Heaven.
+on_game_start_after_lobby = {
+	on_actions = { LR_test_universal_start }
+}
+
+LR_test_universal_start = {
+	trigger = {
+		current_date = 6066.1.2
+	}
+	effect = {
+		# LR 2026-11-19 (user test: the Roman realms broke up). The effects give titles to root, and an on_action has no
+		# character root, so each emperor runs them in a hidden event of their own (LR_test_universal_start_events.txt).
+		title:e_spqr.holder ?= {
+			trigger_event = LR_test_universal_start.0001
+		}
+		title:e_byzantium.holder ?= {
+			trigger_event = LR_test_universal_start.0002
+		}
+	}
+}

@@ -279,6 +279,10 @@ LR_replace_vanilla_default_government_effect = {
 
 # Root is a ruler. With the DLC, the plain starting governments (classical, western feudal, despotic, Indic feudal, sacral) become
 # their dynastic version; without it, the dynastic governments fall back to the plain ones.
+# LR 2026-11-19 (user) DLC ladder of the 9 administrative groups: Roads to Power + All Under Heaven = dynastic and administrative
+# twins (+ Imperial tiers); Roads to Power alone = the RtP-only tier (Roman, Alexandrian, Carolingian, Persianate, Mamlakah Diwan,
+# Sudanic Court, Nilotic Court, Gupta, Iqta Diwan) for the administrative twins and Imperial tiers, the plain government for the
+# dynastic twins; neither = the plain group government.
 # Run at game start and whenever a government changes, so decisions and events can keep setting the plain government.
 LR_normalize_dynastic_government_effect = {
 	LR_downgrade_upgraded_roman_government_effect = yes # LR 2026-11-19: no Dominate/Principate for decayed Roman empires
@@ -308,6 +312,10 @@ LR_normalize_dynastic_government_effect = {
 				has_government = mamlakah_imperial_government
 				has_government = sudanic_imperial_government
 				has_government = nilotic_imperial_government
+				has_government = persianate_rtp_government # LR 2026-11-19 RtP-only tier
+				has_government = mamlakah_rtp_government
+				has_government = sudanic_rtp_government
+				has_government = nilotic_rtp_government
 			}
 		}
 		if = {
@@ -318,6 +326,10 @@ LR_normalize_dynastic_government_effect = {
 					has_government = mamlakah_administrative_government
 					has_government = sudanic_administrative_government
 					has_government = nilotic_administrative_government
+					has_government = persianate_rtp_government # LR 2026-11-19: becomes Iqta Diwan without All Under Heaven (below)
+					has_government = mamlakah_rtp_government
+					has_government = sudanic_rtp_government
+					has_government = nilotic_rtp_government
 					has_government = mamlakah_imperial_government
 					has_government = sudanic_imperial_government
 					has_government = nilotic_imperial_government
@@ -447,38 +459,94 @@ LR_normalize_dynastic_government_effect = {
 			limit = { has_government = iqta_government }
 			change_government = iqta_dynastic_government
 		}
+		# LR 2026-11-19: the Roads-to-Power-only tier becomes its administrative twin
+		else_if = {
+			limit = { government_has_flag = government_is_rtp_tier }
+			LR_rtp_to_admin_twin_government_effect = yes
+		}
+	}
+	# LR 2026-11-19 (user): Roads to Power without All Under Heaven: the dynastic twins go to the plain group government; the
+	# administrative twins and the merit Imperial tiers (Roman Imperial, Basileia, Megale Basileia, Persianate/Mamlakah/Sudanic/
+	# Nilotic Imperial) to the group's Roads-to-Power-only government (Roman, Alexandrian, Carolingian, Persianate, ...).
+	else_if = {
+		limit = { LR_has_rtp_governments_dlc_trigger = yes }
+		LR_dynastic_to_plain_government_effect = yes
+		LR_admin_to_rtp_government_effect = yes
 	}
 	else = {
+		LR_dynastic_to_plain_government_effect = yes
+		# LR 2026-11-19: no Roads to Power: the RtP-only tier and the Imperial tiers go to the plain group government too
 		if = {
-			limit = { OR = { has_government = roman_dynastic_government has_government = alexandrian_dynastic_government } }
+			limit = {
+				OR = {
+					has_government = roman_rtp_government
+					has_government = alexandrian_rtp_government
+					has_government = roman_autocratic_government
+					has_government = hellenistic_autocratic_government
+					has_government = hellenistic_imperial_government
+				}
+			}
 			change_government = classical_government
 		}
 		else_if = {
-			limit = { has_government = western_dynastic_government }
+			limit = { has_government = western_rtp_government }
 			change_government = western_feudal_government
 		}
 		else_if = {
-			limit = { has_government = persianate_dynastic_government }
+			limit = { OR = { has_government = persianate_rtp_government has_government = persianate_autocratic_government } }
 			change_government = despotic_government
 		}
 		else_if = {
-			limit = { has_government = mamlakah_dynastic_government }
+			limit = { OR = { has_government = mamlakah_rtp_government has_government = mamlakah_imperial_government } }
 			change_government = mamlakah_government
 		}
 		else_if = {
-			limit = { has_government = sudanic_dynastic_government }
+			limit = { OR = { has_government = sudanic_rtp_government has_government = sudanic_imperial_government } }
 			change_government = sudanic_government
 		}
 		else_if = {
-			limit = { has_government = nilotic_dynastic_government }
+			limit = { OR = { has_government = nilotic_rtp_government has_government = nilotic_imperial_government } }
 			change_government = nilotic_government
 		}
 		else_if = {
-			limit = { has_government = gupta_dynastic_government }
+			limit = { has_government = gupta_rtp_government }
 			change_government = indic_feudal_government
 		}
 		else_if = {
-			limit = { has_government = iqta_dynastic_government }
+			limit = { has_government = iqta_rtp_government }
+			change_government = iqta_government
+		}
+		# LR 2026-11-19 (user): the administrative twins need the same DLC as the dynastic ones (Roads to Power + All Under Heaven)
+		else_if = {
+			limit = { OR = { has_government = roman_administrative_government has_government = alexandrian_administrative_government } }
+			change_government = classical_government
+		}
+		else_if = {
+			limit = { has_government = western_administrative_government }
+			change_government = western_feudal_government
+		}
+		else_if = {
+			limit = { has_government = persianate_administrative_government }
+			change_government = despotic_government
+		}
+		else_if = {
+			limit = { has_government = mamlakah_administrative_government }
+			change_government = mamlakah_government
+		}
+		else_if = {
+			limit = { has_government = sudanic_administrative_government }
+			change_government = sudanic_government
+		}
+		else_if = {
+			limit = { has_government = nilotic_administrative_government }
+			change_government = nilotic_government
+		}
+		else_if = {
+			limit = { has_government = gupta_administrative_government }
+			change_government = indic_feudal_government
+		}
+		else_if = {
+			limit = { has_government = iqta_administrative_government }
 			change_government = iqta_government
 		}
 	}
@@ -488,7 +556,7 @@ LR_normalize_dynastic_government_effect = {
 # (or, without the DLC, the plain government of its group).
 LR_change_admin_to_dynastic_effect = {
 	if = {
-		limit = { has_government = iqta_administrative_government }
+		limit = { OR = { has_government = iqta_administrative_government has_government = iqta_rtp_government } } # LR 2026-11-19 RtP-only tier
 		if = {
 			limit = { LR_has_dynastic_governments_dlc_trigger = yes }
 			change_government = iqta_dynastic_government
@@ -550,38 +618,162 @@ LR_change_admin_to_dynastic_effect = {
 			change_government = gupta_dynastic_government
 		}
 	}
-	else = {
+	else = { # LR 2026-11-19: also the Roads-to-Power-only tier
 		if = {
-			limit = { OR = { has_government = roman_administrative_government has_government = roman_autocratic_government has_government = roman_dominate_government } } # LR 2026-11-19: not the Principate (a republic now)
+			limit = { OR = { has_government = roman_administrative_government has_government = roman_rtp_government has_government = roman_autocratic_government has_government = roman_dominate_government } } # LR 2026-11-19: not the Principate (a republic now)
 			change_government = classical_government
 		}
 		else_if = {
-			limit = { OR = { has_government = alexandrian_administrative_government has_government = hellenistic_autocratic_government has_government = hellenistic_imperial_government } }
+			limit = { OR = { has_government = alexandrian_administrative_government has_government = alexandrian_rtp_government has_government = hellenistic_autocratic_government has_government = hellenistic_imperial_government } }
 			change_government = classical_government
 		}
 		else_if = {
-			limit = { has_government = western_administrative_government }
+			limit = { OR = { has_government = western_administrative_government has_government = western_rtp_government } }
 			change_government = western_feudal_government
 		}
 		else_if = {
-			limit = { OR = { has_government = persianate_administrative_government has_government = persianate_autocratic_government } }
+			limit = { OR = { has_government = persianate_administrative_government has_government = persianate_rtp_government has_government = persianate_autocratic_government } }
 			change_government = despotic_government
 		}
 		else_if = { # LR 2026-11-19 Mamlakah
-			limit = { OR = { has_government = mamlakah_administrative_government has_government = mamlakah_imperial_government } }
+			limit = { OR = { has_government = mamlakah_administrative_government has_government = mamlakah_rtp_government has_government = mamlakah_imperial_government } }
 			change_government = mamlakah_government
 		}
 		else_if = { # LR 2026-11-19 Sudanic
-			limit = { OR = { has_government = sudanic_administrative_government has_government = sudanic_imperial_government } }
+			limit = { OR = { has_government = sudanic_administrative_government has_government = sudanic_rtp_government has_government = sudanic_imperial_government } }
 			change_government = sudanic_government
 		}
 		else_if = { # LR 2026-11-19 Nilotic
-			limit = { OR = { has_government = nilotic_administrative_government has_government = nilotic_imperial_government } }
+			limit = { OR = { has_government = nilotic_administrative_government has_government = nilotic_rtp_government has_government = nilotic_imperial_government } }
 			change_government = nilotic_government
 		}
 		else_if = {
-			limit = { has_government = gupta_administrative_government }
+			limit = { OR = { has_government = gupta_administrative_government has_government = gupta_rtp_government } }
 			change_government = indic_feudal_government
 		}
+	}
+}
+
+# LR 2026-11-19 (user): the GRADUS DLC ladder, used by LR_normalize_dynastic_government_effect.
+# Root is a ruler. Dynastic twins (Roads to Power + All Under Heaven) -> the plain group government.
+LR_dynastic_to_plain_government_effect = {
+	if = {
+		limit = { OR = { has_government = roman_dynastic_government has_government = alexandrian_dynastic_government } }
+		change_government = classical_government
+	}
+	else_if = {
+		limit = { has_government = western_dynastic_government }
+		change_government = western_feudal_government
+	}
+	else_if = {
+		limit = { has_government = persianate_dynastic_government }
+		change_government = despotic_government
+	}
+	else_if = {
+		limit = { has_government = mamlakah_dynastic_government }
+		change_government = mamlakah_government
+	}
+	else_if = {
+		limit = { has_government = sudanic_dynastic_government }
+		change_government = sudanic_government
+	}
+	else_if = {
+		limit = { has_government = nilotic_dynastic_government }
+		change_government = nilotic_government
+	}
+	else_if = {
+		limit = { has_government = gupta_dynastic_government }
+		change_government = indic_feudal_government
+	}
+	else_if = {
+		limit = { has_government = iqta_dynastic_government }
+		change_government = iqta_government
+	}
+}
+
+# Root is a ruler (Roads to Power without All Under Heaven). Administrative twins and the merit Imperial tiers -> the group's
+# Roads-to-Power-only government.
+LR_admin_to_rtp_government_effect = {
+	if = {
+		limit = { OR = { has_government = roman_administrative_government has_government = roman_autocratic_government } }
+		change_government = roman_rtp_government
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_government = alexandrian_administrative_government
+				has_government = hellenistic_autocratic_government
+				has_government = hellenistic_imperial_government
+			}
+		}
+		change_government = alexandrian_rtp_government
+	}
+	else_if = {
+		limit = { has_government = western_administrative_government }
+		change_government = western_rtp_government
+	}
+	else_if = {
+		limit = { OR = { has_government = persianate_administrative_government has_government = persianate_autocratic_government } }
+		change_government = persianate_rtp_government
+	}
+	else_if = {
+		limit = { OR = { has_government = mamlakah_administrative_government has_government = mamlakah_imperial_government } }
+		change_government = mamlakah_rtp_government
+	}
+	else_if = {
+		limit = { OR = { has_government = sudanic_administrative_government has_government = sudanic_imperial_government } }
+		change_government = sudanic_rtp_government
+	}
+	else_if = {
+		limit = { OR = { has_government = nilotic_administrative_government has_government = nilotic_imperial_government } }
+		change_government = nilotic_rtp_government
+	}
+	else_if = {
+		limit = { has_government = gupta_administrative_government }
+		change_government = gupta_rtp_government
+	}
+	else_if = {
+		limit = { has_government = iqta_administrative_government }
+		change_government = iqta_rtp_government
+	}
+}
+
+# Root is a ruler (Roads to Power and All Under Heaven). The Roads-to-Power-only tier -> its administrative twin.
+LR_rtp_to_admin_twin_government_effect = {
+	if = {
+		limit = { has_government = roman_rtp_government }
+		change_government = roman_administrative_government
+	}
+	else_if = {
+		limit = { has_government = alexandrian_rtp_government }
+		change_government = alexandrian_administrative_government
+	}
+	else_if = {
+		limit = { has_government = western_rtp_government }
+		change_government = western_administrative_government
+	}
+	else_if = {
+		limit = { has_government = persianate_rtp_government }
+		change_government = persianate_administrative_government
+	}
+	else_if = {
+		limit = { has_government = mamlakah_rtp_government }
+		change_government = mamlakah_administrative_government
+	}
+	else_if = {
+		limit = { has_government = sudanic_rtp_government }
+		change_government = sudanic_administrative_government
+	}
+	else_if = {
+		limit = { has_government = nilotic_rtp_government }
+		change_government = nilotic_administrative_government
+	}
+	else_if = {
+		limit = { has_government = gupta_rtp_government }
+		change_government = gupta_administrative_government
+	}
+	else_if = {
+		limit = { has_government = iqta_rtp_government }
+		change_government = iqta_administrative_government
 	}
 }
