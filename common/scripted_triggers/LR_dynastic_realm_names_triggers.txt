@@ -77,15 +77,25 @@ LR_dynastic_realm_name_culture_trigger = {
 	}
 }
 
-# Governments that never get a house-named realm in the "all realms" mode
+# Republics, theocracies and holy orders are named "<Tier> of <Title>" in every mode, from duchy tier up,
+# and never after a house, e.g. "Republic of Venice", "Duke-Bishopric of Salzburg", "Order of Knights Templar"
+# (the tier word is the government's flavor: Republic / Most Serene Republic / Grand Republic,
+# Duke-Bishopric / Anointed Kingdom..., Order / Sacred Order / Most Sacred Order). User, 11-19.
+LR_dynastic_realm_name_republic_trigger = {
+	OR = {
+		government_has_flag = government_is_republic
+		government_has_flag = government_is_theocracy
+		government_has_flag = government_is_holy_order
+	}
+}
+
+# Governments that never get a realm name (theocracies and holy orders moved to the trigger above, user 11-19)
+
 LR_dynastic_realm_name_excluded_government_trigger = {
 	OR = {
-		government_has_flag = government_is_theocracy
-		government_has_flag = government_is_republic
 		government_has_flag = government_is_landless_adventurer
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_herder
-		government_has_flag = government_is_holy_order
 		government_has_flag = government_is_mercenary
 	}
 }
@@ -115,10 +125,18 @@ LR_dynastic_realm_name_valid_trigger = {
 	exists = primary_title
 	primary_title = {
 		tier >= tier_duchy
+		# landed realms only (not patrician families, noble families, adventurer camps);
+		# holy order titles are landless too but are named (user, 11-19)
+		OR = {
+			is_landless_type_title = no
+			root = { government_has_flag = government_is_holy_order }
+		}
 		# Roman titles are named by LR_roman_title_names_effects.txt
 		NOT = { LR_roman_named_title_trigger = yes }
 	}
 	OR = {
+		# republics, theocracies and holy orders, every mode, duchy+
+		LR_dynastic_realm_name_republic_trigger = yes
 		# house names only; duchies too (user, 11-19)
 		AND = {
 			has_game_rule = lr_dynastic_realm_names_dynastic
@@ -145,6 +163,7 @@ LR_dynastic_realm_name_valid_trigger = {
 # root = a ruler. Does the realm name use the house in the current mode? (never in Tier Names Only)
 LR_dynastic_realm_name_use_house_form_trigger = {
 	NOT = { has_game_rule = lr_dynastic_realm_names_tiered }
+	NOT = { LR_dynastic_realm_name_republic_trigger = yes }
 	LR_dynastic_realm_name_house_form_trigger = yes
 }
 
