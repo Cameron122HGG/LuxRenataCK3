@@ -185,3 +185,60 @@ LR_roman_imperial_office_cap_trigger = {
 		}
 	}
 }
+
+# Character: holds a Roman title on the wrong side for their government, with its twin free (LR_schedule_roman_title_twins_effect).
+# LR 2026-11-19 (user): Empire side for every Roman imperial government (the Principate too), Republic side for a plain republic.
+LR_needs_roman_title_twin_swap_trigger = {
+	OR = {
+		AND = {
+			LR_has_roman_imperial_government_trigger = yes
+			OR = {
+				AND = {
+					has_title = title:e_western_roman_republic
+					NOT = { exists = title:e_western_roman_empire.holder }
+				}
+				AND = {
+					has_title = title:e_eastern_roman_republic
+					NOT = { exists = title:e_eastern_roman_empire.holder }
+				}
+				AND = {
+					has_title = title:h_western_roman_republic
+					NOT = { exists = title:h_western_roman_empire.holder }
+				}
+				AND = {
+					has_title = title:h_eastern_roman_republic
+					NOT = { exists = title:h_eastern_roman_empire.holder }
+				}
+				AND = {
+					has_title = title:h_roman_republic
+					NOT = { exists = title:h_roman_empire.holder }
+				}
+			}
+		}
+		AND = {
+			has_government = republic_government
+			OR = {
+				AND = {
+					has_title = title:e_western_roman_empire
+					NOT = { exists = title:e_western_roman_republic.holder }
+				}
+				AND = {
+					has_title = title:e_eastern_roman_empire
+					NOT = { exists = title:e_eastern_roman_republic.holder }
+				}
+				AND = {
+					has_title = title:h_western_roman_empire
+					NOT = { exists = title:h_western_roman_republic.holder }
+				}
+				AND = {
+					has_title = title:h_eastern_roman_empire
+					NOT = { exists = title:h_eastern_roman_republic.holder }
+				}
+				AND = {
+					has_title = title:h_roman_empire
+					NOT = { exists = title:h_roman_republic.holder }
+				}
+			}
+		}
+	}
+}

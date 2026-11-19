@@ -11,23 +11,20 @@
 #   - Path: a Roman Republic's consul takes LR_accept_principate_decision (the Senate votes on it); a Princeps with a
 #     Ceremonial Senate may take LR_reform_into_dominate_decision (roman_dominate_government, All Under Heaven).
 
-# Root is a ruler who just took the Principate (a republic). LR 2026-11-19 (crash fix): vanilla republics expect a
-# patrician family title with a merchant company seat; vanilla's gdp_found_a_republic_effect (step 4) creates it after
-# change_government, destroying any (administrative) noble family title first, or the merchant title is not given.
-# Without it, the republic window crashed for a Princeps who came from Roman Autocratic.
+# Root is a ruler who just took the Principate (a republic). Gives a seatless character a patrician family title, as vanilla's
+# gdp_found_a_republic_effect (step 4) does for a new republic; characters who already have an estate keep it.
 LR_principate_patrician_seat_effect = {
+	# LR 2026-11-19: no longer destroys anything. Destroying the administrative noble-family titles (estates) of the Princeps and every
+	# new governor inside Restore the Principate is the prime suspect for its crash (vanilla's on_title_destroyed already errors
+	# on it), and the realm-window crash this was added for was the window routing (gui/hud.gui). Only a character with no seat
+	# at all (e.g. a courtier made legate) gets a patrician family title.
 	if = {
 		limit = {
-			OR = {
-				NOT = { exists = domicile }
-				domicile ?= { NOT = { is_domicile_type = merchant_company } }
-			}
+			NOT = { exists = domicile }
+			NOT = { any_held_title = { is_noble_family_title = yes } }
+			exists = house
 		}
 		save_scope_as = republican_founder # read by the vanilla NEW_PATRICIAN_TITLE_NAME
-		every_held_title = {
-			limit = { is_noble_family_title = yes }
-			scope:republican_founder = { destroy_title = prev }
-		}
 		create_dynamic_title = {
 			name = NEW_PATRICIAN_TITLE_NAME
 			tier = county
@@ -162,6 +159,49 @@ LR_become_princeps_effect = {
 			change_government = principate_government
 			LR_principate_patrician_seat_effect = yes # LR 2026-11-19 crash fix
 		}
+	}
+
+	# LR 2026-11-19 (user test: the Senate had only the Princeps and no Senate Size law). The landed vassals of duchy tier
+	# and up take seats (as vanilla gdp_restore_the_roman_republic_effect seats the old assembly), and the Senate Size law
+	# is set from how many sit.
+	custom_tooltip = LR_become_princeps_senators_tt
+	hidden_effect = {
+		every_vassal_or_below = {
+			limit = {
+				is_landed = yes
+				highest_held_title_tier >= tier_duchy
+				NOT = { has_character_flag = republic_appointed_senator }
+			}
+			add_character_flag = republic_appointed_senator
+		}
+		every_vassal_or_below = {
+			limit = { has_character_flag = republic_appointed_senator }
+			add_to_list = LR_princeps_senators
+		}
+		if = {
+			limit = { NOT = { has_realm_law_flag = republic_senate_size } }
+			if = {
+				limit = {
+					any_in_list = {
+						list = LR_princeps_senators
+						count > { value = republic_senate_size_2_value multiply = 1.5 }
+					}
+				}
+				add_realm_law_skip_effects = republic_senate_size_3
+			}
+			else_if = {
+				limit = {
+					any_in_list = {
+						list = LR_princeps_senators
+						count > { value = republic_senate_size_1_value multiply = 1.5 }
+					}
+				}
+				add_realm_law_skip_effects = republic_senate_size_2
+			}
+			else = {
+				add_realm_law_skip_effects = republic_senate_size_1
+			}
+		}
 		update_assembly = yes
 	}
 
@@ -205,7 +245,6 @@ LR_reform_into_dominate_effect = {
 		cp:LR_ab_epistulis ?= { save_scope_as = LR_carry_3 }
 	}
 	change_government = roman_dominate_government
-	custom_tooltip = LR_roman_titles_to_empire_tt # LR_align_roman_title_twins_effect, on the government change
 	hidden_effect = {
 		every_in_list = {
 			list = LR_principate_governors
@@ -359,7 +398,6 @@ LR_restore_roman_principate_effect = {
 		}
 	}
 	LR_become_princeps_effect = yes
-	custom_tooltip = LR_roman_titles_to_republic_tt # LR_align_roman_title_twins_effect, on the government change
 	hidden_effect = {
 		if = {
 			limit = { exists = scope:LR_carry_0 }

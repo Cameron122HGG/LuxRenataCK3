@@ -1,0 +1,20 @@
+﻿# LR 2026-11-19 (user): root = a character. Their family seat doesn't match roman_imperial_domicile: they are on the Roman
+# Principate or the Roman Dominate with another seat type, or they left both and still have the domus. Only family-title
+# holders, since the conversion (vanilla tgp_domicile_conversion_when_changing_government_type) rebuilds that title.
+LR_needs_roman_imperial_domicile_conversion_trigger = {
+	any_held_title = { is_noble_family_title = yes }
+	OR = {
+		AND = {
+			OR = {
+				has_government = principate_government
+				has_government = roman_dominate_government
+			}
+			NOT = { domicile ?= { is_domicile_type = roman_imperial_domicile } }
+		}
+		AND = {
+			NOT = { has_government = principate_government }
+			NOT = { has_government = roman_dominate_government }
+			domicile ?= { is_domicile_type = roman_imperial_domicile }
+		}
+	}
+}

@@ -552,6 +552,7 @@ roman_autocratic_government = { # regional roman empires
 	mechanic_type = administrative
 	title_maa_setup = main_tier_and_top_liege # Lux Renata 1.21: required for administrative governments
 	domicile_type = classical_group_estate
+	compatible_government_type_succession = { roman_dominate_government principate_government roman_administrative_government } # LR 2026-11-19 (user): appointment candidates may also come from the rest of the Roman imperial ladder
 	main_administrative_tier = duchy
 	min_appointment_tier = county
 	minimum_provincial_maa_tier = duchy
@@ -701,7 +702,8 @@ roman_dominate_government = { # restored Roman empires (celestial-based: Roman b
 	#blocked_subject_courts = { meritocratic_government celestial_government japan_administrative_government administrative_government steppe_admin_government }
 	mechanic_type = administrative
 	title_maa_setup = vassals_and_top_liege # Lux Renata 1.21: required for administrative governments
-	domicile_type = classical_group_estate
+	domicile_type = roman_imperial_domicile # LR 2026-11-19 (user): shared with the Principate (was classical_group_estate)
+	compatible_government_type_succession = { principate_government roman_autocratic_government roman_administrative_government } # LR 2026-11-19 (user): appointment candidates may also come from the rest of the Roman imperial ladder
 	main_administrative_tier = duchy
 	min_appointment_tier = county
 	minimum_provincial_maa_tier = duchy
@@ -835,7 +837,7 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 	#   (principate_vassal contracts, common/subject_contracts/contracts/principate.txt)
 	# - reached from a Roman Republic by LR_accept_principate_decision, left by LR_reform_into_dominate_decision
 	primary_holding = city_holding
-	valid_holdings = { castle_holding }
+	valid_holdings = { castle_holding temple_citadel_holding } # LR 2026-11-19: as vanilla 1.21.0 hotfix republics
 	required_county_holdings = { city_holding castle_holding church_holding }
 
 	government_rules = {
@@ -862,7 +864,8 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 		value = patrician_house_score_value
 	}
 
-	domicile_type = merchant_company # the patrician houses' landless seat, as vanilla republics
+	domicile_type = roman_imperial_domicile # LR 2026-11-19 (user): shared with the Dominate (was merchant_company, a mismatch for estates carried over from Roman Administrative)
+	compatible_government_type_succession = { roman_dominate_government roman_autocratic_government roman_administrative_government } # LR 2026-11-19 (user): appointment candidates may also come from the rest of the Roman imperial ladder
 	royal_court = none
 	min_appointment_tier = county
 
@@ -898,9 +901,7 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 		monthly_influence = 1
 	}
 
-	currency_levels_cap = {
-		merit = 5
-	}
+	currency_levels_cap = { merit = 5 }
 
 	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
 	flags = {
@@ -916,15 +917,15 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 		government_has_trade_posts
 		government_has_title_men_at_arms
 		government_has_assembly
-		government_has_merchant_company
+		#government_has_merchant_company
 		has_unique_government_perks
 		government_uses_landless_or_trader_lifestyle_perks
 		government_uses_salary_budget
 		government_uses_military_budget
 		# LR
 		government_is_principate
-		government_has_merit # LR 2026-11-19: the cursus honorum
-		government_has_influence # LR 2026-11-19: influence as auctoritas (trial)
+		government_has_merit
+		government_has_influence
 		government_is_roman_government # LR Roman checks (titles, Roman decisions)
 		government_is_classical_group
 	}

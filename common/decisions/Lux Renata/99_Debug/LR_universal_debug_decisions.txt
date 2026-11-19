@@ -101,3 +101,41 @@ LR_debug_become_dominus_decision = {
 		base = 0
 	}
 }
+
+# LR 2026-11-19: crash bisect. Only the government change (plus leaving a decayed title): no laws, governors, seats or ministers.
+# If this does not crash but Debug: Become Princeps does, the crash is in LR_become_princeps_effect's setup.
+LR_debug_principate_government_only_decision = {
+	decision_group_type = debug
+
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+
+	desc = LR_debug_principate_government_only_decision_desc
+	selection_tooltip = LR_debug_principate_government_only_decision_tooltip
+	confirm_text = LR_debug_principate_government_only_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = principate_government }
+	}
+
+	is_valid = {
+		LR_has_roman_evolution_dlc_trigger = yes
+	}
+
+	effect = {
+		LR_debug_leave_decayed_roman_title_effect = yes
+		change_government = principate_government
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}

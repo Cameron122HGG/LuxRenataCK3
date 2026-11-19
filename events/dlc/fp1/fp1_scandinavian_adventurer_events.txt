@@ -204,7 +204,7 @@ scripted_effect scandinavian_adventurer_start_war_effect = {
 				days = 365
 			}
 		}
-		# Work out how many event troops we should give the adventurer for a 60:40 fight.
+		# Work out how many event troops we should give the adventurer.
 		spawn_army = {
 			levies = {
 				add = {
@@ -216,10 +216,11 @@ scripted_effect scandinavian_adventurer_start_war_effect = {
 					scope:adventurer_target.holder.top_liege = {
 						every_ally = { add = this.max_military_strength }
 					}
+					multiply = 0.5
 					#Cut it off so things don't get too ridiculous.
-					max = 8000
+					max = 4000
 					#Make sure all adventurers have a moderately respectable force.
-					min = 1000
+					min = 500
 				}
 			}
 			inheritable = no
@@ -232,6 +233,8 @@ scripted_effect scandinavian_adventurer_start_war_effect = {
 				stacks = {
 					value = 1
 					multiply = scope:adventurer_target.holder.top_liege.primary_title.tier
+					divide = 2
+					ceiling = yes
 				}
 			}
 			inheritable = yes
@@ -244,6 +247,8 @@ scripted_effect scandinavian_adventurer_start_war_effect = {
 				stacks = {
 					value = 1
 					multiply = scope:adventurer_target.holder.top_liege.primary_title.tier
+					divide = 2
+					floor = yes
 				}
 			}
 			inheritable = yes

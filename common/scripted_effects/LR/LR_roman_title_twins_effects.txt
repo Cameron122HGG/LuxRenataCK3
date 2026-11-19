@@ -5,31 +5,43 @@
 #   h_roman_republic         <-> h_roman_empire
 #   h_western_roman_republic <-> h_western_roman_empire (LR 2026-11-19, user: "Add Republic twins")
 #   h_eastern_roman_republic <-> h_eastern_roman_empire
-# When a ruler's government changes, LR_align_roman_title_twins_effect (called from LR_normalize_dynastic_government_effect)
-# swaps their held titles to the side that fits: the Republic titles for the Principate, the Empire titles for Roman
-# Autocratic and the Dominate. So Restore the Principate gives back the Res Publica, and Reform into the Dominate the Empire.
+# When a ruler's government changes, LR_align_roman_title_twins_effect (scheduled by the normalizer) swaps their held titles
+# to the side that fits. LR 2026-11-19 (user): "principate government should be in the empire half of the roman sibling
+# titles": the Empire titles for every Roman imperial government (Roman Imperial, Principate, Dominate); the Republic titles for a
+# plain Roman Republic (republic_government). So the only Republic -> Empire step is a Roman Republic's Dictator accepting the
+# Principate (LR_accept_principate_decision); Restore the Principate and Reform into the Dominate keep the Empire titles.
+
+# Root is a ruler. LR 2026-11-19: the swap destroys and creates hegemony/empire titles, which crashed the game when it ran inside
+# change_government (on_government_change, in the middle of Restore the Principate). Callers schedule it instead: a hidden event a
+# day later (LR_roman_title_twins.0001) runs LR_align_roman_title_twins_effect once the decision or event has finished.
+LR_schedule_roman_title_twins_effect = {
+	if = {
+		limit = { LR_needs_roman_title_twin_swap_trigger = yes }
+		trigger_event = {
+			id = LR_roman_title_twins.0001
+			days = 1
+		}
+	}
+}
 
 # Root is a ruler
 LR_align_roman_title_twins_effect = {
 	if = {
-		limit = { has_government = principate_government }
+		limit = { LR_has_roman_imperial_government_trigger = yes }
 		# Empires first, then the hegemony, so the hegemony swap also moves the new empire titles under it
-		LR_swap_roman_title_twin_effect = { OLD = e_western_roman_empire NEW = e_western_roman_republic }
-		LR_swap_roman_title_twin_effect = { OLD = e_eastern_roman_empire NEW = e_eastern_roman_republic }
-		LR_swap_roman_title_twin_effect = { OLD = h_western_roman_empire NEW = h_western_roman_republic }
-		LR_swap_roman_title_twin_effect = { OLD = h_eastern_roman_empire NEW = h_eastern_roman_republic }
-		LR_swap_roman_title_twin_effect = { OLD = h_roman_empire NEW = h_roman_republic }
-	}
-	else_if = {
-		limit = {
-			LR_has_roman_imperial_government_trigger = yes
-			NOT = { has_government = principate_government }
-		}
 		LR_swap_roman_title_twin_effect = { OLD = e_western_roman_republic NEW = e_western_roman_empire }
 		LR_swap_roman_title_twin_effect = { OLD = e_eastern_roman_republic NEW = e_eastern_roman_empire }
 		LR_swap_roman_title_twin_effect = { OLD = h_western_roman_republic NEW = h_western_roman_empire }
 		LR_swap_roman_title_twin_effect = { OLD = h_eastern_roman_republic NEW = h_eastern_roman_empire }
 		LR_swap_roman_title_twin_effect = { OLD = h_roman_republic NEW = h_roman_empire }
+	}
+	else_if = {
+		limit = { has_government = republic_government }
+		LR_swap_roman_title_twin_effect = { OLD = e_western_roman_empire NEW = e_western_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = e_eastern_roman_empire NEW = e_eastern_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = h_western_roman_empire NEW = h_western_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = h_eastern_roman_empire NEW = h_eastern_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = h_roman_empire NEW = h_roman_republic }
 	}
 }
 

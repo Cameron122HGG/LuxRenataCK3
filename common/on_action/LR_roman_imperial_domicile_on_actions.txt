@@ -1,0 +1,18 @@
+﻿# LR 2026-11-19 (user): the Roman Principate and the Roman Dominate share roman_imperial_domicile. A day after a government
+# change, a family seat of the wrong type is rebuilt as the right one (LR_roman_imperial_domicile.0001).
+on_government_change = {
+	on_actions = { LR_roman_imperial_domicile_on_government_change }
+}
+
+# root = the character whose government changed
+LR_roman_imperial_domicile_on_government_change = {
+	trigger = {
+		LR_needs_roman_imperial_domicile_conversion_trigger = yes
+	}
+	effect = {
+		trigger_event = {
+			id = LR_roman_imperial_domicile.0001
+			days = 1 # not inside change_government (an immediate title swap there crashed, see LR_roman_title_twins_events.txt)
+		}
+	}
+}
