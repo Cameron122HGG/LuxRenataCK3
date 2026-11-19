@@ -2,5 +2,11 @@
 
 # Root is the emperor. Appoints the best available commander of the realm to the legion title:$TITLE$.
 LR_appoint_roman_legion_effect = {
-	LR_appoint_roman_command_effect = { TITLE = $TITLE$ LAW = LR_roman_legion_appointment_succession_law }
+	if = { # LR 2026-11-19: the Principate's legates are appointed by renown, not merit
+		limit = { has_government = principate_government }
+		LR_appoint_roman_command_effect = { TITLE = $TITLE$ LAW = LR_principate_legion_appointment_succession_law }
+	}
+	else = {
+		LR_appoint_roman_command_effect = { TITLE = $TITLE$ LAW = LR_roman_legion_appointment_succession_law }
+	}
 }

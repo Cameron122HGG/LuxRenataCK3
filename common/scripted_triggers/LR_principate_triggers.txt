@@ -49,6 +49,7 @@ LR_principate_successor_candidate_trigger = {
 
 # Character: can take LR_accept_principate_decision's road (a consul of a Roman Republic, not yet Princeps)
 LR_principate_founder_shown_trigger = {
+	has_gdp_dlc_trigger = yes # LR 2026-11-19 (user): Silk & Silver, as the Roman Republic decisions
 	government_has_flag = government_is_republic
 	NOT = { has_government = principate_government }
 	gdp_is_assembly_head_trigger = yes
@@ -71,4 +72,20 @@ LR_roman_autocrat_highest_tier_trigger = {
 		highest_held_title_tier = tier_hegemony
 	}
 	LR_can_have_upgraded_roman_government_trigger = yes
+}
+
+# Character: has a government of the Classical group (Classical, Roman or Hellenistic, the Principate too), with a tooltip.
+# LR 2026-11-19: the diocese decisions showed the bare flag as "Your Government government_is_classical_group".
+LR_has_classical_government_trigger = {
+	custom_tooltip = {
+		text = LR_has_classical_government_tt
+		government_has_flag = government_is_classical_group
+	}
+}
+
+# Character: has a Roman imperial government: Roman Autocratic, Roman Dominate or the Principate.
+# LR 2026-11-19 (user): "principate should be considered an imperial type even though it uses republic features".
+# Mechanics tied to the administrative mechanic (offices, ministries, title legions) still check their own flags.
+LR_has_roman_imperial_government_trigger = {
+	government_has_flag = government_is_roman_imperial_type
 }

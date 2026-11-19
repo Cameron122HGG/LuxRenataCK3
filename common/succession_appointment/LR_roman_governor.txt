@@ -155,3 +155,43 @@ LR_roman_military_governor = {
 		}
 	}
 }
+
+# LR 2026-11-19: a Princeps' legate (LR_principate_legion_appointment_succession_law). Like LR_roman_military_governor,
+# but by renown (prestige level), since the Principate has no merit.
+LR_principate_legate = {
+	allowed_candidate_tier = lower_or_equal
+	cooldown = yes
+
+	level = prestige
+
+	candidate_score = {
+		value = {
+			add = appointment_score_base
+			add = appointment_score_military
+			# Roman citizenship: shares the Princeps' culture
+			if = {
+				limit = {
+					exists = root.top_liege
+					root.top_liege != root
+					culture = root.top_liege.culture
+				}
+				add = {
+					value = 25
+					desc = LR_roman_appointment_citizen
+				}
+			}
+			# A friend of the Princeps (councillor)
+			if = {
+				limit = {
+					exists = root.top_liege
+					is_councillor_of = root.top_liege
+				}
+				add = {
+					value = 25
+					desc = LR_roman_appointment_consistory
+				}
+			}
+			add = appointment_score_final_factors
+		}
+	}
+}

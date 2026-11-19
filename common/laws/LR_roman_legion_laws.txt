@@ -27,3 +27,34 @@ LR_roman_legion_appointment_succession_law = {
 	flag = appointment_type_succession
 	flag = appointment_with_level_requirement
 }
+
+# LR 2026-11-19 (user: "only principate should get legions"): the Principate's legions. The Princeps has no merit, so the
+# legate is appointed by renown (LR_principate_legate, level = prestige) instead of LR_roman_military_governor.
+LR_principate_legion_appointment_succession_law = {
+	law_group_type = title_succession_laws
+	index = 26
+
+	can_have = {
+		government_has_flag = government_is_principate
+	}
+	can_pass = {
+	}
+	can_title_have = {
+		LR_is_roman_legion_title_trigger = yes
+	}
+	can_realm_have = {
+		always = no
+	}
+	can_remove_from_title = {
+		custom_tooltip = {
+			text = celestial_ministry_appointment_cannot_remove_desc
+			always = no
+		}
+	}
+	succession = {
+		order_of_succession = appointment
+		appointment_type = LR_principate_legate
+	}
+	flag = appointment_type_succession
+	flag = appointment_with_level_requirement
+}

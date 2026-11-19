@@ -1,0 +1,109 @@
+﻿# LR 2026-11-19 (user): "link the roman republic titles with their equivalent roman empire titles so there is a smooth
+# transition". Each Roman Republic title has an Empire twin:
+#   e_western_roman_republic <-> e_western_roman_empire
+#   e_eastern_roman_republic <-> e_eastern_roman_empire
+#   h_roman_republic         <-> h_roman_empire
+#   h_western_roman_republic <-> h_western_roman_empire (LR 2026-11-19, user: "Add Republic twins")
+#   h_eastern_roman_republic <-> h_eastern_roman_empire
+# When a ruler's government changes, LR_align_roman_title_twins_effect (called from LR_normalize_dynastic_government_effect)
+# swaps their held titles to the side that fits: the Republic titles for the Principate, the Empire titles for Roman
+# Autocratic and the Dominate. So Restore the Principate gives back the Res Publica, and Reform into the Dominate the Empire.
+
+# Root is a ruler
+LR_align_roman_title_twins_effect = {
+	if = {
+		limit = { has_government = principate_government }
+		# Empires first, then the hegemony, so the hegemony swap also moves the new empire titles under it
+		LR_swap_roman_title_twin_effect = { OLD = e_western_roman_empire NEW = e_western_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = e_eastern_roman_empire NEW = e_eastern_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = h_western_roman_empire NEW = h_western_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = h_eastern_roman_empire NEW = h_eastern_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = h_roman_empire NEW = h_roman_republic }
+	}
+	else_if = {
+		limit = {
+			LR_has_roman_imperial_government_trigger = yes
+			NOT = { has_government = principate_government }
+		}
+		LR_swap_roman_title_twin_effect = { OLD = e_western_roman_republic NEW = e_western_roman_empire }
+		LR_swap_roman_title_twin_effect = { OLD = e_eastern_roman_republic NEW = e_eastern_roman_empire }
+		LR_swap_roman_title_twin_effect = { OLD = h_western_roman_republic NEW = h_western_roman_empire }
+		LR_swap_roman_title_twin_effect = { OLD = h_eastern_roman_republic NEW = h_eastern_roman_empire }
+		LR_swap_roman_title_twin_effect = { OLD = h_roman_republic NEW = h_roman_empire }
+	}
+}
+
+# Root is a ruler. Swaps OLD for its twin NEW when root holds OLD and nobody holds NEW.
+LR_swap_roman_title_twin_effect = {
+	if = {
+		limit = {
+			has_title = title:$OLD$
+			NOT = { exists = title:$NEW$.holder }
+		}
+		LR_transfer_roman_title_twin_effect = { OLD = $OLD$ NEW = $NEW$ }
+	}
+}
+
+# Root holds OLD. Like LR_transfer_empire_title_effect (99_LR_roman_empire_scripted_effects.txt), but for any tier and
+# any government: NEW takes OLD's holder, history, capital, title men-at-arms, guard variables, de jure liege and de jure
+# vassals, then OLD is destroyed.
+LR_transfer_roman_title_twin_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:$NEW$ = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		hidden_effect = { copy_title_history = title:$OLD$ }
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	hidden_effect = {
+		if = {
+			limit = { exists = title:$OLD$.title_capital_county }
+			title:$NEW$ = { set_capital_county = title:$OLD$.title_capital_county }
+		}
+		if = {
+			limit = {
+				title:$OLD$ = { any_title_maa_regiment = { count >= 1 } }
+			}
+			title:$OLD$ = { transfer_title_maa_ownership = title:$NEW$ }
+		}
+		if = {
+			limit = { title:$OLD$ = { has_variable = founded_varangian_guard } }
+			title:$NEW$ = { set_variable = founded_varangian_guard }
+		}
+		if = {
+			limit = { title:$OLD$ = { has_variable = refounded_praetorian_guard } }
+			title:$NEW$ = { set_variable = refounded_praetorian_guard }
+		}
+
+		# De jure: NEW takes OLD's place above and below
+		if = {
+			limit = { exists = title:$OLD$.de_jure_liege }
+			title:$NEW$ = { set_de_jure_liege_title = title:$OLD$.de_jure_liege }
+		}
+		title:$OLD$ = {
+			every_in_de_jure_hierarchy = {
+				continue = { this = title:$OLD$ }
+				limit = { NOT = { this = title:$OLD$ } }
+				add_to_temporary_list = LR_twin_$OLD$_de_jure_vassals
+			}
+		}
+		every_in_list = {
+			list = LR_twin_$OLD$_de_jure_vassals
+			set_de_jure_liege_title = title:$NEW$
+		}
+
+		if = {
+			limit = { primary_title = title:$OLD$ }
+			set_primary_title_to = title:$NEW$
+		}
+	}
+
+	destroy_title = title:$OLD$
+}

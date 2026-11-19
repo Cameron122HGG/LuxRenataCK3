@@ -107,11 +107,17 @@ principate_elective = {
 		}
 
 		# The senator's own view of the candidate
-		opinion_modifier = {
+		modifier = { # as vanilla's elector_voting_pattern_opinion_feudal_elective_modifier: never on yourself
 			desc = LR_principate_elector_opinion
-			who = root
-			opinion_target = scope:candidate
-			multiplier = 0.5
+			this != scope:candidate
+			save_temporary_opinion_value_as = {
+				name = opinion_of_candidate
+				target = scope:candidate
+			}
+			add = {
+				value = scope:opinion_of_candidate
+				multiply = 0.5
+			}
 		}
 
 		# Acclaimed by the legions: renown and generalship

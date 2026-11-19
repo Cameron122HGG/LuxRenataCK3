@@ -62,7 +62,15 @@ LR_appoint_roman_command_effect = {
 		resolve_title_and_vassal_change = scope:dux_change
 		# The commander takes the emperor's government: Roman Imperial, or Roman Autocratic in a regional empire
 		scope:new_dux = {
-			if = {
+			if = { # LR 2026-11-19: a Princeps' legate serves on the Principate, with a patrician seat (LR_principate_effects.txt)
+				limit = { root = { has_government = principate_government } }
+				if = {
+					limit = { NOT = { has_government = principate_government } }
+					change_government = principate_government
+				}
+				LR_principate_patrician_seat_effect = yes
+			}
+			else_if = {
 				limit = { root = { government_has_flag = government_is_roman_imperial } }
 				if = {
 					limit = { NOT = { government_has_flag = government_is_roman_imperial } }

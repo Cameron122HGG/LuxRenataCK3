@@ -1967,6 +1967,24 @@ GetGovernmentIcon = {
 		}
 		localization_key = roman_administrative_icon_concept
 	}
+	text = { # LR 2026-11-19: Principate (a Roman imperial government on republic mechanics)
+		trigger = {
+			trigger_if = {
+				limit = { is_alive = no }
+				has_government = principate_government
+			}
+			trigger_else = {
+				trigger_if = {
+					limit = { is_ruler = yes }
+					has_government = principate_government
+				}
+				trigger_else = {
+					liege ?= { has_government = principate_government }
+				}
+			}
+		}
+		localization_key = principate_government_icon_concept
+	}
 	text = { # Roman Imperial
 		trigger = {
 			trigger_if = {

@@ -11,6 +11,37 @@
 #   - Path: a Roman Republic's consul takes LR_accept_principate_decision (the Senate votes on it); a Princeps with a
 #     Ceremonial Senate may take LR_reform_into_dominate_decision (roman_dominate_government, All Under Heaven).
 
+# Root is a ruler who just took the Principate (a republic). LR 2026-11-19 (crash fix): vanilla republics expect a
+# patrician family title with a merchant company seat; vanilla's gdp_found_a_republic_effect (step 4) creates it after
+# change_government, destroying any (administrative) noble family title first, or the merchant title is not given.
+# Without it, the republic window crashed for a Princeps who came from Roman Autocratic.
+LR_principate_patrician_seat_effect = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { exists = domicile }
+				domicile ?= { NOT = { is_domicile_type = merchant_company } }
+			}
+		}
+		save_scope_as = republican_founder # read by the vanilla NEW_PATRICIAN_TITLE_NAME
+		every_held_title = {
+			limit = { is_noble_family_title = yes }
+			scope:republican_founder = { destroy_title = prev }
+		}
+		create_dynamic_title = {
+			name = NEW_PATRICIAN_TITLE_NAME
+			tier = county
+			type = title_type_merchant_family
+			holder = scope:republican_founder
+			article = DEFAULT_TITLE_NAME_ARTICLE
+			save_scope_as = LR_new_patrician_title
+		}
+		scope:LR_new_patrician_title ?= {
+			add_title_law = noble_family_succession_law
+		}
+	}
+}
+
 # Root is a ruler. Called first in LR_normalize_dynastic_government_effect (so on game start, on government change and
 # when a liege gains a vassal): direct vassals of a Princeps become governors; a governor who no longer serves a Princeps
 # goes back to feudal, which the normalizer maps to the culture's group.
@@ -22,6 +53,7 @@ LR_principate_align_vassal_effect = {
 			LR_principate_governor_trigger = yes
 		}
 		change_government = principate_government
+		LR_principate_patrician_seat_effect = yes # LR 2026-11-19 crash fix
 	}
 	else_if = {
 		limit = {
@@ -29,6 +61,10 @@ LR_principate_align_vassal_effect = {
 			has_government = principate_government
 			exists = liege
 			LR_principate_governor_trigger = no
+			NAND = { # LR 2026-11-19: a Princeps' landless legate keeps the Principate
+				LR_is_roman_legion_trigger = yes
+				top_liege = { has_government = principate_government }
+			}
 		}
 		change_government = feudal_government # re-normalized by on_government_change
 	}
@@ -58,6 +94,7 @@ LR_downgrade_upgraded_roman_government_effect = {
 # Root is the consul of a Roman Republic. Makes root Princeps: the government, the Principate's laws and the governors.
 LR_become_princeps_effect = {
 	change_government = principate_government
+	hidden_effect = { LR_principate_patrician_seat_effect = yes } # LR 2026-11-19 crash fix
 
 	# Laws. LR 2026-11-19: the Empire tier too, for an emperor restoring the Principate (LR_restore_roman_principate_effect)
 	if = {
@@ -90,6 +127,7 @@ LR_become_princeps_effect = {
 		every_vassal = {
 			limit = { LR_principate_governor_trigger = yes }
 			change_government = principate_government
+			LR_principate_patrician_seat_effect = yes # LR 2026-11-19 crash fix
 		}
 		update_assembly = yes
 	}
@@ -124,6 +162,7 @@ LR_reform_into_dominate_effect = {
 		}
 	}
 	change_government = roman_dominate_government
+	custom_tooltip = LR_roman_titles_to_empire_tt # LR_align_roman_title_twins_effect, on the government change
 	hidden_effect = {
 		every_in_list = {
 			list = LR_principate_governors
@@ -217,4 +256,5 @@ LR_adopt_roman_dominate_effect = {
 # feudal (LR_align_admin_vassals_of_top_liege_effect on the government change).
 LR_restore_roman_principate_effect = {
 	LR_become_princeps_effect = yes
+	custom_tooltip = LR_roman_titles_to_republic_tt # LR_align_roman_title_twins_effect, on the government change
 }
