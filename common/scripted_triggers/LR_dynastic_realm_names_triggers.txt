@@ -114,20 +114,38 @@ LR_dynastic_realm_name_valid_trigger = {
 	exists = house
 	exists = primary_title
 	primary_title = {
-		tier >= tier_kingdom
+		tier >= tier_duchy
 		# Roman titles are named by LR_roman_title_names_effects.txt
 		NOT = { LR_roman_named_title_trigger = yes }
 	}
 	OR = {
+		# house names only; duchies too (user, 11-19)
 		AND = {
 			has_game_rule = lr_dynastic_realm_names_dynastic
 			LR_dynastic_realm_name_house_form_trigger = yes
 		}
+		# house names where the culture uses them (duchies too), "<Tier> of <Title>" for other kingdoms+
 		AND = {
 			has_game_rule = lr_dynastic_realm_names_all
+			OR = {
+				primary_title = { tier >= tier_kingdom }
+				LR_dynastic_realm_name_house_form_trigger = yes
+			}
+			NOT = { LR_dynastic_realm_name_excluded_government_trigger = yes }
+		}
+		# "<Tier> of <Title>" for every kingdom+, no house names (user, 11-19)
+		AND = {
+			has_game_rule = lr_dynastic_realm_names_tiered
+			primary_title = { tier >= tier_kingdom }
 			NOT = { LR_dynastic_realm_name_excluded_government_trigger = yes }
 		}
 	}
+}
+
+# root = a ruler. Does the realm name use the house in the current mode? (never in Tier Names Only)
+LR_dynastic_realm_name_use_house_form_trigger = {
+	NOT = { has_game_rule = lr_dynastic_realm_names_tiered }
+	LR_dynastic_realm_name_house_form_trigger = yes
 }
 
 # scope = a title we named, root = its ruler. Is the stored name still right?

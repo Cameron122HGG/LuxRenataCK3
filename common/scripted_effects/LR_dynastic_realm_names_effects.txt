@@ -63,7 +63,7 @@ LR_dynastic_realm_names_refresh_effect = {
 				# instead of their primary title's tier
 				if = {
 					limit = {
-						root = { LR_dynastic_realm_name_house_form_trigger = yes }
+						root = { LR_dynastic_realm_name_use_house_form_trigger = yes }
 					}
 					if = {
 						limit = {
@@ -84,6 +84,8 @@ LR_dynastic_realm_names_refresh_effect = {
 				else = {
 					set_title_name_dynamic = LR_tiered_realm_name
 				}
+				# "the" before the name, so rulers read "King Philip of the Kingdom of France" (user, 11-19)
+				set_title_prefix = LR_realm_name_prefix
 				if = {
 					limit = {
 						root = { LR_dynastic_realm_name_temporal_head_trigger = yes }
@@ -146,6 +148,7 @@ LR_dynastic_realm_names_force_refresh_effect = {
 # scope = a title we named
 LR_dynastic_realm_names_reset_title_effect = {
 	reset_title_name = yes
+	reset_title_prefix = yes
 	set_can_be_named_after_dynasty = yes
 	remove_variable = LR_dynastic_realm_name
 	if = {
