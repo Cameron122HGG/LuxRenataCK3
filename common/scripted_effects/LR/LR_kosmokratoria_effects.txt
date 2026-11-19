@@ -1,0 +1,143 @@
+﻿# LR 2026-11-19 (user): the Kosmokratoria, the Hellenistic Universal government (hellenistic_kosmokratoria_government).
+# Only the holder of h_hellenistic_empire (Restore Alexander's Empire) with Roads to Power, Silk & Silver and All Under Heaven.
+
+# root = a character. Gives or takes the Kosmokratoria. Called a day after gaining or losing h_hellenistic_empire
+# (LR_kosmokratoria.0001) and from LR_normalize_dynastic_government_effect on every government change.
+LR_kosmokratoria_government_effect = {
+	if = {
+		limit = {
+			NOT = { has_government = hellenistic_kosmokratoria_government }
+			LR_can_become_kosmokrator_trigger = yes
+		}
+		change_government = hellenistic_kosmokratoria_government
+		if = {
+			limit = { has_character_flag = LR_kosmokratoria_force }
+			remove_character_flag = LR_kosmokratoria_force
+		}
+		trigger_event = { id = LR_kosmokratoria.0002 days = 1 } # the acclamation law; never inside change_government
+	}
+	else_if = {
+		limit = {
+			has_government = hellenistic_kosmokratoria_government
+			OR = {
+				NOT = { has_title = title:h_hellenistic_empire }
+				LR_has_roman_evolution_dlc_trigger = no
+			}
+		}
+		# Down the Hellenistic ladder by tier; without the DLCs the normalizer takes it further down
+		if = {
+			limit = { highest_held_title_tier >= tier_hegemony }
+			change_government = hellenistic_imperial_government
+		}
+		else_if = {
+			limit = { highest_held_title_tier >= tier_empire }
+			change_government = hellenistic_autocratic_government
+		}
+		else = {
+			change_government = alexandrian_administrative_government
+		}
+	}
+}
+
+# root = a Kosmokrator: the army acclamation is the succession law
+LR_kosmokratoria_set_succession_effect = {
+	if = {
+		limit = {
+			LR_is_kosmokrator_trigger = yes
+			NOT = { has_realm_law = kosmokratoria_acclamation_succession_law }
+		}
+		add_realm_law_skip_effects = kosmokratoria_acclamation_succession_law
+	}
+}
+
+# root = a Kosmokrator. Yearly (fusion policy): every Philos of another culture brings his culture and the Kosmokrator's
+# closer together.
+LR_kosmokratoria_fusion_pulse_effect = {
+	every_court_position_holder = {
+		limit = {
+			LR_is_kosmokratoria_philos_trigger = yes
+			culture != root.culture
+		}
+		save_temporary_scope_as = philos
+		root.culture = {
+			change_cultural_acceptance = {
+				target = scope:philos.culture
+				value = 2
+				desc = LR_kosmokratoria_philos_acceptance_desc
+			}
+		}
+	}
+}
+
+# root = the Kosmokrator taking LR_kosmokratoria_susa_weddings_decision. Every culture of the realm's counties grows closer
+# to the Kosmokrator's; foreign vassals are pleased, the Kosmokrator's own people resent it.
+LR_kosmokratoria_susa_weddings_effect = {
+	every_sub_realm_county = {
+		limit = { culture != root.culture }
+		culture = { add_to_temporary_list = LR_susa_cultures }
+	}
+	every_in_list = {
+		list = LR_susa_cultures
+		save_temporary_scope_as = susa_culture
+		root.culture = {
+			change_cultural_acceptance = {
+				target = scope:susa_culture
+				value = 15
+				desc = LR_kosmokratoria_susa_weddings_acceptance_desc
+			}
+		}
+	}
+	every_vassal = {
+		limit = { culture != root.culture }
+		add_opinion = {
+			target = root
+			modifier = LR_susa_weddings_foreign_opinion
+		}
+	}
+	every_vassal = {
+		limit = { culture = root.culture }
+		add_opinion = {
+			target = root
+			modifier = LR_susa_weddings_own_people_opinion
+		}
+	}
+}
+
+# root = the Kosmokrator taking LR_kosmokratoria_divine_honours_decision
+LR_kosmokratoria_divine_honours_effect = {
+	if = {
+		limit = { completely_controls_region = world_alexanders_empire }
+		add_character_modifier = LR_divine_honours_megas_modifier # Megas: master of all Alexander's lands
+	}
+	else = {
+		add_character_modifier = LR_divine_honours_modifier
+	}
+	add_legitimacy = major_legitimacy_gain
+	every_vassal = {
+		limit = {
+			faith = { has_doctrine = doctrine_monotheist }
+		}
+		add_opinion = {
+			target = root
+			modifier = LR_divine_honours_monotheist_opinion
+		}
+	}
+}
+
+# root = anyone. Debug: Become Kosmokrator
+LR_debug_become_kosmokrator_effect = {
+	if = {
+		limit = { NOT = { has_title = title:h_hellenistic_empire } }
+		get_title = title:h_hellenistic_empire
+	}
+	set_primary_title_to = title:h_hellenistic_empire
+	if = {
+		limit = { NOT = { has_global_variable = created_alexanders_hegemony } }
+		set_global_variable = {
+			name = created_alexanders_hegemony
+			value = yes
+		}
+	}
+	add_character_flag = LR_kosmokratoria_force
+	trigger_event = { id = LR_kosmokratoria.0001 days = 1 }
+}

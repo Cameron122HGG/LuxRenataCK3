@@ -1,0 +1,188 @@
+﻿# LR 2026-11-19 (user): the Kosmokratoria's ruler cult and fusion policy (Hellenistic Universal government)
+
+# Ruler cult: the cities vote the Kosmokrator divine honours for his deeds (his cult epithet, LR_choose_epithet)
+LR_kosmokratoria_divine_honours_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	decision_group_type = hellenic
+	sort_order = 900
+
+	desc = LR_kosmokratoria_divine_honours_decision_desc
+	selection_tooltip = LR_kosmokratoria_divine_honours_decision_tooltip
+
+	is_shown = {
+		LR_is_kosmokrator_trigger = yes
+		NOR = {
+			has_character_modifier = LR_divine_honours_modifier
+			has_character_modifier = LR_divine_honours_megas_modifier
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_kosmokratoria_cult_epithet_tt
+			LR_has_ruler_cult_epithet_trigger = yes
+		}
+		legitimacy_level >= 2
+		prestige_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_kosmokratoria_divine_honours_effect_tt
+		custom_tooltip = LR_kosmokratoria_divine_honours_megas_tt
+		hidden_effect = {
+			LR_kosmokratoria_divine_honours_effect = yes
+		}
+	}
+
+	ai_check_interval = 60
+	ai_potential = {
+		LR_is_kosmokrator_trigger = yes
+	}
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# Fusion policy: the Susa Weddings, once per reign
+LR_kosmokratoria_susa_weddings_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = hellenic
+	sort_order = 899
+
+	desc = LR_kosmokratoria_susa_weddings_decision_desc
+	selection_tooltip = LR_kosmokratoria_susa_weddings_decision_tooltip
+
+	is_shown = {
+		LR_is_kosmokrator_trigger = yes
+		NOT = { has_character_flag = LR_held_susa_weddings }
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_kosmokratoria_susa_foreign_vassals_tt
+			any_vassal = {
+				count >= 3
+				culture != root.culture
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 500
+		prestige = 500
+	}
+
+	effect = {
+		add_character_flag = LR_held_susa_weddings
+		add_character_modifier = {
+			modifier = LR_susa_weddings_modifier
+			years = 20
+		}
+		custom_tooltip = LR_kosmokratoria_susa_weddings_effect_tt
+		hidden_effect = {
+			LR_kosmokratoria_susa_weddings_effect = yes
+		}
+	}
+
+	ai_check_interval = 60
+	ai_potential = {
+		LR_is_kosmokrator_trigger = yes
+	}
+	ai_will_do = {
+		base = 50
+	}
+}
+
+# Fusion policy: proskynesis, the Persian prostration at court
+LR_kosmokratoria_adopt_proskynesis_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = hellenic
+	sort_order = 898
+
+	desc = LR_kosmokratoria_adopt_proskynesis_decision_desc
+	selection_tooltip = LR_kosmokratoria_adopt_proskynesis_decision_tooltip
+
+	is_shown = {
+		LR_is_kosmokrator_trigger = yes
+		NOT = { has_character_modifier = LR_proskynesis_modifier }
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		prestige = 300
+	}
+
+	effect = {
+		add_character_modifier = LR_proskynesis_modifier
+	}
+
+	ai_check_interval = 120
+	ai_potential = {
+		LR_is_kosmokrator_trigger = yes
+	}
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 40
+			any_vassal = {
+				count >= 5
+				culture != root.culture
+			}
+		}
+	}
+}
+
+LR_kosmokratoria_abolish_proskynesis_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = hellenic
+	sort_order = 897
+
+	desc = LR_kosmokratoria_abolish_proskynesis_decision_desc
+	selection_tooltip = LR_kosmokratoria_abolish_proskynesis_decision_tooltip
+
+	is_shown = {
+		has_character_modifier = LR_proskynesis_modifier
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		remove_character_modifier = LR_proskynesis_modifier
+	}
+
+	ai_check_interval = 120
+	ai_potential = {
+		has_character_modifier = LR_proskynesis_modifier
+		NOT = { LR_is_kosmokrator_trigger = yes }
+	}
+	ai_will_do = {
+		base = 100
+	}
+}

@@ -1,0 +1,89 @@
+﻿# LR 2026-11-19 (user): the Kosmokratoria, the Hellenistic Universal government (hellenistic_kosmokratoria_government).
+
+# root = a character
+LR_is_kosmokrator_trigger = {
+	government_has_flag = government_is_hellenistic_universal
+}
+
+# root = a character: may hold the Kosmokratoria now (DLCs, Alexander's hegemony, a Hellenistic-group government)
+LR_can_become_kosmokrator_trigger = {
+	has_title = title:h_hellenistic_empire
+	LR_has_roman_evolution_dlc_trigger = yes
+	OR = {
+		government_has_flag = government_is_hellenistic_government
+		has_government = alexandrian_dynastic_government
+		has_character_flag = LR_kosmokratoria_force # Debug: Become Kosmokrator
+	}
+}
+
+# root = the court owner: the Philoi offices exist
+LR_kosmokratoria_office_shown_trigger = {
+	LR_is_kosmokrator_trigger = yes
+	highest_held_title_tier >= tier_empire
+}
+
+# root = a candidate for one of the Philoi offices. As vanilla's court office checks; any culture may serve (fusion
+# policy); a Hellenistic governor may serve too; within the liege's gender law.
+LR_kosmokratoria_office_validity_trigger = {
+	base_court_position_validity_trigger = { EMPLOYER = $EMPLOYER$ }
+	custom_tooltip = {
+		text = none_does_not_have_a_full_time_job
+		trigger_if = {
+			limit = { NOT = { has_court_position = $POS$ } }
+			court_position_does_not_already_have_a_job_trigger = yes
+		}
+	}
+	OR = {
+		is_ruler = no
+		government_has_flag = government_is_hellenistic_government
+	}
+	OR = {
+		has_variable = can_be_councillor_override
+		AND = {
+			is_female = yes
+			$EMPLOYER$ = {
+				NOR = {
+					has_realm_law = male_only_law
+					has_realm_law = male_preference_law
+				}
+			}
+		}
+		AND = {
+			is_male = yes
+			$EMPLOYER$ = {
+				NOR = {
+					has_realm_law = female_only_law
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+	}
+}
+
+# root = a character: holds one of the five Philoi offices
+LR_is_kosmokratoria_philos_trigger = {
+	OR = {
+		has_court_position = LR_chiliarchos_court_position
+		has_court_position = LR_somatophylax_court_position
+		has_court_position = LR_dioiketes_court_position
+		has_court_position = LR_epistolographos_court_position
+		has_court_position = LR_archigrammateus_court_position
+	}
+}
+
+# root = a character: bears one of the Hellenistic cult epithets (LR_choose_epithet)
+LR_has_ruler_cult_epithet_trigger = {
+	OR = {
+		has_nickname = nick_soter
+		has_nickname = nick_nicator
+		has_nickname = nick_euergetes
+		has_nickname = nick_theos
+		has_nickname = nick_epiphanes
+		has_nickname = nick_eusebes
+		has_nickname = nick_ktistes
+		has_nickname = nick_eleutherios
+		has_nickname = nick_dikaios
+		has_nickname = nick_eupator
+		has_nickname = nick_philadelphus
+	}
+}

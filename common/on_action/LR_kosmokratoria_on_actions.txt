@@ -1,0 +1,31 @@
+﻿# LR 2026-11-19 (user): the Kosmokratoria, the Hellenistic Universal government. A day after h_hellenistic_empire is gained
+# or lost the government follows it (LR_kosmokratoria.0001); yearly, the fusion policy (non-Greek Philoi).
+on_title_gain = {
+	on_actions = { LR_kosmokratoria_on_title_change }
+}
+on_title_lost = {
+	on_actions = { LR_kosmokratoria_on_title_change }
+}
+yearly_playable_pulse = {
+	on_actions = { LR_kosmokratoria_yearly_pulse }
+}
+
+# root = the character who gained or lost scope:title
+LR_kosmokratoria_on_title_change = {
+	trigger = {
+		scope:title = title:h_hellenistic_empire
+	}
+	events = {
+		delay = { days = 1 }
+		LR_kosmokratoria.0001
+	}
+}
+
+LR_kosmokratoria_yearly_pulse = {
+	trigger = {
+		LR_is_kosmokrator_trigger = yes
+	}
+	effect = {
+		LR_kosmokratoria_fusion_pulse_effect = yes
+	}
+}
