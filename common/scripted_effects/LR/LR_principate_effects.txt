@@ -1,4 +1,4 @@
-﻿# LR 2026-11-19: the Principate (principate_government), designed with the user on 2026-11-19:
+﻿# LR 2026-11-19: the Principate (roman_principate_government), designed with the user on 2026-11-19:
 #   - Mechanic: republic. The Princeps is the head of the Roman Senate assembly for life. Shadowed vanilla laws
 #     (common/laws/04_republic_laws.txt, regenerate with tools/principate/patch_republic_laws.py) lock the term to
 #     Indefinite, the assembly to the Roman Senate and the authority to Legislative or Ceremonial.
@@ -46,21 +46,21 @@ LR_principate_align_vassal_effect = {
 	if = {
 		limit = {
 			is_ruler = yes
-			NOT = { has_government = principate_government }
+			NOT = { has_government = roman_principate_government }
 			LR_principate_governor_trigger = yes
 		}
-		change_government = principate_government
+		change_government = roman_principate_government
 		LR_principate_patrician_seat_effect = yes # LR 2026-11-19 crash fix
 	}
 	else_if = {
 		limit = {
 			is_ruler = yes
-			has_government = principate_government
+			has_government = roman_principate_government
 			exists = liege
 			LR_principate_governor_trigger = no
 			NAND = { # LR 2026-11-19: a Princeps' landless legate keeps the Principate
 				LR_is_roman_legion_trigger = yes
-				top_liege = { has_government = principate_government }
+				top_liege = { has_government = roman_principate_government }
 			}
 		}
 		change_government = feudal_government # re-normalized by on_government_change
@@ -94,7 +94,7 @@ LR_downgrade_upgraded_roman_government_effect = {
 	}
 	else_if = {
 		limit = {
-			has_government = principate_government
+			has_government = roman_principate_government
 			LR_has_roman_evolution_dlc_trigger = no
 		}
 		if = {
@@ -114,7 +114,7 @@ LR_downgrade_upgraded_roman_government_effect = {
 	}
 	else_if = {
 		limit = {
-			has_government = principate_government
+			has_government = roman_principate_government
 			LR_is_decayed_roman_realm_trigger = yes
 		}
 		change_government = republic_government
@@ -123,7 +123,7 @@ LR_downgrade_upgraded_roman_government_effect = {
 
 # Root is the consul of a Roman Republic. Makes root Princeps: the government, the Principate's laws and the governors.
 LR_become_princeps_effect = {
-	change_government = principate_government
+	change_government = roman_principate_government
 	hidden_effect = { LR_principate_patrician_seat_effect = yes } # LR 2026-11-19 crash fix
 
 	# Laws. LR 2026-11-19: the Empire tier too, for an emperor restoring the Principate (LR_restore_roman_principate_effect)
@@ -156,7 +156,7 @@ LR_become_princeps_effect = {
 	hidden_effect = {
 		every_vassal = {
 			limit = { LR_principate_governor_trigger = yes }
-			change_government = principate_government
+			change_government = roman_principate_government
 			LR_principate_patrician_seat_effect = yes # LR 2026-11-19 crash fix
 		}
 	}
@@ -231,7 +231,7 @@ LR_reform_into_dominate_effect = {
 	custom_tooltip = LR_roman_institutions_to_dominate_tt # LR 2026-11-19 (user): institutions carry over
 	hidden_effect = {
 		every_vassal = {
-			limit = { has_government = principate_government }
+			limit = { has_government = roman_principate_government }
 			add_to_list = LR_principate_governors
 			# Senatorial governors keep a seat in the ceremonial Senate
 			if = {
@@ -239,10 +239,23 @@ LR_reform_into_dominate_effect = {
 				add_character_flag = republic_appointed_senator
 			}
 		}
-		cp:LR_praefectus_praetorio ?= { save_scope_as = LR_carry_0 }
-		cp:LR_principate_praefectus_urbi ?= { save_scope_as = LR_carry_1 }
-		cp:LR_a_rationibus ?= { save_scope_as = LR_carry_2 }
-		cp:LR_ab_epistulis ?= { save_scope_as = LR_carry_3 }
+		# LR 2026-11-19: the Princeps' offices are court positions (LR_principate_court_positions.txt)
+		random_court_position_holder = {
+			type = LR_praefectus_praetorio_court_position
+			save_scope_as = LR_carry_0
+		}
+		random_court_position_holder = {
+			type = LR_principate_praefectus_urbi_court_position
+			save_scope_as = LR_carry_1
+		}
+		random_court_position_holder = {
+			type = LR_a_rationibus_court_position
+			save_scope_as = LR_carry_2
+		}
+		random_court_position_holder = {
+			type = LR_ab_epistulis_court_position
+			save_scope_as = LR_carry_3
+		}
 	}
 	change_government = roman_dominate_government
 	hidden_effect = {
@@ -399,37 +412,27 @@ LR_restore_roman_principate_effect = {
 	}
 	LR_become_princeps_effect = yes
 	hidden_effect = {
+		# LR 2026-11-19: the Dominus' ministers take the matching offices of the Princeps (court positions) a day later, once
+		# the Principate's offices exist (nothing is changed inside change_government, see LR_roman_title_twins_events.txt)
 		if = {
 			limit = { exists = scope:LR_carry_0 }
-			assign_councillor_type = {
-				type = LR_praefectus_praetorio
-				remove_existing_councillor = yes
-				target = scope:LR_carry_0
-			}
+			set_variable = { name = LR_principate_office_0 value = scope:LR_carry_0 }
 		}
 		if = {
 			limit = { exists = scope:LR_carry_1 }
-			assign_councillor_type = {
-				type = LR_principate_praefectus_urbi
-				remove_existing_councillor = yes
-				target = scope:LR_carry_1
-			}
+			set_variable = { name = LR_principate_office_1 value = scope:LR_carry_1 }
 		}
 		if = {
 			limit = { exists = scope:LR_carry_2 }
-			assign_councillor_type = {
-				type = LR_a_rationibus
-				remove_existing_councillor = yes
-				target = scope:LR_carry_2
-			}
+			set_variable = { name = LR_principate_office_2 value = scope:LR_carry_2 }
 		}
 		if = {
 			limit = { exists = scope:LR_carry_3 }
-			assign_councillor_type = {
-				type = LR_ab_epistulis
-				remove_existing_councillor = yes
-				target = scope:LR_carry_3
-			}
+			set_variable = { name = LR_principate_office_3 value = scope:LR_carry_3 }
+		}
+		trigger_event = {
+			id = LR_principate_offices.0001
+			days = 1
 		}
 		update_assembly = yes
 	}
@@ -473,4 +476,59 @@ LR_debug_leave_decayed_roman_title_effect = {
 		}
 		LR_transfer_empire_title_effect = { OLD = e_constantinid NEW = e_brittanic_empire }
 	}
+}
+
+# LR 2026-11-19 (user): debug (LR_universal_debug_decisions.txt). Root leaves a decayed Roman title, then forms the Western or
+# Eastern Roman hegemony from the restored empire it holds, through the hegemony decisions' own effects (diocese sorting,
+# title history, twins), so the Dominate or the Principate is taken at the hegemony tier.
+LR_debug_become_roman_hegemon_effect = {
+	LR_debug_leave_decayed_roman_title_effect = yes
+	if = {
+		limit = {
+			NOT = { highest_held_title_tier = tier_hegemony }
+			OR = {
+				has_title = title:e_western_roman_empire
+				has_title = title:e_western_roman_republic
+			}
+			NOT = { exists = title:h_western_roman_empire.holder }
+			NOT = { exists = title:h_western_roman_republic.holder }
+		}
+		LR_restore_western_hegemony_decision_effect = yes
+	}
+	else_if = {
+		limit = {
+			NOT = { highest_held_title_tier = tier_hegemony }
+			OR = {
+				has_title = title:e_eastern_roman_empire
+				has_title = title:e_eastern_roman_republic
+			}
+			NOT = { exists = title:h_eastern_roman_empire.holder }
+			NOT = { exists = title:h_eastern_roman_republic.holder }
+		}
+		LR_restore_eastern_hegemony_decision_effect = yes
+	}
+}
+
+# LR 2026-11-19: root = the new Princeps (LR_principate_offices.0001). Seats the carried-over ministers in the offices.
+LR_principate_fill_carried_offices_effect = {
+	if = {
+		limit = { var:LR_principate_office_0 ?= { is_alive = yes } }
+		appoint_court_position = { recipient = var:LR_principate_office_0 court_position = LR_praefectus_praetorio_court_position }
+	}
+	if = {
+		limit = { var:LR_principate_office_1 ?= { is_alive = yes } }
+		appoint_court_position = { recipient = var:LR_principate_office_1 court_position = LR_principate_praefectus_urbi_court_position }
+	}
+	if = {
+		limit = { var:LR_principate_office_2 ?= { is_alive = yes } }
+		appoint_court_position = { recipient = var:LR_principate_office_2 court_position = LR_a_rationibus_court_position }
+	}
+	if = {
+		limit = { var:LR_principate_office_3 ?= { is_alive = yes } }
+		appoint_court_position = { recipient = var:LR_principate_office_3 court_position = LR_ab_epistulis_court_position }
+	}
+	remove_variable = LR_principate_office_0
+	remove_variable = LR_principate_office_1
+	remove_variable = LR_principate_office_2
+	remove_variable = LR_principate_office_3
 }

@@ -2,18 +2,18 @@
 
 # Character: the Princeps, head of a Principate's Senate
 LR_is_princeps_trigger = {
-	has_government = principate_government
+	has_government = roman_principate_government
 	gdp_is_assembly_head_trigger = yes
 }
 
-# Character: should be a Principate governor (principate_government with Senatorial or Imperial province contracts):
+# Character: should be a Principate governor (roman_principate_government with Senatorial or Imperial province contracts):
 # a landed direct vassal of duchy tier or above of a Princeps, of a settled lay government, not Muslim (Muslims are
 # always Iqta, LR_replace_vanilla_default_government_effect)
 LR_principate_governor_trigger = {
 	exists = liege
 	liege = {
 		this = top_liege
-		has_government = principate_government
+		has_government = roman_principate_government
 	}
 	is_landed = yes
 	highest_held_title_tier >= tier_duchy
@@ -51,7 +51,7 @@ LR_principate_successor_candidate_trigger = {
 LR_principate_founder_shown_trigger = {
 	LR_has_roman_evolution_dlc_trigger = yes # LR 2026-11-19 (user): Roads to Power, Silk & Silver and All Under Heaven
 	government_has_flag = government_is_republic
-	NOT = { has_government = principate_government }
+	NOT = { has_government = roman_principate_government }
 	gdp_is_assembly_head_trigger = yes
 	LR_is_roman_republic_consul_trigger = yes
 }
@@ -240,5 +240,69 @@ LR_needs_roman_title_twin_swap_trigger = {
 				}
 			}
 		}
+	}
+}
+
+# LR 2026-11-19: root = a court owner. The Princeps' five offices (LR_principate_court_positions.txt) are open to an
+# empire-tier Princeps.
+LR_principate_office_shown_trigger = {
+	LR_is_princeps_trigger = yes
+	highest_held_title_tier >= tier_empire
+}
+
+# LR 2026-11-19: root = a candidate for one of the Princeps' offices. As vanilla's court office checks, plus: not a ruler of
+# another government (a Principate governor or legate may serve), and within the liege's gender law.
+LR_principate_office_validity_trigger = {
+	base_court_position_validity_trigger = { EMPLOYER = $EMPLOYER$ }
+	custom_tooltip = {
+		text = none_does_not_have_a_full_time_job
+		trigger_if = {
+			limit = { NOT = { has_court_position = $POS$ } }
+			court_position_does_not_already_have_a_job_trigger = yes
+		}
+	}
+	OR = {
+		is_ruler = no
+		government_has_flag = government_is_principate
+	}
+	OR = {
+		has_variable = can_be_councillor_override
+		AND = {
+			is_female = yes
+			$EMPLOYER$ = {
+				NOR = {
+					has_realm_law = male_only_law
+					has_realm_law = male_preference_law
+				}
+			}
+		}
+		AND = {
+			is_male = yes
+			$EMPLOYER$ = {
+				NOR = {
+					has_realm_law = female_only_law
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+	}
+}
+
+# LR 2026-11-19: root = a character. Holds a Roman empire title that a hegemony debug can build on: the decayed e_spqr or
+# e_byzantium (left first), a restored Western or Eastern Roman empire (or its Republic twin), or a Roman hegemony already.
+LR_debug_roman_hegemon_candidate_trigger = {
+	OR = {
+		has_title = title:e_spqr
+		has_title = title:e_byzantium
+		has_title = title:e_western_roman_empire
+		has_title = title:e_western_roman_republic
+		has_title = title:e_eastern_roman_empire
+		has_title = title:e_eastern_roman_republic
+		has_title = title:h_western_roman_empire
+		has_title = title:h_western_roman_republic
+		has_title = title:h_eastern_roman_empire
+		has_title = title:h_eastern_roman_republic
+		has_title = title:h_roman_empire
+		has_title = title:h_roman_republic
 	}
 }

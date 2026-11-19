@@ -24,7 +24,7 @@ LR_debug_become_princeps_decision = {
 		debug_only = yes
 		is_ruler = yes
 		is_landed = yes
-		NOT = { has_government = principate_government }
+		NOT = { has_government = roman_principate_government }
 	}
 
 	is_valid = {
@@ -71,7 +71,7 @@ LR_debug_become_dominus_decision = {
 	effect = {
 		LR_debug_leave_decayed_roman_title_effect = yes
 		if = { # Principate -> Dominate: ministers and senators carry over
-			limit = { has_government = principate_government }
+			limit = { has_government = roman_principate_government }
 			LR_reform_into_dominate_effect = yes
 		}
 		else = {
@@ -119,7 +119,7 @@ LR_debug_principate_government_only_decision = {
 		debug_only = yes
 		is_ruler = yes
 		is_landed = yes
-		NOT = { has_government = principate_government }
+		NOT = { has_government = roman_principate_government }
 	}
 
 	is_valid = {
@@ -128,7 +128,92 @@ LR_debug_principate_government_only_decision = {
 
 	effect = {
 		LR_debug_leave_decayed_roman_title_effect = yes
-		change_government = principate_government
+		change_government = roman_principate_government
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+# LR 2026-11-19 (user): the same at the hegemony tier. Root leaves a decayed Roman title and forms the Western or Eastern Roman
+# hegemony from the restored empire (LR_debug_become_roman_hegemon_effect), then takes the government as the real
+# hegemony-tier decisions do. Shown for a holder of e_spqr / e_byzantium or a restored Western / Eastern Roman empire.
+LR_debug_become_hegemony_princeps_decision = {
+	decision_group_type = debug
+
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+
+	desc = LR_debug_become_hegemony_princeps_decision_desc
+	selection_tooltip = LR_debug_become_hegemony_princeps_decision_tooltip
+	confirm_text = LR_debug_become_hegemony_princeps_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = roman_principate_government }
+		LR_debug_roman_hegemon_candidate_trigger = yes
+	}
+
+	is_valid = {
+		LR_has_roman_evolution_dlc_trigger = yes
+	}
+
+	effect = {
+		LR_debug_become_roman_hegemon_effect = yes
+		LR_restore_roman_principate_effect = yes
+		add_prestige = 3000
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+LR_debug_become_hegemony_dominus_decision = {
+	decision_group_type = debug
+
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+
+	desc = LR_debug_become_hegemony_dominus_decision_desc
+	selection_tooltip = LR_debug_become_hegemony_dominus_decision_tooltip
+	confirm_text = LR_debug_become_hegemony_dominus_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = roman_dominate_government }
+		LR_debug_roman_hegemon_candidate_trigger = yes
+	}
+
+	is_valid = {
+		LR_has_roman_evolution_dlc_trigger = yes
+	}
+
+	effect = {
+		LR_debug_become_roman_hegemon_effect = yes
+		if = { # Principate -> Dominate: ministers and senators carry over
+			limit = { has_government = roman_principate_government }
+			LR_reform_into_dominate_effect = yes
+		}
+		else = {
+			LR_adopt_roman_dominate_effect = yes
+		}
+		add_prestige = 3000
 	}
 
 	ai_potential = {
