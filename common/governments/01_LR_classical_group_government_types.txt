@@ -691,6 +691,10 @@ roman_dominate_government = { # restored Roman empires (celestial-based: Roman b
 		deny_powerful_vassal = yes
 		disable_regnal_numbers = yes
 		allow_accolades = yes
+		# LR 2026-11-19 (user): Silk & Silver for the Dominate: state trade (fabricae, annona) and a ceremonial Senate
+		profit_trade_routes = yes
+		trade_post = yes
+		uses_assembly = yes # experimental: vanilla only gives assemblies to republics (LR_dominate_senate_laws)
 	}
 
 	royal_court = top_liege
@@ -725,6 +729,9 @@ roman_dominate_government = { # restored Roman empires (celestial-based: Roman b
 
 		# Vassals get Treasury income that is this percentage less than their taxes to their liege
 		monthly_treasury_from_liege_mult = -0.4
+
+		# LR 2026-11-19 (user): bread and circuses, the capital's popular opinion (Silk & Silver)
+		monthly_popular_opinion_change = 0.05
 	}
 
 	top_liege_character_modifier = {
@@ -752,13 +759,15 @@ roman_dominate_government = { # restored Roman empires (celestial-based: Roman b
 	}
 
 	can_get_government = {
-		has_tgp_dlc_trigger = yes
+		LR_has_roman_evolution_dlc_trigger = yes # LR 2026-11-19 (user): Roads to Power, Silk & Silver and All Under Heaven
 		# LR 2026-11-19 (user): a decayed Roman empire must transition out of its title first
 		LR_can_have_upgraded_roman_government_trigger = yes
 	}
 
 	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
 	flags = {
+		government_has_trade_posts # LR 2026-11-19: state trade
+		government_has_assembly # LR 2026-11-19: the ceremonial Senate
 		government_is_roman_imperial_type # LR 2026-11-19 (user): the Roman imperial governments, Principate included (LR_has_roman_imperial_government_trigger)
 		#government_is_meritocratic
 		government_is_roman_imperial # Roman court positions, ministries and Imperial Appointment succession
@@ -847,6 +856,7 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 		house_aspirations = yes
 		government_ignores_rightful_liege_penalties = yes
 		disable_regnal_numbers = yes # Principes were known by name and cognomen, not by number
+		merit = yes # LR 2026-11-19 (user): the cursus honorum (All Under Heaven merit), shared with the Dominate
 	}
 
 	house_power = {
@@ -863,7 +873,7 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 	}
 
 	can_get_government = {
-		has_gdp_dlc_trigger = yes # LR 2026-11-19 (user): Silk & Silver, as vanilla's republic and Roman Republic decisions
+		LR_has_roman_evolution_dlc_trigger = yes # LR 2026-11-19 (user): Roads to Power, Silk & Silver and All Under Heaven
 		# LR 2026-11-19 (user): a decayed Roman empire must transition out of its title first
 		LR_can_have_upgraded_roman_government_trigger = yes
 	}
@@ -883,6 +893,14 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 
 		# How much of your "tax income" (domain/vassal) is moved to the treasury (i.e. the conversion ratio)
 		monthly_treasury_from_vassals = 0.8
+
+		# LR 2026-11-19 (user): the cursus honorum (merit, as the Dominate) and a trial of Roads to Power influence as auctoritas
+		character_max_merit_level_add = 2
+		monthly_influence = 1
+	}
+
+	currency_levels_cap = {
+		merit = 5
 	}
 
 	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
@@ -906,6 +924,8 @@ principate_government = { # LR 2026-11-19 (user): "Principate", replacing the De
 		government_uses_military_budget
 		# LR
 		government_is_principate
+		government_has_merit # LR 2026-11-19: the cursus honorum
+		government_has_influence # LR 2026-11-19: influence as auctoritas (trial)
 		government_is_roman_government # LR Roman checks (titles, Roman decisions)
 		government_is_classical_group
 	}

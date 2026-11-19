@@ -52,6 +52,34 @@ LR_restore_roman_republic_effect = {
 	# LR 11-18: the prefecture's dioceses go to the republic (after the Empire tier law, so the tier law keeps them)
 	LR_roman_republic_grant_$HALF$_dioceses_effect = yes
 
+	# LR 2026-11-19: the half's diocese system counts as restored, as after Restore Western / Eastern Roman Administration,
+	# so the Republic (and a later Principate) can use the province and hegemony decisions
+	hidden_effect = {
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:$HALF$_roman_diocese_restored
+					}
+				}
+			}
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:$HALF$_roman_diocese_restored
+			}
+			if = {
+				limit = { flag:$HALF$ = flag:western }
+				set_global_variable = { name = num_of_provinces_restored_wre value = 0 }
+				LR_count_existing_dioceses_wre_effect = yes
+			}
+			else = {
+				set_global_variable = { name = num_of_provinces_restored_ere value = 0 }
+				LR_count_existing_dioceses_ere_effect = yes
+			}
+		}
+	}
+
 	hidden_effect = {
 		if = {
 			limit = {

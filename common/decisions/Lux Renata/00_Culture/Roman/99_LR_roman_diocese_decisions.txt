@@ -14,7 +14,13 @@
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
-		has_title = title:e_western_roman_empire
+		OR = {
+			has_title = title:e_western_roman_empire
+			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
+				has_title = title:e_western_roman_republic
+				has_government = principate_government
+			}
+		}
 		NOT = { exists = title:h_roman_empire.holder } # LR 2026-11-06: no new hegemony once Rome is restored
 		is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -31,7 +37,10 @@
 
 	is_valid = {
 		# LR 2026-11-06 (user): the core prefecture plus one bordering prefecture; a prefecture counts when all its dioceses are in your realm
-		government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
+		OR = {
+			government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
+			has_government = principate_government # LR 2026-11-19: a Roman imperial government on republic mechanics
+		}
 		custom_tooltip = {
 			text = LR_hegemony_prefecture_italia_tt
 			LR_roman_restoration_prefecture_italia_trigger = yes
@@ -74,7 +83,13 @@
 	}
 
 	ai_potential = {
-		has_title = title:e_western_roman_empire
+		OR = {
+			has_title = title:e_western_roman_empire
+			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
+				has_title = title:e_western_roman_republic
+				has_government = principate_government
+			}
+		}
 		is_at_war = no
 		NOT = { exists = involved_activity }
 		is_imprisoned = no
@@ -192,7 +207,13 @@ LR_restore_eastern_hegemony_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
-		has_title = title:e_eastern_roman_empire
+		OR = {
+			has_title = title:e_eastern_roman_empire
+			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
+				has_title = title:e_eastern_roman_republic
+				has_government = principate_government
+			}
+		}
 		NOT = { exists = title:h_roman_empire.holder } # LR 2026-11-06: no new hegemony once Rome is restored
 		is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -215,7 +236,10 @@ LR_restore_eastern_hegemony_decision = {
 
 	is_valid = {
 		# LR 2026-11-06 (user): the core prefecture plus one bordering prefecture; a prefecture counts when all its dioceses are in your realm
-		government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
+		OR = {
+			government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
+			has_government = principate_government # LR 2026-11-19: a Roman imperial government on republic mechanics
+		}
 		custom_tooltip = {
 			text = LR_hegemony_prefecture_macedonia_tt
 			LR_roman_restoration_prefecture_macedonia_trigger = yes
@@ -271,7 +295,13 @@ LR_restore_eastern_hegemony_decision = {
 		}
 	}
 	ai_potential = {
-		has_title = title:e_eastern_roman_empire
+		OR = {
+			has_title = title:e_eastern_roman_empire
+			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
+				has_title = title:e_eastern_roman_republic
+				has_government = principate_government
+			}
+		}
 		is_at_war = no
 		NOT = { exists = involved_activity }
 		is_imprisoned = no
@@ -943,51 +973,45 @@ restore_gallia_roman_provinces_decision = {
 						}
 					}
 				}
-			}
-			AND = {
-				completely_controls_region = custom_roman_hibernia
-				OR = {
-					title:k_diocese_hibernia = {
-						is_titular = yes
-					}
-					title:k_diocese_hibernia = {
-						NOT = {
-							any_in_de_jure_hierarchy = {
-								is_titular = no
+				AND = {
+					completely_controls_region = custom_roman_hibernia
+					OR = {
+						title:k_diocese_hibernia = {
+							is_titular = yes
+						}
+						title:k_diocese_hibernia = {
+							NOT = {
+								any_in_de_jure_hierarchy = {
+									is_titular = no
+								}
 							}
 						}
 					}
+					custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
+						text = LR_britannia_first_restore_tt
+						LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
+					}
 				}
-				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
-					text = LR_britannia_first_restore_tt
+				AND = {
+					completely_controls_region = custom_roman_caledonia
 					OR = {
-						has_title = title:k_diocese_britannia
-						any_vassal = { has_title = title:k_diocese_britannia }
-					}
-				}
-			}
-			AND = {
-				completely_controls_region = custom_roman_caledonia
-				OR = {
-					title:k_diocese_caledonia = {
-						is_titular = yes
-					}
-					title:k_diocese_caledonia = {
-						NOT = {
-							any_in_de_jure_hierarchy = {
-								is_titular = no
+						title:k_diocese_caledonia = {
+							is_titular = yes
+						}
+						title:k_diocese_caledonia = {
+							NOT = {
+								any_in_de_jure_hierarchy = {
+									is_titular = no
+								}
 							}
 						}
 					}
-				}
-				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
-					text = LR_britannia_first_restore_tt
-					OR = {
-						has_title = title:k_diocese_britannia
-						any_vassal = { has_title = title:k_diocese_britannia }
+					custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
+						text = LR_britannia_first_restore_tt
+						LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 					}
 				}
-			}
+			} # LR 2026-11-19: Hibernia and Caledonia were outside this OR (since 11-16), so the decision needed all of them at once
 		}
 	}
 
@@ -1033,10 +1057,7 @@ restore_gallia_roman_provinces_decision = {
 					limit = { has_title = title:e_brittanic_empire }
 					custom_tooltip = {
 						text = LR_brittanic_britannia_first_tt
-						OR = {
-							has_title = title:k_diocese_britannia
-							any_vassal = { has_title = title:k_diocese_britannia }
-						}
+						LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 					}
 				}
 			}
@@ -1050,10 +1071,7 @@ restore_gallia_roman_provinces_decision = {
 							limit = { has_title = title:e_brittanic_empire }
 							custom_tooltip = {
 								text = LR_brittanic_britannia_first_tt
-								OR = {
-									has_title = title:k_diocese_britannia
-									any_vassal = { has_title = title:k_diocese_britannia }
-								}
+								LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 							}
 						}
 					}
@@ -1092,10 +1110,7 @@ restore_gallia_roman_provinces_decision = {
 					limit = { has_title = title:e_brittanic_empire }
 					custom_tooltip = {
 						text = LR_brittanic_britannia_first_tt
-						OR = {
-							has_title = title:k_diocese_britannia
-							any_vassal = { has_title = title:k_diocese_britannia }
-						}
+						LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 					}
 				}
 			}
@@ -1109,10 +1124,7 @@ restore_gallia_roman_provinces_decision = {
 							limit = { has_title = title:e_brittanic_empire }
 							custom_tooltip = {
 								text = LR_brittanic_britannia_first_tt
-								OR = {
-									has_title = title:k_diocese_britannia
-									any_vassal = { has_title = title:k_diocese_britannia }
-								}
+								LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 							}
 						}
 					}
@@ -1151,10 +1163,7 @@ restore_gallia_roman_provinces_decision = {
 					limit = { has_title = title:e_brittanic_empire }
 					custom_tooltip = {
 						text = LR_brittanic_britannia_first_tt
-						OR = {
-							has_title = title:k_diocese_britannia
-							any_vassal = { has_title = title:k_diocese_britannia }
-						}
+						LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 					}
 				}
 			}
@@ -1168,10 +1177,7 @@ restore_gallia_roman_provinces_decision = {
 							limit = { has_title = title:e_brittanic_empire }
 							custom_tooltip = {
 								text = LR_brittanic_britannia_first_tt
-								OR = {
-									has_title = title:k_diocese_britannia
-									any_vassal = { has_title = title:k_diocese_britannia }
-								}
+								LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 							}
 						}
 					}
@@ -1211,11 +1217,9 @@ restore_gallia_roman_provinces_decision = {
 					limit = { NOT = { has_title = title:e_brittanic_empire } }
 					custom_tooltip = { 
 						text = gallia_first_restore_tt
-						OR = { # must first restore diocese of lugdunensis
-							any_vassal = {
-								has_title = title:k_diocese_lugdunensis
-							}
-							has_title = title:k_diocese_lugdunensis
+						OR = { # LR 2026-11-19: a restored Gallic diocese (Lugdunensis or Viennensis) held anywhere in the realm (was Lugdunensis by you or a direct vassal)
+							LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_lugdunensis }
+							LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_viennensis }
 						}
 					}
 				}
@@ -1230,11 +1234,9 @@ restore_gallia_roman_provinces_decision = {
 							limit = { NOT = { has_title = title:e_brittanic_empire } }
 							custom_tooltip = { 
 								text = gallia_first_restore_tt
-								OR = { # must first restore diocese of lugdunensis
-									any_vassal = {
-										has_title = title:k_diocese_lugdunensis
-									}
-									has_title = title:k_diocese_lugdunensis
+								OR = { # LR 2026-11-19: a restored Gallic diocese (Lugdunensis or Viennensis) held anywhere in the realm (was Lugdunensis by you or a direct vassal)
+									LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_lugdunensis }
+									LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_viennensis }
 								}
 							}
 						}
@@ -1270,10 +1272,7 @@ restore_gallia_roman_provinces_decision = {
 				completely_controls_region = custom_roman_hibernia
 				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
 					text = LR_britannia_first_restore_tt
-					OR = {
-						has_title = title:k_diocese_britannia
-						any_vassal = { has_title = title:k_diocese_britannia }
-					}
+					LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 				}
 			}
 			ai_chance = {
@@ -1281,10 +1280,7 @@ restore_gallia_roman_provinces_decision = {
 				if = {
 					limit = {
 						completely_controls_region = custom_roman_hibernia
-						OR = {
-							has_title = title:k_diocese_britannia
-							any_vassal = { has_title = title:k_diocese_britannia }
-						}
+						LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 					}
 					add = 100
 				}
@@ -1317,10 +1313,7 @@ restore_gallia_roman_provinces_decision = {
 				completely_controls_region = custom_roman_caledonia
 				custom_tooltip = { # LR 2026-11-16: Hibernia and Caledonia are reached from a restored Britannia
 					text = LR_britannia_first_restore_tt
-					OR = {
-						has_title = title:k_diocese_britannia
-						any_vassal = { has_title = title:k_diocese_britannia }
-					}
+					LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 				}
 			}
 			ai_chance = {
@@ -1328,10 +1321,7 @@ restore_gallia_roman_provinces_decision = {
 				if = {
 					limit = {
 						completely_controls_region = custom_roman_caledonia
-						OR = {
-							has_title = title:k_diocese_britannia
-							any_vassal = { has_title = title:k_diocese_britannia }
-						}
+						LR_roman_diocese_held_in_realm_trigger = { DIOCESE = k_diocese_britannia } # LR 2026-11-19: anywhere in the realm (was you or a direct vassal)
 					}
 					add = 100
 				}

@@ -75,7 +75,40 @@ LR_principate_align_vassal_effect = {
 # after inheriting the decayed title): the Dominate falls back to Roman Administrative (the decayed empires' government in
 # history), the Principate to a plain republic. Called first in LR_normalize_dynastic_government_effect and on title gain.
 LR_downgrade_upgraded_roman_government_effect = {
+	# LR 2026-11-19 (user): without Roads to Power, Silk & Silver and All Under Heaven there is no Dominate or Principate. The Dominate
+	# falls back to Roman Autocratic (All Under Heaven), else Roman Administrative (Roads to Power), else Classical; the Principate to a
+	# plain republic (Silk & Silver), else Classical.
 	if = {
+		limit = {
+			has_government = roman_dominate_government
+			LR_has_roman_evolution_dlc_trigger = no
+		}
+		if = {
+			limit = { has_tgp_dlc_trigger = yes }
+			change_government = roman_autocratic_government
+		}
+		else_if = {
+			limit = { has_ep3_dlc_trigger = yes }
+			change_government = roman_administrative_government
+		}
+		else = {
+			change_government = classical_government
+		}
+	}
+	else_if = {
+		limit = {
+			has_government = principate_government
+			LR_has_roman_evolution_dlc_trigger = no
+		}
+		if = {
+			limit = { has_gdp_dlc_trigger = yes }
+			change_government = republic_government
+		}
+		else = {
+			change_government = classical_government
+		}
+	}
+	else_if = {
 		limit = {
 			has_government = roman_dominate_government
 			LR_is_decayed_roman_realm_trigger = yes
@@ -155,11 +188,21 @@ LR_become_princeps_effect = {
 LR_reform_into_dominate_effect = {
 	save_scope_as = dominus
 	custom_tooltip = LR_reform_into_dominate_governors_tt
+	custom_tooltip = LR_roman_institutions_to_dominate_tt # LR 2026-11-19 (user): institutions carry over
 	hidden_effect = {
 		every_vassal = {
 			limit = { has_government = principate_government }
 			add_to_list = LR_principate_governors
+			# Senatorial governors keep a seat in the ceremonial Senate
+			if = {
+				limit = { vassal_contract_has_flag = principate_senatorial_province }
+				add_character_flag = republic_appointed_senator
+			}
 		}
+		cp:LR_praefectus_praetorio ?= { save_scope_as = LR_carry_0 }
+		cp:LR_principate_praefectus_urbi ?= { save_scope_as = LR_carry_1 }
+		cp:LR_a_rationibus ?= { save_scope_as = LR_carry_2 }
+		cp:LR_ab_epistulis ?= { save_scope_as = LR_carry_3 }
 	}
 	change_government = roman_dominate_government
 	custom_tooltip = LR_roman_titles_to_empire_tt # LR_align_roman_title_twins_effect, on the government change
@@ -174,6 +217,44 @@ LR_reform_into_dominate_effect = {
 			}
 		}
 		remove_variable = principate_adopted_heir
+		# The Princeps' ministers take the matching Dominate ministries
+		if = {
+			limit = { exists = scope:LR_carry_0 }
+			assign_councillor_type = {
+				type = LR_magister_militum
+				remove_existing_councillor = yes
+				target = scope:LR_carry_0
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_carry_1 }
+			assign_councillor_type = {
+				type = LR_praefectus_urbi
+				remove_existing_councillor = yes
+				target = scope:LR_carry_1
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_carry_2 }
+			assign_councillor_type = {
+				type = LR_magister_officiorum
+				remove_existing_councillor = yes
+				target = scope:LR_carry_2
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_carry_3 }
+			assign_councillor_type = {
+				type = LR_magister_memoriae
+				remove_existing_councillor = yes
+				target = scope:LR_carry_3
+			}
+		}
+		if = {
+			limit = { NOT = { has_realm_law = LR_dominate_ceremonial_senate_law } }
+			add_realm_law_skip_effects = LR_dominate_ceremonial_senate_law
+		}
+		update_assembly = yes
 	}
 	add_prestige = major_prestige_gain
 	add_character_modifier = {
@@ -243,6 +324,11 @@ LR_adopt_roman_dominate_effect = {
 			limit = { LR_can_have_upgraded_roman_government_trigger = yes }
 			change_government = roman_dominate_government
 		}
+		if = {
+			limit = { NOT = { has_realm_law = LR_dominate_ceremonial_senate_law } }
+			add_realm_law_skip_effects = LR_dominate_ceremonial_senate_law
+		}
+		update_assembly = yes
 	}
 	add_prestige = major_prestige_gain
 	add_character_modifier = {
@@ -255,6 +341,60 @@ LR_adopt_roman_dominate_effect = {
 # place and root rules as Princeps. The great administrative vassals become Principate governors and the lesser ones go
 # feudal (LR_align_admin_vassals_of_top_liege_effect on the government change).
 LR_restore_roman_principate_effect = {
+	# LR 2026-11-19 (user): institutions carry over. A Dominus' ministers take the matching Principate seats; the ceremonial
+	# Senate's members (senators and great governors) sit in the restored Senate.
+	if = {
+		limit = { has_government = roman_dominate_government }
+		custom_tooltip = LR_roman_institutions_to_principate_tt
+		hidden_effect = {
+			cp:LR_magister_militum ?= { save_scope_as = LR_carry_0 }
+			cp:LR_praefectus_urbi ?= { save_scope_as = LR_carry_1 }
+			cp:LR_magister_officiorum ?= { save_scope_as = LR_carry_2 }
+			cp:LR_magister_memoriae ?= { save_scope_as = LR_carry_3 }
+			every_vassal_or_below = {
+				limit = {
+					is_landed = yes
+					highest_held_title_tier >= tier_kingdom
+				}
+				add_character_flag = republic_appointed_senator
+			}
+		}
+	}
 	LR_become_princeps_effect = yes
 	custom_tooltip = LR_roman_titles_to_republic_tt # LR_align_roman_title_twins_effect, on the government change
+	hidden_effect = {
+		if = {
+			limit = { exists = scope:LR_carry_0 }
+			assign_councillor_type = {
+				type = LR_praefectus_praetorio
+				remove_existing_councillor = yes
+				target = scope:LR_carry_0
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_carry_1 }
+			assign_councillor_type = {
+				type = LR_principate_praefectus_urbi
+				remove_existing_councillor = yes
+				target = scope:LR_carry_1
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_carry_2 }
+			assign_councillor_type = {
+				type = LR_a_rationibus
+				remove_existing_councillor = yes
+				target = scope:LR_carry_2
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_carry_3 }
+			assign_councillor_type = {
+				type = LR_ab_epistulis
+				remove_existing_councillor = yes
+				target = scope:LR_carry_3
+			}
+		}
+		update_assembly = yes
+	}
 }

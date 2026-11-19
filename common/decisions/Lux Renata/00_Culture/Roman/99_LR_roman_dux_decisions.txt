@@ -12,7 +12,10 @@ LR_appoint_roman_dux_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_independent_ruler = yes
-		has_government = roman_dominate_government # LR 2026-11-19 (user): only the Dominate gets duces and comites, for now (was every Roman Autocratic empire)
+		OR = { # LR 2026-11-19 (user): the Dominate appoints the duces; Roman Imperial a few (LR_roman_imperial_office_cap_trigger)
+			has_government = roman_dominate_government
+			has_government = roman_autocratic_government
+		}
 		is_restored_roman_emperor_trigger = yes
 	}
 
@@ -40,6 +43,7 @@ LR_appoint_roman_dux_decision = {
 	}
 
 	is_valid = {
+		LR_roman_imperial_office_cap_trigger = { OFFICE = dux } # LR 2026-11-19: Roman Imperial holds up to 3 duces
 		custom_tooltip = {
 			text = LR_appoint_roman_dux_decision_trigger_1
 			OR = {

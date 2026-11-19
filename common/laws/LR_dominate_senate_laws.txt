@@ -1,0 +1,51 @@
+﻿# LR 2026-11-19 (user): the Dominate keeps a ceremonial Senate. It sits through the change from the Principate (senators keep the
+# flag republic_appointed_senator) and votes only on restoring the Principate (LR_restore_roman_principate_decision).
+# Members: the Dominus, appointed senators, and the great governors (kingdom tier and above).
+LR_dominate_ceremonial_senate_law = {
+	law_group_type = LR_dominate_senate_laws
+	index = 0
+
+	modifier = {
+		character_capital_popular_opinion_add = 5
+		monthly_prestige_gain_mult = 0.05
+	}
+
+	potential = { has_government = roman_dominate_government }
+	can_have = { has_government = roman_dominate_government }
+	can_keep = { has_government = roman_dominate_government }
+	should_start_with = { has_government = roman_dominate_government }
+
+	assembly = {
+		major = {
+			sources = { liege vassals courtiers }
+			limit = {
+				OR = {
+					AND = {
+						has_government = roman_dominate_government
+						is_independent_ruler = yes
+					}
+					has_character_flag = republic_appointed_senator
+					AND = {
+						is_landed = yes
+						highest_held_title_tier >= tier_kingdom
+					}
+				}
+			}
+		}
+	}
+
+	assembly_voting_thresholds = {
+		law_votes = {
+			value = 0.51
+		}
+		decree_votes = {
+			value = 0.51
+		}
+	}
+
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = 100
+	}
+}

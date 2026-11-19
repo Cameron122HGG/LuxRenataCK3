@@ -12,7 +12,10 @@ LR_appoint_roman_legion_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_independent_ruler = yes
-		has_government = principate_government # LR 2026-11-19 (user): only the Principate raises legions, for now (was every Roman Autocratic empire)
+		OR = { # LR 2026-11-19 (user): the Principate raises the legions; Roman Imperial a few (LR_roman_imperial_office_cap_trigger)
+			has_government = principate_government
+			has_government = roman_autocratic_government
+		}
 		OR = {
 			is_restored_roman_emperor_trigger = yes
 			LR_is_roman_republic_consul_trigger = yes # a Princeps of a Roman Republic title
@@ -43,6 +46,7 @@ LR_appoint_roman_legion_decision = {
 	}
 
 	is_valid = {
+		LR_roman_imperial_office_cap_trigger = { OFFICE = legion } # LR 2026-11-19: Roman Imperial holds up to 3 legions
 		custom_tooltip = {
 			text = LR_appoint_roman_legion_decision_trigger_1
 			OR = {

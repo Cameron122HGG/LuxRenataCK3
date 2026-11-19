@@ -172,7 +172,7 @@ LR_reform_into_dominate_decision = {
 
 	is_shown = {
 		LR_is_princeps_trigger = yes
-		has_tgp_dlc_trigger = yes # roman_dominate_government's can_get_government
+		LR_has_roman_evolution_dlc_trigger = yes # LR 2026-11-19 (user): Roads to Power, Silk & Silver and All Under Heaven
 	}
 
 	is_valid = {
@@ -201,7 +201,10 @@ LR_reform_into_dominate_decision = {
 	}
 
 	cost = {
-		prestige = 1500
+		prestige = {
+			value = 1500
+			if = { limit = { OR = { LR_rw_capital_in_phase_trigger = { PHASE = rw_crisis } LR_rw_capital_in_phase_trigger = { PHASE = rw_anarchy } } } multiply = 0.5 } # LR 2026-11-19: the Roman World in crisis
+		}
 	}
 
 	effect = {
@@ -225,6 +228,10 @@ LR_reform_into_dominate_decision = {
 		modifier = {
 			add = -50
 			has_trait = just
+		}
+		modifier = { # LR 2026-11-19: the Roman World's phase
+			add = 40
+			OR = { LR_rw_capital_in_phase_trigger = { PHASE = rw_crisis } LR_rw_capital_in_phase_trigger = { PHASE = rw_anarchy } }
 		}
 	}
 }
@@ -266,7 +273,10 @@ LR_adopt_roman_dominate_decision = {
 	}
 
 	cost = {
-		prestige = 1000
+		prestige = {
+			value = 1000
+			if = { limit = { OR = { LR_rw_capital_in_phase_trigger = { PHASE = rw_crisis } LR_rw_capital_in_phase_trigger = { PHASE = rw_anarchy } } } multiply = 0.5 } # LR 2026-11-19: the Roman World in crisis
+		}
 	}
 
 	effect = {
@@ -282,6 +292,10 @@ LR_adopt_roman_dominate_decision = {
 		modifier = {
 			add = 30
 			OR = { has_trait = ambitious has_trait = arrogant has_trait = callous }
+		}
+		modifier = { # LR 2026-11-19: the Roman World's phase
+			add = 40
+			OR = { LR_rw_capital_in_phase_trigger = { PHASE = rw_crisis } LR_rw_capital_in_phase_trigger = { PHASE = rw_anarchy } }
 		}
 	}
 }
@@ -306,8 +320,10 @@ LR_restore_roman_principate_decision = {
 	}
 
 	is_shown = {
-		LR_roman_autocrat_shown_trigger = yes
-		has_gdp_dlc_trigger = yes # LR 2026-11-19 (user): the Principate is a republic (Silk & Silver)
+		OR = { # LR 2026-11-19 (user): two-way at the hegemony tier, from Roman Imperial or the Dominate
+			LR_roman_autocrat_shown_trigger = yes
+			LR_roman_dominus_shown_trigger = yes
+		}
 	}
 
 	is_valid = {
@@ -324,11 +340,26 @@ LR_restore_roman_principate_decision = {
 	}
 
 	cost = {
-		prestige = 1000
+		prestige = {
+			value = 1000
+			if = { limit = { LR_rw_capital_in_phase_trigger = { PHASE = rw_pax } } multiply = 0.5 } # LR 2026-11-19: the Roman World's Pax Romana
+		}
 	}
 
 	effect = {
 		LR_restore_roman_principate_effect = yes
+	}
+
+	# LR 2026-11-19: a Dominus asks the ceremonial Senate (LR_dominate_senate_laws.txt); senators are glad to sit again
+	requires_approve = { has_government = roman_dominate_government }
+
+	ai_approval = {
+		value = 30
+		add = {
+			value = ai_decree_approval_opinion_value
+			multiply = 0.25
+			desc = DECREE_OPINION_DESC
+		}
 	}
 
 	ai_potential = {
@@ -340,6 +371,86 @@ LR_restore_roman_principate_decision = {
 		modifier = {
 			add = 30
 			OR = { has_trait = just has_trait = humble has_trait = content }
+		}
+		modifier = { # LR 2026-11-19: the Roman World's phase
+			add = 40
+			LR_rw_capital_in_phase_trigger = { PHASE = rw_pax }
+		}
+	}
+}
+
+# LR 2026-11-19 (user): bread and circuses. Silk & Silver popular opinion for every Roman imperial government (Roman Imperial,
+# Principate, Dominate): the ruler pays for games in the capital's circus.
+LR_roman_circus_games_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	desc = LR_roman_circus_games_decision_desc
+	selection_tooltip = LR_roman_circus_games_decision_tooltip
+	decision_group_type = roman
+	sort_order = 90
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 24
+		hegemony = 24
+	}
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes # popular opinion
+		is_ruler = yes
+		is_landed = yes
+		LR_has_roman_imperial_government_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+			if = {
+				limit = { has_treasury = yes }
+				add = 300
+			}
+		}
+		gold = {
+			value = 0
+			if = {
+				limit = { has_treasury = no }
+				add = 300
+			}
+		}
+	}
+
+	effect = {
+		capital_county = { add_popular_opinion = 20 }
+		add_prestige = medium_prestige_gain
+		every_vassal = {
+			custom = LR_roman_circus_games_vassals_custom
+			limit = { highest_held_title_tier >= tier_duchy }
+			add_opinion = {
+				target = root
+				modifier = LR_roman_circus_games_opinion
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = 40
+			capital_county ?= { popular_opinion < 0 }
 		}
 	}
 }

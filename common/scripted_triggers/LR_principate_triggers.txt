@@ -49,7 +49,7 @@ LR_principate_successor_candidate_trigger = {
 
 # Character: can take LR_accept_principate_decision's road (a consul of a Roman Republic, not yet Princeps)
 LR_principate_founder_shown_trigger = {
-	has_gdp_dlc_trigger = yes # LR 2026-11-19 (user): Silk & Silver, as the Roman Republic decisions
+	LR_has_roman_evolution_dlc_trigger = yes # LR 2026-11-19 (user): Roads to Power, Silk & Silver and All Under Heaven
 	government_has_flag = government_is_republic
 	NOT = { has_government = principate_government }
 	gdp_is_assembly_head_trigger = yes
@@ -59,7 +59,7 @@ LR_principate_founder_shown_trigger = {
 # Character: a Roman Autocratic emperor (LR 2026-11-19, user: the least complex Roman imperial government) who may take up
 # the Dominate or the Principate: only at the highest tier (LR_adopt_roman_dominate_decision, LR_restore_roman_principate_decision)
 LR_roman_autocrat_shown_trigger = {
-	has_tgp_dlc_trigger = yes # Roman Autocratic and the Dominate need All Under Heaven
+	LR_has_roman_evolution_dlc_trigger = yes # LR 2026-11-19 (user): the Dominate and the Principate need Roads to Power, Silk & Silver and All Under Heaven
 	is_ruler = yes
 	is_playable_character = yes
 	has_government = roman_autocratic_government
@@ -88,4 +88,100 @@ LR_has_classical_government_trigger = {
 # Mechanics tied to the administrative mechanic (offices, ministries, title legions) still check their own flags.
 LR_has_roman_imperial_government_trigger = {
 	government_has_flag = government_is_roman_imperial_type
+}
+
+# Character (root = the ruler taking a diocese decision): the restored diocese title:$DIOCESE$ is held by root or anyone in root's realm.
+# LR 2026-11-19: the diocese decisions checked only root and direct vassals, so a diocese held under a prefecture did not count.
+LR_roman_diocese_held_in_realm_trigger = {
+	exists = title:$DIOCESE$.holder
+	title:$DIOCESE$.holder = {
+		OR = {
+			this = root
+			top_liege = root
+		}
+	}
+}
+
+# LR 2026-11-19 (user): the Roman Dominate and the Principate are "special, very complex evolutions of roman imperial": both need
+# Roads to Power, Silk & Silver and All Under Heaven. Used in both governments' can_get_government and their four decisions.
+LR_has_roman_evolution_dlc_trigger = {
+	custom_tooltip = {
+		text = LR_has_roman_evolution_dlc_tt
+		has_ep3_dlc_trigger = yes
+		has_gdp_dlc_trigger = yes
+		has_tgp_dlc_trigger = yes
+	}
+}
+
+# LR 2026-11-19: the Princeps' ministers (LR_principate_ministry_positions.txt); a copy of LR_can_be_roman_minister_trigger
+LR_can_be_principate_minister_trigger = {
+	can_be_councillor_basics_trigger = yes
+	# Has to be a Principate ruler (a governor or legate) or a non-ruler
+	OR = {
+		is_ruler = no
+		government_has_flag = government_is_principate
+	}
+	# Gender is based on laws of the liege
+	OR = {
+		has_variable = can_be_councillor_override
+		AND = {
+			is_female = yes
+			$COURT_OWNER$ = {
+				NOR = {
+					has_realm_law = male_only_law
+					has_realm_law = male_preference_law
+				}
+			}
+		}
+		AND = {
+			is_male = yes
+			$COURT_OWNER$ = {
+				NOR = {
+					has_realm_law = female_only_law
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+	}
+	# Players are only allowed if they have enough merit or is a councillor already, unless they are friends or disciples/elders
+	# We do this to prevent the AI from "randomly" requesting the player to be on their council
+	trigger_if = {
+		limit = {
+			is_ai = no
+			$COURT_OWNER$ = { is_ai = yes }
+			NOT = { is_councillor_of = $COURT_OWNER$ }
+		}
+		OR = {
+			merit_level >= merit_level_expected_empire_value
+			has_relation_friend = $COURT_OWNER$
+			has_relation_disciple = $COURT_OWNER$
+			has_relation_elder = $COURT_OWNER$
+		}
+	}
+}
+
+# Character: a Dominus who may restore the Principate (LR_restore_roman_principate_decision; two-way at the hegemony tier)
+LR_roman_dominus_shown_trigger = {
+	LR_has_roman_evolution_dlc_trigger = yes
+	is_ruler = yes
+	is_playable_character = yes
+	has_government = roman_dominate_government
+	is_restored_roman_emperor_trigger = yes
+}
+
+# Character (the emperor): may raise another Roman command of kind OFFICE (legion / dux). LR 2026-11-19 (user): Roman Imperial
+# gets "fewer of each": at most 3 legions and 3 duces in the realm; the Principate (legions) and the Dominate (duces) have no cap.
+LR_roman_imperial_office_cap_trigger = {
+	trigger_if = {
+		limit = { has_government = roman_autocratic_government }
+		custom_tooltip = {
+			text = LR_roman_imperial_$OFFICE$_cap_tt
+			NOT = {
+				any_vassal = {
+					count >= 3
+					any_held_title = { LR_is_roman_$OFFICE$_title_trigger = yes }
+				}
+			}
+		}
+	}
 }
