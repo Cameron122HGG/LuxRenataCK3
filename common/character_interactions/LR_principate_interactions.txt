@@ -1,0 +1,80 @@
+﻿# LR 2026-11-19: the Princeps adopts a successor, whom the Senate favours in the principate_elective
+# (common/succession_election/LR_principate_elective.txt). Effect: LR_principate_adopt_successor_effect.
+LR_principate_adopt_successor_interaction = {
+	category = interaction_category_friendly
+	desc = LR_principate_adopt_successor_interaction_desc
+	icon = heir
+	cooldown = { years = 5 }
+
+	is_shown = {
+		scope:actor = { LR_is_princeps_trigger = yes }
+		NOT = { scope:recipient = scope:actor }
+		scope:recipient = {
+			LR_principate_successor_candidate_trigger = { PRINCEPS = scope:actor }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = LR_principate_already_adopted_tt
+				NOT = { var:principate_adopted_heir ?= scope:recipient }
+			}
+		}
+	}
+
+	cost = {
+		prestige = 250
+	}
+
+	auto_accept = yes
+
+	on_accept = {
+		scope:recipient = { save_scope_as = new_heir }
+		scope:actor = {
+			LR_principate_adopt_successor_effect = yes
+		}
+	}
+
+	ai_targets = {
+		ai_recipients = family
+		ai_recipients = vassals
+		ai_recipients = courtiers
+	}
+	ai_frequency = 60
+
+	is_available = {
+		trigger_if = {
+			limit = { is_ai = yes }
+			age >= 40
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = { # No heir yet, or the heir is gone
+			add = 30
+			NOT = { var:principate_adopted_heir ?= { is_alive = yes } }
+		}
+		modifier = {
+			add = -100
+			var:principate_adopted_heir ?= { is_alive = yes }
+		}
+		modifier = {
+			add = 20
+			scope:recipient = { is_child_of = scope:actor }
+		}
+		modifier = {
+			add = {
+				value = scope:recipient.martial
+				add = scope:recipient.stewardship
+				subtract = 20
+			}
+		}
+		opinion_modifier = {
+			who = scope:actor
+			opinion_target = scope:recipient
+			multiplier = 0.25
+		}
+	}
+}

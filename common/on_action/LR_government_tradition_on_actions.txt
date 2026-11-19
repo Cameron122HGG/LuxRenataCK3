@@ -41,7 +41,9 @@ LR_government_tradition_on_tradition_added = {
 			scope:tradition = culture_tradition:lux_tradition_gov_western
 			scope:tradition = culture_tradition:lux_tradition_gov_despotic
 			scope:tradition = culture_tradition:lux_tradition_gov_indic
-			scope:tradition = culture_tradition:lux_tradition_gov_islamic
+			scope:tradition = culture_tradition:lux_tradition_gov_mamlakah
+			scope:tradition = culture_tradition:lux_tradition_gov_sudanic
+			scope:tradition = culture_tradition:lux_tradition_gov_nilotic
 			scope:tradition = culture_tradition:lux_tradition_gov_sinic
 			scope:tradition = culture_tradition:lux_tradition_gov_japanese
 			scope:tradition = culture_tradition:lux_tradition_gov_barbarian
@@ -81,7 +83,13 @@ LR_government_tradition_on_game_start = {
 		}
 		# Remember who starts tribal, so their settling is caught below
 		every_ruler = {
-			limit = { government_has_flag = government_is_tribal }
+			limit = {
+				OR = {
+					government_has_flag = government_is_tribal
+					government_has_flag = government_is_nomadic
+					government_has_flag = government_is_herder
+				}
+			}
 			add_character_flag = LR_was_tribal
 		}
 	}
@@ -99,12 +107,19 @@ LR_government_tradition_on_vassal_change = {
 	}
 }
 
-# root = the character whose government changed. When a tribal ruler settles, the game picks their new government
-# from heritage (primary_heritages); move them to the same tier of their culture's government tradition group instead.
+# root = the character whose government changed. When a tribal, nomad or herder ruler settles, the game picks their new
+# government from heritage (primary_heritages); move them to the same tier of their culture's government tradition group instead.
+# (LR 2026-11-19: nomads and herders too, user: "make sure vanilla feudal, clan, and administrative are always superseded")
 LR_government_tradition_on_government_change = {
 	effect = {
 		if = {
-			limit = { government_has_flag = government_is_tribal }
+			limit = {
+				OR = {
+					government_has_flag = government_is_tribal
+					government_has_flag = government_is_nomadic
+					government_has_flag = government_is_herder
+				}
+			}
 			add_character_flag = LR_was_tribal
 		}
 		else_if = {
@@ -140,7 +155,9 @@ LR_government_tradition_on_tradition_removed = {
 			scope:tradition = culture_tradition:lux_tradition_gov_western
 			scope:tradition = culture_tradition:lux_tradition_gov_despotic
 			scope:tradition = culture_tradition:lux_tradition_gov_indic
-			scope:tradition = culture_tradition:lux_tradition_gov_islamic
+			scope:tradition = culture_tradition:lux_tradition_gov_mamlakah
+			scope:tradition = culture_tradition:lux_tradition_gov_sudanic
+			scope:tradition = culture_tradition:lux_tradition_gov_nilotic
 			scope:tradition = culture_tradition:lux_tradition_gov_sinic
 			scope:tradition = culture_tradition:lux_tradition_gov_japanese
 			scope:tradition = culture_tradition:lux_tradition_gov_barbarian

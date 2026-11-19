@@ -1,0 +1,74 @@
+﻿# LR 2026-11-19: Principate triggers (see the header of common/scripted_effects/LR/LR_principate_effects.txt)
+
+# Character: the Princeps, head of a Principate's Senate
+LR_is_princeps_trigger = {
+	has_government = principate_government
+	gdp_is_assembly_head_trigger = yes
+}
+
+# Character: should be a Principate governor (principate_government with Senatorial or Imperial province contracts):
+# a landed direct vassal of duchy tier or above of a Princeps, of a settled lay government, not Muslim (Muslims are
+# always Iqta, LR_replace_vanilla_default_government_effect)
+LR_principate_governor_trigger = {
+	exists = liege
+	liege = {
+		this = top_liege
+		has_government = principate_government
+	}
+	is_landed = yes
+	highest_held_title_tier >= tier_duchy
+	NOT = { faith = { religion_tag = islam_religion } }
+	LR_can_have_upgraded_roman_government_trigger = yes # LR 2026-11-19: not a decayed Roman empire's ruler
+	government_has_flag = government_is_settled_non_tribal
+	NOR = {
+		government_has_flag = government_is_theocracy
+		government_has_flag = government_is_holy_order
+		government_has_flag = government_is_mercenary
+		government_has_flag = government_is_landless_adventurer
+		government_has_flag = government_is_ecclesiastical
+	}
+}
+
+# Character (the recipient): can be named successor by $PRINCEPS$. Must be in a candidate set of principate_elective
+# (common/succession_election/LR_principate_elective.txt): close or extended family, a direct vassal or a councillor.
+LR_principate_successor_candidate_trigger = {
+	NOT = { this = $PRINCEPS$ }
+	is_adult = yes
+	is_imprisoned = no
+	is_incapable = no
+	is_clergy = no
+	OR = {
+		is_close_or_extended_family_of = $PRINCEPS$
+		AND = {
+			is_ruler = yes
+			liege = $PRINCEPS$
+		}
+		is_councillor_of = $PRINCEPS$
+	}
+}
+
+# Character: can take LR_accept_principate_decision's road (a consul of a Roman Republic, not yet Princeps)
+LR_principate_founder_shown_trigger = {
+	government_has_flag = government_is_republic
+	NOT = { has_government = principate_government }
+	gdp_is_assembly_head_trigger = yes
+	LR_is_roman_republic_consul_trigger = yes
+}
+
+# Character: a Roman Autocratic emperor (LR 2026-11-19, user: the least complex Roman imperial government) who may take up
+# the Dominate or the Principate: only at the highest tier (LR_adopt_roman_dominate_decision, LR_restore_roman_principate_decision)
+LR_roman_autocrat_shown_trigger = {
+	has_tgp_dlc_trigger = yes # Roman Autocratic and the Dominate need All Under Heaven
+	is_ruler = yes
+	is_playable_character = yes
+	has_government = roman_autocratic_government
+	is_restored_roman_emperor_trigger = yes
+}
+
+LR_roman_autocrat_highest_tier_trigger = {
+	custom_tooltip = {
+		text = LR_roman_autocrat_highest_tier_tt
+		highest_held_title_tier = tier_hegemony
+	}
+	LR_can_have_upgraded_roman_government_trigger = yes
+}

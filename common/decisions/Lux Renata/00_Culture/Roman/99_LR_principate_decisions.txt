@@ -1,0 +1,344 @@
+﻿# LR 2026-11-19: the Principate's road in and out (design: common/scripted_effects/LR/LR_principate_effects.txt)
+#   - LR_accept_principate_decision: the consul of a Roman Republic asks the Senate for the powers of a Princeps
+#     (a Senate vote, requires_approve). Effect: LR_become_princeps_effect.
+#   - LR_reform_into_dominate_decision: a Princeps of hegemony tier whose Senate is only Ceremonial sets it aside and rules
+#     as Dominus (roman_dominate_government, All Under Heaven). Effect: LR_reform_into_dominate_effect.
+#   - LR 2026-11-19 (user): a restored Roman empire starts on Roman Autocratic (LR_restore_roman_administration_effect); at the
+#     hegemony tier it may take up the Dominate (LR_adopt_roman_dominate_decision) or restore the Principate
+#     (LR_restore_roman_principate_decision).
+
+LR_accept_principate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_accept_principate_decision_desc
+	selection_tooltip = LR_accept_principate_decision_tooltip
+	confirm_text = LR_accept_principate_decision_confirm
+	decision_group_type = roman
+	sort_order = 103
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 36
+		hegemony = 36
+	}
+
+	is_shown = {
+		LR_principate_founder_shown_trigger = yes
+	}
+
+	is_valid = {
+		LR_can_have_upgraded_roman_government_trigger = yes # LR 2026-11-19 (user): not while ruling a decayed Roman empire
+		prestige_level >= 4
+		custom_tooltip = {
+			text = LR_accept_principate_auctoritas_tt
+			OR = {
+				prestige_level >= 5
+				martial >= 14
+				any_army = { army_max_size >= 10000 }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		LR_become_princeps_effect = yes
+	}
+
+	requires_approve = { always = yes }
+
+	# Run on each senator. Senators fear a master but follow a strong and liked consul.
+	ai_approval = {
+		value = 0
+		if = {
+			limit = {
+				liege ?= {
+					this != root
+					is_target_in_variable_list = {
+						name = decree_approvers
+						target = root
+					}
+				}
+			}
+			add = {
+				value = 100
+				desc = decree_pledged_support_desc
+			}
+		}
+		else = {
+			add = republic_assembly_preparation_approval_value
+			add = republic_caucus_room_approval_value
+			add = {
+				value = ai_decree_approval_opinion_value
+				multiply = 0.5
+				desc = DECREE_OPINION_DESC
+			}
+			add = {
+				value = -20
+				desc = LR_accept_principate_reluctance_desc
+			}
+			if = {
+				limit = {
+					liege ?= { prestige_level >= 5 }
+				}
+				add = {
+					value = 15
+					desc = LR_accept_principate_renown_desc
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = ambitious
+						has_trait = arrogant
+					}
+				}
+				add = {
+					value = -15
+					desc = LR_accept_principate_ambitious_desc
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = content
+						has_trait = craven
+						has_trait = humble
+					}
+				}
+				add = {
+					value = 10
+					desc = LR_accept_principate_meek_desc
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 50
+			OR = {
+				has_trait = ambitious
+				has_trait = arrogant
+			}
+		}
+		modifier = {
+			add = -20
+			OR = {
+				has_trait = content
+				has_trait = humble
+			}
+		}
+	}
+}
+
+LR_reform_into_dominate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_reform_into_dominate_decision_desc
+	selection_tooltip = LR_reform_into_dominate_decision_tooltip
+	confirm_text = LR_reform_into_dominate_decision_confirm
+	decision_group_type = roman
+	sort_order = 102
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		LR_is_princeps_trigger = yes
+		has_tgp_dlc_trigger = yes # roman_dominate_government's can_get_government
+	}
+
+	is_valid = {
+		LR_can_have_upgraded_roman_government_trigger = yes # LR 2026-11-19 (user): not while ruling a decayed Roman empire
+		highest_held_title_tier = tier_hegemony # LR 2026-11-19 (user): the Dominate only at the highest tier
+		prestige_level >= 4
+		custom_tooltip = {
+			text = LR_reform_into_dominate_ceremonial_senate_tt
+			has_realm_law = republic_assembly_authority_ceremonial
+		}
+		custom_tooltip = {
+			text = LR_reform_into_dominate_skill_tt
+			OR = {
+				stewardship >= 14
+				martial >= 14
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1500
+	}
+
+	effect = {
+		LR_reform_into_dominate_effect = yes
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 40
+			OR = {
+				has_trait = ambitious
+				has_trait = arrogant
+				has_trait = callous
+			}
+		}
+		modifier = {
+			add = -50
+			has_trait = just
+		}
+	}
+}
+
+LR_adopt_roman_dominate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_adopt_roman_dominate_decision_desc
+	selection_tooltip = LR_adopt_roman_dominate_decision_tooltip
+	confirm_text = LR_adopt_roman_dominate_decision_confirm
+	decision_group_type = roman
+	sort_order = 101
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 60
+	}
+
+	is_shown = {
+		LR_roman_autocrat_shown_trigger = yes
+	}
+
+	is_valid = {
+		LR_roman_autocrat_highest_tier_trigger = yes
+		prestige_level >= 4
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		LR_adopt_roman_dominate_effect = yes
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = 30
+			OR = { has_trait = ambitious has_trait = arrogant has_trait = callous }
+		}
+	}
+}
+
+LR_restore_roman_principate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_restore_roman_principate_decision_desc
+	selection_tooltip = LR_restore_roman_principate_decision_tooltip
+	confirm_text = LR_restore_roman_principate_decision_confirm
+	decision_group_type = roman
+	sort_order = 100
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 60
+	}
+
+	is_shown = {
+		LR_roman_autocrat_shown_trigger = yes
+	}
+
+	is_valid = {
+		LR_roman_autocrat_highest_tier_trigger = yes
+		prestige_level >= 4
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		LR_restore_roman_principate_effect = yes
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 5
+		modifier = {
+			add = 30
+			OR = { has_trait = just has_trait = humble has_trait = content }
+		}
+	}
+}

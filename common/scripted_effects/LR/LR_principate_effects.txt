@@ -1,0 +1,220 @@
+﻿# LR 2026-11-19: the Principate (principate_government), designed with the user on 2026-11-19:
+#   - Mechanic: republic. The Princeps is the head of the Roman Senate assembly for life. Shadowed vanilla laws
+#     (common/laws/04_republic_laws.txt, regenerate with tools/principate/patch_republic_laws.py) lock the term to
+#     Indefinite, the assembly to the Roman Senate and the authority to Legislative or Ceremonial.
+#   - Succession: principate_succession_law (common/laws/00_succession_laws.txt), an election by the Senate
+#     (common/succession_election/LR_principate_elective.txt) that favours the heir the Princeps adopted
+#     (LR_principate_adopt_successor_interaction).
+#   - Provinces: landed direct vassals of duchy tier or above become Principate governors (LR_principate_governor_trigger)
+#     with Senatorial or Imperial province contracts (common/subject_contracts/contracts/principate.txt). Senatorial
+#     governors sit in the Senate.
+#   - Path: a Roman Republic's consul takes LR_accept_principate_decision (the Senate votes on it); a Princeps with a
+#     Ceremonial Senate may take LR_reform_into_dominate_decision (roman_dominate_government, All Under Heaven).
+
+# Root is a ruler. Called first in LR_normalize_dynastic_government_effect (so on game start, on government change and
+# when a liege gains a vassal): direct vassals of a Princeps become governors; a governor who no longer serves a Princeps
+# goes back to feudal, which the normalizer maps to the culture's group.
+LR_principate_align_vassal_effect = {
+	if = {
+		limit = {
+			is_ruler = yes
+			NOT = { has_government = principate_government }
+			LR_principate_governor_trigger = yes
+		}
+		change_government = principate_government
+	}
+	else_if = {
+		limit = {
+			is_ruler = yes
+			has_government = principate_government
+			exists = liege
+			LR_principate_governor_trigger = no
+		}
+		change_government = feudal_government # re-normalized by on_government_change
+	}
+}
+
+# Root is a ruler. LR 2026-11-19 (user): a decayed Roman empire's ruler (LR_is_decayed_roman_realm_trigger: e_byzantium,
+# e_spqr, e_tadmor, e_syagria, e_constantinid, with no restored title) cannot keep the Dominate or the Principate (e.g.
+# after inheriting the decayed title): the Dominate falls back to Roman Administrative (the decayed empires' government in
+# history), the Principate to a plain republic. Called first in LR_normalize_dynastic_government_effect and on title gain.
+LR_downgrade_upgraded_roman_government_effect = {
+	if = {
+		limit = {
+			has_government = roman_dominate_government
+			LR_is_decayed_roman_realm_trigger = yes
+		}
+		change_government = roman_administrative_government
+	}
+	else_if = {
+		limit = {
+			has_government = principate_government
+			LR_is_decayed_roman_realm_trigger = yes
+		}
+		change_government = republic_government
+	}
+}
+
+# Root is the consul of a Roman Republic. Makes root Princeps: the government, the Principate's laws and the governors.
+LR_become_princeps_effect = {
+	change_government = principate_government
+
+	# Laws. LR 2026-11-19: the Empire tier too, for an emperor restoring the Principate (LR_restore_roman_principate_effect)
+	if = {
+		limit = { NOT = { has_realm_law = republic_tier_empire } }
+		add_realm_law_skip_effects = republic_tier_empire
+	}
+	# The shadowed republic laws would switch most of these on their own (can_keep / should_start_with);
+	# set them here so the tooltip shows them and nothing waits for the next law check.
+	add_realm_law_skip_effects = principate_succession_law
+	if = {
+		limit = { NOT = { has_realm_law = republic_type_roman } }
+		add_realm_law_skip_effects = republic_type_roman
+	}
+	if = {
+		limit = { NOT = { has_realm_law = republic_assembly_composition_roman_senate } }
+		add_realm_law_skip_effects = republic_assembly_composition_roman_senate
+	}
+	if = {
+		limit = { NOT = { has_realm_law = republic_assembly_term_length_indefinite } }
+		add_realm_law_skip_effects = republic_assembly_term_length_indefinite
+	}
+	if = {
+		limit = { has_realm_law = republic_assembly_authority_constitutional }
+		add_realm_law_skip_effects = republic_assembly_authority_legislative
+	}
+
+	# Governors
+	custom_tooltip = LR_become_princeps_governors_tt
+	hidden_effect = {
+		every_vassal = {
+			limit = { LR_principate_governor_trigger = yes }
+			change_government = principate_government
+		}
+		update_assembly = yes
+	}
+
+	# Rewards and costs
+	add_prestige = major_prestige_gain
+	add_character_modifier = {
+		modifier = LR_princeps_auctoritas_modifier
+		years = 20
+	}
+	capital_county = { add_popular_opinion = 15 }
+	every_vassal = {
+		custom = LR_become_princeps_opinion_custom
+		limit = { government_has_flag = government_is_republic }
+		add_opinion = {
+			target = root
+			modifier = LR_became_princeps_opinion
+		years = 10
+		}
+	}
+}
+
+# Root is the Princeps. Ends the Principate: the Senate is set aside and root and his governors take the Dominate
+# (roman_dominate_government; the decision needs All Under Heaven, as the Dominate's can_get_government).
+LR_reform_into_dominate_effect = {
+	save_scope_as = dominus
+	custom_tooltip = LR_reform_into_dominate_governors_tt
+	hidden_effect = {
+		every_vassal = {
+			limit = { has_government = principate_government }
+			add_to_list = LR_principate_governors
+		}
+	}
+	change_government = roman_dominate_government
+	hidden_effect = {
+		every_in_list = {
+			list = LR_principate_governors
+			change_government = roman_dominate_government
+			add_opinion = {
+				target = scope:dominus
+				modifier = LR_senate_set_aside_opinion
+			years = 15
+			}
+		}
+		remove_variable = principate_adopted_heir
+	}
+	add_prestige = major_prestige_gain
+	add_character_modifier = {
+		modifier = LR_dominus_reform_modifier
+		years = 15
+	}
+	capital_county = { add_popular_opinion = -15 }
+}
+
+# Root is the Princeps, scope:new_heir the adopted successor (LR_principate_adopt_successor_interaction)
+LR_principate_adopt_successor_effect = {
+	if = {
+		limit = {
+			var:principate_adopted_heir ?= { is_alive = yes }
+		}
+		var:principate_adopted_heir = {
+			save_scope_as = old_heir
+			remove_character_modifier = LR_principate_adopted_heir_modifier
+			add_opinion = {
+				target = root
+				modifier = LR_principate_disinherited_opinion
+			years = 15
+			}
+		}
+	}
+	set_variable = {
+		name = principate_adopted_heir
+		value = scope:new_heir
+	}
+	scope:new_heir = {
+		add_character_modifier = LR_principate_adopted_heir_modifier
+		add_opinion = {
+			target = root
+			modifier = LR_principate_adopted_opinion
+		years = 20
+		}
+	}
+	# Sons and daughters passed over for an outsider resent it
+	every_child = {
+		limit = {
+			is_adult = yes
+			NOT = { this = scope:new_heir }
+			NOT = { scope:new_heir = { is_child_of = root } }
+		}
+		custom = LR_principate_passed_over_children_custom
+		add_opinion = {
+			target = root
+			modifier = LR_principate_passed_over_opinion
+		years = 10
+		}
+	}
+}
+
+# Root is a Roman Autocratic emperor of hegemony tier (LR_adopt_roman_dominate_decision). Root and the realm's Roman
+# Autocratic governors take up the Dominate (LR's realm code keeps same-group administrations, so they are moved here).
+LR_adopt_roman_dominate_effect = {
+	save_scope_as = dominus
+	every_vassal_or_below = {
+		limit = { has_government = roman_autocratic_government }
+		add_to_list = LR_roman_autocratic_governors
+	}
+	change_government = roman_dominate_government
+	custom_tooltip = LR_adopt_roman_dominate_governors_tt
+	hidden_effect = {
+		every_in_list = {
+			list = LR_roman_autocratic_governors
+			limit = { LR_can_have_upgraded_roman_government_trigger = yes }
+			change_government = roman_dominate_government
+		}
+	}
+	add_prestige = major_prestige_gain
+	add_character_modifier = {
+		modifier = LR_dominus_reform_modifier
+		years = 15
+	}
+}
+
+# Root is a Roman Autocratic emperor of hegemony tier (LR_restore_roman_principate_decision): the Senate is given back its
+# place and root rules as Princeps. The great administrative vassals become Principate governors and the lesser ones go
+# feudal (LR_align_admin_vassals_of_top_liege_effect on the government change).
+LR_restore_roman_principate_effect = {
+	LR_become_princeps_effect = yes
+}

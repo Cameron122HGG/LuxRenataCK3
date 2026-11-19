@@ -1,7 +1,8 @@
 ﻿# Lux Renata government traditions: each culture has exactly one, and it decides which group of governments
 # (plain -> dynastic -> administrative -> top tier) its rulers use. Seeded in the culture files by heritage.
 # Adopting another one replaces it and moves the culture's rulers to the same tier of the new group
-# (LR_government_tradition_on_actions.txt). The AI never adopts them on its own.
+# (LR_government_tradition_on_actions.txt). 2026-11-18: a culture can only pick a group it knows, a group much of the
+# culture already lives under is cheaper, the AI takes up the group most of it lives under, and each has a small bonus.
 # A culture left without one falls into Anarchy (lux_tradition_gov_anarchy, at the end of this file) until it picks one.
 
 lux_tradition_gov_classical = {
@@ -17,6 +18,43 @@ lux_tradition_gov_classical = {
 		lux_government_group_classical = yes
 	}
 
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_classical_known_tt
+			LR_culture_knows_classical_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	# LR 2026-11-18, after Lux Invicta's classical_government (demesne -2, pikemen defence +50%, court +10, cities built with prestige)
+	character_modifier = {
+		domain_limit = -1
+		pikemen_toughness_mult = 0.1
+		court_grandeur_baseline_add = 2
+		city_holding_build_gold_cost = -0.1
+	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -25,6 +63,21 @@ lux_tradition_gov_classical = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_classical_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_classical_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -35,7 +88,18 @@ lux_tradition_gov_classical = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_classical }
+				LR_culture_share_under_classical_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_classical_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
 lux_tradition_gov_western = {
@@ -51,6 +115,40 @@ lux_tradition_gov_western = {
 		lux_government_group_western = yes
 	}
 
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_western_known_tt
+			LR_culture_knows_western_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		martial = 1
+		knight_effectiveness_mult = 0.1
+	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -59,6 +157,21 @@ lux_tradition_gov_western = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_western_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_western_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -69,7 +182,18 @@ lux_tradition_gov_western = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_western }
+				LR_culture_share_under_western_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_western_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
 lux_tradition_gov_despotic = {
@@ -85,6 +209,42 @@ lux_tradition_gov_despotic = {
 		lux_government_group_despotic = yes
 	}
 
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_despotic_known_tt
+			LR_culture_knows_despotic_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	# LR 2026-11-18, after Lux Invicta's oriental_monarchy_government (demesne +2, vassal limit -20, court +10)
+	character_modifier = {
+		domain_limit = 1
+		vassal_limit = -10
+		court_grandeur_baseline_add = 2
+	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -93,6 +253,21 @@ lux_tradition_gov_despotic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_despotic_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_despotic_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -103,7 +278,18 @@ lux_tradition_gov_despotic = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_despotic }
+				LR_culture_share_under_despotic_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_despotic_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
 lux_tradition_gov_indic = {
@@ -119,6 +305,40 @@ lux_tradition_gov_indic = {
 		lux_government_group_indic = yes
 	}
 
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_indic_known_tt
+			LR_culture_knows_indic_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		learning = 1
+		monthly_piety_gain_mult = 0.05
+	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -127,6 +347,21 @@ lux_tradition_gov_indic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_indic_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_indic_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -137,10 +372,21 @@ lux_tradition_gov_indic = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_indic }
+				LR_culture_share_under_indic_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_indic_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
-lux_tradition_gov_islamic = {
+lux_tradition_gov_mamlakah = {
 	category = realm
 
 	layers = {
@@ -150,7 +396,41 @@ lux_tradition_gov_islamic = {
 	}
 
 	parameters = {
-		lux_government_group_islamic = yes
+		lux_government_group_mamlakah = yes
+	}
+
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_mamlakah_known_tt
+			LR_culture_knows_mamlakah_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		diplomacy = 1
+		levy_size = 0.05
 	}
 
 	cost = {
@@ -161,6 +441,21 @@ lux_tradition_gov_islamic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_mamlakah_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_mamlakah_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -171,7 +466,206 @@ lux_tradition_gov_islamic = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_mamlakah }
+				LR_culture_share_under_mamlakah_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_mamlakah_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
+}
+
+lux_tradition_gov_sudanic = {
+	category = realm
+
+	layers = {
+		0 = steward
+		1 = default_todo.dds
+		4 = saharan_traders.dds
+	}
+
+	parameters = {
+		lux_government_group_sudanic = yes
+	}
+
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_sudanic_known_tt
+			LR_culture_knows_sudanic_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		stewardship = 1
+		domain_tax_mult = 0.05
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_sudanic_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_sudanic_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
+		}
+	}
+
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_sudanic }
+				LR_culture_share_under_sudanic_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_sudanic_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
+}
+
+lux_tradition_gov_nilotic = {
+	category = realm
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = king.dds
+	}
+
+	parameters = {
+		lux_government_group_nilotic = yes
+	}
+
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_nilotic_known_tt
+			LR_culture_knows_nilotic_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		learning = 1
+		monthly_prestige_gain_mult = 0.05
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_nilotic_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_nilotic_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			if = { # Anarchy: settling on a way of government is the culture's first need
+				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
+				multiply = {
+					value = 0.25
+					desc = LR_tradition_cost_in_anarchy_desc
+				}
+			}
+		}
+	}
+
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_nilotic }
+				LR_culture_share_under_nilotic_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_nilotic_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
 lux_tradition_gov_sinic = {
@@ -187,6 +681,40 @@ lux_tradition_gov_sinic = {
 		lux_government_group_sinic = yes
 	}
 
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_sinic_known_tt
+			LR_culture_knows_sinic_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		stewardship = 1
+		monthly_prestige_gain_mult = 0.05
+	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -195,6 +723,21 @@ lux_tradition_gov_sinic = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_sinic_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_sinic_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -205,7 +748,18 @@ lux_tradition_gov_sinic = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_sinic }
+				LR_culture_share_under_sinic_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_sinic_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
 lux_tradition_gov_japanese = {
@@ -221,6 +775,40 @@ lux_tradition_gov_japanese = {
 		lux_government_group_japanese = yes
 	}
 
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_japanese_known_tt
+			LR_culture_knows_japanese_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		prowess = 2
+		monthly_prestige_gain_mult = 0.05
+	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -229,6 +817,21 @@ lux_tradition_gov_japanese = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_japanese_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_japanese_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -239,7 +842,18 @@ lux_tradition_gov_japanese = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_japanese }
+				LR_culture_share_under_japanese_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_japanese_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
 lux_tradition_gov_barbarian = {
@@ -255,6 +869,40 @@ lux_tradition_gov_barbarian = {
 		lux_government_group_barbarian = yes
 	}
 
+	# LR 2026-11-18: a culture can only take up a way of government it knows (its own lands, its head's realm or a neighbour)
+	can_pick = {
+		custom_tooltip = {
+			text = LR_tradition_gov_barbarian_known_tt
+			LR_culture_knows_barbarian_group_trigger = yes
+		}
+		# LR 2026-11-18: a full culture may only replace its old government tradition (or Anarchy); replacing another
+		# tradition would lose it as well as the old government tradition (LR_drop_other_government_traditions_effect)
+		trigger_if = {
+			limit = { exists = scope:replacing }
+			custom_tooltip = {
+				text = LR_tradition_gov_replaces_gov_tt
+				OR = {
+					scope:replacing = culture_tradition:lux_tradition_gov_classical
+					scope:replacing = culture_tradition:lux_tradition_gov_western
+					scope:replacing = culture_tradition:lux_tradition_gov_despotic
+					scope:replacing = culture_tradition:lux_tradition_gov_indic
+					scope:replacing = culture_tradition:lux_tradition_gov_mamlakah
+					scope:replacing = culture_tradition:lux_tradition_gov_nilotic
+					scope:replacing = culture_tradition:lux_tradition_gov_sudanic
+					scope:replacing = culture_tradition:lux_tradition_gov_sinic
+					scope:replacing = culture_tradition:lux_tradition_gov_japanese
+					scope:replacing = culture_tradition:lux_tradition_gov_barbarian
+					scope:replacing = culture_tradition:lux_tradition_gov_anarchy
+				}
+			}
+		}
+	}
+
+	character_modifier = {
+		prowess = 1
+		levy_size = 0.1
+	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -263,6 +911,21 @@ lux_tradition_gov_barbarian = {
 				format = "BASE_VALUE_FORMAT"
 			}
 			multiply = 2
+			# LR 2026-11-18 realm drift: cheaper when much of the culture already lives in realms of this group
+			if = {
+				limit = { LR_culture_share_under_barbarian_value >= 0.5 }
+				multiply = {
+					value = 0.5
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
+			else_if = {
+				limit = { LR_culture_share_under_barbarian_value >= 0.25 }
+				multiply = {
+					value = 0.75
+					desc = LR_tradition_cost_realm_drift_desc
+				}
+			}
 			if = { # Anarchy: settling on a way of government is the culture's first need
 				limit = { has_cultural_tradition = lux_tradition_gov_anarchy }
 				multiply = {
@@ -273,7 +936,18 @@ lux_tradition_gov_barbarian = {
 		}
 	}
 
-	ai_will_do = { value = 0 }
+	# LR 2026-11-18: an AI culture takes up the group most of it lives under, if its head's realm is of that group too
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_cultural_tradition = lux_tradition_gov_barbarian }
+				LR_culture_share_under_barbarian_value >= 0.6
+				culture_head ?= { top_liege = { LR_government_in_barbarian_group_trigger = yes } }
+			}
+			add = 100
+		}
+	}
 }
 
 # Anarchy: a culture without a government tradition. It cannot be picked; it is given to any culture that has no

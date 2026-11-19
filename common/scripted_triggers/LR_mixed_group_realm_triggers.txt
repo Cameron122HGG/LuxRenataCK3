@@ -1,0 +1,232 @@
+﻿# Lux Renata 2026-11-18: vassals whose government group differs from their top liege's (LR_mixed_group_realm_effects.txt)
+
+# Character scope: the government belongs to one of the Lux Renata government groups
+LR_has_lr_government_group_trigger = {
+	OR = {
+		government_has_flag = government_is_classical_group
+		government_has_flag = government_is_western_group
+		government_has_flag = government_is_despotic_group
+		government_has_flag = government_is_mamlakah_group # LR 2026-11-19
+		government_has_flag = government_is_sudanic_group # LR 2026-11-19
+		government_has_flag = government_is_nilotic_group # LR 2026-11-19
+		government_has_flag = government_is_indic_group
+		government_has_flag = government_is_islamic_group
+		government_has_flag = government_is_sinic_group
+		government_has_flag = government_is_japanese_group
+		government_has_flag = government_is_sacral_group
+		government_has_flag = government_is_barbarian_group
+	}
+}
+
+# Character scope: a landed vassal of non-administrative customs whose government group differs from their top liege's.
+# Muslims are left out: they always keep the Islamicate group (user: "all Muslims Iqta").
+LR_has_foreign_customs_trigger = {
+	is_ruler = yes
+	is_landed = yes
+	top_liege != this
+	NOT = { government_has_mechanic = administrative }
+	NOT = { faith = { religion_tag = islam_religion } }
+	LR_has_lr_government_group_trigger = yes
+	top_liege = { LR_has_lr_government_group_trigger = yes }
+	NOT = { LR_government_shares_tradition_group_trigger = { OTHER = top_liege } }
+}
+
+# LR 2026-11-18 cultural toleration, after Lux Invicta's accepts_liege_governments(_culture): character scope, a vassal of
+# other customs who still accepts their top liege's group, outright or only from a liege of their own culture.
+# Classical, Persianate, Western, Iqta and Barbarian rows follow LI; Indic, Sinic, Japanese and Sacral are LR's own.
+# A tolerating vassal does not resent the liege and does not count toward Realm of Many Customs (One Custom still presses them).
+LR_tolerates_top_liege_customs_trigger = {
+	OR = {
+		AND = { # classical vassal (Persianate only of their own culture: LI's in-game tooltip, user 2026-11-19)
+			LR_government_in_classical_group_trigger = yes
+			OR = {
+				top_liege = {
+					OR = {
+						LR_government_in_western_group_trigger = yes
+						LR_government_in_islamic_group_trigger = yes
+					}
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						LR_government_in_despotic_group_trigger = yes
+					}
+				}
+			}
+		}
+		AND = { # despotic vassal (Western and Iqta only of their own culture: LI's in-game tooltip, user 2026-11-19; no Barbarian)
+			LR_government_in_despotic_group_trigger = yes
+			OR = {
+				top_liege = {
+					LR_government_in_classical_group_trigger = yes
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						OR = {
+							LR_government_in_western_group_trigger = yes
+							LR_government_in_islamic_group_trigger = yes
+						}
+					}
+				}
+			}
+		}
+		AND = { # mamlakah vassal (LR 2026-11-19: a copy of the Persianate row, plus Persianate lieges of their own culture)
+			LR_government_in_mamlakah_group_trigger = yes
+			OR = {
+				top_liege = {
+					LR_government_in_classical_group_trigger = yes
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						OR = {
+							LR_government_in_despotic_group_trigger = yes
+							LR_government_in_western_group_trigger = yes
+							LR_government_in_islamic_group_trigger = yes
+						}
+					}
+				}
+			}
+		}
+		AND = { # sudanic vassal (LR 2026-11-19: a copy of the Persianate row, plus Persianate lieges of their own culture)
+			LR_government_in_sudanic_group_trigger = yes
+			OR = {
+				top_liege = {
+					LR_government_in_classical_group_trigger = yes
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						OR = {
+							LR_government_in_despotic_group_trigger = yes
+							LR_government_in_western_group_trigger = yes
+							LR_government_in_islamic_group_trigger = yes
+						}
+					}
+				}
+			}
+		}
+		AND = { # nilotic vassal (LR 2026-11-19: a copy of the Persianate row, plus Persianate lieges of their own culture)
+			LR_government_in_nilotic_group_trigger = yes
+			OR = {
+				top_liege = {
+					LR_government_in_classical_group_trigger = yes
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						OR = {
+							LR_government_in_despotic_group_trigger = yes
+							LR_government_in_western_group_trigger = yes
+							LR_government_in_islamic_group_trigger = yes
+						}
+					}
+				}
+			}
+		}
+		# No group but Barbarian itself tolerates a Barbarian liege (user 2026-11-19: Barbarian "should not be on equal footing
+		# with the other groups it should be something you upgrade out of")
+		AND = { # western vassal
+			LR_government_in_western_group_trigger = yes
+			OR = {
+				top_liege = {
+					OR = {
+						LR_government_in_classical_group_trigger = yes
+						LR_government_in_islamic_group_trigger = yes
+					}
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						LR_government_in_despotic_group_trigger = yes
+					}
+				}
+			}
+		}
+		AND = { # islamic vassal
+			LR_government_in_islamic_group_trigger = yes
+			OR = {
+				top_liege = {
+					OR = {
+						LR_government_in_classical_group_trigger = yes
+						LR_government_in_western_group_trigger = yes
+					}
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						LR_government_in_despotic_group_trigger = yes
+					}
+				}
+			}
+		}
+		AND = { # barbarian vassal
+			LR_government_in_barbarian_group_trigger = yes
+			culture = top_liege.culture # only from a liege of their own culture
+			top_liege = {
+				OR = {
+					LR_government_in_classical_group_trigger = yes
+					LR_government_in_western_group_trigger = yes
+					LR_government_in_despotic_group_trigger = yes
+					LR_government_in_islamic_group_trigger = yes
+					LR_government_in_mamlakah_group_trigger = yes # LR 2026-11-19
+					LR_government_in_sudanic_group_trigger = yes # LR 2026-11-19
+					LR_government_in_nilotic_group_trigger = yes # LR 2026-11-19
+				}
+			}
+		}
+		# Indic and Sinic are culture-based (user 2026-11-19): only a liege of their own culture is tolerated
+		AND = { # indic vassal
+			LR_government_in_indic_group_trigger = yes
+			culture = top_liege.culture
+			top_liege = {
+				OR = {
+					LR_government_in_despotic_group_trigger = yes
+					LR_government_in_classical_group_trigger = yes
+					LR_government_in_islamic_group_trigger = yes
+				}
+			}
+		}
+		AND = { # sinic vassal
+			LR_government_in_sinic_group_trigger = yes
+			culture = top_liege.culture
+			top_liege = {
+				LR_government_in_japanese_group_trigger = yes
+			}
+		}
+		AND = { # japanese vassal
+			LR_government_in_japanese_group_trigger = yes
+			top_liege = {
+				LR_government_in_sinic_group_trigger = yes
+			}
+		}
+		AND = { # sacral vassal
+			government_has_flag = government_is_sacral_group
+			OR = {
+				top_liege = {
+					LR_government_in_western_group_trigger = yes
+				}
+				AND = {
+					culture = top_liege.culture
+					top_liege = {
+						LR_government_in_classical_group_trigger = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+# Character scope: a vassal of other customs who does not accept their top liege's group (Foreign Customs, the realm count)
+LR_resents_foreign_customs_trigger = {
+	LR_has_foreign_customs_trigger = yes
+	LR_tolerates_top_liege_customs_trigger = no
+}
+
+# Character scope: a vassal of other customs who can take up the realm's (decision, Demand Conformity, One Custom).
+# LR 2026-11-19: not in an Iqta realm, as Iqta is the faith-based group of Muslim rulers (Muslim vassals are exempt anyway).
+LR_can_adopt_realm_customs_trigger = {
+	LR_has_foreign_customs_trigger = yes
+	top_liege = { NOT = { government_has_flag = government_is_islamic_group } }
+}

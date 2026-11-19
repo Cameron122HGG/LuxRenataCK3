@@ -1,0 +1,294 @@
+﻿# Lux Renata 2026-11-18: vassals whose government group differs from their top liege's (option B, user: "lets do B").
+# - Administrative tier: an administrative vassal always takes its top liege's administration (Muslims stay Iqta), and
+#   there are no administrative vassals in a realm whose top liege is not administrative. The game picks a vassal's
+#   contract from the vassal's own government, and each group's admin contract has its own province types and flags
+#   (roman_administrative_theme_*, meritocratic_civil_appointment...), which do not work side by side.
+# - Feudal tier: vassals keep their own culture's group, but resent a top liege of other customs
+#   (LR_foreign_customs_opinion), a realm of many customs is harder to hold (LR_realm_of_many_customs_*), and a vassal
+#   can adopt the realm's customs (LR_adopt_realm_customs_decision) or be asked to (LR_demand_conformity_interaction).
+# - Option C (2026-11-18): kings and up choose a realm customs law (LR_realm_customs_laws.txt): Many Customs, Customary
+#   (default, the rules above) or One Custom (more resentment, a yearly event pressing vassals to conform).
+
+# Root is a ruler with a Lux Renata administrative government. Root moves to its top liege's administration
+# (through the vanilla administrative default, which LR_replace_vanilla_default_government_effect maps to the top
+# liege's group), or to feudal when the top liege is not administrative. Called first in LR_normalize_dynastic_government_effect.
+LR_align_admin_vassal_government_effect = {
+	if = {
+		limit = {
+			is_ruler = yes
+			top_liege != this
+			government_has_mechanic = administrative
+			NOT = { has_government = administrative_government } # the vanilla default: left to LR_replace_vanilla_default_government_effect
+			top_liege = { LR_has_lr_government_group_trigger = yes } # LR_replace maps only the LR groups; anything else would loop
+			# LR 2026-11-19: a non-Muslim in an Iqta realm keeps the Mamlakah administration (Iqta is only for Muslims)
+			NAND = {
+				top_liege = { government_has_flag = government_is_islamic_group }
+				government_has_flag = government_is_mamlakah_group # mamlakah-only
+			}
+		}
+		if = {
+			limit = { top_liege = { NOT = { government_has_mechanic = administrative } } }
+			change_government = feudal_government # re-normalized by on_government_change: the culture's group
+		}
+		else_if = {
+			limit = {
+				NOT = { faith = { religion_tag = islam_religion } } # Muslims stay Iqta (user: "all Muslims Iqta")
+				NOT = { LR_government_shares_tradition_group_trigger = { OTHER = top_liege } }
+			}
+			change_government = administrative_government # LR_replace_vanilla_default_government_effect, run next, picks the group
+		}
+	}
+}
+
+# Root is a ruler with a Lux Renata administrative government whose government just changed (on_government_change).
+# Its administrative vassals follow the new administration, or go feudal if it is no longer administrative.
+LR_align_admin_vassals_of_top_liege_effect = {
+	if = {
+		limit = { is_independent_ruler = yes }
+		every_vassal_or_below = {
+			limit = { government_has_mechanic = administrative }
+			LR_normalize_dynastic_government_effect = yes
+		}
+	}
+}
+
+# Root is a vassal with the vanilla feudal default, or one adopting the realm's customs: take the plain feudal tier of the
+# top liege's group (LR_normalize_dynastic_government_effect then picks the dynastic twin with the DLC).
+LR_take_top_liege_feudal_group_effect = {
+	if = {
+		limit = { top_liege = { government_has_flag = government_is_classical_group } }
+		change_government = classical_government
+	}
+	else_if = {
+		limit = { top_liege = { government_has_flag = government_is_western_group } }
+		change_government = western_feudal_government
+	}
+	else_if = {
+		limit = { top_liege = { government_has_flag = government_is_despotic_group } }
+		change_government = despotic_government
+	}
+	else_if = {
+		limit = { top_liege = { government_has_flag = government_is_indic_group } }
+		change_government = indic_feudal_government
+	}
+	else_if = { # LR 2026-11-19
+		limit = { top_liege = { government_has_flag = government_is_mamlakah_group } }
+		change_government = mamlakah_government # mamlakah_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
+	}
+	else_if = { # LR 2026-11-19
+		limit = { top_liege = { government_has_flag = government_is_sudanic_group } }
+		change_government = sudanic_government # sudanic_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
+	}
+	else_if = { # LR 2026-11-19
+		limit = { top_liege = { government_has_flag = government_is_nilotic_group } }
+		change_government = nilotic_government # nilotic_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
+	}
+	else_if = { # mamlakah-only. LR 2026-11-19: Iqta is for Muslims (they are caught before this); a non-Muslim in an Iqta realm takes the secular Mamlakah
+		limit = { top_liege = { government_has_flag = government_is_islamic_group } }
+		change_government = mamlakah_government # mamlakah_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
+	}
+	else_if = {
+		limit = { top_liege = { government_has_flag = government_is_sinic_group } }
+		if = {
+			limit = { top_liege = { government_has_flag = government_is_japanese_plain } }
+			change_government = japanese_government
+		}
+		else = {
+			change_government = chinese_feudal_government
+		}
+	}
+	else_if = {
+		limit = { top_liege = { government_has_flag = government_is_japanese_group } }
+		add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
+		change_government = japan_feudal_government
+	}
+	else_if = {
+		limit = { top_liege = { government_has_flag = government_is_sacral_group } }
+		change_government = sacral_government
+	}
+	else_if = {
+		limit = { top_liege = { government_has_flag = government_is_barbarian_group } }
+		change_government = great_tribal_government
+	}
+}
+
+# Root is a vassal of foreign customs taking up the realm's (decision or interaction): the government changes, the top
+# liege is pleased and the resentment ends.
+LR_adopt_realm_customs_effect = {
+	save_scope_as = LR_customs_vassal
+	top_liege = { save_scope_as = LR_customs_liege }
+	LR_take_top_liege_feudal_group_effect = yes
+	LR_remove_customs_opinion_effect = { OPINION = LR_foreign_customs_opinion }
+	LR_remove_customs_opinion_effect = { OPINION = LR_customs_suppressed_opinion }
+	scope:LR_customs_liege = {
+		add_opinion = {
+			target = scope:LR_customs_vassal
+			modifier = LR_adopted_realm_customs_opinion
+			years = 10
+		}
+	}
+}
+
+# Root is an independent ruler (yearly pulse, and after a realm customs law passes, LR_realm_customs_laws.txt):
+# vassals of other customs resent root as the realm customs law says, and root's realm modifier follows how many there are.
+# Many Customs: no resentment, costlier modifier. Customary (or no law, below kings): Foreign Customs. One Custom: Customs Suppressed.
+# Vassals who tolerate the liege's group (LR_tolerates_top_liege_customs_trigger, after Lux Invicta) neither resent nor count.
+LR_update_mixed_group_realm_effect = {
+	save_scope_as = LR_customs_liege
+	every_vassal_or_below = {
+		if = {
+			limit = {
+				LR_resents_foreign_customs_trigger = yes
+				scope:LR_customs_liege = { has_realm_law_flag = LR_one_custom }
+			}
+			LR_remove_customs_opinion_effect = { OPINION = LR_foreign_customs_opinion }
+			add_opinion = {
+				target = scope:LR_customs_liege
+				modifier = LR_customs_suppressed_opinion
+				months = 13 # renewed by the yearly pulse; lapses after leaving the realm
+			}
+		}
+		else_if = {
+			limit = {
+				LR_resents_foreign_customs_trigger = yes
+				scope:LR_customs_liege = { NOT = { has_realm_law_flag = LR_many_customs } }
+			}
+			LR_remove_customs_opinion_effect = { OPINION = LR_customs_suppressed_opinion }
+			add_opinion = {
+				target = scope:LR_customs_liege
+				modifier = LR_foreign_customs_opinion
+				months = 13 # renewed by the yearly pulse; lapses after leaving the realm
+			}
+		}
+		else = {
+			LR_remove_customs_opinion_effect = { OPINION = LR_foreign_customs_opinion }
+			LR_remove_customs_opinion_effect = { OPINION = LR_customs_suppressed_opinion }
+		}
+	}
+	remove_character_modifier = LR_realm_of_many_customs_modifier
+	remove_character_modifier = LR_realm_of_very_many_customs_modifier
+	remove_character_modifier = LR_realm_of_tolerated_customs_modifier
+	remove_character_modifier = LR_realm_of_very_tolerated_customs_modifier
+	if = {
+		limit = {
+			any_vassal_or_below = {
+				count >= 6
+				LR_resents_foreign_customs_trigger = yes
+			}
+		}
+		if = {
+			limit = { has_realm_law_flag = LR_many_customs }
+			add_character_modifier = LR_realm_of_very_tolerated_customs_modifier
+		}
+		else = {
+			add_character_modifier = LR_realm_of_very_many_customs_modifier
+		}
+	}
+	else_if = {
+		limit = {
+			any_vassal_or_below = {
+				count >= 3
+				LR_resents_foreign_customs_trigger = yes
+			}
+		}
+		if = {
+			limit = { has_realm_law_flag = LR_many_customs }
+			add_character_modifier = LR_realm_of_tolerated_customs_modifier
+		}
+		else = {
+			add_character_modifier = LR_realm_of_many_customs_modifier
+		}
+	}
+}
+
+# Root is a vassal, scope:LR_customs_liege its top liege; $OPINION$ = an opinion modifier root may hold of them
+LR_remove_customs_opinion_effect = {
+	if = {
+		limit = {
+			has_opinion_modifier = {
+				target = scope:LR_customs_liege
+				modifier = $OPINION$
+			}
+		}
+		remove_opinion = {
+			target = scope:LR_customs_liege
+			modifier = $OPINION$
+		}
+	}
+}
+
+# Root is an independent ruler under One Custom (yearly pulse): each vassal of other customs has a one in five chance a
+# year to be pressed to conform (LR_realm_customs.0001), unless they refused in the last five years.
+LR_press_one_custom_effect = {
+	if = {
+		limit = { has_realm_law_flag = LR_one_custom }
+		every_vassal_or_below = {
+			limit = {
+				LR_can_adopt_realm_customs_trigger = yes
+				NOT = { has_character_flag = LR_refused_one_custom }
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = LR_realm_customs.0001
+					days = { 1 300 }
+				}
+			}
+		}
+	}
+}
+
+# Root is an AI independent ruler of a kingdom or more (yearly pulse): now and then it changes its realm customs law.
+# Proud or zealous rulers with vassals of other customs take One Custom; easy-going ones with many take Many Customs;
+# a realm with none goes back to Customary.
+LR_ai_choose_realm_customs_law_effect = {
+	if = {
+		limit = {
+			is_ai = yes
+			highest_held_title_tier >= tier_kingdom
+			is_at_war = no
+			prestige >= 200
+		}
+		random = {
+			chance = 10
+			if = {
+				limit = {
+					NOT = { has_realm_law = LR_realm_customs_2 }
+					any_vassal_or_below = { LR_has_foreign_customs_trigger = yes }
+					OR = {
+						has_trait = zealous
+						has_trait = arrogant
+						has_trait = stubborn
+					}
+				}
+				add_prestige = -200
+				add_realm_law = LR_realm_customs_2
+			}
+			else_if = {
+				limit = {
+					NOT = { has_realm_law = LR_realm_customs_0 }
+					any_vassal_or_below = {
+						count >= 6
+						LR_resents_foreign_customs_trigger = yes # only those who resent: all Many Customs changes
+					}
+					OR = {
+						has_trait = content
+						has_trait = humble
+						has_trait = compassionate
+						has_trait = trusting
+					}
+				}
+				add_prestige = -200
+				add_realm_law = LR_realm_customs_0
+			}
+			else_if = {
+				limit = {
+					NOT = { has_realm_law = LR_realm_customs_1 }
+					NOT = { any_vassal_or_below = { LR_has_foreign_customs_trigger = yes } }
+				}
+				add_prestige = -100
+				add_realm_law = LR_realm_customs_1
+			}
+		}
+	}
+}

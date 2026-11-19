@@ -10,6 +10,28 @@ on_vassal_gained = {
 	on_actions = { LR_dynastic_government_on_vassal_gained }
 }
 
+on_faith_conversion = {
+	on_actions = { LR_dynastic_government_on_faith_conversion }
+}
+
+# LR 2026-11-19 safety nets (user: "make sure vanilla feudal, clan, and administrative are always superseded")
+on_title_gain = {
+	on_actions = { LR_dynastic_government_on_title_gain }
+}
+
+yearly_global_pulse = {
+	on_actions = { LR_dynastic_government_yearly_pulse }
+}
+
+# root = the converted character. A ruler who becomes Muslim leaves feudal, clan or the Persianate (despotic) group for
+# the Islamicate government of the same tier (LR_normalize_dynastic_government_effect).
+LR_dynastic_government_on_faith_conversion = {
+	trigger = { is_ruler = yes }
+	effect = {
+		LR_normalize_dynastic_government_effect = yes
+	}
+}
+
 # root = the character whose government changed
 LR_dynastic_government_on_government_change = {
 	effect = {
@@ -20,7 +42,46 @@ LR_dynastic_government_on_government_change = {
 # History uses the dynastic governments; without the DLC they fall back to the plain ones (and vice versa)
 LR_dynastic_government_on_game_start = {
 	effect = {
+		# LR 2026-11-19: the Mamlakah tradition is new, and history still gives its cultures' rulers the governments of their
+		# old traditions (Western, Classical, Persianate, Iqta). Move the non-Muslims to the Mamlakah first (administrative
+		# vassals and top tiers are left alone by LR_apply_culture_government_group_effect; Muslims stay Iqta).
 		every_ruler = {
+			limit = {
+				culture = { has_cultural_tradition = lux_tradition_gov_mamlakah }
+				NOT = { faith = { religion_tag = islam_religion } }
+			}
+			LR_apply_culture_government_group_effect = yes
+		}
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_tradition = lux_tradition_gov_sudanic }
+				NOT = { faith = { religion_tag = islam_religion } }
+			}
+			LR_apply_culture_government_group_effect = yes
+		}
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_tradition = lux_tradition_gov_nilotic }
+				NOT = { faith = { religion_tag = islam_religion } }
+			}
+			LR_apply_culture_government_group_effect = yes
+		}
+		# Independent rulers first, so each vassal then sees its top liege's final government (a vassal handled
+		# while its sultan was still clan stayed clan). Vassals go from the highest tier down for the same reason.
+		every_ruler = {
+			limit = { is_independent_ruler = yes }
+			LR_normalize_dynastic_government_effect = yes
+		}
+		every_ruler = {
+			limit = { is_independent_ruler = no highest_held_title_tier >= tier_kingdom }
+			LR_normalize_dynastic_government_effect = yes
+		}
+		every_ruler = {
+			limit = { is_independent_ruler = no highest_held_title_tier = tier_duchy }
+			LR_normalize_dynastic_government_effect = yes
+		}
+		every_ruler = {
+			limit = { is_independent_ruler = no highest_held_title_tier <= tier_county }
 			LR_normalize_dynastic_government_effect = yes
 		}
 	}
@@ -32,6 +93,46 @@ LR_dynastic_government_on_vassal_gained = {
 	effect = {
 		scope:vassal = {
 			LR_normalize_dynastic_government_effect = yes
+		}
+	}
+}
+
+# root = the character gaining a title. A ruler who lands (or is handed a title) on a vanilla default gets an LR government.
+LR_dynastic_government_on_title_gain = {
+	trigger = {
+		OR = {
+			LR_vanilla_default_government_trigger = yes
+			LR_has_forbidden_upgraded_roman_government_trigger = yes # LR 2026-11-19: gained a decayed Roman empire title
+		}
+	}
+	effect = {
+		LR_normalize_dynastic_government_effect = yes
+	}
+}
+
+# Every Jan 1st: catch any ruler left on a vanilla default (no on_action fired for them)
+LR_dynastic_government_yearly_pulse = {
+	effect = {
+		every_ruler = {
+			limit = {
+				OR = {
+					LR_vanilla_default_government_trigger = yes
+					LR_has_forbidden_upgraded_roman_government_trigger = yes # LR 2026-11-19
+				}
+			}
+			LR_normalize_dynastic_government_effect = yes
+		}
+		# LR 2026-11-19: a Princeps' vassal who rose to duchy tier becomes a governor (no on_action covers a title gain
+		# by a ruler who is not on a vanilla default)
+		every_ruler = {
+			limit = { LR_is_princeps_trigger = yes }
+			every_vassal = {
+				limit = {
+					NOT = { has_government = principate_government }
+					LR_principate_governor_trigger = yes
+				}
+				LR_normalize_dynastic_government_effect = yes
+			}
 		}
 	}
 }

@@ -1,228 +1,70 @@
-﻿decayed_principate_obligations = {
+﻿# LR 2026-11-19: Principate governors (vassals with principate_government; contract group principate_vassal).
+# Replaces the Decayed Principate's administrative themes. Augustus' settlement of 27 BC split the provinces:
+#   - Senatorial provinces (provinciae populi Romani): the governor is a senator (proconsul) and sits in the Senate
+#     (republic_assembly_composition_roman_senate checks the flag principate_senatorial_province); he sends taxes
+#     to Rome and keeps few troops.
+#   - Imperial provinces (provinciae Caesaris): the frontier provinces, held by a legate of the Princeps, who holds
+#     the legions; more levies and men-at-arms, less tax, and no seat in the Senate.
+
+principate_obligations = {
 	obligation_levels = {
 		default = {
-			levies = {
-				value = 0.3
-				#multiply = governor_efficiency
-			}
-
-			tax = {
-				value = 0.1
-				#multiply = governor_efficiency
-			}
+			levies = 0.2
+			tax = 0.4
 		}
 	}
 }
 
-### brief: decayed_principate_themes
-# This is referenced in code. 
-#
-decayed_principate_themes = {
+principate_provinces = {
 	display_mode = radiobutton
 	is_shown = {
 		scope:subject.primary_title.tier >= tier_duchy
 	}
 	obligation_levels = {
-		decayed_principate_theme_balanced = {
+		principate_province_senatorial = {
 			default = yes
 			position = { 0 0 }
-			icon = "gfx/interface/icons/theme_administration_types/icon_balanced_administration.dds"
-			
-			ai_liege_desire = {
-				value = 0
-				if = {
-					limit = {
-						scope:subject = {
-							is_ai = yes
-						}
-					}
-					add = 1
-				}
-				if = {
-					limit = {
-						scope:liege = {
-							is_independent_ruler = no
-							OR = {
-								vassal_contract_has_flag = decayed_principate_theme_balanced
-								vassal_contract_has_flag = decayed_principate_theme_imperial
-								vassal_contract_has_flag = decayed_principate_theme_naval
-							}
-						}
-					}
-					add = 100
-				}				
-			}
-			ai_subject_desire = 0
-			
-			score = 0
-			color = { 0.7 0.7 0.7 1.0 }
-			
-			subject_modifier = {
-				governor_xp_gain_mult = 0.2
-			}
-			
-			flag = decayed_principate_theme_balanced
-		}
-		decayed_principate_theme_civilian = {
-			position = { 2 0 }
 			icon = "gfx/interface/icons/theme_administration_types/icon_civilian_administration.dds"
-			
+
 			ai_liege_desire = {
-				value = 0
-				if = {
+				value = 1
+				if = { # The Princeps keeps the frontier for himself
 					limit = {
 						scope:subject = {
-							is_ai = yes
-							OR = {
-								has_trait = education_stewardship
-								stewardship >= very_high_skill_rating
-								AND = { # Large semi-coastal themes are good for an economic focus
-									any_sub_realm_county = { count >= 2 is_coastal_county = yes }
-									any_sub_realm_county = { count >= 2 is_coastal_county = no }
+							any_sub_realm_county = {
+								any_neighboring_county = {
+									holder = { NOT = { top_liege = scope:subject.top_liege } }
 								}
 							}
 						}
 					}
-					add = 2
+					add = -2
 				}
-				if = {
-					limit = {
-						scope:liege = {
-							ai_has_economical_boom_personality = yes
-						}
-					}
-					add = 1
-				}
-				if = {
-					limit = {
-						scope:liege = {
-							is_independent_ruler = no
-							vassal_contract_has_flag = decayed_principate_theme_civilian
-						}
-					}
-					add = 100
-				}				
 			}
-			ai_subject_desire = 0
-			
-			score = 0
-			color = { 0.2 0.2 0.7 1.0 }
+			ai_subject_desire = 2 # Senators prefer a seat in the Senate to the toil of the frontier
 
-			tax_factor = 0.5
+			score = 1
+			color = { 0.55 0.15 0.35 1.0 }
+
+			tax_factor = 0.25
+			levies_factor = -0.5
 
 			subject_modifier = {
-				prosperity_growth_factor = 0.2
-				build_gold_cost = -0.1
-				build_speed = -0.1
-				men_at_arms_title_limit = -2
-				men_at_arms_title_cap = -2
+				prosperity_growth_factor = 0.1
+				monthly_prestige_gain_mult = 0.1
+				men_at_arms_title_cap = -1
 			}
-			
-			flag = decayed_principate_stewardship_obligation_bonus
-			flag = decayed_principate_influence_construction_bonus
-			flag = decayed_principate_ai_is_builder
-			flag = decayed_principate_theme_civilian
+
+			flag = principate_senatorial_province
 			flag = obligation_high_taxes
 		}
-		decayed_principate_theme_military = {
+		principate_province_imperial = {
 			position = { 1 0 }
 			icon = "gfx/interface/icons/theme_administration_types/icon_military_administration.dds"
-			
-			ai_liege_desire = {
-				value = 0
-				if = {
-					limit = {
-						scope:subject = {
-							is_ai = yes
-							OR = {
-								has_trait = education_martial
-								martial >= very_high_skill_rating
-								primary_title = { any_owned_title_maa_regiment = { count > 4 } }
-								AND = { # Large inland themes are good for military
-									any_sub_realm_county = { count >= 5 }
-									any_sub_realm_county = { percent >= 0.95 is_coastal_county = no }
-								}
-							}
-						}
-					}
-					add = 2
-				}
-				if = {
-					limit = {
-						scope:liege = {
-							ai_has_warlike_personality = yes
-						}
-					}
-					add = 1
-				}
-				if = {
-					limit = {
-						scope:liege = {
-							is_independent_ruler = no
-							OR = {
-								vassal_contract_has_flag = decayed_principate_theme_military
-								vassal_contract_has_flag = decayed_principate_theme_frontier
-							}
-						}
-					}
-					add = 100
-				}				
-			}
-			ai_subject_desire = 0
-			
-			score = 0
-			color = { 0.7 0.2 0.2 1.0 }
 
-			tax_factor = -0.75
-			levies_factor = 0.75
-			
-			subject_modifier = {
-				prosperity_growth_factor = -0.25
-				monthly_control_change_when_below_baseline_mult = 0.1
-				maa_damage_mult = 0.1
-				men_at_arms_title_cap = 2
-				men_at_arms_maintenance = -0.2
-			}
-			
-			flag = decayed_principate_martial_obligation_bonus
-			flag = decayed_principate_theme_military
-			flag = obligation_high_levies
-		}
-		decayed_principate_theme_frontier = {
-			position = { 0 1 }
-			icon = "gfx/interface/icons/theme_administration_types/icon_frontier_administration.dds"
-			
-			ai_liege_desire = {
-				value = 0
-				if = {
-					limit = {
-						scope:subject = {
-							is_ai = yes
-						}
-					}
-					add = 5
-				}
-				#if = {
-				#	limit = {
-				#		scope:liege = {
-				#			is_independent_ruler = no
-				#			OR = {
-				#				vassal_contract_has_flag = admin_theme_military
-				#				vassal_contract_has_flag = admin_theme_frontier
-				#			}
-				#		}
-				#	}
-				#	add = 100
-				#}				
-			}
-			ai_subject_desire = 0
-			
-			score = 0
-			color = { 0.2 0.7 0.2 1.0 }
-			
 			is_valid = {
 				custom_tooltip = {
-					text = decayed_principate_theme_frontier_valid_desc
+					text = principate_province_imperial_valid_desc
 					scope:subject = {
 						any_sub_realm_county = {
 							any_neighboring_county = {
@@ -234,192 +76,44 @@ decayed_principate_themes = {
 					}
 				}
 			}
-			
-			tax_factor = -0.4
 
-			subject_modifier = {
-				fort_level = 2
-				defender_advantage = 6
-				hostile_county_attrition = -0.3
-				hostile_raid_time = 0.75
-				
-				# Values to tweak the AI slightly in order to make them more likely to declare war
-				ai_boldness = 20
-				ai_rationality = -15
-			}
-			
-			flag = decayed_principate_prowess_obligation_bonus
-			flag = decayed_principate_duchy_expansion_unlocked
-			flag = decayed_principate_ai_is_warlike
-			flag = decayed_principate_theme_frontier
-			flag = decayed_principate_theme_can_raid
-		}
-		decayed_principate_theme_imperial = {
-			position = { 1 1 }
-			icon = "gfx/interface/icons/theme_administration_types/icon_imperial_administration.dds"
-			
 			ai_liege_desire = {
 				value = 0
 				if = {
 					limit = {
-						scope:liege = {
-							NOT = {
-								any_vassal = { vassal_contract_has_flag = decayed_principate_theme_imperial }
+						scope:subject = {
+							OR = {
+								has_trait = education_martial
+								martial >= high_skill_rating
 							}
 						}
-						scope:subject = {
-							is_ai = yes
-							culture = scope:liege.culture
-							faith = top_liege.primary_title.state_faith
-						}
 					}
-					add = 5
+					add = 2
 				}
 				if = {
 					limit = {
-						exists = scope:liege.house
-						exists = scope:subject.house
-						scope:liege.house = scope:subject.house
+						scope:liege = { is_at_war = yes }
 					}
 					add = 1
 				}
 			}
 			ai_subject_desire = 0
-			
-			score = 0
-			color = { 0.7 0.0 0.7 1.0 }
-			
-			is_valid = {
-				scope:liege = {
-					is_independent_ruler = yes	
-					highest_held_title_tier >= tier_empire
-				}
-				custom_tooltip = {
-					text = decayed_principate_theme_imperial_valid_desc
-					OR = {
-						scope:liege = {
-							NOT = {
-								any_vassal = { vassal_contract_has_flag = decayed_principate_theme_imperial }
-							}
-						}
-						AND = {
-							scope:subject = { vassal_contract_has_flag = decayed_principate_theme_imperial }
-							scope:liege = {
-								any_vassal = {
-									count = 1
-									vassal_contract_has_flag = decayed_principate_theme_imperial
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			tax_factor = 0.1
 
-			liege_modifier = {
-				monthly_prestige_gain_per_legitimacy_level_add = 0.5
-				legitimacy_gain_mult = 0.2
-			}
+			score = 0
+			color = { 0.7 0.2 0.2 1.0 }
+
+			tax_factor = -0.4
+			levies_factor = 1
 
 			subject_modifier = {
-				monthly_prestige = 0.5
-				monthly_influence = 0.25
-			}
-			
-			flag = decayed_principate_theme_imperial
-			flag = decayed_principate_prestige_obligation_bonus
-			flag = decayed_principate_cannot_revoke_titles_without_cause
-			flag = obligation_high_taxes
-		}
-		decayed_principate_theme_naval = {
-			position = { 2 1 }
-			icon = "gfx/interface/icons/theme_administration_types/icon_naval_administration.dds"
-			
-			ai_liege_desire = {
-				value = 0
-				if = {
-					limit = {
-						scope:subject = { is_ai = yes }
-					}
-					if = {
-						limit = { # Large coastal areas qualify as good naval themes
-							scope:subject = {
-								any_sub_realm_county = {
-									count >= 3
-									is_coastal_county = yes
-								}
-							}
-							scope:liege = { # But don't go overboard with naval themes
-								any_vassal = {
-									percent < 0.15
-									vassal_contract_has_flag = decayed_principate_theme_naval
-								}
-							}
-						}
-						add = 3
-					}
-					
-					if = {
-						limit = { # Islands are good naval candidates
-							scope:subject = {
-								any_sub_realm_county = {
-									percent >= 0.95
-									is_coastal_county = yes
-									OR = {
-										any_neighboring_county = {
-											percent >= 0.95
-											holder = {
-												OR = {
-													this = scope:subject
-													any_liege_or_above = { this = scope:subject }
-												}
-											}
-										}
-										any_neighboring_county = { count < 1 }
-									}
-								}
-							}
-						}
-						add = 8
-					}
-				}
-			}
-			ai_subject_desire = 0
-			
-			score = 0
-			color = { 0.0 0.4 0.7 1.0 }
-			
-			is_valid = {
-				custom_tooltip = {
-					text = decayed_principate_theme_naval_valid_desc
-					scope:subject = {
-						any_sub_realm_county = {
-							is_coastal_county = yes
-						}
-					}
-				}
-			}
-			
-			tax_factor = -0.2
-			
-			liege_modifier = {
-				embarkation_cost_mult = -0.1
-				naval_movement_speed_mult = 0.1
+				men_at_arms_title_cap = 2
+				men_at_arms_title_limit = 2
+				fort_level = 1
+				defender_advantage = 4
+				levy_reinforcement_rate = 0.25
 			}
 
-			subject_modifier = {
-				embarkation_cost_mult = -0.5
-				naval_movement_speed_mult = 0.25
-				no_disembark_penalty = yes
-				coastal_advantage = 10
-				prosperity_growth_factor = 0.1
-				monthly_treasury_from_military_budget_base = 1
-			}
-			
-			flag = decayed_principate_naval_duchy_expansion_unlocked
-			flag = decayed_principate_tradeport_obligation_bonus
-			flag = decayed_principate_theme_naval
+			flag = principate_imperial_province
 		}
 	}
 }

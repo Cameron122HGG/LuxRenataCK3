@@ -22,7 +22,6 @@ LR_seed_government_tradition_effect = {
 						has_cultural_pillar = heritage_brythonic
 						has_cultural_pillar = heritage_ancient_greek
 						has_cultural_pillar = heritage_albanian
-						has_cultural_pillar = heritage_syriac
 					}
 				}
 				add_culture_tradition = lux_tradition_gov_classical
@@ -39,7 +38,6 @@ LR_seed_government_tradition_effect = {
 						has_cultural_pillar = heritage_east_slavic
 						has_cultural_pillar = heritage_illyrian
 						has_cultural_pillar = heritage_goidelic
-						has_cultural_pillar = heritage_israelite
 						has_cultural_pillar = heritage_west_slavic
 						has_cultural_pillar = heritage_baltic
 						has_cultural_pillar = heritage_balto_finnic
@@ -51,20 +49,7 @@ LR_seed_government_tradition_effect = {
 				limit = {
 					OR = {
 						has_cultural_pillar = heritage_iranian
-						has_cultural_pillar = heritage_magyar
-						has_cultural_pillar = heritage_berber
-						has_cultural_pillar = heritage_egyptian
-						has_cultural_pillar = heritage_phoenician
 						has_cultural_pillar = heritage_sarmatian
-						has_cultural_pillar = heritage_akan
-						has_cultural_pillar = heritage_central_african
-						has_cultural_pillar = heritage_east_african
-						has_cultural_pillar = heritage_sahelian
-						has_cultural_pillar = heritage_senegambian
-						has_cultural_pillar = heritage_west_african
-						has_cultural_pillar = heritage_yoruba
-						has_cultural_pillar = heritage_bantu
-						has_cultural_pillar = heritage_somalian
 					}
 				}
 				add_culture_tradition = lux_tradition_gov_despotic
@@ -82,12 +67,47 @@ LR_seed_government_tradition_effect = {
 			}
 			else_if = {
 				limit = {
-					OR = {
+					OR = { # LR 2026-11-19: the Semitic heritages (syriac was classical, phoenician despotic) and the Berbers (were despotic)
+						has_cultural_pillar = heritage_berber
 						has_cultural_pillar = heritage_arabic
-						has_cultural_pillar = heritage_turkic
+						has_cultural_pillar = heritage_israelite
+						has_cultural_pillar = heritage_syriac
+						has_cultural_pillar = heritage_phoenician
 					}
 				}
-				add_culture_tradition = lux_tradition_gov_islamic
+				add_culture_tradition = lux_tradition_gov_mamlakah # mamlakah-only (seed by heritage)
+			}
+			else_if = { # LR 2026-11-19: Turkic cultures are Persianate (user: "keep turkic persianate")
+				limit = { has_cultural_pillar = heritage_turkic }
+				add_culture_tradition = lux_tradition_gov_despotic
+			}
+			else_if = { # LR 2026-11-19: the Nile and the Horn are Nilotic (user: "Nilotic, with Ethiopia")
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_east_african
+						has_cultural_pillar = heritage_egyptian
+						has_cultural_pillar = heritage_somalian
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_nilotic
+			}
+			else_if = { # LR 2026-11-19: settled sub-Saharan Africa is Sudanic (user: "settled subsaharan africans get their own group")
+				limit = {
+					OR = {
+						has_cultural_pillar = heritage_akan
+						has_cultural_pillar = heritage_bantu
+						has_cultural_pillar = heritage_central_african
+						has_cultural_pillar = heritage_sahelian
+						has_cultural_pillar = heritage_senegambian
+						has_cultural_pillar = heritage_west_african
+						has_cultural_pillar = heritage_yoruba
+					}
+				}
+				add_culture_tradition = lux_tradition_gov_sudanic
+			}
+			else_if = { # LR 2026-11-19: Magyar cultures are Barbarian (user, after Persianate felt too common)
+				limit = { has_cultural_pillar = heritage_magyar }
+				add_culture_tradition = lux_tradition_gov_barbarian
 			}
 			else_if = {
 				limit = {
@@ -175,10 +195,24 @@ LR_keep_one_government_tradition_effect = {
 		}
 		else_if = {
 			limit = {
-				has_cultural_tradition = lux_tradition_gov_islamic
+				has_cultural_tradition = lux_tradition_gov_mamlakah
 				scope:founder ?= { government_has_flag = government_is_islamic_group }
 			}
-			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_islamic }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_mamlakah }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_sudanic
+				scope:founder ?= { government_has_flag = government_is_islamic_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sudanic }
+		}
+		else_if = {
+			limit = {
+				has_cultural_tradition = lux_tradition_gov_nilotic
+				scope:founder ?= { government_has_flag = government_is_islamic_group }
+			}
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_nilotic }
 		}
 		else_if = {
 			limit = {
@@ -226,8 +260,16 @@ LR_keep_one_government_tradition_effect = {
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_indic }
 		}
 		else_if = {
-			limit = { has_cultural_tradition = lux_tradition_gov_islamic }
-			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_islamic }
+			limit = { has_cultural_tradition = lux_tradition_gov_mamlakah }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_mamlakah }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_sudanic }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sudanic }
+		}
+		else_if = {
+			limit = { has_cultural_tradition = lux_tradition_gov_nilotic }
+			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_nilotic }
 		}
 		else_if = {
 			limit = { has_cultural_tradition = lux_tradition_gov_sinic }
@@ -283,10 +325,24 @@ LR_drop_other_government_traditions_effect = {
 	}
 	if = {
 		limit = {
-			has_cultural_tradition = lux_tradition_gov_islamic
-			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_islamic }
+			has_cultural_tradition = lux_tradition_gov_mamlakah
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_mamlakah }
 		}
-		remove_culture_tradition = lux_tradition_gov_islamic
+		remove_culture_tradition = lux_tradition_gov_mamlakah
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_sudanic
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_sudanic }
+		}
+		remove_culture_tradition = lux_tradition_gov_sudanic
+	}
+	if = {
+		limit = {
+			has_cultural_tradition = lux_tradition_gov_nilotic
+			NOT = { var:LR_gov_tradition_keep = flag:lux_tradition_gov_nilotic }
+		}
+		remove_culture_tradition = lux_tradition_gov_nilotic
 	}
 	if = {
 		limit = {
@@ -331,8 +387,16 @@ LR_replace_government_tradition_effect = {
 		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_indic }
 	}
 	else_if = {
-		limit = { scope:tradition = culture_tradition:lux_tradition_gov_islamic }
-		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_islamic }
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_mamlakah }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_mamlakah }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_sudanic }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sudanic }
+	}
+	else_if = {
+		limit = { scope:tradition = culture_tradition:lux_tradition_gov_nilotic }
+		set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_nilotic }
 	}
 	else_if = {
 		limit = { scope:tradition = culture_tradition:lux_tradition_gov_sinic }
@@ -399,8 +463,16 @@ LR_apply_culture_government_group_effect = {
 				change_government = gupta_administrative_government
 			}
 			else_if = {
-				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
-				change_government = iqta_administrative_government
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_mamlakah } }
+				change_government = mamlakah_administrative_government # LR 2026-11-19 (Muslims are moved on to Iqta by normalizing)
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sudanic } }
+				change_government = sudanic_administrative_government # LR 2026-11-19 (Muslims are moved on to Iqta by normalizing)
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_nilotic } }
+				change_government = nilotic_administrative_government # LR 2026-11-19 (Muslims are moved on to Iqta by normalizing)
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
@@ -445,8 +517,16 @@ LR_apply_culture_government_group_effect = {
 				change_government = indic_feudal_government
 			}
 			else_if = {
-				limit = { culture = { has_cultural_tradition = lux_tradition_gov_islamic } }
-				change_government = iqta_government
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_mamlakah } }
+				change_government = mamlakah_government # LR 2026-11-19 (Muslims are moved on to Iqta by normalizing)
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sudanic } }
+				change_government = sudanic_government # LR 2026-11-19 (Muslims are moved on to Iqta by normalizing)
+			}
+			else_if = {
+				limit = { culture = { has_cultural_tradition = lux_tradition_gov_nilotic } }
+				change_government = nilotic_government # LR 2026-11-19 (Muslims are moved on to Iqta by normalizing)
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
@@ -498,8 +578,20 @@ LR_adopt_government_tradition_of_model_effect = {
 			prev = { add_culture_tradition = lux_tradition_gov_indic }
 		}
 		else_if = {
+			limit = { government_has_flag = government_is_mamlakah_group }
+			prev = { add_culture_tradition = lux_tradition_gov_mamlakah }
+		}
+		else_if = {
+			limit = { government_has_flag = government_is_sudanic_group }
+			prev = { add_culture_tradition = lux_tradition_gov_sudanic }
+		}
+		else_if = {
+			limit = { government_has_flag = government_is_nilotic_group }
+			prev = { add_culture_tradition = lux_tradition_gov_nilotic }
+		}
+		else_if = { # LR 2026-11-19: Iqta is faith-based, not a tradition: the culture takes the one its language or heritage points to
 			limit = { government_has_flag = government_is_islamic_group }
-			prev = { add_culture_tradition = lux_tradition_gov_islamic }
+			prev = { LR_seed_government_tradition_effect = yes }
 		}
 		else_if = {
 			limit = {

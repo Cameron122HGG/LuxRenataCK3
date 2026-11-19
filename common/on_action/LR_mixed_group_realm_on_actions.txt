@@ -1,0 +1,38 @@
+﻿# Lux Renata 2026-11-18: vassals whose government group differs from their top liege's (LR_mixed_group_realm_effects.txt)
+
+yearly_global_pulse = {
+	on_actions = { LR_mixed_group_realm_yearly_pulse }
+}
+
+on_game_start_after_lobby = {
+	on_actions = { LR_mixed_group_realm_yearly_pulse }
+}
+
+on_government_change = {
+	on_actions = { LR_mixed_group_realm_on_government_change }
+}
+
+# Vassals of other customs resent their top liege; the realm modifier follows how many there are. AI kings may change their
+# realm customs law, and under One Custom vassals are pressed to conform (option C).
+LR_mixed_group_realm_yearly_pulse = {
+	effect = {
+		every_independent_ruler = {
+			limit = {
+				LR_has_lr_government_group_trigger = yes
+				any_vassal = { count >= 1 }
+			}
+			LR_ai_choose_realm_customs_law_effect = yes
+			LR_update_mixed_group_realm_effect = yes
+			LR_press_one_custom_effect = yes
+		}
+	}
+}
+
+# root = the character whose government changed. When a top liege's government changes, the realm's administrative
+# vassals follow the new administration (or go feudal if the realm is no longer administrative).
+LR_mixed_group_realm_on_government_change = {
+	trigger = { is_independent_ruler = yes }
+	effect = {
+		LR_align_admin_vassals_of_top_liege_effect = yes
+	}
+}

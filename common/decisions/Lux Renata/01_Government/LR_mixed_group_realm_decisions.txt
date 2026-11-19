@@ -1,0 +1,77 @@
+﻿# Lux Renata 2026-11-18: a vassal of other customs takes up the government group of their top liege (LR_mixed_group_realm_effects.txt)
+LR_adopt_realm_customs_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	desc = LR_adopt_realm_customs_decision_desc
+	selection_tooltip = LR_adopt_realm_customs_decision_tooltip
+	ai_check_interval = 60
+
+	is_shown = {
+		LR_can_adopt_realm_customs_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 150
+	}
+
+	effect = {
+		LR_adopt_realm_customs_effect = yes
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 10
+			opinion = {
+				target = top_liege
+				value >= 25
+			}
+		}
+		modifier = {
+			add = 15
+			culture = {
+				cultural_acceptance = {
+					target = root.top_liege.culture
+					value >= 60
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			has_trait = content
+		}
+		modifier = {
+			add = 10
+			has_trait = humble
+		}
+		modifier = {
+			add = -15
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -15
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -20
+			has_trait = stubborn
+		}
+		modifier = {
+			factor = 0
+			opinion = {
+				target = top_liege
+				value < 0
+			}
+		}
+	}
+}

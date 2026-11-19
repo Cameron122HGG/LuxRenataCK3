@@ -1,0 +1,158 @@
+﻿# LR 2026-11-19: the Principate's succession (principate_succession_law in common/laws/00_succession_laws.txt).
+# The Princeps names (adopts) a successor (LR_principate_adopt_successor_interaction: variable principate_adopted_heir
+# on the Princeps); on his death the Senate confirms him or picks another. The Senate is the Princeps and his direct
+# vassals who sit in the assembly (Senatorial governors and appointed senators); the army's favour shows as the
+# candidates' prestige and martial skill.
+
+principate_elective = {
+	elector_vote_strength = {
+		base = 1 # One senator, one vote
+
+		modifier = { # The Princeps' word carries the weight of the legions
+			add = 2
+			this = scope:holder
+			desc = LR_principate_vote_strength_princeps
+		}
+		modifier = { # Governors of the great provinces
+			add = 1
+			highest_held_title_tier >= tier_kingdom
+			desc = LR_principate_vote_strength_province
+		}
+	}
+
+	electors = {
+		character_sets = {
+			principate_electors_holder = {
+				type = holder
+			}
+			principate_electors_senate = {
+				type = holder_direct_vassals
+				limit = {
+					OR = {
+						is_assembly_member = yes
+						government_has_flag = government_is_principate # Principate governors
+					}
+				}
+			}
+		}
+	}
+
+	candidates = {
+		character_sets = {
+			principate_candidates_family = { # the adopted heir must be in one of these sets (LR_principate_successor_candidate_trigger)
+				type = holder_close_or_extended_family
+			}
+			principate_candidates_direct_vassals = { # governors and senators
+				type = holder_direct_vassals
+			}
+			principate_candidates_council = { # the Princeps' amici, prefects and generals
+				type = holder_council_members
+			}
+		}
+
+		# Limits for all of the above candidate sets
+		limit = {
+			is_adult = yes
+			is_imprisoned = no
+			is_incapable = no
+			is_clergy = no
+			trigger_if = {
+				limit = {
+					scope:holder ?= {
+						OR = {
+							has_realm_law = male_only_law
+							has_realm_law = male_preference_law
+						}
+					}
+				}
+				is_female = no
+			}
+			trigger_if = {
+				limit = {
+					scope:holder ?= {
+						OR = {
+							has_realm_law = female_only_law
+							has_realm_law = female_preference_law
+						}
+					}
+				}
+				is_female = yes
+			}
+		}
+	}
+
+	candidate_score = {
+		base = 0
+
+		# The adopted heir
+		modifier = {
+			add = 100
+			desc = LR_principate_elector_adopted_heir_princeps
+			this = scope:holder
+			scope:holder = { var:principate_adopted_heir ?= scope:candidate }
+		}
+		modifier = {
+			add = 40
+			desc = LR_principate_elector_adopted_heir
+			NOT = { this = scope:holder }
+			scope:holder = { var:principate_adopted_heir ?= scope:candidate }
+		}
+		# Without an adopted heir the Princeps backs his own blood
+		modifier = {
+			add = 50
+			desc = LR_principate_elector_princeps_family
+			this = scope:holder
+			scope:holder = { NOT = { var:principate_adopted_heir ?= { is_alive = yes } } }
+			scope:candidate = { is_close_family_of = scope:holder }
+		}
+
+		# The senator's own view of the candidate
+		opinion_modifier = {
+			desc = LR_principate_elector_opinion
+			who = root
+			opinion_target = scope:candidate
+			multiplier = 0.5
+		}
+
+		# Acclaimed by the legions: renown and generalship
+		modifier = {
+			add = {
+				value = scope:candidate.prestige_level
+				multiply = 5
+			}
+			desc = LR_principate_elector_candidate_prestige
+		}
+		modifier = {
+			add = {
+				value = scope:candidate.martial
+				subtract = 10
+				multiply = 1.5
+			}
+			desc = LR_principate_elector_candidate_martial
+			scope:candidate.martial > 10
+		}
+		modifier = {
+			add = 10
+			desc = LR_principate_elector_candidate_province
+			scope:candidate = {
+				highest_held_title_tier >= tier_kingdom
+			}
+		}
+
+		# Electors favour themselves and their houses
+		modifier = {
+			add = 30
+			desc = LR_principate_elector_self
+			this = scope:candidate
+		}
+		modifier = {
+			add = 15
+			desc = LR_principate_elector_same_house
+			NOT = { this = scope:candidate }
+			exists = house
+			house = scope:candidate.house
+		}
+
+		elector_voting_pattern_circumstances_misc_elective_modifier = yes
+	}
+}

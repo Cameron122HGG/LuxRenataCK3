@@ -1,0 +1,106 @@
+﻿# Lux Renata 2026-11-18: a top liege asks a direct vassal of other customs to take up the realm's (LR_mixed_group_realm_effects.txt)
+LR_demand_conformity_interaction = {
+	category = interaction_category_vassal
+	desc = LR_demand_conformity_interaction_desc
+	cooldown_against_recipient = { years = 10 }
+
+	is_shown = {
+		scope:actor = {
+			is_independent_ruler = yes
+			NOT = { has_realm_law_flag = LR_many_customs } # LR 2026-11-18 option C: a realm of Many Customs does not demand it
+		}
+		scope:recipient = {
+			liege = scope:actor
+			LR_can_adopt_realm_customs_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_at_war = no
+			is_imprisoned = no
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			LR_adopt_realm_customs_effect = yes
+			add_opinion = {
+				target = scope:actor
+				modifier = LR_forced_customs_opinion
+				years = 5
+			}
+		}
+	}
+
+	on_decline = {
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = LR_refused_conformity_opinion
+				years = 5
+			}
+		}
+	}
+
+	ai_accept = {
+		base = -20
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.5
+			desc = AI_OPINION_REASON
+		}
+		modifier = {
+			add = 20
+			scope:recipient.culture = {
+				cultural_acceptance = {
+					target = scope:actor.culture
+					value >= 60
+				}
+			}
+			desc = LR_demand_conformity_acceptance_reason
+		}
+		modifier = {
+			add = 15
+			scope:recipient = {
+				OR = {
+					has_trait = content
+					has_trait = humble
+				}
+			}
+			desc = LR_demand_conformity_meek_reason
+		}
+		modifier = {
+			add = -25
+			scope:recipient = {
+				OR = {
+					has_trait = stubborn
+					has_trait = arrogant
+				}
+			}
+			desc = LR_demand_conformity_proud_reason
+		}
+	}
+
+	is_available = {
+		is_independent_ruler = yes
+	}
+	ai_targets = {
+		ai_recipients = vassals
+	}
+	ai_frequency = 60
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 50
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value >= 40
+				}
+			}
+		}
+	}
+}

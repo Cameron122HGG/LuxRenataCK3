@@ -1,0 +1,108 @@
+﻿namespace = LR_realm_customs
+
+# Lux Renata 2026-11-18 (option C): realm customs laws (LR_realm_customs_laws.txt, LR_mixed_group_realm_effects.txt)
+
+# root = a vassal of other customs in a realm whose top liege has the One Custom law (LR_press_one_custom_effect).
+# Conform: take up the realm's government group. Refuse: the liege is displeased and will not ask again for five years.
+LR_realm_customs.0001 = {
+	type = character_event
+	title = LR_realm_customs.0001.t
+	desc = LR_realm_customs.0001.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:LR_customs_liege
+		animation = personality_dishonorable
+	}
+
+	trigger = {
+		LR_can_adopt_realm_customs_trigger = yes
+		top_liege = { has_realm_law_flag = LR_one_custom }
+	}
+
+	immediate = {
+		top_liege = { save_scope_as = LR_customs_liege }
+	}
+
+	# Conform
+	option = {
+		name = LR_realm_customs.0001.a
+		LR_adopt_realm_customs_effect = yes
+		scope:LR_customs_liege = {
+			send_interface_toast = {
+				title = LR_realm_customs.0001.toast_conformed
+				type = event_toast_effect_good
+				left_icon = root
+			}
+		}
+		ai_chance = {
+			base = 30
+			modifier = {
+				add = 30
+				opinion = {
+					target = scope:LR_customs_liege
+					value >= 25
+				}
+			}
+			modifier = {
+				add = 25
+				culture = {
+					cultural_acceptance = {
+						target = scope:LR_customs_liege.culture
+						value >= 60
+					}
+				}
+			}
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = content
+					has_trait = humble
+					has_trait = craven
+				}
+			}
+			modifier = {
+				add = -25
+				OR = {
+					has_trait = stubborn
+					has_trait = arrogant
+					has_trait = brave
+				}
+			}
+		}
+	}
+
+	# Refuse
+	option = {
+		name = LR_realm_customs.0001.b
+		add_character_flag = {
+			flag = LR_refused_one_custom
+			years = 5
+		}
+		scope:LR_customs_liege = {
+			add_opinion = {
+				target = root
+				modifier = LR_refused_conformity_opinion
+				years = 5
+			}
+			send_interface_toast = {
+				title = LR_realm_customs.0001.toast_refused
+				type = event_toast_effect_bad
+				left_icon = root
+			}
+		}
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = 30
+				opinion = {
+					target = scope:LR_customs_liege
+					value < 0
+				}
+			}
+		}
+	}
+}

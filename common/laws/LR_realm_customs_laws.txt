@@ -1,0 +1,60 @@
+﻿# Lux Renata 2026-11-18 (option C): realm customs laws (law group in common/law_groups/LR_realm_customs_law_groups.txt).
+# Effects are scripted in LR_update_mixed_group_realm_effect (yearly pulse and on_pass), keyed on the law flags.
+
+# Many Customs: vassals of other customs do not resent their liege, but the realm pays more for them
+# (LR_realm_of_tolerated_customs_*), and Demand Conformity is not used.
+LR_realm_customs_0 = {
+	law_group_type = LR_realm_customs
+	index = 0
+	flag = LR_many_customs
+
+	can_pass = {
+		is_at_war = no
+	}
+
+	pass_cost = {
+		prestige = 200
+	}
+
+	on_after_pass = {
+		LR_update_mixed_group_realm_effect = yes # opinions and the realm modifier follow the new law at once
+	}
+}
+
+# Customary (default): option B as built 2026-11-18: Foreign Customs resentment and the Realm of Many Customs modifier
+LR_realm_customs_1 = {
+	law_group_type = LR_realm_customs
+	index = 1
+
+	can_pass = {
+		is_at_war = no
+	}
+
+	pass_cost = {
+		prestige = 100
+	}
+
+	on_after_pass = {
+		LR_update_mixed_group_realm_effect = yes # opinions and the realm modifier follow the new law at once
+	}
+}
+
+# One Custom: vassals of other customs resent the liege more (LR_customs_suppressed_opinion), and each year may be
+# pressed to conform (LR_realm_customs.0001)
+LR_realm_customs_2 = {
+	law_group_type = LR_realm_customs
+	index = 2
+	flag = LR_one_custom
+
+	can_pass = {
+		is_at_war = no
+	}
+
+	pass_cost = {
+		prestige = 200
+	}
+
+	on_after_pass = {
+		LR_update_mixed_group_realm_effect = yes # opinions and the realm modifier follow the new law at once
+	}
+}

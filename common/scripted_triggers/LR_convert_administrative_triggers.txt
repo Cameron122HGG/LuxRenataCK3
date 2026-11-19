@@ -9,6 +9,9 @@ LR_has_no_government_group_trigger = {
 		government_has_flag = government_is_classical_group
 		government_has_flag = government_is_western_group
 		government_has_flag = government_is_despotic_group
+		government_has_flag = government_is_mamlakah_group
+		government_has_flag = government_is_sudanic_group
+		government_has_flag = government_is_nilotic_group
 		government_has_flag = government_is_indic_group
 		government_has_flag = government_is_islamic_group
 		government_has_flag = government_is_sinic_group
@@ -46,7 +49,6 @@ LR_convert_admin_sees_roman_administrative_trigger = {
 				has_government = roman_administrative_government
 				has_government = roman_autocratic_government
 				has_government = roman_dominate_government
-				has_government = decayed_principate_government
 			}
 		}
 	}
@@ -97,6 +99,53 @@ LR_convert_admin_sees_persianate_administrative_trigger = {
 			OR = {
 				has_government = persianate_administrative_government
 				has_government = persianate_autocratic_government
+			}
+		}
+	}
+}
+
+# Character scope (LR 2026-11-19)
+LR_convert_admin_sees_mamlakah_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_mamlakah_group
+	}
+	trigger_else = {
+		top_liege = {
+			OR = {
+				has_government = mamlakah_administrative_government
+				has_government = mamlakah_imperial_government
+			}
+		}
+	}
+}
+LR_convert_admin_sees_sudanic_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_sudanic_group
+	}
+	trigger_else = {
+		top_liege = {
+			OR = {
+				has_government = sudanic_administrative_government
+				has_government = sudanic_imperial_government
+			}
+		}
+	}
+}
+LR_convert_admin_sees_nilotic_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		government_has_flag = government_is_nilotic_group
+	}
+	trigger_else = {
+		top_liege = {
+			OR = {
+				has_government = nilotic_administrative_government
+				has_government = nilotic_imperial_government
 			}
 		}
 	}
@@ -194,6 +243,9 @@ LR_convert_admin_sees_any_option_trigger = {
 		LR_convert_admin_sees_alexandrian_administrative_trigger = yes
 		LR_convert_admin_sees_western_administrative_trigger = yes
 		LR_convert_admin_sees_persianate_administrative_trigger = yes
+		LR_convert_admin_sees_mamlakah_administrative_trigger = yes
+		LR_convert_admin_sees_sudanic_administrative_trigger = yes
+		LR_convert_admin_sees_nilotic_administrative_trigger = yes
 		LR_convert_admin_sees_gupta_administrative_trigger = yes
 		LR_convert_admin_sees_iqta_administrative_trigger = yes
 		LR_convert_admin_sees_meritocratic_trigger = yes

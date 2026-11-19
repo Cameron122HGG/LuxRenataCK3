@@ -1,17 +1,35 @@
 ﻿# Roman vassal tiers (user, 2026-11-05): a decayed Roman empire cannot have kingdom-tier vassals. Only a restored
 # Roman empire may have vassal kings (as a high king, empire tier) or vassal high kings (as an emperor, hegemony tier).
 
-# Character: rules a decayed Roman empire (a decayed Roman empire title or the Decayed Principate) and no restored one
+# Character: rules a decayed Roman empire title and no restored one
+# LR 2026-11-19: the Principate no longer counts (it was the Decayed Principate); its provinces may be kingdom tier
+# (k_provincia_*, 01_LR_roman_principate.txt)
 LR_is_decayed_roman_realm_trigger = {
 	is_restored_roman_emperor_trigger = no
-	OR = {
-		is_decayed_roman_emperor_trigger = yes
-		has_government = decayed_principate_government
-	}
+	is_decayed_roman_emperor_trigger = yes
 }
 
 # Title: a landed kingdom-tier title (landless kingdoms such as k_sol and the Roman ministries are left alone)
 LR_is_landed_kingdom_title_trigger = {
 	tier = tier_kingdom
 	is_landless_type_title = no
+}
+
+# Character: may hold an upgraded Roman imperial government (roman_dominate_government, principate_government).
+# LR 2026-11-19 (user): "decayed roman empires cannot have upgraded roman imperial governments (roman dominate, and roman
+# principate) they should transition out of the title before they can adopt those."
+LR_can_have_upgraded_roman_government_trigger = {
+	custom_tooltip = {
+		text = LR_can_have_upgraded_roman_government_tt
+		LR_is_decayed_roman_realm_trigger = no
+	}
+}
+
+# Character: holds an upgraded Roman imperial government it may not have (a decayed Roman empire's ruler)
+LR_has_forbidden_upgraded_roman_government_trigger = {
+	OR = {
+		has_government = roman_dominate_government
+		has_government = principate_government
+	}
+	LR_is_decayed_roman_realm_trigger = yes
 }

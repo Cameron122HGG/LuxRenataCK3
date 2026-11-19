@@ -1,0 +1,112 @@
+﻿# LR 2026-11-19 (user): "the reform western/eastern administration should be streamlined to be more like the other decay
+# restorations". Shared by restore_western_roman_administration_decision and restore_eastern_roman_administration_decision
+# (99_LR_roman_diocese_decisions.txt), built like LR_proclaim_regional_roman_empire_effect (99_LR_roman_proclamation_effects.txt).
+# Root is the restoring ruler. Usage: LR_restore_roman_administration_effect = { OLD = e_spqr NEW = e_western_roman_empire COUNT = wre }
+#   OLD: the decayed empire title, transferred to NEW when held (an already restored ruler just sets up the dioceses)
+#   COUNT: suffix of the global num_of_provinces_restored_<COUNT> counter (wre / ere)
+LR_restore_roman_administration_effect = {
+	# The title first, so the restored title is held when the government changes
+	if = {
+		limit = { has_title = title:$OLD$ }
+		LR_transfer_empire_title_effect = { OLD = $OLD$ NEW = $NEW$ }
+	}
+
+	# Government (LR 2026-11-19, user): Roman Autocratic, the least complex Roman imperial government, for the restorer and
+	# their great Roman vassals, as the regional restorations. The Dominate and the Principate come only at the hegemony
+	# tier (LR_adopt_roman_dominate_decision, LR_restore_roman_principate_decision). Roman Autocratic needs All Under
+	# Heaven; without it, Roman Administrative. A ruler already on the Dominate keeps it.
+	if = {
+		limit = { has_tgp_dlc_trigger = yes }
+		if = {
+			limit = {
+				NOR = {
+					has_government = roman_autocratic_government
+					has_government = roman_dominate_government
+				}
+			}
+			change_government = roman_autocratic_government
+		}
+		every_vassal_or_below = {
+			custom = LR_proclaim_roman_empire_vassals_custom
+			limit = {
+				highest_held_title_tier >= tier_duchy
+				government_has_flag = government_is_classical_group
+				NOT = { government_has_flag = government_is_republic }
+				NOR = {
+					has_government = roman_autocratic_government
+					has_government = roman_dominate_government
+				}
+			}
+			change_government = roman_autocratic_government
+		}
+	}
+	else = {
+		if = {
+			limit = { NOT = { government_has_mechanic = administrative } }
+			change_government = roman_administrative_government
+		}
+		every_vassal_or_below = {
+			custom = LR_proclaim_roman_empire_vassals_custom
+			limit = {
+				highest_held_title_tier >= tier_duchy
+				government_has_flag = government_is_classical_group
+				NOT = { government_has_flag = government_is_republic }
+				NOT = { government_has_mechanic = administrative }
+			}
+			change_government = roman_administrative_government
+		}
+	}
+
+	# Rewards, as the regional restorations
+	add_prestige = major_prestige_gain
+	add_legitimacy = major_legitimacy_gain
+	add_character_modifier = {
+		modifier = LR_proclaimed_roman_emperor_modifier
+		years = 20
+	}
+	every_vassal = {
+		custom = LR_proclaim_roman_empire_opinion_custom
+		limit = { government_has_flag = government_is_classical_group }
+		add_opinion = {
+			target = root
+			modifier = LR_proclaimed_roman_empire_opinion
+		}
+	}
+
+	# Dioceses that already exist count toward the hegemony decision
+	set_global_variable = {
+		name = num_of_provinces_restored_$COUNT$
+		value = 0
+	}
+	hidden_effect = {
+		LR_count_existing_dioceses_$COUNT$_effect = yes
+	}
+}
+
+# Restore the Hegemony of the Romans of the West (Africa and Mauretania are restored together, so they count once)
+LR_count_existing_dioceses_wre_effect = {
+	if = { limit = { exists = title:k_diocese_italia_annonaria.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_italia_suburbicaria.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_africa.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_lugdunensis.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_viennensis.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_hispania.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_britannia.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_illyricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_noricum.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_pannonia.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+	if = { limit = { exists = title:k_diocese_dardania.holder } change_global_variable = { name = num_of_provinces_restored_wre add = 1 } }
+}
+
+# Reassert Eastern Hegemony
+LR_count_existing_dioceses_ere_effect = {
+	if = { limit = { exists = title:k_diocese_thracia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_macedonia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_pontus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_asia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_armenia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_gothia.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_syria.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_palestine.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+	if = { limit = { exists = title:k_diocese_aegyptus.holder } change_global_variable = { name = num_of_provinces_restored_ere add = 1 } }
+}

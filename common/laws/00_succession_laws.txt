@@ -1092,6 +1092,7 @@ republican_despot_succession_law = {
 	}
 
 	can_have = {
+		NOT = { government_has_flag = government_is_principate } # LR 2026-11-19: the Principate is adoptive (user 2026-11-19)
 		government_has_flag = government_is_republic
 		highest_held_title_tier >= tier_county
 		liege = {
@@ -1178,6 +1179,51 @@ republican_despot_succession_law = {
 
 	potential = {
 		government_has_flag = government_is_republic
+		gdp_is_assembly_head_trigger = yes
+	}
+}
+
+
+# LR 2026-11-19: the Principate. The Princeps rules for life; the Senate elects his successor, as a rule the heir he
+# adopted (LR_principate_adopt_successor_interaction). Election: common/succession_election/LR_principate_elective.txt.
+principate_succession_law = {
+	law_group_type = succession_order_laws
+	index = 45
+
+	can_keep = {
+		government_has_flag = government_is_principate
+		gdp_is_assembly_head_trigger = yes
+	}
+	can_have = {
+		government_has_flag = government_is_principate
+		gdp_is_assembly_head_trigger = yes
+	}
+	should_start_with = {
+		government_has_flag = government_is_principate
+		gdp_is_assembly_head_trigger = yes
+	}
+
+	succession = {
+		order_of_succession = election
+		election_type = principate_elective
+	}
+
+	flag = elective_succession_law
+
+	modifier = {
+		short_reign_duration_mult = -1
+	}
+
+	pass_cost = {
+		prestige = change_title_succession_law_prestige_cost
+	}
+
+	ai_will_do = {
+		value = 100
+	}
+
+	potential = {
+		government_has_flag = government_is_principate
 		gdp_is_assembly_head_trigger = yes
 	}
 }
@@ -1935,9 +1981,12 @@ meritocratic_appointment_succession_law = {
 		OR = {
 			government_has_flag = government_is_meritocratic
 			government_has_flag = government_is_steppe_admin
-			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Decayed Principate, which shares its flag)
+			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Principate, which shares its flag)
 			government_has_flag = government_is_hellenistic_autocratic # LR: Basileia and Megale Basileia
 			government_has_flag = government_is_persianate_autocratic # LR: Persianate Imperial
+			government_has_flag = government_is_mamlakah_imperial # LR 2026-11-19: Mamlakah Imperial
+			government_has_flag = government_is_sudanic_imperial # LR 2026-11-19: Sudanic Imperial
+			government_has_flag = government_is_nilotic_imperial # LR 2026-11-19: Nilotic Imperial
 		}
 		NOT = { government_has_flag = government_is_roman_imperial }
 		is_independent_ruler = no
@@ -1983,9 +2032,12 @@ meritocratic_appointment_succession_law = {
 		OR = {
 			government_has_flag = government_is_steppe_admin
 			government_has_flag = government_is_meritocratic
-			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Decayed Principate, which shares its flag)
+			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Principate, which shares its flag)
 			government_has_flag = government_is_hellenistic_autocratic # LR: Basileia and Megale Basileia
 			government_has_flag = government_is_persianate_autocratic # LR: Persianate Imperial
+			government_has_flag = government_is_mamlakah_imperial # LR 2026-11-19: Mamlakah Imperial
+			government_has_flag = government_is_sudanic_imperial # LR 2026-11-19: Sudanic Imperial
+			government_has_flag = government_is_nilotic_imperial # LR 2026-11-19: Nilotic Imperial
 		}
 		NOT = { government_has_flag = government_is_roman_imperial }
 		use_governor_appointment_law_trigger = yes
@@ -2025,9 +2077,12 @@ meritocratic_military_appointment_succession_law = {
 		OR = {
 			government_has_flag = government_is_meritocratic
 			government_has_flag = government_is_steppe_admin
-			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Decayed Principate, which shares its flag)
+			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Principate, which shares its flag)
 			government_has_flag = government_is_hellenistic_autocratic # LR: Basileia and Megale Basileia
 			government_has_flag = government_is_persianate_autocratic # LR: Persianate Imperial
+			government_has_flag = government_is_mamlakah_imperial # LR 2026-11-19: Mamlakah Imperial
+			government_has_flag = government_is_sudanic_imperial # LR 2026-11-19: Sudanic Imperial
+			government_has_flag = government_is_nilotic_imperial # LR 2026-11-19: Nilotic Imperial
 		}
 		NOT = { government_has_flag = government_is_roman_imperial }
 		is_independent_ruler = no
@@ -2073,9 +2128,12 @@ meritocratic_military_appointment_succession_law = {
 		OR = {
 			government_has_flag = government_is_steppe_admin
 			government_has_flag = government_is_meritocratic
-			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Decayed Principate, which shares its flag)
+			government_has_flag = government_uses_roman_autocratic_bureaucracy # LR: Roman Autocratic (not Principate, which shares its flag)
 			government_has_flag = government_is_hellenistic_autocratic # LR: Basileia and Megale Basileia
 			government_has_flag = government_is_persianate_autocratic # LR: Persianate Imperial
+			government_has_flag = government_is_mamlakah_imperial # LR 2026-11-19: Mamlakah Imperial
+			government_has_flag = government_is_sudanic_imperial # LR 2026-11-19: Sudanic Imperial
+			government_has_flag = government_is_nilotic_imperial # LR 2026-11-19: Nilotic Imperial
 		}
 		NOT = { government_has_flag = government_is_roman_imperial }
 		use_governor_appointment_law_trigger = yes
@@ -2179,6 +2237,7 @@ republican_elective_succession_law = {
 	index = 37
 
 	can_keep = {
+		NOT = { government_has_flag = government_is_principate } # LR 2026-11-19: the Principate has principate_succession_law
 		government_has_flag = government_is_republic
 		highest_held_title_tier >= tier_county
 		liege = {
@@ -2189,6 +2248,7 @@ republican_elective_succession_law = {
 		}
 	}
 	can_have = {
+		NOT = { government_has_flag = government_is_principate } # LR 2026-11-19: the Principate has principate_succession_law
 		government_has_flag = government_is_republic
 		highest_held_title_tier >= tier_county
 	}
@@ -2196,6 +2256,7 @@ republican_elective_succession_law = {
 		government_has_flag = government_is_republic
 	}
 	should_start_with = {
+		NOT = { government_has_flag = government_is_principate } # LR 2026-11-19: the Principate has principate_succession_law
 		government_has_flag = government_is_republic
 		highest_held_title_tier >= tier_county
 	}
