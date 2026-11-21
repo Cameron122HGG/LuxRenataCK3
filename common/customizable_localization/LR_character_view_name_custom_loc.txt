@@ -8,6 +8,18 @@
 LR_character_view_name = {
 	type = character
 
+	# Roman imperial style (11-21): "Imperatore Cesare Evangelus Agosto of Roma" in the tooltip header too
+	text = {
+		trigger = {
+			LR_has_imperial_style_trigger = yes
+			exists = primary_title
+		}
+		localization_key = LR_character_view_name_styled
+	}
+	text = { # empress consort without a title: the name alone
+		trigger = { LR_has_imperial_style_trigger = yes }
+		localization_key = LR_character_view_name_top_styled
+	}
 	text = {
 		trigger = {
 			has_character_flag = LR_dynastic_realm_name_flag
@@ -49,6 +61,14 @@ LR_character_view_name_top = {
 		}
 		localization_key = LR_character_view_name_top_house_first
 	}
+	# Roman imperial style, with or without a nickname: "Imperatore Cesare Evangelus Agosto" (LR_character_name_styled)
+	text = {
+		trigger = {
+			LR_has_imperial_style_trigger = yes
+			exists = primary_title
+		}
+		localization_key = LR_character_view_name_top_styled
+	}
 	text = {
 		trigger = {
 			exists = primary_title
@@ -59,6 +79,21 @@ LR_character_view_name_top = {
 	text = {
 		fallback = yes
 		localization_key = LR_character_view_name_top_none
+	}
+}
+
+# Roman imperial style name (11-21, user): the plain titled name (CHARACTER_TITLED_FIRST_NAME, which has no
+# suffix hook), then the suffix, then the nickname, so the suffix shows with or without a nickname and never twice.
+LR_character_name_styled = {
+	type = character
+
+	text = {
+		trigger = { has_any_nickname = yes }
+		localization_key = LR_character_name_styled_nicknamed
+	}
+	text = {
+		fallback = yes
+		localization_key = LR_character_name_styled_plain
 	}
 }
 
