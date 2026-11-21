@@ -1,0 +1,51 @@
+﻿# Roman Nostalgia (11-20): game rule lr_roman_nostalgia_start gives out the tradition at game start.
+#   both = Western Roman (heritage_latin) and Eastern Roman (heritage_byzantine) heritage cultures
+#   western = Western Roman heritage only
+#   eastern = Eastern Roman heritage only
+#   western_roman = the Western Roman culture only
+#   off = nobody (cultures can still adopt it)
+
+on_game_start_after_lobby = {
+	on_actions = { LR_roman_nostalgia_game_start }
+}
+
+LR_roman_nostalgia_game_start = {
+	trigger = {
+		NOT = { has_game_rule = lr_roman_nostalgia_off }
+	}
+	effect = {
+		if = {
+			limit = { has_game_rule = lr_roman_nostalgia_western_roman }
+			culture:western_roman = {
+				if = {
+					limit = { NOT = { has_cultural_tradition = lux_tradition_roman_nostalgia } }
+					add_culture_tradition = lux_tradition_roman_nostalgia
+				}
+			}
+		}
+		else = {
+			every_culture_global = {
+				limit = {
+					NOT = { has_cultural_tradition = lux_tradition_roman_nostalgia }
+					OR = {
+						AND = {
+							OR = {
+								has_game_rule = lr_roman_nostalgia_both
+								has_game_rule = lr_roman_nostalgia_western
+							}
+							has_cultural_pillar = heritage_latin
+						}
+						AND = {
+							OR = {
+								has_game_rule = lr_roman_nostalgia_both
+								has_game_rule = lr_roman_nostalgia_eastern
+							}
+							has_cultural_pillar = heritage_byzantine
+						}
+					}
+				}
+				add_culture_tradition = lux_tradition_roman_nostalgia
+			}
+		}
+	}
+}

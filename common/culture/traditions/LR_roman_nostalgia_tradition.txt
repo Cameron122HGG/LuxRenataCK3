@@ -1,0 +1,69 @@
+﻿# Roman Nostalgia (11-20)
+# Cultures that hold this tradition dress in the Renovatio Roman clothes (togas, centurion
+# armour, sandals...). The portrait gate is renov_roman_portrait_trigger in
+# common/scripted_triggers/renov_cultural_portrait_triggers.txt.
+# Which cultures start with it: game rule lr_roman_nostalgia_start, given out by
+# common/on_action/LR_roman_nostalgia_on_actions.txt.
+
+lux_tradition_roman_nostalgia = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = mediterranean
+		4 = laurel.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:roman
+			any_parent_culture_or_above = {
+				this = culture:roman
+			}
+			has_cultural_pillar = heritage_latin
+			has_cultural_pillar = heritage_byzantine
+		}
+	}
+	can_pick = {
+		OR = {
+			this = culture:roman
+			any_parent_culture_or_above = {
+				this = culture:roman
+			}
+			has_cultural_pillar = heritage_latin
+			has_cultural_pillar = heritage_byzantine
+		}
+	}
+
+	character_modifier = {
+		monthly_court_grandeur_change_mult = 0.1
+		monthly_prestige_gain_mult = 0.05
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = lux_tradition_roman_nostalgia }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 25
+		if = {
+			limit = { has_cultural_pillar = heritage_latin }
+			add = 75
+		}
+	}
+}

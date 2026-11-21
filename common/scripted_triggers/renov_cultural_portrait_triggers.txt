@@ -1,20 +1,8 @@
-﻿renov_roman_portrait_trigger = {
+﻿# Gate for every Renovatio Roman portrait modifier (togas, centurion armour, helmets...).
+# Since 11-20 the Roman Nostalgia tradition alone decides it. Which cultures start with the
+# tradition is set by the game rule lr_roman_nostalgia_start (common/on_action/LR_roman_nostalgia_on_actions.txt).
+renov_roman_portrait_trigger = {
 	exists = this
-	OR = {
-		this.culture = culture:roman
-		this.culture = culture:western_roman
-		this.culture = {
-			any_parent_culture = { #not "any_parent_culture_or_above" because otherwise the culture strays too far from Roman
-				OR = {
-					this = culture:roman
-					this = culture:western_roman
-				}
-			}
-			OR = { #only descendant cultures with the correct heritage
-				has_cultural_pillar = heritage_latin
-				#has_cultural_pillar = heritage_byzantine
-			}
-		}
-	}
-	this.culture = { has_clothing_gfx = roman_clothing_gfx }
+	exists = this.culture
+	this.culture = { has_cultural_tradition = lux_tradition_roman_nostalgia }
 }
