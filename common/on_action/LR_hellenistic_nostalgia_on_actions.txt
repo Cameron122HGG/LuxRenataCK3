@@ -1,0 +1,52 @@
+﻿# Hellenistic Nostalgia (11-20): game rule lr_hellenistic_nostalgia_start gives out the tradition at game start.
+#   all = Ancient Greek, Hellenistic Greek, Indo-Hellenic and Serican heritages
+#   greek = Ancient Greek and Hellenistic Greek heritages
+#   hellenistic = Hellenistic Greek heritage only
+#   hellenistic_culture = the Hellenistic culture only
+#   off = nobody (cultures can still adopt it)
+
+on_game_start_after_lobby = {
+	on_actions = { LR_hellenistic_nostalgia_game_start }
+}
+
+LR_hellenistic_nostalgia_game_start = {
+	trigger = {
+		NOT = { has_game_rule = lr_hellenistic_nostalgia_off }
+	}
+	effect = {
+		if = {
+			limit = { has_game_rule = lr_hellenistic_nostalgia_hellenistic_culture }
+			culture:hellenistic = {
+				if = {
+					limit = { NOT = { has_cultural_tradition = lux_tradition_hellenistic_nostalgia } }
+					add_culture_tradition = lux_tradition_hellenistic_nostalgia
+				}
+			}
+		}
+		else = {
+			every_culture_global = {
+				limit = {
+					NOT = { has_cultural_tradition = lux_tradition_hellenistic_nostalgia }
+					OR = {
+						has_cultural_pillar = heritage_hellenistic
+						AND = {
+							OR = {
+								has_game_rule = lr_hellenistic_nostalgia_all
+								has_game_rule = lr_hellenistic_nostalgia_greek
+							}
+							has_cultural_pillar = heritage_ancient_greek
+						}
+						AND = {
+							has_game_rule = lr_hellenistic_nostalgia_all
+							OR = {
+								has_cultural_pillar = heritage_indo_hellenic
+								has_cultural_pillar = heritage_sino_hellenic
+							}
+						}
+					}
+				}
+				add_culture_tradition = lux_tradition_hellenistic_nostalgia
+			}
+		}
+	}
+}

@@ -1,0 +1,60 @@
+﻿# Hellenistic Nostalgia (11-20)
+# Cultures that hold this tradition will dress in the Hellenistic clothes (Macedonian and Spartan
+# armour, Phrygian and Pilos helmets...) once those models are in. The portrait gate is
+# lr_hellenistic_portrait_trigger in common/scripted_triggers/LR_hellenistic_portrait_triggers.txt.
+# Which cultures start with it: game rule lr_hellenistic_nostalgia_start, given out by
+# common/on_action/LR_hellenistic_nostalgia_on_actions.txt.
+
+lux_tradition_hellenistic_nostalgia = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = mediterranean
+		4 = philosopher.dds
+	}
+
+	is_shown = {
+		lr_hellenistic_nostalgia_eligible_trigger = yes
+	}
+	can_pick = {
+		lr_hellenistic_nostalgia_eligible_trigger = yes
+	}
+
+	character_modifier = {
+		monthly_court_grandeur_change_mult = 0.1
+		monthly_prestige_gain_mult = 0.05
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = lux_tradition_hellenistic_nostalgia }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 25
+		if = {
+			limit = {
+				OR = {
+					has_cultural_pillar = heritage_ancient_greek
+					has_cultural_pillar = heritage_hellenistic
+				}
+			}
+			add = 75
+		}
+	}
+}

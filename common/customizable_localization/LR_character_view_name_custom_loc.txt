@@ -31,3 +31,47 @@ LR_character_view_name = {
 		localization_key = LR_character_view_name_default
 	}
 }
+
+# Two-line character window header (user, 2026-11-21): style of address and name on the top line, the held
+# title under it with the age ("Imperator Caesar Marcus IV Augustus" / "of Rome, 21"), since both run long in LR.
+# Rulers only; for everyone else LR_character_view_name_top is empty, the GUI hides the top line and the
+# bottom line shows CHARACTER_VIEW_NAME as before. Patronym cultures keep the one-line engine name.
+# GUI: gui/window_character.gui, vbox "name_health_and_relationship". Loc: LR_dynastic_realm_names_l_english.yml.
+LR_character_view_name_top = {
+	type = character
+
+	text = {
+		trigger = {
+			exists = primary_title
+			exists = house
+			NOT = { LR_character_name_patronym_trigger = yes }
+			LR_character_name_house_first_trigger = yes
+		}
+		localization_key = LR_character_view_name_top_house_first
+	}
+	text = {
+		trigger = {
+			exists = primary_title
+			NOT = { LR_character_name_patronym_trigger = yes }
+		}
+		localization_key = LR_character_view_name_top_default
+	}
+	text = {
+		fallback = yes
+		localization_key = LR_character_view_name_top_none
+	}
+}
+
+# Bottom line for rulers who have a top line: "of the <realm>" for dynastic/tiered realm names, else "of <title>".
+LR_character_view_name_title_line = {
+	type = character
+
+	text = {
+		trigger = { has_character_flag = LR_dynastic_realm_name_flag }
+		localization_key = LR_character_view_name_title_line_realm
+	}
+	text = {
+		fallback = yes
+		localization_key = LR_character_view_name_title_line_default
+	}
+}

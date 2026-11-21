@@ -1,0 +1,23 @@
+﻿# Hellenistic Nostalgia (11-20)
+
+# Gate for every Hellenistic portrait modifier (character scope). The tradition alone decides it.
+lr_hellenistic_portrait_trigger = {
+	exists = this
+	exists = this.culture
+	this.culture = { has_cultural_tradition = lux_tradition_hellenistic_nostalgia }
+}
+
+# Culture scope: who can see and adopt the tradition
+lr_hellenistic_nostalgia_eligible_trigger = {
+	OR = {
+		this = culture:hellenistic
+		any_parent_culture_or_above = {
+			this = culture:hellenistic
+		}
+		has_cultural_pillar = heritage_ancient_greek
+		has_cultural_pillar = heritage_hellenistic
+		has_cultural_pillar = heritage_indo_hellenic
+		has_cultural_pillar = heritage_sino_hellenic
+		has_cultural_pillar = heritage_byzantine
+	}
+}
