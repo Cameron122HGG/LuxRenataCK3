@@ -21,9 +21,9 @@ LR_roman_title_names_refresh_effect = {
 			limit = {
 				OR = {
 					NOT = { has_variable = LR_roman_title_name }
-					NOT = { var:LR_roman_title_name = scope:lr_rtn_style }
+					NOT = { var:LR_roman_title_name = var:LR_rtn_pick }
 					AND = {
-						NOT = { scope:lr_rtn_style = flag:vanilla }
+						NOT = { var:LR_rtn_pick = flag:vanilla }
 						has_custom_title_name = no
 					}
 				}
@@ -34,10 +34,11 @@ LR_roman_title_names_refresh_effect = {
 			}
 			set_variable = {
 				name = LR_roman_title_name
-				value = scope:lr_rtn_style
+				value = var:LR_rtn_pick
 			}
 			LR_roman_title_names_apply_effect = yes
 		}
+		remove_variable = LR_rtn_pick
 	}
 	else_if = {
 		limit = { has_variable = LR_roman_title_name }
@@ -63,10 +64,11 @@ LR_roman_title_names_refresh_held_effect = {
 	}
 }
 
-# scope = a held Roman title. Saves scope:lr_rtn_style (a flag)
+# scope = a held Roman title. Sets var:LR_rtn_pick (a flag) on the title; the refresh effect removes it again
 LR_roman_title_names_pick_style_effect = {
-	# Plain default; every branch below overwrites it. Lets ck3-tiger see the scope is always set (11-22 flicker fix)
-	save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
+	# Plain default; every branch below overwrites it. A title variable, not a saved scope: ck3-tiger could not
+	# always follow a scope saved in this helper (11-22 flicker fix)
+	set_variable = { name = LR_rtn_pick value = flag:foreign }
 	if = {
 		limit = {
 			LR_roman_named_title_east_trigger = yes
@@ -74,38 +76,38 @@ LR_roman_title_names_pick_style_effect = {
 		}
 		if = {
 			limit = { has_game_rule = default_name_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:vanilla }
+			set_variable = { name = LR_rtn_pick value = flag:vanilla }
 		}
 		else_if = {
 			limit = { has_game_rule = eastern_rome_name_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:eastern_rome }
+			set_variable = { name = LR_rtn_pick value = flag:eastern_rome }
 		}
 		else_if = {
 			limit = { has_game_rule = eastern_rome_name_latin_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:eastern_rome_latin }
+			set_variable = { name = LR_rtn_pick value = flag:eastern_rome_latin }
 		}
 		else_if = {
 			limit = { has_game_rule = roman_empire_name_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:roman_empire_east }
+			set_variable = { name = LR_rtn_pick value = flag:roman_empire_east }
 		}
 		else_if = {
 			limit = { has_game_rule = roman_empire_name_latin_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
+			set_variable = { name = LR_rtn_pick value = flag:latin }
 		}
 		else_if = {
 			limit = { has_game_rule = romania_name_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:romania_east }
+			set_variable = { name = LR_rtn_pick value = flag:romania_east }
 		}
 		else_if = {
 			limit = { has_game_rule = empire_of_the_greeks_name_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greeks }
+			set_variable = { name = LR_rtn_pick value = flag:greeks }
 		}
 		else_if = {
 			limit = { has_game_rule = rhomaion_name_of_byzantium }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:rhomaion }
+			set_variable = { name = LR_rtn_pick value = flag:rhomaion }
 		}
 		else = {
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:unholy_east }
+			set_variable = { name = LR_rtn_pick value = flag:unholy_east }
 		}
 	}
 	else_if = {
@@ -115,38 +117,38 @@ LR_roman_title_names_pick_style_effect = {
 		}
 		if = {
 			limit = { has_game_rule = default_name_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:vanilla }
+			set_variable = { name = LR_rtn_pick value = flag:vanilla }
 		}
 		else_if = {
 			limit = { has_game_rule = western_rome_name_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:western_rome }
+			set_variable = { name = LR_rtn_pick value = flag:western_rome }
 		}
 		else_if = {
 			limit = { has_game_rule = western_rome_name_latin_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:western_rome_latin }
+			set_variable = { name = LR_rtn_pick value = flag:western_rome_latin }
 		}
 		else_if = {
 			limit = { has_game_rule = roman_empire_name_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:roman_empire_west }
+			set_variable = { name = LR_rtn_pick value = flag:roman_empire_west }
 		}
 		else_if = {
 			limit = { has_game_rule = western_rome_name_unified_latin_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
+			set_variable = { name = LR_rtn_pick value = flag:latin }
 		}
 		else_if = {
 			limit = { has_game_rule = romania_name_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:romania_west }
+			set_variable = { name = LR_rtn_pick value = flag:romania_west }
 		}
 		else_if = {
 			limit = { has_game_rule = empire_of_the_romans_name_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:romans }
+			set_variable = { name = LR_rtn_pick value = flag:romans }
 		}
 		else_if = {
 			limit = { has_game_rule = res_publica_romana_name_of_spqr }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:res_publica }
+			set_variable = { name = LR_rtn_pick value = flag:res_publica }
 		}
 		else = {
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:unholy_west }
+			set_variable = { name = LR_rtn_pick value = flag:unholy_west }
 		}
 	}
 	else_if = {
@@ -156,27 +158,27 @@ LR_roman_title_names_pick_style_effect = {
 		}
 		if = {
 			limit = { has_game_rule = name_of_decayed_byzantium_foreign }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
+			set_variable = { name = LR_rtn_pick value = flag:foreign }
 		}
 		else_if = {
 			limit = { has_game_rule = name_of_decayed_byzantium_latin }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
+			set_variable = { name = LR_rtn_pick value = flag:latin }
 		}
 		else_if = {
 			limit = { has_game_rule = name_of_decayed_byzantium_greek }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greek }
+			set_variable = { name = LR_rtn_pick value = flag:greek }
 		}
 		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
+				set_variable = { name = LR_rtn_pick value = flag:restored_latin }
 			}
 			else_if = {
 				limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_greek }
+				set_variable = { name = LR_rtn_pick value = flag:restored_greek }
 			}
 			else = {
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_foreign }
+				set_variable = { name = LR_rtn_pick value = flag:restored_foreign }
 			}
 		}
 	}
@@ -187,27 +189,27 @@ LR_roman_title_names_pick_style_effect = {
 		}
 		if = {
 			limit = { has_game_rule = name_of_decayed_spqr_foreign }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
+			set_variable = { name = LR_rtn_pick value = flag:foreign }
 		}
 		else_if = {
 			limit = { has_game_rule = name_of_decayed_spqr_latin }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
+			set_variable = { name = LR_rtn_pick value = flag:latin }
 		}
 		else_if = {
 			limit = { has_game_rule = name_of_decayed_spqr_greek }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greek }
+			set_variable = { name = LR_rtn_pick value = flag:greek }
 		}
 		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
+				set_variable = { name = LR_rtn_pick value = flag:restored_latin }
 			}
 			else_if = {
 				limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_greek }
+				set_variable = { name = LR_rtn_pick value = flag:restored_greek }
 			}
 			else = {
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_foreign }
+				set_variable = { name = LR_rtn_pick value = flag:restored_foreign }
 			}
 		}
 	}
@@ -218,23 +220,23 @@ LR_roman_title_names_pick_style_effect = {
 		}
 		if = {
 			limit = { has_game_rule = name_of_decayed_tadmor_foreign }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
+			set_variable = { name = LR_rtn_pick value = flag:foreign }
 		}
 		else_if = {
 			limit = { has_game_rule = name_of_decayed_tadmor_latin }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
+			set_variable = { name = LR_rtn_pick value = flag:latin }
 		}
 		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
+				set_variable = { name = LR_rtn_pick value = flag:restored_latin }
 			}
 			else_if = {
 				limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_greek }
+				set_variable = { name = LR_rtn_pick value = flag:restored_greek }
 			}
 			else = {
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_foreign }
+				set_variable = { name = LR_rtn_pick value = flag:restored_foreign }
 			}
 		}
 	}
@@ -245,14 +247,14 @@ LR_roman_title_names_pick_style_effect = {
 		}
 		if = {
 			limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
+			set_variable = { name = LR_rtn_pick value = flag:restored_latin }
 		}
 		else_if = {
 			limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_greek }
+			set_variable = { name = LR_rtn_pick value = flag:restored_greek }
 		}
 		else = {
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_foreign }
+			set_variable = { name = LR_rtn_pick value = flag:restored_foreign }
 		}
 	}
 	else_if = {
@@ -262,514 +264,514 @@ LR_roman_title_names_pick_style_effect = {
 		}
 		if = {
 			limit = { has_game_rule = name_of_decayed_constantinid_foreign }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
+			set_variable = { name = LR_rtn_pick value = flag:foreign }
 		}
 		else_if = {
 			limit = { has_game_rule = name_of_decayed_constantinid_greek }
-			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greek }
+			set_variable = { name = LR_rtn_pick value = flag:greek }
 		}
 		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
+				set_variable = { name = LR_rtn_pick value = flag:restored_latin }
 			}
 			else_if = {
 				limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_greek }
+				set_variable = { name = LR_rtn_pick value = flag:restored_greek }
 			}
 			else = {
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_foreign }
+				set_variable = { name = LR_rtn_pick value = flag:restored_foreign }
 			}
 		}
 	}
 	else_if = {
 		limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
-		save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
+		set_variable = { name = LR_rtn_pick value = flag:latin }
 	}
 	else_if = {
 		limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
-		save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greek }
+		set_variable = { name = LR_rtn_pick value = flag:greek }
 	}
 	else = {
-		save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
+		set_variable = { name = LR_rtn_pick value = flag:foreign }
 	}
 }
 
-# scope = a Roman title, scope:lr_rtn_style set
+# scope = a Roman title, var:LR_rtn_pick set
 LR_roman_title_names_apply_effect = {
 	if = {
-		limit = { scope:lr_rtn_style = flag:vanilla }
+		limit = { var:LR_rtn_pick = flag:vanilla }
 		reset_title_name = yes
 	}
 	else_if = {
 		limit = { this = title:e_byzantium }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_byzantium_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_byzantium_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_byzantium_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_foreign }
+			limit = { var:LR_rtn_pick = flag:restored_foreign }
 			set_title_name = LR_rtn_e_eastern_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_latin }
+			limit = { var:LR_rtn_pick = flag:restored_latin }
 			set_title_name = LR_rtn_e_eastern_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_greek }
+			limit = { var:LR_rtn_pick = flag:restored_greek }
 			set_title_name = LR_rtn_e_eastern_roman_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_eastern_roman_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_eastern_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_eastern_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_eastern_roman_empire_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:eastern_rome }
+			limit = { var:LR_rtn_pick = flag:eastern_rome }
 			set_title_name = e_eastern_roman_empire
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:eastern_rome_latin }
+			limit = { var:LR_rtn_pick = flag:eastern_rome_latin }
 			set_title_name = e_eastern_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:roman_empire_east }
+			limit = { var:LR_rtn_pick = flag:roman_empire_east }
 			set_title_name = LR_rtn_roman_empire_east
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:romania_east }
+			limit = { var:LR_rtn_pick = flag:romania_east }
 			set_title_name = e_romania_empire
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greeks }
+			limit = { var:LR_rtn_pick = flag:greeks }
 			set_title_name = e_empire_of_the_greeks
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:rhomaion }
+			limit = { var:LR_rtn_pick = flag:rhomaion }
 			set_title_name = e_rhomaion
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:unholy_east }
+			limit = { var:LR_rtn_pick = flag:unholy_east }
 			set_title_name = e_unholy_roman_empire
 		}
 	}
 	else_if = {
 		limit = { this = title:h_eastern_roman_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_eastern_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_eastern_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_eastern_roman_empire_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:eastern_rome }
+			limit = { var:LR_rtn_pick = flag:eastern_rome }
 			set_title_name = h_eastern_roman_empire
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:eastern_rome_latin }
+			limit = { var:LR_rtn_pick = flag:eastern_rome_latin }
 			set_title_name = h_eastern_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:roman_empire_east }
+			limit = { var:LR_rtn_pick = flag:roman_empire_east }
 			set_title_name = LR_rtn_roman_empire_east
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:romania_east }
+			limit = { var:LR_rtn_pick = flag:romania_east }
 			set_title_name = h_romania_empire
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greeks }
+			limit = { var:LR_rtn_pick = flag:greeks }
 			set_title_name = h_empire_of_the_greeks
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:rhomaion }
+			limit = { var:LR_rtn_pick = flag:rhomaion }
 			set_title_name = h_rhomaion
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:unholy_east }
+			limit = { var:LR_rtn_pick = flag:unholy_east }
 			set_title_name = h_unholy_roman_empire
 		}
 	}
 	else_if = {
 		limit = { this = title:e_eastern_roman_republic }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_eastern_roman_republic_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_eastern_roman_republic_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_eastern_roman_republic_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:h_eastern_roman_republic }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_eastern_roman_republic_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_eastern_roman_republic_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_eastern_roman_republic_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_constantinid }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_constantinid_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_constantinid_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_constantinid_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_foreign }
+			limit = { var:LR_rtn_pick = flag:restored_foreign }
 			set_title_name = LR_rtn_e_brittanic_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_latin }
+			limit = { var:LR_rtn_pick = flag:restored_latin }
 			set_title_name = LR_rtn_e_brittanic_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_greek }
+			limit = { var:LR_rtn_pick = flag:restored_greek }
 			set_title_name = LR_rtn_e_brittanic_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_spqr }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_spqr_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_spqr_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_spqr_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_foreign }
+			limit = { var:LR_rtn_pick = flag:restored_foreign }
 			set_title_name = LR_rtn_e_western_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_latin }
+			limit = { var:LR_rtn_pick = flag:restored_latin }
 			set_title_name = LR_rtn_e_western_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_greek }
+			limit = { var:LR_rtn_pick = flag:restored_greek }
 			set_title_name = LR_rtn_e_western_roman_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_western_roman_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_western_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_western_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_western_roman_empire_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:western_rome }
+			limit = { var:LR_rtn_pick = flag:western_rome }
 			set_title_name = e_western_roman_empire
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:western_rome_latin }
+			limit = { var:LR_rtn_pick = flag:western_rome_latin }
 			set_title_name = e_spqr_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:roman_empire_west }
+			limit = { var:LR_rtn_pick = flag:roman_empire_west }
 			set_title_name = LR_rtn_roman_empire_west
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:romania_west }
+			limit = { var:LR_rtn_pick = flag:romania_west }
 			set_title_name = e_romania_spqr
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:romans }
+			limit = { var:LR_rtn_pick = flag:romans }
 			set_title_name = e_empire_of_the_romans
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:res_publica }
+			limit = { var:LR_rtn_pick = flag:res_publica }
 			set_title_name = e_res_publica_romana
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:unholy_west }
+			limit = { var:LR_rtn_pick = flag:unholy_west }
 			set_title_name = e_unholy_roman_empire_spqr
 		}
 	}
 	else_if = {
 		limit = { this = title:h_western_roman_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_western_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_western_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_western_roman_empire_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:western_rome }
+			limit = { var:LR_rtn_pick = flag:western_rome }
 			set_title_name = h_western_roman_empire
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:western_rome_latin }
+			limit = { var:LR_rtn_pick = flag:western_rome_latin }
 			set_title_name = h_western_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:roman_empire_west }
+			limit = { var:LR_rtn_pick = flag:roman_empire_west }
 			set_title_name = LR_rtn_roman_empire_west
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:romania_west }
+			limit = { var:LR_rtn_pick = flag:romania_west }
 			set_title_name = h_romania_spqr
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:romans }
+			limit = { var:LR_rtn_pick = flag:romans }
 			set_title_name = h_empire_of_the_romans
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:res_publica }
+			limit = { var:LR_rtn_pick = flag:res_publica }
 			set_title_name = h_res_publica_romana
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:unholy_west }
+			limit = { var:LR_rtn_pick = flag:unholy_west }
 			set_title_name = h_unholy_roman_empire_spqr
 		}
 	}
 	else_if = {
 		limit = { this = title:e_western_roman_republic }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_western_roman_republic_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_western_roman_republic_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_western_roman_republic_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:h_western_roman_republic }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_western_roman_republic_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_western_roman_republic_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_western_roman_republic_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_syagria }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_syagria_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_syagria_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_syagria_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_foreign }
+			limit = { var:LR_rtn_pick = flag:restored_foreign }
 			set_title_name = LR_rtn_e_gallic_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_latin }
+			limit = { var:LR_rtn_pick = flag:restored_latin }
 			set_title_name = LR_rtn_e_gallic_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_greek }
+			limit = { var:LR_rtn_pick = flag:restored_greek }
 			set_title_name = LR_rtn_e_gallic_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:h_roman_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_roman_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:h_roman_republic }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_roman_republic_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_roman_republic_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_roman_republic_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:k_roman_kingdom }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_k_roman_kingdom_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_k_roman_kingdom_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_k_roman_kingdom_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_southern_roman_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_southern_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_southern_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_southern_roman_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:h_southern_roman_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_southern_roman_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_southern_roman_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_southern_roman_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_tadmor }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_tadmor_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_tadmor_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_tadmor_greek
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_foreign }
+			limit = { var:LR_rtn_pick = flag:restored_foreign }
 			set_title_name = LR_rtn_e_palmyrene_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_latin }
+			limit = { var:LR_rtn_pick = flag:restored_latin }
 			set_title_name = LR_rtn_e_palmyrene_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:restored_greek }
+			limit = { var:LR_rtn_pick = flag:restored_greek }
 			set_title_name = LR_rtn_e_palmyrene_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:e_palmyrene_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_e_palmyrene_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_e_palmyrene_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_e_palmyrene_empire_greek
 		}
 	}
 	else_if = {
 		limit = { this = title:h_palmyrene_empire }
 		if = {
-			limit = { scope:lr_rtn_style = flag:foreign }
+			limit = { var:LR_rtn_pick = flag:foreign }
 			set_title_name = LR_rtn_h_palmyrene_empire_foreign
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:latin }
+			limit = { var:LR_rtn_pick = flag:latin }
 			set_title_name = LR_rtn_h_palmyrene_empire_latin
 		}
 		else_if = {
-			limit = { scope:lr_rtn_style = flag:greek }
+			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_palmyrene_empire_greek
 		}
 	}

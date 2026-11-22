@@ -2,7 +2,7 @@
 
 # LR_tgp_sacral_gaul_establish_house_fief_decision
 
-scripted_effect tgp_establish_house_fief_save_scopes_effect = {
+scripted_effect LR_tgp_sacral_gaul_establish_house_fief_save_scopes_effect = {
 	top_liege ?= { save_scope_as = sacral_majordomo }
 	save_scope_as = new_head
 	house = {
@@ -228,7 +228,7 @@ LR_tgp_sacral_gaul_decision.9001 = { # CHOOSE HOUSE NAME EVENT - WITH WIDGET
 		switch = {
 			trigger = has_character_flag
 			establish_house_fief = {
-				tgp_establish_house_fief_save_scopes_effect = yes
+				LR_tgp_sacral_gaul_establish_house_fief_save_scopes_effect = yes
 				play_music_cue = "mx_cue_positive_effect"
 			}
 			fallback = {
@@ -383,7 +383,7 @@ LR_tgp_sacral_gaul_decision.9002 = { # SAME CLAN EVENT - NO WIDGET
 
 	immediate = {
 		play_music_cue = "mx_cue_positive_effect"
-		tgp_establish_house_fief_save_scopes_effect = yes
+		LR_tgp_sacral_gaul_establish_house_fief_save_scopes_effect = yes
 		sacral_establish_house_fief_effect = yes
 	}
 
@@ -1466,19 +1466,15 @@ LR_tgp_sacral_gaul_decision.9913 = {
 		}
 	}
 }
-scripted_trigger dominion_fight = {
+# LR 2026-11-22: root = the ruler asserting dominion. A short-lived variable instead of the potential_vassals list,
+# which does not exist outside the event that built it.
+scripted_trigger LR_tgp_sacral_gaul_dominion_fight = {
 	exists = scope:main_defender
-	NOT = {
-		any_in_list = {
-			list = potential_vassals
-		}
-	}
+	NOT = { root = { has_variable = LR_dominion_willing_vassals } }
 }
-scripted_trigger dominion_fight_partial = {
+scripted_trigger LR_tgp_sacral_gaul_dominion_fight_partial = {
 	exists = scope:main_defender
-	any_in_list = {
-		list = potential_vassals
-	}
+	root = { has_variable = LR_dominion_willing_vassals }
 }
 #Assert Regional Dominion
 #LR_tgp_sacral_gaul_decision.9960
@@ -1498,7 +1494,7 @@ LR_tgp_sacral_gaul_decision.9960 = {
 			}
 			#some de jure vassals agree to let you be duke, some will fight you
 			triggered_desc = {
-				trigger = { dominion_fight_partial = yes }
+				trigger = { LR_tgp_sacral_gaul_dominion_fight_partial = yes }
 				desc = LR_tgp_sacral_gaul_decision.9960.partial_war
 			}
 			#all jure vassals will fight you
@@ -1507,19 +1503,19 @@ LR_tgp_sacral_gaul_decision.9960 = {
 	}
 	theme = battle
 	override_icon = {
-		trigger = { dominion_fight = no }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = no }
 		reference = "gfx/interface/icons/event_types/type_authority.dds"
 	}
 	override_icon = {
-		trigger = { dominion_fight = yes }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = yes }
 		reference ="gfx/interface/icons/event_types/type_war.dds"
 	}
 	override_header_background = {
-		trigger = { dominion_fight = yes }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = yes }
 		reference = "gfx/interface/window_event/event_header_red.dds"
 	}
 	override_sound = {
-		trigger = { dominion_fight = no }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = no }
 		reference = "event:/SFX/Events/Themes/sfx_event_theme_type_diplomacy"
 	}
 	left_portrait = {
@@ -1527,7 +1523,7 @@ LR_tgp_sacral_gaul_decision.9960 = {
 		triggered_animation = {
 			trigger = {
 				is_adult = yes
-				dominion_fight = yes
+				LR_tgp_sacral_gaul_dominion_fight = yes
 				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = root }
 			}
 			#it's war!
@@ -1541,13 +1537,13 @@ LR_tgp_sacral_gaul_decision.9960 = {
 		camera = camera_event_right_crowner_crowning
 	}
 	override_background = {
-		trigger = { dominion_fight = yes }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = yes }
 		#it's war!
 		reference = army_camp
 	}
 	override_background = {	reference = bp1_crossroads_inn }
 	override_effect_2d = {
-		trigger = { dominion_fight = no }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = no }
 		reference = legend_glow
 	}
 	immediate = {
@@ -1567,12 +1563,12 @@ LR_tgp_sacral_gaul_decision.9960 = {
 	}
 	#fight
 	option = {
-		trigger = { dominion_fight = yes }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = yes }
 		name = LR_tgp_sacral_gaul_decision.9960.a
 	}
 	#no fight
 	option = {
-		trigger = { dominion_fight = no }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = no }
 		name = LR_tgp_sacral_gaul_decision.9960.b
 	}
 	after = {
@@ -1587,7 +1583,7 @@ LR_tgp_sacral_gaul_decision.9961 = {
 	desc = LR_tgp_sacral_gaul_decision.9961.desc
 	theme = battle
 	override_icon = {
-		trigger = { dominion_fight = yes }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = yes }
 		reference ="gfx/interface/icons/event_types/type_hunt.dds"
 	}
 	override_header_background = { reference = "gfx/interface/window_event/header_neutral.dds" }
@@ -1634,7 +1630,7 @@ LR_tgp_sacral_gaul_decision.9962 = {
 	desc = LR_tgp_sacral_gaul_decision.9962.desc
 	theme = battle
 	override_icon = {
-		trigger = { dominion_fight = yes }
+		trigger = { LR_tgp_sacral_gaul_dominion_fight = yes }
 		reference ="gfx/interface/icons/event_types/type_hunt.dds"
 	}
 	override_header_background = { reference = "gfx/interface/window_event/header_neutral.dds" }

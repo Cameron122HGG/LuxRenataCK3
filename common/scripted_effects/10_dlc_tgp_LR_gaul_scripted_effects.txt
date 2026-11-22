@@ -1296,6 +1296,7 @@ LR_tgp_restore_palatine_civil_war_effect = {
 
 LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_effect = {
 	save_scope_as = super_manorial
+	remove_variable = LR_dominion_willing_vassals # LR 2026-11-22: set below when some vassals accept (was the potential_vassals list)
 	scope:super_manorial.primary_title.duchy ?= { save_scope_as = title_scope }
 	# Crime to sacral_regent_admin
 	if = {
@@ -1420,7 +1421,14 @@ LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_effect = {
 						add_to_list = war_targets
 					}
 					else = {
-						add_to_list = potential_vassals 
+						add_to_list = potential_vassals
+						scope:super_manorial = {
+							set_variable = {
+								name = LR_dominion_willing_vassals
+								value = yes
+								days = 1
+							}
+						}
 					}
 					
 				}
@@ -1750,10 +1758,6 @@ LR_tgp_sacral_gaul_mayors_crown_effect = {
 			}
 		}
 		set_primary_title_to = title:e_frankish_empire
-		set_global_variable = {
-			name = LR_sacral_gaul_mayors_crown_taken
-			value = yes
-		}
 	}
 	destroy_title = title:e_sacral_kingdom_gaul
 	# Carolingian administration (Roads to Power); without it, ordinary feudal rule
