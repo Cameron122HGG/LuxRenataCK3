@@ -1,0 +1,48 @@
+﻿# LR 2026-11-22: Sons of the Lightning crossover. The Pontic emperor raises the Hypsistarian rite of
+# Hellenic Pagan into the full Hypsistarian faith (hypsistarian_religion) and becomes its head. Once per game.
+LR_found_hypsistarian_faith_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = major
+	ai_check_interval = 120
+
+	desc = LR_found_hypsistarian_faith_decision_desc
+	selection_tooltip = LR_found_hypsistarian_faith_decision_tooltip
+	confirm_text = LR_found_hypsistarian_faith_decision_confirm
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		rite = rite:hypsistarian_rite
+		NOT = { has_global_variable = LR_hypsistarian_faith_founded }
+	}
+
+	is_valid = {
+		has_title = title:e_pontus
+		is_independent_ruler = yes
+		piety_level >= 3
+		custom_tooltip = {
+			text = LR_hypsistarian_amaseia_tt
+			title:c_helenopontus.holder ?= { OR = { this = root target_is_liege_or_above = root } }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 1000
+	}
+
+	effect = {
+		show_as_tooltip = { get_title = title:d_theos_hypsistos }
+		custom_tooltip = LR_found_hypsistarian_faith_effect_tt
+		hidden_effect = { LR_found_hypsistarian_faith_effect = yes }
+	}
+
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
