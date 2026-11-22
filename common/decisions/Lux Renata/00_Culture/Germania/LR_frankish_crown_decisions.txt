@@ -1,0 +1,115 @@
+﻿# LR Frankish title sets (register_frankish_sets.py, 2026-11-22). GENERATED.
+# The two Frankish crowns (LR_german_title_set_proposal.md, decided 2026-11-22).
+
+LR_proclaim_sacral_empire_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }
+	decision_group_type = major
+	sort_order = 125
+	ai_check_interval = 120
+	cost = { prestige = 1000 }
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		NOT = { has_title = title:h_sacral_empire }
+		NOT = { has_title = title:h_hre }
+		OR = {
+			has_title = title:e_frankish_empire
+			has_title = title:e_sacral_kingdom_gaul
+			has_title = title:e_carolingian_empire
+			has_title = title:e_germany
+		}
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= high_prestige_level
+		custom_tooltip = {
+			text = LR_proclaim_sacral_empire_government_trigger
+			trigger_if = {
+				limit = { has_dlc_feature = roads_to_power }
+				has_government = western_administrative_government
+			}
+			trigger_else = { has_government = feudal_government }
+		}
+		custom_tooltip = {
+			text = LR_proclaim_sacral_empire_gaul_trigger
+			OR = {
+				title:e_frankish_empire.holder ?= { OR = { this = root target_is_liege_or_above = root } }
+				title:e_sacral_kingdom_gaul.holder ?= { OR = { this = root target_is_liege_or_above = root } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_proclaim_sacral_empire_carolingian_trigger
+			title:e_carolingian_empire.holder ?= { OR = { this = root target_is_liege_or_above = root } }
+		}
+		custom_tooltip = {
+			text = LR_proclaim_sacral_empire_germany_trigger
+			title:e_germany.holder ?= { OR = { this = root target_is_liege_or_above = root } }
+		}
+		custom_tooltip = {
+			text = LR_frankish_one_crown_hre_tt
+			NOT = { exists = title:h_hre.holder }
+		}
+		custom_tooltip = {
+			text = LR_frankish_one_crown_sacral_tt
+			NOT = { exists = title:h_sacral_empire.holder }
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+	effect = {
+		LR_found_sacral_empire_effect = yes
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+# The holder of one crown turns it into the other (Sacral Empire <-> Holy Roman Empire).
+LR_reform_frankish_empire_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = major
+	sort_order = 124
+	ai_check_interval = 240
+	cooldown = { years = 50 }
+	cost = { prestige = 1500 }
+	is_shown = {
+		is_ruler = yes
+		OR = {
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
+		}
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= high_prestige_level
+		trigger_if = {
+			limit = { has_title = title:h_hre }
+			custom_tooltip = {
+				text = LR_proclaim_sacral_empire_government_trigger
+				trigger_if = {
+					limit = { has_dlc_feature = roads_to_power }
+					has_government = western_administrative_government
+				}
+				trigger_else = { has_government = feudal_government }
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+	effect = {
+		if = {
+			limit = { has_title = title:h_sacral_empire }
+			custom_tooltip = LR_reform_to_hre_tt
+			hidden_effect = { LR_found_holy_roman_hegemony_effect = yes }
+		}
+		else = {
+			custom_tooltip = LR_reform_to_sacral_tt
+			hidden_effect = { LR_found_sacral_empire_effect = yes }
+		}
+	}
+	ai_potential = { always = no } # the AI keeps the crown it has
+	ai_will_do = { base = 0 }
+}

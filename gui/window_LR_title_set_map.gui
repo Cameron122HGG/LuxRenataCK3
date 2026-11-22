@@ -351,6 +351,26 @@ window = {
 						}
 
 						button_LR_tsm_view = {
+							text = "LR_TSM_SET_GERMAN"
+							tooltip = "LR_TSM_SET_GERMAN_TT"
+							onclick = "[GetScriptedGui( 'LR_tsm_preview_german' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GetScriptedGui( 'LR_tsm_preview_german' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+
+							# Repaint once this becomes the current choice (see button_tmm_trait)
+							state = {
+								name = LR_tsm_refresh
+								trigger_when = "[Not( GetScriptedGui( 'LR_tsm_preview_german' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+								on_start = "[SetMapMode( 'realms' )]"
+								duration = 0.05
+								next = LR_tsm_refresh_2
+							}
+							state = {
+								name = LR_tsm_refresh_2
+								on_start = "[SetMapMode( 'situation' )]"
+							}
+						}
+
+						button_LR_tsm_view = {
 							text = "LR_TSM_SET_MISSATICA"
 							tooltip = "LR_TSM_SET_MISSATICA_TT"
 							onclick = "[GetScriptedGui( 'LR_tsm_preview_missatica' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
@@ -589,6 +609,13 @@ window = {
 						blockoverride "swatch_color" { color = { 0.16 0.27 0.67 1 } }
 						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_frankish" }
 						blockoverride "count" { text = "LR_TSM_COUNT_FRANKISH" }
+					}
+
+					hbox_LR_tsm_legend_row = {
+						visible = "[Not( GetScriptedGui( 'LR_tsm_is_preview' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+						blockoverride "swatch_color" { color = { 0.78 0.61 0.18 1 } }
+						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_german" }
+						blockoverride "count" { text = "LR_TSM_COUNT_GERMAN" }
 					}
 
 					hbox_LR_tsm_legend_row = {

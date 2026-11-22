@@ -1,21 +1,45 @@
 ﻿# LR Frankish title sets (register_frankish_sets.py, 2026-11-22). GENERATED.
-# The Carolingian emperor organises Lux Invicta's four HRE kingdoms as regna, one by one.
+# The Carolingian emperor organises Lux Invicta's four HRE kingdoms as regna, one by one. The layout follows the crown in force (Sacral Empire: missatica;
+# Holy Roman Empire: old duchies); without one, the realm's own way. The crown holders may organise any regnum.
 
 LR_organise_carolingian_regnum_austrasia_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
 	decision_group_type = major
 	sort_order = 60
 	ai_check_interval = 60
+	cooldown = { years = 5 }
 	cost = {
 		gold = 300
 		prestige = 300
 	}
 	is_shown = {
 		is_ruler = yes
-		has_title = title:e_carolingian_empire
-		NOT = { has_global_variable = LR_frankish_austrasia_organised }
+		OR = {
+			has_title = title:e_carolingian_empire
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
+		}
+		# hidden once the regnum is laid out the way it would be laid out now, under its realm
+		trigger_if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			NOT = {
+				AND = {
+					title:k_regnum_austrasia.var:LR_frankish_layout ?= flag:missatica
+					title:k_regnum_austrasia.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
+		trigger_else = {
+			NOT = {
+				AND = {
+					title:k_regnum_austrasia.var:LR_frankish_layout ?= flag:merovingian
+					title:k_regnum_austrasia.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
 	}
 	is_valid = {
+		is_independent_ruler = yes
 		is_at_war = no
 		custom_tooltip = {
 			text = LR_organise_carolingian_regnum_austrasia_decision_trigger
@@ -26,7 +50,11 @@ LR_organise_carolingian_regnum_austrasia_decision = {
 		is_available_adult = yes
 	}
 	effect = {
-		custom_tooltip = LR_organise_carolingian_regnum_austrasia_decision_effect_tt
+		if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			custom_tooltip = LR_frankish_organise_missatica_tt
+		}
+		else = { custom_tooltip = LR_frankish_organise_merovingian_tt }
 		hidden_effect = { LR_frankish_organise_austrasia_effect = yes }
 	}
 	ai_potential = { always = yes }
@@ -38,16 +66,39 @@ LR_organise_carolingian_regnum_belgica_decision = {
 	decision_group_type = major
 	sort_order = 60
 	ai_check_interval = 60
+	cooldown = { years = 5 }
 	cost = {
 		gold = 300
 		prestige = 300
 	}
 	is_shown = {
 		is_ruler = yes
-		has_title = title:e_carolingian_empire
-		NOT = { has_global_variable = LR_frankish_belgica_organised }
+		OR = {
+			has_title = title:e_carolingian_empire
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
+		}
+		# hidden once the regnum is laid out the way it would be laid out now, under its realm
+		trigger_if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			NOT = {
+				AND = {
+					title:k_regnum_belgica.var:LR_frankish_layout ?= flag:missatica
+					title:k_regnum_belgica.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
+		trigger_else = {
+			NOT = {
+				AND = {
+					title:k_regnum_belgica.var:LR_frankish_layout ?= flag:merovingian
+					title:k_regnum_belgica.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
 	}
 	is_valid = {
+		is_independent_ruler = yes
 		is_at_war = no
 		custom_tooltip = {
 			text = LR_organise_carolingian_regnum_belgica_decision_trigger
@@ -58,7 +109,11 @@ LR_organise_carolingian_regnum_belgica_decision = {
 		is_available_adult = yes
 	}
 	effect = {
-		custom_tooltip = LR_organise_carolingian_regnum_belgica_decision_effect_tt
+		if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			custom_tooltip = LR_frankish_organise_missatica_tt
+		}
+		else = { custom_tooltip = LR_frankish_organise_merovingian_tt }
 		hidden_effect = { LR_frankish_organise_belgica_effect = yes }
 	}
 	ai_potential = { always = yes }
@@ -70,16 +125,39 @@ LR_organise_carolingian_regnum_lotharingia_decision = {
 	decision_group_type = major
 	sort_order = 60
 	ai_check_interval = 60
+	cooldown = { years = 5 }
 	cost = {
 		gold = 300
 		prestige = 300
 	}
 	is_shown = {
 		is_ruler = yes
-		has_title = title:e_carolingian_empire
-		NOT = { has_global_variable = LR_frankish_lotharingia_organised }
+		OR = {
+			has_title = title:e_carolingian_empire
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
+		}
+		# hidden once the regnum is laid out the way it would be laid out now, under its realm
+		trigger_if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			NOT = {
+				AND = {
+					title:k_regnum_lotharingia.var:LR_frankish_layout ?= flag:missatica
+					title:k_regnum_lotharingia.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
+		trigger_else = {
+			NOT = {
+				AND = {
+					title:k_regnum_lotharingia.var:LR_frankish_layout ?= flag:merovingian
+					title:k_regnum_lotharingia.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
 	}
 	is_valid = {
+		is_independent_ruler = yes
 		is_at_war = no
 		custom_tooltip = {
 			text = LR_organise_carolingian_regnum_lotharingia_decision_trigger
@@ -90,7 +168,11 @@ LR_organise_carolingian_regnum_lotharingia_decision = {
 		is_available_adult = yes
 	}
 	effect = {
-		custom_tooltip = LR_organise_carolingian_regnum_lotharingia_decision_effect_tt
+		if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			custom_tooltip = LR_frankish_organise_missatica_tt
+		}
+		else = { custom_tooltip = LR_frankish_organise_merovingian_tt }
 		hidden_effect = { LR_frankish_organise_lotharingia_effect = yes }
 	}
 	ai_potential = { always = yes }
@@ -102,16 +184,39 @@ LR_organise_carolingian_regnum_frisia_decision = {
 	decision_group_type = major
 	sort_order = 60
 	ai_check_interval = 60
+	cooldown = { years = 5 }
 	cost = {
 		gold = 300
 		prestige = 300
 	}
 	is_shown = {
 		is_ruler = yes
-		has_title = title:e_carolingian_empire
-		NOT = { has_global_variable = LR_frankish_frisia_organised }
+		OR = {
+			has_title = title:e_carolingian_empire
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
+		}
+		# hidden once the regnum is laid out the way it would be laid out now, under its realm
+		trigger_if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			NOT = {
+				AND = {
+					title:k_regnum_frisia.var:LR_frankish_layout ?= flag:missatica
+					title:k_regnum_frisia.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
+		trigger_else = {
+			NOT = {
+				AND = {
+					title:k_regnum_frisia.var:LR_frankish_layout ?= flag:merovingian
+					title:k_regnum_frisia.de_jure_liege ?= title:e_carolingian_empire
+				}
+			}
+		}
 	}
 	is_valid = {
+		is_independent_ruler = yes
 		is_at_war = no
 		custom_tooltip = {
 			text = LR_organise_carolingian_regnum_frisia_decision_trigger
@@ -122,7 +227,11 @@ LR_organise_carolingian_regnum_frisia_decision = {
 		is_available_adult = yes
 	}
 	effect = {
-		custom_tooltip = LR_organise_carolingian_regnum_frisia_decision_effect_tt
+		if = {
+			limit = { LR_frankish_caro_wants_missatica_trigger = yes }
+			custom_tooltip = LR_frankish_organise_missatica_tt
+		}
+		else = { custom_tooltip = LR_frankish_organise_merovingian_tt }
 		hidden_effect = { LR_frankish_organise_frisia_effect = yes }
 	}
 	ai_potential = { always = yes }

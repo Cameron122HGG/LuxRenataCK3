@@ -1,5 +1,6 @@
 ﻿# LR Frankish title sets (register_frankish_sets.py, 2026-11-22). GENERATED.
-# Gaul organises West Francia's regna one by one, in its own set.
+# Gaul organises West Francia's regna one by one. The layout follows the crown in force (Sacral Empire: missatica;
+# Holy Roman Empire: old duchies); without one, the realm's own way. The crown holders may organise any regnum.
 
 LR_organise_frankish_regnum_neustria_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
@@ -16,13 +17,19 @@ LR_organise_frankish_regnum_neustria_decision = {
 		OR = {
 			has_title = title:e_frankish_empire
 			has_title = title:e_sacral_kingdom_gaul
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
 		}
+		# hidden once the regnum is laid out the way it would be laid out now, under its realm
 		trigger_if = {
-			limit = { has_title = title:e_frankish_empire }
+			limit = { LR_frankish_west_wants_missatica_trigger = yes }
 			NOT = {
 				AND = {
 					title:k_regnum_neustria.var:LR_frankish_layout ?= flag:missatica
-					title:k_regnum_neustria.de_jure_liege ?= title:e_frankish_empire
+					OR = {
+						title:k_regnum_neustria.de_jure_liege ?= title:e_frankish_empire
+						title:k_regnum_neustria.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					}
 				}
 			}
 		}
@@ -30,7 +37,10 @@ LR_organise_frankish_regnum_neustria_decision = {
 			NOT = {
 				AND = {
 					title:k_regnum_neustria.var:LR_frankish_layout ?= flag:merovingian
-					title:k_regnum_neustria.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					OR = {
+						title:k_regnum_neustria.de_jure_liege ?= title:e_frankish_empire
+						title:k_regnum_neustria.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					}
 				}
 			}
 		}
@@ -48,14 +58,11 @@ LR_organise_frankish_regnum_neustria_decision = {
 	}
 	effect = {
 		if = {
-			limit = { has_title = title:e_frankish_empire }
-			custom_tooltip = LR_frankish_reorganise_missatica_tt
-			hidden_effect = { LR_frankish_reorganise_neustria_effect = { SET = missatica REALM = title:e_frankish_empire GRANT = yes } }
+			limit = { LR_frankish_west_wants_missatica_trigger = yes }
+			custom_tooltip = LR_frankish_organise_missatica_tt
 		}
-		else = {
-			custom_tooltip = LR_frankish_reorganise_merovingian_tt
-			hidden_effect = { LR_frankish_reorganise_neustria_effect = { SET = merovingian REALM = title:e_sacral_kingdom_gaul GRANT = no } }
-		}
+		else = { custom_tooltip = LR_frankish_organise_merovingian_tt }
+		hidden_effect = { LR_frankish_organise_neustria_effect = yes }
 	}
 	ai_potential = { always = yes }
 	ai_will_do = { base = 100 }
@@ -76,13 +83,19 @@ LR_organise_frankish_regnum_burgundia_decision = {
 		OR = {
 			has_title = title:e_frankish_empire
 			has_title = title:e_sacral_kingdom_gaul
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
 		}
+		# hidden once the regnum is laid out the way it would be laid out now, under its realm
 		trigger_if = {
-			limit = { has_title = title:e_frankish_empire }
+			limit = { LR_frankish_west_wants_missatica_trigger = yes }
 			NOT = {
 				AND = {
 					title:k_regnum_burgundia.var:LR_frankish_layout ?= flag:missatica
-					title:k_regnum_burgundia.de_jure_liege ?= title:e_frankish_empire
+					OR = {
+						title:k_regnum_burgundia.de_jure_liege ?= title:e_frankish_empire
+						title:k_regnum_burgundia.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					}
 				}
 			}
 		}
@@ -90,7 +103,10 @@ LR_organise_frankish_regnum_burgundia_decision = {
 			NOT = {
 				AND = {
 					title:k_regnum_burgundia.var:LR_frankish_layout ?= flag:merovingian
-					title:k_regnum_burgundia.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					OR = {
+						title:k_regnum_burgundia.de_jure_liege ?= title:e_frankish_empire
+						title:k_regnum_burgundia.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					}
 				}
 			}
 		}
@@ -108,14 +124,11 @@ LR_organise_frankish_regnum_burgundia_decision = {
 	}
 	effect = {
 		if = {
-			limit = { has_title = title:e_frankish_empire }
-			custom_tooltip = LR_frankish_reorganise_missatica_tt
-			hidden_effect = { LR_frankish_reorganise_burgundia_effect = { SET = missatica REALM = title:e_frankish_empire GRANT = yes } }
+			limit = { LR_frankish_west_wants_missatica_trigger = yes }
+			custom_tooltip = LR_frankish_organise_missatica_tt
 		}
-		else = {
-			custom_tooltip = LR_frankish_reorganise_merovingian_tt
-			hidden_effect = { LR_frankish_reorganise_burgundia_effect = { SET = merovingian REALM = title:e_sacral_kingdom_gaul GRANT = no } }
-		}
+		else = { custom_tooltip = LR_frankish_organise_merovingian_tt }
+		hidden_effect = { LR_frankish_organise_burgundia_effect = yes }
 	}
 	ai_potential = { always = yes }
 	ai_will_do = { base = 100 }
@@ -136,13 +149,19 @@ LR_organise_frankish_regnum_aquitania_decision = {
 		OR = {
 			has_title = title:e_frankish_empire
 			has_title = title:e_sacral_kingdom_gaul
+			has_title = title:h_sacral_empire
+			has_title = title:h_hre
 		}
+		# hidden once the regnum is laid out the way it would be laid out now, under its realm
 		trigger_if = {
-			limit = { has_title = title:e_frankish_empire }
+			limit = { LR_frankish_west_wants_missatica_trigger = yes }
 			NOT = {
 				AND = {
 					title:k_regnum_aquitania.var:LR_frankish_layout ?= flag:missatica
-					title:k_regnum_aquitania.de_jure_liege ?= title:e_frankish_empire
+					OR = {
+						title:k_regnum_aquitania.de_jure_liege ?= title:e_frankish_empire
+						title:k_regnum_aquitania.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					}
 				}
 			}
 		}
@@ -150,7 +169,10 @@ LR_organise_frankish_regnum_aquitania_decision = {
 			NOT = {
 				AND = {
 					title:k_regnum_aquitania.var:LR_frankish_layout ?= flag:merovingian
-					title:k_regnum_aquitania.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					OR = {
+						title:k_regnum_aquitania.de_jure_liege ?= title:e_frankish_empire
+						title:k_regnum_aquitania.de_jure_liege ?= title:e_sacral_kingdom_gaul
+					}
 				}
 			}
 		}
@@ -168,14 +190,11 @@ LR_organise_frankish_regnum_aquitania_decision = {
 	}
 	effect = {
 		if = {
-			limit = { has_title = title:e_frankish_empire }
-			custom_tooltip = LR_frankish_reorganise_missatica_tt
-			hidden_effect = { LR_frankish_reorganise_aquitania_effect = { SET = missatica REALM = title:e_frankish_empire GRANT = yes } }
+			limit = { LR_frankish_west_wants_missatica_trigger = yes }
+			custom_tooltip = LR_frankish_organise_missatica_tt
 		}
-		else = {
-			custom_tooltip = LR_frankish_reorganise_merovingian_tt
-			hidden_effect = { LR_frankish_reorganise_aquitania_effect = { SET = merovingian REALM = title:e_sacral_kingdom_gaul GRANT = no } }
-		}
+		else = { custom_tooltip = LR_frankish_organise_merovingian_tt }
+		hidden_effect = { LR_frankish_organise_aquitania_effect = yes }
 	}
 	ai_potential = { always = yes }
 	ai_will_do = { base = 100 }

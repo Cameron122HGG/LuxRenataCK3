@@ -52,6 +52,10 @@ LR_found_holy_roman_hegemony_effect = {
 			limit = { exists = title:e_hre.holder }
 			copy_title_history = title:e_hre
 		}
+		else_if = { # LR 2026-11-22: Reform the Empire, the Sacral Empire becomes the HRE
+			limit = { root = { has_title = title:h_sacral_empire } }
+			copy_title_history = title:h_sacral_empire
+		}
 		add_title_law = princely_elective_succession_law # the Electors, as the old e_hre had
 	}
 	resolve_title_and_vassal_change = scope:change
@@ -88,6 +92,16 @@ LR_found_holy_roman_hegemony_effect = {
 	if = {
 		limit = { has_title = title:e_hre }
 		destroy_title = title:e_hre
+	}
+	# LR 2026-11-22 (one crown at a time): the Sacral Empire gives way, and the regna already organised are laid
+	# out over their old duchies (the princely layout)
+	if = {
+		limit = { has_title = title:h_sacral_empire }
+		destroy_title = title:h_sacral_empire
+	}
+	hidden_effect = {
+		LR_frankish_crown_relayout_effect = { SET = merovingian GRANT = no }
+		LR_title_set_reorganise_realm_effect = yes
 	}
 	# (LR 2026-11-22: e_carolingian_empire is no longer destroyed here; it stays under the hegemony)
 	# The Electors: keep the ones the papal route chose, or pick them now (the Karling route chooses none), and

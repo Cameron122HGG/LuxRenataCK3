@@ -1,24 +1,29 @@
 ﻿# LR Frankish title sets (register_frankish_sets.py, 2026-11-22). GENERATED.
 
-# Character: holds one of the realm titles that the Frankish sets belong to
+# Character: holds one of the realm titles of the Frankish world
 LR_frankish_realm_holder_trigger = {
 	OR = {
 		has_title = title:e_sacral_kingdom_gaul
 		has_title = title:e_frankish_empire
 		has_title = title:e_carolingian_empire
+		has_title = title:e_germany
+		has_title = title:h_sacral_empire
 		has_title = title:h_hre
 	}
 }
 
+# Character: holds a realm title of the Frankish world that may use missatica (all but the Sacral Kingdom)
 LR_carolingian_realm_holder_trigger = {
 	OR = {
 		has_title = title:e_frankish_empire
 		has_title = title:e_carolingian_empire
+		has_title = title:e_germany
+		has_title = title:h_sacral_empire
 		has_title = title:h_hre
 	}
 }
 
-# Title: one of the Frankish regna
+# Title: one of the Frankish regna, or the Holy Roman Empire on top of them
 LR_title_set_frankish_title_trigger = {
 	OR = {
 		this = title:k_regnum_neustria
@@ -28,11 +33,11 @@ LR_title_set_frankish_title_trigger = {
 		this = title:k_regnum_belgica
 		this = title:k_regnum_lotharingia
 		this = title:k_regnum_frisia
+		this = title:h_hre
 	}
 }
 
-# Character: may use the Frankish regna: the realms of the Sacral Kingdom, the High Kingdom of the Franks,
-# the Carolingian Empire and the HRE, and every ruler in them
+# Character: may use the Frankish regna: the realms of the Frankish world and every ruler in them
 LR_title_set_frankish_native_trigger = {
 	OR = {
 		LR_frankish_realm_holder_trigger = yes
@@ -45,7 +50,31 @@ LR_title_set_frankish_outsider_trigger = {
 	any_held_title = { LR_title_set_frankish_title_trigger = yes }
 }
 
-# Title: one of the missatica and marches
+# Title: one of the German regna, or the Holy Roman Empire on top of them
+LR_title_set_german_title_trigger = {
+	OR = {
+		this = title:k_regnum_saxonia
+		this = title:k_regnum_franconia
+		this = title:k_regnum_alamannia
+		this = title:k_regnum_bavaria
+		this = title:h_hre
+	}
+}
+
+# Character: may use the German regna: the realms of the Frankish world and every ruler in them
+LR_title_set_german_native_trigger = {
+	OR = {
+		LR_frankish_realm_holder_trigger = yes
+		top_liege ?= { LR_frankish_realm_holder_trigger = yes }
+	}
+}
+
+LR_title_set_german_outsider_trigger = {
+	NOT = { LR_title_set_german_native_trigger = yes }
+	any_held_title = { LR_title_set_german_title_trigger = yes }
+}
+
+# Title: one of the missatica and marches, or the Sacral Empire on top of them
 LR_title_set_missatica_title_trigger = {
 	OR = {
 		this = title:d_missaticum_paris
@@ -70,11 +99,24 @@ LR_title_set_missatica_title_trigger = {
 		this = title:d_missaticum_verdun
 		this = title:d_missaticum_utrecht
 		this = title:d_marca_frisia
+		this = title:d_missaticum_bremen
+		this = title:d_missaticum_paderborn
+		this = title:d_marca_danica
+		this = title:d_marca_saxonica
+		this = title:d_missaticum_wurzburg
+		this = title:d_missaticum_mainz
+		this = title:d_marca_thuringica
+		this = title:d_missaticum_ulm
+		this = title:d_missaticum_konstanz
+		this = title:d_missaticum_regensburg
+		this = title:d_missaticum_salzburg
+		this = title:d_marca_orientalis
+		this = title:d_marca_carantana
+		this = title:h_sacral_empire
 	}
 }
 
-# Character: may use the missatica: the Carolingian-administered realms (High Kingdom of the Franks, Carolingian
-# Empire, HRE) and every ruler in them
+# Character: may use the missatica: the realms of the Frankish world but the Sacral Kingdom, and every ruler in them
 LR_title_set_missatica_native_trigger = {
 	OR = {
 		LR_carolingian_realm_holder_trigger = yes
@@ -96,6 +138,11 @@ LR_frankish_march_title_trigger = {
 		this = title:d_marca_gothia
 		this = title:d_marca_flandria
 		this = title:d_marca_frisia
+		this = title:d_marca_danica
+		this = title:d_marca_saxonica
+		this = title:d_marca_thuringica
+		this = title:d_marca_orientalis
+		this = title:d_marca_carantana
 	}
 }
 
@@ -108,6 +155,40 @@ LR_carolingian_kingdom_trigger = {
 		this = title:k_regnum_frisia
 		this = title:k_belgica
 		this = title:k_lotharingia
+	}
+}
+
+# Character: a regnum organised now goes into missatica (yes) or over its old duchies (no). The crown in force
+# decides (Sacral Empire: missatica; Holy Roman Empire: old duchies); without one, the realm's own way.
+LR_frankish_west_wants_missatica_trigger = {
+	OR = {
+		top_liege = { has_title = title:h_sacral_empire }
+		AND = {
+			NOT = { top_liege = { has_title = title:h_hre } }
+			NOT = { has_title = title:e_sacral_kingdom_gaul }
+		}
+	}
+}
+
+LR_frankish_caro_wants_missatica_trigger = {
+	OR = {
+		top_liege = { has_title = title:h_sacral_empire }
+		NOT = { top_liege = { has_title = title:h_hre } }
+	}
+}
+
+LR_frankish_germ_wants_missatica_trigger = {
+	top_liege = { has_title = title:h_sacral_empire }
+}
+
+# Character: no one else holds a Frankish crown (one crown at a time)
+LR_no_rival_frankish_crown_trigger = {
+	custom_tooltip = {
+		text = LR_frankish_one_crown_sacral_tt
+		OR = {
+			NOT = { exists = title:h_sacral_empire.holder }
+			has_title = title:h_sacral_empire
+		}
 	}
 }
 
@@ -306,5 +387,139 @@ LR_frankish_regnum_frisia_controlled_trigger = {
 	completely_controls = title:c_westfriesland
 	completely_controls = title:c_zeeland
 	completely_controls = title:c_zutphen
+}
+
+# Character: completely controls the lands of the regnum of Saxony
+LR_frankish_regnum_saxonia_controlled_trigger = {
+	completely_controls = title:c_arnsberg
+	completely_controls = title:c_bergh
+	completely_controls = title:c_blankenburg
+	completely_controls = title:c_bremen
+	completely_controls = title:c_brunswick
+	completely_controls = title:c_dannenberg
+	completely_controls = title:c_dessau
+	completely_controls = title:c_ditmarschen
+	completely_controls = title:c_dortmund
+	completely_controls = title:c_eutin
+	completely_controls = title:c_gleichenstein
+	completely_controls = title:c_gottingen
+	completely_controls = title:c_halberstadt
+	completely_controls = title:c_hamburg
+	completely_controls = title:c_hannover
+	completely_controls = title:c_hildesheim
+	completely_controls = title:c_kiel
+	completely_controls = title:c_lippe
+	completely_controls = title:c_lubeck
+	completely_controls = title:c_luneburg
+	completely_controls = title:c_magdeburg
+	completely_controls = title:c_mansfeld
+	completely_controls = title:c_mark
+	completely_controls = title:c_mersenburg
+	completely_controls = title:c_minden
+	completely_controls = title:c_munster
+	completely_controls = title:c_oldenburg
+	completely_controls = title:c_osnabruck
+	completely_controls = title:c_paderborn
+	completely_controls = title:c_sayn
+	completely_controls = title:c_soest
+	completely_controls = title:c_stade
+	completely_controls = title:c_stendal
+	completely_controls = title:c_tecklenburg
+	completely_controls = title:c_verden
+	completely_controls = title:c_waldeck
+	completely_controls = title:c_wolpe
+}
+
+# Character: completely controls the lands of the regnum of Franconia
+LR_frankish_regnum_franconia_controlled_trigger = {
+	completely_controls = title:c_ansbach
+	completely_controls = title:c_bamberg
+	completely_controls = title:c_coburg
+	completely_controls = title:c_durne
+	completely_controls = title:c_erbach
+	completely_controls = title:c_frankfurt
+	completely_controls = title:c_fulda
+	completely_controls = title:c_hohenlohe
+	completely_controls = title:c_kaiserslautern
+	completely_controls = title:c_kassel
+	completely_controls = title:c_klingenberg
+	completely_controls = title:c_lobdaburg
+	completely_controls = title:c_mainz
+	completely_controls = title:c_marburg
+	completely_controls = title:c_nassau
+	completely_controls = title:c_naumburg
+	completely_controls = title:c_nordlingen
+	completely_controls = title:c_nurnberg
+	completely_controls = title:c_orlamunde
+	completely_controls = title:c_schmalkalden
+	completely_controls = title:c_speyer
+	completely_controls = title:c_vaihingen
+	completely_controls = title:c_vogtland
+	completely_controls = title:c_wiltberg
+	completely_controls = title:c_wolkenstein
+	completely_controls = title:c_worms
+	completely_controls = title:c_wurzburg
+}
+
+# Character: completely controls the lands of the regnum of Alamannia
+LR_frankish_regnum_alamannia_controlled_trigger = {
+	completely_controls = title:c_alpsee
+	completely_controls = title:c_andechs
+	completely_controls = title:c_augsburg
+	completely_controls = title:c_baden
+	completely_controls = title:c_breisgau
+	completely_controls = title:c_burgau
+	completely_controls = title:c_furstenberg
+	completely_controls = title:c_grisons
+	completely_controls = title:c_grunningen
+	completely_controls = title:c_hohenberg
+	completely_controls = title:c_kempten
+	completely_controls = title:c_konstanz
+	completely_controls = title:c_ravensburg
+	completely_controls = title:c_ulm
+	completely_controls = title:c_wurttemberg
+	completely_controls = title:c_zollern
+	completely_controls = title:c_zurich
+}
+
+# Character: completely controls the lands of the regnum of Bavaria
+LR_frankish_regnum_bavaria_controlled_trigger = {
+	completely_controls = title:c_amstetten
+	completely_controls = title:c_berchtesgaden
+	completely_controls = title:c_bogen
+	completely_controls = title:c_brixen
+	completely_controls = title:c_burghausen
+	completely_controls = title:c_eichstadt
+	completely_controls = title:c_eschenlohe
+	completely_controls = title:c_falkenstein
+	completely_controls = title:c_freistadt
+	completely_controls = title:c_frontenhausen
+	completely_controls = title:c_geisenhausen
+	completely_controls = title:c_graz
+	completely_controls = title:c_hallstatt
+	completely_controls = title:c_hohenau
+	completely_controls = title:c_hohenburg
+	completely_controls = title:c_ingolstadt
+	completely_controls = title:c_innsbruck
+	completely_controls = title:c_kammersberg
+	completely_controls = title:c_karnten
+	completely_controls = title:c_knittelfeld
+	completely_controls = title:c_krems
+	completely_controls = title:c_leuchtenburg
+	completely_controls = title:c_liebnitz
+	completely_controls = title:c_lienz
+	completely_controls = title:c_linz
+	completely_controls = title:c_munchen
+	completely_controls = title:c_murzzuschlag
+	completely_controls = title:c_parsberg
+	completely_controls = title:c_passau
+	completely_controls = title:c_pitten
+	completely_controls = title:c_regensburg
+	completely_controls = title:c_rothenburg
+	completely_controls = title:c_salzburg
+	completely_controls = title:c_sankt_polten
+	completely_controls = title:c_schaumberg
+	completely_controls = title:c_vienna
+	completely_controls = title:c_villach
 }
 
