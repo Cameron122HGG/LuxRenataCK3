@@ -8,6 +8,18 @@ LR_is_warlord_title_trigger = {
 	has_variable = LR_warlord_title
 }
 
+# A warlord title is open for normal creation once its region has joined the warlord map (var set by
+# LR_mark_warlord_open_dates_effect, tools/warlord_open_dates.py). A title with no date stays decision/event-only.
+LR_warlord_title_is_open_trigger = {
+	$TITLE$ = { has_variable = LR_warlord_open_date }
+	OR = {
+		AND = { $TITLE$ = { var:LR_warlord_open_date = 5936 } current_date >= 5936.1.1 }
+		AND = { $TITLE$ = { var:LR_warlord_open_date = 5986 } current_date >= 5986.1.1 }
+		AND = { $TITLE$ = { var:LR_warlord_open_date = 6036 } current_date >= 6036.1.1 }
+		AND = { $TITLE$ = { var:LR_warlord_open_date = 6060 } current_date >= 6060.1.1 }
+	}
+}
+
 # A Bronze Age title (02_LR_bronze_classical_titles.txt, gen_bronze_classical.py): creatable only in the Bronze Age
 LR_is_bronze_title_trigger = {
 	has_variable = LR_bronze_title

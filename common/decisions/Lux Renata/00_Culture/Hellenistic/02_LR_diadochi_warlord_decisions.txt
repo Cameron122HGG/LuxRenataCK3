@@ -162,9 +162,11 @@ LR_found_attalid_decision = {
 	}
 }
 
+# LR 2026-11-22 (user): Pontos goes straight to the Mithridatic Empire in one step, like the Seleukids, and gets
+# the satrap route (Asia strategia) at once. Replaces Found the Kingdom of Pontos + Proclaim the Pontic Empire.
 LR_found_mithridatid_decision = {
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
 	}
 	desc = LR_found_mithridatid_decision_desc
 	selection_tooltip = LR_found_mithridatid_decision_tooltip
@@ -175,28 +177,39 @@ LR_found_mithridatid_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
-		NOT = { exists = title:k_mithridatid_kingdom.holder }
+		NOT = { exists = title:e_mithridatid_empire.holder }
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
-				target = flag:flag_lux_mithridatid_founded
+				target = flag:flag_lux_mithridatid_empire
 			}
 		}
 		OR = {
 			dynasty = dynasty:dynasty_hellenistic_mithridates
 			has_trait = trait:bloodline_mithridates
 		}
+		custom_tooltip = {
+			text = primary_title_is_kingdom_tooltip
+			primary_title.tier = tier_kingdom
+		}
 	}
 
 	is_valid = {
-		highest_held_title_tier >= tier_duchy
-		prestige_level >= 2
 		custom_tooltip = { # One diadochi line per ruler (gen_diadochi_lines.py)
 			text = LR_not_other_diadochi_line_tt
 			NOT = { LR_holds_other_diadochi_line_mithridatid_trigger = yes }
 		}
+		prestige_level >= 3
 		completely_controls_region = custom_satrapy_pontus
-		completely_controls_region = custom_satrapy_paphlagonia
+		custom_tooltip = {
+			text = LR_found_mithridatid_decision_second_satrapy_tt
+			OR = {
+				completely_controls_region = custom_satrapy_paphlagonia
+				completely_controls_region = custom_satrapy_cappadocia
+				completely_controls_region = custom_satrapy_clochis
+				completely_controls_region = custom_satrapy_armenia
+			}
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -209,26 +222,27 @@ LR_found_mithridatid_decision = {
 
 	cost = {
 		gold = {
-			value = 500
-			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_revival } } multiply = 0.7 } # LR 2026-11-06: hw_revival
-		}
-		prestige = {
-			value = 500
+			value = 1000
 			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_revival } } multiply = 0.7 } # LR 2026-11-06: hw_revival
 		}
 	}
 
 	effect = {
 		custom_tooltip = LR_found_mithridatid_decision_effect_tooltip
+		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
 		hidden_effect = {
 			add_to_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:flag_lux_mithridatid_founded
 			}
-			LR_create_diadochi_warlord_kingdom_effect = { TITLE = k_mithridatid_kingdom }
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_lux_mithridatid_empire
+			}
+			LR_create_mithridatic_empire_effect = yes
 			change_government = alexandrian_administrative_government
 		}
-		title:k_mithridatid_kingdom = { save_scope_as = founded_title }
+		title:e_mithridatid_empire = { save_scope_as = founded_title }
 		root = { save_scope_as = scoped_ruler }
 		trigger_event = LR_diadochi_warlord.0001
 	}
@@ -611,81 +625,6 @@ LR_reform_attalid_empire_decision = {
 			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_attalid_kingdom EMPIRE = e_attalid_empire }
 		}
 		title:e_attalid_empire = { save_scope_as = founded_title }
-		root = { save_scope_as = scoped_ruler }
-		trigger_event = LR_diadochi_warlord.0001
-	}
-
-	ai_potential = {
-		always = yes
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
-
-LR_reform_mithridatid_empire_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds"
-	}
-	desc = LR_reform_mithridatid_empire_decision_desc
-	selection_tooltip = LR_reform_mithridatid_empire_decision_tooltip
-	confirm_text = LR_reform_mithridatid_empire_decision_confirm
-	decision_group_type = hellenic
-	ai_check_interval = 120
-
-	is_shown = {
-		is_ruler = yes
-		has_title = title:k_mithridatid_kingdom
-		NOT = { exists = title:e_mithridatid_empire.holder }
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:flag_lux_mithridatid_empire
-			}
-		}
-	}
-
-	is_valid = {
-		prestige_level >= 3
-		completely_controls_region = custom_satrapy_pontus
-		custom_tooltip = {
-			text = LR_reform_mithridatid_empire_decision_two_satrapies_tt
-			calc_true_if = {
-				amount >= 2
-				completely_controls_region = custom_satrapy_paphlagonia
-				completely_controls_region = custom_satrapy_cappadocia
-				completely_controls_region = custom_satrapy_clochis
-				completely_controls_region = custom_satrapy_armenia
-			}
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_capable_adult = yes
-		is_imprisoned = no
-		is_independent_ruler = yes
-		is_at_war = no
-	}
-
-	cost = {
-		gold = {
-			value = 1000
-			if = { limit = { LR_hw_in_phase_trigger = { PHASE = hw_revival } } multiply = 0.7 } # LR 2026-11-06: hw_revival
-		}
-	}
-
-	effect = {
-		custom_tooltip = LR_reform_mithridatid_empire_decision_effect_tooltip
-		custom_tooltip = LR_diadochi_basileia_tt # Government changes next day (LR_diadochi_line_government_effect)
-		hidden_effect = {
-			add_to_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:flag_lux_mithridatid_empire
-			}
-			LR_create_diadochi_warlord_empire_effect = { KINGDOM = k_mithridatid_kingdom EMPIRE = e_mithridatid_empire }
-		}
-		title:e_mithridatid_empire = { save_scope_as = founded_title }
 		root = { save_scope_as = scoped_ruler }
 		trigger_event = LR_diadochi_warlord.0001
 	}

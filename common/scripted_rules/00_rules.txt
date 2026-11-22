@@ -1510,12 +1510,13 @@ can_create_title = {
 			always = no
 		}
 	}
-	# LR: warlord titles (gen_warlord_titles.py) only come from decisions and events
+	# LR: warlord titles (gen_warlord_titles.py) open for creation by region (user, 2026-11-22): from the year their capital
+	# county joins the warlord map (936 / 986 / 1036, the Eastern Roman core 1060; tools/warlord_open_dates.py). Before that only decisions and events give them.
 	trigger_if = {
 		limit = { scope:title = { LR_is_warlord_title_trigger = yes } }
 		custom_tooltip = {
 			text = LR_warlord_title_creation_tooltip
-			always = no
+			LR_warlord_title_is_open_trigger = { TITLE = scope:title }
 		}
 	}
 	# LR: the Bronze Age and Classical Age titles (gen_bronze_classical.py) can only be created in their own age
