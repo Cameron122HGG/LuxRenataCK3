@@ -355,6 +355,7 @@ restore_gallic_empire_decision = {
 	ai_check_interval = 120
 
 	is_shown = {
+		NOT = { LR_tgp_sacral_gaul_gallo_roman_regent_trigger = yes } # LR 2026-11-22: they use LR_tgp_sacral_gaul_gallic_empire_decision
 		is_ruler = yes
 		is_landed_or_landless_administrative = yes
 		OR = {
@@ -403,82 +404,7 @@ restore_gallic_empire_decision = {
 	}
 
 	effect = {
-		if = {
-			limit = {
-			has_dlc_feature = all_under_heaven
-			}
-			change_government = roman_autocratic_government
-			save_scope_as = actor
-			#restore_gallic_empire_provinces_viennensis_decision_effect = yes
-		}
-		create_title_and_vassal_change = {
-			type = created
-			save_scope_as = title_change
-			add_claim_on_loss = no
-		}
-		every_vassal_or_below = {
-			if = {
-				limit = {
-					has_dlc_feature = all_under_heaven
-					OR = {
-						government_has_flag = government_is_sacral_administrative
-						AND = {
-							government_has_flag = government_is_roman_government
-							highest_held_title_tier > tier_county
-						}
-					}
-				}
-				change_government = roman_autocratic_government
-			}
-			else_if = {
-				limit = {
-					NOT = { has_dlc_feature = all_under_heaven }
-					OR = {
-						government_has_flag = government_is_sacral_feudal
-						AND = {
-							government_has_flag = government_is_roman_government
-							highest_held_title_tier > tier_county
-						}
-					}
-				}
-				change_government = roman_autocratic_government
-			}
-		}
-		title:e_gallic_empire = {
-			save_scope_as = title_e_gallic_empire
-		}
-		title:e_gallic_empire = {
-			change_title_holder = {
-				holder = root
-				change = scope:title_change
-			}
-			save_scope_as = title_e_gallic_empire
-		}
-		resolve_title_and_vassal_change = scope:title_change
-		if = {
-			limit = { exists = title:k_sacral_king_gaul_throne.holder }
-			destroy_title = title:k_sacral_king_gaul_throne
-		}
-		if = {
-			limit = { exists = title:e_sacral_kingdom_gaul.holder }
-			destroy_title = title:e_sacral_kingdom_gaul
-		}
-		
-		#trigger_event = {
-		#	id = province_events.0040
-		#	days = 2
-		#}
-		add_prestige = 2000
-		
-		hidden_effect = {
-
-			restore_gallic_empire_provinces_viennensis_decision_effect = yes
-
-			add_to_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:restore_gallic_empire_decision
-			}
-		}
+		LR_restore_gallic_empire_effect = yes
 	}
 
 	cost = {

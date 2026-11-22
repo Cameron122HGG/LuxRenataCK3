@@ -229,7 +229,7 @@ LR_tgp_sacral_gaul_decision.9001 = { # CHOOSE HOUSE NAME EVENT - WITH WIDGET
 			trigger = has_character_flag
 			establish_house_fief = {
 				tgp_establish_house_fief_save_scopes_effect = yes
-				play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_adopting_feudal_government"
+				play_music_cue = "mx_cue_positive_effect"
 			}
 			fallback = {
 				play_music_cue = "mx_cue_low_key_positive"
@@ -382,7 +382,7 @@ LR_tgp_sacral_gaul_decision.9002 = { # SAME CLAN EVENT - NO WIDGET
 	lower_right_portrait =  scope:sacral_majordomo
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_adopting_feudal_government"
+		play_music_cue = "mx_cue_positive_effect"
 		tgp_establish_house_fief_save_scopes_effect = yes
 		sacral_establish_house_fief_effect = yes
 	}
@@ -417,7 +417,7 @@ LR_tgp_sacral_gaul_decision.9005 = { # NOTIFICATION FOR OLD HOUSE HEADS
 	}
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_adopting_feudal_government"
+		play_music_cue = "mx_cue_positive_effect"
 		show_as_tooltip = {
 			scope:new_head = {
 				set_house = scope:new_head.house
@@ -450,14 +450,13 @@ LR_tgp_sacral_gaul_decision.9101 = {
 	title = LR_tgp_sacral_gaul_decision.9101.t
 	desc = LR_tgp_sacral_gaul_decision.9101.desc
 	theme = crown
-	override_background = { reference = tgp_fullscreen_japanese_shogunate }
 	left_portrait = {
 		character = root
 		triggered_animation = {
 			trigger = { has_trait = devoted }
 			animation = war_over_win
 		}
-		animation = japanese_war_fan
+		animation = personality_bold
 	}
 	right_portrait = {
 		character = scope:ceremonial_liege
@@ -467,7 +466,7 @@ LR_tgp_sacral_gaul_decision.9101 = {
 	immediate = {
 		save_scope_as = sacral_dictator
 		tgp_save_realm_ceremonial_liege_effect = yes
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		if = {
 			limit = {
 				any_vassal = {
@@ -519,7 +518,7 @@ LR_tgp_sacral_gaul_decision.9102 = {
 	}
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 	}
 
 	option = {
@@ -562,7 +561,7 @@ LR_tgp_sacral_gaul_decision.9301 = {
 	override_effect_2d = { reference = legend_glow }
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_restoring_japanese_emperor"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		save_scope_as = sacral_king_gaul
 		save_scope_as = bg_override_char
 		sacral_clear_flavour_flags_effect = yes
@@ -576,7 +575,7 @@ LR_tgp_sacral_gaul_decision.9301 = {
 			limit = { is_vassal_or_below_of = root }
 			trigger_event = LR_tgp_sacral_gaul_decision.9302
 		}
-		restore_ceremonial_liege_faction_reward_effect = yes
+		sacral_restore_ceremonial_liege_faction_reward_effect = yes
 	}
 
 	option = {
@@ -598,9 +597,9 @@ LR_tgp_sacral_gaul_decision.9302 = {
 	}
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_restoring_japanese_emperor"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		show_as_tooltip = {
-			scope:sacral_king_gaul = { restore_ceremonial_liege_faction_reward_effect = yes }
+			scope:sacral_king_gaul = { sacral_restore_ceremonial_liege_faction_reward_effect = yes }
 		}
 	}
 
@@ -898,7 +897,7 @@ LR_tgp_sacral_gaul_decision.9603 = { # Vassal player event
 
 	left_portrait = {
 		character = scope:sacral_magister_militum
-		animation = japanese_war_fan
+		animation = personality_bold
 	}
 	lower_left_portrait = scope:leader
 	lower_center_portrait = scope:portrait_1
@@ -909,7 +908,7 @@ LR_tgp_sacral_gaul_decision.9603 = { # Vassal player event
 	}
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		show_as_tooltip = {
 			scope:sacral_magister_militum = {
 				custom_description_no_bullet = { text = if_you_win_effect }
@@ -1113,14 +1112,14 @@ LR_tgp_sacral_gaul_decision.9605 = { # War start event
 
 	left_portrait = {
 		character = scope:sacral_magister_militum
-		animation = japanese_war_fan
+		animation = personality_bold
 	}
 	lower_left_portrait = scope:leader
 	lower_center_portrait = scope:portrait_1
 	lower_right_portrait = scope:portrait_2
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		add_character_flag = wear_armor
 		if = {
 			limit = { exists = scope:leader }
@@ -1186,7 +1185,7 @@ LR_tgp_sacral_gaul_decision.9606 = { # War won event
 
 	left_portrait = {
 		character = scope:sacral_magister_militum
-		animation = japanese_war_fan
+		animation = personality_bold
 	}
 	right_portrait = {
 		character = scope:leader
@@ -1199,7 +1198,7 @@ LR_tgp_sacral_gaul_decision.9606 = { # War won event
 	}
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		sacral_gaul_establish_manorial_administration_reward_effect = yes
 	}
 
@@ -1239,7 +1238,7 @@ LR_tgp_sacral_gaul_decision.9607 = { # War won vassal event
 	}
 
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		show_as_tooltip = { sacral_gaul_establish_manorial_administration_reward_effect = yes }
 	}
 
@@ -1562,7 +1561,7 @@ LR_tgp_sacral_gaul_decision.9960 = {
 				days = 1
 			}
 		}
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 
 		LR_tgp_sacral_gaul_assert_regional_dominion_government_decision_effect = yes
 	}
@@ -1599,14 +1598,14 @@ LR_tgp_sacral_gaul_decision.9961 = {
 				is_adult = yes
 				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = root }
 			}
-			animation = japanese_war_fan
+			animation = personality_bold
 		}
 		animation = personality_content
 	}
 	override_background = { reference = battlefield }
 	override_effect_2d = { reference = legend_glow }
 	immediate = {
-		play_sound_effect = "event:/DLC/EP4/SFX/Stingers/Japan/tgp_mx_sting_become_japanese_shogun"
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		if = {
 			limit = {
 				is_adult = yes

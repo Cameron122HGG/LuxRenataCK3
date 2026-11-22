@@ -65,6 +65,8 @@ LR_roman_title_names_refresh_held_effect = {
 
 # scope = a held Roman title. Saves scope:lr_rtn_style (a flag)
 LR_roman_title_names_pick_style_effect = {
+	# Plain default; every branch below overwrites it. Lets ck3-tiger see the scope is always set (11-22 flicker fix)
+	save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
 	if = {
 		limit = {
 			LR_roman_named_title_east_trigger = yes
@@ -102,8 +104,7 @@ LR_roman_title_names_pick_style_effect = {
 			limit = { has_game_rule = rhomaion_name_of_byzantium }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:rhomaion }
 		}
-		else_if = {
-			limit = { has_game_rule = unholy_roman_empire_name_of_byzantium }
+		else = {
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:unholy_east }
 		}
 	}
@@ -144,8 +145,7 @@ LR_roman_title_names_pick_style_effect = {
 			limit = { has_game_rule = res_publica_romana_name_of_spqr }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:res_publica }
 		}
-		else_if = {
-			limit = { has_game_rule = unholy_roman_empire_name_of_spqr }
+		else = {
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:unholy_west }
 		}
 	}
@@ -158,16 +158,15 @@ LR_roman_title_names_pick_style_effect = {
 			limit = { has_game_rule = name_of_decayed_byzantium_foreign }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
 		}
-		if = {
+		else_if = {
 			limit = { has_game_rule = name_of_decayed_byzantium_latin }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
 		}
-		if = {
+		else_if = {
 			limit = { has_game_rule = name_of_decayed_byzantium_greek }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greek }
 		}
-		if = {
-			limit = { has_game_rule = name_of_decayed_byzantium_restored }
+		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
 				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
@@ -190,16 +189,15 @@ LR_roman_title_names_pick_style_effect = {
 			limit = { has_game_rule = name_of_decayed_spqr_foreign }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
 		}
-		if = {
+		else_if = {
 			limit = { has_game_rule = name_of_decayed_spqr_latin }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
 		}
-		if = {
+		else_if = {
 			limit = { has_game_rule = name_of_decayed_spqr_greek }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greek }
 		}
-		if = {
-			limit = { has_game_rule = name_of_decayed_spqr_restored }
+		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
 				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
@@ -222,12 +220,11 @@ LR_roman_title_names_pick_style_effect = {
 			limit = { has_game_rule = name_of_decayed_tadmor_foreign }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
 		}
-		if = {
+		else_if = {
 			limit = { has_game_rule = name_of_decayed_tadmor_latin }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:latin }
 		}
-		if = {
-			limit = { has_game_rule = name_of_decayed_tadmor_restored }
+		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
 				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
@@ -247,18 +244,15 @@ LR_roman_title_names_pick_style_effect = {
 			NOT = { has_game_rule = name_of_decayed_syagria_dynamic }
 		}
 		if = {
-			limit = { has_game_rule = name_of_decayed_syagria_restored }
-			if = {
-				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
-			}
-			else_if = {
-				limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_greek }
-			}
-			else = {
-				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_foreign }
-			}
+			limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
+			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }
+		}
+		else_if = {
+			limit = { holder = { LR_roman_title_name_greek_style_trigger = yes } }
+			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_greek }
+		}
+		else = {
+			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_foreign }
 		}
 	}
 	else_if = {
@@ -270,12 +264,11 @@ LR_roman_title_names_pick_style_effect = {
 			limit = { has_game_rule = name_of_decayed_constantinid_foreign }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:foreign }
 		}
-		if = {
+		else_if = {
 			limit = { has_game_rule = name_of_decayed_constantinid_greek }
 			save_temporary_scope_value_as = { name = lr_rtn_style value = flag:greek }
 		}
-		if = {
-			limit = { has_game_rule = name_of_decayed_constantinid_restored }
+		else = {
 			if = {
 				limit = { holder = { LR_roman_title_name_latin_style_trigger = yes } }
 				save_temporary_scope_value_as = { name = lr_rtn_style value = flag:restored_latin }

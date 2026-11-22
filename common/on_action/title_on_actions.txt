@@ -2005,6 +2005,71 @@ on_title_gain = {
 						}
 					}
 				}
+				# LR SACRAL GAUL (the e_japan branch above, for e_sacral_kingdom_gaul)
+				else_if = {
+					limit = { scope:title = title:e_sacral_kingdom_gaul }
+					# The Sacral King takes the realm title himself
+					if = {
+						limit = {
+							exists = title:e_sacral_kingdom_gaul.var:administrative_ui_special_title
+							has_title = title:e_sacral_kingdom_gaul.var:administrative_ui_special_title
+						}
+						remove_character_flag = sacral_dictator_flag
+						if = {
+							limit = { has_global_variable = sacral_king_gaul_restored }
+							add_character_flag = ceremonial_liege_flag
+							trigger_event = {
+								id = LR_tgp_sacral_gaul_general.9100
+								days = 1
+							}
+						}
+						else = { # Event to abdicate and become a cloistered Sacral King
+							trigger_event = {
+								id = LR_tgp_sacral_gaul_general.9120
+								days = 1
+							}
+						}
+					}
+					# Military rule
+					else_if = {
+						limit = {
+							has_government = sacral_feudal_government
+							has_global_variable = sacral_dictatorship_established
+						}
+						remove_character_flag = ceremonial_liege_flag
+						add_character_flag = sacral_dictator_flag
+					}
+					# Mayor of the Palace
+					else = {
+						remove_character_flag = ceremonial_liege_flag
+						remove_character_flag = sacral_dictator_flag
+					}
+					# Sacral regency law
+					if = {
+						limit = {
+							tgp_realm_has_ceremonial_liege_trigger = yes
+							government_is_sacral_trigger = yes
+							NOR = {
+								has_global_variable = sacral_dictatorship_established
+								has_global_variable = sacral_king_gaul_restored
+							}
+						}
+						if = {
+							limit = {
+								government_has_flag = government_is_sacral_administrative
+								NOT = { has_realm_law = sacral_regency_succession_law }
+							}
+							add_realm_law_skip_effects = sacral_regency_succession_law
+						}
+						else_if = {
+							limit = {
+								government_has_flag = government_is_sacral_feudal
+								has_realm_law = sacral_regency_succession_law
+							}
+							remove_realm_law = sacral_regency_succession_law
+						}
+					}
+				}
 				# ROME
 				else_if = {
 					limit = {
@@ -2139,9 +2204,18 @@ on_title_gain = {
 					limit = { government_has_flag = government_is_landless_adventurer }
 					destroy_laamp_effect = { ADVENTURER = this }
 				}
-				trigger_event = {
-					id = tgp_japan_general.9100
-					days = 1
+				if = {
+					limit = { scope:title = title:k_sacral_king_gaul_throne }
+					trigger_event = {
+						id = LR_tgp_sacral_gaul_general.9100
+						days = 1
+					}
+				}
+				else = {
+					trigger_event = {
+						id = tgp_japan_general.9100
+						days = 1
+					}
 				}
 			}
 			# Norway stuff

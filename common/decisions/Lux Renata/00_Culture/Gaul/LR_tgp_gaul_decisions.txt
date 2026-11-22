@@ -783,15 +783,9 @@ LR_tgp_sacral_king_gaul_restoration_decision = {
 	}
 
 	effect = {
-		if = {
-			limit = {
-				is_ai = no
-				has_title = title:k_sacral_king_gaul_throne
-			}
-		}
 		trigger_event = LR_tgp_sacral_gaul_decision.9301
 		show_as_tooltip = {
-			restore_ceremonial_liege_faction_reward_effect = yes
+			sacral_restore_ceremonial_liege_faction_reward_effect = yes
 		}
 	}
 	
@@ -835,15 +829,8 @@ LR_tgp_sacral_gaul_become_a_poet_decision = {
 
 	is_shown = {
 		has_tgp_dlc_trigger = yes
-		OR = {
-			AND = {
-				government_is_sacral_trigger = yes
-				house = { has_house_aspiration_parameter = ceremony_become_a_poet_decision }
-			}
-			top_participant_group:dynastic_cycle ?= {
-				participant_group_type = advancement_movement
-			}
-		}
+		government_is_sacral_trigger = yes
+		house = { has_house_aspiration_parameter = ceremony_become_a_poet_decision }
 	}
 
 	is_valid = {
@@ -1009,9 +996,10 @@ LR_tgp_sacral_gaul_become_a_monk_decision = {
 	}
 
 	is_shown = {
+		has_tgp_dlc_trigger = yes
+		government_is_sacral_trigger = yes
 		religion = religion:christianity_religion
 		is_adult = yes
-		NOT = { government_has_flag = government_is_tribal }
 	}
 
 	is_valid = {
@@ -1174,7 +1162,7 @@ LR_tgp_sacral_gaul_restore_sacral_monarchy_decision = {
 	is_valid = {
 		is_independent_ruler = yes
 		has_title = title:e_sacral_kingdom_gaul
-		completely_controls = title:c_ile_de_france # Kyoto
+		completely_controls = title:c_ile_de_france # the old Merovingian seat
 		custom_tooltip = { # Chrysanthemum destroyed or no longer part of gaul
 			text = LR_tgp_sacral_gaul_restore_sacral_monarchy_decision_title_tt
 			trigger_if = {
@@ -1226,10 +1214,12 @@ LR_tgp_sacral_gaul_restore_sacral_government_decision = {
 		has_tgp_dlc_trigger = yes
 		government_is_sacral_trigger = yes
 		NOT = { government_has_flag = government_is_sacral_administrative }
-		# gaul not governed gallicly or destroyed
+		# Gaul not under Palatine rule, or destroyed
 		trigger_if = {
 			limit = { exists = title:e_sacral_kingdom_gaul.holder }
-			title:e_sacral_kingdom_gaul.holder = { government_is_sacral_trigger = no }
+			title:e_sacral_kingdom_gaul.holder = {
+				NOT = { government_has_flag = government_is_sacral_administrative }
+			}
 		}
 		# gallic culture
 		culture = {
@@ -1304,7 +1294,7 @@ LR_tgp_sacral_gaul_assert_regional_dominion_government_decision = {
 	is_shown = {
 		has_tgp_dlc_trigger = yes
 		is_landed = yes
-		highest_held_title_tier = tier_duchy
+		highest_held_title_tier = tier_county
 		government_has_flag = government_is_sacral_feudal
 	}
 	  
@@ -1442,7 +1432,7 @@ move_sacral_dictatorship_court_decision = {
 	title = LR_tgp_sacral_gaul_move_sacral_dictatorship_court_decision
 	desc = LR_tgp_sacral_gaul_move_sacral_dictatorship_court_decision_desc
 	selection_tooltip = LR_tgp_sacral_gaul_move_sacral_dictatorship_court_decision_tooltip
-	picture = { reference = "gfx/interface/illustrations/event_story/tgp_japanese_shogunate.dds" }
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
 
 	cost = {
 		gold = {
@@ -1455,7 +1445,7 @@ move_sacral_dictatorship_court_decision = {
 
 	is_shown = {
 		has_global_variable = sacral_dictatorship_established
-		capital_county ?= title:c_lyon
+		capital_county ?= title:c_ile_de_france
 		domain_size > 1
 		NOT = { has_variable = moved_sacral_dictatorship_court }
 		is_landed = yes
@@ -1490,7 +1480,7 @@ move_sacral_dictatorship_court_decision = {
                 limit = { exists = this }
 				is_capital_barony = yes
 				holder = scope:ruler
-				county != title:c_lyon
+				county != title:c_ile_de_france
 				is_leased_out = no
             }
 		}
@@ -1531,6 +1521,7 @@ become_king_of_franks_decision = {
 	ai_check_interval = 120
 
 	is_shown = {
+		always = no # LR 2026-11-22: replaced by LR_tgp_sacral_gaul_mayors_crown_decision
 		has_tgp_dlc_trigger = yes
 		is_independent_ruler = yes
 		government_is_sacral_trigger = yes
@@ -1711,6 +1702,7 @@ merge_aquitaine_decision = {
 	sort_order = 50
 
 	is_shown = {
+		always = no # LR 2026-11-22: unavailable for now (sacral Gaul rework, Q6)
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -1800,4 +1792,191 @@ merge_aquitaine_decision = {
 	ai_will_do = {
 		base = 100
 	}
+}
+
+################################################################################################
+# LR 2026-11-22: sacral Gaul rework (LR_sacral_gaul_rework_proposal.md)
+################################################################################################
+
+# The Mayor's Crown: the Frankish Mayor of the Palace deposes the Merovingian, as Pippin did in 751,
+# and the Sacral Kingdom becomes the High Kingdom of the Franks under Carolingian administration.
+# Replaces become_king_of_franks_decision.
+LR_tgp_sacral_gaul_mayors_crown_decision = {
+	decision_group_type = major
+	title = LR_tgp_sacral_gaul_mayors_crown_decision
+	desc = LR_tgp_sacral_gaul_mayors_crown_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_mayors_crown_decision_tooltip
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }
+	sort_order = 90
+
+	cost = {
+		prestige = { value = monumental_prestige_gain }
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes
+		LR_tgp_sacral_gaul_frankish_regent_trigger = yes
+		NOT = { exists = title:e_frankish_empire.holder }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		is_house_head = yes
+		prestige_level >= 4
+		completely_controls_region = LR_area_k_france
+		completely_controls_region = LR_area_k_neustria
+		completely_controls_region = LR_area_k_belgica
+		custom_tooltip = {
+			text = LR_tgp_sacral_gaul_no_other_powerful_forces_trigger
+			NOT = {
+				any_vassal = {
+					NOR = {
+						is_allied_to = root
+						house = root.house
+					}
+					current_strength_with_allies_value > root.current_strength_with_allies_fifty_percent_value
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		LR_tgp_sacral_gaul_mayors_crown_effect = yes
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 0
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 50 }
+}
+
+# The Gallic Empire: the Gallo-Roman Mayor of the Palace deposes the Merovingian, ends the Sacral Kingdom and
+# proclaims the Gallic Empire. Other Latin sacral rulers keep restore_gallic_empire_decision.
+LR_tgp_sacral_gaul_gallic_empire_decision = {
+	decision_group_type = major
+	title = LR_tgp_sacral_gaul_gallic_empire_decision
+	desc = LR_tgp_sacral_gaul_gallic_empire_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_gallic_empire_decision_tooltip
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_restore_gallic_empire.dds" }
+	sort_order = 90
+
+	cost = {
+		gold = 1500
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes
+		LR_tgp_sacral_gaul_gallo_roman_regent_trigger = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:restore_gallic_empire_decision
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		prestige_level >= high_prestige_level
+		completely_controls_region = LR_area_k_france
+		completely_controls_region = LR_area_k_neustria
+		completely_controls_region = LR_area_k_burgundy
+		completely_controls_region = LR_area_k_aquitaine
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		LR_tgp_sacral_gaul_gallic_empire_effect = yes
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 0
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 50 }
+}
+
+# The Gaulish road to the Holy Roman Empire: the High King of the Franks, or a Sacral King who rules in his own
+# right, founds h_hre (the Karling route's coronation, without the head of faith).
+LR_tgp_sacral_gaul_claim_imperial_crown_decision = {
+	decision_group_type = major
+	title = LR_tgp_sacral_gaul_claim_imperial_crown_decision
+	desc = LR_tgp_sacral_gaul_claim_imperial_crown_decision_desc
+	selection_tooltip = LR_tgp_sacral_gaul_claim_imperial_crown_decision_tooltip
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }
+	sort_order = 95
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		OR = {
+			has_title = title:e_frankish_empire
+			AND = {
+				has_title = title:e_sacral_kingdom_gaul
+				has_title = title:k_sacral_king_gaul_throne
+			}
+		}
+		NOT = { exists = title:h_hre.holder }
+	}
+
+	is_valid = {
+		top_liege = this
+		is_at_war = no
+		prestige_level >= high_prestige_level
+		completely_controls_region = custom_carolingian_francia
+		completely_controls_region = custom_lotharingia
+		completely_controls_region = custom_carolingian_germany
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		show_as_tooltip = { LR_found_holy_roman_hegemony_effect = yes }
+		gain_heroic_legend_seed_tooltip_effect = yes
+		save_scope_as = founder
+		capital_province = { save_scope_as = ceremony_locale }
+		trigger_event = {
+			id = middle_europe_decisions.0015
+		}
+		every_player = {
+			limit = {
+				this != root
+				is_within_diplo_range = { CHARACTER = root }
+			}
+			trigger_event = middle_europe_decisions.0016
+		}
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 120
+		hegemony = 0
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
 }

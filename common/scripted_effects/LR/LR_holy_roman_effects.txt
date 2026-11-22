@@ -70,7 +70,14 @@ LR_found_holy_roman_hegemony_effect = {
 				LR_hre_sort_kingdom_effect = yes
 			}
 		}
-		title:e_sacral_kingdom_gaul = { set_de_jure_liege_title = title:h_hre }
+		# LR 2026-11-22: after the Mayor's Crown, the High Kingdom of the Franks stands in for the Sacral Kingdom
+		if = {
+			limit = { has_global_variable = LR_sacral_gaul_mayors_crown_taken }
+			title:e_frankish_empire = { set_de_jure_liege_title = title:h_hre }
+		}
+		else = {
+			title:e_sacral_kingdom_gaul = { set_de_jure_liege_title = title:h_hre }
+		}
 		title:e_germany = { set_de_jure_liege_title = title:h_hre }
 		set_primary_title_to = title:h_hre
 	}
@@ -111,7 +118,13 @@ LR_hre_sort_kingdom_effect = {
 		limit = {
 			title_capital_county ?= { title_province = { geographical_region = LR_world_europe_gaul } }
 		}
-		set_de_jure_liege_title = title:e_sacral_kingdom_gaul
+		if = {
+			limit = { has_global_variable = LR_sacral_gaul_mayors_crown_taken }
+			set_de_jure_liege_title = title:e_frankish_empire
+		}
+		else = {
+			set_de_jure_liege_title = title:e_sacral_kingdom_gaul
+		}
 	}
 	else = {
 		set_de_jure_liege_title = title:e_germany

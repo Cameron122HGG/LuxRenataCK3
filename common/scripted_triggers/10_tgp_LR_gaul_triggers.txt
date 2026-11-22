@@ -735,3 +735,26 @@ LR_uses_frankish_house_names_trigger = {
 		}
 	}
 }
+
+# LR 2026-11-22: sacral Gaul rework. The Mayor of the Palace: holds the Sacral Kingdom under a sacral government
+# without being the Sacral King himself.
+LR_tgp_sacral_gaul_is_mayor_trigger = {
+	has_title = title:e_sacral_kingdom_gaul
+	government_is_sacral_trigger = yes
+	NOT = { has_title = title:k_sacral_king_gaul_throne }
+}
+
+LR_tgp_sacral_gaul_frankish_regent_trigger = {
+	LR_tgp_sacral_gaul_is_mayor_trigger = yes
+	culture ?= { has_cultural_pillar = heritage_frankish }
+}
+
+LR_tgp_sacral_gaul_gallo_roman_regent_trigger = {
+	LR_tgp_sacral_gaul_is_mayor_trigger = yes
+	culture ?= {
+		OR = {
+			this = culture:gallo_roman
+			any_parent_culture_or_above = { this = culture:gallo_roman }
+		}
+	}
+}
