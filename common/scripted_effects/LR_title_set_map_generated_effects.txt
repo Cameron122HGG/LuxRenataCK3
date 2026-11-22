@@ -861,241 +861,213 @@ LR_tsm_tag_set_titles_effect = {
 	title:d_marca_frisia = { set_variable = { name = LR_tsm_set value = flag:missatica } }
 }
 
-# Needs scope:situation and scope:LR_tsm_county. Puts the county in one sub-region (only if it is not already there)
-# and takes it out of the others, then counts it for the legend.
+# Needs scope:situation and scope:LR_tsm_county. Puts the county in one sub-region (nothing to do if it is already
+# there, by its LR_tsm_in cache), then counts it for the legend.
 LR_tsm_move_to_hellenistic_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_hellenistic = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:hellenistic } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_hellenistic = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:hellenistic } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_hellenistic add = 1 } }
 }
 
 LR_tsm_move_to_roman_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_roman = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:roman } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_roman = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:roman } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_roman add = 1 } }
 }
 
 LR_tsm_move_to_themes_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_themes = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:themes } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_themes = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:themes } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_themes add = 1 } }
 }
 
 LR_tsm_move_to_persian_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_persian = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:persian } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_persian = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:persian } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_persian add = 1 } }
 }
 
 LR_tsm_move_to_hebrew_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_hebrew = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:hebrew } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_hebrew = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:hebrew } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_hebrew add = 1 } }
 }
 
 LR_tsm_move_to_brythonic_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_brythonic = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:brythonic } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_brythonic = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:brythonic } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_brythonic add = 1 } }
 }
 
 LR_tsm_move_to_galatian_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_galatian = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:galatian } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_galatian = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:galatian } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_galatian add = 1 } }
 }
 
 LR_tsm_move_to_punic_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_punic = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:punic } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_punic = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:punic } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_punic add = 1 } }
 }
 
 LR_tsm_move_to_frankish_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_frankish = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:frankish } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_frankish = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:frankish } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_frankish add = 1 } }
 }
 
 LR_tsm_move_to_missatica_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
-	scope:situation.situation_sub_region:LR_tsm_missatica = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:missatica } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_missatica = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:missatica } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_missatica add = 1 } }
 }
 
 LR_tsm_move_to_foreign_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	scope:situation.situation_sub_region:LR_tsm_foreign = {
-		if = {
-			limit = { NOT = { situation_sub_region_has_county = scope:LR_tsm_county } }
-			add_dejure_title_to_sub_region = scope:LR_tsm_county
-		}
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:foreign } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_foreign = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:foreign } }
 	}
 	scope:situation = { change_variable = { name = LR_tsm_count_foreign add = 1 } }
 }
 
-# Needs scope:situation and scope:LR_tsm_county: takes the county out of every sub-region
+# Needs scope:situation and scope:LR_tsm_county: takes the county out of the sub-region it is cached in
+LR_tsm_uncache_effect = {
+	if = {
+		limit = { scope:LR_tsm_county = { has_variable = LR_tsm_in } }
+		if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:hellenistic }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:roman }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:themes }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:persian }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:hebrew }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:brythonic }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:galatian }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:punic }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:frankish }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:missatica }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:foreign }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
+		}
+		scope:LR_tsm_county = { remove_variable = LR_tsm_in }
+	}
+}
+
+# Needs scope:situation and scope:LR_tsm_county: takes the county out of the preview palette sub-region it is in
+LR_tsm_unpalette_effect = {
+	if = {
+		limit = { scope:LR_tsm_county = { has_variable = LR_tsm_pal } }
+		if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p1 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p1 }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p2 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p2 }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p3 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p3 }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p4 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p4 }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p5 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p5 }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p6 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p6 }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p7 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p7 }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_pal = flag:LR_tsm_p8 }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_p8 }
+		}
+		scope:LR_tsm_county = { remove_variable = LR_tsm_pal }
+	}
+}
+
+# Needs scope:situation and scope:LR_tsm_county: takes the county out of its sub-region
 LR_tsm_remove_from_all_effect = {
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hellenistic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_roman }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_themes }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_persian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_hebrew }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_brythonic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_galatian }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_punic }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_frankish }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_missatica }
-	LR_tsm_remove_from_effect = { FROM = LR_tsm_foreign }
+	LR_tsm_uncache_effect = yes
 }
 
 # Situation scope: resets the legend counts

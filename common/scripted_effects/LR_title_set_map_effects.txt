@@ -1,12 +1,21 @@
 ﻿# Title Set Map (common/situation/situations/LR_title_set_map.txt). The title tags and the per-region moves are in
 # LR_title_set_map_generated_effects.txt (gen_title_set_map.py).
 
+# Performance (2026-11-22): the map repaints only when it is opened and stale (LR_tsm_open_effect), each county
+# caches its sub-region (LR_tsm_in) and preview colour (LR_tsm_pal) so unchanged counties are skipped, and a set
+# title changing hands only makes the rule view stale (the land view depends on de jure land only).
+
 # Starts the Title Set Map situation once (new games, and saves started before it existed).
-# A situation from an older layout (no LR_tsm_layout variable) is ended first; the next call starts the new one.
+# A situation from an older layout (LR_tsm_layout below 2: no county caches) is ended first; the next call starts the new one.
 LR_tsm_ensure_situation_effect = {
 	situation:LR_title_set_map ?= {
 		if = {
-			limit = { NOT = { has_variable = LR_tsm_layout } }
+			limit = {
+				NOT = {
+					has_variable = LR_tsm_layout
+					var:LR_tsm_layout >= 2
+				}
+			}
 			end_situation = yes
 		}
 	}
@@ -66,13 +75,34 @@ LR_tsm_show_preview_effect = {
 	LR_tsm_paint_preview_effect = yes
 }
 
-# Situation scope: takes every county out of every sub-region (the six set regions and the preview palette)
+# Situation scope: takes every painted county out of its sub-region (set regions and the preview palette), by the
+# county caches: only painted counties do any work
 LR_tsm_clear_all_effect = {
 	save_scope_as = situation
 	every_county = {
+		limit = {
+			OR = {
+				has_variable = LR_tsm_in
+				has_variable = LR_tsm_pal
+			}
+		}
 		save_temporary_scope_as = LR_tsm_county
-		LR_tsm_remove_from_all_effect = yes
-		LR_tsm_remove_from_palette_effect = yes
+		LR_tsm_uncache_effect = yes
+		LR_tsm_unpalette_effect = yes
+	}
+}
+
+# Any scope: forgets every county cache (a new situation starts with empty sub-regions)
+LR_tsm_reset_caches_effect = {
+	every_county = {
+		limit = {
+			OR = {
+				has_variable = LR_tsm_in
+				has_variable = LR_tsm_pal
+			}
+		}
+		remove_variable = LR_tsm_in
+		remove_variable = LR_tsm_pal
 	}
 }
 
@@ -82,18 +112,50 @@ LR_tsm_preview_put_effect = {
 	scope:situation.situation_sub_region:$TO$ = {
 		add_dejure_title_to_sub_region = scope:LR_tsm_county
 	}
+	scope:LR_tsm_county = { set_variable = { name = LR_tsm_pal value = flag:$TO$ } }
 }
 
-# Any scope: asks for a repaint at the next monthly tick (a set title changed hands)
+# Any scope: a set title changed hands. Only the rule view depends on who holds titles, so only it goes stale.
 LR_tsm_mark_dirty_effect = {
-	situation:LR_title_set_map ?= { set_variable = LR_tsm_dirty }
+	situation:LR_title_set_map ?= { set_variable = LR_tsm_rule_stale }
 }
 
-# Situation scope: repaints the six sub-regions for the current view and counts the counties for the legend.
-# Only counties that change sub-region are moved.
+# Any scope: de jure land moved between sets (layout and reorganise decisions): both views go stale
+LR_tsm_mark_stale_effect = {
+	situation:LR_title_set_map ?= { set_variable = LR_tsm_stale }
+}
+
+# Character scope (the player opening the map): repaints the current view if it is stale. Previews are fixed
+# layouts and repaint on their own buttons. Run by the map mode button (scripted GUI LR_tsm_open).
+LR_tsm_open_effect = {
+	situation:LR_title_set_map ?= {
+		if = {
+			limit = {
+				NOT = { LR_tsm_view_is_preview_trigger = yes }
+				OR = {
+					has_variable = LR_tsm_stale
+					AND = {
+						LR_tsm_view_is_rule_trigger = yes
+						has_variable = LR_tsm_rule_stale
+					}
+				}
+			}
+			if = {
+				limit = { has_variable = LR_tsm_stale }
+				LR_tsm_tag_set_titles_effect = yes
+			}
+			LR_tsm_refresh_effect = yes
+		}
+	}
+}
+
+# Situation scope: repaints the sub-regions for the current view and counts the counties for the legend.
+# Only counties that change sub-region are moved (county cache LR_tsm_in).
 LR_tsm_refresh_effect = {
 	save_scope_as = situation
 	remove_variable = LR_tsm_dirty
+	remove_variable = LR_tsm_stale
+	remove_variable = LR_tsm_rule_stale
 	set_variable = { name = LR_tsm_months value = 0 }
 	if = {
 		limit = { NOT = { has_variable = LR_tsm_view } }
