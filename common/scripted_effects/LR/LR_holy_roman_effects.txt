@@ -33,8 +33,9 @@ LR_proclaim_holy_roman_empire_effect = {
 	}
 }
 
-# The Holy Roman Empire as a hegemony (h_hre). e_hre (and a held Carolingian Empire) is dissolved into it: its Gaulish
-# kingdoms go to the Sacral Kingdom of Gaul and the rest to Germany, the two empires under the hegemony.
+# The Holy Roman Empire as a hegemony (h_hre). e_hre is dissolved into it: its Carolingian kingdoms go to the
+# Carolingian Empire, its other Gaulish kingdoms to Gaul (the Sacral Kingdom or the High Kingdom of the Franks) and the
+# rest to Germany: three empires under the hegemony (LR 2026-11-22; before, the Carolingian Empire was dissolved too).
 # Character scope (the new emperor).
 LR_found_holy_roman_hegemony_effect = {
 	create_title_and_vassal_change = {
@@ -56,20 +57,23 @@ LR_found_holy_roman_hegemony_effect = {
 	resolve_title_and_vassal_change = scope:change
 	custom_tooltip = LR_found_holy_roman_hegemony_dejure_tt
 	hidden_effect = {
+		# LR 2026-11-22 (Frankish title sets, agreed): the Carolingian Empire stays, as the third empire under the
+		# hegemony beside Gaul and Germany (the Treaty of Verdun's three parts). Its regna (and the warlord kingdoms they
+		# replace) go back to it from e_hre; e_hre's other kingdoms are sorted to Gaul or Germany as before.
 		title:e_hre = {
 			every_in_de_jure_hierarchy = {
 				continue = { tier >= tier_empire }
 				limit = { tier = tier_kingdom }
-				LR_hre_sort_kingdom_effect = yes
+				if = {
+					limit = { LR_carolingian_kingdom_trigger = yes }
+					set_de_jure_liege_title = title:e_carolingian_empire
+				}
+				else = {
+					LR_hre_sort_kingdom_effect = yes
+				}
 			}
 		}
-		title:e_carolingian_empire = {
-			every_in_de_jure_hierarchy = {
-				continue = { tier >= tier_empire }
-				limit = { tier = tier_kingdom }
-				LR_hre_sort_kingdom_effect = yes
-			}
-		}
+		title:e_carolingian_empire = { set_de_jure_liege_title = title:h_hre }
 		# LR 2026-11-22: after the Mayor's Crown, the High Kingdom of the Franks stands in for the Sacral Kingdom
 		if = {
 			limit = { LR_tgp_sacral_gaul_frankish_crown_rules_gaul_trigger = yes }
@@ -85,10 +89,7 @@ LR_found_holy_roman_hegemony_effect = {
 		limit = { has_title = title:e_hre }
 		destroy_title = title:e_hre
 	}
-	if = {
-		limit = { has_title = title:e_carolingian_empire }
-		destroy_title = title:e_carolingian_empire
-	}
+	# (LR 2026-11-22: e_carolingian_empire is no longer destroyed here; it stays under the hegemony)
 	# The Electors: keep the ones the papal route chose, or pick them now (the Karling route chooses none), and
 	# write them onto h_hre for the tooltip (the old variables were on the destroyed e_hre)
 	if = {

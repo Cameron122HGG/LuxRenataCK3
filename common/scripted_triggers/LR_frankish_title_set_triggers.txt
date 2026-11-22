@@ -1,0 +1,180 @@
+﻿# LR Frankish title sets (register_frankish_sets.py, 2026-11-22). GENERATED.
+
+# Character: holds one of the realm titles that the Frankish sets belong to
+LR_frankish_realm_holder_trigger = {
+	OR = {
+		has_title = title:e_sacral_kingdom_gaul
+		has_title = title:e_frankish_empire
+		has_title = title:e_carolingian_empire
+		has_title = title:h_hre
+	}
+}
+
+LR_carolingian_realm_holder_trigger = {
+	OR = {
+		has_title = title:e_frankish_empire
+		has_title = title:e_carolingian_empire
+		has_title = title:h_hre
+	}
+}
+
+# Title: one of the Frankish regna
+LR_title_set_frankish_title_trigger = {
+	OR = {
+		this = title:k_regnum_neustria
+		this = title:k_regnum_burgundia
+		this = title:k_regnum_aquitania
+		this = title:k_regnum_austrasia
+		this = title:k_regnum_belgica
+		this = title:k_regnum_lotharingia
+		this = title:k_regnum_frisia
+	}
+}
+
+# Character: may use the Frankish regna: the realms of the Sacral Kingdom, the High Kingdom of the Franks,
+# the Carolingian Empire and the HRE, and every ruler in them
+LR_title_set_frankish_native_trigger = {
+	OR = {
+		LR_frankish_realm_holder_trigger = yes
+		top_liege ?= { LR_frankish_realm_holder_trigger = yes }
+	}
+}
+
+LR_title_set_frankish_outsider_trigger = {
+	NOT = { LR_title_set_frankish_native_trigger = yes }
+	any_held_title = { LR_title_set_frankish_title_trigger = yes }
+}
+
+# Title: one of the missatica and marches
+LR_title_set_missatica_title_trigger = {
+	OR = {
+		this = title:d_missaticum_paris
+		this = title:d_missaticum_reims
+		this = title:d_missaticum_rouen
+		this = title:d_missaticum_orleans
+		this = title:d_marca_britannica
+		this = title:d_missaticum_lyon
+		this = title:d_missaticum_besancon
+		this = title:d_missaticum_chalon
+		this = title:d_marca_provincia
+		this = title:d_missaticum_poitiers
+		this = title:d_missaticum_bourges
+		this = title:d_missaticum_toulouse
+		this = title:d_marca_vasconia
+		this = title:d_marca_gothia
+		this = title:d_missaticum_aachen
+		this = title:d_missaticum_liege
+		this = title:d_missaticum_brabant
+		this = title:d_marca_flandria
+		this = title:d_missaticum_metz
+		this = title:d_missaticum_verdun
+		this = title:d_missaticum_utrecht
+		this = title:d_marca_frisia
+	}
+}
+
+# Character: may use the missatica: the Carolingian-administered realms (High Kingdom of the Franks, Carolingian
+# Empire, HRE) and every ruler in them
+LR_title_set_missatica_native_trigger = {
+	OR = {
+		LR_carolingian_realm_holder_trigger = yes
+		top_liege ?= { LR_carolingian_realm_holder_trigger = yes }
+	}
+}
+
+LR_title_set_missatica_outsider_trigger = {
+	NOT = { LR_title_set_missatica_native_trigger = yes }
+	any_held_title = { LR_title_set_missatica_title_trigger = yes }
+}
+
+# Title: a march (border command)
+LR_frankish_march_title_trigger = {
+	OR = {
+		this = title:d_marca_britannica
+		this = title:d_marca_provincia
+		this = title:d_marca_vasconia
+		this = title:d_marca_gothia
+		this = title:d_marca_flandria
+		this = title:d_marca_frisia
+	}
+}
+
+# Title: a kingdom of the Carolingian Empire (its regna, and the warlord kingdoms they replace)
+LR_carolingian_kingdom_trigger = {
+	OR = {
+		this = title:k_regnum_austrasia
+		this = title:k_regnum_belgica
+		this = title:k_regnum_lotharingia
+		this = title:k_regnum_frisia
+		this = title:k_belgica
+		this = title:k_lotharingia
+	}
+}
+
+# Character: completely controls the lands of the regnum of Austrasia
+LR_frankish_regnum_austrasia_controlled_trigger = {
+	completely_controls = title:c_aachen
+	completely_controls = title:c_bouillon
+	completely_controls = title:c_chiny
+	completely_controls = title:c_cleves
+	completely_controls = title:c_cologne
+	completely_controls = title:c_koblenz
+	completely_controls = title:c_liege
+	completely_controls = title:c_loon
+	completely_controls = title:c_luxembourg
+	completely_controls = title:c_maastricht
+	completely_controls = title:c_namur
+	completely_controls = title:c_stavelot
+	completely_controls = title:c_taxandria
+	completely_controls = title:c_vianden
+}
+
+# Character: completely controls the lands of the regnum of Belgica
+LR_frankish_regnum_belgica_controlled_trigger = {
+	completely_controls = title:c_antwerpen
+	completely_controls = title:c_artois
+	completely_controls = title:c_boulogne
+	completely_controls = title:c_brabant
+	completely_controls = title:c_brugge
+	completely_controls = title:c_gent
+	completely_controls = title:c_guines
+	completely_controls = title:c_hainaut
+	completely_controls = title:c_lille
+	completely_controls = title:c_yperen
+}
+
+# Character: completely controls the lands of the regnum of Lotharingia
+LR_frankish_regnum_lotharingia_controlled_trigger = {
+	completely_controls = title:c_bar
+	completely_controls = title:c_briey
+	completely_controls = title:c_colmar
+	completely_controls = title:c_echternach
+	completely_controls = title:c_langres
+	completely_controls = title:c_luxeuil
+	completely_controls = title:c_metz
+	completely_controls = title:c_nancy
+	completely_controls = title:c_neufchateau
+	completely_controls = title:c_puttlingen
+	completely_controls = title:c_saarbrucken
+	completely_controls = title:c_strassburg
+	completely_controls = title:c_sundgau
+	completely_controls = title:c_trier
+	completely_controls = title:c_vaucouleurs
+	completely_controls = title:c_verdun
+}
+
+# Character: completely controls the lands of the regnum of Frisia
+LR_frankish_regnum_frisia_controlled_trigger = {
+	completely_controls = title:c_arnhem
+	completely_controls = title:c_dokkum
+	completely_controls = title:c_frisia
+	completely_controls = title:c_guelders
+	completely_controls = title:c_holland
+	completely_controls = title:c_nedersticht
+	completely_controls = title:c_ostfriesland
+	completely_controls = title:c_ostringen
+	completely_controls = title:c_westfriesland
+	completely_controls = title:c_zeeland
+	completely_controls = title:c_zutphen
+}
+
