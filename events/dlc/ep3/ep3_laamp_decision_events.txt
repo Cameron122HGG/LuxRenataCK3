@@ -217,7 +217,7 @@ scripted_trigger 1000_time_to_go_home_trigger = {
 	#Did we have, and are we done with the Buy Supplies option?
 	trigger_if = {
 		limit = { 
-			domicile ?= { provisions = max_provisions }
+			domicile ?= { provisions >= max_provisions }
 		}
 		always = yes
 	}
@@ -255,7 +255,7 @@ scripted_trigger 1000_done_with_second_trigger = {
 		AND = {
 			OR = {
 				exists = scope:laamp_decision_bought_supplies
-				domicile ?= { provisions = max_provisions }
+				domicile ?= { provisions >= max_provisions }
 			}	
 			NOT = {
 				is_target_in_variable_list = {
@@ -272,7 +272,7 @@ scripted_trigger 1000_done_with_second_trigger = {
 		AND = {
 			OR = {
 				exists = scope:laamp_decision_bought_supplies
-				domicile ?= { provisions = max_provisions }
+				domicile ?= { provisions >= max_provisions }
 			}	
 			is_target_in_variable_list = {
 				name = list_of_options
@@ -2268,7 +2268,7 @@ ep3_laamp_decision_event.1001 = {
 				custom_tooltip = {
 					text = full_on_supplies.tt
 					NOT = { 
-						domicile ?= { provisions = max_provisions }
+						domicile ?= { provisions >= max_provisions }
 					}
 				}
 			}
