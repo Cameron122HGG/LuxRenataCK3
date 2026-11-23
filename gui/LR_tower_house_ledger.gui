@@ -1,0 +1,174 @@
+﻿######################################################
+############### LR TOWER HOUSE LEDGER ################
+######################################################
+# LR 2026-11-22 (user): every trade post held by a Potentes member of the player's house, with its Tower House level,
+# entrenchment and stage, and a button to go to it. Opened from the domicile window (window_domicile.gui, the button
+# row at the top right), which first runs the scripted GUI LR_tower_house_ledger_gui to fill the player's variable list
+# LR_ledger_posts (common/scripted_guis/LR_tower_house_ledger_scripted_guis.txt). Placed at the top level of hud.gui
+# (search "LR TOWER HOUSE LEDGER"). Shown while the variable system holds 'lr_tower_house_ledger'.
+
+types LR_tower_house_ledger
+{
+	type LR_thl_cell = text_single {
+		align = left|nobaseline
+		using = Font_Size_Small
+	}
+
+	type LR_tower_house_ledger_window = window {
+		name = "LR_tower_house_ledger_window"
+		datacontext = "[GetPlayer]"
+		visible = "[And( GetVariableSystem.Exists( 'lr_tower_house_ledger' ), Not( IsPauseMenuShown ) )]"
+		parentanchor = center
+		widgetanchor = center
+		position = { -300 0 }
+		layer = middle
+		movable = yes
+		allow_outside = yes
+
+		using = Window_Background
+		using = Window_Decoration
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+		}
+
+		vbox = {
+			set_parent_size_to_minimum = yes
+			margin = { 16 0 }
+			margin_bottom = 16
+			spacing = 6
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "LR_THL_TITLE"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[GetVariableSystem.Clear( 'lr_tower_house_ledger' )]"
+					shortcut = "close_window"
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					align = left|nobaseline
+					default_format = "#weak"
+					text = "LR_THL_HINT"
+				}
+
+				button_standard_small = {
+					size = { 110 26 }
+					text = "LR_THL_REFRESH"
+					tooltip = "LR_THL_REFRESH_TT"
+					onclick = "[GetScriptedGui( 'LR_tower_house_ledger_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+			}
+
+			### Column headers ###
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 8 4 }
+				spacing = 8
+
+				background = {
+					using = Background_Area_Dark
+				}
+
+				LR_thl_cell = { size = { 170 22 } text = "LR_THL_COL_COUNTY" default_format = "#T" }
+				LR_thl_cell = { size = { 130 22 } text = "LR_THL_COL_OWNER" default_format = "#T" }
+				LR_thl_cell = { size = { 70 22 } text = "LR_THL_COL_TOWER" default_format = "#T" tooltip = "LR_THL_COL_TOWER_TT" }
+				LR_thl_cell = { size = { 90 22 } text = "LR_THL_COL_ENTRENCHMENT" default_format = "#T" tooltip = "LR_THL_COL_ENTRENCHMENT_TT" }
+				LR_thl_cell = { size = { 150 22 } text = "LR_THL_COL_STAGE" default_format = "#T" tooltip = "LR_THL_COL_STAGE_TT" }
+				LR_thl_cell = { size = { 50 22 } text = "LR_THL_COL_YEARS" default_format = "#T" }
+				LR_thl_cell = { size = { 70 22 } text = "LR_THL_COL_BANNER" default_format = "#T" tooltip = "LR_THL_COL_BANNER_TT" }
+				widget = { size = { 30 22 } }
+			}
+
+			### Posts ###
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				size = { 840 360 }
+
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						datamodel = "[GetPlayer.MakeScope.GetList( 'LR_ledger_posts' )]"
+
+						item = {
+							hbox = {
+								datacontext = "[Scope.Province]"
+								layoutpolicy_horizontal = expanding
+								margin = { 8 2 }
+								spacing = 8
+
+								background = {
+									using = Background_Area
+								}
+
+								LR_thl_cell = {
+									size = { 170 26 }
+									text = "[Province.GetCounty.GetTitle.GetName]"
+									tooltip = "[Province.GetName]"
+								}
+								LR_thl_cell = {
+									size = { 130 26 }
+									text = "[Province.MakeScope.Var( 'LR_ledger_owner' ).Char.GetShortUIName]"
+								}
+								LR_thl_cell = {
+									size = { 70 26 }
+									text = "LR_THL_TOWER_VALUE"
+								}
+								LR_thl_cell = {
+									size = { 90 26 }
+									text = "LR_THL_ENTRENCHMENT_VALUE"
+								}
+								LR_thl_cell = {
+									size = { 150 26 }
+									text = "LR_THL_STAGE_VALUE"
+								}
+								LR_thl_cell = {
+									size = { 50 26 }
+									text = "LR_THL_YEARS_VALUE"
+								}
+								LR_thl_cell = {
+									size = { 70 26 }
+									text = "[Select_CString( Province.MakeScope.Var( 'LR_ledger_banner_ready' ).IsSet, Localize( 'LR_THL_BANNER_YES' ), Localize( 'LR_THL_BANNER_NO' ) )]"
+								}
+								button_go_to_my_location = {
+									size = { 26 26 }
+									onclick = "[Province.PanCameraTo]"
+									tooltip = "LR_THL_GO_TT"
+								}
+							}
+						}
+					}
+				}
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				visible = "[IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'LR_ledger_posts' ) )]"
+				align = center|nobaseline
+				default_format = "#weak"
+				text = "LR_THL_EMPTY"
+			}
+		}
+	}
+}

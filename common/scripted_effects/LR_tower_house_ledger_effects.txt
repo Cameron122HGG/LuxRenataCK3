@@ -1,0 +1,65 @@
+﻿# LR 2026-11-22 (user): Tower House ledger (LR_tower_house_ledger_scripted_guis.txt). Scope: a trade-post province.
+# scope:lr_ledger_owner = its Potentes owner. Sets the display variables the ledger window reads.
+LR_tower_house_ledger_province_effect = {
+	set_variable = {
+		name = LR_ledger_owner
+		value = scope:lr_ledger_owner
+	}
+	set_variable = {
+		name = LR_ledger_value
+		value = LR_entrenchment_value
+	}
+	set_variable = {
+		name = LR_ledger_next_stage
+		value = LR_entrenchment_stage_value
+	}
+	set_variable = {
+		name = LR_ledger_tower_level
+		value = 0
+	}
+	if = {
+		limit = { has_building_or_higher = lr_tower_house_05 }
+		set_variable = { name = LR_ledger_tower_level value = 5 }
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_04 }
+		set_variable = { name = LR_ledger_tower_level value = 4 }
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_03 }
+		set_variable = { name = LR_ledger_tower_level value = 3 }
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_02 }
+		set_variable = { name = LR_ledger_tower_level value = 2 }
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_01 }
+		set_variable = { name = LR_ledger_tower_level value = 1 }
+	}
+	set_variable = {
+		name = LR_ledger_years
+		value = 0
+	}
+	if = {
+		limit = {
+			has_variable = LR_entrenched_since
+			var:LR_entrenched_house ?= scope:lr_ledger_owner.house
+		}
+		set_variable = {
+			name = LR_ledger_years
+			value = {
+				value = current_year
+				subtract = var:LR_entrenched_since
+				min = 0
+			}
+		}
+	}
+	if = {
+		limit = { LR_house_banner_target_trigger = { HOUSE = scope:lr_ledger_owner } }
+		set_variable = { name = LR_ledger_banner_ready value = yes }
+	}
+	else = {
+		remove_variable = LR_ledger_banner_ready
+	}
+}

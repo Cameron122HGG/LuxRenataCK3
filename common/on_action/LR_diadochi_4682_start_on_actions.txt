@@ -1,0 +1,31 @@
+﻿# LR 2026-11-22: the Diadochi start (4682.12.4). History can't set a regent, so at that start Perdikkas the
+# Chiliarch becomes regent (diarch) for the boy Alexandros IV. Inert at every other start date.
+on_game_start_after_lobby = {
+	on_actions = { LR_diadochi_4682_start }
+}
+
+LR_diadochi_4682_start = {
+	trigger = {
+		current_date = 4682.12.4
+	}
+	effect = {
+		character:13100 ?= {
+			if = {
+				limit = {
+					is_alive = yes
+					is_ruler = yes
+					character:lr_diadochi_perdikkas ?= { is_alive = yes }
+				}
+				try_start_diarchy = regency
+				if = {
+					limit = { has_active_diarchy = yes }
+					set_diarch = character:lr_diadochi_perdikkas
+					remove_generated_diarch_consequences_effect = {
+						NEW_DIARCH = character:lr_diadochi_perdikkas
+						LIEGE = character:13100
+					}
+				}
+			}
+		}
+	}
+}

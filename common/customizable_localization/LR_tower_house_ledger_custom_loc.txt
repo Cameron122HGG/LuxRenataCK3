@@ -1,0 +1,53 @@
+﻿# LR 2026-11-22 (user): Tower House ledger. Province scope: the post's stage (as of the yearly update) and the stage its
+# entrenchment points to now (LR_ledger_next_stage, set when the ledger opens).
+LR_ledger_stage = {
+	type = province
+	text = {
+		trigger = { LR_entrenchment_stage_at_least_trigger = { STAGE = 4 } }
+		localization_key = LR_ledger_stage_4
+	}
+	text = {
+		trigger = { LR_entrenchment_stage_at_least_trigger = { STAGE = 3 } }
+		localization_key = LR_ledger_stage_3
+	}
+	text = {
+		trigger = { LR_entrenchment_stage_at_least_trigger = { STAGE = 2 } }
+		localization_key = LR_ledger_stage_2
+	}
+	text = {
+		fallback = yes
+		localization_key = LR_ledger_stage_1
+	}
+}
+
+LR_ledger_stage_trend = {
+	type = province
+	text = {
+		trigger = {
+			has_variable = LR_ledger_next_stage
+			OR = {
+				AND = {
+					NOT = { has_variable = LR_entrenchment_stage }
+					var:LR_ledger_next_stage > 1
+				}
+				AND = {
+					has_variable = LR_entrenchment_stage
+					var:LR_ledger_next_stage > var:LR_entrenchment_stage
+				}
+			}
+		}
+		localization_key = LR_ledger_trend_up
+	}
+	text = {
+		trigger = {
+			has_variable = LR_ledger_next_stage
+			has_variable = LR_entrenchment_stage
+			var:LR_ledger_next_stage < var:LR_entrenchment_stage
+		}
+		localization_key = LR_ledger_trend_down
+	}
+	text = {
+		fallback = yes
+		localization_key = LR_ledger_trend_none
+	}
+}

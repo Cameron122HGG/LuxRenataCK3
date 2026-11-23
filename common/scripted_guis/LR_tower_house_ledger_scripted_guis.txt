@@ -1,0 +1,38 @@
+﻿# LR 2026-11-22 (user): the Tower House ledger (gui/LR_tower_house_ledger.gui), opened from the domicile window.
+# Scope: the player. Fills the variable list LR_ledger_posts with every trade-post province held by a Potentes member of
+# the player's house, and gives each province the display variables the window reads (LR_ledger_*). Display only: the
+# entrenchment itself is still updated yearly (LR_entrenchment_update_owner_effect).
+LR_tower_house_ledger_gui = {
+	scope = character
+
+	is_shown = {
+		OR = {
+			government_has_flag = government_is_potentes
+			house ?= {
+				any_house_member = { government_has_flag = government_is_potentes }
+			}
+		}
+	}
+
+	effect = {
+		clear_variable_list = LR_ledger_posts
+		house ?= {
+			every_house_member = {
+				limit = { government_has_flag = government_is_potentes }
+				save_scope_as = lr_ledger_owner
+				every_owned_trade_post_district = {
+					district_province = {
+						save_scope_as = lr_ledger_province
+						root = {
+							add_to_variable_list = {
+								name = LR_ledger_posts
+								target = scope:lr_ledger_province
+							}
+						}
+						LR_tower_house_ledger_province_effect = yes
+					}
+				}
+			}
+		}
+	}
+}
