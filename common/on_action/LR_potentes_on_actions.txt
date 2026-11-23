@@ -1,0 +1,82 @@
+﻿# LR 2026-11-22 (user): Potentes government and Tower House entrenchment (LR_entrenchment_effects.txt)
+
+on_game_start = {
+	on_actions = { LR_potentes_game_start }
+}
+
+yearly_playable_pulse = {
+	on_actions = { LR_potentes_yearly_pulse }
+}
+
+on_title_gain = {
+	on_actions = { LR_potentes_title_gain LR_potentes_map_title_gain }
+}
+
+# Each county remembers the warlord duchy it belongs to on the warlord map (tools/warlord_duchy_map.py), so a house can
+# proclaim it even where the warlord map has not taken over yet
+LR_potentes_game_start = {
+	effect = {
+		LR_mark_warlord_duchy_map_effect = yes
+		# LR 2026-11-22 (user): PROTOTYPE live map of entrenchment (LR_potentes_situation.txt)
+		if = {
+			limit = {
+				has_gdp_dlc_trigger = yes
+				NOT = { exists = situation:LR_potentes_situation }
+			}
+			start_situation = {
+				type = LR_potentes_situation
+			}
+		}
+		# Paint the Archontes of the history (the trade posts paint themselves as they are set up)
+		every_ruler = {
+			limit = { has_government = archontes_government }
+			LR_potentes_map_refresh_domain_effect = yes
+		}
+	}
+}
+
+LR_potentes_yearly_pulse = {
+	trigger = {
+		has_gdp_dlc_trigger = yes
+		OR = {
+			government_has_flag = government_is_potentes
+			AND = {
+				has_government = merchant_government
+				any_held_title = { has_variable = LR_potentes_title }
+			}
+		}
+	}
+	effect = {
+		LR_potentes_keep_government_effect = yes
+		if = {
+			limit = { government_has_flag = government_is_potentes }
+			LR_entrenchment_update_owner_effect = yes
+		}
+	}
+}
+
+LR_potentes_title_gain = {
+	trigger = {
+		has_gdp_dlc_trigger = yes
+		has_government = merchant_government
+		any_held_title = { has_variable = LR_potentes_title }
+	}
+	effect = {
+		LR_potentes_keep_government_effect = yes
+	}
+}
+
+# The map (LR_potentes_situation.txt): a county passing to or from an Archontes holder is repainted
+# root = the new holder, scope:title = the title, scope:previous_holder = the old holder
+LR_potentes_map_title_gain = {
+	trigger = {
+		scope:title = { tier = tier_county }
+		OR = {
+			has_government = archontes_government
+			scope:previous_holder ?= { has_government = archontes_government }
+		}
+	}
+	effect = {
+		scope:title = { LR_potentes_map_refresh_county_effect = yes }
+	}
+}

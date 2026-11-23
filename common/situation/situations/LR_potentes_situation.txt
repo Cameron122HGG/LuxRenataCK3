@@ -1,0 +1,86 @@
+﻿# LR 2026-11-22 (user): PROTOTYPE. The Rise of the Potentes, a situation used only as a map of Tower House entrenchment.
+# Built like the Title Set Map (LR_title_set_map.txt), kept light on purpose (the user: the title set maps are already
+# heavy): the 'sub_regions' map mode paints four sub-regions that start empty and are filled county by county, and a
+# county is only moved when something about it changes (LR_potentes_map_refresh_county_effect, LR_entrenchment_effects.txt):
+#   - its Potentes post changes stage, is built, ousted or taken (the yearly entrenchment update, the oust, the flip)
+#   - it passes to or from an Archontes holder (on_title_gain / on_title_lost), or its holder settles
+# No sweeps over the map, no geographical regions, and the participant lists only look at the painted counties.
+# Each county shows one colour: Archontes holder first, else its post's stage (House Seat, Fortified Compound, Tower House).
+# No modifiers: no effect on the game.
+LR_potentes_situation = {
+	window = situation
+	gui_window_name = "window_situation"
+	gui_participation_window_name = "window_situation_participation"
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_merchant_domicile.dds"
+	situation_group_type = minor
+	map_mode = sub_regions
+	is_unique = yes
+
+	##################################################
+	# Regions: empty at start, filled county by county
+	##################################################
+	sub_regions = {
+		LR_pot_archontes = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			map_color = rgb{ 215 165 40 }
+		}
+		LR_pot_house_seat = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			map_color = rgb{ 160 20 25 }
+		}
+		LR_pot_compound = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			map_color = rgb{ 225 110 30 }
+		}
+		LR_pot_tower = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			map_color = rgb{ 235 205 90 }
+		}
+	}
+
+	##################################################
+	# Groups (the window's lists; only rulers in painted counties are considered)
+	##################################################
+	participant_groups = {
+		archontes = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			auto_add_landless_rulers = no
+			require_realm_in_sub_region = no
+			require_domain_in_sub_region = yes
+			is_character_valid = {
+				has_government = archontes_government
+			}
+		}
+		hosts = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			auto_add_landless_rulers = no
+			require_realm_in_sub_region = no
+			require_domain_in_sub_region = yes
+			is_character_valid = {
+				LR_hosts_entrenchment_stage_trigger = { STAGE = 2 }
+			}
+		}
+		potentes_houses = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			auto_add_rulers = no
+			auto_add_landless_rulers = yes
+			require_realm_in_sub_region = no
+			require_domicile_in_sub_region = yes
+			is_character_valid = {
+				government_has_flag = government_is_potentes
+			}
+		}
+	}
+
+	##################################################
+	# Phases
+	##################################################
+	start_phase = LR_potentes_age
+
+	phases = {
+		LR_potentes_age = {
+			icon = "gfx/interface/icons/flat_icons/domicile_merchant.dds"
+			illustration = "gfx/interface/illustrations/event_scenes/gdp_merchant_domicile.dds"
+		}
+	}
+}

@@ -1519,6 +1519,21 @@ can_create_title = {
 			LR_warlord_title_is_open_trigger = { TITLE = scope:title }
 		}
 	}
+	# LR 2026-11-22 (user): the Archontes (city lords risen from the Potentes) create duchies, and kingdoms only from the
+	# warlord titles; nothing higher until they settle into their culture's government (LR_settle_archontes_decision)
+	trigger_if = {
+		limit = { government_has_flag = government_is_archontes }
+		custom_tooltip = {
+			text = LR_archontes_duchy_cap_tooltip
+			OR = {
+				scope:title.tier <= tier_duchy
+				AND = {
+					scope:title.tier = tier_kingdom
+					scope:title = { LR_is_warlord_title_trigger = yes }
+				}
+			}
+		}
+	}
 	# LR: the Bronze Age and Classical Age titles (gen_bronze_classical.py) can only be created in their own age
 	trigger_if = {
 		limit = { scope:title = { LR_is_bronze_title_trigger = yes } }

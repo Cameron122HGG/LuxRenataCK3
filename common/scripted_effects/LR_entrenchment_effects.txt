@@ -1,0 +1,471 @@
+﻿# LR 2026-11-22 (user): Potentes government and Tower House entrenchment.
+# Government: 05_LR_potentes_government_types.txt. Buildings: LR_tower_house_buildings.txt.
+# Values: LR_entrenchment_values.txt. Triggers: LR_entrenchment_triggers.txt. Events: LR_entrenchment_events.txt.
+# Province variables on each Potentes trade post:
+#   LR_entrenched_house   the house that has held the post without a break
+#   LR_entrenched_since   the year that house got it (years held count toward entrenchment)
+#   LR_entrenchment       LR_entrenchment_value, recomputed yearly
+#   LR_entrenchment_stage 1 Factory, 2 Tower House, 3 Fortified Compound, 4 House Seat
+
+# Root: a merchant. Turns them (and their company title) into a house of the Potentes.
+LR_make_potentes_effect = {
+	every_held_title = {
+		limit = { gdp_merchant_company_title_trigger = yes }
+		set_variable = LR_potentes_title
+	}
+	if = {
+		limit = { NOT = { has_government = potentes_government } }
+		change_government = potentes_government
+	}
+	if = {
+		limit = { NOT = { has_realm_law = merchant_succession_law } }
+		add_realm_law_skip_effects = merchant_succession_law
+	}
+}
+
+# Root: any character. The engine gives merchant_government to whoever takes a company title; heirs of a house of the Potentes
+# title go back on the Potentes government. Run on title gain and in the yearly pulse.
+LR_potentes_keep_government_effect = {
+	if = {
+		limit = {
+			has_gdp_dlc_trigger = yes
+			has_government = merchant_government
+			any_held_title = { has_variable = LR_potentes_title }
+		}
+		change_government = potentes_government
+	}
+}
+
+# Root: a house of the Potentes. Updates every trade post it owns.
+LR_entrenchment_update_owner_effect = {
+	every_owned_trade_post_district = {
+		district_province = { LR_entrenchment_update_province_effect = yes }
+	}
+}
+
+# Province with a trade post. Recomputes entrenchment and applies the stage.
+LR_entrenchment_update_province_effect = {
+	save_scope_as = lr_entrench_province
+	trade_post_owner = { save_scope_as = lr_entrench_owner }
+	county = { save_scope_as = lr_entrench_county }
+	county.holder ?= { save_scope_as = lr_entrench_host }
+	# A new house in the post starts over
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = LR_entrenched_house }
+				NOT = { var:LR_entrenched_house = scope:lr_entrench_owner.house }
+			}
+		}
+		set_variable = {
+			name = LR_entrenched_house
+			value = scope:lr_entrench_owner.house
+		}
+		set_variable = {
+			name = LR_entrenched_since
+			value = current_year
+		}
+		remove_variable = LR_entrenchment_claim_given
+	}
+	# Old stage, new value and stage
+	if = {
+		limit = { has_variable = LR_entrenchment_stage }
+		set_variable = {
+			name = LR_entrenchment_old_stage
+			value = var:LR_entrenchment_stage
+		}
+	}
+	else = {
+		set_variable = {
+			name = LR_entrenchment_old_stage
+			value = 1
+		}
+	}
+	set_variable = {
+		name = LR_entrenchment
+		value = LR_entrenchment_value
+	}
+	set_variable = {
+		name = LR_entrenchment_stage
+		value = LR_entrenchment_stage_value
+	}
+	# Stage modifier on the county
+	scope:lr_entrench_county = {
+		LR_entrenchment_clear_county_modifiers_effect = yes
+		if = {
+			limit = { scope:lr_entrench_province.var:LR_entrenchment_stage = 2 }
+			add_county_modifier = LR_entrenchment_stage_2_county_modifier
+		}
+		else_if = {
+			limit = { scope:lr_entrench_province.var:LR_entrenchment_stage = 3 }
+			add_county_modifier = LR_entrenchment_stage_3_county_modifier
+		}
+		else_if = {
+			limit = { scope:lr_entrench_province.var:LR_entrenchment_stage = 4 }
+			add_county_modifier = LR_entrenchment_stage_4_county_modifier
+		}
+	}
+	# Stage 3 or more: the house gets a claim on the county, once
+	if = {
+		limit = {
+			var:LR_entrenchment_stage >= 3
+			NOT = { has_variable = LR_entrenchment_claim_given }
+		}
+		set_variable = LR_entrenchment_claim_given
+		scope:lr_entrench_owner = {
+			if = {
+				limit = { NOT = { has_claim_on = scope:lr_entrench_county } }
+				add_pressed_claim = scope:lr_entrench_county
+			}
+		}
+	}
+	# Tell the house when a post moves up a stage
+	if = {
+		limit = { var:LR_entrenchment_stage > var:LR_entrenchment_old_stage }
+		scope:lr_entrench_owner = {
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = LR_entrenchment_stage_up_toast
+				left_icon = scope:lr_entrench_owner
+				right_icon = scope:lr_entrench_county
+				custom_tooltip = LR_entrenchment_stage_up_toast_desc
+			}
+		}
+		scope:lr_entrench_host ?= {
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				title = LR_entrenchment_stage_up_host_toast
+				left_icon = scope:lr_entrench_owner
+				right_icon = scope:lr_entrench_county
+				custom_tooltip = LR_entrenchment_stage_up_host_toast_desc
+			}
+		}
+	}
+	# The map (LR_potentes_situation.txt): repaint this county only when its stage changed
+	if = {
+		limit = { var:LR_entrenchment_stage != var:LR_entrenchment_old_stage }
+		scope:lr_entrench_county = { LR_potentes_map_refresh_county_effect = yes }
+	}
+	remove_variable = LR_entrenchment_old_stage
+	# The host reacts to a Fortified Compound or a House Seat (not while a house is being set up)
+	if = {
+		limit = {
+			var:LR_entrenchment_stage >= 3
+			exists = scope:lr_entrench_host
+			NOT = { scope:lr_entrench_owner = { has_character_flag = LR_entrenchment_setup } }
+		}
+		scope:lr_entrench_host = {
+			if = {
+				limit = { is_ai = no }
+				random = {
+					chance = 25
+					trigger_event = LR_entrenchment.0010
+				}
+			}
+			else_if = {
+				limit = {
+					opinion = {
+						target = scope:lr_entrench_owner
+						value < 0
+					}
+				}
+				random = {
+					chance = 10
+					LR_entrenchment_oust_effect = yes
+				}
+			}
+		}
+	}
+}
+
+# County title
+LR_entrenchment_clear_county_modifiers_effect = {
+	remove_county_modifier = LR_entrenchment_stage_2_county_modifier
+	remove_county_modifier = LR_entrenchment_stage_3_county_modifier
+	remove_county_modifier = LR_entrenchment_stage_4_county_modifier
+}
+
+# Root: the host. Scopes: lr_entrench_province, lr_entrench_owner, lr_entrench_county. The host tears down the post.
+LR_entrenchment_oust_effect = {
+	add_prestige = -100
+	scope:lr_entrench_owner = {
+		add_opinion = {
+			target = root
+			modifier = LR_ousted_tower_house_opinion
+		}
+		send_interface_toast = {
+			type = event_toast_effect_bad
+			title = LR_entrenchment_ousted_toast
+			left_icon = root
+			right_icon = scope:lr_entrench_county
+			custom_tooltip = LR_entrenchment_ousted_toast_desc
+		}
+	}
+	scope:lr_entrench_county = { LR_entrenchment_clear_county_modifiers_effect = yes }
+	scope:lr_entrench_province = {
+		remove_variable = LR_entrenched_house
+		remove_variable = LR_entrenched_since
+		remove_variable = LR_entrenchment
+		remove_variable = LR_entrenchment_stage
+		remove_variable = LR_entrenchment_claim_given
+		trade_post_district = { remove_district = yes }
+	}
+	scope:lr_entrench_county = { LR_potentes_map_refresh_county_effect = yes } # the map
+}
+
+# Scope: the Potentes head (not root: also called from the host's event and the war). Scopes: lr_banner_province (a post that passes LR_house_banner_target_trigger),
+# lr_banner_host (its county holder). The house splits: the company, its title and the other posts go to a trading
+# branch (an unlanded adult of the house, or a new one), and the head takes the county as the host's vassal.
+LR_potentes_flip_effect = {
+	save_scope_as = lr_new_lord
+	scope:lr_banner_province.county = { save_scope_as = lr_banner_county }
+	# 1. The trading branch
+	if = {
+		limit = {
+			house ?= {
+				any_house_member = {
+					is_alive = yes
+					is_adult = yes
+					is_landed = no
+					is_ruler = no
+					this != scope:lr_new_lord
+					is_imprisoned = no
+				}
+			}
+		}
+		house = {
+			ordered_house_member = {
+				limit = {
+					is_alive = yes
+					is_adult = yes
+					is_landed = no
+					is_ruler = no
+					this != scope:lr_new_lord
+					is_imprisoned = no
+				}
+				order_by = stewardship
+				save_scope_as = lr_firm_heir
+			}
+		}
+	}
+	else = {
+		create_character = {
+			age = { 25 40 }
+			gender = scope:lr_new_lord
+			dynasty_house = scope:lr_new_lord.house
+			culture = scope:lr_new_lord.culture
+			faith = scope:lr_new_lord.faith
+			employer = scope:lr_new_lord
+			random_traits = yes
+			save_scope_as = lr_firm_heir
+		}
+	}
+	# The posts, noted before the company title leaves (the head can no longer own them without it)
+	every_owned_trade_post_district = { add_to_list = lr_house_posts }
+	# 2. The company title (and its domicile) to the trading branch
+	create_title_and_vassal_change = {
+		type = granted
+		save_scope_as = lr_firm_change
+		add_claim_on_loss = no
+	}
+	every_held_title = {
+		limit = { gdp_merchant_company_title_trigger = yes }
+		set_variable = LR_potentes_title
+		change_title_holder = {
+			holder = scope:lr_firm_heir
+			change = scope:lr_firm_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:lr_firm_change
+	scope:lr_firm_heir = {
+		LR_make_potentes_effect = yes
+		if = {
+			limit = {
+				exists = liege
+				liege != this
+			}
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = lr_firm_independency
+				add_claim_on_loss = no
+			}
+			becomes_independent = { change = scope:lr_firm_independency }
+			resolve_title_and_vassal_change = scope:lr_firm_independency
+		}
+		add_gold = 100
+	}
+	# 3. The trade posts stay with the company
+	every_in_list = {
+		list = lr_house_posts
+		set_trade_post_district_owner = scope:lr_firm_heir
+	}
+	# 4. The head becomes a lord: the county first, then the Archontes government (05_LR_potentes_government_types.txt),
+	# whatever the engine gave them on becoming landed
+	if = {
+		limit = { exists = suzerain }
+		end_tributary = yes
+	}
+	create_title_and_vassal_change = {
+		type = granted
+		save_scope_as = lr_banner_change
+		add_claim_on_loss = yes
+	}
+	scope:lr_banner_county = {
+		change_title_holder = {
+			holder = scope:lr_new_lord
+			change = scope:lr_banner_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:lr_banner_change
+	if = {
+		limit = { NOT = { has_government = archontes_government } }
+		change_government = archontes_government
+	}
+	# Vassal only (user): the house serves the city's lord
+	if = {
+		limit = {
+			scope:lr_banner_host = { is_landed = yes }
+			NOT = { liege ?= scope:lr_banner_host }
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = lr_fealty_change
+			add_claim_on_loss = no
+		}
+		change_liege = {
+			liege = scope:lr_banner_host
+			change = scope:lr_fealty_change
+		}
+		resolve_title_and_vassal_change = scope:lr_fealty_change
+	}
+	set_realm_capital = scope:lr_banner_county
+	add_character_flag = LR_potentes_lord
+	set_variable = {
+		name = LR_potentes_seat
+		value = scope:lr_banner_county
+	}
+	remove_claim = scope:lr_banner_county
+	scope:lr_banner_county = {
+		LR_entrenchment_clear_county_modifiers_effect = yes
+		LR_potentes_map_refresh_county_effect = yes # the map: now an Archontes county
+	}
+	# Everyone nearby hears of it
+	scope:lr_banner_host = {
+		send_interface_toast = {
+			type = event_toast_effect_bad
+			title = LR_house_banner_raised_host_toast
+			left_icon = scope:lr_new_lord
+			right_icon = scope:lr_banner_county
+			custom_tooltip = LR_house_banner_raised_host_toast_desc
+		}
+	}
+	send_interface_toast = {
+		type = event_toast_effect_good
+		title = LR_house_banner_raised_toast
+		left_icon = scope:lr_firm_heir
+		right_icon = scope:lr_banner_county
+		custom_tooltip = LR_house_banner_raised_toast_desc
+	}
+}
+
+# Root: a house of the Potentes lord (LR_can_proclaim_house_lordship_trigger). Scope: lr_lordship_duchy, the warlord duchy of
+# their seat (var LR_warlord_duchy on the county, LR_warlord_duchy_map_effects.txt). Creates it (duchy at most), stays
+# the vassal of their liege, takes the warlord map's counties de jure under it and claims those where their house holds
+# a Fortified Compound or House Seat.
+LR_proclaim_house_lordship_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = lr_lordship_change
+		add_claim_on_loss = no
+	}
+	scope:lr_lordship_duchy = {
+		change_title_holder = {
+			holder = root
+			change = scope:lr_lordship_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:lr_lordship_change
+	every_county = {
+		limit = {
+			has_variable = LR_warlord_duchy
+			var:LR_warlord_duchy = scope:lr_lordship_duchy
+		}
+		set_de_jure_liege_title = scope:lr_lordship_duchy
+		if = {
+			limit = {
+				NOT = { holder ?= root }
+				any_county_province = {
+					exists = trade_post_district
+					trade_post_owner ?= { house ?= root.house }
+					LR_entrenchment_stage_at_least_trigger = { STAGE = 3 }
+				}
+			}
+			save_temporary_scope_as = lr_lordship_claim
+			root = {
+				if = {
+					limit = { NOT = { has_claim_on = scope:lr_lordship_claim } }
+					add_pressed_claim = scope:lr_lordship_claim
+				}
+			}
+		}
+	}
+	remove_character_flag = LR_potentes_lord # one proclamation per house lord
+	add_character_flag = LR_potentes_proclaimed
+}
+
+##################################################
+# The Rise of the Potentes map (LR_potentes_situation.txt): one county at a time, only when it changes
+##################################################
+
+# County title. Puts the county in the one sub-region it belongs in, or in none: Archontes holder first, else the
+# deepest stage of a Potentes post in it (House Seat, Fortified Compound, Tower House). Factories are not shown.
+LR_potentes_map_refresh_county_effect = {
+	save_temporary_scope_as = lr_pot_county
+	situation:LR_potentes_situation ?= {
+		LR_potentes_map_remove_effect = { FROM = LR_pot_archontes }
+		LR_potentes_map_remove_effect = { FROM = LR_pot_house_seat }
+		LR_potentes_map_remove_effect = { FROM = LR_pot_compound }
+		LR_potentes_map_remove_effect = { FROM = LR_pot_tower }
+		if = {
+			limit = { scope:lr_pot_county.holder ?= { has_government = archontes_government } }
+			LR_potentes_map_put_effect = { TO = LR_pot_archontes }
+		}
+		else_if = {
+			limit = { scope:lr_pot_county = { any_county_province = { LR_potentes_post_stage_trigger = { STAGE = 4 } } } }
+			LR_potentes_map_put_effect = { TO = LR_pot_house_seat }
+		}
+		else_if = {
+			limit = { scope:lr_pot_county = { any_county_province = { LR_potentes_post_stage_trigger = { STAGE = 3 } } } }
+			LR_potentes_map_put_effect = { TO = LR_pot_compound }
+		}
+		else_if = {
+			limit = { scope:lr_pot_county = { any_county_province = { LR_potentes_post_stage_trigger = { STAGE = 2 } } } }
+			LR_potentes_map_put_effect = { TO = LR_pot_tower }
+		}
+	}
+}
+
+# Situation scope; needs scope:lr_pot_county
+LR_potentes_map_remove_effect = {
+	situation_sub_region:$FROM$ = {
+		if = {
+			limit = { situation_sub_region_has_county = scope:lr_pot_county }
+			remove_dejure_title_from_sub_region = scope:lr_pot_county
+		}
+	}
+}
+
+# Situation scope; needs scope:lr_pot_county
+LR_potentes_map_put_effect = {
+	situation_sub_region:$TO$ = {
+		add_dejure_title_to_sub_region = scope:lr_pot_county
+	}
+}
+
+# Character: repaints every county in their domain (game start for history Archontes, settling)
+LR_potentes_map_refresh_domain_effect = {
+	every_held_title = {
+		limit = { tier = tier_county }
+		LR_potentes_map_refresh_county_effect = yes
+	}
+}

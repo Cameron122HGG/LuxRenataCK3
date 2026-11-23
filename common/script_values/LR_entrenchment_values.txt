@@ -1,0 +1,149 @@
+﻿# LR 2026-11-22 (user): Tower House entrenchment (LR_entrenchment_effects.txt). Root is the province with the trade post.
+# 0-100. Stages: 1 Factory (0-24), 2 Tower House (25-49), 3 Fortified Compound (50-74), 4 House Seat (75+).
+
+LR_entrenchment_value = {
+	value = 0
+	# The Tower House: 10 per level
+	if = {
+		limit = { has_building_or_higher = lr_tower_house_05 }
+		add = 50
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_04 }
+		add = 40
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_03 }
+		add = 30
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_02 }
+		add = 20
+	}
+	else_if = {
+		limit = { has_building_or_higher = lr_tower_house_01 }
+		add = 10
+	}
+	# Years the same house has held the post: half a point a year, at most 25
+	if = {
+		limit = { has_variable = LR_entrenched_since }
+		add = {
+			value = current_year
+			subtract = var:LR_entrenched_since
+			multiply = 0.5
+			min = 0
+			max = 25
+		}
+	}
+	# Guards, men and mercenaries in the post
+	if = {
+		limit = { has_building_or_higher = trade_watchtower_01 }
+		add = 5
+	}
+	if = {
+		limit = { has_building_or_higher = trade_recruitment_office_01 }
+		add = 5
+	}
+	if = {
+		limit = { has_building_or_higher = trade_mercenary_office_01 }
+		add = 5
+	}
+	# The house: company size and prestige
+	if = {
+		limit = { trade_post_owner ?= { has_realm_law = company_size_huge } }
+		add = 15
+	}
+	else_if = {
+		limit = { trade_post_owner ?= { has_realm_law = company_size_large } }
+		add = 10
+	}
+	else_if = {
+		limit = { trade_post_owner ?= { has_realm_law = company_size_medium } }
+		add = 5
+	}
+	if = {
+		limit = { exists = trade_post_owner }
+		add = {
+			value = trade_post_owner.prestige_level
+			multiply = 2
+		}
+	}
+	# A weak host: at war, in debt, a child
+	if = {
+		limit = { county.holder ?= { is_at_war = yes } }
+		add = 5
+	}
+	if = {
+		limit = { county.holder ?= { gold < 0 } }
+		add = 5
+	}
+	if = {
+		limit = { county.holder ?= { is_adult = no } }
+		add = 5
+	}
+	# A strong host: county control (up to -10)
+	if = {
+		limit = { exists = county }
+		subtract = {
+			value = county.county_control
+			divide = 10
+		}
+	}
+	# Strangers: the house's faith and culture against the county's
+	if = {
+		limit = {
+			exists = trade_post_owner
+			trade_post_owner.faith != faith
+		}
+		subtract = 10
+	}
+	if = {
+		limit = {
+			exists = trade_post_owner
+			trade_post_owner.culture != culture
+		}
+		subtract = 5
+	}
+	min = 0
+	max = 100
+}
+
+# The stage (1-4) for LR_entrenchment_value
+LR_entrenchment_stage_value = {
+	value = 1
+	if = {
+		limit = { LR_entrenchment_value >= 75 }
+		value = 4
+	}
+	else_if = {
+		limit = { LR_entrenchment_value >= 50 }
+		value = 3
+	}
+	else_if = {
+		limit = { LR_entrenchment_value >= 25 }
+		value = 2
+	}
+}
+
+# Gold the house pays the holder to take the county peacefully (Raise the House Banner). Root is the province with the
+# post. Cheaper the deeper the house is dug in: 250 at entrenchment 75, 200 at 100.
+LR_house_banner_price_value = {
+	value = 400
+	if = {
+		limit = { has_variable = LR_entrenchment }
+		subtract = {
+			value = var:LR_entrenchment
+			multiply = 2
+		}
+	}
+	min = 150
+}
+
+# District scope (a trade post): its province's entrenchment, for ordering posts
+LR_district_entrenchment_value = {
+	value = 0
+	if = {
+		limit = { district_province = { has_variable = LR_entrenchment } }
+		add = district_province.var:LR_entrenchment
+	}
+}

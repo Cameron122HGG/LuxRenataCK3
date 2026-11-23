@@ -1,0 +1,97 @@
+﻿# LR 2026-11-22 (user): Potentes government and Tower House entrenchment (05_LR_potentes_government_types.txt).
+
+# Character: may build Tower Houses and entrench (owner of a trade post)
+LR_tower_house_owner_trigger = {
+	has_gdp_dlc_trigger = yes
+	government_has_flag = government_is_potentes
+}
+
+# Character: a plain merchant house that may become a house of the Potentes (LR_found_potentes_decision)
+LR_can_found_potentes_trigger = {
+	has_gdp_dlc_trigger = yes
+	has_government = merchant_government
+	is_house_head = yes
+	OR = {
+		has_realm_law = company_size_medium
+		has_realm_law = company_size_large
+		has_realm_law = company_size_huge
+	}
+	# The diaspora houses stay a network, not a seat
+	culture = { NOT = { has_cultural_tradition = tradition_diasporic } }
+}
+
+# Province with a trade post: the post has reached entrenchment stage $STAGE$ (1-4) or more
+LR_entrenchment_stage_at_least_trigger = {
+	has_variable = LR_entrenchment_stage
+	var:LR_entrenchment_stage >= $STAGE$
+}
+
+# Province: a trade post here can be turned into the owner's county (Raise the House Banner / Seize the Stronghold).
+# Vassal only: the county's holder keeps their seat and other land, so the house becomes their vassal.
+# $HOUSE$: the Potentes head; scope: the province.
+LR_house_banner_target_trigger = {
+	exists = trade_post_district
+	trade_post_owner ?= $HOUSE$
+	LR_entrenchment_stage_at_least_trigger = { STAGE = 4 }
+	county = {
+		save_temporary_scope_as = lr_banner_county
+		is_landless_type_title = no
+		holder ?= {
+			this != $HOUSE$
+			is_landed = yes
+			# not their seat, and they keep land of their own
+			capital_county != scope:lr_banner_county
+			any_held_title = {
+				tier = tier_county
+				this != scope:lr_banner_county
+			}
+		}
+	}
+}
+
+# Character: the house head may raise the banner over at least one entrenched post
+LR_can_raise_house_banner_trigger = {
+	LR_tower_house_owner_trigger = yes
+	is_landed = no
+	any_owned_trade_post_district = {
+		district_province = { LR_house_banner_target_trigger = { HOUSE = root } }
+	}
+}
+
+# Character: a landed lord who came from a house of the Potentes (LR_potentes_flip_effect) may proclaim the warlord duchy of
+# their seat. $DUCHY$ is the duchy title.
+LR_can_proclaim_house_lordship_trigger = {
+	has_character_flag = LR_potentes_lord
+	is_landed = yes
+	highest_held_title_tier = tier_county # duchy at most: the proclamation is the house's last step up
+	$DUCHY$ = {
+		tier = tier_duchy
+		LR_is_warlord_title_trigger = yes
+		NOT = { exists = holder }
+		OR = {
+			LR_warlord_title_is_open_trigger = { TITLE = this }
+			has_global_variable = LR_test_potentes_warlords_open # the 936 test start opens them early
+		}
+	}
+}
+
+# Character: holds in their domain a county with a Potentes trade post at entrenchment stage $STAGE$ or more
+# (the Rise of the Potentes situation map, LR_potentes_situation.txt)
+LR_hosts_entrenchment_stage_trigger = {
+	is_landed = yes
+	any_held_title = {
+		tier = tier_county
+		any_county_province = {
+			exists = trade_post_district
+			trade_post_owner ?= { government_has_flag = government_is_potentes }
+			LR_entrenchment_stage_at_least_trigger = { STAGE = $STAGE$ }
+		}
+	}
+}
+
+# Province: a Potentes trade post here at entrenchment stage $STAGE$ or more
+LR_potentes_post_stage_trigger = {
+	exists = trade_post_district
+	trade_post_owner ?= { government_has_flag = government_is_potentes }
+	LR_entrenchment_stage_at_least_trigger = { STAGE = $STAGE$ }
+}

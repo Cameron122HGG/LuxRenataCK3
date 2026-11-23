@@ -1,0 +1,141 @@
+﻿# LR 2026-11-22 (user): Potentes and Tower House entrenchment (LR_entrenchment_effects.txt).
+# LR_entrenchment.0001: a house of the Potentes raises its banner over a county; the holder sells it or refuses.
+# LR_entrenchment.0010: a player holder faces a Fortified Compound or House Seat in their county.
+
+namespace = LR_entrenchment
+
+# Root: the county holder (scope:lr_banner_host). Scopes: lr_banner_house (the Potentes head), lr_banner_province,
+# lr_banner_county. The house has already put scope:lr_banner_price gold aside (LR_raise_house_banner_decision).
+LR_entrenchment.0001 = {
+	type = character_event
+	title = LR_entrenchment.0001.t
+	desc = LR_entrenchment.0001.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:lr_banner_house
+		animation = scheme
+	}
+
+	option = { # sell them the county as a fief
+		name = LR_entrenchment.0001.a
+		add_gold = scope:lr_banner_price
+		add_opinion = {
+			target = scope:lr_banner_house
+			modifier = LR_house_banner_granted_opinion
+		}
+		scope:lr_banner_house = {
+			add_opinion = {
+				target = root
+				modifier = LR_house_banner_granted_opinion
+			}
+			LR_potentes_flip_effect = yes
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 30
+				gold < 0
+			}
+			modifier = {
+				add = 30
+				is_at_war = yes
+			}
+			opinion_modifier = {
+				opinion_target = scope:lr_banner_house
+				multiplier = 0.5
+			}
+			ai_value_modifier = {
+				ai_greed = 0.5
+			}
+		}
+	}
+
+	option = { # refuse: the house keeps its gold and its grudge
+		name = LR_entrenchment.0001.b
+		scope:lr_banner_house = {
+			add_gold = scope:lr_banner_price
+			add_opinion = {
+				target = root
+				modifier = LR_house_banner_refused_opinion
+			}
+			add_character_flag = {
+				flag = LR_house_banner_refused
+				years = 10
+			}
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				title = LR_house_banner_refused_toast
+				left_icon = root
+				right_icon = scope:lr_banner_county
+				custom_tooltip = LR_house_banner_refused_toast_desc
+			}
+		}
+		ai_chance = {
+			base = 40
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_vengefulness = 0.25
+			}
+		}
+	}
+}
+
+# Root: a player county holder. Scopes: lr_entrench_province, lr_entrench_owner, lr_entrench_county
+# (LR_entrenchment_update_province_effect).
+LR_entrenchment.0010 = {
+	type = character_event
+	title = LR_entrenchment.0010.t
+	desc = LR_entrenchment.0010.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:lr_entrench_owner
+		animation = personality_bold
+	}
+
+	trigger = {
+		exists = scope:lr_entrench_owner
+		scope:lr_entrench_province = { exists = trade_post_district }
+	}
+
+	option = { # buy them out of their privileges: the years they have held the post count for nothing
+		name = LR_entrenchment.0010.a
+		trigger = { gold >= 100 }
+		remove_short_term_gold = 100
+		scope:lr_entrench_owner = { add_gold = 100 }
+		scope:lr_entrench_province = {
+			set_variable = {
+				name = LR_entrenched_since
+				value = current_year
+			}
+		}
+		custom_tooltip = LR_entrenchment.0010.a.tt
+	}
+
+	option = { # confirm their privileges
+		name = LR_entrenchment.0010.b
+		add_opinion = {
+			target = scope:lr_entrench_owner
+			modifier = LR_tower_house_privileges_opinion
+		}
+		scope:lr_entrench_owner = {
+			add_opinion = {
+				target = root
+				modifier = LR_tower_house_privileges_opinion
+			}
+			add_prestige = 50
+		}
+	}
+
+	option = { # tear down their tower
+		name = LR_entrenchment.0010.c
+		LR_entrenchment_oust_effect = yes
+	}
+}

@@ -1,0 +1,267 @@
+﻿# LR 2026-11-22 (user): Potentes government (05_LR_potentes_government_types.txt) and Tower House entrenchment
+# (LR_entrenchment_effects.txt). Silk & Silver only.
+
+# A merchant house of standing becomes a house of the Potentes
+LR_found_potentes_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/event_story/gdp_decision_become_merchant.dds"
+	}
+	decision_group_type = realm
+	desc = LR_found_potentes_decision_desc
+	selection_tooltip = LR_found_potentes_decision_tooltip
+	ai_check_interval = 120
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		has_government = merchant_government
+	}
+
+	is_valid = {
+		LR_can_found_potentes_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 300
+	}
+
+	effect = {
+		LR_make_potentes_effect = yes
+	}
+
+	ai_potential = {
+		LR_can_found_potentes_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 20
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = arrogant
+		}
+	}
+}
+
+# The house asks the county's holder to sell it the county where its Tower House stands, as a fief
+LR_raise_house_banner_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = LR_raise_house_banner_decision_desc
+	selection_tooltip = LR_raise_house_banner_decision_tooltip
+	confirm_text = LR_raise_house_banner_decision_confirm
+	ai_check_interval = 60
+
+	cooldown = { years = 3 }
+
+	is_shown = {
+		LR_tower_house_owner_trigger = yes
+		is_landed = no
+		any_owned_trade_post_district = {
+			district_province = { LR_entrenchment_stage_at_least_trigger = { STAGE = 3 } }
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_raise_house_banner_needs_seat_tt
+			LR_can_raise_house_banner_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_raise_house_banner_needs_gold_tt
+			any_owned_trade_post_district = {
+				district_province = {
+					LR_house_banner_target_trigger = { HOUSE = root }
+					root.gold >= LR_house_banner_price_value
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	effect = {
+		save_scope_as = lr_banner_house
+		ordered_owned_trade_post_district = {
+			limit = {
+				district_province = {
+					LR_house_banner_target_trigger = { HOUSE = root }
+					root.gold >= LR_house_banner_price_value
+				}
+			}
+			order_by = LR_district_entrenchment_value
+			district_province = {
+				save_scope_as = lr_banner_province
+				county = { save_scope_as = lr_banner_county }
+				county.holder = { save_scope_as = lr_banner_host }
+				save_scope_value_as = {
+					name = lr_banner_price
+					value = LR_house_banner_price_value
+				}
+			}
+		}
+		custom_tooltip = LR_raise_house_banner_decision_effect_tt
+		hidden_effect = {
+			remove_short_term_gold = scope:lr_banner_price
+			scope:lr_banner_host = { trigger_event = LR_entrenchment.0001 }
+		}
+	}
+
+	ai_potential = {
+		LR_can_raise_house_banner_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = 25
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -25
+			has_trait = content
+		}
+	}
+}
+
+# The house's lord proclaims the warlord duchy around their seat (duchy at most)
+LR_proclaim_house_lordship_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	desc = LR_proclaim_house_lordship_decision_desc
+	selection_tooltip = LR_proclaim_house_lordship_decision_tooltip
+	ai_check_interval = 60
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		has_character_flag = LR_potentes_lord
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_proclaim_house_lordship_needs_duchy_tt
+			capital_county ?= {
+				has_variable = LR_warlord_duchy
+			}
+			root = {
+				LR_can_proclaim_house_lordship_trigger = { DUCHY = capital_county.var:LR_warlord_duchy }
+			}
+		}
+		custom_tooltip = {
+			text = LR_proclaim_house_lordship_needs_reach_tt
+			OR = {
+				# a second county of the duchy
+				any_held_title = {
+					tier = tier_county
+					has_variable = LR_warlord_duchy
+					this != root.capital_county
+					var:LR_warlord_duchy = root.capital_county.var:LR_warlord_duchy
+				}
+				# or the house's trading branch dug in elsewhere in it
+				any_county = {
+					has_variable = LR_warlord_duchy
+					this != root.capital_county
+					var:LR_warlord_duchy = root.capital_county.var:LR_warlord_duchy
+					any_county_province = {
+						exists = trade_post_district
+						trade_post_owner ?= { house ?= root.house }
+						LR_entrenchment_stage_at_least_trigger = { STAGE = 3 }
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		gold = 100
+		prestige = 300
+	}
+
+	effect = {
+		capital_county.var:LR_warlord_duchy = { save_scope_as = lr_lordship_duchy }
+		custom_tooltip = LR_proclaim_house_lordship_decision_effect_tt
+		LR_proclaim_house_lordship_effect = yes
+	}
+
+	ai_potential = {
+		has_character_flag = LR_potentes_lord
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# LR 2026-11-22 (user): the Archontes settle into their culture's government, which lifts the duchy cap
+LR_settle_archontes_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = LR_settle_archontes_decision_desc
+	selection_tooltip = LR_settle_archontes_decision_tooltip
+	confirm_text = LR_settle_archontes_decision_confirm
+	ai_check_interval = 120
+
+	is_shown = {
+		has_government = archontes_government
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_settle_archontes_not_founder_tt
+			NOT = { has_character_flag = LR_potentes_lord }
+		}
+		prestige_level >= 2
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 250
+	}
+
+	effect = {
+		custom_tooltip = LR_settle_archontes_decision_effect_tt
+		change_government = feudal_government # normalized to the culture's group (LR_dynastic_government_effects.txt)
+		LR_potentes_map_refresh_domain_effect = yes # the map: no longer Archontes
+	}
+
+	ai_potential = {
+		has_government = archontes_government
+		highest_held_title_tier >= tier_duchy
+	}
+
+	ai_will_do = {
+		base = 5
+		modifier = {
+			add = 20
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -5
+			has_trait = greedy
+		}
+	}
+}

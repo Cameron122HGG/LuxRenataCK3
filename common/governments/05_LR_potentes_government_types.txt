@@ -1,0 +1,144 @@
+﻿# LR 2026-11-22 (user): the Potentes, a clone of vanilla merchant_government (Silk & Silver) for noble merchant houses
+# that dig into foreign cities. On top of the merchant it:
+#   - owns trade posts (trade_post rule + government_has_trade_posts flag; vanilla gives them only to republics)
+#   - builds the Tower House in its posts (LR_tower_house_buildings.txt) and entrenches there (LR_entrenchment_*)
+#   - can take an entrenched county as a vassal of its holder (Raise the House Banner, Seize the Stronghold), the house
+#     splitting into a landed branch and a trading branch, and the landed branch can proclaim a warlord duchy (no higher)
+# It keeps government_is_merchant, so company, sentiment, contracts and the merchant succession law all still apply.
+# The engine hands out merchant_government as the merchant mechanic's default; LR_potentes_keep_government_effect
+# puts holders of a house of the Potentes title (var LR_potentes_title) back on this one.
+potentes_government = {
+	government_rules = {
+		court_generate_spouses = no
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		landless_playable = yes
+		allow_out_of_realm_inheritance = yes
+		use_as_base_on_landed = yes
+		can_have_vassal_suzerain = yes
+		profit_trade_routes = yes
+		distribution_trade_routes = no
+		can_sponsor_construction = yes
+		disable_regnal_numbers = yes
+		trade_post = yes # LR: the Potentes owns trade posts
+	}
+
+	domicile_type = merchant_company
+	court_generate_commanders = no
+	house_unity = merchant_house_unity
+	mechanic_type = merchant
+	is_mechanic_type_default = no
+
+	can_get_government = {
+		has_gdp_dlc_trigger = yes
+		any_held_title = {
+			title_tier = county
+			is_landless_type_title = yes
+		}
+	}
+
+	valid_holdings = { tribal_holding church_holding castle_holding city_holding temple_citadel_holding }
+
+	character_modifier = {
+		men_at_arms_cap = -99
+		men_at_arms_limit = -99
+		character_travel_speed = 20
+		siege_weapon_siege_value_mult = -0.5
+		mercenary_hire_cost_mult = 0.5 # LR: house guards and hired swords (merchant: 1)
+		short_reign_duration_mult = -5
+		long_reign_bonus_mult = -1
+		domicile_travel_speed = -0.75
+		prestige_standalone_gain_mult = -0.25 # LR: a noble house (merchant: -0.5)
+	}
+
+	ai = {
+		use_goals = no
+		use_scripted_guis = no
+		perform_religious_reformation = no
+		use_legends = no
+	}
+
+	flags = {
+		cannot_be_vassal_or_liege
+		government_is_merchant
+		government_uses_landless_lifestyle_perks
+		government_uses_landless_or_trader_lifestyle_perks
+		has_unique_government_perks
+		government_uses_company_sentiment
+		government_has_merchant_company
+		government_has_trade_posts # LR: trade post UI and can_build_external_trade_post (00_rules.txt)
+		government_is_potentes # LR: Tower House, entrenchment, the flip
+	}
+
+	color = hsv{ 0.11 0.55 0.70 }
+	realm_mask_offset = { 0.0 0.05 }
+	realm_mask_scale = { 1 1 }
+
+	build_queue_reserve_categories = {
+		gold
+	}
+}
+
+# LR 2026-11-22 (user): the Archontes, the landed sibling of the Potentes. A house of the Potentes that takes a county
+# (LR_potentes_flip_effect) becomes Archontes: the city lords who rose from trade, like the archontes who seized Greek
+# cities as Byzantine authority broke up. A copy of LR's feudal_government with:
+#   - profit trade routes (it still trades for gold, like a republic)
+#   - a cap: it creates duchies, and kingdoms only from the warlord titles (can_create_title in 00_rules.txt, government_is_archontes)
+#   - no government group: LR's normalizer and the foreign-customs rules leave it alone (as they do republics)
+# LR_settle_archontes_decision moves it onto its culture group's government (feudal_government, normalized).
+archontes_government = {
+	government_rules = {
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		dynasty_named_realms = yes
+		legitimacy = yes
+		allow_accolades = yes
+		profit_trade_routes = yes # LR: the house keeps trading
+	}
+
+	royal_court = any
+
+	primary_holding = city_holding # LR: city lords
+	valid_holdings = { castle_holding temple_citadel_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+
+	vassal_contract_group = feudal_vassal
+
+	can_get_government = {
+		has_gdp_dlc_trigger = yes
+	}
+
+	character_modifier = {
+		mercenary_hire_cost_mult = -0.15 # LR: hired swords, as the house always had
+		prestige_standalone_gain_mult = -0.15 # LR: new men among the lords
+	}
+
+	ai = {
+		use_legends = yes
+	}
+
+	flags = {
+		government_is_feudal
+		government_is_settled
+		government_is_settled_non_tribal
+		may_elevate_co_monarch
+		government_uses_crown_authority
+		government_uses_domain_limit
+		government_uses_legitimacy
+		government_uses_royal_court
+		government_is_archontes # LR: warlord-kingdom cap, settle decision
+	}
+
+	mechanic_type = feudal
+	is_mechanic_type_default = no
+
+	possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }
+
+	color = hsv{ 0.08 0.60 0.55 }
+	realm_mask_offset = { 0.0 0.01 }
+	realm_mask_scale = { 1 1 }
+
+	build_queue_reserve_categories = {
+		gold
+	}
+}
