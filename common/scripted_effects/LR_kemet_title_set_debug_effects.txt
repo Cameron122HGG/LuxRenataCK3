@@ -1,0 +1,59 @@
+﻿# LR Kemet title set (tools/register_kemet_set.py, 2026-11-24). GENERATED. Debug helpers for the Kemet set (debug mode only).
+
+# Root takes every county of the Kemet set outside its realm (with their vassals)
+LR_kemet_debug_take_lands_effect = {
+	title:c_aswan = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_jabal_quzlum = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_qus = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_qusayr = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_asyut = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_kharga = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_dakhla = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_ushmun = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_bahnasa = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_bahriya = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_farafra = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_fayyum = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_giza = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_cairo = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_alexandria = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_al-buhaira = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_al-gharbiya = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_sharkiya = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_damietta = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_farama = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_firaun = { add_to_temporary_list = LR_kemet_debug_counties }
+	title:c_sinai = { add_to_temporary_list = LR_kemet_debug_counties }
+	every_in_list = {
+		list = LR_kemet_debug_counties
+		limit = {
+			NOR = {
+				holder ?= root
+				holder.top_liege ?= root
+			}
+		}
+		create_title_and_vassal_change = {
+			type = usurped
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		change_title_holder_include_vassals = {
+			holder = root
+			change = scope:change
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+}
+
+# Root raises both crowns not yet raised, ignoring control
+LR_kemet_debug_raise_all_effect = {
+	if = {
+		limit = { NOT = { title:k_kemet_ta_shemau = { has_variable = LR_kemet_raised } } }
+		LR_kemet_raise_ta_shemau_effect = yes
+	}
+	if = {
+		limit = { NOT = { title:k_kemet_ta_mehu = { has_variable = LR_kemet_raised } } }
+		LR_kemet_raise_ta_mehu_effect = yes
+	}
+}
+

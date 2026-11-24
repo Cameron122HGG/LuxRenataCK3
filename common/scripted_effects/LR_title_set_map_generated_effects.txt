@@ -1000,6 +1000,24 @@ LR_tsm_tag_set_titles_effect = {
 	title:d_pontic_bosna = { set_variable = { name = LR_tsm_set value = flag:pontic } }
 	title:d_pontic_dalmatia = { set_variable = { name = LR_tsm_set value = flag:pontic } }
 	title:d_pontic_lower_bosna = { set_variable = { name = LR_tsm_set value = flag:pontic } }
+	# kemet (17)
+	title:e_kemet_tawy = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:k_kemet_ta_shemau = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_ta_seti = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_waset = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_zawty = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_wenet = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_per_medjed = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_ta_she = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:k_kemet_ta_mehu = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_ineb_hedj = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_iunu = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_raqedet = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_imenti = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_sap_meh = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_per_bastet = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_djanet = { set_variable = { name = LR_tsm_set value = flag:kemet } }
+	title:d_sepat_ta_mefkat = { set_variable = { name = LR_tsm_set value = flag:kemet } }
 }
 
 # Needs scope:situation and scope:LR_tsm_county. Puts the county in one sub-region (nothing to do if it is already
@@ -1124,6 +1142,16 @@ LR_tsm_move_to_pontic_effect = {
 	scope:situation = { change_variable = { name = LR_tsm_count_pontic add = 1 } }
 }
 
+LR_tsm_move_to_kemet_effect = {
+	if = {
+		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:kemet } }
+		LR_tsm_uncache_effect = yes
+		scope:situation.situation_sub_region:LR_tsm_kemet = { add_dejure_title_to_sub_region = scope:LR_tsm_county }
+		scope:LR_tsm_county = { set_variable = { name = LR_tsm_in value = flag:kemet } }
+	}
+	scope:situation = { change_variable = { name = LR_tsm_count_kemet add = 1 } }
+}
+
 LR_tsm_move_to_foreign_effect = {
 	if = {
 		limit = { NOT = { scope:LR_tsm_county.var:LR_tsm_in ?= flag:foreign } }
@@ -1185,6 +1213,10 @@ LR_tsm_uncache_effect = {
 		else_if = {
 			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:pontic }
 			LR_tsm_remove_from_effect = { FROM = LR_tsm_pontic }
+		}
+		else_if = {
+			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:kemet }
+			LR_tsm_remove_from_effect = { FROM = LR_tsm_kemet }
 		}
 		else_if = {
 			limit = { scope:LR_tsm_county.var:LR_tsm_in = flag:foreign }
@@ -1253,6 +1285,7 @@ LR_tsm_reset_counts_effect = {
 	set_variable = { name = LR_tsm_count_missatica value = 0 }
 	set_variable = { name = LR_tsm_count_german value = 0 }
 	set_variable = { name = LR_tsm_count_pontic value = 0 }
+	set_variable = { name = LR_tsm_count_kemet value = 0 }
 	set_variable = { name = LR_tsm_count_foreign value = 0 }
 }
 
@@ -1305,6 +1338,10 @@ LR_tsm_move_to_picked_set_effect = {
 	else_if = {
 		limit = { scope:situation.var:LR_tsm_pick = { var:LR_tsm_set = flag:pontic } }
 		LR_tsm_move_to_pontic_effect = yes
+	}
+	else_if = {
+		limit = { scope:situation.var:LR_tsm_pick = { var:LR_tsm_set = flag:kemet } }
+		LR_tsm_move_to_kemet_effect = yes
 	}
 	else = { LR_tsm_remove_from_all_effect = yes }
 }
