@@ -1,0 +1,177 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+
+# Root (the Augustus) makes scope:new_holder Caesar of scope:caesar_command: the command title, your counties,
+# titles and direct vassals in its area (LR_cleave_hand_over_half_effect), the command under your hegemony.
+LR_caesar_appoint_effect = {
+	save_scope_as = caesar_augustus
+	custom_tooltip = LR_caesar_appoint_tt
+	if = {
+		limit = { scope:caesar_command = title:e_western_roman_empire }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_west }
+		LR_cleave_give_title_effect = { TITLE = e_western_roman_empire }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_eastern_roman_empire }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_east }
+		LR_cleave_give_title_effect = { TITLE = e_eastern_roman_empire }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_brittanic_empire }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_britannia }
+		LR_cleave_give_title_effect = { TITLE = e_brittanic_empire }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_gallic_empire }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_gallia }
+		LR_cleave_give_title_effect = { TITLE = e_gallic_empire }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_palmyrene_empire }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_palmyra }
+		LR_cleave_give_title_effect = { TITLE = e_palmyrene_empire }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_praetorian_prefecture_gallia }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_gallia }
+		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_gallia }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_praetorian_prefecture_italia }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_italia }
+		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_italia }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_praetorian_prefecture_illyricum }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_illyricum }
+		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_illyricum }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_praetorian_prefecture_germania }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_germania }
+		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_germania }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_praetorian_prefecture_macedonia }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_macedonia }
+		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_macedonia }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_praetorian_prefecture_pontica }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_pontica }
+		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_pontica }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_praetorian_prefecture_oriens }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_oriens }
+		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_oriens }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_magisterium_italia }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_mag_italia }
+		LR_cleave_give_title_effect = { TITLE = e_magisterium_italia }
+	}
+	else_if = {
+		limit = { scope:caesar_command = title:e_magisterium_africa }
+		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_mag_africa }
+		LR_cleave_give_title_effect = { TITLE = e_magisterium_africa }
+	}
+	hidden_effect = {
+		if = {
+			limit = { primary_title.tier = tier_hegemony }
+			scope:caesar_command = { set_de_jure_liege_title = root.primary_title }
+		}
+		scope:caesar_command = { set_variable = { name = LR_caesar_of value = scope:new_holder } }
+	}
+	scope:new_holder = {
+		if = {
+			limit = { has_title = scope:caesar_command }
+			set_primary_title_to = scope:caesar_command
+		}
+		add_trait = caesar
+		add_character_flag = LR_caesar_flag # flavourization: shown as Caesar
+		add_opinion = { target = root modifier = grateful_opinion opinion = 40 }
+		set_variable = { name = LR_caesar_augustus value = root }
+	}
+	# seniority among Caesars (the senior one is promoted)
+	if = { limit = { NOT = { has_global_variable = LR_caesar_seq } } set_global_variable = { name = LR_caesar_seq value = 0 } }
+	change_global_variable = { name = LR_caesar_seq add = 1 }
+	scope:new_holder = { set_variable = { name = LR_caesar_seq value = global_var:LR_caesar_seq } }
+	# 2026-11-24 (user): the Caesar is independent, bound to the Augustus in the Imperial College
+	custom_tooltip = LR_caesar_independent_tt
+	hidden_effect = {
+		if = {
+			limit = { scope:new_holder = { is_independent_ruler = no } }
+			create_title_and_vassal_change = { type = independency save_scope_as = caesar_indep add_claim_on_loss = no }
+			scope:new_holder = { becomes_independent = { change = scope:caesar_indep } }
+			resolve_title_and_vassal_change = scope:caesar_indep
+		}
+	}
+	scope:caesar_command = { save_scope_as = college_title }
+	LR_college_add_title_effect = yes
+	scope:new_holder = { trigger_event = LR_caesar.0003 }
+}
+
+# Root (an Augustus): put scope:college_title into his Imperial College, founding it if he has none
+LR_college_add_title_effect = {
+	primary_title = { save_scope_as = lr_college_lead } # scope-relative: also run for others than root
+	if = {
+		limit = { exists = primary_title.title_confederation }
+		primary_title.title_confederation = {
+			save_scope_as = lr_college
+			add_confederation_member_title = scope:college_title
+		}
+	}
+	else = {
+		create_confederation = {
+			name = LR_COLLEGIUM_IMPERIALE
+			type = confederation_type:lr_imperial_college
+			leading_title = scope:lr_college_lead
+		}
+		scope:new_confederation ?= {
+			save_scope_as = lr_college
+			set_cohesion = 30
+			set_coa = scope:lr_college_lead
+			add_confederation_member_title = scope:college_title
+		}
+	}
+	scope:lr_college ?= { LR_college_rename_effect = yes }
+}
+
+# Confederation: name by membership (Tetrarchia / Concordia Augustorum / Collegium Imperiale)
+LR_college_rename_effect = {
+	if = {
+		limit = {
+			any_confederation_member = { count >= 2 LR_caesar_is_augustus_trigger = yes }
+			any_confederation_member = { count >= 2 has_trait = caesar }
+		}
+		set_confederation_name = LR_TETRARCHIA
+	}
+	else_if = {
+		limit = { any_confederation_member = { count >= 2 LR_caesar_is_augustus_trigger = yes } }
+		set_confederation_name = LR_CONCORDIA_AUGUSTORUM
+	}
+	else = { set_confederation_name = LR_COLLEGIUM_IMPERIALE }
+}
+
+# Character: take your titles out of their Imperial College (not a leading title)
+LR_college_leave_effect = {
+	every_held_title = {
+		limit = {
+			exists = title_confederation
+			NOT = { title_confederation.leading_title ?= this }
+		}
+		save_temporary_scope_as = lr_leaving_title
+		title_confederation = { remove_confederation_member_title = scope:lr_leaving_title }
+	}
+}
+
+# Character: stop being a Caesar (recalled, proclaimed Augustus, or promoted)
+LR_caesar_unmake_effect = {
+	if = { limit = { has_trait = caesar } remove_trait = caesar }
+	if = { limit = { has_character_flag = LR_caesar_flag } remove_character_flag = LR_caesar_flag }
+	every_held_title = {
+		limit = { has_variable = LR_caesar_of }
+		remove_variable = LR_caesar_of
+	}
+}
+

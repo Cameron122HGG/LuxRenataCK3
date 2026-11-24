@@ -288,11 +288,13 @@ LR_form_magisterium_italia_effect = {
 		resolve_title_and_vassal_change = scope:LR_radd_change
 	}
 	set_global_variable = { name = LR_magisterium_italia_formed value = yes }
-	if = { limit = { root.primary_title.tier = tier_hegemony } title:e_magisterium_italia = { set_de_jure_liege_title = root.primary_title } }
+	LR_resort_magisteria_effect = yes # under your hegemony, Rome or (below them) your empire
 	if = { limit = { title:k_diocese_italia_annonaria = { is_titular = no } } title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_magisterium_italia } }
 	if = { limit = { title:k_diocese_italia_suburbicaria = { is_titular = no } } title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_magisterium_italia } }
-	title:e_praetorian_prefecture_italia = { set_variable = { name = LR_merged_into_magisterium value = title:e_magisterium_italia } }
-	if = { limit = { has_title = title:e_praetorian_prefecture_italia title:e_praetorian_prefecture_italia = { NOT = { any_de_jure_county = { always = yes } } } } destroy_title = title:e_praetorian_prefecture_italia }
+	if = { limit = { title:e_praetorian_prefecture_italia = { NOT = { any_de_jure_county = { always = yes } } } }
+		title:e_praetorian_prefecture_italia = { set_variable = { name = LR_merged_into_magisterium value = title:e_magisterium_italia } }
+		if = { limit = { has_title = title:e_praetorian_prefecture_italia } destroy_title = title:e_praetorian_prefecture_italia }
+	}
 }
 
 # Root (a restored Roman emperor) forms the Magisterium per Africam
@@ -303,11 +305,42 @@ LR_form_magisterium_africa_effect = {
 		resolve_title_and_vassal_change = scope:LR_radd_change
 	}
 	set_global_variable = { name = LR_magisterium_africa_formed value = yes }
-	if = { limit = { root.primary_title.tier = tier_hegemony } title:e_magisterium_africa = { set_de_jure_liege_title = root.primary_title } }
+	LR_resort_magisteria_effect = yes # under your hegemony, Rome or (below them) your empire
 	if = { limit = { title:k_diocese_africa = { is_titular = no } } title:k_diocese_africa = { set_de_jure_liege_title = title:e_magisterium_africa } }
 	if = { limit = { title:k_diocese_mauretania = { is_titular = no } } title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_magisterium_africa } }
-	title:e_praetorian_prefecture_africa = { set_variable = { name = LR_merged_into_magisterium value = title:e_magisterium_africa } }
-	if = { limit = { has_title = title:e_praetorian_prefecture_africa title:e_praetorian_prefecture_africa = { NOT = { any_de_jure_county = { always = yes } } } } destroy_title = title:e_praetorian_prefecture_africa }
+	if = { limit = { title:e_praetorian_prefecture_italia = { NOT = { any_de_jure_county = { always = yes } } } }
+		title:e_praetorian_prefecture_italia = { set_variable = { name = LR_merged_into_magisterium value = title:e_magisterium_africa } }
+		if = { limit = { has_title = title:e_praetorian_prefecture_italia } destroy_title = title:e_praetorian_prefecture_italia }
+	}
+}
+
+# Character: put the formed magisteria held in your realm under your hegemony, Rome, or your empire
+LR_resort_magisteria_effect = {
+	save_scope_as = LR_radd_mag_ruler
+	if = { limit = { has_title = title:h_roman_empire } title:h_roman_empire = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_roman_republic } title:h_roman_republic = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_western_roman_empire } title:h_western_roman_empire = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_western_roman_republic } title:h_western_roman_republic = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_eastern_roman_empire } title:h_eastern_roman_empire = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_eastern_roman_republic } title:h_eastern_roman_republic = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { primary_title.tier = tier_empire } primary_title = { save_scope_as = LR_radd_mag_liege } }
+	if = {
+		limit = { exists = scope:LR_radd_mag_liege }
+		if = {
+			limit = {
+				title:e_magisterium_italia = { OR = { holder ?= scope:LR_radd_mag_ruler holder.top_liege ?= scope:LR_radd_mag_ruler } }
+				NOT = { scope:LR_radd_mag_liege = title:e_magisterium_italia }
+			}
+			title:e_magisterium_italia = { set_de_jure_liege_title = scope:LR_radd_mag_liege }
+		}
+		if = {
+			limit = {
+				title:e_magisterium_africa = { OR = { holder ?= scope:LR_radd_mag_ruler holder.top_liege ?= scope:LR_radd_mag_ruler } }
+				NOT = { scope:LR_radd_mag_liege = title:e_magisterium_africa }
+			}
+			title:e_magisterium_africa = { set_de_jure_liege_title = scope:LR_radd_mag_liege }
+		}
+	}
 }
 
 # Root (an eastern restored emperor) forms the Quaestura exercitus

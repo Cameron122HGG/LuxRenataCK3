@@ -1,0 +1,518 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+namespace = LR_caesar
+
+# Step 1: the command (root = the Augustus)
+LR_caesar.0001 = {
+	type = character_event
+	title = LR_caesar.0001.t
+	desc = LR_caesar.0001.desc
+	theme = emperor
+	left_portrait = { character = root animation = personality_rational }
+
+	immediate = { save_scope_as = caesar_augustus }
+
+	option = {
+		name = LR_caesar.0001.west
+		trigger = { LR_caesar_command_west_trigger = yes }
+		title:e_western_roman_empire = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.east
+		trigger = { LR_caesar_command_east_trigger = yes }
+		title:e_eastern_roman_empire = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.britannia
+		trigger = { LR_caesar_command_britannia_trigger = yes }
+		title:e_brittanic_empire = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.gallia
+		trigger = { LR_caesar_command_gallia_trigger = yes }
+		title:e_gallic_empire = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.palmyra
+		trigger = { LR_caesar_command_palmyra_trigger = yes }
+		title:e_palmyrene_empire = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.pp_gallia
+		trigger = { LR_caesar_command_pp_gallia_trigger = yes }
+		title:e_praetorian_prefecture_gallia = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.pp_italia
+		trigger = { LR_caesar_command_pp_italia_trigger = yes }
+		title:e_praetorian_prefecture_italia = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.pp_illyricum
+		trigger = { LR_caesar_command_pp_illyricum_trigger = yes }
+		title:e_praetorian_prefecture_illyricum = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.pp_germania
+		trigger = { LR_caesar_command_pp_germania_trigger = yes }
+		title:e_praetorian_prefecture_germania = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.pp_macedonia
+		trigger = { LR_caesar_command_pp_macedonia_trigger = yes }
+		title:e_praetorian_prefecture_macedonia = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.pp_pontica
+		trigger = { LR_caesar_command_pp_pontica_trigger = yes }
+		title:e_praetorian_prefecture_pontica = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.pp_oriens
+		trigger = { LR_caesar_command_pp_oriens_trigger = yes }
+		title:e_praetorian_prefecture_oriens = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.mag_italia
+		trigger = { LR_caesar_command_mag_italia_trigger = yes }
+		title:e_magisterium_italia = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.mag_africa
+		trigger = { LR_caesar_command_mag_africa_trigger = yes }
+		title:e_magisterium_africa = { save_scope_as = caesar_command }
+		trigger_event = LR_caesar.0002
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0001.none
+		ai_chance = { base = 0 }
+	}
+}
+
+# Step 2: the Caesar (root = the Augustus, scope:caesar_command)
+LR_caesar.0002 = {
+	type = character_event
+	title = LR_caesar.0002.t
+	desc = LR_caesar.0002.desc
+	theme = emperor
+	left_portrait = { character = root animation = personality_rational }
+	right_portrait = { character = scope:cand_local trigger = { exists = scope:cand_local } animation = personality_honorable }
+	lower_left_portrait = { character = scope:cand_family trigger = { exists = scope:cand_family } }
+	lower_center_portrait = { character = scope:cand_diarch trigger = { exists = scope:cand_diarch } }
+	lower_right_portrait = { character = scope:cand_house trigger = { exists = scope:cand_house } }
+
+	immediate = {
+		# kin: your heir, else your ablest adult close relative
+		if = {
+			limit = { primary_heir ?= { is_adult = yes is_imprisoned = no NOT = { has_trait = caesar } NOT = { this = root } } }
+			primary_heir = { save_scope_as = cand_family }
+		}
+		else_if = {
+			limit = { any_close_family_member = { is_adult = yes is_imprisoned = no NOT = { has_trait = caesar } } }
+			ordered_close_family_member = {
+				limit = { is_adult = yes is_imprisoned = no NOT = { has_trait = caesar } }
+				order_by = martial
+				save_scope_as = cand_family
+			}
+		}
+		# your co- or junior emperor
+		if = {
+			limit = {
+				has_active_diarchy = yes
+				exists = diarch
+				diarch = { NOT = { has_trait = caesar } }
+				NOT = { diarch ?= scope:cand_family }
+			}
+			diarch = { save_scope_as = cand_diarch }
+		}
+		# the strongest vassal based in the command
+		if = {
+			limit = { scope:caesar_command = title:e_western_roman_empire any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_west } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_west } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_eastern_roman_empire any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_east } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_east } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_brittanic_empire any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_britannia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_britannia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_gallic_empire any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_gallia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_gallia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_palmyrene_empire any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_palmyra } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_palmyra } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_praetorian_prefecture_gallia any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_gallia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_gallia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_praetorian_prefecture_italia any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_italia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_italia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_praetorian_prefecture_illyricum any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_illyricum } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_illyricum } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_praetorian_prefecture_germania any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_germania } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_germania } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_praetorian_prefecture_macedonia any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_macedonia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_macedonia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_praetorian_prefecture_pontica any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_pontica } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_pontica } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_praetorian_prefecture_oriens any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_oriens } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_pp_oriens } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_magisterium_italia any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_mag_italia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_mag_italia } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		else_if = {
+			limit = { scope:caesar_command = title:e_magisterium_africa any_vassal = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_mag_africa } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } }
+			ordered_vassal = { limit = { highest_held_title_tier >= tier_county NOT = { has_trait = caesar } capital_province = { geographical_region = custom_caesar_mag_africa } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } } order_by = max_military_strength save_scope_as = cand_local }
+		}
+		# the head of the strongest other great family
+		if = {
+			limit = {
+				any_powerful_family = {
+					this != root.house
+					house_head ?= { is_adult = yes NOT = { has_trait = caesar } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } NOT = { this = scope:cand_local } }
+				}
+			}
+			ordered_powerful_family = {
+				limit = {
+					this != root.house
+					house_head ?= { is_adult = yes NOT = { has_trait = caesar } NOT = { this = scope:cand_family } NOT = { this = scope:cand_diarch } NOT = { this = scope:cand_local } }
+				}
+				order_by = house_power_score
+				house_head = { save_scope_as = cand_house }
+			}
+		}
+	}
+
+	option = {
+		name = LR_caesar.0002.local
+		trigger = { exists = scope:cand_local }
+		scope:cand_local = { save_scope_as = new_holder }
+		LR_caesar_appoint_effect = yes
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = LR_caesar.0002.family
+		trigger = { exists = scope:cand_family }
+		scope:cand_family = { save_scope_as = new_holder }
+		LR_caesar_appoint_effect = yes
+		ai_chance = { base = 30 }
+	}
+	option = {
+		name = LR_caesar.0002.diarch
+		trigger = { exists = scope:cand_diarch }
+		scope:cand_diarch = { save_scope_as = new_holder }
+		LR_caesar_appoint_effect = yes
+		ai_chance = { base = 20 }
+	}
+	option = {
+		name = LR_caesar.0002.house
+		trigger = { exists = scope:cand_house }
+		scope:cand_house = { save_scope_as = new_holder }
+		LR_caesar_appoint_effect = yes
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = LR_caesar.0002.none
+		ai_chance = { base = 0 }
+	}
+}
+
+# Debug: the command, without requirements (root = you)
+LR_caesar.0090 = {
+	type = character_event
+	title = LR_caesar.0090.t
+	desc = LR_caesar.0090.desc
+	theme = emperor
+	left_portrait = { character = root animation = personality_rational }
+
+	immediate = { save_scope_as = caesar_augustus }
+
+	option = {
+		name = LR_caesar.0001.west
+		trigger = { NOT = { primary_title = title:e_western_roman_empire } }
+		title:e_western_roman_empire = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_western_roman_empire.holder NOT = { title:e_western_roman_empire.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_western_roman_empire = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.east
+		trigger = { NOT = { primary_title = title:e_eastern_roman_empire } }
+		title:e_eastern_roman_empire = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_eastern_roman_empire.holder NOT = { title:e_eastern_roman_empire.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_eastern_roman_empire = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.britannia
+		trigger = { NOT = { primary_title = title:e_brittanic_empire } }
+		title:e_brittanic_empire = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_brittanic_empire.holder NOT = { title:e_brittanic_empire.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_brittanic_empire = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.gallia
+		trigger = { NOT = { primary_title = title:e_gallic_empire } }
+		title:e_gallic_empire = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_gallic_empire.holder NOT = { title:e_gallic_empire.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_gallic_empire = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.palmyra
+		trigger = { NOT = { primary_title = title:e_palmyrene_empire } }
+		title:e_palmyrene_empire = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_palmyrene_empire.holder NOT = { title:e_palmyrene_empire.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_palmyrene_empire = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.pp_gallia
+		trigger = { NOT = { primary_title = title:e_praetorian_prefecture_gallia } }
+		title:e_praetorian_prefecture_gallia = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_praetorian_prefecture_gallia.holder NOT = { title:e_praetorian_prefecture_gallia.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_praetorian_prefecture_gallia = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.pp_italia
+		trigger = { NOT = { primary_title = title:e_praetorian_prefecture_italia } }
+		title:e_praetorian_prefecture_italia = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_praetorian_prefecture_italia.holder NOT = { title:e_praetorian_prefecture_italia.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_praetorian_prefecture_italia = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.pp_illyricum
+		trigger = { NOT = { primary_title = title:e_praetorian_prefecture_illyricum } }
+		title:e_praetorian_prefecture_illyricum = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_praetorian_prefecture_illyricum.holder NOT = { title:e_praetorian_prefecture_illyricum.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_praetorian_prefecture_illyricum = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.pp_germania
+		trigger = { NOT = { primary_title = title:e_praetorian_prefecture_germania } }
+		title:e_praetorian_prefecture_germania = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_praetorian_prefecture_germania.holder NOT = { title:e_praetorian_prefecture_germania.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_praetorian_prefecture_germania = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.pp_macedonia
+		trigger = { NOT = { primary_title = title:e_praetorian_prefecture_macedonia } }
+		title:e_praetorian_prefecture_macedonia = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_praetorian_prefecture_macedonia.holder NOT = { title:e_praetorian_prefecture_macedonia.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_praetorian_prefecture_macedonia = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.pp_pontica
+		trigger = { NOT = { primary_title = title:e_praetorian_prefecture_pontica } }
+		title:e_praetorian_prefecture_pontica = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_praetorian_prefecture_pontica.holder NOT = { title:e_praetorian_prefecture_pontica.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_praetorian_prefecture_pontica = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.pp_oriens
+		trigger = { NOT = { primary_title = title:e_praetorian_prefecture_oriens } }
+		title:e_praetorian_prefecture_oriens = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_praetorian_prefecture_oriens.holder NOT = { title:e_praetorian_prefecture_oriens.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_praetorian_prefecture_oriens = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.mag_italia
+		trigger = { NOT = { primary_title = title:e_magisterium_italia } }
+		title:e_magisterium_italia = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_magisterium_italia.holder NOT = { title:e_magisterium_italia.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_magisterium_italia = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.mag_africa
+		trigger = { NOT = { primary_title = title:e_magisterium_africa } }
+		title:e_magisterium_africa = { save_scope_as = caesar_command }
+		if = {
+			limit = { exists = title:e_magisterium_africa.holder NOT = { title:e_magisterium_africa.holder = root } }
+			create_title_and_vassal_change = { type = usurped save_scope_as = change add_claim_on_loss = no }
+			title:e_magisterium_africa = { change_title_holder = { holder = root change = scope:change } }
+			resolve_title_and_vassal_change = scope:change
+		}
+		trigger_event = LR_caesar.0002
+	}
+	option = {
+		name = LR_caesar.0001.none
+		ai_chance = { base = 0 }
+	}
+}
+
+# Debug: start a Tetrarchy (root = you, holding Rome)
+LR_caesar.0091 = {
+	type = character_event
+	title = LR_caesar.0091.t
+	desc = LR_caesar.0091.desc
+	theme = emperor
+	left_portrait = { character = root animation = personality_rational }
+	right_portrait = { character = scope:new_holder trigger = { exists = scope:new_holder } animation = personality_honorable }
+
+	immediate = {
+		save_scope_as = cleaving_emperor
+		if = {
+			limit = { LR_cleave_keeps_east_trigger = yes }
+			LR_cleave_find_new_augustus_effect = { OTHER_REGION = custom_theodosian_wre }
+		}
+		else = {
+			LR_cleave_find_new_augustus_effect = { OTHER_REGION = custom_theodosian_ere }
+		}
+	}
+
+	option = {
+		name = LR_caesar.0091.a
+		trigger = { exists = scope:new_holder }
+		LR_cleave_empire_full_effect = yes
+		scope:new_holder.primary_title = { save_scope_as = college_title }
+		LR_college_add_title_effect = yes
+		trigger_event = { id = LR_caesar.0090 days = 1 }
+		scope:new_holder = { trigger_event = { id = LR_caesar.0090 days = 2 } }
+	}
+	option = {
+		name = LR_caesar.0091.b
+		trigger = { NOT = { exists = scope:new_holder } }
+	}
+	option = {
+		name = LR_caesar.0001.none
+	}
+}
+
+# To the new Caesar
+LR_caesar.0003 = {
+	type = character_event
+	title = LR_caesar.0003.t
+	desc = LR_caesar.0003.desc
+	theme = emperor
+	left_portrait = { character = root animation = personality_honorable }
+	right_portrait = { character = scope:caesar_augustus animation = personality_rational }
+	option = { name = LR_caesar.0003.a }
+}
+
+# To the Augustus: a Caesar proclaims himself Augustus (root = the Augustus, scope:usurper)
+LR_caesar.0004 = {
+	type = character_event
+	title = LR_caesar.0004.t
+	desc = LR_caesar.0004.desc
+	theme = war
+	left_portrait = { character = root animation = anger }
+	right_portrait = { character = scope:usurper animation = war_attacker }
+	option = { name = LR_caesar.0004.a }
+}
+
+# To the dead Augustus's heir: the purple went to the senior Caesar, the heir is his Caesar (root = heir, scope:lr_promoted)
+LR_caesar.0005 = {
+	type = character_event
+	title = LR_caesar.0005.t
+	desc = LR_caesar.0005.desc
+	theme = emperor
+	left_portrait = { character = root animation = personality_rational }
+	right_portrait = { character = scope:lr_promoted animation = personality_honorable }
+	option = { name = LR_caesar.0005.a }
+}
+

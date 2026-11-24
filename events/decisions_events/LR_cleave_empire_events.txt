@@ -36,6 +36,10 @@ LR_cleave_empire.0001 = {
 		name = LR_cleave_empire.0001.a
 		trigger = { exists = scope:new_holder }
 		LR_cleave_empire_full_effect = yes
+		# LR caesars BEGIN (tools/cleave_caesars.py)
+		scope:new_holder.primary_title = { save_scope_as = college_title }
+		LR_college_add_title_effect = yes # Concordia Augustorum
+		# LR caesars END
 		scope:new_holder = { trigger_event = LR_cleave_empire.0002 }
 		if = {
 			limit = {
@@ -57,25 +61,50 @@ LR_cleave_empire.0001 = {
 		}
 	}
 
-	option = { # A Caesar: Rome stays, a junior emperor rules the other half as your vassal
-		name = LR_cleave_empire.0001.b
+	# LR caesars: replaced 2026-11-24 by Name a Caesar... (the old one-half Caesar)
+	# option = { # A Caesar: Rome stays, a junior emperor rules the other half as your vassal
+	# name = LR_cleave_empire.0001.b
+	# trigger = {
+	# exists = scope:new_holder
+	# trigger_if = {
+	# limit = { LR_cleave_keeps_east_trigger = yes }
+	# LR_cleave_caesar_title_free_trigger = { TITLE = e_western_roman_empire }
+	# }
+	# trigger_else = {
+	# LR_cleave_caesar_title_free_trigger = { TITLE = e_eastern_roman_empire }
+	# }
+	# }
+	# LR_cleave_empire_junior_effect = yes
+	# scope:new_holder = { trigger_event = LR_cleave_empire.0002 }
+	# ai_chance = {
+	# base = 70
+	# }
+	# }
+
+	# LR caesars BEGIN (tools/cleave_caesars.py)
+	option = { # Name a Caesar...: Rome stays whole; choose a command and a Caesar (LR_caesar.0001)
+		name = LR_cleave_empire.0001.caesar
+		trigger = { LR_caesar_any_command_trigger = yes LR_caesar_has_room_trigger = yes }
+		custom_tooltip = LR_cleave_empire.0001.caesar_tt
+		trigger_event = LR_caesar.0001
+		ai_chance = { base = 60 }
+	}
+	option = { # Tetrarchy: two Augusti, each with a Caesar
+		name = LR_cleave_empire.0001.tetrarchy
 		trigger = {
 			exists = scope:new_holder
-			trigger_if = {
-				limit = { LR_cleave_keeps_east_trigger = yes }
-				LR_cleave_caesar_title_free_trigger = { TITLE = e_western_roman_empire }
-			}
-			trigger_else = {
-				LR_cleave_caesar_title_free_trigger = { TITLE = e_eastern_roman_empire }
-			}
+			LR_caesar_tetrarchy_possible_trigger = yes
 		}
-		LR_cleave_empire_junior_effect = yes
+		LR_cleave_empire_full_effect = yes
+		scope:new_holder.primary_title = { save_scope_as = college_title }
+		LR_college_add_title_effect = yes # both halves in one Imperial College
 		scope:new_holder = { trigger_event = LR_cleave_empire.0002 }
-		ai_chance = {
-			base = 70
-		}
+		custom_tooltip = LR_cleave_empire.0001.tetrarchy_tt
+		trigger_event = { id = LR_caesar.0001 days = 1 }
+		scope:new_holder = { trigger_event = { id = LR_caesar.0001 days = 2 } }
+		ai_chance = { base = 10 }
 	}
-
+	# LR caesars END
 	option = { # Not yet
 		name = LR_cleave_empire.0001.c
 		ai_chance = {

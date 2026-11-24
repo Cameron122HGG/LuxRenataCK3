@@ -1,0 +1,22 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+
+# Monthly cohesion of an Imperial College (root = the confederation). Harmony with the leading Augustus.
+LR_college_cohesion_monthly_value = {
+	value = 0.25
+	if = {
+		limit = { exists = root.leading_title.holder }
+		every_confederation_member = {
+			limit = { NOT = { this = root.leading_title.holder } }
+			if = { limit = { faith = root.leading_title.holder.faith } add = 0.05 }
+			else = { add = -0.1 }
+			if = { limit = { house ?= root.leading_title.holder.house } add = 0.1 }
+			if = { limit = { opinion = { target = root.leading_title.holder value >= 25 } } add = 0.05 }
+			if = { limit = { opinion = { target = root.leading_title.holder value <= -25 } } add = -0.15 }
+			if = { limit = { is_at_war_with = root.leading_title.holder } add = -2 }
+		}
+		if = {
+			limit = { root.leading_title.holder = { LR_rw_capital_in_phase_trigger = { PHASE = rw_pax } } }
+			add = 0.2 # the Roman World in Pax Romana
+		}
+	}
+}

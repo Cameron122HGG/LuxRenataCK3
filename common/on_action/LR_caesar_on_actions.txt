@@ -1,0 +1,103 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+
+on_death = {
+	on_actions = { LR_caesar_on_death }
+}
+on_title_gain = {
+	on_actions = { LR_caesar_on_title_gain }
+}
+
+# An Augustus dies (2026-11-24, Imperial College). His hegemony remembers him (LR_college_prev_augustus).
+# At Harmonia (lr_college_tetrarchic_succession) and unless his heir is a Caesar, his senior Caesar is marked
+# for promotion (LR_college_promote, carried out on the heir's title gain). Otherwise his Caesars, except his
+# heir, get a pressed claim on the hegemony.
+LR_caesar_on_death = {
+	trigger = {
+		LR_caesar_is_augustus_trigger = yes
+		primary_title.title_confederation ?= { any_confederation_member = { LR_caesar_of_root_trigger = yes } }
+	}
+	effect = {
+		primary_title = { save_scope_as = caesar_hegemony }
+		primary_title.title_confederation = { save_scope_as = lr_college }
+		scope:caesar_hegemony = { set_variable = { name = LR_college_prev_augustus value = root } }
+		if = {
+			limit = {
+				scope:lr_college = { has_cohesion_level_parameter = lr_college_tetrarchic_succession }
+				NOT = { primary_heir ?= { has_trait = caesar } }
+			}
+			scope:lr_college = {
+				ordered_confederation_member = {
+					limit = { LR_caesar_of_root_trigger = yes }
+					order_by = { value = 0 subtract = var:LR_caesar_seq } # the senior (first named)
+					save_scope_as = lr_promoted
+				}
+			}
+			scope:caesar_hegemony = { set_variable = { name = LR_college_promote value = scope:lr_promoted } }
+		}
+		else = {
+			scope:lr_college = {
+				every_confederation_member = {
+					limit = { LR_caesar_of_root_trigger = yes NOT = { this = root.primary_heir } }
+					add_pressed_claim = scope:caesar_hegemony
+				}
+			}
+		}
+	}
+}
+
+# Gaining Rome or a half: a Caesar is Augustus now; the new holder of a dead Augustus's hegemony takes over
+# his Caesars, or hands the purple to the senior Caesar marked for promotion and becomes that Augustus's Caesar.
+LR_caesar_on_title_gain = {
+	trigger = {
+		OR = { scope:title = title:h_roman_empire scope:title = title:h_western_roman_empire scope:title = title:h_eastern_roman_empire }
+	}
+	effect = {
+		if = {
+			limit = { has_trait = caesar }
+			LR_caesar_unmake_effect = yes
+			add_trait = augustus
+		}
+		if = {
+			limit = { scope:title = { exists = var:LR_college_prev_augustus } }
+			scope:title.var:LR_college_prev_augustus = { save_scope_as = lr_dead_augustus }
+			scope:title = { remove_variable = LR_college_prev_augustus }
+			if = {
+				limit = {
+					scope:title = { exists = var:LR_college_promote }
+					scope:title.var:LR_college_promote = { is_alive = yes NOT = { this = root } }
+				}
+				scope:title.var:LR_college_promote = { save_scope_as = lr_promoted }
+				scope:title = { remove_variable = LR_college_promote }
+				# the Caesars of the dead Augustus serve the promoted one
+				scope:title.title_confederation ?= {
+					every_confederation_member = {
+						limit = { exists = var:LR_caesar_augustus var:LR_caesar_augustus = scope:lr_dead_augustus }
+						set_variable = { name = LR_caesar_augustus value = scope:lr_promoted }
+					}
+				}
+				create_title_and_vassal_change = { type = granted save_scope_as = lr_promotion add_claim_on_loss = no }
+				scope:title = { change_title_holder = { holder = scope:lr_promoted change = scope:lr_promotion } }
+				resolve_title_and_vassal_change = scope:lr_promotion
+				scope:lr_promoted = { set_primary_title_to = scope:title }
+				# the heir becomes the new Augustus's Caesar, his realm in the college
+				add_trait = caesar
+				add_character_flag = LR_caesar_flag
+				set_variable = { name = LR_caesar_augustus value = scope:lr_promoted }
+				if = { limit = { NOT = { has_global_variable = LR_caesar_seq } } set_global_variable = { name = LR_caesar_seq value = 0 } }
+				change_global_variable = { name = LR_caesar_seq add = 1 }
+				set_variable = { name = LR_caesar_seq value = global_var:LR_caesar_seq }
+				primary_title = { save_scope_as = college_title set_variable = { name = LR_caesar_of value = root } }
+				scope:lr_promoted = { LR_college_add_title_effect = yes }
+				trigger_event = LR_caesar.0005
+			}
+			else = {
+				scope:title.title_confederation ?= {
+					every_confederation_member = {
+						limit = { exists = var:LR_caesar_augustus var:LR_caesar_augustus = scope:lr_dead_augustus }
+						set_variable = { name = LR_caesar_augustus value = root }
+					}
+				}
+			}
+		}
+	}
+}

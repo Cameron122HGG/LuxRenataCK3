@@ -1,0 +1,154 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+
+# Character (an Augustus, as root): can TITLE (over REGION) be given to a Caesar?
+# Unheld or yours, not your primary title, your capital outside it, a county of your own domain in it, and at
+# least half its counties in your realm.
+LR_caesar_can_command_trigger = {
+	NOT = { primary_title = title:$TITLE$ }
+	OR = {
+		NOT = { exists = title:$TITLE$.holder }
+		title:$TITLE$.holder = root
+	}
+	NOT = { capital_province = { geographical_region = $REGION$ } }
+	any_held_title = {
+		tier = tier_county
+		is_landless_type_title = no
+		title_province = { geographical_region = $REGION$ }
+	}
+	any_county_in_region = {
+		region = $REGION$
+		percent >= 0.5
+		holder.top_liege ?= root
+	}
+}
+
+LR_caesar_command_west_trigger = { # e_western_roman_empire
+	LR_caesar_can_command_trigger = { TITLE = e_western_roman_empire REGION = custom_caesar_west }
+}
+
+LR_caesar_command_east_trigger = { # e_eastern_roman_empire
+	LR_caesar_can_command_trigger = { TITLE = e_eastern_roman_empire REGION = custom_caesar_east }
+}
+
+LR_caesar_command_britannia_trigger = { # e_brittanic_empire
+	LR_caesar_can_command_trigger = { TITLE = e_brittanic_empire REGION = custom_caesar_britannia }
+}
+
+LR_caesar_command_gallia_trigger = { # e_gallic_empire
+	LR_caesar_can_command_trigger = { TITLE = e_gallic_empire REGION = custom_caesar_gallia }
+}
+
+LR_caesar_command_palmyra_trigger = { # e_palmyrene_empire
+	LR_caesar_can_command_trigger = { TITLE = e_palmyrene_empire REGION = custom_caesar_palmyra }
+}
+
+LR_caesar_command_pp_gallia_trigger = { # e_praetorian_prefecture_gallia
+	title:e_praetorian_prefecture_gallia = { any_de_jure_county = { count >= 1 } } # restored: has de jure land
+	LR_caesar_can_command_trigger = { TITLE = e_praetorian_prefecture_gallia REGION = custom_caesar_pp_gallia }
+}
+
+LR_caesar_command_pp_italia_trigger = { # e_praetorian_prefecture_italia
+	title:e_praetorian_prefecture_italia = { any_de_jure_county = { count >= 1 } } # restored: has de jure land
+	LR_caesar_can_command_trigger = { TITLE = e_praetorian_prefecture_italia REGION = custom_caesar_pp_italia }
+}
+
+LR_caesar_command_pp_illyricum_trigger = { # e_praetorian_prefecture_illyricum
+	title:e_praetorian_prefecture_illyricum = { any_de_jure_county = { count >= 1 } } # restored: has de jure land
+	LR_caesar_can_command_trigger = { TITLE = e_praetorian_prefecture_illyricum REGION = custom_caesar_pp_illyricum }
+}
+
+LR_caesar_command_pp_germania_trigger = { # e_praetorian_prefecture_germania
+	title:e_praetorian_prefecture_germania = { any_de_jure_county = { count >= 1 } } # restored: has de jure land
+	LR_caesar_can_command_trigger = { TITLE = e_praetorian_prefecture_germania REGION = custom_caesar_pp_germania }
+}
+
+LR_caesar_command_pp_macedonia_trigger = { # e_praetorian_prefecture_macedonia
+	title:e_praetorian_prefecture_macedonia = { any_de_jure_county = { count >= 1 } } # restored: has de jure land
+	LR_caesar_can_command_trigger = { TITLE = e_praetorian_prefecture_macedonia REGION = custom_caesar_pp_macedonia }
+}
+
+LR_caesar_command_pp_pontica_trigger = { # e_praetorian_prefecture_pontica
+	title:e_praetorian_prefecture_pontica = { any_de_jure_county = { count >= 1 } } # restored: has de jure land
+	LR_caesar_can_command_trigger = { TITLE = e_praetorian_prefecture_pontica REGION = custom_caesar_pp_pontica }
+}
+
+LR_caesar_command_pp_oriens_trigger = { # e_praetorian_prefecture_oriens
+	title:e_praetorian_prefecture_oriens = { any_de_jure_county = { count >= 1 } } # restored: has de jure land
+	LR_caesar_can_command_trigger = { TITLE = e_praetorian_prefecture_oriens REGION = custom_caesar_pp_oriens }
+}
+
+LR_caesar_command_mag_italia_trigger = { # e_magisterium_italia
+	has_global_variable = LR_magisterium_italia_formed
+	LR_caesar_can_command_trigger = { TITLE = e_magisterium_italia REGION = custom_caesar_mag_italia }
+}
+
+LR_caesar_command_mag_africa_trigger = { # e_magisterium_africa
+	has_global_variable = LR_magisterium_africa_formed
+	LR_caesar_can_command_trigger = { TITLE = e_magisterium_africa REGION = custom_caesar_mag_africa }
+}
+
+# Character: any command can be given
+LR_caesar_any_command_trigger = {
+	OR = {
+		LR_caesar_command_west_trigger = yes
+		LR_caesar_command_east_trigger = yes
+		LR_caesar_command_britannia_trigger = yes
+		LR_caesar_command_gallia_trigger = yes
+		LR_caesar_command_palmyra_trigger = yes
+		LR_caesar_command_pp_gallia_trigger = yes
+		LR_caesar_command_pp_italia_trigger = yes
+		LR_caesar_command_pp_illyricum_trigger = yes
+		LR_caesar_command_pp_germania_trigger = yes
+		LR_caesar_command_pp_macedonia_trigger = yes
+		LR_caesar_command_pp_pontica_trigger = yes
+		LR_caesar_command_pp_oriens_trigger = yes
+		LR_caesar_command_mag_italia_trigger = yes
+		LR_caesar_command_mag_africa_trigger = yes
+	}
+}
+
+# Character (Rome, before Cleave the Empire): two commands in each half for the Tetrarchy
+LR_caesar_tetrarchy_possible_trigger = {
+	calc_true_if = {
+		amount >= 2
+		LR_caesar_command_west_trigger = yes
+		LR_caesar_command_britannia_trigger = yes
+		LR_caesar_command_gallia_trigger = yes
+		LR_caesar_command_pp_gallia_trigger = yes
+		LR_caesar_command_pp_italia_trigger = yes
+		LR_caesar_command_pp_illyricum_trigger = yes
+		LR_caesar_command_pp_germania_trigger = yes
+		LR_caesar_command_mag_italia_trigger = yes
+		LR_caesar_command_mag_africa_trigger = yes
+	}
+	calc_true_if = {
+		amount >= 2
+		LR_caesar_command_east_trigger = yes
+		LR_caesar_command_palmyra_trigger = yes
+		LR_caesar_command_pp_macedonia_trigger = yes
+		LR_caesar_command_pp_pontica_trigger = yes
+		LR_caesar_command_pp_oriens_trigger = yes
+	}
+}
+
+# Character: an Augustus (holds Rome or one of its halves as primary title)
+LR_caesar_is_augustus_trigger = {
+	OR = { primary_title ?= title:h_roman_empire primary_title ?= title:h_western_roman_empire primary_title ?= title:h_eastern_roman_empire }
+}
+
+# Character (root, an Augustus): room for another Caesar (at most two of his own in his college)
+LR_caesar_has_room_trigger = {
+	NOT = {
+		primary_title.title_confederation ?= {
+			any_confederation_member = { count >= 2 LR_caesar_of_root_trigger = yes }
+		}
+	}
+}
+
+# Character: a Caesar of root's (independent since 2026-11-24; bound to root in the Imperial College)
+LR_caesar_of_root_trigger = {
+	has_trait = caesar
+	exists = var:LR_caesar_augustus
+	var:LR_caesar_augustus = root
+}
+
