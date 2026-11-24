@@ -391,6 +391,39 @@ window = {
 						}
 
 						button_LR_tsm_view = {
+							text = "LR_TSM_SET_PONTIC"
+							tooltip = "LR_TSM_SET_PONTIC_TT"
+							onclick = "[GetScriptedGui( 'LR_tsm_preview_pontic' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GetScriptedGui( 'LR_tsm_preview_pontic' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+
+							# Repaint once this becomes the current choice (see button_tmm_trait)
+							state = {
+								name = LR_tsm_refresh
+								trigger_when = "[Not( GetScriptedGui( 'LR_tsm_preview_pontic' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+								on_start = "[SetMapMode( 'realms' )]"
+								duration = 0.05
+								next = LR_tsm_refresh_2
+							}
+							state = {
+								name = LR_tsm_refresh_2
+								on_start = "[SetMapMode( 'situation' )]"
+							}
+						}
+
+						expand = {}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+
+						text_single = {
+							text = ""
+							align = nobaseline
+							minimumsize = { 90 0 }
+						}
+
+						button_LR_tsm_view = {
 							text = "LR_TSM_SET_WARLORD"
 							tooltip = "LR_TSM_SET_WARLORD_TT"
 							onclick = "[GetScriptedGui( 'LR_tsm_preview_warlord' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
@@ -623,6 +656,13 @@ window = {
 						blockoverride "swatch_color" { color = { 0.37 0.65 0.84 1 } }
 						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_missatica" }
 						blockoverride "count" { text = "LR_TSM_COUNT_MISSATICA" }
+					}
+
+					hbox_LR_tsm_legend_row = {
+						visible = "[Not( GetScriptedGui( 'LR_tsm_is_preview' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+						blockoverride "swatch_color" { color = { 0.69 0.16 0.27 1 } }
+						blockoverride "group_name" { text = "LR_title_set_map_sub_region_LR_tsm_pontic" }
+						blockoverride "count" { text = "LR_TSM_COUNT_PONTIC" }
 					}
 
 					hbox_LR_tsm_legend_row = {

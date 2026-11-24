@@ -1,0 +1,1961 @@
+﻿# LR Pontic title set (tools/register_pontic_set.py, 2026-11-24). GENERATED.
+
+# Scope: a title left behind by a Pontic layout. If it has a holder but no de jure land left, the holder gets the
+# Pontic title of the same tier over its capital county (if unheld and theirs to use) and the old title is dissolved.
+LR_pontic_dissolve_if_empty_effect = {
+	if = {
+		limit = {
+			exists = holder
+			NOT = { LR_title_set_pontic_title_trigger = yes }
+			NOT = { this = title:e_mithridatid_empire }
+			NOT = { any_de_jure_county = { always = yes } }
+		}
+		save_temporary_scope_as = LR_pontic_old
+		holder = { save_temporary_scope_as = LR_pontic_old_holder }
+		title_capital_county ?= {
+			if = {
+				limit = { scope:LR_pontic_old.tier = tier_duchy }
+				duchy ?= { save_temporary_scope_as = LR_pontic_new }
+			}
+			else_if = {
+				limit = { scope:LR_pontic_old.tier = tier_kingdom }
+				kingdom ?= { save_temporary_scope_as = LR_pontic_new }
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:LR_pontic_new
+				scope:LR_pontic_new = {
+					LR_title_set_pontic_title_trigger = yes
+					NOT = { exists = holder }
+				}
+				scope:LR_pontic_old_holder = { LR_title_set_pontic_native_trigger = yes }
+			}
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = LR_pontic_change
+				add_claim_on_loss = no
+			}
+			scope:LR_pontic_new = {
+				change_title_holder = {
+					holder = scope:LR_pontic_old_holder
+					change = scope:LR_pontic_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:LR_pontic_change
+		}
+		scope:LR_pontic_old_holder = { destroy_title = scope:LR_pontic_old }
+		clear_saved_scope = LR_pontic_new
+	}
+}
+
+# The ruler (root) organises the Pontic kingdom of Hellēspontos: its counties go into the Pontic duchies,
+# the duchies under k_pontic_hellespontos, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_hellespontos_effect = {
+	title:c_abydos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_apollonia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kyzikos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mysia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_troas = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_adrianopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_aenus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_bizye = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_brysis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_byzantion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kalliopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_perinthos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_selymbria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sozopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_bythinion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_chalcedon = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_hadrianopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_honorias = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_nikaea = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_nikomedia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_prusa = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_prusias = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_edonis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mosynopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_philippoi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zherkovo = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_abydos = { set_de_jure_liege_title = title:d_pontic_optimatoi }
+	title:c_apollonia = { set_de_jure_liege_title = title:d_pontic_optimatoi }
+	title:c_kyzikos = { set_de_jure_liege_title = title:d_pontic_optimatoi }
+	title:c_mysia = { set_de_jure_liege_title = title:d_pontic_optimatoi }
+	title:c_troas = { set_de_jure_liege_title = title:d_pontic_optimatoi }
+	title:d_pontic_optimatoi = { set_de_jure_liege_title = title:k_pontic_hellespontos }
+	title:c_adrianopolis = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_aenus = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_bizye = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_brysis = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_byzantion = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_kalliopolis = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_perinthos = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_selymbria = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:c_sozopolis = { set_de_jure_liege_title = title:d_pontic_thrace }
+	title:d_pontic_thrace = { set_de_jure_liege_title = title:k_pontic_hellespontos }
+	title:c_bythinion = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:c_chalcedon = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:c_hadrianopolis = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:c_honorias = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:c_nikaea = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:c_nikomedia = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:c_prusa = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:c_prusias = { set_de_jure_liege_title = title:d_pontic_opsikion }
+	title:d_pontic_opsikion = { set_de_jure_liege_title = title:k_pontic_hellespontos }
+	title:c_edonis = { set_de_jure_liege_title = title:d_pontic_strymon }
+	title:c_mosynopolis = { set_de_jure_liege_title = title:d_pontic_strymon }
+	title:c_philippoi = { set_de_jure_liege_title = title:d_pontic_strymon }
+	title:c_zherkovo = { set_de_jure_liege_title = title:d_pontic_strymon }
+	title:d_pontic_strymon = { set_de_jure_liege_title = title:k_pontic_hellespontos }
+	title:k_pontic_hellespontos = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_hellespontos = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_hellespontos.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_hellespontos = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Saksaki: its counties go into the Pontic duchies,
+# the duchies under k_pontic_saksaki, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_saksaki_effect = {
+	title:c_chalkidike = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mygdonia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pella = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_perrhaebia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pieria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_serres = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_stageira = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_thessalonika = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_veria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_demetrias = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_histaiotis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_neopatras = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_thessalia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_thessaliotis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_metzovo = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_ohrid = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_skopje = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_strumica = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_velbazhd = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pirin = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_rhodopes = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_chalkidike = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_mygdonia = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_pella = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_perrhaebia = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_pieria = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_serres = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_stageira = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_thessalonika = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:c_veria = { set_de_jure_liege_title = title:d_pontic_thessalonika }
+	title:d_pontic_thessalonika = { set_de_jure_liege_title = title:k_pontic_saksaki }
+	title:c_demetrias = { set_de_jure_liege_title = title:d_pontic_thessaly }
+	title:c_histaiotis = { set_de_jure_liege_title = title:d_pontic_thessaly }
+	title:c_neopatras = { set_de_jure_liege_title = title:d_pontic_thessaly }
+	title:c_thessalia = { set_de_jure_liege_title = title:d_pontic_thessaly }
+	title:c_thessaliotis = { set_de_jure_liege_title = title:d_pontic_thessaly }
+	title:d_pontic_thessaly = { set_de_jure_liege_title = title:k_pontic_saksaki }
+	title:c_metzovo = { set_de_jure_liege_title = title:d_pontic_agrafa }
+	title:d_pontic_agrafa = { set_de_jure_liege_title = title:k_pontic_saksaki }
+	title:c_ohrid = { set_de_jure_liege_title = title:d_pontic_pelagonia }
+	title:c_skopje = { set_de_jure_liege_title = title:d_pontic_pelagonia }
+	title:c_strumica = { set_de_jure_liege_title = title:d_pontic_pelagonia }
+	title:c_velbazhd = { set_de_jure_liege_title = title:d_pontic_pelagonia }
+	title:d_pontic_pelagonia = { set_de_jure_liege_title = title:k_pontic_saksaki }
+	title:c_pirin = { set_de_jure_liege_title = title:d_pontic_bulgaria }
+	title:c_rhodopes = { set_de_jure_liege_title = title:d_pontic_bulgaria }
+	title:d_pontic_bulgaria = { set_de_jure_liege_title = title:k_pontic_saksaki }
+	title:k_pontic_saksaki = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_saksaki = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_saksaki.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_saksaki = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Akhaia: its counties go into the Pontic duchies,
+# the duchies under k_pontic_akhaia, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_akhaia_effect = {
+	title:c_achaia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_arcadia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_argolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_elis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_korinthos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_laconia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_messenia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mystras = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_aetolia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cephalonia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_delphi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_locris = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_attica = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_boeotia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_eretria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_euboea = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_megara = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_phocis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_achaia = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:c_arcadia = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:c_argolis = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:c_elis = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:c_korinthos = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:c_laconia = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:c_messenia = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:c_mystras = { set_de_jure_liege_title = title:d_pontic_achaia }
+	title:d_pontic_achaia = { set_de_jure_liege_title = title:k_pontic_akhaia }
+	title:c_aetolia = { set_de_jure_liege_title = title:d_pontic_cephalonia }
+	title:c_cephalonia = { set_de_jure_liege_title = title:d_pontic_cephalonia }
+	title:c_delphi = { set_de_jure_liege_title = title:d_pontic_cephalonia }
+	title:c_locris = { set_de_jure_liege_title = title:d_pontic_cephalonia }
+	title:d_pontic_cephalonia = { set_de_jure_liege_title = title:k_pontic_akhaia }
+	title:c_attica = { set_de_jure_liege_title = title:d_pontic_athens }
+	title:c_boeotia = { set_de_jure_liege_title = title:d_pontic_athens }
+	title:c_eretria = { set_de_jure_liege_title = title:d_pontic_athens }
+	title:c_euboea = { set_de_jure_liege_title = title:d_pontic_athens }
+	title:c_megara = { set_de_jure_liege_title = title:d_pontic_athens }
+	title:c_phocis = { set_de_jure_liege_title = title:d_pontic_athens }
+	title:d_pontic_athens = { set_de_jure_liege_title = title:k_pontic_akhaia }
+	title:k_pontic_akhaia = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_akhaia = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_akhaia.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_akhaia = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Krētē: its counties go into the Pontic duchies,
+# the duchies under k_pontic_krete, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_krete_effect = {
+	title:c_andros = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_chios = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lemnos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lesbos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mellos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_naxos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_samos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_skyros = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_thera = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_caria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cnidos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_halikarnassos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_miletus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_rhodos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_chandax = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_chania = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_andros = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_chios = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_lemnos = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_lesbos = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_mellos = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_naxos = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_samos = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_skyros = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:c_thera = { set_de_jure_liege_title = title:d_pontic_aegean_islands }
+	title:d_pontic_aegean_islands = { set_de_jure_liege_title = title:k_pontic_krete }
+	title:c_caria = { set_de_jure_liege_title = title:d_pontic_rhodos }
+	title:c_cnidos = { set_de_jure_liege_title = title:d_pontic_rhodos }
+	title:c_halikarnassos = { set_de_jure_liege_title = title:d_pontic_rhodos }
+	title:c_kos = { set_de_jure_liege_title = title:d_pontic_rhodos }
+	title:c_miletus = { set_de_jure_liege_title = title:d_pontic_rhodos }
+	title:c_rhodos = { set_de_jure_liege_title = title:d_pontic_rhodos }
+	title:d_pontic_rhodos = { set_de_jure_liege_title = title:k_pontic_krete }
+	title:c_chandax = { set_de_jure_liege_title = title:d_pontic_krete }
+	title:c_chania = { set_de_jure_liege_title = title:d_pontic_krete }
+	title:d_pontic_krete = { set_de_jure_liege_title = title:k_pontic_krete }
+	title:k_pontic_krete = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_krete = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_krete.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_krete = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Ermiar: its counties go into the Pontic duchies,
+# the duchies under k_pontic_ermiar, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_ermiar_effect = {
+	title:c_aytos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_beroe = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kran = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mesembria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_philippopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_branicevo = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_naissus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sredets = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_vidin = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_vratsa = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_constanta = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_dorostorum = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_nikopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_turnovo = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_aytos = { set_de_jure_liege_title = title:d_pontic_philippopolis }
+	title:c_beroe = { set_de_jure_liege_title = title:d_pontic_philippopolis }
+	title:c_kran = { set_de_jure_liege_title = title:d_pontic_philippopolis }
+	title:c_mesembria = { set_de_jure_liege_title = title:d_pontic_philippopolis }
+	title:c_philippopolis = { set_de_jure_liege_title = title:d_pontic_philippopolis }
+	title:d_pontic_philippopolis = { set_de_jure_liege_title = title:k_pontic_ermiar }
+	title:c_branicevo = { set_de_jure_liege_title = title:d_pontic_vidin }
+	title:c_naissus = { set_de_jure_liege_title = title:d_pontic_vidin }
+	title:c_sredets = { set_de_jure_liege_title = title:d_pontic_vidin }
+	title:c_vidin = { set_de_jure_liege_title = title:d_pontic_vidin }
+	title:c_vratsa = { set_de_jure_liege_title = title:d_pontic_vidin }
+	title:d_pontic_vidin = { set_de_jure_liege_title = title:k_pontic_ermiar }
+	title:c_constanta = { set_de_jure_liege_title = title:d_pontic_dobrudja }
+	title:d_pontic_dobrudja = { set_de_jure_liege_title = title:k_pontic_ermiar }
+	title:c_dorostorum = { set_de_jure_liege_title = title:d_pontic_turnovo }
+	title:c_nikopolis = { set_de_jure_liege_title = title:d_pontic_turnovo }
+	title:c_turnovo = { set_de_jure_liege_title = title:d_pontic_turnovo }
+	title:d_pontic_turnovo = { set_de_jure_liege_title = title:k_pontic_ermiar }
+	title:k_pontic_ermiar = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_ermiar = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_ermiar.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_ermiar = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Kypros: its counties go into the Pontic duchies,
+# the duchies under k_pontic_kypros, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_kypros_effect = {
+	title:c_famagusta = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_nicosia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_famagusta = { set_de_jure_liege_title = title:d_pontic_cyprus }
+	title:c_nicosia = { set_de_jure_liege_title = title:d_pontic_cyprus }
+	title:d_pontic_cyprus = { set_de_jure_liege_title = title:k_pontic_kypros }
+	title:k_pontic_kypros = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_kypros = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_kypros.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_kypros = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Pontos: its counties go into the Pontic duchies,
+# the duchies under k_pontic_pontos, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_pontos_effect = {
+	title:c_acampse = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_trebizond = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_amastris = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_gangra = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_ionopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kimiatene = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pompeiopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sinope = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_camisene = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_colonea = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_nicopolis_armenia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_satala = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cerasus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_domanitis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_gazelonitis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_helenopontus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_phanaroia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pimolisene = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_polemonium = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sebastopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zelitis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_acampse = { set_de_jure_liege_title = title:d_pontic_chaldia }
+	title:c_trebizond = { set_de_jure_liege_title = title:d_pontic_chaldia }
+	title:d_pontic_chaldia = { set_de_jure_liege_title = title:k_pontic_pontos }
+	title:c_amastris = { set_de_jure_liege_title = title:d_pontic_paphlagonia }
+	title:c_gangra = { set_de_jure_liege_title = title:d_pontic_paphlagonia }
+	title:c_ionopolis = { set_de_jure_liege_title = title:d_pontic_paphlagonia }
+	title:c_kimiatene = { set_de_jure_liege_title = title:d_pontic_paphlagonia }
+	title:c_pompeiopolis = { set_de_jure_liege_title = title:d_pontic_paphlagonia }
+	title:c_sinope = { set_de_jure_liege_title = title:d_pontic_paphlagonia }
+	title:d_pontic_paphlagonia = { set_de_jure_liege_title = title:k_pontic_pontos }
+	title:c_camisene = { set_de_jure_liege_title = title:d_pontic_sebasteia }
+	title:c_colonea = { set_de_jure_liege_title = title:d_pontic_sebasteia }
+	title:c_nicopolis_armenia = { set_de_jure_liege_title = title:d_pontic_sebasteia }
+	title:c_satala = { set_de_jure_liege_title = title:d_pontic_sebasteia }
+	title:d_pontic_sebasteia = { set_de_jure_liege_title = title:k_pontic_pontos }
+	title:c_cerasus = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_domanitis = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_gazelonitis = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_helenopontus = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_phanaroia = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_pimolisene = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_polemonium = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_sebastopolis = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:c_zelitis = { set_de_jure_liege_title = title:d_pontic_armeniac }
+	title:d_pontic_armeniac = { set_de_jure_liege_title = title:k_pontic_pontos }
+	title:k_pontic_pontos = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_pontos = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_pontos.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_pontos = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Hayastan: its counties go into the Pontic duchies,
+# the duchies under k_pontic_hayastan, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_hayastan_effect = {
+	title:c_apahunik = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_turuberan = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_vaspurakan = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_aran = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_khachen = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lori = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_bagrewand = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_hayk = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_vanand = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_bakriya = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_balu = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_byzerene = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_camacha = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_chaldia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mayyafariqin = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_theodosiopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_dvin = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_suenik = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_klarjeti = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_tao = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_apahunik = { set_de_jure_liege_title = title:d_pontic_vaspurakan }
+	title:c_turuberan = { set_de_jure_liege_title = title:d_pontic_vaspurakan }
+	title:c_vaspurakan = { set_de_jure_liege_title = title:d_pontic_vaspurakan }
+	title:d_pontic_vaspurakan = { set_de_jure_liege_title = title:k_pontic_hayastan }
+	title:c_aran = { set_de_jure_liege_title = title:d_pontic_artsakh }
+	title:c_khachen = { set_de_jure_liege_title = title:d_pontic_artsakh }
+	title:c_lori = { set_de_jure_liege_title = title:d_pontic_artsakh }
+	title:d_pontic_artsakh = { set_de_jure_liege_title = title:k_pontic_hayastan }
+	title:c_bagrewand = { set_de_jure_liege_title = title:d_pontic_greater_armenia }
+	title:c_hayk = { set_de_jure_liege_title = title:d_pontic_greater_armenia }
+	title:c_vanand = { set_de_jure_liege_title = title:d_pontic_greater_armenia }
+	title:d_pontic_greater_armenia = { set_de_jure_liege_title = title:k_pontic_hayastan }
+	title:c_bakriya = { set_de_jure_liege_title = title:d_pontic_mesopotamia }
+	title:c_balu = { set_de_jure_liege_title = title:d_pontic_mesopotamia }
+	title:c_byzerene = { set_de_jure_liege_title = title:d_pontic_mesopotamia }
+	title:c_camacha = { set_de_jure_liege_title = title:d_pontic_mesopotamia }
+	title:c_chaldia = { set_de_jure_liege_title = title:d_pontic_mesopotamia }
+	title:c_mayyafariqin = { set_de_jure_liege_title = title:d_pontic_mesopotamia }
+	title:c_theodosiopolis = { set_de_jure_liege_title = title:d_pontic_mesopotamia }
+	title:d_pontic_mesopotamia = { set_de_jure_liege_title = title:k_pontic_hayastan }
+	title:c_dvin = { set_de_jure_liege_title = title:d_pontic_suenik }
+	title:c_suenik = { set_de_jure_liege_title = title:d_pontic_suenik }
+	title:d_pontic_suenik = { set_de_jure_liege_title = title:k_pontic_hayastan }
+	title:c_klarjeti = { set_de_jure_liege_title = title:d_pontic_tao_klarjeti }
+	title:c_tao = { set_de_jure_liege_title = title:d_pontic_tao_klarjeti }
+	title:d_pontic_tao_klarjeti = { set_de_jure_liege_title = title:k_pontic_hayastan }
+	title:k_pontic_hayastan = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_hayastan = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_hayastan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_hayastan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Georgia: its counties go into the Pontic duchies,
+# the duchies under k_pontic_georgia, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_georgia_effect = {
+	title:c_abkhazia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_guria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_odishi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_svaneti = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_hereti = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kakheti = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kartli = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_tbilisi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_abkhazia = { set_de_jure_liege_title = title:d_pontic_abkhazia }
+	title:c_guria = { set_de_jure_liege_title = title:d_pontic_abkhazia }
+	title:c_odishi = { set_de_jure_liege_title = title:d_pontic_abkhazia }
+	title:c_svaneti = { set_de_jure_liege_title = title:d_pontic_abkhazia }
+	title:d_pontic_abkhazia = { set_de_jure_liege_title = title:k_pontic_georgia }
+	title:c_hereti = { set_de_jure_liege_title = title:d_pontic_georgia }
+	title:c_kakheti = { set_de_jure_liege_title = title:d_pontic_georgia }
+	title:c_kartli = { set_de_jure_liege_title = title:d_pontic_georgia }
+	title:c_tbilisi = { set_de_jure_liege_title = title:d_pontic_georgia }
+	title:d_pontic_georgia = { set_de_jure_liege_title = title:k_pontic_georgia }
+	title:k_pontic_georgia = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_georgia = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_georgia.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_georgia = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Bosporos: its counties go into the Pontic duchies,
+# the duchies under k_pontic_bosporos, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_bosporos_effect = {
+	title:c_azov = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_khumar = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_tmutarakan = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_bakhmut = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lozova = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_samar = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_besinada = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cabardinia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_maghas = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zichia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cherkassy = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_dnipro = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_ladyzyn = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_uman = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_golden_hills = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kazanskaya = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_millerovo = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sarysyn = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kalos_limen = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kerch = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_perekop = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kherson = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lower_dniepr = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_odessa = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_khortytsia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_oleshye = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kuzeytorg = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_tana = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_azov = { set_de_jure_liege_title = title:d_pontic_azov }
+	title:c_khumar = { set_de_jure_liege_title = title:d_pontic_azov }
+	title:c_tmutarakan = { set_de_jure_liege_title = title:d_pontic_azov }
+	title:d_pontic_azov = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_bakhmut = { set_de_jure_liege_title = title:d_pontic_levedia }
+	title:c_lozova = { set_de_jure_liege_title = title:d_pontic_levedia }
+	title:c_samar = { set_de_jure_liege_title = title:d_pontic_levedia }
+	title:d_pontic_levedia = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_besinada = { set_de_jure_liege_title = title:d_pontic_alania }
+	title:c_cabardinia = { set_de_jure_liege_title = title:d_pontic_alania }
+	title:c_maghas = { set_de_jure_liege_title = title:d_pontic_alania }
+	title:c_zichia = { set_de_jure_liege_title = title:d_pontic_alania }
+	title:d_pontic_alania = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_cherkassy = { set_de_jure_liege_title = title:d_pontic_yedisan }
+	title:c_dnipro = { set_de_jure_liege_title = title:d_pontic_yedisan }
+	title:c_ladyzyn = { set_de_jure_liege_title = title:d_pontic_yedisan }
+	title:c_uman = { set_de_jure_liege_title = title:d_pontic_yedisan }
+	title:d_pontic_yedisan = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_golden_hills = { set_de_jure_liege_title = title:d_pontic_don_valley }
+	title:c_kazanskaya = { set_de_jure_liege_title = title:d_pontic_don_valley }
+	title:c_millerovo = { set_de_jure_liege_title = title:d_pontic_don_valley }
+	title:c_sarysyn = { set_de_jure_liege_title = title:d_pontic_don_valley }
+	title:d_pontic_don_valley = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_kalos_limen = { set_de_jure_liege_title = title:d_pontic_crimea }
+	title:c_kerch = { set_de_jure_liege_title = title:d_pontic_crimea }
+	title:c_perekop = { set_de_jure_liege_title = title:d_pontic_crimea }
+	title:d_pontic_crimea = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_kherson = { set_de_jure_liege_title = title:d_pontic_kizilyedisan }
+	title:c_lower_dniepr = { set_de_jure_liege_title = title:d_pontic_kizilyedisan }
+	title:c_odessa = { set_de_jure_liege_title = title:d_pontic_kizilyedisan }
+	title:d_pontic_kizilyedisan = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_khortytsia = { set_de_jure_liege_title = title:d_pontic_red_levedia }
+	title:c_oleshye = { set_de_jure_liege_title = title:d_pontic_red_levedia }
+	title:d_pontic_red_levedia = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:c_kuzeytorg = { set_de_jure_liege_title = title:d_pontic_tana }
+	title:c_tana = { set_de_jure_liege_title = title:d_pontic_tana }
+	title:d_pontic_tana = { set_de_jure_liege_title = title:k_pontic_bosporos }
+	title:k_pontic_bosporos = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_bosporos = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_bosporos.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_bosporos = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Phrygia: its counties go into the Pontic duchies,
+# the duchies under k_pontic_phrygia, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_phrygia_effect = {
+	title:c_adramyttion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_attalia_lydica = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_hadrianeia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pergamon = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_synaos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_thyatira = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_aeolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_chonae = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_ionia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_maeonia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sardes = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_amorion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_galatia_salutaris = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kotyaion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pacatiana = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sebaste = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_arabissus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_azysia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cappadocia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_dasmenda = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_garsauria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kaisereia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kyzistra = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lower_galatia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lycandus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sebasteia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_charsianon = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_galatia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_gordium = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_soanda = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_tectosagia_galatia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_trocmi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_adramyttion = { set_de_jure_liege_title = title:d_pontic_thracesia }
+	title:c_attalia_lydica = { set_de_jure_liege_title = title:d_pontic_thracesia }
+	title:c_hadrianeia = { set_de_jure_liege_title = title:d_pontic_thracesia }
+	title:c_pergamon = { set_de_jure_liege_title = title:d_pontic_thracesia }
+	title:c_synaos = { set_de_jure_liege_title = title:d_pontic_thracesia }
+	title:c_thyatira = { set_de_jure_liege_title = title:d_pontic_thracesia }
+	title:d_pontic_thracesia = { set_de_jure_liege_title = title:k_pontic_phrygia }
+	title:c_aeolis = { set_de_jure_liege_title = title:d_pontic_ephese }
+	title:c_chonae = { set_de_jure_liege_title = title:d_pontic_ephese }
+	title:c_ionia = { set_de_jure_liege_title = title:d_pontic_ephese }
+	title:c_maeonia = { set_de_jure_liege_title = title:d_pontic_ephese }
+	title:c_sardes = { set_de_jure_liege_title = title:d_pontic_ephese }
+	title:d_pontic_ephese = { set_de_jure_liege_title = title:k_pontic_phrygia }
+	title:c_amorion = { set_de_jure_liege_title = title:d_pontic_charsianon }
+	title:c_galatia_salutaris = { set_de_jure_liege_title = title:d_pontic_charsianon }
+	title:c_kotyaion = { set_de_jure_liege_title = title:d_pontic_charsianon }
+	title:c_pacatiana = { set_de_jure_liege_title = title:d_pontic_charsianon }
+	title:c_sebaste = { set_de_jure_liege_title = title:d_pontic_charsianon }
+	title:d_pontic_charsianon = { set_de_jure_liege_title = title:k_pontic_phrygia }
+	title:c_arabissus = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_azysia = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_cappadocia = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_dasmenda = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_garsauria = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_kaisereia = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_kyzistra = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_lower_galatia = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_lycandus = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:c_sebasteia = { set_de_jure_liege_title = title:d_pontic_cappadocia }
+	title:d_pontic_cappadocia = { set_de_jure_liege_title = title:k_pontic_phrygia }
+	title:c_charsianon = { set_de_jure_liege_title = title:d_pontic_bucellaria }
+	title:c_galatia = { set_de_jure_liege_title = title:d_pontic_bucellaria }
+	title:c_gordium = { set_de_jure_liege_title = title:d_pontic_bucellaria }
+	title:c_soanda = { set_de_jure_liege_title = title:d_pontic_bucellaria }
+	title:c_tectosagia_galatia = { set_de_jure_liege_title = title:d_pontic_bucellaria }
+	title:c_trocmi = { set_de_jure_liege_title = title:d_pontic_bucellaria }
+	title:d_pontic_bucellaria = { set_de_jure_liege_title = title:k_pontic_phrygia }
+	title:k_pontic_phrygia = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_phrygia = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_phrygia.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_phrygia = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Kilikia: its counties go into the Pontic duchies,
+# the duchies under k_pontic_kilikia, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_kilikia_effect = {
+	title:c_anazaribus = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cilicia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mopsuestia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pamphylia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_seleucia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_soloi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_tall_hamid = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_attaleia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cremna = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_kabaleia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_korakesion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lycia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mopsopia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_phaselis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_telmessos = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_ikonion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_isauria = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_laranda = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lycaonia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_mistea = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_ninike = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_philomelium = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pisidia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_selge = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sozopolis_pisidia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_anazaribus = { set_de_jure_liege_title = title:d_pontic_cilicia }
+	title:c_cilicia = { set_de_jure_liege_title = title:d_pontic_cilicia }
+	title:c_mopsuestia = { set_de_jure_liege_title = title:d_pontic_cilicia }
+	title:c_pamphylia = { set_de_jure_liege_title = title:d_pontic_cilicia }
+	title:c_seleucia = { set_de_jure_liege_title = title:d_pontic_cilicia }
+	title:c_soloi = { set_de_jure_liege_title = title:d_pontic_cilicia }
+	title:c_tall_hamid = { set_de_jure_liege_title = title:d_pontic_cilicia }
+	title:d_pontic_cilicia = { set_de_jure_liege_title = title:k_pontic_kilikia }
+	title:c_attaleia = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:c_cremna = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:c_kabaleia = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:c_korakesion = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:c_lycia = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:c_mopsopia = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:c_phaselis = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:c_telmessos = { set_de_jure_liege_title = title:d_pontic_cibyrrhaeot }
+	title:d_pontic_cibyrrhaeot = { set_de_jure_liege_title = title:k_pontic_kilikia }
+	title:c_ikonion = { set_de_jure_liege_title = title:d_pontic_anatolia }
+	title:c_isauria = { set_de_jure_liege_title = title:d_pontic_anatolia }
+	title:c_laranda = { set_de_jure_liege_title = title:d_pontic_anatolia }
+	title:c_lycaonia = { set_de_jure_liege_title = title:d_pontic_anatolia }
+	title:c_mistea = { set_de_jure_liege_title = title:d_pontic_anatolia }
+	title:c_ninike = { set_de_jure_liege_title = title:d_pontic_anatolia }
+	title:d_pontic_anatolia = { set_de_jure_liege_title = title:k_pontic_kilikia }
+	title:c_philomelium = { set_de_jure_liege_title = title:d_pontic_pisidia }
+	title:c_pisidia = { set_de_jure_liege_title = title:d_pontic_pisidia }
+	title:c_selge = { set_de_jure_liege_title = title:d_pontic_pisidia }
+	title:c_sozopolis_pisidia = { set_de_jure_liege_title = title:d_pontic_pisidia }
+	title:d_pontic_pisidia = { set_de_jure_liege_title = title:k_pontic_kilikia }
+	title:k_pontic_kilikia = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_kilikia = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_kilikia.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_kilikia = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Epirus: its counties go into the Pontic duchies,
+# the duchies under k_pontic_epirus, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_epirus_effect = {
+	title:c_acarnania = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_epeiros = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_nicopolis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_thesprotis = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_antipatreia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_arbanon = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_debar = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_avlonas = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_corfu = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_dyrrachion = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_acarnania = { set_de_jure_liege_title = title:d_pontic_epirus }
+	title:c_epeiros = { set_de_jure_liege_title = title:d_pontic_epirus }
+	title:c_nicopolis = { set_de_jure_liege_title = title:d_pontic_epirus }
+	title:c_thesprotis = { set_de_jure_liege_title = title:d_pontic_epirus }
+	title:d_pontic_epirus = { set_de_jure_liege_title = title:k_pontic_epirus }
+	title:c_antipatreia = { set_de_jure_liege_title = title:d_pontic_atintania }
+	title:c_arbanon = { set_de_jure_liege_title = title:d_pontic_atintania }
+	title:c_debar = { set_de_jure_liege_title = title:d_pontic_atintania }
+	title:d_pontic_atintania = { set_de_jure_liege_title = title:k_pontic_epirus }
+	title:c_avlonas = { set_de_jure_liege_title = title:d_pontic_dyrrachion }
+	title:c_corfu = { set_de_jure_liege_title = title:d_pontic_dyrrachion }
+	title:c_dyrrachion = { set_de_jure_liege_title = title:d_pontic_dyrrachion }
+	title:d_pontic_dyrrachion = { set_de_jure_liege_title = title:k_pontic_epirus }
+	title:k_pontic_epirus = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_epirus = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_epirus.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_epirus = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Getia: its counties go into the Pontic duchies,
+# the duchies under k_pontic_getia, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_getia_effect = {
+	title:c_braila = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_bucuresti = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_buzau = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_calarasi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_giurgiu = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_calafat = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_craiova = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_severin = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_targu_jiu = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_campulung = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_polovragi = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_tabla_butii = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_braila = { set_de_jure_liege_title = title:d_pontic_muntenia }
+	title:c_bucuresti = { set_de_jure_liege_title = title:d_pontic_muntenia }
+	title:c_buzau = { set_de_jure_liege_title = title:d_pontic_muntenia }
+	title:c_calarasi = { set_de_jure_liege_title = title:d_pontic_muntenia }
+	title:c_giurgiu = { set_de_jure_liege_title = title:d_pontic_muntenia }
+	title:d_pontic_muntenia = { set_de_jure_liege_title = title:k_pontic_getia }
+	title:c_calafat = { set_de_jure_liege_title = title:d_pontic_oltenia }
+	title:c_craiova = { set_de_jure_liege_title = title:d_pontic_oltenia }
+	title:c_severin = { set_de_jure_liege_title = title:d_pontic_oltenia }
+	title:c_targu_jiu = { set_de_jure_liege_title = title:d_pontic_oltenia }
+	title:d_pontic_oltenia = { set_de_jure_liege_title = title:k_pontic_getia }
+	title:c_campulung = { set_de_jure_liege_title = title:d_pontic_transylvanian_alps }
+	title:c_polovragi = { set_de_jure_liege_title = title:d_pontic_transylvanian_alps }
+	title:c_tabla_butii = { set_de_jure_liege_title = title:d_pontic_transylvanian_alps }
+	title:d_pontic_transylvanian_alps = { set_de_jure_liege_title = title:k_pontic_getia }
+	title:k_pontic_getia = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_getia = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_getia.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_getia = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Dardania: its counties go into the Pontic duchies,
+# the duchies under k_pontic_dardania, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_dardania_effect = {
+	title:c_beograd = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_macva = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_szerem = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_duklja = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pomorje = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_travunia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_hvosno = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_podrinje = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pomoravlje = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_rashka = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_sumadija = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zlatibor = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_beograd = { set_de_jure_liege_title = title:d_pontic_macva }
+	title:c_macva = { set_de_jure_liege_title = title:d_pontic_macva }
+	title:c_szerem = { set_de_jure_liege_title = title:d_pontic_macva }
+	title:d_pontic_macva = { set_de_jure_liege_title = title:k_pontic_dardania }
+	title:c_duklja = { set_de_jure_liege_title = title:d_pontic_duklja }
+	title:c_pomorje = { set_de_jure_liege_title = title:d_pontic_duklja }
+	title:c_travunia = { set_de_jure_liege_title = title:d_pontic_duklja }
+	title:d_pontic_duklja = { set_de_jure_liege_title = title:k_pontic_dardania }
+	title:c_hvosno = { set_de_jure_liege_title = title:d_pontic_rashka }
+	title:c_podrinje = { set_de_jure_liege_title = title:d_pontic_rashka }
+	title:c_pomoravlje = { set_de_jure_liege_title = title:d_pontic_rashka }
+	title:c_rashka = { set_de_jure_liege_title = title:d_pontic_rashka }
+	title:c_sumadija = { set_de_jure_liege_title = title:d_pontic_rashka }
+	title:c_zlatibor = { set_de_jure_liege_title = title:d_pontic_rashka }
+	title:d_pontic_rashka = { set_de_jure_liege_title = title:k_pontic_dardania }
+	title:k_pontic_dardania = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_dardania = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_dardania.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_dardania = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) organises the Pontic kingdom of Delmatia: its counties go into the Pontic duchies,
+# the duchies under k_pontic_delmatia, the kingdom under the Mithridatic Empire. Old titles left empty are dissolved.
+LR_pontic_organise_delmatia_effect = {
+	title:c_cetina = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pagania = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_ragusa = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zachlumia = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zavrsje = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zelengora = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_donjikraji = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_pset = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_rama = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_vhrbosna = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_gacka = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_knin = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_lika = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_zadar = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_soli = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_usora = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_vrbas = {
+		duchy ?= { add_to_temporary_list = LR_pontic_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_pontic_old_titles }
+	}
+	title:c_cetina = { set_de_jure_liege_title = title:d_pontic_usora }
+	title:c_pagania = { set_de_jure_liege_title = title:d_pontic_usora }
+	title:c_ragusa = { set_de_jure_liege_title = title:d_pontic_usora }
+	title:c_zachlumia = { set_de_jure_liege_title = title:d_pontic_usora }
+	title:c_zavrsje = { set_de_jure_liege_title = title:d_pontic_usora }
+	title:c_zelengora = { set_de_jure_liege_title = title:d_pontic_usora }
+	title:d_pontic_usora = { set_de_jure_liege_title = title:k_pontic_delmatia }
+	title:c_donjikraji = { set_de_jure_liege_title = title:d_pontic_bosna }
+	title:c_pset = { set_de_jure_liege_title = title:d_pontic_bosna }
+	title:c_rama = { set_de_jure_liege_title = title:d_pontic_bosna }
+	title:c_vhrbosna = { set_de_jure_liege_title = title:d_pontic_bosna }
+	title:d_pontic_bosna = { set_de_jure_liege_title = title:k_pontic_delmatia }
+	title:c_gacka = { set_de_jure_liege_title = title:d_pontic_dalmatia }
+	title:c_knin = { set_de_jure_liege_title = title:d_pontic_dalmatia }
+	title:c_lika = { set_de_jure_liege_title = title:d_pontic_dalmatia }
+	title:c_zadar = { set_de_jure_liege_title = title:d_pontic_dalmatia }
+	title:d_pontic_dalmatia = { set_de_jure_liege_title = title:k_pontic_delmatia }
+	title:c_soli = { set_de_jure_liege_title = title:d_pontic_lower_bosna }
+	title:c_usora = { set_de_jure_liege_title = title:d_pontic_lower_bosna }
+	title:c_vrbas = { set_de_jure_liege_title = title:d_pontic_lower_bosna }
+	title:d_pontic_lower_bosna = { set_de_jure_liege_title = title:k_pontic_delmatia }
+	title:k_pontic_delmatia = { set_de_jure_liege_title = title:e_mithridatid_empire }
+	title:k_pontic_delmatia = { set_variable = LR_pontic_organised }
+	if = {
+		limit = { NOT = { exists = title:k_pontic_delmatia.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_pontic_change
+			add_claim_on_loss = no
+		}
+		title:k_pontic_delmatia = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_pontic_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_pontic_change
+	}
+	every_in_list = {
+		list = LR_pontic_old_titles
+		LR_pontic_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
