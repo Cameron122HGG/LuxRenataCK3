@@ -1,0 +1,38 @@
+﻿# LR 2026-11-24: set titles made by title set decisions (LR_title_set_make_kingdoms_effect in LR_title_set_effects.txt)
+
+# Title: a set title nobody holds that may be made for the realm (no can_create of its own)
+LR_tsm_unmade_set_title_trigger = {
+	NOT = { exists = holder }
+	LR_is_set_title_trigger = yes
+	LR_title_has_own_creation_gate_trigger = no
+}
+
+# Character: scope:LR_tsm_maker or someone in their realm
+LR_tsm_in_maker_realm_trigger = {
+	OR = {
+		this = scope:LR_tsm_maker
+		any_liege_or_above = { this = scope:LR_tsm_maker }
+	}
+}
+
+# Character: may receive a new set kingdom: the ruler, or a vassal of duke tier or below under a ruler above king tier
+LR_tsm_may_receive_kingdom_trigger = {
+	OR = {
+		this = scope:LR_tsm_maker
+		AND = {
+			scope:LR_tsm_maker.highest_held_title_tier > tier_kingdom
+			highest_held_title_tier < tier_kingdom
+		}
+	}
+}
+
+# Character: may receive a new set duchy: the ruler, or a vassal of count tier under a ruler above duke tier
+LR_tsm_may_receive_duchy_trigger = {
+	OR = {
+		this = scope:LR_tsm_maker
+		AND = {
+			scope:LR_tsm_maker.highest_held_title_tier > tier_duchy
+			highest_held_title_tier < tier_duchy
+		}
+	}
+}
