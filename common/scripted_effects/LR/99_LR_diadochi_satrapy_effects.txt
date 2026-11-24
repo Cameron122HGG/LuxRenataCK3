@@ -36,14 +36,14 @@ LR_restore_satrapy_effect = {
 	if = { # downshifted great kingdoms (tools/register_hellenistic_downshift.py, 2026-11-24)
 		limit = {
 			LR_is_indian_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_basileia_indike = { holder.top_liege ?= root }
+			title:e_basileia_indike = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_basileia_indike }
 	}
 	else_if = {
 		limit = {
 			LR_is_chinese_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_basileia_serike = { holder.top_liege ?= root }
+			title:e_basileia_serike = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_basileia_serike }
 	}
@@ -51,42 +51,42 @@ LR_restore_satrapy_effect = {
 	else_if = {
 		limit = {
 			LR_epikrateia_upper_satrapies_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_epikrateia_upper_satrapies = { holder.top_liege ?= root }
+			title:e_epikrateia_upper_satrapies = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_upper_satrapies }
 	}
 	else_if = {
 		limit = {
 			LR_epikrateia_asia_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_epikrateia_asia = { holder.top_liege ?= root }
+			title:e_epikrateia_asia = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_asia }
 	}
 	else_if = {
 		limit = {
 			LR_epikrateia_egypt_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_epikrateia_egypt = { holder.top_liege ?= root }
+			title:e_epikrateia_egypt = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_egypt }
 	}
 	else_if = {
 		limit = {
 			LR_epikrateia_syria_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_epikrateia_syria = { holder.top_liege ?= root }
+			title:e_epikrateia_syria = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_syria }
 	}
 	else_if = {
 		limit = {
 			LR_epikrateia_nesoi_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_epikrateia_nesoi = { holder.top_liege ?= root }
+			title:e_epikrateia_nesoi = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_nesoi }
 	}
 	else_if = {
 		limit = {
 			LR_epikrateia_bautai_satrapy_trigger = { SATRAPY = $SATRAPY$ }
-			title:e_epikrateia_bautai = { holder.top_liege ?= root }
+			title:e_epikrateia_bautai = { OR = { holder ?= root holder.top_liege ?= root } }
 		}
 		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_bautai }
 	}
@@ -1771,6 +1771,7 @@ LR_sort_satrapies_into_strategiai_effect = {
 		limit = { title:k_satrapy_trogodytike = { is_titular = no } }
 		LR_satrapy_strategia_k_satrapy_trogodytike_effect = { HEGEMONY = h_hellenistic_empire }
 	}
+	LR_resort_epikrateiai_effect = yes # tools/register_hellenistic_epikrateiai.py
 }
 
 # Root founds the Basileia Indike: any Indian satrapy already restored moves into its strategia under it

@@ -10,14 +10,22 @@ LR_kemet_raise_ta_shemau_decision = {
 	selection_tooltip = LR_kemet_raise_ta_shemau_decision_tooltip
 	confirm_text = LR_kemet_raise_ta_shemau_decision_confirm
 	cost = {
-		gold = 300
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 }
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 }
+		}
 		prestige = 300
 	}
 	is_shown = {
 		is_ruler = yes
 		LR_title_set_kemet_native_trigger = yes
 		highest_held_title_tier >= tier_duchy
-		NOT = { title:k_kemet_ta_shemau = { has_variable = LR_kemet_raised } }
+		LR_satrapy_restorable_trigger = { SATRAPY = k_kemet_ta_shemau }
+		any_realm_county = { LR_kemet_ta_shemau_county_trigger = yes } # only for rulers with land there
 	}
 	is_valid = {
 		is_independent_ruler = yes
@@ -48,14 +56,22 @@ LR_kemet_raise_ta_mehu_decision = {
 	selection_tooltip = LR_kemet_raise_ta_mehu_decision_tooltip
 	confirm_text = LR_kemet_raise_ta_mehu_decision_confirm
 	cost = {
-		gold = 300
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 }
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 }
+		}
 		prestige = 300
 	}
 	is_shown = {
 		is_ruler = yes
 		LR_title_set_kemet_native_trigger = yes
 		highest_held_title_tier >= tier_duchy
-		NOT = { title:k_kemet_ta_mehu = { has_variable = LR_kemet_raised } }
+		LR_satrapy_restorable_trigger = { SATRAPY = k_kemet_ta_mehu }
+		any_realm_county = { LR_kemet_ta_mehu_county_trigger = yes } # only for rulers with land there
 	}
 	is_valid = {
 		is_independent_ruler = yes
