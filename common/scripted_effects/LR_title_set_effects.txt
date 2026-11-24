@@ -164,10 +164,55 @@ LR_title_set_replace_dissolved_title_effect = {
 	clear_saved_scope = LR_title_set_replacement
 }
 
+# LR 2026-11-24 (user: "all kingdom level title set decisions should immediately make the title if its not made").
+# Scope: the ruler who ran a title set decision (run by LR_title_set_reorganise_realm_effect, which every set decision
+# ends with). Every set kingdom that nobody holds and that has a de jure county in their realm is created for them at
+# once, if the usual creation rules allow it (LR_title_creation_rules_trigger: set natives, ages, warlord dates...)
+# and the kingdom has no can_create of its own (decision-only crowns stay with their decisions). The decisions that
+# make one kingdom already create it; this covers the ones that lay out a whole set (Frankish and German regna under
+# the Sacral/Frankish/Holy Roman crowns, the dioceses of a provincialisation...).
+LR_title_set_make_kingdoms_effect = {
+	save_scope_as = LR_tsm_kingdom_maker
+	every_sub_realm_county = {
+		limit = {
+			kingdom ?= {
+				NOT = { exists = holder }
+				NOT = { is_in_list = LR_tsm_kingdoms_checked }
+			}
+		}
+		kingdom = { add_to_temporary_list = LR_tsm_kingdoms_checked }
+	}
+	every_in_list = {
+		list = LR_tsm_kingdoms_checked
+		limit = {
+			NOT = { exists = holder }
+			LR_is_set_title_trigger = yes
+			LR_title_has_own_creation_gate_trigger = no
+		}
+		save_scope_as = LR_tsm_new_kingdom
+		if = {
+			limit = {
+				scope:LR_tsm_kingdom_maker = { LR_title_creation_rules_trigger = { TITLE = scope:LR_tsm_new_kingdom } }
+			}
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = LR_tsm_kingdom_change
+				add_claim_on_loss = no
+			}
+			change_title_holder = {
+				holder = scope:LR_tsm_kingdom_maker
+				change = scope:LR_tsm_kingdom_change
+			}
+			resolve_title_and_vassal_change = scope:LR_tsm_kingdom_change
+		}
+	}
+}
+
 # Scope: the ruler who ran a reorganise decision. Refreshes them and every ruler below them holding a set title,
 # so vassal titles follow the counties at once instead of at the next yearly check.
 LR_title_set_reorganise_realm_effect = {
 	LR_tsm_mark_stale_effect = yes # the Title Set Map repaints at its next opening (de jure land moved)
+	LR_title_set_make_kingdoms_effect = yes # LR 2026-11-24
 	LR_title_set_refresh_effect = yes
 	every_vassal_or_below = {
 		limit = { any_held_title = { LR_is_set_title_trigger = yes } }
