@@ -1,0 +1,178 @@
+﻿# LR 2026-11-24 (user): hand out titles to new characters automatically, either of the liege's culture and faith/rite
+# (MODE = liege) or of the culture and faith/rite of each title's own county (MODE = local).
+# Decisions in common/decisions/Lux Renata/01_Government/LR_hand_out_titles_decisions.txt.
+#
+# Root = the liege. Every held title below their highest tier is handed out, except the capital county and the
+# capital's de jure duchy (LR_ho_can_hand_out_title_trigger). Top-down: each title of duchy tier and above goes to a
+# new character together with a county to live in (the title's capital county if it is being handed out, else another
+# handed-out county under it). A title with no county left goes to the new holder of its nearest handed-out de jure
+# liege title; failing that the liege keeps it. Every remaining county gets a new character of its own. A new holder
+# whose title lies de jure under another new holder's title becomes that holder's vassal.
+
+# Usage: LR_hand_out_titles_effect = { MODE = liege } or { MODE = local }
+LR_hand_out_titles_effect = {
+	capital_county = { save_scope_as = lr_ho_capital }
+	every_held_title = {
+		limit = { LR_ho_can_hand_out_title_trigger = yes }
+		add_to_temporary_list = lr_ho_titles
+	}
+	LR_ho_tier_effect = { MODE = $MODE$ TIER = empire }
+	LR_ho_tier_effect = { MODE = $MODE$ TIER = kingdom }
+	LR_ho_tier_effect = { MODE = $MODE$ TIER = duchy }
+	LR_ho_tier_effect = { MODE = $MODE$ TIER = county }
+}
+
+# Hands out every listed title of tier TIER (root = the liege)
+LR_ho_tier_effect = {
+	every_in_list = {
+		list = lr_ho_titles
+		limit = {
+			tier = tier_$TIER$
+			NOT = { is_in_list = lr_ho_done }
+		}
+		save_scope_as = lr_ho_title
+		# The county the new holder lives in
+		if = {
+			limit = { tier = tier_county }
+			save_scope_as = lr_ho_seat
+		}
+		else_if = {
+			limit = {
+				title_capital_county ?= {
+					is_in_list = lr_ho_titles
+					NOT = { is_in_list = lr_ho_done }
+				}
+			}
+			title_capital_county = { save_scope_as = lr_ho_seat }
+		}
+		else = {
+			random_in_list = {
+				list = lr_ho_titles
+				limit = {
+					tier = tier_county
+					NOT = { is_in_list = lr_ho_done }
+					any_this_title_or_de_jure_above = { this = scope:lr_ho_title }
+				}
+				save_scope_as = lr_ho_seat
+			}
+		}
+		if = {
+			limit = { exists = scope:lr_ho_seat }
+			LR_ho_grant_effect = { MODE = $MODE$ }
+		}
+		else = {
+			# No county left for it: it goes with its nearest handed-out de jure liege title
+			LR_ho_find_new_liege_effect = yes
+			if = {
+				limit = { exists = scope:lr_ho_new_liege }
+				create_title_and_vassal_change = {
+					type = granted
+					save_scope_as = lr_ho_change
+					add_claim_on_loss = no
+				}
+				change_title_holder_include_vassals = {
+					holder = scope:lr_ho_new_liege
+					change = scope:lr_ho_change
+				}
+				resolve_title_and_vassal_change = scope:lr_ho_change
+				add_to_temporary_list = lr_ho_done
+			}
+		}
+		clear_saved_scope = lr_ho_seat
+		clear_saved_scope = lr_ho_new_liege
+	}
+}
+
+# Needs scope:lr_ho_title and scope:lr_ho_seat (the same title for a county): a new character takes both
+LR_ho_grant_effect = {
+	LR_ho_source_$MODE$_effect = yes
+	create_character = {
+		age = { 25 45 }
+		gender_female_chance = LR_ho_female_chance_value
+		culture = scope:lr_ho_culture
+		faith = scope:lr_ho_faith
+		rite = scope:lr_ho_rite
+		dynasty = generate
+		employer = root
+		random_traits = yes
+		save_scope_as = lr_ho_new
+	}
+	scope:lr_ho_new = { add_to_temporary_list = lr_ho_new_holders }
+	create_title_and_vassal_change = {
+		type = granted
+		save_scope_as = lr_ho_change
+		add_claim_on_loss = no
+	}
+	scope:lr_ho_seat = {
+		change_title_holder_include_vassals = {
+			holder = scope:lr_ho_new
+			change = scope:lr_ho_change
+		}
+		add_to_temporary_list = lr_ho_done
+	}
+	if = {
+		limit = { NOT = { scope:lr_ho_seat = scope:lr_ho_title } }
+		scope:lr_ho_title = {
+			change_title_holder_include_vassals = {
+				holder = scope:lr_ho_new
+				change = scope:lr_ho_change
+			}
+			add_to_temporary_list = lr_ho_done
+		}
+	}
+	resolve_title_and_vassal_change = scope:lr_ho_change
+	# Under the new holder of the nearest handed-out title above it, if any
+	scope:lr_ho_title = { LR_ho_find_new_liege_effect = yes }
+	if = {
+		limit = {
+			exists = scope:lr_ho_new_liege
+			NOT = { scope:lr_ho_new.liege ?= scope:lr_ho_new_liege }
+		}
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = lr_ho_liege_change
+			add_claim_on_loss = no
+		}
+		scope:lr_ho_new = {
+			change_liege = {
+				liege = scope:lr_ho_new_liege
+				change = scope:lr_ho_liege_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:lr_ho_liege_change
+	}
+}
+
+# Title scope: saves scope:lr_ho_new_liege, the new holder (from this hand-out) of the nearest de jure title above it
+LR_ho_find_new_liege_effect = {
+	if = {
+		limit = { de_jure_liege ?= { holder ?= { is_in_list = lr_ho_new_holders } } }
+		de_jure_liege.holder = { save_scope_as = lr_ho_new_liege }
+	}
+	else_if = {
+		limit = { de_jure_liege.de_jure_liege ?= { holder ?= { is_in_list = lr_ho_new_holders } } }
+		de_jure_liege.de_jure_liege.holder = { save_scope_as = lr_ho_new_liege }
+	}
+	else_if = {
+		limit = { de_jure_liege.de_jure_liege.de_jure_liege ?= { holder ?= { is_in_list = lr_ho_new_holders } } }
+		de_jure_liege.de_jure_liege.de_jure_liege.holder = { save_scope_as = lr_ho_new_liege }
+	}
+}
+
+# Culture and faith/rite of the new holder: the liege's
+LR_ho_source_liege_effect = {
+	root = {
+		culture = { save_scope_as = lr_ho_culture }
+		faith = { save_scope_as = lr_ho_faith }
+		rite = { save_scope_as = lr_ho_rite }
+	}
+}
+
+# Culture and faith/rite of the new holder: those of the county they will live in
+LR_ho_source_local_effect = {
+	scope:lr_ho_seat = {
+		culture = { save_scope_as = lr_ho_culture }
+		faith = { save_scope_as = lr_ho_faith }
+		rite = { save_scope_as = lr_ho_rite }
+	}
+}
