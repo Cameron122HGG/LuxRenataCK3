@@ -1,0 +1,55 @@
+﻿# LR 2026-11-24 (user): "add a debug decision to grant the hellenistic empire" (debug mode only).
+# Does what Restore Alexander's Hegemony (LR_create_alexander_hegemony_decision) does, without its requirements:
+# takes h_hellenistic_empire (from its holder if it has one), absorbs a held Diadochi hegemony, sets the empires of
+# Alexander's lands under it and sorts restored satrapies into its strategiai. The title gain fires the Kosmokratoria
+# government and the naming event (LR_hellenistic_name.0001).
+
+LR_debug_grant_hellenistic_empire_decision = {
+	decision_group_type = debug
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_alexanders_restoration.dds" }
+	desc = LR_debug_grant_hellenistic_empire_decision_desc
+	selection_tooltip = LR_debug_grant_hellenistic_empire_decision_desc
+	confirm_text = LR_debug_grant_hellenistic_empire_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_title = title:h_hellenistic_empire }
+	}
+
+	effect = {
+		show_as_tooltip = { get_title = title:h_hellenistic_empire }
+		hidden_effect = {
+			create_title_and_vassal_change = {
+				type = usurped
+				save_scope_as = LR_debug_hegemony_change
+				add_claim_on_loss = no
+			}
+			title:h_hellenistic_empire = {
+				change_title_holder = {
+					holder = root
+					change = scope:LR_debug_hegemony_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:LR_debug_hegemony_change
+			set_primary_title_to = title:h_hellenistic_empire
+			LR_absorb_diadochi_hegemony_effect = yes
+			every_empire = {
+				limit = {
+					NOT = { this = title:h_hellenistic_empire }
+					tier = tier_empire
+					title_capital_county.title_province = { geographical_region = world_alexanders_empire }
+				}
+				set_de_jure_liege_title = title:h_hellenistic_empire
+			}
+			LR_sort_satrapies_into_strategiai_effect = yes
+			set_global_variable = { name = created_alexanders_hegemony value = yes }
+			add_prestige = 5000
+		}
+	}
+
+	ai_check_interval = 0
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

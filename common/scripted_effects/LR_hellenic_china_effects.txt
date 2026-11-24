@@ -1,0 +1,3945 @@
+﻿# LR Hellenic China (tools/register_hellenic_china_set.py, 2026-11-24). GENERATED.
+
+# Scope: a title left behind by a Hellenic China layout. If it has a holder but no de jure land left, the holder
+# gets the Hellenistic title of the same tier over its capital county (if unheld and theirs to use) and the old
+# title is dissolved.
+LR_sina_dissolve_if_empty_effect = {
+	if = {
+		limit = {
+			exists = holder
+			NOT = { LR_title_set_hellenistic_title_trigger = yes }
+			NOT = { any_de_jure_county = { always = yes } }
+		}
+		save_temporary_scope_as = LR_sina_old
+		holder = { save_temporary_scope_as = LR_sina_old_holder }
+		title_capital_county ?= {
+			if = {
+				limit = { scope:LR_sina_old.tier = tier_duchy }
+				duchy ?= { save_temporary_scope_as = LR_sina_new }
+			}
+			else_if = {
+				limit = { scope:LR_sina_old.tier = tier_kingdom }
+				kingdom ?= { save_temporary_scope_as = LR_sina_new }
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:LR_sina_new
+				scope:LR_sina_new = {
+					LR_is_hellenic_china_title_trigger = yes
+					NOT = { exists = holder }
+				}
+				scope:LR_sina_old_holder = { LR_title_set_hellenistic_native_trigger = yes }
+			}
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = LR_sina_change
+				add_claim_on_loss = no
+			}
+			scope:LR_sina_new = {
+				change_title_holder = {
+					holder = scope:LR_sina_old_holder
+					change = scope:LR_sina_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:LR_sina_change
+		}
+		scope:LR_sina_old_holder = { destroy_title = scope:LR_sina_old }
+		clear_saved_scope = LR_sina_new
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_daibei_effect = {
+	# Sangganitis
+	title:d_hyparchy_sina_sanggan = { set_de_jure_liege_title = title:k_satrapy_sina_daibei }
+	title:c_huaian = { set_de_jure_liege_title = title:d_hyparchy_sina_sanggan }
+	title:c_jiushijiuquan = { set_de_jure_liege_title = title:d_hyparchy_sina_sanggan }
+	title:c_rouyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_sanggan }
+	title:c_yongxing = { set_de_jure_liege_title = title:d_hyparchy_sina_sanggan }
+	# Tzenouia
+	title:d_hyparchy_sina_xinan = { set_de_jure_liege_title = title:k_satrapy_sina_daibei }
+	title:c_fuzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xinan }
+	title:c_linzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xinan }
+	title:c_lxj_yunneizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xinan }
+	title:c_qingshan = { set_de_jure_liege_title = title:d_hyparchy_sina_xinan }
+	title:c_shengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xinan }
+	# Iounsoia
+	title:d_hyparchy_sina_yunshuo = { set_de_jure_liege_title = title:k_satrapy_sina_daibei }
+	title:c_datong_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_yunshuo }
+	title:c_hongzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_yunshuo }
+	title:c_shuozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yunshuo }
+	title:c_yingzhou_5 = { set_de_jure_liege_title = title:d_hyparchy_sina_yunshuo }
+	title:c_yuzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yunshuo }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_daibei_effect = {
+	title:k_satrapy_sina_daibei = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+	title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_daibei_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_arktike = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_daibei = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+		title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_daibei = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_dali_effect = {
+	# Dalipolitis
+	title:d_hyparchy_sina_dali = { set_de_jure_liege_title = title:k_satrapy_sina_dali }
+	title:c_dali = { set_de_jure_liege_title = title:d_hyparchy_sina_dali }
+	title:c_nongdong = { set_de_jure_liege_title = title:d_hyparchy_sina_dali }
+	title:c_weichu = { set_de_jure_liege_title = title:d_hyparchy_sina_dali }
+	# Chouitsouanitis
+	title:d_hyparchy_sina_huichuan = { set_de_jure_liege_title = title:k_satrapy_sina_dali }
+	title:c_huichuan = { set_de_jure_liege_title = title:d_hyparchy_sina_huichuan }
+	title:c_jianchang_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_huichuan }
+	# Tziantsouanitis
+	title:d_hyparchy_sina_jianchuan = { set_de_jure_liege_title = title:k_satrapy_sina_dali }
+	title:c_chengji = { set_de_jure_liege_title = title:d_hyparchy_sina_jianchuan }
+	title:c_jianchuan = { set_de_jure_liege_title = title:d_hyparchy_sina_jianchuan }
+	title:c_xiangcheng = { set_de_jure_liege_title = title:d_hyparchy_sina_jianchuan }
+	# Tongchaia
+	title:d_hyparchy_sina_tonghai = { set_de_jure_liege_title = title:k_satrapy_sina_dali }
+	title:c_muze = { set_de_jure_liege_title = title:d_hyparchy_sina_tonghai }
+	title:c_tonghai = { set_de_jure_liege_title = title:d_hyparchy_sina_tonghai }
+	title:c_zuining = { set_de_jure_liege_title = title:d_hyparchy_sina_tonghai }
+	# Todongitis
+	title:d_hyparchy_sina_tuodong = { set_de_jure_liege_title = title:k_satrapy_sina_dali }
+	title:c_dongchuan = { set_de_jure_liege_title = title:d_hyparchy_sina_tuodong }
+	title:c_shanchan = { set_de_jure_liege_title = title:d_hyparchy_sina_tuodong }
+	title:c_shicheng = { set_de_jure_liege_title = title:d_hyparchy_sina_tuodong }
+	# Insengitis
+	title:d_hyparchy_sina_yinsheng = { set_de_jure_liege_title = title:k_satrapy_sina_dali }
+	title:c_buri = { set_de_jure_liege_title = title:d_hyparchy_sina_yinsheng }
+	title:c_weiyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_yinsheng }
+	title:c_yinsheng = { set_de_jure_liege_title = title:d_hyparchy_sina_yinsheng }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_dali_effect = {
+	title:k_satrapy_sina_dali = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+	title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_dali_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_oreine = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_dali = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+		title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_dali = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_dongchuan_effect = {
+	# Dongtsouanitis
+	title:d_hyparchy_sina_dongchuan = { set_de_jure_liege_title = title:k_satrapy_sina_dongchuan }
+	title:c_jianzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_dongchuan }
+	title:c_longzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_dongchuan }
+	title:c_mianzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_dongchuan }
+	title:c_puzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_dongchuan }
+	title:c_tongchuan = { set_de_jure_liege_title = title:d_hyparchy_sina_dongchuan }
+	title:c_zizhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_dongchuan }
+	# Ousinitis
+	title:d_hyparchy_sina_wuxin = { set_de_jure_liege_title = title:k_satrapy_sina_dongchuan }
+	title:c_changzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxin }
+	title:c_luzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxin }
+	title:c_nanxi = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxin }
+	title:c_rongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxin }
+	title:c_suining = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxin }
+	title:c_yuzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxin }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_dongchuan_effect = {
+	title:k_satrapy_sina_dongchuan = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+	title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_dongchuan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_oreine = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_dongchuan = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+		title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_dongchuan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_fujian_effect = {
+	# Tzianningitis
+	title:d_hyparchy_sina_jianning = { set_de_jure_liege_title = title:k_satrapy_sina_fujian }
+	title:c_jian_an = { set_de_jure_liege_title = title:d_hyparchy_sina_jianning }
+	title:c_nanjian = { set_de_jure_liege_title = title:d_hyparchy_sina_jianning }
+	title:c_shaowu = { set_de_jure_liege_title = title:d_hyparchy_sina_jianning }
+	title:c_tingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jianning }
+	# Pingchaia
+	title:d_hyparchy_sina_pinghai = { set_de_jure_liege_title = title:k_satrapy_sina_fujian }
+	title:c_quanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_pinghai }
+	title:c_xinghua = { set_de_jure_liege_title = title:d_hyparchy_sina_pinghai }
+	title:c_zhangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_pinghai }
+	# Ouïtis
+	title:d_hyparchy_sina_weiwu = { set_de_jure_liege_title = title:k_satrapy_sina_fujian }
+	title:c_funing = { set_de_jure_liege_title = title:d_hyparchy_sina_weiwu }
+	title:c_fuzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_weiwu }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_fujian_effect = {
+	title:k_satrapy_sina_fujian = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+	title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_fujian_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_paralia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_fujian = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+		title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_fujian = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_guannei_effect = {
+	# Binningitis
+	title:d_hyparchy_sina_binning = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_binzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_binning }
+	title:c_huanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_binning }
+	title:c_jinzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_binning }
+	title:c_qingyang = { set_de_jure_liege_title = title:d_hyparchy_sina_binning }
+	# Fengsiangitis
+	title:d_hyparchy_sina_fengxiang = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_fengxiang = { set_de_jure_liege_title = title:d_hyparchy_sina_fengxiang }
+	title:c_longzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_fengxiang }
+	# Foufangitis
+	title:d_hyparchy_sina_fufang = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_danzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_fufang }
+	title:c_fangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_fufang }
+	title:c_fuzhou_5 = { set_de_jure_liege_title = title:d_hyparchy_sina_fufang }
+	title:c_yan_an = { set_de_jure_liege_title = title:d_hyparchy_sina_fufang }
+	# Tzingiouanitis
+	title:d_hyparchy_sina_jingyuan = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_jingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jingyuan }
+	title:c_xiaoguan = { set_de_jure_liege_title = title:d_hyparchy_sina_jingyuan }
+	title:c_yuanzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_jingyuan }
+	# Tzinsangitis
+	title:d_hyparchy_sina_jinshang = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_jinzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_jinshang }
+	title:c_shangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jinshang }
+	# Tsintsengitis
+	title:d_hyparchy_sina_qincheng = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_chengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qincheng }
+	title:c_jiezhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qincheng }
+	title:c_minzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qincheng }
+	title:c_qinzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_qincheng }
+	title:c_weizhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_qincheng }
+	# Singfengitis
+	title:d_hyparchy_sina_xingfeng = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_fengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xingfeng }
+	title:c_xingqing = { set_de_jure_liege_title = title:d_hyparchy_sina_xingfeng }
+	# Thinaitis
+	title:d_hyparchy_sina_yongxing = { set_de_jure_liege_title = title:k_satrapy_sina_guannei }
+	title:c_huayin = { set_de_jure_liege_title = title:d_hyparchy_sina_yongxing }
+	title:c_jingzhao = { set_de_jure_liege_title = title:d_hyparchy_sina_yongxing }
+	title:c_tongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yongxing }
+	title:c_yaozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yongxing }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_guannei_effect = {
+	title:k_satrapy_sina_guannei = { set_de_jure_liege_title = title:e_strategia_sina_hesperia }
+	title:e_strategia_sina_hesperia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_guannei_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_hesperia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_guannei = { set_de_jure_liege_title = title:e_strategia_sina_hesperia }
+		title:e_strategia_sina_hesperia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_guannei = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_hebei_effect = {
+	# Tsangtzingitis
+	title:d_hyparchy_sina_cangjing = { set_de_jure_liege_title = title:k_satrapy_sina_hebei }
+	title:c_cangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_cangjing }
+	title:c_dezhou = { set_de_jure_liege_title = title:d_hyparchy_sina_cangjing }
+	title:c_dizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_cangjing }
+	# Tsengdeia
+	title:d_hyparchy_sina_chengde = { set_de_jure_liege_title = title:k_satrapy_sina_hebei }
+	title:c_jizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_chengde }
+	title:c_shenzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_chengde }
+	title:c_zhaozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_chengde }
+	title:c_zhenzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_chengde }
+	# Cheiangitis
+	title:d_hyparchy_sina_heyang = { set_de_jure_liege_title = title:k_satrapy_sina_hebei }
+	title:c_huaizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_heyang }
+	title:c_weizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_heyang }
+	# Ouïbōtis
+	title:d_hyparchy_sina_weibo = { set_de_jure_liege_title = title:k_satrapy_sina_hebei }
+	title:c_beizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_weibo }
+	title:c_bozhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_weibo }
+	title:c_weizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_weibo }
+	# Singmingitis
+	title:d_hyparchy_sina_xingming = { set_de_jure_liege_title = title:k_satrapy_sina_hebei }
+	title:c_mingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xingming }
+	title:c_xiangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xingming }
+	title:c_xingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xingming }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_hebei_effect = {
+	title:k_satrapy_sina_hebei = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+	title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_hebei_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_arktike = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_hebei = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+		title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_hebei = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_hedong_effect = {
+	# Taïouanitis
+	title:d_hyparchy_sina_hedong = { set_de_jure_liege_title = title:k_satrapy_sina_hedong }
+	title:c_fenzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hedong }
+	title:c_lanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hedong }
+	title:c_liaozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hedong }
+	title:c_shizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hedong }
+	title:c_taiyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_hedong }
+	# Chetzongitis
+	title:d_hyparchy_sina_hezhong = { set_de_jure_liege_title = title:k_satrapy_sina_hedong }
+	title:c_cizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hezhong }
+	title:c_hezhong = { set_de_jure_liege_title = title:d_hyparchy_sina_hezhong }
+	title:c_jiangzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_hezhong }
+	title:c_pingyang = { set_de_jure_liege_title = title:d_hyparchy_sina_hezhong }
+	title:c_xizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hezhong }
+	# Ianmenitis
+	title:d_hyparchy_sina_yanmen = { set_de_jure_liege_title = title:k_satrapy_sina_hedong }
+	title:c_daizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yanmen }
+	title:c_xinzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yanmen }
+	# Zelouia
+	title:d_hyparchy_sina_zelu = { set_de_jure_liege_title = title:k_satrapy_sina_hedong }
+	title:c_longde = { set_de_jure_liege_title = title:d_hyparchy_sina_zelu }
+	title:c_yangcheng = { set_de_jure_liege_title = title:d_hyparchy_sina_zelu }
+	title:c_zezhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zelu }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_hedong_effect = {
+	title:k_satrapy_sina_hedong = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+	title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_hedong_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_arktike = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_hedong = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+		title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_hedong = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_henan_effect = {
+	# Biansongitis
+	title:d_hyparchy_sina_biansong = { set_de_jure_liege_title = title:k_satrapy_sina_henan }
+	title:c_bianzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_biansong }
+	title:c_bozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_biansong }
+	title:c_shanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_biansong }
+	title:c_songzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_biansong }
+	title:c_yingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_biansong }
+	# Tsensouia
+	title:d_hyparchy_sina_chenxu = { set_de_jure_liege_title = title:k_satrapy_sina_henan }
+	title:c_caizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_chenxu }
+	title:c_huaining = { set_de_jure_liege_title = title:d_hyparchy_sina_chenxu }
+	title:c_shenzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_chenxu }
+	title:c_yingchuan = { set_de_jure_liege_title = title:d_hyparchy_sina_chenxu }
+	# Sēropolitis
+	title:d_hyparchy_sina_dongji = { set_de_jure_liege_title = title:k_satrapy_sina_henan }
+	title:c_henan = { set_de_jure_liege_title = title:d_hyparchy_sina_dongji }
+	title:c_ruzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_dongji }
+	# Sangoia
+	title:d_hyparchy_sina_shanguo = { set_de_jure_liege_title = title:k_satrapy_sina_henan }
+	title:c_guozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_shanguo }
+	title:c_shanzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_shanguo }
+	# Tzengchouaia
+	title:d_hyparchy_sina_zhenghua = { set_de_jure_liege_title = title:k_satrapy_sina_henan }
+	title:c_huazhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhenghua }
+	title:c_zhengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhenghua }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_henan_effect = {
+	title:k_satrapy_sina_henan = { set_de_jure_liege_title = title:e_strategia_sina_mesogeios }
+	title:e_strategia_sina_mesogeios = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_henan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_mesogeios = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_henan = { set_de_jure_liege_title = title:e_strategia_sina_mesogeios }
+		title:e_strategia_sina_mesogeios = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_henan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_hexi_effect = {
+	# Gansouia
+	title:d_hyparchy_sina_gansu = { set_de_jure_liege_title = title:k_satrapy_sina_hexi }
+	title:c_ganzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_gansu }
+	title:c_jiankang = { set_de_jure_liege_title = title:d_hyparchy_sina_gansu }
+	title:c_jiuquan = { set_de_jure_liege_title = title:d_hyparchy_sina_gansu }
+	title:c_liaoquan = { set_de_jure_liege_title = title:d_hyparchy_sina_gansu }
+	title:c_yumen = { set_de_jure_liege_title = title:d_hyparchy_sina_gansu }
+	title:c_zhenwu_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_gansu }
+	# Throana
+	title:d_hyparchy_sina_guasha = { set_de_jure_liege_title = title:k_satrapy_sina_hexi }
+	title:c_guazhou = { set_de_jure_liege_title = title:d_hyparchy_sina_guasha }
+	title:c_hehe = { set_de_jure_liege_title = title:d_hyparchy_sina_guasha }
+	title:c_shazhou = { set_de_jure_liege_title = title:d_hyparchy_sina_guasha }
+	title:c_shouchang = { set_de_jure_liege_title = title:d_hyparchy_sina_guasha }
+	title:c_xincheng = { set_de_jure_liege_title = title:d_hyparchy_sina_guasha }
+	title:c_ziting = { set_de_jure_liege_title = title:d_hyparchy_sina_guasha }
+	# Liangitis
+	title:d_hyparchy_sina_hexi = { set_de_jure_liege_title = title:k_satrapy_sina_hexi }
+	title:c_baishan = { set_de_jure_liege_title = title:d_hyparchy_sina_hexi }
+	title:c_fanhe = { set_de_jure_liege_title = title:d_hyparchy_sina_hexi }
+	title:c_guangwu = { set_de_jure_liege_title = title:d_hyparchy_sina_hexi }
+	title:c_liangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hexi }
+	title:c_zhanyin = { set_de_jure_liege_title = title:d_hyparchy_sina_hexi }
+	# Santzia
+	title:d_hyparchy_sina_longyou = { set_de_jure_liege_title = title:k_satrapy_sina_hexi }
+	title:c_hezhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_longyou }
+	title:c_kuozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_longyou }
+	title:c_lanzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_longyou }
+	title:c_xiningzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_longyou }
+	# Tsilianitis
+	title:d_hyparchy_sina_qilian = { set_de_jure_liege_title = title:k_satrapy_sina_hexi }
+	title:c_qilin = { set_de_jure_liege_title = title:d_hyparchy_sina_qilian }
+	title:c_yalong = { set_de_jure_liege_title = title:d_hyparchy_sina_qilian }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_hexi_effect = {
+	title:k_satrapy_sina_hexi = { set_de_jure_liege_title = title:e_strategia_sina_hesperia }
+	title:e_strategia_sina_hesperia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_hexi_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_hesperia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_hexi = { set_de_jure_liege_title = title:e_strategia_sina_hesperia }
+		title:e_strategia_sina_hesperia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_hexi = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_huainan_effect = {
+	# Iangitis
+	title:d_hyparchy_sina_huainan = { set_de_jure_liege_title = title:k_satrapy_sina_huainan }
+	title:c_chuzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_huainan }
+	title:c_chuzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_huainan }
+	title:c_taizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_huainan }
+	title:c_yangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_huainan }
+	# Chouaisia
+	title:d_hyparchy_sina_huaixi = { set_de_jure_liege_title = title:k_satrapy_sina_huainan }
+	title:c_guangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_huaixi }
+	title:c_haozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_huaixi }
+	title:c_liyang_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_huaixi }
+	title:c_lujiang = { set_de_jure_liege_title = title:d_hyparchy_sina_huaixi }
+	title:c_shouzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_huaixi }
+	title:c_shuzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_huaixi }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_huainan_effect = {
+	title:k_satrapy_sina_huainan = { set_de_jure_liege_title = title:e_strategia_sina_mesogeios }
+	title:e_strategia_sina_mesogeios = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_huainan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_mesogeios = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_huainan = { set_de_jure_liege_title = title:e_strategia_sina_mesogeios }
+		title:e_strategia_sina_mesogeios = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_huainan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_hunan_effect = {
+	# Tanitis
+	title:d_hyparchy_sina_hunan = { set_de_jure_liege_title = title:k_satrapy_sina_hunan }
+	title:c_chenzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_hunan }
+	title:c_guiyang = { set_de_jure_liege_title = title:d_hyparchy_sina_hunan }
+	title:c_hengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hunan }
+	title:c_lianzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hunan }
+	title:c_tanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_hunan }
+	# Linglingitis
+	title:d_hyparchy_sina_lingling = { set_de_jure_liege_title = title:k_satrapy_sina_hunan }
+	title:c_daozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingling }
+	title:c_quanzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_lingling }
+	title:c_shaozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingling }
+	title:c_yongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingling }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_hunan_effect = {
+	title:k_satrapy_sina_hunan = { set_de_jure_liege_title = title:e_strategia_sina_potamia }
+	title:e_strategia_sina_potamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_hunan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_potamia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_hunan = { set_de_jure_liege_title = title:e_strategia_sina_potamia }
+		title:e_strategia_sina_potamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_hunan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_jiangdong_effect = {
+	# Tziankangitis
+	title:d_hyparchy_sina_jiangdong = { set_de_jure_liege_title = title:k_satrapy_sina_jiangdong }
+	title:c_changzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangdong }
+	title:c_jiangning = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangdong }
+	title:c_runzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangdong }
+	title:c_suzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangdong }
+	# Souanseia
+	title:d_hyparchy_sina_xuanshe = { set_de_jure_liege_title = title:k_satrapy_sina_jiangdong }
+	title:c_chizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xuanshe }
+	title:c_guangde = { set_de_jure_liege_title = title:d_hyparchy_sina_xuanshe }
+	title:c_shezhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xuanshe }
+	title:c_xuanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xuanshe }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_jiangdong_effect = {
+	title:k_satrapy_sina_jiangdong = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+	title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_jiangdong_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_paralia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_jiangdong = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+		title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_jiangdong = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_jiangxi_effect = {
+	# Dingtziangitis
+	title:d_hyparchy_sina_dingjiang = { set_de_jure_liege_title = title:k_satrapy_sina_jiangxi }
+	title:c_nankang = { set_de_jure_liege_title = title:d_hyparchy_sina_dingjiang }
+	title:c_raozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_dingjiang }
+	title:c_xinhzou = { set_de_jure_liege_title = title:d_hyparchy_sina_dingjiang }
+	title:c_yunyang = { set_de_jure_liege_title = title:d_hyparchy_sina_dingjiang }
+	# Chongopolitis
+	title:d_hyparchy_sina_jiangxi = { set_de_jure_liege_title = title:k_satrapy_sina_jiangxi }
+	title:c_fuzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangxi }
+	title:c_hongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangxi }
+	title:c_jianchang = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangxi }
+	title:c_jizhou_3 = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangxi }
+	title:c_linjiang = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangxi }
+	title:c_yuanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangxi }
+	title:c_yunzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_jiangxi }
+	# Tzaosinitis
+	title:d_hyparchy_sina_zhaoxin = { set_de_jure_liege_title = title:k_satrapy_sina_jiangxi }
+	title:c_nanan = { set_de_jure_liege_title = title:d_hyparchy_sina_zhaoxin }
+	title:c_ningduzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhaoxin }
+	title:c_qianzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhaoxin }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_jiangxi_effect = {
+	title:k_satrapy_sina_jiangxi = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+	title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_jiangxi_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_paralia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_jiangxi = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+		title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_jiangxi = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_kuizhou_effect = {
+	# Kouitzongitis
+	title:d_hyparchy_sina_kuizhong = { set_de_jure_liege_title = title:k_satrapy_sina_kuizhou }
+	title:c_fuzhou_4 = { set_de_jure_liege_title = title:d_hyparchy_sina_kuizhong }
+	title:c_kuizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_kuizhong }
+	title:c_wanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_kuizhong }
+	title:c_zhongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_kuizhong }
+	# Tsiantzongitis
+	title:d_hyparchy_sina_qianzhong = { set_de_jure_liege_title = title:k_satrapy_sina_kuizhou }
+	title:c_bochuan = { set_de_jure_liege_title = title:d_hyparchy_sina_qianzhong }
+	title:c_nanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qianzhong }
+	title:c_qianzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_qianzhong }
+	title:c_shizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_qianzhong }
+	title:c_sizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qianzhong }
+	title:c_yizhou_3 = { set_de_jure_liege_title = title:d_hyparchy_sina_qianzhong }
+	title:c_zhenxi = { set_de_jure_liege_title = title:d_hyparchy_sina_qianzhong }
+	# Ousia
+	title:d_hyparchy_sina_wuxi = { set_de_jure_liege_title = title:k_satrapy_sina_kuizhou }
+	title:c_lingxi = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxi }
+	title:c_luxi = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxi }
+	title:c_luyang = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxi }
+	title:c_shangxi = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxi }
+	title:c_tanyang = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxi }
+	title:c_yezhou = { set_de_jure_liege_title = title:d_hyparchy_sina_wuxi }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_kuizhou_effect = {
+	title:k_satrapy_sina_kuizhou = { set_de_jure_liege_title = title:e_strategia_sina_potamia }
+	title:e_strategia_sina_potamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_kuizhou_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_potamia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_kuizhou = { set_de_jure_liege_title = title:e_strategia_sina_potamia }
+		title:e_strategia_sina_potamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_kuizhou = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_liangzhe_effect = {
+	# Youeïtis
+	title:d_hyparchy_sina_zhedong = { set_de_jure_liege_title = title:k_satrapy_sina_liangzhe }
+	title:c_chuzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhedong }
+	title:c_mingzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_zhedong }
+	title:c_taizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhedong }
+	title:c_wenzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_zhedong }
+	title:c_wuzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhedong }
+	title:c_xin_an = { set_de_jure_liege_title = title:d_hyparchy_sina_zhedong }
+	title:c_yuezhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhedong }
+	# Changitis
+	title:d_hyparchy_sina_zhexi = { set_de_jure_liege_title = title:k_satrapy_sina_liangzhe }
+	title:c_hangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhexi }
+	title:c_huzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhexi }
+	title:c_muzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhexi }
+	title:c_xiuzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zhexi }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_liangzhe_effect = {
+	title:k_satrapy_sina_liangzhe = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+	title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_liangzhe_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_paralia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_liangzhe = { set_de_jure_liege_title = title:e_strategia_sina_paralia }
+		title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_liangzhe = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_lingnan_effect = {
+	# Chouisounitis
+	title:d_hyparchy_sina_huixun = { set_de_jure_liege_title = title:k_satrapy_sina_lingnan }
+	title:c_chaozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_huixun }
+	title:c_dongguan = { set_de_jure_liege_title = title:d_hyparchy_sina_huixun }
+	title:c_huizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_huixun }
+	title:c_meizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_huixun }
+	title:c_shaozhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_huixun }
+	title:c_xunzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_huixun }
+	# Panyopolitis
+	title:d_hyparchy_sina_lingnan = { set_de_jure_liege_title = title:k_satrapy_sina_lingnan }
+	title:c_chunzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+	title:c_duanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+	title:c_enzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+	title:c_guangzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+	title:c_kangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+	title:c_shuangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+	title:c_xinzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+	title:c_yingde = { set_de_jure_liege_title = title:d_hyparchy_sina_lingnan }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_lingnan_effect = {
+	title:k_satrapy_sina_lingnan = { set_de_jure_liege_title = title:e_strategia_sina_notia }
+	title:e_strategia_sina_notia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_lingnan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_notia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_lingnan = { set_de_jure_liege_title = title:e_strategia_sina_notia }
+		title:e_strategia_sina_notia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_lingnan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_lingxi_effect = {
+	# Gaoliangitis
+	title:d_hyparchy_sina_gaoliang = { set_de_jure_liege_title = title:k_satrapy_sina_lingxi }
+	title:c_gaozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_gaoliang }
+	title:c_leizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_gaoliang }
+	title:c_luozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_gaoliang }
+	# Gouigouanitis
+	title:d_hyparchy_sina_guiguan = { set_de_jure_liege_title = title:k_satrapy_sina_lingxi }
+	title:c_guizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_guiguan }
+	title:c_liuzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_guiguan }
+	title:c_qingyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_guiguan }
+	title:c_rongshui = { set_de_jure_liege_title = title:d_hyparchy_sina_guiguan }
+	title:c_xiangshan = { set_de_jure_liege_title = title:d_hyparchy_sina_guiguan }
+	# Tzingtziangitis
+	title:d_hyparchy_sina_jingjiang = { set_de_jure_liege_title = title:k_satrapy_sina_lingxi }
+	title:c_gongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jingjiang }
+	title:c_wuzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_jingjiang }
+	title:c_zhaozhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_jingjiang }
+	# Tsionggouanitis
+	title:d_hyparchy_sina_qiongguan = { set_de_jure_liege_title = title:k_satrapy_sina_lingxi }
+	title:c_danzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongguan }
+	title:c_lidong = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongguan }
+	title:c_wanan = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongguan }
+	title:c_yazhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongguan }
+	title:c_yazhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongguan }
+	# Ronggouanitis
+	title:d_hyparchy_sina_rongguan = { set_de_jure_liege_title = title:k_satrapy_sina_lingxi }
+	title:c_baizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_rongguan }
+	title:c_lianzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_rongguan }
+	title:c_rongzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_rongguan }
+	title:c_tengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_rongguan }
+	title:c_yulin = { set_de_jure_liege_title = title:d_hyparchy_sina_rongguan }
+	# Ionggouanitis
+	title:d_hyparchy_sina_yongguan = { set_de_jure_liege_title = title:k_satrapy_sina_lingxi }
+	title:c_binzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+	title:c_hengzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+	title:c_qinzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+	title:c_rangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+	title:c_shukunzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+	title:c_tianzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+	title:c_xunzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+	title:c_yongzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_yongguan }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_lingxi_effect = {
+	title:k_satrapy_sina_lingxi = { set_de_jure_liege_title = title:e_strategia_sina_notia }
+	title:e_strategia_sina_notia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_lingxi_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_notia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_lingxi = { set_de_jure_liege_title = title:e_strategia_sina_notia }
+		title:e_strategia_sina_notia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_lingxi = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_qianzhong_effect = {
+	# Lodianitis
+	title:d_hyparchy_sina_luodian = { set_de_jure_liege_title = title:k_satrapy_sina_qianzhong }
+	title:c_luodian = { set_de_jure_liege_title = title:d_hyparchy_sina_luodian }
+	title:c_yanchuan = { set_de_jure_liege_title = title:d_hyparchy_sina_luodian }
+	title:c_yanzhou_3 = { set_de_jure_liege_title = title:d_hyparchy_sina_luodian }
+	# Losia
+	title:d_hyparchy_sina_luoshi = { set_de_jure_liege_title = title:k_satrapy_sina_qianzhong }
+	title:c_shaoqing = { set_de_jure_liege_title = title:d_hyparchy_sina_luoshi }
+	title:c_shunzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_luoshi }
+	title:c_sie = { set_de_jure_liege_title = title:d_hyparchy_sina_luoshi }
+	title:c_zongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_luoshi }
+	# Simenitis
+	title:d_hyparchy_sina_shimen = { set_de_jure_liege_title = title:k_satrapy_sina_qianzhong }
+	title:c_jingzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_shimen }
+	title:c_quzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_shimen }
+	title:c_yinzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_shimen }
+	# Siouanitis
+	title:d_hyparchy_sina_xiyuan = { set_de_jure_liege_title = title:k_satrapy_sina_qianzhong }
+	title:c_guile = { set_de_jure_liege_title = title:d_hyparchy_sina_xiyuan }
+	title:c_siyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_xiyuan }
+	title:c_wulong = { set_de_jure_liege_title = title:d_hyparchy_sina_xiyuan }
+	# Zangkeia
+	title:d_hyparchy_sina_zangke = { set_de_jure_liege_title = title:k_satrapy_sina_qianzhong }
+	title:c_guzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zangke }
+	title:c_huangzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_zangke }
+	title:c_juzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_zangke }
+	title:c_nanping = { set_de_jure_liege_title = title:d_hyparchy_sina_zangke }
+	title:c_yingzhou_4 = { set_de_jure_liege_title = title:d_hyparchy_sina_zangke }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_qianzhong_effect = {
+	title:k_satrapy_sina_qianzhong = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+	title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_qianzhong_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_oreine = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_qianzhong = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+		title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_qianzhong = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_qingxu_effect = {
+	# Sousia
+	title:d_hyparchy_sina_xusi = { set_de_jure_liege_title = title:k_satrapy_sina_qingxu }
+	title:c_huaiyang = { set_de_jure_liege_title = title:d_hyparchy_sina_xusi }
+	title:c_sizhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_xusi }
+	title:c_suzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xusi }
+	title:c_xuzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_xusi }
+	# Ianchaia
+	title:d_hyparchy_sina_yanhai = { set_de_jure_liege_title = title:k_satrapy_sina_qingxu }
+	title:c_haizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yanhai }
+	title:c_langya = { set_de_jure_liege_title = title:d_hyparchy_sina_yanhai }
+	title:c_mizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yanhai }
+	title:c_yanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yanhai }
+	# Iountsaoia
+	title:d_hyparchy_sina_yuncao = { set_de_jure_liege_title = title:k_satrapy_sina_qingxu }
+	title:c_caozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yuncao }
+	title:c_puzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_yuncao }
+	title:c_qizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yuncao }
+	title:c_yunzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yuncao }
+	# Zitsingitis
+	title:d_hyparchy_sina_ziqing = { set_de_jure_liege_title = title:k_satrapy_sina_qingxu }
+	title:c_dengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_ziqing }
+	title:c_laizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_ziqing }
+	title:c_qingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_ziqing }
+	title:c_weizhou_4 = { set_de_jure_liege_title = title:d_hyparchy_sina_ziqing }
+	title:c_zichuan = { set_de_jure_liege_title = title:d_hyparchy_sina_ziqing }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_qingxu_effect = {
+	title:k_satrapy_sina_qingxu = { set_de_jure_liege_title = title:e_strategia_sina_mesogeios }
+	title:e_strategia_sina_mesogeios = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_qingxu_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_mesogeios = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_qingxu = { set_de_jure_liege_title = title:e_strategia_sina_mesogeios }
+		title:e_strategia_sina_mesogeios = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_qingxu = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_shannan_effect = {
+	# Euïa
+	title:d_hyparchy_sina_eyue = { set_de_jure_liege_title = title:k_satrapy_sina_shannan }
+	title:c_anzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_eyue }
+	title:c_ezhou = { set_de_jure_liege_title = title:d_hyparchy_sina_eyue }
+	title:c_huangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_eyue }
+	title:c_qizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_eyue }
+	title:c_yuezhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_eyue }
+	# Tzinganitis
+	title:d_hyparchy_sina_jingnan = { set_de_jure_liege_title = title:k_satrapy_sina_shannan }
+	title:c_fuzhou_3 = { set_de_jure_liege_title = title:d_hyparchy_sina_jingnan }
+	title:c_guizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jingnan }
+	title:c_hanyang = { set_de_jure_liege_title = title:d_hyparchy_sina_jingnan }
+	title:c_jiangling = { set_de_jure_liege_title = title:d_hyparchy_sina_jingnan }
+	title:c_langzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_jingnan }
+	title:c_liyang = { set_de_jure_liege_title = title:d_hyparchy_sina_jingnan }
+	title:c_xiazhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_jingnan }
+	# Siangdengitis
+	title:d_hyparchy_sina_xiangdeng = { set_de_jure_liege_title = title:k_satrapy_sina_shannan }
+	title:c_dengzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_xiangdeng }
+	title:c_fangzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_xiangdeng }
+	title:c_junzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xiangdeng }
+	title:c_suizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_xiangdeng }
+	title:c_tangzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xiangdeng }
+	title:c_xiangyang = { set_de_jure_liege_title = title:d_hyparchy_sina_xiangdeng }
+	title:c_yingzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_xiangdeng }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_shannan_effect = {
+	title:k_satrapy_sina_shannan = { set_de_jure_liege_title = title:e_strategia_sina_potamia }
+	title:e_strategia_sina_potamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_shannan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_potamia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_shannan = { set_de_jure_liege_title = title:e_strategia_sina_potamia }
+		title:e_strategia_sina_potamia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_shannan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_viet_effect = {
+	# Paralia Kattigarēs
+	title:d_hyparchy_sina_hai_dong = { set_de_jure_liege_title = title:k_satrapy_sina_viet }
+	title:c_binh_nguyen = { set_de_jure_liege_title = title:d_hyparchy_sina_hai_dong }
+	title:c_hai_dong = { set_de_jure_liege_title = title:d_hyparchy_sina_hai_dong }
+	# Lamtaïtis
+	title:d_hyparchy_sina_lam_tay = { set_de_jure_liege_title = title:k_satrapy_sina_viet }
+	title:c_lam_tay = { set_de_jure_liege_title = title:d_hyparchy_sina_lam_tay }
+	title:c_quoc_oai = { set_de_jure_liege_title = title:d_hyparchy_sina_lam_tay }
+	# Ngeanitis
+	title:d_hyparchy_sina_nghe_an = { set_de_jure_liege_title = title:k_satrapy_sina_viet }
+	title:c_nam_dinh = { set_de_jure_liege_title = title:d_hyparchy_sina_nghe_an }
+	title:c_nghe_an = { set_de_jure_liege_title = title:d_hyparchy_sina_nghe_an }
+	title:c_sam_nuea = { set_de_jure_liege_title = title:d_hyparchy_sina_nghe_an }
+	# Kattigara
+	title:d_hyparchy_sina_thang_long = { set_de_jure_liege_title = title:k_satrapy_sina_viet }
+	title:c_long_hung = { set_de_jure_liege_title = title:d_hyparchy_sina_thang_long }
+	title:c_thang_long = { set_de_jure_liege_title = title:d_hyparchy_sina_thang_long }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_viet_effect = {
+	title:k_satrapy_sina_viet = { set_de_jure_liege_title = title:e_strategia_sina_notia }
+	title:e_strategia_sina_notia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_viet_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_notia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_viet = { set_de_jure_liege_title = title:e_strategia_sina_notia }
+		title:e_strategia_sina_notia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_viet = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_xia_effect = {
+	# Tzouianitis
+	title:d_hyparchy_sina_juyan = { set_de_jure_liege_title = title:k_satrapy_sina_xia }
+	title:c_heihe = { set_de_jure_liege_title = title:d_hyparchy_sina_juyan }
+	title:c_mazongshan = { set_de_jure_liege_title = title:d_hyparchy_sina_juyan }
+	title:c_tongcheng = { set_de_jure_liege_title = title:d_hyparchy_sina_juyan }
+	title:c_wentugaole = { set_de_jure_liege_title = title:d_hyparchy_sina_juyan }
+	# Oulouchaia
+	title:d_hyparchy_sina_langshan = { set_de_jure_liege_title = title:k_satrapy_sina_xia }
+	title:c_hequ = { set_de_jure_liege_title = title:d_hyparchy_sina_langshan }
+	title:c_keyimen = { set_de_jure_liege_title = title:d_hyparchy_sina_langshan }
+	title:c_langshan = { set_de_jure_liege_title = title:d_hyparchy_sina_langshan }
+	# Sophanē
+	title:d_hyparchy_sina_shuofang = { set_de_jure_liege_title = title:k_satrapy_sina_xia }
+	title:c_huaiyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_shuofang }
+	title:c_huizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_shuofang }
+	title:c_lingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_shuofang }
+	title:c_weizhou_3 = { set_de_jure_liege_title = title:d_hyparchy_sina_shuofang }
+	title:c_wulan = { set_de_jure_liege_title = title:d_hyparchy_sina_shuofang }
+	title:c_xiongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_shuofang }
+	# Tiandeia
+	title:d_hyparchy_sina_tiande = { set_de_jure_liege_title = title:k_satrapy_sina_xia }
+	title:c_lxj_fengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_tiande }
+	title:c_tiande = { set_de_jure_liege_title = title:d_hyparchy_sina_tiande }
+	# Siasouia
+	title:d_hyparchy_sina_xiasui = { set_de_jure_liege_title = title:k_satrapy_sina_xia }
+	title:c_quye = { set_de_jure_liege_title = title:d_hyparchy_sina_xiasui }
+	title:c_suizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xiasui }
+	title:c_wuyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_xiasui }
+	title:c_xiazhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xiasui }
+	title:c_yinzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xiasui }
+	title:c_youzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_xiasui }
+	# Tzenfanitis
+	title:d_hyparchy_sina_xiutu = { set_de_jure_liege_title = title:k_satrapy_sina_xia }
+	title:c_alxa = { set_de_jure_liege_title = title:d_hyparchy_sina_xiutu }
+	title:c_tengger = { set_de_jure_liege_title = title:d_hyparchy_sina_xiutu }
+	title:c_zhenfan = { set_de_jure_liege_title = title:d_hyparchy_sina_xiutu }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_xia_effect = {
+	title:k_satrapy_sina_xia = { set_de_jure_liege_title = title:e_strategia_sina_hesperia }
+	title:e_strategia_sina_hesperia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_xia_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_hesperia = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_xia = { set_de_jure_liege_title = title:e_strategia_sina_hesperia }
+		title:e_strategia_sina_hesperia = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_xia = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_xichuan_effect = {
+	# Tsiongnanitis
+	title:d_hyparchy_sina_qiongnan = { set_de_jure_liege_title = title:k_satrapy_sina_xichuan }
+	title:c_hanyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongnan }
+	title:c_jiazhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongnan }
+	title:c_meizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongnan }
+	title:c_qiongbu = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongnan }
+	title:c_qiongzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongnan }
+	title:c_yazhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_qiongnan }
+	# Tsengtouïtis
+	title:d_hyparchy_sina_xichuan = { set_de_jure_liege_title = title:k_satrapy_sina_xichuan }
+	title:c_chengdu = { set_de_jure_liege_title = title:d_hyparchy_sina_xichuan }
+	title:c_hanzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xichuan }
+	title:c_jianyang = { set_de_jure_liege_title = title:d_hyparchy_sina_xichuan }
+	title:c_lingzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_xichuan }
+	title:c_maozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xichuan }
+	title:c_pengzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xichuan }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_xichuan_effect = {
+	title:k_satrapy_sina_xichuan = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+	title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_xichuan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_oreine = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_xichuan = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+		title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_xichuan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_xingyuan_effect = {
+	# Batsouia
+	title:d_hyparchy_sina_baqu = { set_de_jure_liege_title = title:k_satrapy_sina_xingyuan }
+	title:c_bazhou = { set_de_jure_liege_title = title:d_hyparchy_sina_baqu }
+	title:c_kaizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_baqu }
+	title:c_quzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_baqu }
+	title:c_tongzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_baqu }
+	# Lilangitis
+	title:d_hyparchy_sina_lilang = { set_de_jure_liege_title = title:k_satrapy_sina_xingyuan }
+	title:c_guozhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_lilang }
+	title:c_langzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_lilang }
+	title:c_lizhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_lilang }
+	title:c_pengzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_lilang }
+	title:c_wenzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_lilang }
+	# Singiouanitis
+	title:d_hyparchy_sina_xingyuan = { set_de_jure_liege_title = title:k_satrapy_sina_xingyuan }
+	title:c_bizhou = { set_de_jure_liege_title = title:d_hyparchy_sina_xingyuan }
+	title:c_jizhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_xingyuan }
+	title:c_xingyuan = { set_de_jure_liege_title = title:d_hyparchy_sina_xingyuan }
+	title:c_yangzhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_xingyuan }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_xingyuan_effect = {
+	title:k_satrapy_sina_xingyuan = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+	title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_xingyuan_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_oreine = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_xingyuan = { set_de_jure_liege_title = title:e_strategia_sina_oreine }
+		title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_xingyuan = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+LR_satrapy_hyparchies_k_satrapy_sina_youji_effect = {
+	# Idengitis
+	title:d_hyparchy_sina_yideng = { set_de_jure_liege_title = title:k_satrapy_sina_youji }
+	title:c_dingzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yideng }
+	title:c_yizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_yideng }
+	# Ingmoia
+	title:d_hyparchy_sina_yingmo = { set_de_jure_liege_title = title:k_satrapy_sina_youji }
+	title:c_hejian = { set_de_jure_liege_title = title:d_hyparchy_sina_yingmo }
+	title:c_mozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_yingmo }
+	# Iouzēnē
+	title:d_hyparchy_sina_youzhou = { set_de_jure_liege_title = title:k_satrapy_sina_youji }
+	title:c_guizhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_youzhou }
+	title:c_jizhou_1 = { set_de_jure_liege_title = title:d_hyparchy_sina_youzhou }
+	title:c_pinzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_youzhou }
+	title:c_tanzhou_2 = { set_de_jure_liege_title = title:d_hyparchy_sina_youzhou }
+	title:c_youzhou = { set_de_jure_liege_title = title:d_hyparchy_sina_youzhou }
+	title:c_zhuozhou = { set_de_jure_liege_title = title:d_hyparchy_sina_youzhou }
+}
+
+LR_satrapy_strategia_k_satrapy_sina_youji_effect = {
+	title:k_satrapy_sina_youji = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+	title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+}
+
+# For a diadochi hegemon (LR_restore_satrapy_diadochi_effect, 99_LR_diadochi_hegemony_effects.txt)
+LR_satrapy_diadochi_k_satrapy_sina_youji_effect = {
+	if = {
+		limit = {
+			title:e_strategia_sina_arktike = {
+				OR = {
+					NOT = { exists = de_jure_liege }
+					de_jure_liege = title:$HEGEMONY$
+					NOT = { exists = de_jure_liege.holder }
+				}
+			}
+		}
+		title:k_satrapy_sina_youji = { set_de_jure_liege_title = title:e_strategia_sina_arktike }
+		title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	}
+	else = {
+		title:k_satrapy_sina_youji = { set_de_jure_liege_title = title:$EMPIRE$ }
+	}
+}
+
+# Root holds the Basileia Sērikē: every Chinese satrapy already restored moves into its strategia under it
+LR_sort_chinese_satrapies_into_strategiai_effect = {
+	if = {
+		limit = { title:k_satrapy_sina_daibei = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_daibei_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_dali = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_dali_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_dongchuan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_dongchuan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_fujian = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_fujian_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_guannei = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_guannei_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_hebei = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_hebei_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_hedong = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_hedong_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_henan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_henan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_hexi = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_hexi_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_huainan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_huainan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_hunan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_hunan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_jiangdong = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_jiangdong_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_jiangxi = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_jiangxi_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_kuizhou = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_kuizhou_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_liangzhe = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_liangzhe_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_lingnan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_lingnan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_lingxi = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_lingxi_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_qianzhong = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_qianzhong_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_qingxu = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_qingxu_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_shannan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_shannan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_viet = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_viet_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_xia = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_xia_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_xichuan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_xichuan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_xingyuan = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_xingyuan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	if = {
+		limit = { title:k_satrapy_sina_youji = { is_titular = no } }
+		LR_satrapy_strategia_k_satrapy_sina_youji_effect = { HEGEMONY = h_hellenic_china }
+	}
+}
+
+# The ruler (root) restores the satrapy of Daïtis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_daibei, the satrapy under e_strategia_sina_arktike, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_daibei_effect = {
+	title:c_huaian = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiushijiuquan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_rouyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yongxing = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fuzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_linzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lxj_yunneizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qingshan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_datong_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hongzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shuozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yingzhou_5 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yuzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_daibei_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_daibei = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_daibei_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_daibei_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_daibei = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_daibei.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_daibei = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Dalitis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_dali, the satrapy under e_strategia_sina_oreine, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_dali_effect = {
+	title:c_dali = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nongdong = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_weichu = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huichuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jianchang_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_chengji = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jianchuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiangcheng = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_muze = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tonghai = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zuining = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_dongchuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shanchan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shicheng = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_buri = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_weiyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yinsheng = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_dali_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_dali = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_dali_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_dali_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_dali = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_dali.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_dali = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Katō Souïa: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_dongchuan, the satrapy under e_strategia_sina_oreine, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_dongchuan_effect = {
+	title:c_jianzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_longzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_mianzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_puzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tongchuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zizhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_changzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_luzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nanxi = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_rongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_suining = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yuzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_dongchuan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_dongchuan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_dongchuan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_dongchuan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_dongchuan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_dongchuan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_dongchuan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Minia: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_fujian, the satrapy under e_strategia_sina_paralia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_fujian_effect = {
+	title:c_jian_an = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nanjian = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shaowu = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_quanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xinghua = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_funing = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fuzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_fujian_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_fujian = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_fujian_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_fujian_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_fujian = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_fujian.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_fujian = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Thinaia: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_guannei, the satrapy under e_strategia_sina_hesperia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_guannei_effect = {
+	title:c_binzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jinzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qingyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fengxiang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_longzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_danzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fuzhou_5 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yan_an = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiaoguan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yuanzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jinzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_chengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiezhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_minzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qinzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_weizhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xingqing = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huayin = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jingzhao = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yaozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_guannei_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_guannei = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_guannei_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_guannei_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_guannei = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_guannei.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_guannei = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Hyperpotamia: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_hebei, the satrapy under e_strategia_sina_arktike, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_hebei_effect = {
+	title:c_cangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_dezhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_dizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shenzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhaozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhenzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huaizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_weizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_beizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_bozhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_weizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_mingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_hebei_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_hebei = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_hebei_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_hebei_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_hebei = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_hebei.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_hebei = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Peraia: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_hedong, the satrapy under e_strategia_sina_arktike, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_hedong_effect = {
+	title:c_fenzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_liaozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_taiyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_cizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hezhong = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiangzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_pingyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_daizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xinzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_longde = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yangcheng = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zezhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_hedong_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_hedong = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_hedong_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_hedong_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_hedong = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_hedong.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_hedong = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Sēra: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_henan, the satrapy under e_strategia_sina_mesogeios, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_henan_effect = {
+	title:c_bianzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_bozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_songzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_caizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huaining = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shenzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yingchuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_henan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_ruzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shanzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huazhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_henan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_henan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_henan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_henan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_henan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_henan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_henan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Aulōnitis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_hexi, the satrapy under e_strategia_sina_hesperia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_hexi_effect = {
+	title:c_ganzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiankang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiuquan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_liaoquan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yumen = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhenwu_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guazhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hehe = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shazhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shouchang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xincheng = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_ziting = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_baishan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fanhe = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guangwu = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_liangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhanyin = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hezhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_kuozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lanzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiningzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qilin = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yalong = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_hexi_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_hexi = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_hexi_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_hexi_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_hexi = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_hexi.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_hexi = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Chouaïtis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_huainan, the satrapy under e_strategia_sina_mesogeios, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_huainan_effect = {
+	title:c_chuzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_chuzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_taizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_haozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_liyang_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lujiang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shouzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shuzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_huainan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_huainan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_huainan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_huainan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_huainan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_huainan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_huainan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Siangitis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_hunan, the satrapy under e_strategia_sina_potamia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_hunan_effect = {
+	title:c_chenzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guiyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lianzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_daozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_quanzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shaozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_hunan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_hunan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_hunan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_hunan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_hunan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_hunan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_hunan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Kiangitis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_jiangdong, the satrapy under e_strategia_sina_paralia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_jiangdong_effect = {
+	title:c_changzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiangning = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_runzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_suzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_chizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guangde = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shezhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xuanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_jiangdong_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_jiangdong = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_jiangdong_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_jiangdong_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_jiangdong = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_jiangdong.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_jiangdong = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Chongitis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_jiangxi, the satrapy under e_strategia_sina_paralia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_jiangxi_effect = {
+	title:c_nankang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_raozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xinhzou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yunyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fuzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jianchang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jizhou_3 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_linjiang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yuanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yunzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nanan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_ningduzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qianzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_jiangxi_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_jiangxi = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_jiangxi_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_jiangxi_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_jiangxi = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_jiangxi.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_jiangxi = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Baïtis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_kuizhou, the satrapy under e_strategia_sina_potamia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_kuizhou_effect = {
+	title:c_fuzhou_4 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_kuizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_bochuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qianzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_sizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yizhou_3 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhenxi = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lingxi = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_luxi = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_luyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shangxi = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tanyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yezhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_kuizhou_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_kuizhou = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_kuizhou_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_kuizhou_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_kuizhou = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_kuizhou.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_kuizhou = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Tzeïtis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_liangzhe, the satrapy under e_strategia_sina_paralia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_liangzhe_effect = {
+	title:c_chuzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_mingzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_taizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wenzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wuzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xin_an = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yuezhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_muzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiuzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_liangzhe_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_liangzhe = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_liangzhe_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_liangzhe_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_liangzhe = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_liangzhe.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_liangzhe = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Panouïtis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_lingnan, the satrapy under e_strategia_sina_notia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_lingnan_effect = {
+	title:c_chaozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_dongguan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_meizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shaozhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xunzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_chunzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_duanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_enzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guangzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_kangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shuangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xinzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yingde = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_lingnan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_lingnan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_lingnan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_lingnan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_lingnan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_lingnan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_lingnan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Gouïtis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_lingxi, the satrapy under e_strategia_sina_notia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_lingxi_effect = {
+	title:c_gaozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_leizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_luozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_liuzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qingyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_rongshui = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiangshan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_gongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wuzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhaozhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_danzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lidong = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wanan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yazhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yazhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_baizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lianzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_rongzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yulin = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_binzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hengzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qinzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_rangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shukunzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tianzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xunzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yongzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_lingxi_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_lingxi = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_lingxi_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_lingxi_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_lingxi = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_lingxi.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_lingxi = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Tsianitis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_qianzhong, the satrapy under e_strategia_sina_oreine, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_qianzhong_effect = {
+	title:c_luodian = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yanchuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yanzhou_3 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shaoqing = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_shunzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_sie = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jingzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_quzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yinzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guile = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_siyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wulong = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huangzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_juzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nanping = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yingzhou_4 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_qianzhong_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_qianzhong = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_qianzhong_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_qianzhong_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_qianzhong = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_qianzhong.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_qianzhong = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Taïanē: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_qingxu, the satrapy under e_strategia_sina_mesogeios, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_qingxu_effect = {
+	title:c_huaiyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_sizhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_suzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xuzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_haizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_langya = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_mizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_caozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_puzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yunzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_dengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_laizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_weizhou_4 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zichuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_qingxu_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_qingxu = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_qingxu_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_qingxu_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_qingxu = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_qingxu.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_qingxu = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Hyporeia: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_shannan, the satrapy under e_strategia_sina_potamia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_shannan_effect = {
+	title:c_anzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_ezhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yuezhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fuzhou_3 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hanyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiangling = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_langzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_liyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiazhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_dengzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_fangzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_junzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_suizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tangzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiangyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yingzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_shannan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_shannan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_shannan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_shannan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_shannan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_shannan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_shannan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Kattigarikē: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_viet, the satrapy under e_strategia_sina_notia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_viet_effect = {
+	title:c_binh_nguyen = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hai_dong = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lam_tay = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_quoc_oai = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nam_dinh = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_nghe_an = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_sam_nuea = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_long_hung = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_thang_long = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_viet_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_viet = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_viet_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_viet_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_viet = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_viet.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_viet = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Siatis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_xia, the satrapy under e_strategia_sina_hesperia, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_xia_effect = {
+	title:c_heihe = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_mazongshan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tongcheng = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wentugaole = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hequ = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_keyimen = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_langshan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huaiyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_huizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_weizhou_3 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wulan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lxj_fengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tiande = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_quye = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_suizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wuyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xiazhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yinzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_youzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_alxa = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tengger = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhenfan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_xia_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_xia = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_xia_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_xia_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_xia = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_xia.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_xia = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Anō Souïa: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_xichuan, the satrapy under e_strategia_sina_oreine, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_xichuan_effect = {
+	title:c_hanyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jiazhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_meizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qiongbu = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_qiongzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yazhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_chengdu = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hanzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jianyang = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lingzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_maozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_pengzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_xichuan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_xichuan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_xichuan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_xichuan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_xichuan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_xichuan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_xichuan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Chanitis: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_xingyuan, the satrapy under e_strategia_sina_oreine, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_xingyuan_effect = {
+	title:c_bazhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_kaizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_quzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tongzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guozhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_langzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_lizhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_pengzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_wenzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_bizhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jizhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_xingyuan = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yangzhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_xingyuan_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_xingyuan = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_xingyuan_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_xingyuan_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_xingyuan = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_xingyuan.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_xingyuan = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the satrapy of Iania: its counties go into its hyparchies, the
+# hyparchies under k_satrapy_sina_youji, the satrapy under e_strategia_sina_arktike, the strategia under h_hellenic_china
+# (under h_hellenistic_empire instead if root holds Alexander's hegemony, as for the Indian satrapies).
+LR_sina_restore_youji_effect = {
+	title:c_dingzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_yizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_hejian = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_mozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_guizhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_jizhou_1 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_pinzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_tanzhou_2 = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_youzhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	title:c_zhuozhou = {
+		duchy ?= { add_to_temporary_list = LR_sina_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_sina_old_titles }
+	}
+	LR_satrapy_hyparchies_k_satrapy_sina_youji_effect = yes
+	if = { # downshifted: straight under the great kingdom (tools/register_hellenistic_downshift.py)
+		limit = { title:e_basileia_serike = { holder.top_liege ?= root } }
+		title:k_satrapy_sina_youji = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
+		limit = { has_title = title:h_hellenistic_empire }
+		LR_satrapy_strategia_k_satrapy_sina_youji_effect = { HEGEMONY = h_hellenistic_empire }
+	}
+	else = {
+		LR_satrapy_strategia_k_satrapy_sina_youji_effect = { HEGEMONY = h_hellenic_china }
+	}
+	title:k_satrapy_sina_youji = { set_variable = LR_sina_restored }
+	if = {
+		limit = { NOT = { exists = title:k_satrapy_sina_youji.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:k_satrapy_sina_youji = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	every_in_list = {
+		list = LR_sina_old_titles
+		LR_sina_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) proclaims the Basileia Sērikē over the Chinese strategiai
+LR_sina_proclaim_basileia_effect = {
+	if = {
+		limit = { NOT = { exists = title:h_hellenic_china.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_sina_change
+			add_claim_on_loss = no
+		}
+		title:h_hellenic_china = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_sina_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_sina_change
+	}
+	title:e_strategia_sina_arktike = { set_de_jure_liege_title = title:h_hellenic_china }
+	title:e_strategia_sina_mesogeios = { set_de_jure_liege_title = title:h_hellenic_china }
+	title:e_strategia_sina_hesperia = { set_de_jure_liege_title = title:h_hellenic_china }
+	title:e_strategia_sina_paralia = { set_de_jure_liege_title = title:h_hellenic_china }
+	title:e_strategia_sina_potamia = { set_de_jure_liege_title = title:h_hellenic_china }
+	title:e_strategia_sina_oreine = { set_de_jure_liege_title = title:h_hellenic_china }
+	title:e_strategia_sina_notia = { set_de_jure_liege_title = title:h_hellenic_china }
+	LR_sort_chinese_satrapies_into_strategiai_effect = yes
+	set_primary_title_to = title:h_hellenic_china
+	LR_title_set_reorganise_realm_effect = yes
+}
+

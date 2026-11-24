@@ -1,0 +1,18 @@
+﻿# LR 2026-11-24 (user): a new house that gains Alexander's hegemony names it (LR_hellenistic_name.0001), as the Chinese
+# dynastic cycle renames the Chinese empire. Two days after the gain, so the Kosmokratoria government (one day) is set first.
+on_title_gain = {
+	on_actions = { LR_hellenistic_name_on_title_gain }
+}
+
+# root = the character who gained scope:title
+LR_hellenistic_name_on_title_gain = {
+	trigger = {
+		scope:title = title:h_hellenistic_empire
+		exists = root.house
+		NOT = { title:h_hellenistic_empire.var:LR_hellenistic_named_house ?= root.house }
+	}
+	events = {
+		delay = { days = 2 }
+		LR_hellenistic_name.0001
+	}
+}

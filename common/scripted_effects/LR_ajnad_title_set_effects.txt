@@ -1,0 +1,625 @@
+﻿# LR Caliphal ajnad title set (tools/register_ajnad_set.py, 2026-11-24). GENERATED.
+
+# Scope: a title left behind by an ajnad layout. If it has a holder but no de jure land left, the holder gets the
+# ajnad title of the same tier over its capital county (if unheld and theirs to use) and the old title is dissolved.
+LR_ajnad_dissolve_if_empty_effect = {
+	if = {
+		limit = {
+			exists = holder
+			NOT = { LR_title_set_ajnad_title_trigger = yes }
+			NOT = { any_de_jure_county = { always = yes } }
+		}
+		save_temporary_scope_as = LR_ajnad_old
+		holder = { save_temporary_scope_as = LR_ajnad_old_holder }
+		title_capital_county ?= {
+			if = {
+				limit = { scope:LR_ajnad_old.tier = tier_duchy }
+				duchy ?= { save_temporary_scope_as = LR_ajnad_new }
+			}
+			else_if = {
+				limit = { scope:LR_ajnad_old.tier = tier_kingdom }
+				kingdom ?= { save_temporary_scope_as = LR_ajnad_new }
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:LR_ajnad_new
+				scope:LR_ajnad_new = {
+					LR_title_set_ajnad_title_trigger = yes
+					NOT = { exists = holder }
+				}
+				scope:LR_ajnad_old_holder = { LR_title_set_ajnad_native_trigger = yes }
+			}
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = LR_ajnad_change
+				add_claim_on_loss = no
+			}
+			scope:LR_ajnad_new = {
+				change_title_holder = {
+					holder = scope:LR_ajnad_old_holder
+					change = scope:LR_ajnad_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:LR_ajnad_change
+		}
+		scope:LR_ajnad_old_holder = { destroy_title = scope:LR_ajnad_old }
+		clear_saved_scope = LR_ajnad_new
+	}
+}
+
+# The ruler (root) establishes Wilayat al-Sham: its counties go into the districts, the districts under
+# k_wilaya_sham, the wilaya under al-Khilafa. Old duchies and kingdoms left without land are dissolved.
+LR_ajnad_establish_sham_effect = {
+	title:c_jaffa = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_jerusalem = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_ghazza = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_negev = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_tiberias = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_acre = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_irbid = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_damascus = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_juwair = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_baalbek = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_hauran = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_beirut = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_tripoli = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_qaryatan = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_balqa = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_jilat = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_kerak = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_maab = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_homs = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_hama = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_shayzar = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_masyaf = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_latakia = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_antartus = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_palmyra = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_qinnasrin = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_aleppo = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_cyrrhestica = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_suriya = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_syrrusafa = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_sukhna = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_antiocheia = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_alexandretta = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_baghras = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_jaffa = { set_de_jure_liege_title = title:d_jund_filastin }
+	title:c_jerusalem = { set_de_jure_liege_title = title:d_jund_filastin }
+	title:c_ghazza = { set_de_jure_liege_title = title:d_jund_filastin }
+	title:c_negev = { set_de_jure_liege_title = title:d_jund_filastin }
+	title:d_jund_filastin = { set_de_jure_liege_title = title:k_wilaya_sham }
+	title:c_tiberias = { set_de_jure_liege_title = title:d_jund_urdunn }
+	title:c_acre = { set_de_jure_liege_title = title:d_jund_urdunn }
+	title:c_irbid = { set_de_jure_liege_title = title:d_jund_urdunn }
+	title:d_jund_urdunn = { set_de_jure_liege_title = title:k_wilaya_sham }
+	title:c_damascus = { set_de_jure_liege_title = title:d_jund_dimashq }
+	title:c_juwair = { set_de_jure_liege_title = title:d_jund_dimashq }
+	title:c_baalbek = { set_de_jure_liege_title = title:d_jund_dimashq }
+	title:c_hauran = { set_de_jure_liege_title = title:d_jund_dimashq }
+	title:c_beirut = { set_de_jure_liege_title = title:d_jund_dimashq }
+	title:c_tripoli = { set_de_jure_liege_title = title:d_jund_dimashq }
+	title:c_qaryatan = { set_de_jure_liege_title = title:d_jund_dimashq }
+	title:d_jund_dimashq = { set_de_jure_liege_title = title:k_wilaya_sham }
+	title:c_balqa = { set_de_jure_liege_title = title:d_kura_balqa }
+	title:c_jilat = { set_de_jure_liege_title = title:d_kura_balqa }
+	title:c_kerak = { set_de_jure_liege_title = title:d_kura_balqa }
+	title:c_maab = { set_de_jure_liege_title = title:d_kura_balqa }
+	title:d_kura_balqa = { set_de_jure_liege_title = title:k_wilaya_sham }
+	title:c_homs = { set_de_jure_liege_title = title:d_jund_hims }
+	title:c_hama = { set_de_jure_liege_title = title:d_jund_hims }
+	title:c_shayzar = { set_de_jure_liege_title = title:d_jund_hims }
+	title:c_masyaf = { set_de_jure_liege_title = title:d_jund_hims }
+	title:c_latakia = { set_de_jure_liege_title = title:d_jund_hims }
+	title:c_antartus = { set_de_jure_liege_title = title:d_jund_hims }
+	title:c_palmyra = { set_de_jure_liege_title = title:d_jund_hims }
+	title:d_jund_hims = { set_de_jure_liege_title = title:k_wilaya_sham }
+	title:c_qinnasrin = { set_de_jure_liege_title = title:d_jund_qinnasrin }
+	title:c_aleppo = { set_de_jure_liege_title = title:d_jund_qinnasrin }
+	title:c_cyrrhestica = { set_de_jure_liege_title = title:d_jund_qinnasrin }
+	title:c_suriya = { set_de_jure_liege_title = title:d_jund_qinnasrin }
+	title:c_syrrusafa = { set_de_jure_liege_title = title:d_jund_qinnasrin }
+	title:c_sukhna = { set_de_jure_liege_title = title:d_jund_qinnasrin }
+	title:d_jund_qinnasrin = { set_de_jure_liege_title = title:k_wilaya_sham }
+	title:c_antiocheia = { set_de_jure_liege_title = title:d_thughur_awasim }
+	title:c_alexandretta = { set_de_jure_liege_title = title:d_thughur_awasim }
+	title:c_baghras = { set_de_jure_liege_title = title:d_thughur_awasim }
+	title:d_thughur_awasim = { set_de_jure_liege_title = title:k_wilaya_sham }
+	title:k_wilaya_sham = { set_de_jure_liege_title = title:e_khilafa }
+	title:k_wilaya_sham = { set_variable = LR_ajnad_established }
+	if = {
+		limit = { NOT = { exists = title:k_wilaya_sham.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_ajnad_change
+			add_claim_on_loss = no
+		}
+		title:k_wilaya_sham = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_ajnad_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_ajnad_change
+	}
+	every_in_list = {
+		list = LR_ajnad_old_titles
+		LR_ajnad_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) establishes Wilayat al-Jazira: its counties go into the districts, the districts under
+# k_wilaya_jazira, the wilaya under al-Khilafa. Old duchies and kingdoms left without land are dissolved.
+LR_ajnad_establish_jazira_effect = {
+	title:c_amida = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_mayyafariqin = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_tall_basma = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_hakkari = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_bakriya = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_raqqa = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_harran = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_dausar = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_rahba = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_nasibin = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_sinjar = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_khabur = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_upper_khabur = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_mosul = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_ninive = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_irbil = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_shahrazur = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_kurdistan = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_amida = { set_de_jure_liege_title = title:d_diyar_bakr }
+	title:c_mayyafariqin = { set_de_jure_liege_title = title:d_diyar_bakr }
+	title:c_tall_basma = { set_de_jure_liege_title = title:d_diyar_bakr }
+	title:c_hakkari = { set_de_jure_liege_title = title:d_diyar_bakr }
+	title:c_bakriya = { set_de_jure_liege_title = title:d_diyar_bakr }
+	title:d_diyar_bakr = { set_de_jure_liege_title = title:k_wilaya_jazira }
+	title:c_raqqa = { set_de_jure_liege_title = title:d_diyar_mudar }
+	title:c_harran = { set_de_jure_liege_title = title:d_diyar_mudar }
+	title:c_dausar = { set_de_jure_liege_title = title:d_diyar_mudar }
+	title:c_rahba = { set_de_jure_liege_title = title:d_diyar_mudar }
+	title:d_diyar_mudar = { set_de_jure_liege_title = title:k_wilaya_jazira }
+	title:c_nasibin = { set_de_jure_liege_title = title:d_diyar_rabia }
+	title:c_sinjar = { set_de_jure_liege_title = title:d_diyar_rabia }
+	title:c_khabur = { set_de_jure_liege_title = title:d_diyar_rabia }
+	title:c_upper_khabur = { set_de_jure_liege_title = title:d_diyar_rabia }
+	title:d_diyar_rabia = { set_de_jure_liege_title = title:k_wilaya_jazira }
+	title:c_mosul = { set_de_jure_liege_title = title:d_kura_mawsil }
+	title:c_ninive = { set_de_jure_liege_title = title:d_kura_mawsil }
+	title:c_irbil = { set_de_jure_liege_title = title:d_kura_mawsil }
+	title:d_kura_mawsil = { set_de_jure_liege_title = title:k_wilaya_jazira }
+	title:c_shahrazur = { set_de_jure_liege_title = title:d_kura_shahrazur }
+	title:c_kurdistan = { set_de_jure_liege_title = title:d_kura_shahrazur }
+	title:d_kura_shahrazur = { set_de_jure_liege_title = title:k_wilaya_jazira }
+	title:k_wilaya_jazira = { set_de_jure_liege_title = title:e_khilafa }
+	title:k_wilaya_jazira = { set_variable = LR_ajnad_established }
+	if = {
+		limit = { NOT = { exists = title:k_wilaya_jazira.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_ajnad_change
+			add_claim_on_loss = no
+		}
+		title:k_wilaya_jazira = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_ajnad_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_ajnad_change
+	}
+	every_in_list = {
+		list = LR_ajnad_old_titles
+		LR_ajnad_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) establishes Wilayat al-Iraq: its counties go into the districts, the districts under
+# k_wilaya_iraq, the wilaya under al-Khilafa. Old duchies and kingdoms left without land are dissolved.
+LR_ajnad_establish_iraq_effect = {
+	title:c_baghdad = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_iskaf = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_badaraya = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_anbar = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_hadithat-ana = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_al-haditha = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_kufa = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_karbala = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_safata = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_qadisiya = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_akhadid = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_waqisa = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_wasit = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_tib = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_batiha = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_basra = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_ubulla = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_rusafa = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_samarra = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_takrit = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_kirkuk = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_hulwan = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_baghdad = { set_de_jure_liege_title = title:d_kura_madinat_al_salam }
+	title:c_iskaf = { set_de_jure_liege_title = title:d_kura_madinat_al_salam }
+	title:c_badaraya = { set_de_jure_liege_title = title:d_kura_madinat_al_salam }
+	title:d_kura_madinat_al_salam = { set_de_jure_liege_title = title:k_wilaya_iraq }
+	title:c_anbar = { set_de_jure_liege_title = title:d_kura_anbar }
+	title:c_hadithat-ana = { set_de_jure_liege_title = title:d_kura_anbar }
+	title:c_al-haditha = { set_de_jure_liege_title = title:d_kura_anbar }
+	title:d_kura_anbar = { set_de_jure_liege_title = title:k_wilaya_iraq }
+	title:c_kufa = { set_de_jure_liege_title = title:d_kura_kufa }
+	title:c_karbala = { set_de_jure_liege_title = title:d_kura_kufa }
+	title:c_safata = { set_de_jure_liege_title = title:d_kura_kufa }
+	title:c_qadisiya = { set_de_jure_liege_title = title:d_kura_kufa }
+	title:c_akhadid = { set_de_jure_liege_title = title:d_kura_kufa }
+	title:c_waqisa = { set_de_jure_liege_title = title:d_kura_kufa }
+	title:d_kura_kufa = { set_de_jure_liege_title = title:k_wilaya_iraq }
+	title:c_wasit = { set_de_jure_liege_title = title:d_kura_wasit }
+	title:c_tib = { set_de_jure_liege_title = title:d_kura_wasit }
+	title:c_batiha = { set_de_jure_liege_title = title:d_kura_wasit }
+	title:d_kura_wasit = { set_de_jure_liege_title = title:k_wilaya_iraq }
+	title:c_basra = { set_de_jure_liege_title = title:d_kura_basra }
+	title:c_ubulla = { set_de_jure_liege_title = title:d_kura_basra }
+	title:c_rusafa = { set_de_jure_liege_title = title:d_kura_basra }
+	title:d_kura_basra = { set_de_jure_liege_title = title:k_wilaya_iraq }
+	title:c_samarra = { set_de_jure_liege_title = title:d_kura_samarra }
+	title:c_takrit = { set_de_jure_liege_title = title:d_kura_samarra }
+	title:c_kirkuk = { set_de_jure_liege_title = title:d_kura_samarra }
+	title:c_hulwan = { set_de_jure_liege_title = title:d_kura_samarra }
+	title:d_kura_samarra = { set_de_jure_liege_title = title:k_wilaya_iraq }
+	title:k_wilaya_iraq = { set_de_jure_liege_title = title:e_khilafa }
+	title:k_wilaya_iraq = { set_variable = LR_ajnad_established }
+	if = {
+		limit = { NOT = { exists = title:k_wilaya_iraq.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_ajnad_change
+			add_claim_on_loss = no
+		}
+		title:k_wilaya_iraq = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_ajnad_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_ajnad_change
+	}
+	every_in_list = {
+		list = LR_ajnad_old_titles
+		LR_ajnad_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) establishes Wilayat al-Hijaz: its counties go into the districts, the districts under
+# k_wilaya_hijaz, the wilaya under al-Khilafa. Old duchies and kingdoms left without land are dissolved.
+LR_ajnad_establish_hijaz_effect = {
+	title:c_mecca = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_taif = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_tihama = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_bisha = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_medina = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_yanbu = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_wajh = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_khaybar = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_harrat_rahat = {
+		duchy ?= { add_to_temporary_list = LR_ajnad_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_ajnad_old_titles }
+	}
+	title:c_mecca = { set_de_jure_liege_title = title:d_kura_makka }
+	title:c_taif = { set_de_jure_liege_title = title:d_kura_makka }
+	title:c_tihama = { set_de_jure_liege_title = title:d_kura_makka }
+	title:c_bisha = { set_de_jure_liege_title = title:d_kura_makka }
+	title:d_kura_makka = { set_de_jure_liege_title = title:k_wilaya_hijaz }
+	title:c_medina = { set_de_jure_liege_title = title:d_kura_madina }
+	title:c_yanbu = { set_de_jure_liege_title = title:d_kura_madina }
+	title:c_wajh = { set_de_jure_liege_title = title:d_kura_madina }
+	title:c_khaybar = { set_de_jure_liege_title = title:d_kura_madina }
+	title:c_harrat_rahat = { set_de_jure_liege_title = title:d_kura_madina }
+	title:d_kura_madina = { set_de_jure_liege_title = title:k_wilaya_hijaz }
+	title:k_wilaya_hijaz = { set_de_jure_liege_title = title:e_khilafa }
+	title:k_wilaya_hijaz = { set_variable = LR_ajnad_established }
+	if = {
+		limit = { NOT = { exists = title:k_wilaya_hijaz.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_ajnad_change
+			add_claim_on_loss = no
+		}
+		title:k_wilaya_hijaz = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_ajnad_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_ajnad_change
+	}
+	every_in_list = {
+		list = LR_ajnad_old_titles
+		LR_ajnad_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) restores the Caliphate: creates al-Khilafa over the wilayat
+LR_ajnad_restore_khilafa_effect = {
+	if = {
+		limit = { NOT = { exists = title:e_khilafa.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_ajnad_change
+			add_claim_on_loss = no
+		}
+		title:e_khilafa = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_ajnad_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_ajnad_change
+	}
+	title:k_wilaya_sham = { set_de_jure_liege_title = title:e_khilafa }
+	title:k_wilaya_jazira = { set_de_jure_liege_title = title:e_khilafa }
+	title:k_wilaya_iraq = { set_de_jure_liege_title = title:e_khilafa }
+	title:k_wilaya_hijaz = { set_de_jure_liege_title = title:e_khilafa }
+	set_primary_title_to = title:e_khilafa
+	if = {
+		limit = { LR_ajnad_holds_caliph_title_trigger = yes }
+		add_character_modifier = { modifier = LR_ajnad_commander_of_the_faithful_modifier }
+	}
+	else = {
+		add_character_modifier = { modifier = LR_ajnad_guardian_of_the_holy_cities_modifier }
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+

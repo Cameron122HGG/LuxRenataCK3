@@ -33,7 +33,21 @@ LR_diadochi_ensure_successor_empire_effect = {
 LR_restore_satrapy_effect = {
 	title:$SATRAPY$ = { save_scope_as = restored_satrapy }
 	title:$EMPIRE$ = { save_scope_as = satrapy_empire }
-	if = {
+	if = { # downshifted great kingdoms (tools/register_hellenistic_downshift.py, 2026-11-24)
+		limit = {
+			LR_is_indian_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_basileia_indike = { holder.top_liege ?= root }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_basileia_indike }
+	}
+	else_if = {
+		limit = {
+			LR_is_chinese_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_basileia_serike = { holder.top_liege ?= root }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	else_if = {
 		limit = { has_title = title:h_hellenistic_empire }
 		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_hellenistic_empire }
 	}
@@ -43,6 +57,13 @@ LR_restore_satrapy_effect = {
 			LR_is_indian_satrapy_trigger = { SATRAPY = $SATRAPY$ }
 		}
 		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_greek_india }
+	}
+	else_if = { # Hellenic China (tools/register_hellenic_china_set.py, 2026-11-24)
+		limit = {
+			has_title = title:h_hellenic_china
+			LR_is_chinese_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+		}
+		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_hellenic_china }
 	}
 	else_if = { # Diadochi hegemony (gen_diadochi_hegemonies.py)
 		limit = { LR_holds_diadochi_hegemony_trigger = yes }
