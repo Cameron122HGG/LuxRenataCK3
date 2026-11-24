@@ -1,0 +1,79 @@
+﻿# LR Roman additions (tools/register_roman_additions.py, 2026-11-24). GENERATED.
+
+# Title: one of the added Roman titles (OR-ed into LR_title_set_roman_title_trigger)
+LR_is_roman_additions_title_trigger = {
+	OR = {
+		this = title:k_diocese_dacia_traiana
+		this = title:k_diocese_marcomannia
+		this = title:k_diocese_assyria
+		this = title:k_diocese_arabia_felix
+		this = title:k_diocese_aethiopia
+		this = title:d_roman_province_dacia_apulensis
+		this = title:d_roman_province_dacia_porolissensis
+		this = title:d_roman_province_dacia_malvensis
+		this = title:d_roman_province_marcomannia
+		this = title:d_roman_province_quadia
+		this = title:d_roman_province_sarmatia_iazygum
+		this = title:d_roman_province_sarmatia_superior
+		this = title:d_roman_province_assyria
+		this = title:d_roman_province_babylonia
+		this = title:d_roman_province_mesene
+		this = title:d_roman_province_arabia_felix
+		this = title:d_roman_province_hadramautica
+		this = title:d_roman_province_aethiopia_inferior
+		this = title:d_roman_province_aethiopia_superior
+		this = title:d_roman_province_trogodytica
+		this = title:d_roman_province_mesopotamia
+		this = title:d_roman_province_sophanene
+		this = title:d_roman_province_garamantia
+		this = title:e_magisterium_italia
+		this = title:e_magisterium_africa
+		this = title:k_quaestura_exercitus
+	}
+}
+
+# Is DIOCESE one of the Magisterium per Italiam's? Usage: LR_magisterium_italia_diocese_trigger = { DIOCESE = k_diocese_x }
+LR_magisterium_italia_diocese_trigger = {
+	title:$DIOCESE$ = {
+		OR = {
+			this = title:k_diocese_italia_annonaria
+			this = title:k_diocese_italia_suburbicaria
+		}
+	}
+}
+
+# Character: their realm holds one of the Magisterium per Italiam's dioceses
+LR_magisterium_italia_can_form_trigger = {
+	OR = {
+		title:k_diocese_italia_annonaria = { is_titular = no holder.top_liege ?= root }
+		title:k_diocese_italia_suburbicaria = { is_titular = no holder.top_liege ?= root }
+	}
+}
+
+# Is DIOCESE one of the Magisterium per Africam's? Usage: LR_magisterium_africa_diocese_trigger = { DIOCESE = k_diocese_x }
+LR_magisterium_africa_diocese_trigger = {
+	title:$DIOCESE$ = {
+		OR = {
+			this = title:k_diocese_africa
+			this = title:k_diocese_mauretania
+		}
+	}
+}
+
+# Character: their realm holds one of the Magisterium per Africam's dioceses
+LR_magisterium_africa_can_form_trigger = {
+	OR = {
+		title:k_diocese_africa = { is_titular = no holder.top_liege ?= root }
+		title:k_diocese_mauretania = { is_titular = no holder.top_liege ?= root }
+	}
+}
+
+# Character: their realm holds every province of the Quaestura exercitus
+LR_quaestura_exercitus_can_form_trigger = {
+	title:d_roman_province_moesia_secunda = { is_titular = no title_capital_county.holder.top_liege ?= root }
+	title:d_roman_province_scythia = { is_titular = no title_capital_county.holder.top_liege ?= root }
+	title:d_roman_province_insulae = { is_titular = no title_capital_county.holder.top_liege ?= root }
+	title:d_roman_province_caria = { is_titular = no title_capital_county.holder.top_liege ?= root }
+	title:d_roman_province_cyprus = { is_titular = no title_capital_county.holder.top_liege ?= root }
+}
+
