@@ -8,6 +8,8 @@
 #   has_this_patron_god (patron_god_name)        - is this the player's current patron?
 # Each god is a flag such as patron_god_roman_deity_01, with:
 #   <flag>             name (loc)          <flag>_desc     description (loc)
+# 1.21: use Scope.GetFlagKey for the raw flag (patron_god_roman_deity_01). GetFlagName returns the flag's
+# localized text ("Jupiter"), which broke every lookup and the Choose button (fixed 2026-11-24).
 #   <flag>_modifier    character modifier  <flag>_icon     icon (hidden culture innovation, LR_patron_icon_innovations.txt)
 
 types LRPatrons
@@ -59,7 +61,7 @@ types LRPatrons
 			}
 			text_single = {
 				visible = "[GetPlayer.MakeScope.Var( 'patron_god' ).IsSet]"
-				text = "[Localize( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName )]"
+				text = "[Localize( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagKey )]"
 				using = Font_Size_Medium
 			}
 			text_single = {
@@ -81,81 +83,196 @@ types LRPatrons
 
 			blockoverride "scrollbox_content"
 			{
+				# Two panels (2026-11-24): the faith's primary pantheon (list patron_gods) and the player's
+				# own rite gods (list rite_patron_gods, filled only when viewing your own faith).
 				vbox = {
 					layoutpolicy_horizontal = expanding
-					spacing = 6
-					datamodel = "[GetPlayer.MakeScope.GetList( 'patron_gods' )]"
+					spacing = 14
 
-					item = {
-						LR_patron_god_entry = {}
+					LR_patron_panel = {
+						blockoverride "panel_title" {
+							text = "LR_PATRON_FAITH_PANEL"
+						}
+						blockoverride "panel_subtitle" {
+							text = "LR_PATRON_FAITH_PANEL_DESC"
+						}
+						blockoverride "panel_list" {
+							datamodel = "[GetPlayer.MakeScope.GetList( 'patron_gods' )]"
+						}
+					}
+
+					LR_patron_panel = {
+						visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rite_patron_gods' ) ) )]"
+						blockoverride "panel_title" {
+							text = "LR_PATRON_RITE_PANEL"
+						}
+						blockoverride "panel_subtitle" {
+							text = "LR_PATRON_RITE_PANEL_DESC"
+						}
+						blockoverride "panel_list" {
+							datamodel = "[GetPlayer.MakeScope.GetList( 'rite_patron_gods' )]"
+						}
 					}
 				}
 			}
 		}
 	}
 
-	type LR_patron_god_entry = hbox {
+	# A framed panel with a title, a one-line explanation and a list of god cards
+	type LR_patron_panel = vbox {
 		layoutpolicy_horizontal = expanding
-		margin = { 8 6 }
-		spacing = 10
-		datacontext = "[GetModifier( Concatenate( Scope.GetFlagName, '_modifier' ) )]"
+		margin = { 6 8 }
+		spacing = 6
 
 		background = {
 			using = Background_Area
 		}
-		# Highlight the current patron
-		background = {
-			visible = "[EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName, Scope.GetFlagName )]"
-			texture = "gfx/interface/component_masks/mask_fade_circle.dds"
-			color = { 1.0 1.0 0.9 0.35 }
-		}
 
-		icon = {
-			size = { 90 90 }
-			texture = "[GetCultureInnovationType( Concatenate( Scope.GetFlagName, '_icon' ) ).GetIcon]"
-			using = Mask_Rough_Edges
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			margin = { 6 0 }
+			using = Font_Size_Medium
+			default_format = "#T"
+			block "panel_title" {
+				text = ""
+			}
+		}
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			margin = { 6 0 }
+			default_format = "#weak"
+			block "panel_subtitle" {
+				text = ""
+			}
+		}
+		divider_light = {
+			layoutpolicy_horizontal = expanding
 		}
 
 		vbox = {
 			layoutpolicy_horizontal = expanding
-			spacing = 2
+			spacing = 6
+			block "panel_list" {}
 
-			text_single = {
-				layoutpolicy_horizontal = expanding
-				text = "[Localize( Scope.GetFlagName )]"
-				using = Font_Size_Medium
-				default_format = "#high"
+			item = {
+				LR_patron_god_entry = {}
 			}
-			text_multi = {
-				layoutpolicy_horizontal = expanding
-				max_width = 300
-				autoresize = yes
-				text = "[Localize( Concatenate( Scope.GetFlagName, '_desc' ) )]"
-				default_format = "#low"
-			}
-			expand = {}
+		}
+	}
+
+	# One god = one card (pattern of Historical_Bloodline.gui, 2026-11-24): the whole card is the button that
+	# chooses the god, the current patron's card shows pressed (down), and the lore button opens a taller
+	# card with the god's description. The open/closed state is kept per god in the variable system.
+	type LR_patron_god_entry = vbox {
+		layoutpolicy_horizontal = expanding
+
+		# Short card: icon, name, bonuses
+		LR_patron_god_card = {
+			visible = "[Not( GetVariableSystem.Exists( Concatenate( 'patron_lore_', Scope.GetFlagKey ) ) )]"
 		}
 
-		text_multi = {
-			max_width = 230
-			autoresize = yes
-			text = "[StaticModifier.GetDescWithEffects]"
+		# Tall card with the lore, toggled by the lore button
+		LR_patron_god_card = {
+			visible = "[GetVariableSystem.Exists( Concatenate( 'patron_lore_', Scope.GetFlagKey ) )]"
+
+			blockoverride "card_size" {
+				size = { 0 230 }
+			}
+			blockoverride "lore_button" {
+				frame = 2
+				tooltip = "LR_PATRON_LORE_HIDE_TT"
+			}
+			blockoverride "lore_visible" {
+				visible = yes
+			}
+		}
+	}
+
+	type LR_patron_god_card = button_standard_list {
+		layoutpolicy_horizontal = expanding
+		datacontext = "[GetModifier( Concatenate( Scope.GetFlagKey, '_modifier' ) )]"
+		down = "[EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagKey, Scope.GetFlagKey )]"
+		# choose_patron_god_generic checks again in its effect (piety, own faith, not already the patron)
+		onclick = "[GetScriptedGui('choose_patron_god_generic').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'patron_god_name', MakeScopeFlag( Scope.GetFlagKey ) ).End )]"
+		tooltip = "PATRON_GOD_SELECTION_TOOLTIP"
+
+		block "card_size" {
+			size = { 0 120 }
 		}
 
 		vbox = {
-			button_standard = {
-				size = { 110 32 }
-				visible = "[Not( EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName, Scope.GetFlagName ) )]"
-				text = "LR_PATRON_CHOOSE"
-				enabled = "[GetScriptedGui('choose_patron_god_generic').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'patron_god_name', MakeScopeFlag( Scope.GetFlagName ) ).End )]"
-				tooltip = "PATRON_GOD_SELECTION_TOOLTIP"
-				onclick = "[GetScriptedGui('choose_patron_god_generic').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'patron_god_name', MakeScopeFlag( Scope.GetFlagName ) ).End )]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin = { 10 8 }
+			spacing = 6
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+
+				icon = {
+					size = { 80 80 }
+					texture = "[GetCultureInnovationType( Concatenate( Scope.GetFlagKey, '_icon' ) ).GetIcon]"
+					using = Mask_Rough_Edges
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 2
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 6
+
+						text_single = {
+							text = "[Localize( Scope.GetFlagKey )]"
+							using = Font_Size_Medium
+							default_format = "#high"
+						}
+						expand = {}
+						text_single = {
+							visible = "[EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagKey, Scope.GetFlagKey )]"
+							text = "LR_PATRON_IS_CURRENT"
+							default_format = "#high"
+						}
+						button_expand = {
+							onclick = "[GetVariableSystem.Toggle( Concatenate( 'patron_lore_', Scope.GetFlagKey ) )]"
+							block "lore_button" {
+								frame = 1
+								tooltip = "LR_PATRON_LORE_SHOW_TT"
+							}
+						}
+					}
+
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						max_width = 460
+						autoresize = yes
+						text = "[StaticModifier.GetDescWithEffects]"
+					}
+					expand = {}
+				}
 			}
-			text_single = {
-				visible = "[EqualTo_string( GetPlayer.MakeScope.Var( 'patron_god' ).GetFlagName, Scope.GetFlagName )]"
-				text = "LR_PATRON_IS_CURRENT"
-				default_format = "#high"
+
+			# The lore (description), only on the tall card
+			text_multi = {
+				block "lore_visible" {
+					visible = no
+				}
+				layoutpolicy_horizontal = expanding
+				# Must stay narrower than the room inside the card, or it widens the card past the panel and
+				# cuts off "Your patron" and the lore button (seen 2026-11-24 at 620 and still at 560; 480 since the panels add a margin).
+				max_width = 480
+				autoresize = yes
+				margin = { 6 0 }
+				text = "[Localize( Concatenate( Scope.GetFlagKey, '_desc' ) )]"
+				default_format = "#low"
 			}
+			expand = {}
 		}
 	}
 }

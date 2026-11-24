@@ -38,7 +38,24 @@ choose_patron_god_generic = {
 	
 
 	effect = {
-		parse_patron_god_name_flag_complex = { PATRON_GOD = scope:patron_god_name APPLY = agot_set_patron_god_effect }
+		# The whole card in the Patron Gods tab is now the button (2026-11-24), so check is_valid again here,
+		# and never re-pick (and pay for) the god that is already the patron.
+		if = {
+			limit = {
+				trigger_if = {
+					limit = {
+						has_perk = zealous_proselytizer_perk
+					}
+					piety >= 20
+				}
+				trigger_else = {
+					piety >= minor_piety_value
+				}
+				var:selected_faith = faith
+				NOT = { var:patron_god ?= scope:patron_god_name }
+			}
+			parse_patron_god_name_flag_complex = { PATRON_GOD = scope:patron_god_name APPLY = agot_set_patron_god_effect }
+		}
 	}
 }
 
@@ -58,15 +75,12 @@ get_patron_god_list = {
 
 	effect = {
 		clear_variable_list = patron_gods
+		clear_variable_list = rite_patron_gods # 2026-11-24: rite gods get their own panel
 		if = {
 			limit = {
 				scope:faith = { 
 					has_doctrine_parameter = roman_patrons
 				}
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_roman_deity_01
 			}
 			add_to_variable_list = {
 				name = patron_gods
@@ -158,10 +172,6 @@ get_patron_god_list = {
 				scope:faith = {
 					has_doctrine_parameter = celtic_patrons
 				}
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_celtic_deity_01
 			}
 			add_to_variable_list = {
 				name = patron_gods
@@ -302,19 +312,7 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_kemetic_deity_01
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_kemetic_deity_02
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_kemetic_deity_03
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_kemetic_deity_04
 			}
 			add_to_variable_list = {
 				name = patron_gods
@@ -322,11 +320,12 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_kemetic_deity_06
+				target = flag:patron_god_kemetic_deity_07
 			}
+			# LUX faith extras kemetic
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_kemetic_deity_07
+				target = flag:patron_god_kemetic_deity_08
 			}
 		}
 		if = {
@@ -372,31 +371,20 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_slavic_deity_01
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_slavic_deity_02
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_slavic_deity_03
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_slavic_deity_04
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_slavic_deity_05
 			}
+			# LUX faith extras slavic
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_slavic_deity_06
+				target = flag:patron_god_slavic_deity_08
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_slavic_deity_07
+				target = flag:patron_god_slavic_deity_09
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_slavic_deity_10
 			}
 		}
 		if = {
@@ -419,19 +407,11 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_canaanite_deity_04
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_canaanite_deity_05
 			}
 			add_to_variable_list = {
 				name = patron_gods
 				target = flag:patron_god_canaanite_deity_06
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_canaanite_deity_07
 			}
 		}
 		if = {
@@ -439,10 +419,6 @@ get_patron_god_list = {
 				scope:faith = {
 					has_doctrine_parameter = anatolian_patrons
 				}
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_anatolian_deity_01
 			}
 			add_to_variable_list = {
 				name = patron_gods
@@ -586,15 +562,7 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_neoplatonic_deity_02
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_neoplatonic_deity_03
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_neoplatonic_deity_04
 			}
 			add_to_variable_list = {
 				name = patron_gods
@@ -617,23 +585,11 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_sabaean_arab_deity_01
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_sabaean_arab_deity_02
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_sabaean_arab_deity_03
 			}
 			add_to_variable_list = {
 				name = patron_gods
 				target = flag:patron_god_sabaean_arab_deity_04
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_sabaean_arab_deity_05
 			}
 			add_to_variable_list = {
 				name = patron_gods
@@ -664,10 +620,6 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_steppe_deity_04
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_steppe_deity_05
 			}
 			add_to_variable_list = {
@@ -687,14 +639,6 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_baltic_deity_01
-			}
-			add_to_variable_list = {
-				name = patron_gods
-				target = flag:patron_god_baltic_deity_02
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_baltic_deity_03
 			}
 			add_to_variable_list = {
@@ -707,10 +651,6 @@ get_patron_god_list = {
 			}
 			add_to_variable_list = {
 				name = patron_gods
-				target = flag:patron_god_baltic_deity_06
-			}
-			add_to_variable_list = {
-				name = patron_gods
 				target = flag:patron_god_baltic_deity_07
 			}
 		}
@@ -718,12 +658,6 @@ get_patron_god_list = {
 			limit = {
 				scope:faith = {
 					has_doctrine_parameter = finno_ugric_patrons
-				}
-				NAND = {
-					scope:faith = root.faith
-					root.rite = {
-						rite_has_parameter = mari_patrons
-					}
 				}
 			}
 			add_to_variable_list = {
@@ -763,32 +697,2146 @@ get_patron_god_list = {
 				}
 			}
 			add_to_variable_list = {
-				name = patron_gods
+				name = rite_patron_gods
 				target = flag:patron_god_mari_deity_01
 			}
 			add_to_variable_list = {
-				name = patron_gods
+				name = rite_patron_gods
 				target = flag:patron_god_mari_deity_02
 			}
 			add_to_variable_list = {
-				name = patron_gods
+				name = rite_patron_gods
 				target = flag:patron_god_mari_deity_03
 			}
 			add_to_variable_list = {
-				name = patron_gods
+				name = rite_patron_gods
 				target = flag:patron_god_mari_deity_04
 			}
 			add_to_variable_list = {
-				name = patron_gods
+				name = rite_patron_gods
 				target = flag:patron_god_mari_deity_05
 			}
 			add_to_variable_list = {
-				name = patron_gods
+				name = rite_patron_gods
 				target = flag:patron_god_mari_deity_06
 			}
 			add_to_variable_list = {
-				name = patron_gods
+				name = rite_patron_gods
 				target = flag:patron_god_mari_deity_07
+			}
+		}
+		if = { # rite gods: Rod
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_rod_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_slavic_deity_07
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_rod_deity_01
+			}
+		}
+		if = { # rite gods: Dazhbog
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_dazhbog_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_slavic_deity_04
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_dazhbog_deity_01
+			}
+		}
+		if = { # rite gods: Perun
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_perun_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_slavic_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_perun_deity_01
+			}
+		}
+		if = { # rite gods: Rodnovery
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_slavic_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_slavic_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_slavic_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Svarog
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_svaroh_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_slavic_deity_03
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_svaroh_deity_01
+			}
+		}
+		if = { # rite gods: Svetovid
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_svetovid_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_slavic_deity_06
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_svetovid_deity_01
+			}
+		}
+		if = { # rite gods: Veles
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_veles_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_slavic_deity_02
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_veles_deity_01
+			}
+		}
+		if = { # rite gods: Amun
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_amun_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_kemetic_deity_06
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_amun_deity_01
+			}
+		}
+		if = { # rite gods: Aten
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_aten_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_aten_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_aten_deity_02
+			}
+		}
+		if = { # rite gods: Ra-Horakhty
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_horus_re_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_kemetic_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_horus_re_deity_01
+			}
+		}
+		if = { # rite gods: Isis
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_isis_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_kemetic_deity_04
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_isis_deity_01
+			}
+		}
+		if = { # rite gods: Set
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_set_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_kemetic_deity_02
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_set_deity_01
+			}
+		}
+		if = { # rite gods: Kushitism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_kushitism_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_kushitism_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_kushitism_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Elohim
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_palmyran_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_palmyran_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_palmyran_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Aglibôl
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_aglibol_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_aglibol_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_aglibol_deity_02
+			}
+		}
+		if = { # rite gods: Beelshamên
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_beelshamen_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_beelshamen_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_beelshamen_deity_02
+			}
+		}
+		if = { # rite gods: Hadad
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_hadad_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_canaanite_deity_04
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_hadad_deity_01
+			}
+		}
+		if = { # rite gods: Kothar-wa-Khasis
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_kothar_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_canaanite_deity_07
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_kothar_deity_01
+			}
+		}
+		if = { # rite gods: Malakbêl
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_malakbel_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_malakbel_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_malakbel_deity_02
+			}
+		}
+		if = { # rite gods: Almaqah
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_almaqah_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_sabaean_arab_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_almaqah_deity_01
+			}
+		}
+		if = { # rite gods: Al-lat
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_allat_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_sabaean_arab_deity_02
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_allat_deity_01
+			}
+		}
+		if = { # rite gods: Attar
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_attar_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_attar_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_attar_deity_02
+			}
+		}
+		if = { # rite gods: Hubal
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_hubal_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_sabaean_arab_deity_05
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_hubal_deity_01
+			}
+		}
+		if = { # rite gods: Maher
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_maher_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_maher_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_maher_deity_02
+			}
+		}
+		if = { # rite gods: Shams
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_shams_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_shams_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_shams_deity_02
+			}
+		}
+		if = { # rite gods: Ta'lab
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_talab_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_talab_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_talab_deity_02
+			}
+		}
+		if = { # rite gods: Dievas
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_baltic_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_baltic_deity_06
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_baltic_pagan_deity_01
+			}
+		}
+		if = { # rite gods: Peckols
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_peckols_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_peckols_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_peckols_deity_02
+			}
+		}
+		if = { # rite gods: Perkūnas
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_perkunas_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_baltic_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_perkunas_deity_01
+			}
+		}
+		if = { # rite gods: Saulė
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_saule_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_baltic_deity_02
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_saule_deity_01
+			}
+		}
+		if = { # rite gods: Luwian
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_luwian_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_luwian_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_luwian_deity_02
+			}
+		}
+		if = { # rite gods: Illuyanka
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_illuyanka_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_illuyanka_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_illuyanka_deity_02
+			}
+		}
+		if = { # rite gods: Tarhunt
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_tarhunt_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_anatolian_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tarhunt_deity_01
+			}
+		}
+		if = { # rite gods: Furistaz Siduz
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_german_pagan_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_german_pagan_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_german_pagan_rite_deity_02
+			}
+		}
+		if = { # rite gods: Wodan
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_allfather_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_allfather_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_allfather_deity_02
+			}
+		}
+		if = { # rite gods: Irminsul
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_irminsul_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_irminsul_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_irminsul_deity_02
+			}
+		}
+		if = { # rite gods: Teiwaz
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_teiwaz_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_teiwaz_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_teiwaz_deity_02
+			}
+		}
+		if = { # rite gods: Forn Siðr
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_norse_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_norse_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_norse_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Kristatrú
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_norse_christ_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_norse_christ_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_norse_christ_deity_02
+			}
+		}
+		if = { # rite gods: Ófriðartívar
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_norse_war_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_norse_war_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_norse_war_deity_02
+			}
+		}
+		if = { # rite gods: Njöla
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_nott_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_nott_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_nott_deity_02
+			}
+		}
+		if = { # rite gods: Røkkatrú
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_ragnarok_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_ragnarok_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_ragnarok_deity_02
+			}
+		}
+		if = { # rite gods: Sunnatrú
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sowilo_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sowilo_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sowilo_deity_02
+			}
+		}
+		if = { # rite gods: Ukonusko
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_finnish_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_finnish_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_finnish_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Chumbylat
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_chumbylat_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_chumbylat_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_chumbylat_deity_02
+			}
+		}
+		if = { # rite gods: Ilmatar
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_ilmatar_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_ilmatar_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_ilmatar_deity_02
+			}
+		}
+		if = { # rite gods: Jumala
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_jumala_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_jumala_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_jumala_deity_02
+			}
+		}
+		if = { # rite gods: Voipel'
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_voipel_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_voipel_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_voipel_deity_02
+			}
+		}
+		if = {
+			limit = {
+				scope:faith = {
+					has_doctrine_parameter = indo_hellenic_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_indo_hellenic_deity_01
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_indo_hellenic_deity_02
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_indo_hellenic_deity_03
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_indo_hellenic_deity_04
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_indo_hellenic_deity_05
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_indo_hellenic_deity_06
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_indo_hellenic_deity_07
+			}
+		}
+		if = { # rite gods: Hellenism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_hellenic_pagan_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_hellenic_pagan_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_hellenic_pagan_rite_deity_02
+			}
+		}
+		if = { # rite gods: Cybele
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_cybele_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_cybele_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_cybele_rite_deity_02
+			}
+		}
+		if = { # rite gods: Dionysos
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_dionysos_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_dionysos_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_dionysos_rite_deity_02
+			}
+		}
+		if = { # rite gods: Hypsistarian
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_hypsistarian_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_hypsistarian_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_hypsistarian_rite_deity_02
+			}
+		}
+		if = { # rite gods: Alexandros-Ammonite
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_alexandros_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_alexandros_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_alexandros_rite_deity_02
+			}
+		}
+		if = { # rite gods: Alexandros-Solomon
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_solomonic_alexandros_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_solomonic_alexandros_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_solomonic_alexandros_rite_deity_02
+			}
+		}
+		if = { # rite gods: Druidism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_celtic_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_celtic_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_celtic_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Endovellico-Neto
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_endovellico_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_endovellico_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_endovellico_deity_02
+			}
+		}
+		if = { # rite gods: Martinianism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_martinianism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_martinianism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_martinianism_deity_02
+			}
+		}
+		if = { # rite gods: Lughism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_lugh_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_celtic_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_lugh_deity_01
+			}
+		}
+		if = { # rite gods: Hibernicism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_celtic_christ_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_celtic_christ_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_celtic_christ_deity_02
+			}
+		}
+		if = { # rite gods: Religio Romana
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_roman_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_roman_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_roman_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Sacra Augustālia
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_roman_caesar_cult_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_roman_caesar_cult_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_roman_caesar_cult_rite_deity_02
+			}
+		}
+		if = { # rite gods: Mos Jovis
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_roman_jupiter_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_roman_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_roman_jupiter_rite_deity_01
+			}
+		}
+		if = { # rite gods: Mithraic
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_mithras_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mithras_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mithras_rite_deity_02
+			}
+		}
+		if = { # rite gods: Tauraimanism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_mithras_christ_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mithras_christ_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mithras_christ_deity_02
+			}
+		}
+		if = { # rite gods: Theomachia
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_mani_mithras_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mani_mithras_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mani_mithras_deity_02
+			}
+		}
+		if = { # rite gods: Eosphorism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_mithras_sol_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mithras_sol_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mithras_sol_deity_02
+			}
+		}
+		if = { # rite gods: Gökh Tanri
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_tengri_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_pagan_deity_02
+			}
+		}
+		if = { # rite gods: Rod Tanri
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_tengri_rod_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_rod_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_rod_deity_02
+			}
+		}
+		if = { # rite gods: Ahriman Tanri
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_tengri_ahriman_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_ahriman_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_ahriman_deity_02
+			}
+		}
+		if = { # rite gods: Ak-Koyash
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_tengri_mani_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_mani_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_mani_deity_02
+			}
+		}
+		if = { # rite gods: Vattisen Yaly
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_vattisenyaly_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_vattisenyaly_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_vattisenyaly_deity_02
+			}
+		}
+		if = { # rite gods: Ata Burkhan
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_tengri_bud_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_bud_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_bud_deity_02
+			}
+		}
+		if = { # rite gods: Kong Tanri
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_tengri_confucian_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_confucian_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_tengri_confucian_deity_02
+			}
+		}
+		if = { # rite gods: Erlik
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_erlik_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_steppe_deity_04
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_erlik_deity_01
+			}
+		}
+		if = { # rite gods: Neoplatonism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_neoplato_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_neoplato_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_neoplato_deity_02
+			}
+		}
+		if = { # rite gods: Neopythagoreanism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_plato_pythagorean_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_neoplatonic_deity_02
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_plato_pythagorean_deity_01
+			}
+		}
+		if = { # rite gods: Porphyrianism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_porphyryan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_neoplatonic_deity_04
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_porphyryan_deity_01
+			}
+		}
+		if = { # rite gods: Scholasticism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_plato_christ_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_plato_christ_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_plato_christ_deity_02
+			}
+		}
+		if = { # rite gods: Falsafa
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_plato_islam_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_plato_islam_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_plato_islam_deity_02
+			}
+		}
+		if = { # rite gods: Vedanta
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_plato_hindu_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_plato_hindu_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_plato_hindu_deity_02
+			}
+		}
+		if = { # rite gods: Zalmoxism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_zal_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zal_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zal_deity_02
+			}
+		}
+		if = { # rite gods: Apogenesianism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_zal_mani_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zal_mani_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zal_mani_deity_02
+			}
+		}
+		if = { # rite gods: Decaeneism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_zal_christ_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zal_christ_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zal_christ_deity_02
+			}
+		}
+		if = { # rite gods: Alekjendaravism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_alekjendaravism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_alekjendaravism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_alekjendaravism_deity_02
+			}
+		}
+		if = { # rite gods: Pantoléteira
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_indohelen_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_indohelen_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_indohelen_deity_02
+			}
+		}
+		if = { # rite gods: Artanism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_indoh_zor_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_indoh_zor_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_indoh_zor_deity_02
+			}
+		}
+		if = { # rite gods: Vedanism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sindh_indohelen_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sindh_indohelen_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sindh_indohelen_deity_02
+			}
+		}
+		if = { # rite gods: Mahādīpika
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_bud_zor_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_bud_zor_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_bud_zor_deity_02
+			}
+		}
+		if = { # rite gods: Helios Autokrator
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_solar_imperial_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_solar_imperial_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_solar_imperial_rite_deity_02
+			}
+		}
+		if = { # rite gods: Sol Invictus
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_invictus_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_invictus_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_invictus_rite_deity_02
+			}
+		}
+		if = { # rite gods: Helianism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_christ_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_christ_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_christ_rite_deity_02
+			}
+		}
+		if = { # rite gods: Victorianism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_victor_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_victor_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_victor_rite_deity_02
+			}
+		}
+		if = { # rite gods: Apollonianism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_apollo_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_apollo_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_apollo_rite_deity_02
+			}
+		}
+		if = { # rite gods: Apollo-Boreas
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_boreas_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_boreas_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_boreas_rite_deity_02
+			}
+		}
+		if = { # rite gods: Oromasdeism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_mani_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_mani_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_mani_rite_deity_02
+			}
+		}
+		if = { # rite gods: Ódinn-Sól
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_norse_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_norse_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_norse_rite_deity_02
+			}
+		}
+		if = { # rite gods: Hors
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_slav_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_slav_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_slav_rite_deity_02
+			}
+		}
+		if = { # rite gods: Dulefuka
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_sahara_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_sahara_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_sahara_rite_deity_02
+			}
+		}
+		if = { # rite gods: Ts'ähäy Mahrem
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_tsahay_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_tsahay_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_tsahay_rite_deity_02
+			}
+		}
+		if = { # rite gods: Al-Shamsiyyah
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_sol_islam_rite_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_islam_rite_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_sol_islam_rite_deity_02
+			}
+		}
+		if = { # rite gods: Vaishnavism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_vaishnavism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_vaishnavism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_vaishnavism_deity_02
+			}
+		}
+		if = { # rite gods: Krishnaism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_krishnaism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_krishnaism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_krishnaism_deity_02
+			}
+		}
+		if = { # rite gods: Shaivism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_shaivism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_shaivism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_shaivism_deity_02
+			}
+		}
+		if = { # rite gods: Advaita
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_advaitism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_advaitism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_advaitism_deity_02
+			}
+		}
+		if = { # rite gods: Srikula Shaktism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_srikula_shaktism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_srikula_shaktism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_srikula_shaktism_deity_02
+			}
+		}
+		if = { # rite gods: Kalikula Shaktism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_kalikula_shaktism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_kalikula_shaktism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_kalikula_shaktism_deity_02
+			}
+		}
+		if = { # rite gods: Smartism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_smartism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_smartism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_smartism_deity_02
+			}
+		}
+		if = { # rite gods: Saura
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_saura_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_saura_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_saura_deity_02
+			}
+		}
+		if = { # rite gods: Mazdayasna
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_mazdayasna_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mazdayasna_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mazdayasna_deity_02
+			}
+		}
+		if = { # rite gods: Parsikasa
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_zor_hindu_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zor_hindu_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zor_hindu_deity_02
+			}
+		}
+		if = { # rite gods: Angra Mainyu
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_zor_angra_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zor_angra_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zor_angra_deity_02
+			}
+		}
+		if = { # rite gods: Zurvanism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_zurvanism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zurvanism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_zurvanism_deity_02
+			}
+		}
+		if = { # rite gods: Gayomarthianism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_gayomarthianism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_gayomarthianism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_gayomarthianism_deity_02
+			}
+		}
+		if = { # rite gods: Khurmazta
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_khurmazta_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_khurmazta_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_khurmazta_deity_02
+			}
+		}
+		if = { # rite gods: Mazdakism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_mazdakism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mazdakism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_mazdakism_deity_02
+			}
+		}
+		if = { # rite gods: Khurramism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_khurramism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_khurramism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_khurramism_deity_02
+			}
+		}
+		if = { # rite gods: Urartuism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_urartuism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_urartuism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_urartuism_deity_02
+			}
+		}
+		if = { # rite gods: Afridunism
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_afridunism_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_afridunism_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_afridunism_deity_02
+			}
+		}
+		if = { # rite gods: Odha Theltatë
+			limit = {
+				scope:faith = root.faith
+				root.rite = {
+					rite_has_parameter = rite_illyrian_pagan_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_illyrian_pagan_deity_01
+			}
+			add_to_variable_list = {
+				name = rite_patron_gods
+				target = flag:patron_god_rite_illyrian_pagan_deity_02
+			}
+		}
+		if = {
+			limit = {
+				scope:faith = {
+					has_doctrine_parameter = christian_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_christian_deity_01
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_christian_deity_02
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_christian_deity_03
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_christian_deity_04
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_christian_deity_05
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_christian_deity_06
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_christian_deity_07
+			}
+		}
+		if = {
+			limit = {
+				scope:faith = {
+					has_doctrine_parameter = islamic_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_islamic_deity_01
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_islamic_deity_02
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_islamic_deity_03
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_islamic_deity_04
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_islamic_deity_05
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_islamic_deity_06
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_islamic_deity_07
+			}
+		}
+		if = {
+			limit = {
+				scope:faith = {
+					has_doctrine_parameter = jewish_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_jewish_deity_01
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_jewish_deity_02
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_jewish_deity_03
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_jewish_deity_04
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_jewish_deity_05
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_jewish_deity_06
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_jewish_deity_07
+			}
+		}
+		if = {
+			limit = {
+				scope:faith = {
+					has_doctrine_parameter = gnostic_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_gnostic_deity_01
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_gnostic_deity_02
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_gnostic_deity_03
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_gnostic_deity_04
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_gnostic_deity_05
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_gnostic_deity_06
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_gnostic_deity_07
+			}
+		}
+		if = {
+			limit = {
+				scope:faith = {
+					has_doctrine_parameter = sinitic_patrons
+				}
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_sinitic_deity_01
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_sinitic_deity_02
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_sinitic_deity_03
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_sinitic_deity_04
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_sinitic_deity_05
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_sinitic_deity_06
+			}
+			add_to_variable_list = {
+				name = patron_gods
+				target = flag:patron_god_sinitic_deity_07
 			}
 		}
 	}
@@ -805,6 +2853,7 @@ clear_patron_god_list = {
 
 	effect = {
 		clear_variable_list = patron_gods
+		clear_variable_list = rite_patron_gods # 2026-11-24: rite gods get their own panel
 	}
 }
 
