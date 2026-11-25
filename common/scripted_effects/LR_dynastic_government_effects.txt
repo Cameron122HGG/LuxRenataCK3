@@ -148,7 +148,7 @@ LR_replace_vanilla_default_government_effect = {
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
 				if = {
-					limit = { has_tgp_dlc_trigger = yes }
+					limit = { LR_gradus_has_auh_trigger = yes }
 					change_government = japan_administrative_government
 				}
 				else = {
@@ -242,7 +242,7 @@ LR_replace_vanilla_default_government_effect = {
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
 				if = {
-					limit = { has_tgp_dlc_trigger = yes }
+					limit = { LR_gradus_has_auh_trigger = yes }
 					add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
 					change_government = japan_feudal_government
 				}
@@ -393,12 +393,12 @@ LR_normalize_dynastic_government_effect = {
 	# Japanese realms: Soryo and Ritsuryo need All Under Heaven; without it they use Japanese Feudal (sinic group)
 	if = {
 		limit = {
-			has_tgp_dlc_trigger = no
+			LR_gradus_has_auh_trigger = no
 			OR = {
 				has_government = japan_feudal_government
 				AND = { # LR 2026-11-25: with Roads to Power alone Ritsuryo becomes Autocratic (LR_admin_to_rtp_government_effect)
 					has_government = japan_administrative_government
-					LR_has_rtp_governments_dlc_trigger = no
+					LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no
 				}
 			}
 		}
@@ -406,7 +406,7 @@ LR_normalize_dynastic_government_effect = {
 	}
 	else_if = {
 		limit = {
-			has_tgp_dlc_trigger = yes
+			LR_gradus_has_auh_trigger = yes
 			has_government = japanese_government
 		}
 		add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
@@ -415,8 +415,8 @@ LR_normalize_dynastic_government_effect = {
 	# Sinic group: Meritocratic and Celestial need All Under Heaven; without it they use Chinese Feudal
 	else_if = {
 		limit = {
-			has_tgp_dlc_trigger = no
-			LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone they become Autocratic (below)
+			LR_gradus_has_auh_trigger = no
+			LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone they become Autocratic (below)
 			OR = {
 				has_government = meritocratic_government
 				has_government = celestial_government
@@ -429,19 +429,19 @@ LR_normalize_dynastic_government_effect = {
 		limit = { government_has_flag = government_is_sacral_group }
 		if = {
 			limit = {
-				has_tgp_dlc_trigger = yes
+				LR_gradus_has_auh_trigger = yes
 				has_government = sacral_government
 			}
 			change_government = sacral_feudal_government
 		}
 		else_if = {
 			limit = {
-				has_tgp_dlc_trigger = no
+				LR_gradus_has_auh_trigger = no
 				OR = {
 					has_government = sacral_feudal_government
 					AND = {
 						has_government = sacral_administrative_government
-						LR_has_rtp_governments_dlc_trigger = no
+						LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no
 					}
 				}
 			}
@@ -450,13 +450,13 @@ LR_normalize_dynastic_government_effect = {
 		else_if = { # LR 2026-11-25: with Roads to Power alone Palatine becomes Autocratic
 			limit = {
 				has_government = sacral_administrative_government
-				LR_has_rtp_governments_dlc_trigger = yes
+				LR_gradus_test_LR_has_rtp_governments_dlc_trigger = yes
 			}
 			change_government = rtp_autocratic_government
 		}
 	}
 	else_if = {
-		limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+		limit = { LR_gradus_test_LR_has_dynastic_governments_dlc_trigger = yes }
 		if = {
 			limit = { has_government = classical_government }
 			if = {
@@ -508,7 +508,7 @@ LR_normalize_dynastic_government_effect = {
 	# LR 2026-11-19/25 (user): Roads to Power without All Under Heaven: the dynastic twins go to the plain group government; the
 	# administrative twins and the merit Imperial ranks to Autocratic (rtp_autocratic_government), shared by every group.
 	else_if = {
-		limit = { LR_has_rtp_governments_dlc_trigger = yes }
+		limit = { LR_gradus_test_LR_has_rtp_governments_dlc_trigger = yes }
 		LR_dynastic_to_plain_government_effect = yes
 		LR_admin_to_rtp_government_effect = yes
 	}
@@ -596,7 +596,7 @@ LR_change_admin_to_dynastic_effect = {
 	else_if = {
 		limit = { OR = { has_government = iqta_administrative_government has_government = iqta_imperial_government has_government = iqta_imama_government } } # LR 2026-11-25 + the imperial rank
 		if = {
-			limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+			limit = { LR_gradus_test_LR_has_dynastic_governments_dlc_trigger = yes }
 			change_government = iqta_dynastic_government
 		}
 		else = {
@@ -612,7 +612,7 @@ LR_change_admin_to_dynastic_effect = {
 			}
 		}
 		if = {
-			limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+			limit = { LR_gradus_test_LR_has_dynastic_governments_dlc_trigger = yes }
 			change_government = sinic_dynastic_government
 		}
 		else = {
@@ -629,7 +629,7 @@ LR_change_admin_to_dynastic_effect = {
 		change_government = sacral_feudal_government # becomes sacral_government without the DLC (LR_normalize_dynastic_government_effect)
 	}
 	else_if = {
-		limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+		limit = { LR_gradus_test_LR_has_dynastic_governments_dlc_trigger = yes }
 		if = {
 			limit = { OR = { has_government = roman_administrative_government has_government = roman_imperial_government has_government = roman_dominate_government } } # LR 2026-11-19: not the Principate (a republic now)
 			change_government = roman_dynastic_government
