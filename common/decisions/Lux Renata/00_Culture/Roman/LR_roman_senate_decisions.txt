@@ -154,6 +154,7 @@ LR_convene_gallic_senate_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
+		NOT = { government_has_flag = government_is_republic } # 2026-11-25: Republics take Reconvene the Senate of ... instead
 		OR = { has_title = title:e_gallic_empire has_title = title:h_gallic_empire has_title = title:e_gallic_republic has_title = title:h_gallic_republic }
 		LR_roman_court_holds_gallic_trigger = no
 		NOT = { title:e_gallic_empire = { has_variable = LR_roman_senate } }
@@ -221,6 +222,7 @@ LR_convene_palmyrene_senate_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
+		NOT = { government_has_flag = government_is_republic } # 2026-11-25: Republics take Reconvene the Senate of ... instead
 		OR = { has_title = title:e_palmyrene_empire has_title = title:h_palmyrene_empire has_title = title:e_palmyrene_republic has_title = title:h_palmyrene_republic }
 		LR_roman_court_holds_palmyrene_trigger = no
 		NOT = { title:e_palmyrene_empire = { has_variable = LR_roman_senate } }
@@ -288,6 +290,7 @@ LR_convene_brittanic_senate_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
+		NOT = { government_has_flag = government_is_republic } # 2026-11-25: Republics take Reconvene the Senate of ... instead
 		OR = { has_title = title:e_brittanic_empire has_title = title:h_brittanic_empire has_title = title:e_brittanic_republic has_title = title:h_brittanic_republic }
 		LR_roman_court_holds_brittanic_trigger = no
 		NOT = { title:e_brittanic_empire = { has_variable = LR_roman_senate } }
@@ -355,6 +358,7 @@ LR_convene_southern_senate_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
+		NOT = { government_has_flag = government_is_republic } # 2026-11-25: Republics take Reconvene the Senate of ... instead
 		OR = { has_title = title:e_southern_roman_empire has_title = title:h_southern_roman_empire has_title = title:e_southern_roman_republic has_title = title:h_southern_roman_republic }
 		LR_roman_court_holds_southern_trigger = no
 		NOT = { title:e_southern_roman_empire = { has_variable = LR_roman_senate } }
@@ -404,6 +408,290 @@ LR_convene_southern_senate_decision = {
 
 	ai_will_do = {
 		base = 50
+	}
+}
+
+# The gallic Republic's Senate
+LR_reconvene_gallic_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_reconvene_gallic_senate_decision_desc
+	selection_tooltip = LR_reconvene_gallic_senate_decision_tooltip
+	confirm_text = LR_reconvene_gallic_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_plain_roman_republic_trigger = yes
+		OR = { has_title = title:e_gallic_republic has_title = title:h_gallic_republic }
+		NOT = { title:e_gallic_republic = { has_variable = LR_roman_senate } }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reconvene_regional_senate_twin_tt
+			OR = {
+				has_title = title:e_gallic_republic
+				AND = { NOT = { exists = title:e_gallic_republic.holder } NOT = { exists = title:e_gallic_empire.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_gallic_prefecture_tt
+			LR_roman_restoration_prefecture_gallia_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_reconvene_senate_authority_tt
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		LR_regional_senate_establish_effect = { SHADOW = e_gallic_republic HEGEMONY = h_gallic_republic REGION = custom_roman_prefecture_gallia SORT = gallic SEAT = c_trier LINE = gallic }
+		custom_tooltip = LR_roman_senate_provinces_tt
+		if = {
+			limit = { has_realm_law = republic_senate_size_1 }
+			add_realm_law_skip_effects = republic_senate_size_2
+		}
+		else_if = {
+			limit = { has_realm_law = republic_senate_size_2 }
+			add_realm_law_skip_effects = republic_senate_size_3
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# The palmyrene Republic's Senate
+LR_reconvene_palmyrene_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_reconvene_palmyrene_senate_decision_desc
+	selection_tooltip = LR_reconvene_palmyrene_senate_decision_tooltip
+	confirm_text = LR_reconvene_palmyrene_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_plain_roman_republic_trigger = yes
+		OR = { has_title = title:e_palmyrene_republic has_title = title:h_palmyrene_republic }
+		NOT = { title:e_palmyrene_republic = { has_variable = LR_roman_senate } }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reconvene_regional_senate_twin_tt
+			OR = {
+				has_title = title:e_palmyrene_republic
+				AND = { NOT = { exists = title:e_palmyrene_republic.holder } NOT = { exists = title:e_palmyrene_empire.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_palmyrene_prefecture_tt
+			LR_roman_restoration_prefecture_oriens_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_reconvene_senate_authority_tt
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		LR_regional_senate_establish_effect = { SHADOW = e_palmyrene_republic HEGEMONY = h_palmyrene_republic REGION = custom_roman_prefecture_oriens SORT = palmyrene SEAT = c_palmyra LINE = palmyrene }
+		custom_tooltip = LR_roman_senate_provinces_tt
+		if = {
+			limit = { has_realm_law = republic_senate_size_1 }
+			add_realm_law_skip_effects = republic_senate_size_2
+		}
+		else_if = {
+			limit = { has_realm_law = republic_senate_size_2 }
+			add_realm_law_skip_effects = republic_senate_size_3
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# The brittanic Republic's Senate
+LR_reconvene_brittanic_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_reconvene_brittanic_senate_decision_desc
+	selection_tooltip = LR_reconvene_brittanic_senate_decision_tooltip
+	confirm_text = LR_reconvene_brittanic_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_plain_roman_republic_trigger = yes
+		OR = { has_title = title:e_brittanic_republic has_title = title:h_brittanic_republic }
+		NOT = { title:e_brittanic_republic = { has_variable = LR_roman_senate } }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reconvene_regional_senate_twin_tt
+			OR = {
+				has_title = title:e_brittanic_republic
+				AND = { NOT = { exists = title:e_brittanic_republic.holder } NOT = { exists = title:e_brittanic_empire.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_brittanic_prefecture_tt
+			LR_roman_restoration_prefecture_britannia_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_reconvene_senate_authority_tt
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		LR_regional_senate_establish_effect = { SHADOW = e_brittanic_republic HEGEMONY = h_brittanic_republic REGION = custom_roman_prefecture_britannia SORT = brittanic SEAT = c_middlesex LINE = brittanic }
+		custom_tooltip = LR_roman_senate_provinces_tt
+		if = {
+			limit = { has_realm_law = republic_senate_size_1 }
+			add_realm_law_skip_effects = republic_senate_size_2
+		}
+		else_if = {
+			limit = { has_realm_law = republic_senate_size_2 }
+			add_realm_law_skip_effects = republic_senate_size_3
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# The southern Republic's Senate
+LR_reconvene_southern_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_reconvene_southern_senate_decision_desc
+	selection_tooltip = LR_reconvene_southern_senate_decision_tooltip
+	confirm_text = LR_reconvene_southern_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_plain_roman_republic_trigger = yes
+		OR = { has_title = title:e_southern_roman_republic has_title = title:h_southern_roman_republic }
+		NOT = { title:e_southern_roman_republic = { has_variable = LR_roman_senate } }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reconvene_regional_senate_twin_tt
+			OR = {
+				has_title = title:e_southern_roman_republic
+				AND = { NOT = { exists = title:e_southern_roman_republic.holder } NOT = { exists = title:e_southern_roman_empire.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_southern_prefecture_tt
+			LR_roman_restoration_prefecture_africa_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_reconvene_senate_authority_tt
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		LR_regional_senate_establish_effect = { SHADOW = e_southern_roman_republic HEGEMONY = h_southern_roman_republic REGION = custom_roman_prefecture_africa SORT = southern SEAT = c_tunis LINE = southern }
+		custom_tooltip = LR_roman_senate_provinces_tt
+		if = {
+			limit = { has_realm_law = republic_senate_size_1 }
+			add_realm_law_skip_effects = republic_senate_size_2
+		}
+		else_if = {
+			limit = { has_realm_law = republic_senate_size_2 }
+			add_realm_law_skip_effects = republic_senate_size_3
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
 	}
 }
 
