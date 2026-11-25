@@ -4,7 +4,7 @@
 # Anarchy and Pax Romana are set by LR_rw_update_effect; the rest move on catalyst points.
 LR_roman_world = {
 	is_unique = yes
-	gui_window_name = "window_LR_world_situation" # LR: vanilla window plus the Greek East meter
+	gui_window_name = "window_LR_imperium" # LR 2026-11-25 (user): the big Imperium Romanum window (Roman World tab); was window_LR_world_situation
 	gui_participation_window_name = "window_situation_participation"
 	illustration = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
 	situation_group_type = major
@@ -198,14 +198,15 @@ LR_roman_world = {
 						trigger_event = LR_world_situation.0003
 					}
 				}
-				# The East's Anarchy is the old Eastern Anarchy situation, now run by the Roman World (user 2026-11-06)
-				if = {
-					limit = {
-						scope:situation_sub_region = { situation_sub_region_has_county = title:c_byzantion }
-						NOT = { exists = situation:LR_eastern_anarchy }
-					}
-					LR_start_eastern_anarchy_effect = yes
-				}
+				# LR 2026-11-25 (user): "Turn it off fully". The Eastern Anarchy situation is no longer started; the East's
+				# Anarchy phase keeps its own effects. Was (user 2026-11-06): the Roman World started it here.
+				# if = {
+				# 	limit = {
+				# 		scope:situation_sub_region = { situation_sub_region_has_county = title:c_byzantion }
+				# 		NOT = { exists = situation:LR_eastern_anarchy }
+				# 	}
+				# 	LR_start_eastern_anarchy_effect = yes
+				# }
 			}
 			on_end = {
 				if = {

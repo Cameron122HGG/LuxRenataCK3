@@ -109,6 +109,42 @@ LR_roman_court_holds_southern_trigger = {
 	}
 }
 
+# County title: any imperial residence (a Caesar's court)
+LR_roman_court_residence_caesar_trigger = {
+	OR = {
+		this = title:c_roma_urbs
+		this = title:c_lombardia
+		this = title:c_ravenna
+		this = title:c_trier
+		this = title:c_arles
+		this = title:c_szerem
+		this = title:c_byzantion
+		this = title:c_nikomedia
+		this = title:c_antiocheia
+		this = title:c_thessalonika
+		this = title:c_sredets
+		this = title:c_lyon
+		this = title:c_cologne
+		this = title:c_palmyra
+		this = title:c_homs
+		this = title:c_alexandria
+		this = title:c_middlesex
+		this = title:c_north_riding
+		this = title:c_essex
+		this = title:c_tunis
+		this = title:c_tripolitana
+		this = title:c_constantine
+	}
+}
+
+# Character: holds a Caesar's dynamic Imperial Court
+LR_roman_court_holds_caesar_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		has_variable = LR_caesar_court_title
+	}
+}
+
 # County title (root = the character): a residence of a court root holds
 LR_roman_court_residence_for_root_trigger = {
 	OR = {
@@ -135,6 +171,10 @@ LR_roman_court_residence_for_root_trigger = {
 		AND = {
 			LR_roman_court_residence_southern_trigger = yes
 			root = { LR_roman_court_holds_southern_trigger = yes }
+		}
+		AND = {
+			LR_roman_court_residence_caesar_trigger = yes
+			root = { LR_roman_court_holds_caesar_trigger = yes }
 		}
 	}
 }
