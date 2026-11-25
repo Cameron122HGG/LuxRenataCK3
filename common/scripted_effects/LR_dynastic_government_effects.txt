@@ -283,6 +283,16 @@ LR_replace_vanilla_default_government_effect = {
 # dynastic twins; neither = the plain group government.
 # Run at game start and whenever a government changes, so decisions and events can keep setting the plain government.
 LR_normalize_dynastic_government_effect = {
+	if = { # LR 2026-11-25 GRADUS DLC test (tools/gradus_dlc_test/build_gradus_dlc_test.py): lets the fallback governments take this ruler while the test hides a DLC
+		limit = {
+			OR = {
+				LR_gradus_dlc_test_hides_rtp_trigger = yes
+				LR_gradus_dlc_test_hides_auh_trigger = yes
+				LR_gradus_dlc_test_hides_gdp_trigger = yes
+			}
+		}
+		add_character_flag = { flag = LR_gradus_dlc_test_fallback days = 1 }
+	}
 	LR_downgrade_upgraded_roman_government_effect = yes # LR 2026-11-19: no Dominate/Principate for decayed Roman empires
 	LR_kosmokratoria_government_effect = yes
 	LR_celestial_government_effect = yes # LR 2026-11-25 Sinic twins: Celestial follows h_china (LR_celestial_effects.txt) # LR 2026-11-19: the Kosmokratoria follows h_hellenistic_empire and the DLCs (LR_kosmokratoria_effects.txt)
