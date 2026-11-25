@@ -7,7 +7,8 @@
 # never move. scope:caesar_command = the new title.
 LR_caesar_appoint_effect = {
 	save_scope_as = caesar_augustus
-	custom_tooltip = LR_caesar_appoint_tt
+	if = { limit = { exists = scope:proconsular } custom_tooltip = LR_proconsul_appoint_tt }
+	else = { custom_tooltip = LR_caesar_appoint_tt }
 	if = {
 		limit = { scope:caesar_cmd = flag:west }
 		create_dynamic_title = {
@@ -18,12 +19,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_western_roman_empire set_variable = { name = LR_caesar_region value = flag:west } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_west_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_west_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_lombardia } }
+			title:c_lombardia = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_west_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_western_roman_empire set_variable = { name = LR_caesar_region value = flag:west } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_west } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -38,12 +58,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_eastern_roman_empire set_variable = { name = LR_caesar_region value = flag:east } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_east_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_east_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_nikomedia } }
+			title:c_nikomedia = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_east_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_eastern_roman_empire set_variable = { name = LR_caesar_region value = flag:east } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_east } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -58,12 +97,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_brittanic_empire set_variable = { name = LR_caesar_region value = flag:britannia } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_britannia_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_britannia_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_middlesex } }
+			title:c_middlesex = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_britannia_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_brittanic_empire set_variable = { name = LR_caesar_region value = flag:britannia } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_britannia } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -78,12 +136,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_gallic_empire set_variable = { name = LR_caesar_region value = flag:gallia } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_gallia_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_gallia_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_lyon } }
+			title:c_lyon = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_gallia_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_gallic_empire set_variable = { name = LR_caesar_region value = flag:gallia } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_gallia } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -98,12 +175,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_palmyrene_empire set_variable = { name = LR_caesar_region value = flag:palmyra } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_palmyra_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_palmyra_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_antiocheia } }
+			title:c_antiocheia = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_palmyra_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_palmyrene_empire set_variable = { name = LR_caesar_region value = flag:palmyra } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_palmyra } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -118,12 +214,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_southern_roman_empire set_variable = { name = LR_caesar_region value = flag:southern } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_southern_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_southern_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_tunis } }
+			title:c_tunis = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_southern_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_southern_roman_empire set_variable = { name = LR_caesar_region value = flag:southern } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_southern } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -138,12 +253,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_britannia set_variable = { name = LR_caesar_region value = flag:pp_britannia } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_britannia_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_britannia_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_middlesex } }
+			title:c_middlesex = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_britannia_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_britannia set_variable = { name = LR_caesar_region value = flag:pp_britannia } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_britannia } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -158,12 +292,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_gallia set_variable = { name = LR_caesar_region value = flag:pp_gallia } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_gallia_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_gallia_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_lyon } }
+			title:c_lyon = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_gallia_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_gallia set_variable = { name = LR_caesar_region value = flag:pp_gallia } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_gallia } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -178,12 +331,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_italia set_variable = { name = LR_caesar_region value = flag:pp_italia } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_italia_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_italia_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_ravenna } }
+			title:c_ravenna = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_italia_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_italia set_variable = { name = LR_caesar_region value = flag:pp_italia } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_italia } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -198,12 +370,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_illyricum set_variable = { name = LR_caesar_region value = flag:pp_illyricum } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_illyricum_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_illyricum_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_szerem } }
+			title:c_szerem = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_illyricum_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_illyricum set_variable = { name = LR_caesar_region value = flag:pp_illyricum } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_illyricum } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -218,12 +409,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_germania set_variable = { name = LR_caesar_region value = flag:pp_germania } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_germania_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_germania_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_cologne } }
+			title:c_cologne = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_germania_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_germania set_variable = { name = LR_caesar_region value = flag:pp_germania } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_germania } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -238,12 +448,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_macedonia set_variable = { name = LR_caesar_region value = flag:pp_macedonia } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_macedonia_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_macedonia_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_thessalonika } }
+			title:c_thessalonika = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_macedonia_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_macedonia set_variable = { name = LR_caesar_region value = flag:pp_macedonia } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_macedonia } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -258,12 +487,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_pontica set_variable = { name = LR_caesar_region value = flag:pp_pontica } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_pontica_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_pontica_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_galatia } }
+			title:c_galatia = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_pontica_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_pontica set_variable = { name = LR_caesar_region value = flag:pp_pontica } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_pontica } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -278,12 +526,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_oriens set_variable = { name = LR_caesar_region value = flag:pp_oriens } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_pp_oriens_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_pp_oriens_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_antiocheia } }
+			title:c_antiocheia = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_pp_oriens_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_praetorian_prefecture_oriens set_variable = { name = LR_caesar_region value = flag:pp_oriens } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_oriens } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -298,12 +565,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_magisterium_italia set_variable = { name = LR_caesar_region value = flag:mag_italia } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_mag_italia_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_mag_italia_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_ravenna } }
+			title:c_ravenna = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_mag_italia_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_magisterium_italia set_variable = { name = LR_caesar_region value = flag:mag_italia } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_mag_italia } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -318,12 +604,31 @@ LR_caesar_appoint_effect = {
 			save_scope_as = caesar_command
 		}
 		scope:caesar_command = { set_coa = title:e_magisterium_africa set_variable = { name = LR_caesar_region value = flag:mag_africa } }
-		create_dynamic_title = {
-			type = title_type_lr_caesar_court
-			tier = empire
-			holder = scope:new_holder
-			name = LR_caesar_court_mag_africa_latin
-			save_scope_as = caesar_court
+		if = {
+			limit = { exists = scope:proconsular }
+			create_dynamic_title = {
+				type = title_type_lr_concilium
+				tier = empire
+				holder = scope:new_holder
+				name = LR_concilium_mag_africa_latin
+				save_scope_as = caesar_court
+			}
+			scope:caesar_court = { set_variable = { name = LR_concilium_seat value = title:c_tunis } }
+			title:c_tunis = {
+				if = {
+					limit = { NOT = { has_county_modifier = LR_concilium_modifier } }
+					add_county_modifier = LR_concilium_modifier
+				}
+			}
+		}
+		else = {
+			create_dynamic_title = {
+				type = title_type_lr_caesar_court
+				tier = empire
+				holder = scope:new_holder
+				name = LR_caesar_court_mag_africa_latin
+				save_scope_as = caesar_court
+			}
 		}
 		scope:caesar_court = { set_coa = title:e_magisterium_africa set_variable = { name = LR_caesar_region value = flag:mag_africa } }
 		LR_caesar_hand_over_effect = { REGION = custom_caesar_mag_africa } # after the titles: their tiers let duke- and king-tier vassals be handed over
@@ -332,8 +637,15 @@ LR_caesar_appoint_effect = {
 		scope:caesar_court = {
 			set_de_jure_liege_title = scope:caesar_command
 			set_variable = LR_caesar_court_title
-			set_variable = LR_imperial_court # the court code (LR_roman_imperial_court_effects.txt) names it by residence
+			if = {
+				limit = { exists = scope:proconsular }
+				set_variable = LR_provincial_concilium # never LR_imperial_court: the court code leaves it alone
+			}
+			else = {
+				set_variable = LR_imperial_court # the court code (LR_roman_imperial_court_effects.txt) names it by residence
+			}
 		}
+		if = { limit = { exists = scope:proconsular } scope:caesar_command = { set_variable = LR_proconsular } }
 		scope:caesar_command = { set_variable = { name = LR_caesar_court value = scope:caesar_court } }
 	}
 	hidden_effect = {
@@ -349,9 +661,19 @@ LR_caesar_appoint_effect = {
 			limit = { has_title = scope:caesar_command }
 			set_primary_title_to = scope:caesar_command
 		}
-		add_trait = caesar
-		add_character_flag = LR_caesar_flag # flavourization: shown as Caesar
-		LR_roman_court_update_effect = yes # names his court by residence; the residence modifier
+		if = {
+			limit = { exists = scope:proconsular }
+			add_character_flag = LR_proconsul_flag # flavourization: shown as Proconsul; no trait
+			add_character_modifier = LR_proconsul_modifier
+			set_variable = { name = LR_proconsul_term years = 10 } # the term (LR_proconsul_yearly)
+			scope:caesar_court = { LR_provincial_concilium_name_effect = yes }
+			LR_proconsul_seat_senators_effect = yes
+		}
+		else = {
+			add_trait = caesar
+			add_character_flag = LR_caesar_flag # flavourization: shown as Caesar
+			LR_roman_court_update_effect = yes # names his court by residence; the residence modifier
+		}
 		add_opinion = { target = root modifier = grateful_opinion opinion = 40 }
 		set_variable = { name = LR_caesar_augustus value = root }
 	}
@@ -434,6 +756,10 @@ LR_college_leave_effect = {
 LR_caesar_unmake_effect = {
 	if = { limit = { has_trait = caesar } remove_trait = caesar }
 	if = { limit = { has_character_flag = LR_caesar_flag } remove_character_flag = LR_caesar_flag }
+	if = { limit = { has_character_flag = LR_proconsul_flag } remove_character_flag = LR_proconsul_flag } # 2026-11-25 proconsuls
+	if = { limit = { has_character_modifier = LR_proconsul_modifier } remove_character_modifier = LR_proconsul_modifier }
+	if = { limit = { has_variable = LR_proconsul_term } remove_variable = LR_proconsul_term }
+	if = { limit = { has_variable = LR_proconsul_term_ended } remove_variable = LR_proconsul_term_ended }
 	every_held_title = {
 		limit = { has_variable = LR_caesar_of NOT = { has_variable = LR_caesar_region } }
 		remove_variable = LR_caesar_of
@@ -491,6 +817,198 @@ LR_caesar_command_name_effect = {
 		else = { set_variable = { name = LR_caesar_style value = flag:foreign } }
 		remove_variable = LR_rtn_pick
 		if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_west_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_west_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_west_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_east_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_east_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_east_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_palmyra_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_palmyra_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_palmyra_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_southern_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_southern_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_southern_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_illyricum_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_illyricum_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_illyricum_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_germania_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_germania_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_germania_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_macedonia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_macedonia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_macedonia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_pontica_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_pontica_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_pontica_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_oriens_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_oriens_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_pp_oriens_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_mag_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_mag_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_mag_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:latin has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_mag_africa_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:greek has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_mag_africa_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:foreign has_variable = LR_proconsular NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_proconsul_cmd_mag_africa_foreign
+		}
+		else_if = {
 			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
 			set_title_name = LR_caesar_cmd_west_latin
 		}
@@ -882,7 +1400,8 @@ LR_caesar_command_name_effect = {
 # then destroyed by its holder. The land stays where it is (the caller moves it first if needed).
 LR_caesar_command_end_effect = {
 	save_scope_as = lr_ending_command
-	var:LR_caesar_court ?= { holder ?= { destroy_title = prev } } # 2026-11-25: its Imperial Court goes with it
+	var:LR_caesar_court ?= { var:LR_concilium_seat ?= { if = { limit = { has_county_modifier = LR_concilium_modifier } remove_county_modifier = LR_concilium_modifier } } }
+	var:LR_caesar_court ?= { holder ?= { destroy_title = prev } } # 2026-11-25: its Imperial Court (or Concilium) goes with it
 	remove_list_global_variable = { name = LR_caesar_commands target = scope:lr_ending_command }
 	title_confederation ?= { remove_confederation_member_title = scope:lr_ending_command }
 	holder ?= { destroy_title = scope:lr_ending_command }

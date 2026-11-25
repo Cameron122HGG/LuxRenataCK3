@@ -1,0 +1,40 @@
+﻿# LR proconsuls (tools/cleave_caesars.py, 2026-11-25). GENERATED.
+
+yearly_playable_pulse = {
+	on_actions = { LR_proconsul_yearly }
+}
+on_title_gain = {
+	on_actions = { LR_proconsul_on_title_gain }
+}
+
+# A Proconsul's term (timed variable LR_proconsul_term, 10 years) ran out: his head decides
+LR_proconsul_yearly = {
+	trigger = {
+		has_character_flag = LR_proconsul_flag
+		NOT = { has_variable = LR_proconsul_term }
+		NOT = { has_variable = LR_proconsul_term_ended }
+		var:LR_caesar_augustus ?= { is_alive = yes }
+	}
+	effect = {
+		set_variable = LR_proconsul_term_ended
+		save_scope_as = lr_proconsul
+		var:LR_caesar_augustus = { trigger_event = LR_proconsul.0001 }
+	}
+}
+
+# A new head of a Republic hegemony: the Proconsuls of its college serve him (a Republic is not inherited, so no
+# claims; the Principate and the Augusti go through LR_caesar_on_death / LR_caesar_on_title_gain)
+LR_proconsul_on_title_gain = {
+	trigger = {
+		OR = { scope:title = title:h_western_roman_republic scope:title = title:h_eastern_roman_republic scope:title = title:h_roman_republic scope:title = title:h_gallic_republic scope:title = title:h_palmyrene_republic scope:title = title:h_brittanic_republic scope:title = title:h_southern_roman_republic }
+		exists = scope:title.title_confederation
+	}
+	effect = {
+		scope:title.title_confederation = {
+			every_confederation_member = {
+				limit = { has_character_flag = LR_proconsul_flag NOT = { this = root } }
+				set_variable = { name = LR_caesar_augustus value = root }
+			}
+		}
+	}
+}

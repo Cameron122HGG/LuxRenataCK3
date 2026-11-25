@@ -1,0 +1,78 @@
+﻿# LR proconsuls (tools/cleave_caesars.py, 2026-11-25). GENERATED.
+
+# The Republic's Name a Caesar: a proconsular command, with a provincial council in place of a court
+LR_grant_proconsular_command_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds" }
+	decision_group_type = roman
+	ai_check_interval = 120
+	cooldown = { years = 5 }
+	desc = LR_grant_proconsular_command_decision_desc
+	selection_tooltip = LR_grant_proconsular_command_decision_tooltip
+	cost = {
+		prestige = 500
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_proconsul_granter_trigger = yes
+	}
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_name_caesar_decision_command_tt
+			LR_caesar_any_command_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_grant_proconsular_command_room_tt
+			LR_caesar_has_room_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_grant_proconsular_command_decision_effect_tt
+		save_scope_value_as = { name = proconsular value = yes }
+		trigger_event = LR_caesar.0001
+	}
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 5
+		modifier = { add = 15 realm_size >= 200 }
+	}
+}
+
+# A Proconsul whose term has ended keeps his legions: a claim war for the Republic
+LR_proconsul_cross_rubicon_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = roman
+	ai_check_interval = 60
+	desc = LR_proconsul_cross_rubicon_decision_desc
+	selection_tooltip = LR_proconsul_cross_rubicon_decision_tooltip
+	confirm_text = LR_proconsul_cross_rubicon_decision_confirm
+	is_shown = {
+		is_ruler = yes
+		has_character_flag = LR_proconsul_flag
+		var:LR_caesar_augustus ?= { is_alive = yes }
+	}
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_proconsul_cross_rubicon_term_tt
+			has_variable = LR_proconsul_term_ended
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+	effect = {
+		custom_tooltip = LR_proconsul_cross_rubicon_decision_effect_tt
+		LR_proconsul_rubicon_effect = yes
+	}
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 0
+		modifier = { add = 20 opinion = { target = var:LR_caesar_augustus value <= -30 } }
+		modifier = { add = 20 max_military_strength >= var:LR_caesar_augustus.max_military_strength }
+	}
+}

@@ -164,8 +164,15 @@ LR_holds_caesar_command_trigger = {
 
 # Character: a Caesar of root's (independent since 2026-11-24; bound to root in the Imperial College)
 LR_caesar_of_root_trigger = {
-	has_trait = caesar
+	OR = { has_trait = caesar has_character_flag = LR_proconsul_flag } # 2026-11-25: or a Proconsul
 	exists = var:LR_caesar_augustus
 	var:LR_caesar_augustus = root
+}
+
+# Character: may grant proconsular commands (2026-11-25): a Republic, or the Principate, whose half sits in Senate
+LR_proconsul_granter_trigger = {
+	government_has_flag = government_is_republic
+	OR = { primary_title ?= title:h_western_roman_republic primary_title ?= title:h_eastern_roman_republic primary_title ?= title:h_roman_republic primary_title ?= title:h_gallic_republic primary_title ?= title:h_palmyrene_republic primary_title ?= title:h_brittanic_republic primary_title ?= title:h_southern_roman_republic primary_title ?= title:h_roman_empire primary_title ?= title:h_western_roman_empire primary_title ?= title:h_eastern_roman_empire }
+	any_held_title = { has_variable = LR_roman_senate }
 }
 

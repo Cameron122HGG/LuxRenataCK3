@@ -139,6 +139,274 @@ LR_reconvene_eastern_senate_decision = {
 	}
 }
 
+# The gallic line's Senate: the other ending of Reorganize our Imperium (the choice is final)
+LR_convene_gallic_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_convene_gallic_senate_decision_desc
+	selection_tooltip = LR_convene_gallic_senate_decision_tooltip
+	confirm_text = LR_convene_gallic_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		OR = { has_title = title:e_gallic_empire has_title = title:h_gallic_empire has_title = title:e_gallic_republic has_title = title:h_gallic_republic }
+		LR_roman_court_holds_gallic_trigger = no
+		NOT = { title:e_gallic_empire = { has_variable = LR_roman_senate } }
+		NOT = { title:e_gallic_republic = { has_variable = LR_roman_senate } } # 2026-11-25 Republic twin
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reorganize_gallic_shadow_tt
+			OR = {
+				has_title = title:e_gallic_empire
+				has_title = title:e_gallic_republic
+				AND = { NOT = { exists = title:e_gallic_empire.holder } NOT = { exists = title:e_gallic_republic.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_gallic_prefecture_tt
+			LR_roman_restoration_prefecture_gallia_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_convene_regional_senate_final_tt
+		if = { # 2026-11-25: a Republic convenes on its Republic twin
+			limit = { OR = { has_title = title:e_gallic_republic has_title = title:h_gallic_republic } }
+			LR_regional_senate_establish_effect = { SHADOW = e_gallic_republic HEGEMONY = h_gallic_republic REGION = custom_roman_prefecture_gallia SORT = gallic SEAT = c_trier LINE = gallic }
+		}
+		else = {
+			LR_regional_senate_establish_effect = { SHADOW = e_gallic_empire HEGEMONY = h_gallic_empire REGION = custom_roman_prefecture_gallia SORT = gallic SEAT = c_trier LINE = gallic }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+# The palmyrene line's Senate: the other ending of Reorganize our Imperium (the choice is final)
+LR_convene_palmyrene_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_convene_palmyrene_senate_decision_desc
+	selection_tooltip = LR_convene_palmyrene_senate_decision_tooltip
+	confirm_text = LR_convene_palmyrene_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		OR = { has_title = title:e_palmyrene_empire has_title = title:h_palmyrene_empire has_title = title:e_palmyrene_republic has_title = title:h_palmyrene_republic }
+		LR_roman_court_holds_palmyrene_trigger = no
+		NOT = { title:e_palmyrene_empire = { has_variable = LR_roman_senate } }
+		NOT = { title:e_palmyrene_republic = { has_variable = LR_roman_senate } } # 2026-11-25 Republic twin
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reorganize_palmyrene_shadow_tt
+			OR = {
+				has_title = title:e_palmyrene_empire
+				has_title = title:e_palmyrene_republic
+				AND = { NOT = { exists = title:e_palmyrene_empire.holder } NOT = { exists = title:e_palmyrene_republic.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_palmyrene_prefecture_tt
+			LR_roman_restoration_prefecture_oriens_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_convene_regional_senate_final_tt
+		if = { # 2026-11-25: a Republic convenes on its Republic twin
+			limit = { OR = { has_title = title:e_palmyrene_republic has_title = title:h_palmyrene_republic } }
+			LR_regional_senate_establish_effect = { SHADOW = e_palmyrene_republic HEGEMONY = h_palmyrene_republic REGION = custom_roman_prefecture_oriens SORT = palmyrene SEAT = c_palmyra LINE = palmyrene }
+		}
+		else = {
+			LR_regional_senate_establish_effect = { SHADOW = e_palmyrene_empire HEGEMONY = h_palmyrene_empire REGION = custom_roman_prefecture_oriens SORT = palmyrene SEAT = c_palmyra LINE = palmyrene }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+# The brittanic line's Senate: the other ending of Reorganize our Imperium (the choice is final)
+LR_convene_brittanic_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_convene_brittanic_senate_decision_desc
+	selection_tooltip = LR_convene_brittanic_senate_decision_tooltip
+	confirm_text = LR_convene_brittanic_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		OR = { has_title = title:e_brittanic_empire has_title = title:h_brittanic_empire has_title = title:e_brittanic_republic has_title = title:h_brittanic_republic }
+		LR_roman_court_holds_brittanic_trigger = no
+		NOT = { title:e_brittanic_empire = { has_variable = LR_roman_senate } }
+		NOT = { title:e_brittanic_republic = { has_variable = LR_roman_senate } } # 2026-11-25 Republic twin
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reorganize_brittanic_shadow_tt
+			OR = {
+				has_title = title:e_brittanic_empire
+				has_title = title:e_brittanic_republic
+				AND = { NOT = { exists = title:e_brittanic_empire.holder } NOT = { exists = title:e_brittanic_republic.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_brittanic_prefecture_tt
+			LR_roman_restoration_prefecture_britannia_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_convene_regional_senate_final_tt
+		if = { # 2026-11-25: a Republic convenes on its Republic twin
+			limit = { OR = { has_title = title:e_brittanic_republic has_title = title:h_brittanic_republic } }
+			LR_regional_senate_establish_effect = { SHADOW = e_brittanic_republic HEGEMONY = h_brittanic_republic REGION = custom_roman_prefecture_britannia SORT = brittanic SEAT = c_middlesex LINE = brittanic }
+		}
+		else = {
+			LR_regional_senate_establish_effect = { SHADOW = e_brittanic_empire HEGEMONY = h_brittanic_empire REGION = custom_roman_prefecture_britannia SORT = brittanic SEAT = c_middlesex LINE = brittanic }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+# The southern line's Senate: the other ending of Reorganize our Imperium (the choice is final)
+LR_convene_southern_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_convene_southern_senate_decision_desc
+	selection_tooltip = LR_convene_southern_senate_decision_tooltip
+	confirm_text = LR_convene_southern_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		OR = { has_title = title:e_southern_roman_empire has_title = title:h_southern_roman_empire has_title = title:e_southern_roman_republic has_title = title:h_southern_roman_republic }
+		LR_roman_court_holds_southern_trigger = no
+		NOT = { title:e_southern_roman_empire = { has_variable = LR_roman_senate } }
+		NOT = { title:e_southern_roman_republic = { has_variable = LR_roman_senate } } # 2026-11-25 Republic twin
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reorganize_southern_shadow_tt
+			OR = {
+				has_title = title:e_southern_roman_empire
+				has_title = title:e_southern_roman_republic
+				AND = { NOT = { exists = title:e_southern_roman_empire.holder } NOT = { exists = title:e_southern_roman_republic.holder } }
+			}
+		}
+		custom_tooltip = {
+			text = LR_reorganize_southern_prefecture_tt
+			LR_roman_restoration_prefecture_africa_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		custom_tooltip = LR_convene_regional_senate_final_tt
+		if = { # 2026-11-25: a Republic convenes on its Republic twin
+			limit = { OR = { has_title = title:e_southern_roman_republic has_title = title:h_southern_roman_republic } }
+			LR_regional_senate_establish_effect = { SHADOW = e_southern_roman_republic HEGEMONY = h_southern_roman_republic REGION = custom_roman_prefecture_africa SORT = southern SEAT = c_tunis LINE = southern }
+		}
+		else = {
+			LR_regional_senate_establish_effect = { SHADOW = e_southern_roman_empire HEGEMONY = h_southern_roman_empire REGION = custom_roman_prefecture_africa SORT = southern SEAT = c_tunis LINE = southern }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
 LR_hold_senatus_consultum_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
@@ -154,8 +422,13 @@ LR_hold_senatus_consultum_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_playable_character = yes
-		government_has_flag = government_is_republic
-		any_held_title = { has_variable = LR_roman_senate }
+		OR = {
+			AND = {
+				government_has_flag = government_is_republic
+				any_held_title = { has_variable = LR_roman_senate }
+			}
+			any_held_title = { has_variable = LR_regional_senate }
+		}
 	}
 
 	is_valid = {
@@ -175,9 +448,25 @@ LR_hold_senatus_consultum_decision = {
 	}
 
 	effect = {
-		primary_title = {
-			every_full_assembly_member = {
-				limit = { this != root }
+		if = {
+			limit = { government_has_flag = government_is_republic }
+			primary_title = {
+				every_full_assembly_member = {
+					limit = { this != root }
+					add_opinion = {
+						target = root
+						modifier = LR_senatus_consultum_opinion
+						years = 5
+					}
+				}
+			}
+		}
+		else = { # a regional Senate under an emperor: the governors of the provinces
+			every_vassal_or_below = {
+				limit = {
+					is_landed = yes
+					any_held_title = { LR_roman_senate_province_title_trigger = yes }
+				}
 				add_opinion = {
 					target = root
 					modifier = LR_senatus_consultum_opinion

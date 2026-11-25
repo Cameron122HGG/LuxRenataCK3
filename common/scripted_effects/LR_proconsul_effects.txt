@@ -1,0 +1,311 @@
+﻿# LR proconsuls (tools/cleave_caesars.py, 2026-11-25). GENERATED - edit tools/cleave_caesars.py.
+
+# Title: a Proconsul's Concilium, named by its area (fixed seat) in its holder's Roman title-name style
+LR_provincial_concilium_name_effect = {
+	if = {
+		limit = { exists = holder }
+		LR_roman_title_names_pick_style_effect = yes
+		if = { limit = { LR_roman_court_style_latin_trigger = yes } set_variable = { name = LR_caesar_style value = flag:latin } }
+		else_if = { limit = { LR_roman_court_style_greek_trigger = yes } set_variable = { name = LR_caesar_style value = flag:greek } }
+		else = { set_variable = { name = LR_caesar_style value = flag:foreign } }
+		remove_variable = LR_rtn_pick
+		if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_west_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_west_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_west_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_east_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_east_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_east_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_palmyra_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_palmyra_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_palmyra_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_southern_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_southern_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_southern_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_illyricum_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_illyricum_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_illyricum_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_germania_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_germania_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_germania_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_macedonia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_macedonia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_macedonia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_pontica_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_pontica_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_pontica_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_pp_oriens_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_pp_oriens_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_pp_oriens_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_mag_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_mag_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_mag_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:latin }
+			set_title_name = LR_concilium_mag_africa_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:greek }
+			set_title_name = LR_concilium_mag_africa_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:foreign }
+			set_title_name = LR_concilium_mag_africa_foreign
+		}
+		remove_variable = LR_caesar_style
+	}
+}
+
+# Root = a new Proconsul: the governors of the dioceses and prefectures in his realm sit in his Concilium
+LR_proconsul_seat_senators_effect = {
+	every_vassal_or_below = {
+		limit = {
+			is_landed = yes
+			any_held_title = { LR_roman_senate_province_title_trigger = yes }
+		}
+		add_opinion = { target = root modifier = LR_seated_in_concilium_opinion }
+	}
+}
+
+# Root = a Proconsul who lays down his command (recalled at the end of his term): the command ends, and he
+# swears fealty to the Republic with his lands
+LR_proconsul_lay_down_effect = {
+	var:LR_caesar_augustus ?= { save_scope_as = lr_proconsul_head }
+	LR_caesar_commands_of_root_effect = { MODE = end }
+	LR_college_leave_effect = yes
+	if = { limit = { has_variable = LR_caesar_augustus } remove_variable = LR_caesar_augustus }
+	LR_caesar_unmake_effect = yes
+	if = {
+		limit = {
+			exists = scope:lr_proconsul_head
+			scope:lr_proconsul_head = { is_alive = yes }
+			is_landed = yes
+			is_independent_ruler = yes
+		}
+		create_title_and_vassal_change = { type = swear_fealty save_scope_as = lr_pc_fealty add_claim_on_loss = no }
+		change_liege = { liege = scope:lr_proconsul_head change = scope:lr_pc_fealty }
+		resolve_title_and_vassal_change = scope:lr_pc_fealty
+	}
+	add_prestige = medium_prestige_gain # Cincinnatus went back to his plough
+}
+
+# Root = a Proconsul who crosses the Rubicon: like Proclaim Yourself Augustus, a claim war for the Republic
+LR_proconsul_rubicon_effect = {
+	var:LR_caesar_augustus = { save_scope_as = old_augustus }
+	scope:old_augustus.primary_title = { save_scope_as = usurp_target }
+	save_scope_as = usurper
+	hidden_effect = {
+		primary_title.title_confederation ?= { change_cohesion = -30 }
+		LR_caesar_commands_of_root_effect = { MODE = usurp }
+		LR_college_leave_effect = yes
+		remove_variable = LR_caesar_augustus
+	}
+	LR_caesar_unmake_effect = yes
+	add_trait = augustus
+	add_pressed_claim = scope:usurp_target
+	start_war = {
+		casus_belli = claim_cb
+		target = scope:old_augustus
+		claimant = root
+		target_title = scope:usurp_target
+	}
+	scope:old_augustus = { trigger_event = LR_proconsul.0003 }
+}
+
+# Root = the heir of a dead Proconsul, scope:title = the proconsular command he inherited. The command ends; the
+# heir swears fealty to the Republic, whose head may grant the area again (LR_proconsul.0004).
+LR_proconsul_command_lapses_effect = {
+	scope:title.var:LR_caesar_augustus ?= { save_scope_as = lr_proconsul_head }
+	scope:title = { LR_caesar_command_end_effect = yes }
+	if = {
+		limit = {
+			exists = scope:lr_proconsul_head
+			scope:lr_proconsul_head = { is_alive = yes }
+			NOT = { scope:lr_proconsul_head = root }
+		}
+		if = {
+			limit = { is_landed = yes is_independent_ruler = yes }
+			create_title_and_vassal_change = { type = swear_fealty save_scope_as = lr_pc_fealty add_claim_on_loss = no }
+			change_liege = { liege = scope:lr_proconsul_head change = scope:lr_pc_fealty }
+			resolve_title_and_vassal_change = scope:lr_pc_fealty
+		}
+		scope:lr_proconsul_head = { trigger_event = LR_proconsul.0004 }
+	}
+}
+
+# Root = a ruler taking the Dominate (Reform into the Dominate): his Proconsuls become Caesars, their Concilia
+# Imperial Courts
+LR_proconsuls_to_caesars_effect = {
+	primary_title.title_confederation ?= {
+		every_confederation_member = {
+			limit = { has_character_flag = LR_proconsul_flag var:LR_caesar_augustus ?= root }
+			remove_character_flag = LR_proconsul_flag
+			if = { limit = { has_character_modifier = LR_proconsul_modifier } remove_character_modifier = LR_proconsul_modifier }
+			if = { limit = { has_variable = LR_proconsul_term } remove_variable = LR_proconsul_term }
+			if = { limit = { has_variable = LR_proconsul_term_ended } remove_variable = LR_proconsul_term_ended }
+			add_trait = caesar
+			add_character_flag = LR_caesar_flag
+			every_held_title = {
+				limit = { has_variable = LR_provincial_concilium }
+				var:LR_concilium_seat ?= { if = { limit = { has_county_modifier = LR_concilium_modifier } remove_county_modifier = LR_concilium_modifier } }
+				remove_variable = LR_provincial_concilium
+				set_variable = LR_imperial_court
+			}
+			every_held_title = {
+				limit = { has_variable = LR_proconsular }
+				remove_variable = LR_proconsular
+				LR_caesar_command_name_effect = yes
+			}
+			LR_roman_court_update_effect = yes
+		}
+	}
+}

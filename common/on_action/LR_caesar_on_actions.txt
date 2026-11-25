@@ -18,7 +18,11 @@ LR_caesar_command_inherited = {
 	}
 	effect = {
 		scope:title = { save_scope_as = lr_inherited_command LR_caesar_command_name_effect = yes }
-		if = {
+		if = { # 2026-11-25: a proconsular command ends with its Proconsul; the Republic may grant it again
+			limit = { scope:title = { has_variable = LR_proconsular } }
+			LR_proconsul_command_lapses_effect = yes
+		}
+		else_if = {
 			limit = { scope:title.var:LR_caesar_augustus ?= root }
 			scope:title = { LR_caesar_command_end_effect = yes }
 		}
@@ -53,7 +57,7 @@ LR_caesar_on_death = {
 			}
 			scope:lr_college = {
 				ordered_confederation_member = {
-					limit = { LR_caesar_of_root_trigger = yes }
+					limit = { LR_caesar_of_root_trigger = yes NOT = { has_character_flag = LR_proconsul_flag } } # a Proconsul is never promoted
 					order_by = { value = 0 subtract = var:LR_caesar_seq } # the senior (first named)
 					save_scope_as = lr_promoted
 				}
@@ -63,7 +67,7 @@ LR_caesar_on_death = {
 		else = {
 			scope:lr_college = {
 				every_confederation_member = {
-					limit = { LR_caesar_of_root_trigger = yes NOT = { this = root.primary_heir } }
+					limit = { LR_caesar_of_root_trigger = yes NOT = { this = root.primary_heir } NOT = { has_character_flag = LR_proconsul_flag } }
 					add_pressed_claim = scope:caesar_hegemony
 				}
 			}
