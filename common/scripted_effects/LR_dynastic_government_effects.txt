@@ -85,8 +85,12 @@ LR_replace_vanilla_default_government_effect = {
 					limit = { top_liege = { government_has_flag = government_is_celestial } }
 					change_government = celestial_government
 				}
-				else = {
+				else_if = {
+					limit = { top_liege = { has_government = meritocratic_government } }
 					change_government = meritocratic_government
+				}
+				else = { # LR 2026-11-25 Sinic twins: Junxian, the Sinic administrative twin
+					change_government = sinic_administrative_government
 				}
 			}
 			else_if = {
@@ -139,13 +143,7 @@ LR_replace_vanilla_default_government_effect = {
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
-				if = {
-					limit = { has_tgp_dlc_trigger = yes }
-					change_government = meritocratic_government
-				}
-				else = {
-					change_government = chinese_feudal_government
-				}
+				change_government = sinic_administrative_government # LR 2026-11-25 Sinic twins: Junxian, normalized to the DLC tier
 			}
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
@@ -286,7 +284,8 @@ LR_replace_vanilla_default_government_effect = {
 # Run at game start and whenever a government changes, so decisions and events can keep setting the plain government.
 LR_normalize_dynastic_government_effect = {
 	LR_downgrade_upgraded_roman_government_effect = yes # LR 2026-11-19: no Dominate/Principate for decayed Roman empires
-	LR_kosmokratoria_government_effect = yes # LR 2026-11-19: the Kosmokratoria follows h_hellenistic_empire and the DLCs (LR_kosmokratoria_effects.txt)
+	LR_kosmokratoria_government_effect = yes
+	LR_celestial_government_effect = yes # LR 2026-11-25 Sinic twins: Celestial follows h_china (LR_celestial_effects.txt) # LR 2026-11-19: the Kosmokratoria follows h_hellenistic_empire and the DLCs (LR_kosmokratoria_effects.txt)
 	LR_schedule_roman_title_twins_effect = yes # LR 2026-11-19: Republic titles for the Principate, Empire titles (a day later; swapping inside change_government crashed) otherwise (LR_roman_title_twins_effects.txt)
 	LR_principate_align_vassal_effect = yes # LR 2026-11-19: Principate governors (LR_principate_effects.txt)
 	LR_align_admin_vassal_government_effect = yes # LR 2026-11-18 mixed-group realms (LR_mixed_group_realm_effects.txt)
@@ -466,6 +465,10 @@ LR_normalize_dynastic_government_effect = {
 			limit = { has_government = iqta_government }
 			change_government = iqta_dynastic_government
 		}
+		else_if = { # LR 2026-11-25 Sinic twins
+			limit = { has_government = chinese_feudal_government }
+			change_government = sinic_dynastic_government
+		}
 		# LR 2026-11-25: Autocratic (the Roads-to-Power-only rank) becomes the administrative twin of the ruler's group
 		else_if = {
 			limit = { government_has_flag = government_is_rtp_tier }
@@ -547,6 +550,10 @@ LR_normalize_dynastic_government_effect = {
 			limit = { has_government = iqta_administrative_government }
 			change_government = iqta_government
 		}
+		else_if = { # LR 2026-11-25 Sinic twins
+			limit = { has_government = sinic_administrative_government }
+			change_government = chinese_feudal_government
+		}
 	}
 }
 
@@ -567,14 +574,21 @@ LR_change_admin_to_dynastic_effect = {
 			change_government = iqta_government
 		}
 	}
-	else_if = {
+	else_if = { # LR 2026-11-25 Sinic twins: the Sinic administrations give way to Fengjian (Chinese Feudal without the DLC)
 		limit = {
 			OR = {
+				has_government = sinic_administrative_government
 				has_government = meritocratic_government
 				has_government = celestial_government
 			}
 		}
-		change_government = chinese_feudal_government # the sinic group has no dynastic tier
+		if = {
+			limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+			change_government = sinic_dynastic_government
+		}
+		else = {
+			change_government = chinese_feudal_government
+		}
 	}
 	else_if = {
 		limit = { has_government = japan_administrative_government }
@@ -691,6 +705,10 @@ LR_dynastic_to_plain_government_effect = {
 		limit = { has_government = iqta_dynastic_government }
 		change_government = iqta_government
 	}
+	else_if = { # LR 2026-11-25 Sinic twins
+		limit = { has_government = sinic_dynastic_government }
+		change_government = chinese_feudal_government
+	}
 }
 
 # Root is a ruler (Roads to Power without All Under Heaven). LR 2026-11-25 (user): every group administration and merit Imperial
@@ -717,6 +735,7 @@ LR_admin_to_rtp_government_effect = {
 				has_government = nilotic_imperial_government
 				has_government = gupta_administrative_government
 				has_government = iqta_administrative_government
+				has_government = sinic_administrative_government
 				has_government = meritocratic_government
 				has_government = celestial_government
 				has_government = japan_administrative_government

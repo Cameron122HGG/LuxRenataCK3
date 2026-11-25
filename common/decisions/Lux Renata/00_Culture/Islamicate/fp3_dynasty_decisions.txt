@@ -52,12 +52,15 @@ fp3_embellish_capital_decision = {
 
 	is_valid_showing_failures_only = {
 		is_available_at_peace_adult = yes
-		OR = {
-			# At least one of the decision options is available 
-			employs_court_position = royal_architect_court_position
-			any_consort = { fp3_embellish_capital_decision_character_trigger = yes }
-			any_courtier = { fp3_embellish_capital_decision_character_trigger = yes }
-			cp:councillor_court_chaplain ?= { fp3_embellish_capital_decision_character_trigger = yes }
+		custom_tooltip = { # LR 2026-11-25: tiger tip, OR too complex for a failures-only tooltip
+			text = LR_embellish_capital_overseer_tt
+			OR = {
+				# At least one of the decision options is available 
+				employs_court_position = royal_architect_court_position
+				any_consort = { fp3_embellish_capital_decision_character_trigger = yes }
+				any_courtier = { fp3_embellish_capital_decision_character_trigger = yes }
+				cp:councillor_court_chaplain ?= { fp3_embellish_capital_decision_character_trigger = yes }
+			}
 		}
 	}
 
@@ -134,29 +137,32 @@ fp3_embellish_capital_decision = {
 		item = {
 			value = embellish_capital_consort_courtier
 			is_valid = {
-				OR = {
-					any_consort = {
-						fp3_embellish_capital_decision_character_trigger = yes
-						NOR = {
-							trigger_if = {
-								limit = {
-									root = { employs_court_position = royal_architect_court_position }
+				custom_tooltip = { # LR 2026-11-25: tiger tip, OR too complex for a failures-only tooltip
+					text = LR_embellish_capital_consort_or_courtier_tt
+					OR = {
+						any_consort = {
+							fp3_embellish_capital_decision_character_trigger = yes
+							NOR = {
+								trigger_if = {
+									limit = {
+										root = { employs_court_position = royal_architect_court_position }
+									}
+									has_court_position = royal_architect_court_position
 								}
-								has_court_position = royal_architect_court_position
+								is_councillor_of = root
 							}
-							is_councillor_of = root
 						}
-					}
-					any_courtier = {
-						fp3_embellish_capital_decision_character_trigger = yes
-						NOR = {
-							trigger_if = {
-								limit = {
-									root = { employs_court_position = royal_architect_court_position }
+						any_courtier = {
+							fp3_embellish_capital_decision_character_trigger = yes
+							NOR = {
+								trigger_if = {
+									limit = {
+										root = { employs_court_position = royal_architect_court_position }
+									}
+									has_court_position = royal_architect_court_position
 								}
-								has_court_position = royal_architect_court_position
+								is_councillor_of = root
 							}
-							is_councillor_of = root
 						}
 					}
 				}

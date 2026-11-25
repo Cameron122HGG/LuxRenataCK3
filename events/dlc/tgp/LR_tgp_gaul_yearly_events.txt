@@ -875,11 +875,13 @@ LR_tgp_sacral_gaul_yearly_events.0013 = {
 								value = lifestyle_mystic_xp_gain_minor_value
 							}
 						}
-						else = {
-							random = {
-								chance = 33
-								add_trait = lifestyle_mystic
-							}
+					}
+					# LR 2026-11-25: the 33% roll runs outside the toast (tiger: random inside send_interface_toast does not work right)
+					if = {
+						limit = { NOT = { has_trait = lifestyle_mystic } }
+						random = {
+							chance = 33
+							add_trait = lifestyle_mystic
 						}
 					}
 				}

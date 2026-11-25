@@ -1,0 +1,40 @@
+﻿# LR 2026-11-25 (user): Celestial is the Sinic universal rank (All Under Heaven, as before). The holder of h_china takes it; rival
+# claimants of the Mandate (LR_is_mandate_claimant_trigger) and the administrations of their realms keep it. Called from
+# LR_normalize_dynastic_government_effect, which runs on every government change, title gain and yearly. root = a character.
+LR_celestial_government_effect = {
+	if = { # outside a claimant's realm: down to the imperial rank
+		limit = {
+			has_government = celestial_government
+			NOT = { top_liege = { LR_is_mandate_claimant_trigger = yes } }
+		}
+		change_government = meritocratic_government # normalized further without All Under Heaven
+	}
+	else_if = { # the holder of h_china on a Sinic administration takes the Mandate
+		limit = {
+			top_liege = this
+			has_title = title:h_china
+			has_tgp_dlc_trigger = yes
+			OR = {
+				has_government = sinic_administrative_government
+				has_government = meritocratic_government
+			}
+		}
+		change_government = celestial_government
+		LR_sinic_raise_realm_administrations_effect = { GOVERNMENT = celestial_government }
+	}
+}
+
+# LR 2026-11-25: root = a Sinic ruler who has just risen to $GOVERNMENT$ (Meritocratic or Celestial). The realm's Junxian and
+# Meritocratic governors rise with them: LR_align_admin_vassal_government_effect leaves vassals of the same group alone.
+LR_sinic_raise_realm_administrations_effect = {
+	every_vassal_or_below = {
+		limit = {
+			OR = {
+				has_government = sinic_administrative_government
+				has_government = meritocratic_government
+			}
+			NOT = { has_government = $GOVERNMENT$ }
+		}
+		change_government = $GOVERNMENT$
+	}
+}

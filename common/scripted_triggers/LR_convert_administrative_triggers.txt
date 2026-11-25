@@ -202,6 +202,7 @@ LR_convert_admin_sees_meritocratic_trigger = {
 	trigger_if = {
 		limit = { top_liege = this }
 		LR_in_sinic_group_trigger = yes
+		highest_held_title_tier >= tier_empire # LR 2026-11-25: Meritocratic is the Sinic imperial rank
 	}
 	trigger_else = {
 		top_liege = {
@@ -215,7 +216,7 @@ LR_convert_admin_sees_celestial_trigger = {
 	has_tgp_dlc_trigger = yes
 	trigger_if = {
 		limit = { top_liege = this }
-		LR_in_sinic_group_trigger = yes
+		has_title = title:h_china # LR 2026-11-25: Celestial is the universal rank of the Chinese hegemony
 	}
 	trigger_else = {
 		top_liege = {
@@ -266,6 +267,7 @@ LR_convert_admin_sees_any_option_trigger = {
 		LR_convert_admin_sees_nilotic_administrative_trigger = yes
 		LR_convert_admin_sees_gupta_administrative_trigger = yes
 		LR_convert_admin_sees_iqta_administrative_trigger = yes
+		LR_convert_admin_sees_sinic_administrative_trigger = yes # LR 2026-11-25 Sinic twins
 		LR_convert_admin_sees_meritocratic_trigger = yes
 		LR_convert_admin_sees_celestial_trigger = yes
 		LR_convert_admin_sees_japan_administrative_trigger = yes
@@ -284,6 +286,21 @@ LR_convert_admin_sees_rtp_autocratic_trigger = {
 	trigger_else = {
 		top_liege = {
 			has_government = rtp_autocratic_government
+		}
+	}
+}
+
+# # LR 2026-11-25 Sinic twins: Junxian, the Sinic administrative twin. Character scope
+LR_convert_admin_sees_sinic_administrative_trigger = {
+	has_ep3_dlc_trigger = yes
+	LR_has_rtp_governments_dlc_trigger = no # with Roads to Power alone the only option is Autocratic
+	trigger_if = {
+		limit = { top_liege = this }
+		LR_in_sinic_group_trigger = yes
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = sinic_administrative_government
 		}
 	}
 }

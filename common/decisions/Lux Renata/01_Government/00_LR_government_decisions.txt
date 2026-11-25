@@ -777,6 +777,18 @@ convert_to_administrative_decision = {
 				value = 20
 			}
 		}
+		item = { # LR 2026-11-25 Sinic twins: Junxian
+			value = go_sinic_administrative_government
+			is_shown = {
+				LR_convert_admin_sees_sinic_administrative_trigger = yes
+			}
+			current_description = go_sinic_administrative_government_desc
+			localization = go_sinic_administrative_government_name
+			icon = "gfx/interface/icons/government_types/sinic_administrative_government.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
 		item = {
 			value = go_meritocratic_government
 			is_shown = {
@@ -870,6 +882,10 @@ convert_to_administrative_decision = {
 		else_if = {
 			limit = { scope:go_meritocratic_government = yes }
 			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:meritocratic }
+		}
+		else_if = { # LR 2026-11-25 Sinic twins
+			limit = { scope:go_sinic_administrative_government = yes }
+			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:sinic_administrative }
 		}
 		else_if = {
 			limit = { scope:go_japan_administrative_government = yes }

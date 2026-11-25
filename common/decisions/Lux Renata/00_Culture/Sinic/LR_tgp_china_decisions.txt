@@ -1143,6 +1143,20 @@ tgp_tea_ceremony_decision = {
 				save_scope_as = inspired_courtier
 			}
 			
+			# LR 2026-11-25: roll first, show the result in the toast (tiger: random_list inside send_interface_toast does not work right)
+			random_list = {
+				20 = { trigger = {
+							exists = scope:inspired_courtier
+						} save_temporary_scope_value_as = { name = LR_tea_ceremony_roll value = 1 } }
+				10 = { trigger = {
+							exists = scope:inspired_courtier
+						} save_temporary_scope_value_as = { name = LR_tea_ceremony_roll value = 2 } }
+				10 = {  save_temporary_scope_value_as = { name = LR_tea_ceremony_roll value = 3 } }
+				10 = {  save_temporary_scope_value_as = { name = LR_tea_ceremony_roll value = 4 } }
+				10 = {  save_temporary_scope_value_as = { name = LR_tea_ceremony_roll value = 5 } }
+				10 = {  save_temporary_scope_value_as = { name = LR_tea_ceremony_roll value = 6 } }
+				10 = {  save_temporary_scope_value_as = { name = LR_tea_ceremony_roll value = 7 } }
+			}
 			send_interface_toast = {
 				type = event_toast_effect_good
 				title = tgp_tea_ceremony_decision_toast
@@ -1161,11 +1175,9 @@ tgp_tea_ceremony_decision = {
 					}
 				}
 				# Gain a random effect
-				random_list = {
-					20 = { # Gain opinion
-						trigger = {
-							exists = scope:inspired_courtier
-						}
+				if = {
+						limit = { scope:LR_tea_ceremony_roll = 1 } # Gain opinion
+						
 						
 						progress_towards_friend_effect = {
 							REASON = friend_drinking_tea
@@ -1173,10 +1185,9 @@ tgp_tea_ceremony_decision = {
 							OPINION = default_friend_opinion
 						}
 					}
-					10 = { # Courtier becomes inspired
-						trigger = {
-							exists = scope:inspired_courtier
-						}
+				else_if = {
+						limit = { scope:LR_tea_ceremony_roll = 2 } # Courtier becomes inspired
+						
 						
 						# Add inspiration
 						if = {
@@ -1191,37 +1202,41 @@ tgp_tea_ceremony_decision = {
 						# Custom tooltip to explain that a courtier was inspired
 						custom_tooltip = courtier_inspired_effect
 					}
-					10 = { # Health negation
+				else_if = {
+						limit = { scope:LR_tea_ceremony_roll = 3 } # Health negation
 						add_character_modifier = {
 							modifier = tea_ceremony_health_benefit
 							years = 5
 						}
 					}
-					10 = { # Diplomacy
+				else_if = {
+						limit = { scope:LR_tea_ceremony_roll = 4 } # Diplomacy
 						add_character_modifier = {
 							modifier = tea_ceremony_perfect_tea
 							years = 5
 						}
 					}
-					10 = { # Stress
+				else_if = {
+						limit = { scope:LR_tea_ceremony_roll = 5 } # Stress
 						add_character_modifier = {
 							modifier = tea_ceremony_peace_of_mind
 							years = 5
 						}
 					}
-					10 = { # Spirit/piety
+				else_if = {
+						limit = { scope:LR_tea_ceremony_roll = 6 } # Spirit/piety
 						add_character_modifier = {
 							modifier = tea_ceremony_spirit
 							years = 5
 						}
 					}
-					10 = { # Family
+				else_if = {
+						limit = { scope:LR_tea_ceremony_roll = 7 } # Family
 						add_character_modifier = {
 							modifier = tea_ceremony_family
 							years = 5
 						}
 					}
-				}
 			}
 		}
 	}

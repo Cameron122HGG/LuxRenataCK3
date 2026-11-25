@@ -1,0 +1,76 @@
+﻿# LR 2026-11-25 (user): the rise from Junxian (the Sinic administration) to Meritocratic (the Sinic imperial rank).
+# An independent Junxian emperor opens the imperial examinations; the realm's Junxian governors take Meritocratic with them
+# (LR_sinic_raise_realm_administrations_effect, LR_celestial_effects.txt).
+
+LR_institute_imperial_examinations_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/tgp_scholars.dds"
+	}
+	desc = LR_institute_imperial_examinations_decision_desc
+	selection_tooltip = LR_institute_imperial_examinations_decision_tooltip
+	confirm_text = LR_institute_imperial_examinations_decision_confirm
+	decision_group_type = realm
+	sort_order = 41
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes
+		has_government = sinic_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 750
+		treasury = 500
+	}
+
+	effect = {
+		change_government = meritocratic_government
+		custom_tooltip = LR_institute_imperial_examinations_decision_effect_tooltip
+		hidden_effect = {
+			LR_sinic_raise_realm_administrations_effect = { GOVERNMENT = meritocratic_government }
+		}
+		# the holder of h_china goes on to Celestial when the government change is normalized (LR_celestial_government_effect)
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = diligent
+				has_trait = ambitious
+				has_trait = erudite
+			}
+		}
+		modifier = {
+			add = 25
+			learning >= 15
+		}
+	}
+}
