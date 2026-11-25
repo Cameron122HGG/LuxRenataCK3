@@ -1,0 +1,160 @@
+﻿# Lux Renata 2026-11-25 (user): the group of an Autocratic ruler (rtp_autocratic_government has no group flag).
+# Muslims are Iqta, rulers in the Sacral Kingdom of Gaul's realm are Sacral, everyone else follows their culture's
+# government tradition (no tradition or Anarchy = Western, as Feudal Custom is the fallback). Character scope.
+# tools/rtp_tier/consolidate_autocratic.py
+
+LR_rtp_autocratic_iqta_trigger = {
+	has_government = rtp_autocratic_government
+	faith = { religion_tag = islam_religion }
+}
+
+LR_rtp_autocratic_sacral_trigger = {
+	has_government = rtp_autocratic_government
+	NOT = { faith = { religion_tag = islam_religion } }
+	LR_in_sacral_kingdom_gaul_realm_trigger = yes
+}
+
+# an Autocratic ruler whose group comes from their culture
+LR_rtp_autocratic_by_culture_trigger = {
+	has_government = rtp_autocratic_government
+	NOT = { faith = { religion_tag = islam_religion } }
+	NOT = { LR_in_sacral_kingdom_gaul_realm_trigger = yes }
+}
+
+LR_rtp_autocratic_classical_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_classical }
+}
+
+LR_rtp_autocratic_persianate_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_despotic }
+}
+
+LR_rtp_autocratic_mamlakah_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_mamlakah }
+}
+
+LR_rtp_autocratic_sudanic_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_sudanic }
+}
+
+LR_rtp_autocratic_nilotic_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_nilotic }
+}
+
+LR_rtp_autocratic_gupta_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_indic }
+}
+
+LR_rtp_autocratic_sinic_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_sinic }
+}
+
+LR_rtp_autocratic_japanese_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_japanese }
+}
+
+LR_rtp_autocratic_barbarian_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_barbarian }
+}
+
+LR_rtp_autocratic_roman_trigger = {
+	LR_rtp_autocratic_classical_trigger = yes
+	LR_culture_is_hellenic_trigger = no
+}
+
+LR_rtp_autocratic_alexandrian_trigger = {
+	LR_rtp_autocratic_classical_trigger = yes
+	LR_culture_is_hellenic_trigger = yes
+}
+
+LR_rtp_autocratic_western_trigger = {
+	LR_rtp_autocratic_by_culture_trigger = yes
+	OR = {
+		culture = { has_cultural_tradition = lux_tradition_gov_western }
+		culture = { LR_culture_has_government_tradition_trigger = no }
+	}
+}
+
+# Character scope: in this GRADUS group by government flag, or as an Autocratic ruler of that group.
+# Every government_is_<group>_group check outside the government definitions goes through these.
+LR_in_classical_group_trigger = {
+	OR = {
+		government_has_flag = government_is_classical_group
+		LR_rtp_autocratic_classical_trigger = yes
+	}
+}
+LR_in_western_group_trigger = {
+	OR = {
+		government_has_flag = government_is_western_group
+		LR_rtp_autocratic_western_trigger = yes
+	}
+}
+LR_in_despotic_group_trigger = {
+	OR = {
+		government_has_flag = government_is_despotic_group
+		LR_rtp_autocratic_persianate_trigger = yes
+	}
+}
+LR_in_mamlakah_group_trigger = {
+	OR = {
+		government_has_flag = government_is_mamlakah_group
+		LR_rtp_autocratic_mamlakah_trigger = yes
+	}
+}
+LR_in_sudanic_group_trigger = {
+	OR = {
+		government_has_flag = government_is_sudanic_group
+		LR_rtp_autocratic_sudanic_trigger = yes
+	}
+}
+LR_in_nilotic_group_trigger = {
+	OR = {
+		government_has_flag = government_is_nilotic_group
+		LR_rtp_autocratic_nilotic_trigger = yes
+	}
+}
+LR_in_indic_group_trigger = {
+	OR = {
+		government_has_flag = government_is_indic_group
+		LR_rtp_autocratic_gupta_trigger = yes
+	}
+}
+LR_in_islamic_group_trigger = {
+	OR = {
+		government_has_flag = government_is_islamic_group
+		LR_rtp_autocratic_iqta_trigger = yes
+	}
+}
+LR_in_sinic_group_trigger = {
+	OR = {
+		government_has_flag = government_is_sinic_group
+		LR_rtp_autocratic_sinic_trigger = yes
+	}
+}
+LR_in_japanese_group_trigger = {
+	OR = {
+		government_has_flag = government_is_japanese_group
+		LR_rtp_autocratic_japanese_trigger = yes
+	}
+}
+LR_in_sacral_group_trigger = {
+	OR = {
+		government_has_flag = government_is_sacral_group
+		LR_rtp_autocratic_sacral_trigger = yes
+	}
+}
+LR_in_barbarian_group_trigger = {
+	OR = {
+		government_has_flag = government_is_barbarian_group
+		LR_rtp_autocratic_barbarian_trigger = yes
+	}
+}

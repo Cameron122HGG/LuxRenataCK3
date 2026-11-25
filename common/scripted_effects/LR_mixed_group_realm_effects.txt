@@ -22,8 +22,8 @@ LR_align_admin_vassal_government_effect = {
 			top_liege = { LR_has_lr_government_group_trigger = yes } # LR_replace maps only the LR groups; anything else would loop
 			# LR 2026-11-19: a non-Muslim in an Iqta realm keeps the Mamlakah administration (Iqta is only for Muslims)
 			NAND = {
-				top_liege = { government_has_flag = government_is_islamic_group }
-				government_has_flag = government_is_mamlakah_group # mamlakah-only
+				top_liege = { LR_in_islamic_group_trigger = yes }
+				LR_in_mamlakah_group_trigger = yes # mamlakah-only
 			}
 		}
 		if = {
@@ -56,39 +56,39 @@ LR_align_admin_vassals_of_top_liege_effect = {
 # top liege's group (LR_normalize_dynastic_government_effect then picks the dynastic twin with the DLC).
 LR_take_top_liege_feudal_group_effect = {
 	if = {
-		limit = { top_liege = { government_has_flag = government_is_classical_group } }
+		limit = { top_liege = { LR_in_classical_group_trigger = yes } }
 		change_government = classical_government
 	}
 	else_if = {
-		limit = { top_liege = { government_has_flag = government_is_western_group } }
+		limit = { top_liege = { LR_in_western_group_trigger = yes } }
 		change_government = western_feudal_government
 	}
 	else_if = {
-		limit = { top_liege = { government_has_flag = government_is_despotic_group } }
+		limit = { top_liege = { LR_in_despotic_group_trigger = yes } }
 		change_government = despotic_government
 	}
 	else_if = {
-		limit = { top_liege = { government_has_flag = government_is_indic_group } }
+		limit = { top_liege = { LR_in_indic_group_trigger = yes } }
 		change_government = indic_feudal_government
 	}
 	else_if = { # LR 2026-11-19
-		limit = { top_liege = { government_has_flag = government_is_mamlakah_group } }
+		limit = { top_liege = { LR_in_mamlakah_group_trigger = yes } }
 		change_government = mamlakah_government # mamlakah_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
 	}
 	else_if = { # LR 2026-11-19
-		limit = { top_liege = { government_has_flag = government_is_sudanic_group } }
+		limit = { top_liege = { LR_in_sudanic_group_trigger = yes } }
 		change_government = sudanic_government # sudanic_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
 	}
 	else_if = { # LR 2026-11-19
-		limit = { top_liege = { government_has_flag = government_is_nilotic_group } }
+		limit = { top_liege = { LR_in_nilotic_group_trigger = yes } }
 		change_government = nilotic_government # nilotic_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
 	}
 	else_if = { # mamlakah-only. LR 2026-11-19: Iqta is for Muslims (they are caught before this); a non-Muslim in an Iqta realm takes the secular Mamlakah
-		limit = { top_liege = { government_has_flag = government_is_islamic_group } }
+		limit = { top_liege = { LR_in_islamic_group_trigger = yes } }
 		change_government = mamlakah_government # mamlakah_dynastic_government with the DLC (LR_normalize_dynastic_government_effect)
 	}
 	else_if = {
-		limit = { top_liege = { government_has_flag = government_is_sinic_group } }
+		limit = { top_liege = { LR_in_sinic_group_trigger = yes } }
 		if = {
 			limit = { top_liege = { government_has_flag = government_is_japanese_plain } }
 			change_government = japanese_government
@@ -98,16 +98,16 @@ LR_take_top_liege_feudal_group_effect = {
 		}
 	}
 	else_if = {
-		limit = { top_liege = { government_has_flag = government_is_japanese_group } }
+		limit = { top_liege = { LR_in_japanese_group_trigger = yes } }
 		add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo is otherwise only allowed under a Japanese realm (tgp_can_become_japanese_feudal_trigger)
 		change_government = japan_feudal_government
 	}
 	else_if = {
-		limit = { top_liege = { government_has_flag = government_is_sacral_group } }
+		limit = { top_liege = { LR_in_sacral_group_trigger = yes } }
 		change_government = sacral_government
 	}
 	else_if = {
-		limit = { top_liege = { government_has_flag = government_is_barbarian_group } }
+		limit = { top_liege = { LR_in_barbarian_group_trigger = yes } }
 		change_government = great_tribal_government
 	}
 }

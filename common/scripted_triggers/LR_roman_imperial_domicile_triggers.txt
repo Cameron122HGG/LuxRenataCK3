@@ -16,5 +16,41 @@ LR_needs_roman_imperial_domicile_conversion_trigger = {
 			NOT = { has_government = roman_dominate_government }
 			domicile ?= { is_domicile_type = roman_imperial_domicile }
 		}
+		AND = { # LR 2026-11-25: Autocratic keeps vanilla's estate
+			has_government = rtp_autocratic_government
+			NOT = { domicile ?= { is_domicile_type = estate } }
+		}
+		AND = { # LR 2026-11-25: from Autocratic (or vanilla administrative) to a group administration: that group's seat
+			domicile ?= { is_domicile_type = estate }
+			LR_has_group_estate_administration_trigger = yes
+		}
+	}
+}
+
+# LR 2026-11-25: character scope, on an administrative government whose family seat is its group's estate
+# (consolidate_autocratic.py, from the governments' domicile_type)
+LR_has_group_estate_administration_trigger = {
+	OR = {
+		has_government = alexandrian_administrative_government
+		has_government = celestial_government
+		has_government = gupta_administrative_government
+		has_government = hellenistic_basileia_government
+		has_government = hellenistic_imperial_government
+		has_government = hellenistic_kosmokratoria_government
+		has_government = iqta_administrative_government
+		has_government = japan_administrative_government
+		has_government = mamlakah_administrative_government
+		has_government = mamlakah_imperial_government
+		has_government = meritocratic_government
+		has_government = nilotic_administrative_government
+		has_government = nilotic_imperial_government
+		has_government = persianate_administrative_government
+		has_government = persianate_imperial_government
+		has_government = roman_administrative_government
+		has_government = roman_imperial_government
+		has_government = sacral_administrative_government
+		has_government = sudanic_administrative_government
+		has_government = sudanic_imperial_government
+		has_government = western_administrative_government
 	}
 }

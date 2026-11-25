@@ -1,15 +1,15 @@
 ﻿###################################
-# JAPAN CAREER EVENTS
+# SACRAL GAUL CAREER EVENTS (from All Under Heaven's Japan career events)
 ###################################
 namespace = LR_tgp_sacral_gaul_career
 
 ### EVENT LIST ####################################################################
 ## 0001 - Intro in 1066
-## 0002 - Intro in 1178
 ###################################################################################
 
 # Intro Event - Who are you playing as and what is your situation
-# Also acts as an introduction when you start playing in Japan
+# Also acts as an introduction when you start playing in Gaul
+# LR 2026-11-25: Gaulish rewrite (was Japan intro: tenno/soryo/ritsuryo comments, Asian backgrounds)
 LR_tgp_sacral_gaul_career.0001 = {
 	type = character_event
     window = big_event_window
@@ -18,19 +18,19 @@ LR_tgp_sacral_gaul_career.0001 = {
 		desc = LR_tgp_sacral_gaul_career.0001.desc
 		first_valid =  {
 			triggered_desc = {
-                trigger = { has_title = title:k_sacral_king_gaul_throne } #is tenno
+                trigger = { has_title = title:k_sacral_king_gaul_throne } #is the Merovingian sacral king
                 desc = LR_tgp_sacral_gaul_career.0001.merovingian_desc
             }
 			triggered_desc = {
-				trigger = { has_title = title:e_sacral_kingdom_gaul } #is sacral_majordomo
+				trigger = { has_title = title:e_sacral_kingdom_gaul } #is the mayor of the palace (sacral_majordomo)
 				desc = LR_tgp_sacral_gaul_career.0001.sacral_majordomo_desc
 			}
             triggered_desc = {
-                trigger = { government_has_flag = government_is_sacral_feudal } #is soryo
+                trigger = { government_has_flag = government_is_sacral_feudal } #is manorial
                 desc = LR_tgp_sacral_gaul_career.0001.manorial_desc
             }
             triggered_desc = {
-                trigger = { government_has_flag = government_is_sacral_administrative } #is ritsuryo
+                trigger = { government_has_flag = government_is_sacral_administrative } #is palatine
                 desc = LR_tgp_sacral_gaul_career.0001.palatine_desc
             }           
 		}
@@ -49,7 +49,7 @@ LR_tgp_sacral_gaul_career.0001 = {
             trigger = {
             has_title = title:k_sacral_king_gaul_throne
         }
-        reference = tgp_garden_asia
+        reference = garden # LR 2026-11-25: Gaulish rewrite (was tgp_garden_asia)
     }
 	override_background = {
         trigger = {
@@ -61,7 +61,7 @@ LR_tgp_sacral_gaul_career.0001 = {
         trigger = {
             government_has_flag = government_is_sacral_feudal
 		}
-		reference = tgp_crossroad_inn_asia
+		reference = army_camp # LR 2026-11-25: Gaulish rewrite (was tgp_crossroad_inn_asia)
 	}
     override_background = {
             trigger = {
@@ -75,7 +75,7 @@ LR_tgp_sacral_gaul_career.0001 = {
 		character = root
 		triggered_animation = {
 			trigger = {
-                government_has_flag = government_is_sacral_feudal #Soryo ruler should have their sword out
+                government_has_flag = government_is_sacral_feudal #Manorial ruler should have their sword out
 			}
 			animation = inspect_weapon 
 		}
@@ -86,7 +86,7 @@ LR_tgp_sacral_gaul_career.0001 = {
 		character = player_heir
 		triggered_animation = {
 			trigger = {
-                government_has_flag = government_is_sacral_feudal #Soryo ruler should have their sword out
+                government_has_flag = government_is_sacral_feudal #Manorial ruler should have their sword out
 			}
 			animation = horse_archer_aggressive
 			camera = camera_event_scheme_vs_left_look_left
@@ -107,10 +107,11 @@ LR_tgp_sacral_gaul_career.0001 = {
         player_heir ?= { save_scope_as = heir }
 	}
 
+	# Vanilla AUH modifiers kept on purpose: their shown names are neutral ("Striving for Stability" / "Preparing for Conflict")
 	option = {
 		name = LR_tgp_sacral_gaul_career.0001.a
 		add_character_modifier = {
-			modifier = tgp_japan_peace_modifier
+			modifier = LR_tgp_sacral_gaul_peace_modifier
 			years = 20
 		}
 	}
@@ -118,7 +119,7 @@ LR_tgp_sacral_gaul_career.0001 = {
 	option = {
 		name = LR_tgp_sacral_gaul_career.0001.b
 		add_character_modifier = {
-			modifier = tgp_japan_war_modifier
+			modifier = LR_tgp_sacral_gaul_war_modifier
 			years = 20
 		}
 	}

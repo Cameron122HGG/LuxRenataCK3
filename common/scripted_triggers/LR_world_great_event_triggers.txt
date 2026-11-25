@@ -1,0 +1,16 @@
+﻿# LR great events (tools/world_great_events/gen_great_events.py, 2026-11-25). GENERATED - edit the generator.
+
+# Character (an event root): their capital is in scope:situation_sub_region
+LR_wge_in_region_trigger = {
+	exists = capital_county
+	scope:situation_sub_region ?= { situation_sub_region_has_county = root.capital_county }
+}
+
+# Character: a successor king (holds a diadochi line title, or a Hellenistic-heritage independent ruler)
+LR_wge_successor_trigger = {
+	OR = {
+		LR_holds_diadochi_line_title_trigger = yes
+		AND = { is_independent_ruler = yes culture ?= { has_cultural_pillar = heritage_hellenistic } }
+	}
+}
+

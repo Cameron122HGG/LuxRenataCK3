@@ -22,31 +22,31 @@ LR_restore_roman_administration_effect = {
 		if = {
 			limit = {
 				NOR = {
-					has_government = roman_autocratic_government
+					has_government = roman_imperial_government
 					has_government = roman_dominate_government
 				}
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 		}
 		every_vassal_or_below = {
 			custom = LR_proclaim_roman_empire_vassals_custom
 			limit = {
 				highest_held_title_tier >= tier_duchy
-				government_has_flag = government_is_classical_group
+				LR_in_classical_group_trigger = yes
 				NOT = { government_has_flag = government_is_republic }
 				NOR = {
-					has_government = roman_autocratic_government
+					has_government = roman_imperial_government
 					has_government = roman_dominate_government
 				}
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 		}
 	}
 	else_if = { # LR 2026-11-19: Roads to Power without All Under Heaven (great vassals follow their liege's administration)
 		limit = { LR_has_rtp_governments_dlc_trigger = yes }
 		if = {
-			limit = { NOT = { has_government = roman_rtp_government } }
-			change_government = roman_rtp_government
+			limit = { NOT = { has_government = rtp_autocratic_government } }
+			change_government = rtp_autocratic_government
 		}
 	}
 	else = {
@@ -65,7 +65,7 @@ LR_restore_roman_administration_effect = {
 	}
 	every_vassal = {
 		custom = LR_proclaim_roman_empire_opinion_custom
-		limit = { government_has_flag = government_is_classical_group }
+		limit = { LR_in_classical_group_trigger = yes }
 		add_opinion = {
 			target = root
 			modifier = LR_proclaimed_roman_empire_opinion

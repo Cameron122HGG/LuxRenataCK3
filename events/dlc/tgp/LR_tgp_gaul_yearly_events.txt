@@ -1,34 +1,32 @@
 ﻿namespace = LR_tgp_sacral_gaul_yearly_events
-# LR TODO (2026-11-22, sacral Gaul rework): this file is a reskin of All Under Heaven's Japan yearly events.
-# Events marked "LR TODO: replace" below still carry Japanese content (Buddhism, yokai, Shinto, onsen, bonsai,
-# the Japonic language...) and need replacing with Gaulish/Frankish content, not a reskin. Many are gated on
-# Japanese culture or faith, so they never fire in Gaul until rewritten. See LR_sacral_gaul_rework_proposal.md.
+# LR 2026-11-25: the Sacral Gaul yearly events. They began as a reskin of All Under Heaven's Japan yearly events;
+# the Japanese content was rewritten as Gaulish/Frankish content on 2026-11-25 (comments "Gaulish rewrite (was ...)").
 
 ##########################################################
-# Japan Yearly Events
+# Sacral Gaul Yearly Events (from All Under Heaven's Japan Yearly Events)
 # LR_tgp_sacral_gaul_yearly_events - 0001-0999
 # by Anna Johansson and Laurence Kennedy
 ##########################################################
 
 ##########################################################
-# 0001 - Spreading Joy - Furoshiki (gift wrap something for a loved one)
-# 0006 - Treasures from the Sea - Ama divers (establish a trade deal with them)
-# 0012 - Monkey Business - Onsen
-# 0013 - Purifying the Spirit - Onsen
-# 0014 - Taking It Easy - Onsen
+# 0001 - Spreading Joy - Frisian cloth (buy fine cloth for a loved one)
+# 0006 - Treasures from the Sea - Pearl and oyster divers (establish a trade deal with them)
+# 0012 - A Bristly Bather - Thermal spring (was Monkey Business)
+# 0013 - Purifying the Daimon - Holy thermal spring
+# 0014 - A Welcome Reprieve - Gallo-Roman baths
 # 0021 - Among the Blossoms - Hanami (Cherry Blossoms)
 # 0026 - Tales of the Tengu - Tengu
 # 0027 - Prove Your Worth - Tengu
 # 0028 - False Rumors - Tengu
 # 0029 - Practice Makes Perfect - Tengu
-# 0036 - Green Thumb
+# 0036 - Green Thumb - Reflection of Paradise
 # 1200 - Congestion in the Capital
 # 1210 - Fit to Lead?
 # 1225 - A Poetic Life
 #########################################################
 
-# 0001 - Spreading Joy - Furoshiki (gift wrap something for a loved one)
-# LR TODO: replace -- Japanese content (japan, japon); needs a Gaulish/Frankish rewrite
+# 0001 - Spreading Joy - Frisian cloth (buy fine cloth for a loved one)
+# LR 2026-11-25: Gaulish rewrite (was furoshiki gift wrap / uchiwa fan, Japonic culture gate)
 LR_tgp_sacral_gaul_yearly_events.0001 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.0001.t
@@ -38,7 +36,7 @@ LR_tgp_sacral_gaul_yearly_events.0001 = {
 	cooldown = { years = 30 }
 	left_portrait = {
 		character = root
-		animation = japanese_war_fan
+		animation = interested # LR 2026-11-25: Gaulish rewrite (was japanese_war_fan)
 	}
 
 	#Person we care about
@@ -49,16 +47,14 @@ LR_tgp_sacral_gaul_yearly_events.0001 = {
 	}
 
 	artifact = {
-		target = scope:gift_uchiwa
+		target = scope:gift_textile
 		position = lower_left_portrait
 	}
 
 	trigger = {
 		has_tgp_dlc_trigger = yes
 		is_available_healthy_adult = yes
-		culture = {
-			has_cultural_pillar = heritage_japonic
-		}
+		# LR 2026-11-25: Gaulish rewrite (was heritage_japonic culture gate; the Gaul location gate is enough)
 		location = {
 			geographical_region = LR_world_europe_gaul
 		}
@@ -105,17 +101,17 @@ LR_tgp_sacral_gaul_yearly_events.0001 = {
 			save_scope_as = gift_receiver
 		}
 
-		#Uchiwa is a type of fan that was popular in China/Japan
+		# LR 2026-11-25: Gaulish rewrite (was an uchiwa fan) -- a bolt of fine Frisian cloth
 		hidden_effect_new_object = {
 			create_artifact = {
-				name = LR_gaul_uchiwa
-				description = LR_gaul_uchiwa_desc
+				name = LR_gaul_frisian_cloth
+				description = LR_gaul_frisian_cloth_desc
 				rarity = common
 				type = miscellaneous
 				visuals = tapestry
 				modifier = artifact_attraction_opinion_1_modifier
 				modifier = artifact_fertility_gain_1_modifier
-				save_scope_as = gift_uchiwa
+				save_scope_as = gift_textile
 			}
 		}
 	}
@@ -124,7 +120,7 @@ LR_tgp_sacral_gaul_yearly_events.0001 = {
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.0001.a
 
-		scope:gift_uchiwa = {
+		scope:gift_textile = {
 			set_variable = {
 				name = suppress_artifact_notifications
 				value = yes
@@ -151,7 +147,7 @@ LR_tgp_sacral_gaul_yearly_events.0001 = {
 				}
 				progress_towards_lover_effect = {
 					CHARACTER = scope:gift_receiver
-					REASON = tgp_progress_towards_lover_furoshiki
+					REASON = LR_gaul_progress_towards_lover_gift
 					OPINION = 0
 				}
 			}
@@ -185,7 +181,7 @@ LR_tgp_sacral_gaul_yearly_events.0001 = {
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.0001.b
 		flavor = LR_tgp_sacral_gaul_yearly_events.0001.b.flavor
-		scope:gift_uchiwa = {
+		scope:gift_textile = {
 			set_variable = {
 				name = suppress_artifact_notifications
 				value = yes
@@ -234,8 +230,8 @@ LR_tgp_sacral_gaul_yearly_events.0001 = {
 	}
 }
 
-# 0006 - Treasures from the Sea - Ama divers (establish a trade deal with them)
-# LR TODO: replace -- Japanese content (onsen); needs a Gaulish/Frankish rewrite
+# 0006 - Treasures from the Sea - Pearl and oyster divers (establish a trade deal with them)
+# LR 2026-11-25: Gaulish rewrite (was Japanese ama divers) -- Armorican/Atlantic pearl, oyster and ormer divers
 LR_tgp_sacral_gaul_yearly_events.0006 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.0006.t
@@ -403,7 +399,7 @@ LR_tgp_sacral_gaul_yearly_events.0006 = {
 		}
 	}
 
-	#Learning Duel - Giving abalone to temples
+	#Learning Duel - Giving ormers and pearls to the local shrines # LR 2026-11-25: Gaulish rewrite (was abalone for temples)
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.0006.c
 
@@ -493,8 +489,8 @@ LR_tgp_sacral_gaul_yearly_events.0006 = {
 	}
 }
 
-# 0012 - Monkey Business - Onsen
-# LR TODO: replace -- Japanese content (hot_spring, onsen); needs a Gaulish/Frankish rewrite
+# 0012 - A Bristly Bather - Thermal spring
+# LR 2026-11-25: Gaulish rewrite (was Monkey Business - Onsen) -- a wild boar in a Gaulish thermal spring
 LR_tgp_sacral_gaul_yearly_events.0012 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.0012.t
@@ -539,7 +535,7 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 		}
 	}
 
-	#Martial/Intimidation - scare the monkey away from the hot spring
+	#Martial/Intimidation - scare the boar away from the thermal spring
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.0012.a
 
@@ -557,12 +553,12 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 					min = 20
 					max = 90
 				}
-				desc = LR_tgp_sacral_gaul_yearly_events.0012.a.monkey.martial.tt.success
+				desc = LR_tgp_sacral_gaul_yearly_events.0012.a.boar.martial.tt.success
 				send_interface_toast = {
-					title = LR_tgp_sacral_gaul_yearly_events.0012.a.monkey.martial.tt.success
+					title = LR_tgp_sacral_gaul_yearly_events.0012.a.boar.martial.tt.success
 					left_icon = root
 					add_character_modifier = {
-						modifier = LR_tgp_sacral_gaul_hot_spring_relaxation_modifier
+						modifier = LR_tgp_sacral_gaul_thermal_spring_relaxation_modifier
 						years = 5
 					}
 					add_martial_lifestyle_xp = medium_lifestyle_xp
@@ -575,9 +571,9 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 					min = 20
 					max = 90
 				}
-				desc = LR_tgp_sacral_gaul_yearly_events.0012.a.monkey.martial.tt.failure
+				desc = LR_tgp_sacral_gaul_yearly_events.0012.a.boar.martial.tt.failure
 				send_interface_toast = {
-					title = LR_tgp_sacral_gaul_yearly_events.0012.a.monkey.martial.tt.failure
+					title = LR_tgp_sacral_gaul_yearly_events.0012.a.boar.martial.tt.failure
 					left_icon = root
 					add_prestige = medium_prestige_loss
 				}
@@ -603,7 +599,7 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 		}
 	}
 
-	#Intrigue/Disguise - prove to the monkey that you are no threat
+	#Intrigue/Disguise - prove to the boar that you are no threat
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.0012.b
 
@@ -620,15 +616,15 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 					multiplier = 3.5
 					min = -49
 				}
-				desc = LR_tgp_sacral_gaul_yearly_events.0012.b.monkey.intrigue.tt.success
+				desc = LR_tgp_sacral_gaul_yearly_events.0012.b.boar.intrigue.tt.success
 				min = 20
 				max = 90
 				root = {
 					send_interface_toast = {
-						title = LR_tgp_sacral_gaul_yearly_events.0012.b.monkey.intrigue.tt.success
+						title = LR_tgp_sacral_gaul_yearly_events.0012.b.boar.intrigue.tt.success
 						left_icon = root
 						add_character_modifier = {
-							modifier = LR_tgp_sacral_gaul_hot_spring_relaxation_modifier
+							modifier = LR_tgp_sacral_gaul_thermal_spring_relaxation_modifier
 							years = 5
 						}
 						add_intrigue_lifestyle_xp = medium_lifestyle_xp
@@ -641,12 +637,12 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 					multiplier = -3.5
 					min = -49
 				}
-				desc = LR_tgp_sacral_gaul_yearly_events.0012.b.monkey.intrigue.tt.failure
+				desc = LR_tgp_sacral_gaul_yearly_events.0012.b.boar.intrigue.tt.failure
 				min = 20
 				max = 90
 				root = {
 					send_interface_toast = {
-						title = LR_tgp_sacral_gaul_yearly_events.0012.b.monkey.intrigue.tt.failure
+						title = LR_tgp_sacral_gaul_yearly_events.0012.b.boar.intrigue.tt.failure
 						left_icon = root
 						add_prestige = medium_prestige_loss
 					}
@@ -672,7 +668,7 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 		}
 	}
 
-	#Opt out, you don't want to mess with the monkey
+	#Opt out, you don't want to mess with the boar
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.0012.c
 
@@ -693,8 +689,8 @@ LR_tgp_sacral_gaul_yearly_events.0012 = {
 	}
 }
 
-# 0013 - Purifying the Spirit - Onsen
-# LR TODO: replace -- Japanese content (hot_spring, onsen); needs a Gaulish/Frankish rewrite
+# 0013 - Purifying the Daimon - Holy thermal spring
+# LR 2026-11-25: Gaulish rewrite (was Purifying the Spirit - Onsen) -- a mystic's rite at a spring of Borvo
 LR_tgp_sacral_gaul_yearly_events.0013 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.0013.t
@@ -776,7 +772,7 @@ LR_tgp_sacral_gaul_yearly_events.0013 = {
 		}
 
 		add_character_modifier = {
-			modifier = LR_tgp_sacral_gaul_hot_spring_relaxation_modifier
+			modifier = LR_tgp_sacral_gaul_thermal_spring_relaxation_modifier
 			years = 5
 		}
 		if = {
@@ -795,7 +791,7 @@ LR_tgp_sacral_gaul_yearly_events.0013 = {
 					right_icon = scope:mystic
 
 					add_character_modifier = {
-						modifier = LR_tgp_sacral_gaul_hot_spring_mystic_positive_modifier
+						modifier = LR_tgp_sacral_gaul_thermal_spring_mystic_positive_modifier
 						years = 5
 					}
 				}
@@ -808,7 +804,7 @@ LR_tgp_sacral_gaul_yearly_events.0013 = {
 					right_icon = scope:mystic
 
 					add_character_modifier = {
-						modifier = LR_tgp_sacral_gaul_hot_spring_mystic_neutral_modifier
+						modifier = LR_tgp_sacral_gaul_thermal_spring_mystic_neutral_modifier
 						years = 5
 					}
 				}
@@ -821,7 +817,7 @@ LR_tgp_sacral_gaul_yearly_events.0013 = {
 					right_icon = scope:mystic
 
 					add_character_modifier = {
-						modifier = LR_tgp_sacral_gaul_hot_spring_mystic_negative_modifier
+						modifier = LR_tgp_sacral_gaul_thermal_spring_mystic_negative_modifier
 						years = 5
 					}
 				}
@@ -957,8 +953,8 @@ LR_tgp_sacral_gaul_yearly_events.0013 = {
 	}
 }
 
-# 0014 - Taking It Easy - Onsen
-# LR TODO: replace -- Japanese content (hot_spring); needs a Gaulish/Frankish rewrite
+# 0014 - A Welcome Reprieve - Gallo-Roman baths
+# LR 2026-11-25: Gaulish rewrite (was Taking It Easy - Onsen) -- the old Roman baths of a mountain Aquae
 LR_tgp_sacral_gaul_yearly_events.0014 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.0014.t
@@ -1012,7 +1008,7 @@ LR_tgp_sacral_gaul_yearly_events.0014 = {
 		}
 
 		add_character_modifier = {
-			modifier = LR_tgp_sacral_gaul_hot_spring_relaxation_modifier
+			modifier = LR_tgp_sacral_gaul_thermal_spring_relaxation_modifier
 			years = 5
 		}
 
@@ -1042,7 +1038,7 @@ LR_tgp_sacral_gaul_yearly_events.0014 = {
 
 
 		add_character_modifier = {
-			modifier = LR_tgp_sacral_gaul_hot_spring_relaxation_modifier
+			modifier = LR_tgp_sacral_gaul_thermal_spring_relaxation_modifier
 			years = 10
 		}
 
@@ -1098,7 +1094,7 @@ LR_tgp_sacral_gaul_yearly_events.0021 = {
 		animation = toast_goblet
 	}
 	right_portrait = {
-		character = scope:hanami_enjoyer
+		character = scope:festival_reveller
 		animation = storyteller
 	}
 
@@ -1125,7 +1121,7 @@ LR_tgp_sacral_gaul_yearly_events.0021 = {
 				NOT = { has_trait = blind }
 				is_available_healthy_adult = yes
 			}
-			save_scope_as = hanami_enjoyer
+			save_scope_as = festival_reveller
 		}
 	}
 
@@ -1141,7 +1137,7 @@ LR_tgp_sacral_gaul_yearly_events.0021 = {
 					right_icon = root
 					title = LR_tgp_sacral_gaul_yearly_events.0021.a_char_modifier.tt
 					add_character_modifier = {
-						modifier = LR_tgp_sacral_gaul_sake_offering_character_modifier
+						modifier = LR_tgp_sacral_gaul_wine_offering_character_modifier
 						years = 5
 					}
 				}
@@ -1155,7 +1151,7 @@ LR_tgp_sacral_gaul_yearly_events.0021 = {
 					title = LR_tgp_sacral_gaul_yearly_events.0021.a_county_modifier.tt
 					capital_county = {
 						add_county_modifier = {
-							modifier = LR_tgp_sacral_gaul_sake_offering_county_modifier
+							modifier = LR_tgp_sacral_gaul_wine_offering_county_modifier
 							years = 5
 						}
 					}
@@ -1272,12 +1268,12 @@ LR_tgp_sacral_gaul_yearly_events.0026 = {
 		name = LR_tgp_sacral_gaul_yearly_events.0026.a
 		custom_tooltip = LR_tgp_sacral_gaul_yearly_events.0026.a.tt
 		add_character_flag = {
-			flag = tengu_rumors
+			flag = daimon_rumors
 			years = 30
 		}
 
 		add_character_modifier = {
-			modifier = LR_tgp_sacral_gaul_tengu_rumors_character_modifier
+			modifier = LR_tgp_sacral_gaul_daimon_rumors_character_modifier
 			years = 30
 		}
 
@@ -1316,8 +1312,8 @@ LR_tgp_sacral_gaul_yearly_events.0026 = {
 	}
 }
 
-# 0027 - Prove Your Worth - Tengu
-# LR TODO: replace -- Japanese content (samurai); needs a Gaulish/Frankish rewrite
+# 0027 - Prove Your Worth - Mountain daimon (a hermit swordsman)
+# LR 2026-11-25: Gaulish rewrite (was a samurai taken for a tengu) -- a scarred hermit warrior of the Frankish warbands
 LR_tgp_sacral_gaul_yearly_events.0027 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.0027.t
@@ -1328,14 +1324,14 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 		animation = aggressive_sword
 	}
 	right_portrait = {
-		character = scope:tengu_warrior
-		animation = hasso_no_kamae
+		character = scope:daimon_warrior
+		animation = aggressive_sword # LR 2026-11-25: Gaulish rewrite (was hasso_no_kamae)
 		camera = camera_event_center_background_crowd_right
 	}
 	override_effect_2d = { reference = fog }
 	trigger = {
 		has_tgp_dlc_trigger = yes
-		has_character_flag = tengu_rumors
+		has_character_flag = daimon_rumors
 		NOT = {
 			has_character_flag = had_event_LR_tgp_sacral_gaul_yearly_events.0028
 		}
@@ -1349,24 +1345,24 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 		is_available_travelling_adult = yes
 	}
 
-	#Create a samurai warrior
+	#Create the hermit warrior taken for a mountain daimon # LR 2026-11-25: Gaulish rewrite (was a samurai warrior)
 	immediate = {
 		hidden_effect = {
-			remove_character_modifier = LR_tgp_sacral_gaul_tengu_rumors_character_modifier
+			remove_character_modifier = LR_tgp_sacral_gaul_daimon_rumors_character_modifier
 		}
 
 		create_character = {
-			template = LR_tgp_sacral_gaul_yearly_events_tengu_warrior_template
+			template = LR_tgp_sacral_gaul_yearly_events_daimon_warrior_template
 			location = root.location
 			after_creation = {
 				add_trait = disfigured
 				add_trait = albino
 				add_character_flag = no_headgear
 			}
-			save_scope_as = tengu_warrior
+			save_scope_as = daimon_warrior
 		}
 
-		scope:tengu_warrior = {
+		scope:daimon_warrior = {
 			random_character_trait = {
 				limit = {
 					has_trait_category = commander
@@ -1388,7 +1384,7 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 
 		duel = {
 			skill = prowess
-			target = scope:tengu_warrior
+			target = scope:daimon_warrior
 			50 = {
 				compare_modifier = {
 					value = scope:duel_value
@@ -1401,13 +1397,13 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 				send_interface_toast = {
 					title = LR_tgp_sacral_gaul_yearly_events.0027.a.tt.success
 					left_icon = root
-					right_icon = scope:tengu_warrior
+					right_icon = scope:daimon_warrior
 					custom_tooltip = LR_tgp_sacral_gaul_yearly_events.0027.a.tt.success_explanation
 					current_travel_plan = {
 						delay_travel_plan = { days = 14 }
 					}
 					add_character_flag = {
-						flag = real_tengu
+						flag = real_daimon
 						days = 1
 					}
 					trigger_event = {
@@ -1428,7 +1424,7 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 				send_interface_toast = {
 					title = LR_tgp_sacral_gaul_yearly_events.0027.a.tt.failure
 					left_icon = root
-					right_icon = scope:tengu_warrior
+					right_icon = scope:daimon_warrior
 					increase_wounds_no_death_effect = { REASON = battle }
 
 					add_prestige = minor_prestige_loss
@@ -1458,7 +1454,7 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 
 		duel = {
 			skill = diplomacy
-			target = scope:tengu_warrior
+			target = scope:daimon_warrior
 			50 = {
 				compare_modifier = {
 					value = scope:duel_value
@@ -1471,12 +1467,12 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 				send_interface_toast = {
 					title = LR_tgp_sacral_gaul_yearly_events.0027.b.tt.success
 					left_icon = root
-					right_icon = scope:tengu_warrior
+					right_icon = scope:daimon_warrior
 					current_travel_plan = {
-						add_companion = scope:tengu_warrior
+						add_companion = scope:daimon_warrior
 					}
 					add_character_flag = {
-						flag = real_tengu
+						flag = real_daimon
 						days = 1
 					}
 				}
@@ -1493,7 +1489,7 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 				send_interface_toast = {
 					title = LR_tgp_sacral_gaul_yearly_events.0027.b.tt.failure
 					left_icon = root
-					right_icon = scope:tengu_warrior
+					right_icon = scope:daimon_warrior
 					increase_wounds_no_death_effect = { REASON = battle }
 				}
 			}
@@ -1536,14 +1532,14 @@ LR_tgp_sacral_gaul_yearly_events.0027 = {
 	}
 
 	after = {
-		remove_character_flag = tengu_rumors
+		remove_character_flag = daimon_rumors
 		if = {
 			limit = {
 				NOT = {
-					has_character_flag = real_tengu
+					has_character_flag = real_daimon
 				}
 			}
-			scope:tengu_warrior ?= {
+			scope:daimon_warrior ?= {
 				silent_disappearance_effect = yes
 			}
 		}
@@ -1568,7 +1564,7 @@ LR_tgp_sacral_gaul_yearly_events.0028 = {
 
 	trigger = {
 		has_tgp_dlc_trigger = yes
-		has_character_flag = tengu_rumors
+		has_character_flag = daimon_rumors
 		NOT = {
 			has_character_flag = had_event_LR_tgp_sacral_gaul_yearly_events.0027
 		}
@@ -1584,7 +1580,7 @@ LR_tgp_sacral_gaul_yearly_events.0028 = {
 
 	immediate = {
 		hidden_effect = {
-			remove_character_modifier = LR_tgp_sacral_gaul_tengu_rumors_character_modifier
+			remove_character_modifier = LR_tgp_sacral_gaul_daimon_rumors_character_modifier
 		}
 
 		add_character_flag = {
@@ -1635,7 +1631,7 @@ LR_tgp_sacral_gaul_yearly_events.0028 = {
 	}
 
 	after = {
-		remove_character_flag = tengu_rumors
+		remove_character_flag = daimon_rumors
 	}
 }
 
@@ -1651,14 +1647,14 @@ LR_tgp_sacral_gaul_yearly_events.0029 = {
 		camera = camera_event_center_mostly_away_right
 	}
 	right_portrait = {
-		character = scope:tengu_warrior
+		character = scope:daimon_warrior
 		animation = chudan_no_kamae
 		camera = camera_event_center_pointing_forward_fov35
 	}
 
 	trigger = {
 		has_tgp_dlc_trigger = yes
-		scope:tengu_warrior ?= { is_alive = yes }
+		scope:daimon_warrior ?= { is_alive = yes }
 	}
 
 	#Gain blademaster combined with a trait your mentor has
@@ -1735,8 +1731,8 @@ LR_tgp_sacral_gaul_yearly_events.0029 = {
 	}
 }
 
-# 0036 - Reflection of Pure Land
-# LR TODO: replace -- Japanese content (japan); needs a Gaulish/Frankish rewrite
+# 0036 - Green Thumb - Reflection of Paradise
+# LR 2026-11-25: Gaulish rewrite (was Reflection of Pure Land, Japan-only gate) -- a cloister garden pond
 LR_tgp_sacral_gaul_yearly_events.0036 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.0036.t
@@ -1756,7 +1752,10 @@ LR_tgp_sacral_gaul_yearly_events.0036 = {
 
 	trigger = {
 		has_tgp_dlc_trigger = yes
-		is_valid_for_japan_events_trigger = yes
+		# LR 2026-11-25: Gaulish rewrite (was is_valid_for_japan_events_trigger: Shinto faith + Japonic culture)
+		location = {
+			geographical_region = LR_world_europe_gaul
+		}
 		employs_court_position = court_gardener_court_position
 		is_available_healthy_adult = yes
 	}
@@ -1872,7 +1871,7 @@ LR_tgp_sacral_gaul_yearly_events.1200 = {
 	}
 	#You, the Kampaku
 	left_portrait = {
-		character = scope:kampaku
+		character = scope:sacral_majordomo
 		animation = disbelief
 	}
 
@@ -1913,7 +1912,7 @@ LR_tgp_sacral_gaul_yearly_events.1200 = {
 			save_scope_as = emperor
 		}
 
-		save_scope_as = kampaku
+		save_scope_as = sacral_majordomo # LR 2026-11-25: was kampaku (the loc already used sacral_majordomo)
 	}
 	#Drag him from his horse!
 	option = {
@@ -1922,7 +1921,7 @@ LR_tgp_sacral_gaul_yearly_events.1200 = {
 		scope:upstart = {
 			increase_wounds_effect = { REASON = horse_riding_accident }
 			add_opinion = {
-				target = scope:kampaku
+				target = scope:sacral_majordomo
 				modifier = angry_opinion
 				opinion = low_negative_opinion
 			}
@@ -1937,18 +1936,18 @@ LR_tgp_sacral_gaul_yearly_events.1200 = {
 			#If possible it progresses rivalry
 			if = {
 				limit = {
-					can_set_relation_rival_trigger = { CHARACTER = scope:kampaku }
+					can_set_relation_rival_trigger = { CHARACTER = scope:sacral_majordomo }
 				}
 				progress_towards_rival_effect = {
 					REASON = rival_pulled_me_off_horse
-					CHARACTER = scope:kampaku
+					CHARACTER = scope:sacral_majordomo
 					OPINION = default_rival_opinion
 				}
 			}
 			#otherwise it makes them like you less
 			else = {
 				add_opinion = {
-					target = scope:kampaku
+					target = scope:sacral_majordomo
 					modifier = humbled_opinion
 					opinion = -40
 				}
@@ -2082,7 +2081,7 @@ scripted_effect LR_tgp_sacral_gaul_create_cadet_house_effect = {
 
 # 1210 - Fit to Lead?
 # by Laurence Kennedy
-# LR TODO: replace -- Japanese content (japan); needs a Gaulish/Frankish rewrite
+# LR 2026-11-25: Gaulish rewrite (was Japanese house/"Manor" wording and a hatsuyume omen) -- Frankish house quarrel
 LR_tgp_sacral_gaul_yearly_events.1210 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1210.t
@@ -2174,7 +2173,7 @@ LR_tgp_sacral_gaul_yearly_events.1210 = {
 		is_independent_ruler = no
 		any_close_or_extended_family_member = {
 			is_available_ai_adult = yes
-			#make sure they live in japan
+			#make sure they live in the same sacral realm
 			top_liege ?= root.top_liege
 			is_house_head = no
 			house = root.house
@@ -2213,7 +2212,7 @@ LR_tgp_sacral_gaul_yearly_events.1210 = {
 		random_close_or_extended_family_member = {
 			limit = {
 				is_available_ai_adult = yes
-				#make sure they live in japan
+				#make sure they live in the same sacral realm
 				top_liege ?= root.top_liege
 				is_house_head = no
 				house = root.house
@@ -3457,13 +3456,13 @@ LR_tgp_sacral_gaul_yearly_events.1261 = {
 
 # 1262 - A Poetic Life: An Exchange of Verses
 # by Laurence Kennedy
-# LR TODO: replace -- Japanese content (japan); needs a Gaulish/Frankish rewrite
+# LR 2026-11-25: Gaulish rewrite (was renga/haiku verses, fan animation, Japan comments) -- Latin and Romance verse
 LR_tgp_sacral_gaul_yearly_events.1262 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1262.t
 	desc = {
 		desc = LR_tgp_sacral_gaul_yearly_events.1262.desc.intro
-		#Inspiration in Japan
+		#Inspiration in Gaul
 		triggered_desc = {
 			trigger = {
 				location = {
@@ -3485,7 +3484,7 @@ LR_tgp_sacral_gaul_yearly_events.1262 = {
 		}
 		#body
 		desc = LR_tgp_sacral_gaul_yearly_events.1262.desc
-		#Outro in Japan
+		#Outro in Gaul
 		triggered_desc = {
 			trigger = {
 				location = {
@@ -3508,7 +3507,7 @@ LR_tgp_sacral_gaul_yearly_events.1262 = {
 		desc = LR_tgp_sacral_gaul_yearly_events.1262.gaul.outro.outro
 	}
 	theme = intrigue_temptation_focus
-	#If in Japan
+	#If in Gaul
 	override_background = {
 		trigger = {
 			location = {
@@ -3517,7 +3516,7 @@ LR_tgp_sacral_gaul_yearly_events.1262 = {
 		}
 		reference = garden
 	}
-	#If not in Japan
+	#If not in Gaul
 	override_background = {
 		trigger = {
 			NOT = {
@@ -3544,7 +3543,7 @@ LR_tgp_sacral_gaul_yearly_events.1262 = {
 					geographical_region = LR_world_europe_gaul
 				}
 			}
-			animation = fanning_coyly
+			animation = flirtation # LR 2026-11-25: Gaulish rewrite (was fanning_coyly)
 		}
 		animation = admiration
 	}
@@ -3622,7 +3621,7 @@ LR_tgp_sacral_gaul_yearly_events.1262 = {
 					can_set_relation_friend_trigger = { CHARACTER = scope:inspired_poet }
 				}
 				progress_towards_friend_effect = {
-					REASON = friend_renga_poetry
+					REASON = LR_gaul_friend_verse_exchange
 					CHARACTER = scope:inspired_poet
 					OPINION = 30
 				}

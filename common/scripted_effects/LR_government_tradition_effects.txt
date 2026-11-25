@@ -168,49 +168,49 @@ LR_keep_one_government_tradition_effect = {
 		if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_classical
-				scope:founder ?= { government_has_flag = government_is_classical_group }
+				scope:founder ?= { LR_in_classical_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_classical }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_western
-				scope:founder ?= { government_has_flag = government_is_western_group }
+				scope:founder ?= { LR_in_western_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_western }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_despotic
-				scope:founder ?= { government_has_flag = government_is_despotic_group }
+				scope:founder ?= { LR_in_despotic_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_despotic }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_indic
-				scope:founder ?= { government_has_flag = government_is_indic_group }
+				scope:founder ?= { LR_in_indic_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_indic }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_mamlakah
-				scope:founder ?= { government_has_flag = government_is_islamic_group }
+				scope:founder ?= { LR_in_islamic_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_mamlakah }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_sudanic
-				scope:founder ?= { government_has_flag = government_is_islamic_group }
+				scope:founder ?= { LR_in_islamic_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_sudanic }
 		}
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_nilotic
-				scope:founder ?= { government_has_flag = government_is_islamic_group }
+				scope:founder ?= { LR_in_islamic_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_nilotic }
 		}
@@ -218,7 +218,7 @@ LR_keep_one_government_tradition_effect = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_sinic
 				scope:founder ?= {
-					government_has_flag = government_is_sinic_group
+					LR_in_sinic_group_trigger = yes
 					NOT = { government_has_flag = government_is_japanese_plain } # Japanese Feudal belongs to the Japanese tradition
 				}
 			}
@@ -229,7 +229,7 @@ LR_keep_one_government_tradition_effect = {
 				has_cultural_tradition = lux_tradition_gov_japanese
 				scope:founder ?= {
 					OR = {
-						government_has_flag = government_is_japanese_group
+						LR_in_japanese_group_trigger = yes
 						government_has_flag = government_is_japanese_plain
 					}
 				}
@@ -239,7 +239,7 @@ LR_keep_one_government_tradition_effect = {
 		else_if = {
 			limit = {
 				has_cultural_tradition = lux_tradition_gov_barbarian
-				scope:founder ?= { government_has_flag = government_is_barbarian_group }
+				scope:founder ?= { LR_in_barbarian_group_trigger = yes }
 			}
 			set_variable = { name = LR_gov_tradition_keep value = flag:lux_tradition_gov_barbarian }
 		}
@@ -435,7 +435,7 @@ LR_apply_culture_government_group_effect = {
 			}
 			# The sacral group comes from the Gaul title: its realm keeps its sacral governments
 			NAND = {
-				government_has_flag = government_is_sacral_group
+				LR_in_sacral_group_trigger = yes
 				LR_in_sacral_kingdom_gaul_realm_trigger = yes
 			}
 		}
@@ -563,59 +563,59 @@ LR_apply_culture_government_group_effect = {
 LR_adopt_government_tradition_of_model_effect = {
 	scope:LR_gov_model = {
 		if = {
-			limit = { government_has_flag = government_is_classical_group }
+			limit = { LR_in_classical_group_trigger = yes }
 			prev = { add_culture_tradition = lux_tradition_gov_classical }
 		}
 		else_if = {
-			limit = { government_has_flag = government_is_western_group }
+			limit = { LR_in_western_group_trigger = yes }
 			prev = { add_culture_tradition = lux_tradition_gov_western }
 		}
 		else_if = {
-			limit = { government_has_flag = government_is_despotic_group }
+			limit = { LR_in_despotic_group_trigger = yes }
 			prev = { add_culture_tradition = lux_tradition_gov_despotic }
 		}
 		else_if = {
 			limit = {
 				OR = {
-					government_has_flag = government_is_indic_group
+					LR_in_indic_group_trigger = yes
 					government_has_flag = government_is_mandala
 				}
 			}
 			prev = { add_culture_tradition = lux_tradition_gov_indic }
 		}
 		else_if = {
-			limit = { government_has_flag = government_is_mamlakah_group }
+			limit = { LR_in_mamlakah_group_trigger = yes }
 			prev = { add_culture_tradition = lux_tradition_gov_mamlakah }
 		}
 		else_if = {
-			limit = { government_has_flag = government_is_sudanic_group }
+			limit = { LR_in_sudanic_group_trigger = yes }
 			prev = { add_culture_tradition = lux_tradition_gov_sudanic }
 		}
 		else_if = {
-			limit = { government_has_flag = government_is_nilotic_group }
+			limit = { LR_in_nilotic_group_trigger = yes }
 			prev = { add_culture_tradition = lux_tradition_gov_nilotic }
 		}
 		else_if = { # LR 2026-11-19: Iqta is faith-based, not a tradition: the culture takes the one its language or heritage points to
-			limit = { government_has_flag = government_is_islamic_group }
+			limit = { LR_in_islamic_group_trigger = yes }
 			prev = { LR_seed_government_tradition_effect = yes }
 		}
 		else_if = {
 			limit = {
 				OR = {
-					government_has_flag = government_is_japanese_group
+					LR_in_japanese_group_trigger = yes
 					government_has_flag = government_is_japanese_plain
 				}
 			}
 			prev = { add_culture_tradition = lux_tradition_gov_japanese }
 		}
 		else_if = {
-			limit = { government_has_flag = government_is_sinic_group }
+			limit = { LR_in_sinic_group_trigger = yes }
 			prev = { add_culture_tradition = lux_tradition_gov_sinic }
 		}
 		else_if = {
 			limit = {
 				OR = {
-					government_has_flag = government_is_barbarian_group
+					LR_in_barbarian_group_trigger = yes
 					government_has_flag = government_is_tribal
 					government_has_flag = government_is_nomadic
 					government_has_flag = government_is_herder

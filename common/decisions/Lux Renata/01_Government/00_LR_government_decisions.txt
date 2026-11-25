@@ -106,9 +106,9 @@
 			limit = {
 				liege != this
 				OR = {
-					liege = { government_has_flag = government_is_islamic_group }
+					liege = { LR_in_islamic_group_trigger = yes }
 					AND = {
-						liege = { government_has_flag = government_is_islamic_group }
+						liege = { LR_in_islamic_group_trigger = yes }
 						religion = religion:islam_religion
 					}
 				}
@@ -162,7 +162,7 @@
 			}
 			else_if = {
 				limit = {
-					government_has_flag = government_is_islamic_group
+					LR_in_islamic_group_trigger = yes
 				}
 				every_vassal_or_below = {
 					limit = { government_has_flag = government_is_great_tribal }
@@ -230,8 +230,8 @@ adopt_gaul_gov_decision = {
 
 	is_shown = {
 		is_independent_ruler = no
-		liege = { government_has_flag = government_is_sacral_group } # incl. Sacral Kingship without the DLC
-		NOT = { government_has_flag = government_is_sacral_group }
+		liege = { LR_in_sacral_group_trigger = yes } # incl. Sacral Kingship without the DLC
+		NOT = { LR_in_sacral_group_trigger = yes }
 		OR = {
 			OR = { has_government = western_feudal_government has_government = western_dynastic_government }
 			government_has_flag = government_is_administrative
@@ -239,7 +239,7 @@ adopt_gaul_gov_decision = {
 	}
 
 	is_valid = {
-		liege = { government_has_flag = government_is_sacral_group } # incl. Sacral Kingship without the DLC
+		liege = { LR_in_sacral_group_trigger = yes } # incl. Sacral Kingship without the DLC
 	}
 
 	is_valid_showing_failures_only = {
@@ -363,7 +363,7 @@ convert_to_administrative_decision = {
 			government_has_flag = government_is_iqta
 			government_has_flag = government_is_chinese_feudal
 			government_has_flag = government_is_japanese_plain
-			government_has_flag = government_is_indic_group
+			LR_in_indic_group_trigger = yes
 			AND = { # Republic doges may become admin
 				government_has_flag = government_is_republic
 				highest_liege_matching_rule:uses_assembly = this
@@ -654,6 +654,18 @@ convert_to_administrative_decision = {
 		show_from_start = no
 
 		# LR: each option is shown only to its own group (LR_convert_administrative_triggers.txt)
+		item = { # LR 2026-11-25: with Roads to Power alone, one option for every group: Autocratic
+			value = go_rtp_autocratic_government
+			is_shown = {
+				LR_convert_admin_sees_rtp_autocratic_trigger = yes
+			}
+			current_description = go_rtp_autocratic_government_desc
+			localization = go_rtp_autocratic_government_name
+			icon = "gfx/interface/icons/government_types/rtp_autocratic_government.dds"
+			ai_chance = {
+				value = 20
+			}
+		}
 		item = {
 			value = go_administrative_government
 			is_shown = {
@@ -846,6 +858,10 @@ convert_to_administrative_decision = {
 				scope:go_administrative_government = yes
 			}
 			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:administrative }
+		}
+		else_if = { # LR 2026-11-25
+			limit = { scope:go_rtp_autocratic_government = yes }
+			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:rtp_autocratic }
 		}
 		else_if = {
 			limit = { scope:go_celestial_government = yes }
@@ -1061,12 +1077,12 @@ convert_to_feudalism_from_administrative_decision = {
 		OR = {
 			LR_has_dynastic_twin_trigger = yes
 			NOR = {
-				government_has_flag = government_is_classical_group
-				government_has_flag = government_is_despotic_group
-				government_has_flag = government_is_western_group
-				government_has_flag = government_is_sinic_group
-				government_has_flag = government_is_islamic_group
-				government_has_flag = government_is_indic_group
+				LR_in_classical_group_trigger = yes
+				LR_in_despotic_group_trigger = yes
+				LR_in_western_group_trigger = yes
+				LR_in_sinic_group_trigger = yes
+				LR_in_islamic_group_trigger = yes
+				LR_in_indic_group_trigger = yes
 			}
 		}
 	}
@@ -1110,9 +1126,9 @@ convert_to_feudalism_from_administrative_decision = {
 					}
 					trigger_if = {
 						limit = {
-							has_realm_law_in_group = roman_autocratic_bureaucracy
+							has_realm_law_in_group = roman_imperial_bureaucracy
 						}
-						has_realm_law = roman_autocratic_bureaucracy_0 
+						has_realm_law = roman_imperial_bureaucracy_0 
 					}
 					trigger_if = { # LR
 						limit = {
@@ -1251,9 +1267,9 @@ convert_to_feudalism_from_administrative_decision = {
 			}
 			trigger_if = {
 				limit = {
-					has_realm_law_in_group = roman_autocratic_bureaucracy
+					has_realm_law_in_group = roman_imperial_bureaucracy
 				}
-				has_realm_law = roman_autocratic_bureaucracy_3
+				has_realm_law = roman_imperial_bureaucracy_3
 			}
 			trigger_if = { # LR
 				limit = {

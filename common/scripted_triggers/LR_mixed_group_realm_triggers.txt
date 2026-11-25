@@ -3,18 +3,18 @@
 # Character scope: the government belongs to one of the Lux Renata government groups
 LR_has_lr_government_group_trigger = {
 	OR = {
-		government_has_flag = government_is_classical_group
-		government_has_flag = government_is_western_group
-		government_has_flag = government_is_despotic_group
-		government_has_flag = government_is_mamlakah_group # LR 2026-11-19
-		government_has_flag = government_is_sudanic_group # LR 2026-11-19
-		government_has_flag = government_is_nilotic_group # LR 2026-11-19
-		government_has_flag = government_is_indic_group
-		government_has_flag = government_is_islamic_group
-		government_has_flag = government_is_sinic_group
-		government_has_flag = government_is_japanese_group
-		government_has_flag = government_is_sacral_group
-		government_has_flag = government_is_barbarian_group
+		LR_in_classical_group_trigger = yes
+		LR_in_western_group_trigger = yes
+		LR_in_despotic_group_trigger = yes
+		LR_in_mamlakah_group_trigger = yes # LR 2026-11-19
+		LR_in_sudanic_group_trigger = yes # LR 2026-11-19
+		LR_in_nilotic_group_trigger = yes # LR 2026-11-19
+		LR_in_indic_group_trigger = yes
+		LR_in_islamic_group_trigger = yes
+		LR_in_sinic_group_trigger = yes
+		LR_in_japanese_group_trigger = yes
+		LR_in_sacral_group_trigger = yes
+		LR_in_barbarian_group_trigger = yes
 	}
 }
 
@@ -202,7 +202,7 @@ LR_tolerates_top_liege_customs_trigger = {
 			}
 		}
 		AND = { # sacral vassal
-			government_has_flag = government_is_sacral_group
+			LR_in_sacral_group_trigger = yes
 			OR = {
 				top_liege = {
 					LR_government_in_western_group_trigger = yes
@@ -228,5 +228,5 @@ LR_resents_foreign_customs_trigger = {
 # LR 2026-11-19: not in an Iqta realm, as Iqta is the faith-based group of Muslim rulers (Muslim vassals are exempt anyway).
 LR_can_adopt_realm_customs_trigger = {
 	LR_has_foreign_customs_trigger = yes
-	top_liege = { NOT = { government_has_flag = government_is_islamic_group } }
+	top_liege = { NOT = { LR_in_islamic_group_trigger = yes } }
 }

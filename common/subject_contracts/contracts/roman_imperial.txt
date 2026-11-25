@@ -1,4 +1,4 @@
-﻿roman_autocratic_obligations = {
+﻿roman_imperial_obligations = {
 	obligation_levels = {
 		default = {
 			levies = {
@@ -14,14 +14,14 @@
 ### brief: administrative_themes
 # This is referenced in code. 
 #
-# Governor ranks of a province (duchy), before Diocletian: civil and military command still joined in the legatus (gen_roman_autocratic_contracts.py)
-roman_autocratic_provinces = {
+# Governor ranks of a province (duchy), before Diocletian: civil and military command still joined in the legatus (gen_roman_imperial_contracts.py)
+roman_imperial_provinces = {
 	display_mode = radiobutton
 	is_shown = {
 		scope:subject.highest_held_title_tier = tier_duchy
 	}
 	obligation_levels = {
-		roman_autocratic_province_legatus = {
+		roman_imperial_province_legatus = {
 			default = yes
 			position = { 0 0 }
 			icon = "gfx/interface/icons/celestial_administration_types/icon_standard_administration.dds"
@@ -48,13 +48,13 @@ roman_autocratic_provinces = {
 				monthly_merit_per_liege_tax = 0.6
 				monthly_merit_per_title_maa_value = 0.012
 			}
-			flag = roman_autocratic_province_legatus
+			flag = roman_imperial_province_legatus
 			flag = meritocratic_military_appointment
 			flag = province_military
-			flag = roman_autocratic_military_appointment
+			flag = roman_imperial_military_appointment
 			appointment_trait_flag = military_province
 		}
-		roman_autocratic_province_praeses = {
+		roman_imperial_province_praeses = {
 			position = { 1 0 }
 			icon = "gfx/interface/icons/celestial_administration_types/icon_metropolitan_administration.dds"
 			gui_tags = { civilian }
@@ -84,13 +84,13 @@ roman_autocratic_provinces = {
 				monthly_merit_per_liege_tax = 0.9
 				prosperity_growth_factor = 0.05
 			}
-			flag = roman_autocratic_province_praeses
+			flag = roman_imperial_province_praeses
 			flag = meritocratic_civil_appointment
 			flag = province_civilian
-			flag = roman_autocratic_civil_appointment
+			flag = roman_imperial_civil_appointment
 			appointment_trait_flag = civilian_province
 		}
-		roman_autocratic_province_procurator = {
+		roman_imperial_province_procurator = {
 			position = { 2 0 }
 			icon = "gfx/interface/icons/celestial_administration_types/icon_industrial_administration.dds"
 			gui_tags = { civilian }
@@ -118,15 +118,15 @@ roman_autocratic_provinces = {
 			color = { 0.2 0.2 0.7 1.0 }
 			is_valid = {
 				custom_tooltip = {
-					text = roman_autocratic_province_procurator_amount_desc
+					text = roman_imperial_province_procurator_amount_desc
 					OR = {
 						scope:liege = {
 							any_vassal = {
-								count < roman_autocratic_province_procurator_max_value
-								vassal_contract_has_flag = roman_autocratic_province_procurator
+								count < roman_imperial_province_procurator_max_value
+								vassal_contract_has_flag = roman_imperial_province_procurator
 							}
 						}
-						scope:subject = { vassal_contract_has_flag = roman_autocratic_province_procurator }
+						scope:subject = { vassal_contract_has_flag = roman_imperial_province_procurator }
 					}
 				}
 			}
@@ -139,15 +139,15 @@ roman_autocratic_provinces = {
 				build_gold_cost = -0.1
 				prosperity_growth_factor = 0.1
 			}
-			flag = roman_autocratic_province_procurator
+			flag = roman_imperial_province_procurator
 			flag = admin_ai_is_builder
 			flag = obligation_high_taxes
 			flag = meritocratic_civil_appointment
 			flag = province_civilian
-			flag = roman_autocratic_civil_appointment
+			flag = roman_imperial_civil_appointment
 			appointment_trait_flag = civilian_province
 		}
-		roman_autocratic_province_dux = {
+		roman_imperial_province_dux = {
 			position = { 0 1 }
 			icon = "gfx/interface/icons/celestial_administration_types/icon_military_administration.dds"
 			gui_tags = { military }
@@ -180,19 +180,19 @@ roman_autocratic_provinces = {
 			color = { 0.7 0.2 0.2 1.0 }
 			is_valid = {
 				custom_tooltip = {
-					text = roman_autocratic_province_dux_amount_desc
+					text = roman_imperial_province_dux_amount_desc
 					OR = {
 						scope:liege = {
 							any_vassal = {
-								count < roman_autocratic_province_dux_max_value
-								vassal_contract_has_flag = roman_autocratic_province_dux
+								count < roman_imperial_province_dux_max_value
+								vassal_contract_has_flag = roman_imperial_province_dux
 							}
 						}
-						scope:subject = { vassal_contract_has_flag = roman_autocratic_province_dux }
+						scope:subject = { vassal_contract_has_flag = roman_imperial_province_dux }
 					}
 				}
 				custom_tooltip = {
-					text = roman_autocratic_province_dux_border_desc
+					text = roman_imperial_province_dux_border_desc
 					scope:subject = {
 						any_sub_realm_county = {
 							any_neighboring_county = {
@@ -212,17 +212,17 @@ roman_autocratic_provinces = {
 				domain_tax_mult = -0.3
 				monthly_treasury_from_military_budget_base = 1.0
 			}
-			flag = roman_autocratic_province_dux
+			flag = roman_imperial_province_dux
 			flag = obligation_high_levies
 			flag = meritocratic_military_appointment
 			flag = province_military
-			flag = roman_autocratic_military_appointment
+			flag = roman_imperial_military_appointment
 			appointment_trait_flag = military_province
 		}
 	}
 }
 
-roman_autocratic_treasury = {
+roman_imperial_treasury = {
 	display_mode = tree
 	is_shown = {
 		scope:subject.primary_title.tier >= tier_duchy
@@ -300,7 +300,7 @@ roman_autocratic_treasury = {
 	}
 }
 
-roman_autocratic_salary = {
+roman_imperial_salary = {
 	display_mode = tree
 	is_shown = {
 		scope:subject.primary_title.tier >= tier_duchy
@@ -381,23 +381,23 @@ roman_autocratic_salary = {
 	}
 }
 
-# Grade of the office (hidden; the salary it draws): Egregius, Perfectissimus, Clarissimus, Eminentissimus (gen_roman_autocratic_contracts.py)
-roman_autocratic_salary_rank = {
+# Grade of the office (hidden; the salary it draws): Egregius, Perfectissimus, Clarissimus, Eminentissimus (gen_roman_imperial_contracts.py)
+roman_imperial_salary_rank = {
 	display_mode = hidden
 	defaults_to_highest_valid_level = yes
 	can_be_changed = {
 		always = no
 	}
 	obligation_levels = {
-		roman_autocratic_salary_rank_none = {
+		roman_imperial_salary_rank_none = {
 			position = { 0 0 }
 			default = yes
 			ai_liege_desire = 0
 			ai_subject_desire = 0
 		}
-		roman_autocratic_salary_rank_egregius = { # county
+		roman_imperial_salary_rank_egregius = { # county
 			position = { 1 0 }
-			parent = roman_autocratic_salary_rank_none
+			parent = roman_imperial_salary_rank_none
 			is_valid = {
 				scope:subject = {
 					highest_held_title_tier = tier_county
@@ -412,9 +412,9 @@ roman_autocratic_salary_rank = {
 				monthly_treasury_from_salary_budget_base = 0.3
 			}
 		}
-		roman_autocratic_salary_rank_perfectissimus = { # duchy
+		roman_imperial_salary_rank_perfectissimus = { # duchy
 			position = { 2 0 }
-			parent = roman_autocratic_salary_rank_egregius
+			parent = roman_imperial_salary_rank_egregius
 			is_valid = {
 				scope:subject = {
 					highest_held_title_tier = tier_duchy
@@ -426,9 +426,9 @@ roman_autocratic_salary_rank = {
 				monthly_treasury_from_salary_budget_base = 0.75
 			}
 		}
-		roman_autocratic_salary_rank_clarissimus = { # kingdom
+		roman_imperial_salary_rank_clarissimus = { # kingdom
 			position = { 3 0 }
-			parent = roman_autocratic_salary_rank_perfectissimus
+			parent = roman_imperial_salary_rank_perfectissimus
 			is_valid = {
 				scope:subject = {
 					highest_held_title_tier = tier_kingdom
@@ -440,9 +440,9 @@ roman_autocratic_salary_rank = {
 				monthly_treasury_from_salary_budget_base = 1.0
 			}
 		}
-		roman_autocratic_salary_rank_eminentissimus = { # empire
+		roman_imperial_salary_rank_eminentissimus = { # empire
 			position = { 4 0 }
-			parent = roman_autocratic_salary_rank_clarissimus
+			parent = roman_imperial_salary_rank_clarissimus
 			is_valid = {
 				scope:subject = {
 					highest_held_title_tier = tier_empire
@@ -458,11 +458,11 @@ roman_autocratic_salary_rank = {
 	}
 }
 
-roman_autocratic_tribute_gold = {
+roman_imperial_tribute_gold = {
 	display_mode = tree
 	icon = gold_icon
 	obligation_levels = {
-		roman_autocratic_tributary_tax_none = {
+		roman_imperial_tributary_tax_none = {
 			position = { 0 0 }
 
 			tax = 0
@@ -476,12 +476,12 @@ roman_autocratic_tribute_gold = {
 			ai_subject_desire = 4
 			score = -2
 		}
-		roman_autocratic_tributary_tax_low = {
+		roman_imperial_tributary_tax_low = {
 			default = yes
-			parent = roman_autocratic_tributary_tax_none
+			parent = roman_imperial_tributary_tax_none
 			position = { 1 0 }
 
-			tax = low_roman_autocratic_tributary_tax
+			tax = low_roman_imperial_tributary_tax
 			subject_opinion = -5
 
 			subject_modifier = {
@@ -492,11 +492,11 @@ roman_autocratic_tribute_gold = {
 			ai_subject_desire = 3
 			score = -1
 		}
-		roman_autocratic_tributary_tax_normal = {
-			parent = roman_autocratic_tributary_tax_low
+		roman_imperial_tributary_tax_normal = {
+			parent = roman_imperial_tributary_tax_low
 			position = { 2 0 }
 
-			tax = normal_roman_autocratic_tributary_tax
+			tax = normal_roman_imperial_tributary_tax
 			subject_opinion = -10
 
 			subject_modifier = {
@@ -507,11 +507,11 @@ roman_autocratic_tribute_gold = {
 			ai_subject_desire = 2
 			score = 0
 		}
-		roman_autocratic_tributary_tax_high = {
-			parent = roman_autocratic_tributary_tax_normal
+		roman_imperial_tributary_tax_high = {
+			parent = roman_imperial_tributary_tax_normal
 			position = { 3 0 }
 
-			tax = high_roman_autocratic_tributary_tax
+			tax = high_roman_imperial_tributary_tax
 			subject_opinion = -25
 
 			subject_modifier = {
@@ -525,11 +525,11 @@ roman_autocratic_tribute_gold = {
 	}
 }
 
-roman_autocratic_tribute_prestige = {
+roman_imperial_tribute_prestige = {
 	display_mode = tree
 	icon = prestige_icon
 	obligation_levels = {
-		roman_autocratic_prestige_transfer_none = {
+		roman_imperial_prestige_transfer_none = {
 			position = { 0 1 }
 
 			prestige = 0
@@ -543,12 +543,12 @@ roman_autocratic_tribute_prestige = {
 			ai_subject_desire = 4
 			score = -2
 		}
-		roman_autocratic_prestige_transfer_low = {
+		roman_imperial_prestige_transfer_low = {
 			default = yes
-			parent = roman_autocratic_prestige_transfer_none
+			parent = roman_imperial_prestige_transfer_none
 			position = { 1 1 }
 
-			prestige = low_roman_autocratic_prestige_transfer
+			prestige = low_roman_imperial_prestige_transfer
 			subject_opinion = -5
 
 			subject_modifier = {
@@ -559,12 +559,12 @@ roman_autocratic_tribute_prestige = {
 			ai_subject_desire = 3
 			score = -1
 		}
-		roman_autocratic_prestige_transfer_normal = {
+		roman_imperial_prestige_transfer_normal = {
 			default = yes
-			parent = roman_autocratic_prestige_transfer_low
+			parent = roman_imperial_prestige_transfer_low
 			position = { 2 1 }
 
-			prestige = normal_roman_autocratic_prestige_transfer
+			prestige = normal_roman_imperial_prestige_transfer
 			subject_opinion = -10
 
 			subject_modifier = {
@@ -575,11 +575,11 @@ roman_autocratic_tribute_prestige = {
 			ai_subject_desire = 2
 			score = 0
 		}
-		roman_autocratic_prestige_transfer_high = {
-			parent = roman_autocratic_prestige_transfer_normal
+		roman_imperial_prestige_transfer_high = {
+			parent = roman_imperial_prestige_transfer_normal
 			position = { 3 1 }
 
-			prestige = high_roman_autocratic_prestige_transfer
+			prestige = high_roman_imperial_prestige_transfer
 			subject_opinion = -25
 
 			subject_modifier = {
