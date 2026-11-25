@@ -1,0 +1,1211 @@
+﻿# LR 2026-11-25 GRADUS signature decisions (tools/imperial_rise/build_signatures.py)
+
+LR_buy_household_recruits_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_recruitment.dds"
+	}
+	desc = LR_buy_household_recruits_decision_desc
+	selection_tooltip = LR_buy_household_recruits_decision_tooltip
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = mamlakah_administrative_government has_government = mamlakah_imperial_government
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 300
+	}
+
+	effect = {
+		create_character = {
+			employer = root
+			template = pool_repopulate_martial
+			faith = root.faith
+			culture = root.culture
+			save_scope_as = household_commander
+		}
+		scope:household_commander = {
+			add_trait = loyal
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 30
+			}
+		}
+		add_character_modifier = {
+			modifier = LR_household_recruits_modifier
+			years = 10
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_perform_royal_rites_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_perform_royal_rites_decision_desc
+	selection_tooltip = LR_perform_royal_rites_decision_tooltip
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 3 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 36
+		kingdom = 36
+		empire = 36
+		hegemony = 36
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = nilotic_administrative_government has_government = nilotic_imperial_government
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 200
+	}
+
+	effect = {
+		add_legitimacy = 75
+		add_character_modifier = {
+			modifier = LR_royal_rites_modifier
+			years = 3
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 40
+	}
+}
+
+LR_send_gold_embassy_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds"
+	}
+	desc = LR_send_gold_embassy_decision_desc
+	selection_tooltip = LR_send_gold_embassy_decision_tooltip
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = sudanic_administrative_government has_government = sudanic_imperial_government
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		treasury = 250
+	}
+
+	effect = {
+		add_prestige = 300
+		every_neighboring_top_liege_realm_owner = {
+			add_opinion = {
+				target = root
+				modifier = LR_gold_embassy_opinion
+				years = 10
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_found_royal_city_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_city.dds"
+	}
+	desc = LR_found_royal_city_decision_desc
+	selection_tooltip = LR_found_royal_city_decision_tooltip
+	confirm_text = LR_found_royal_city_decision_confirm
+	decision_group_type = realm
+	sort_order = 44
+	cooldown = { years = 10 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = alexandrian_administrative_government has_government = hellenistic_basileia_government
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_found_royal_city_decision_county_tt
+			any_held_title = {
+				tier = tier_county
+				NOT = { has_county_modifier = LR_royal_city_county_modifier }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 400
+	}
+
+	effect = {
+		ordered_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { has_county_modifier = LR_royal_city_county_modifier }
+			}
+			order_by = prosperity_level
+			add_county_modifier = {
+				modifier = LR_royal_city_county_modifier
+			}
+			save_scope_as = LR_found_royal_city_decision_county
+		}
+		custom_tooltip = LR_found_royal_city_decision_effect_tt
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_settle_cleruchs_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_recruitment.dds"
+	}
+	desc = LR_settle_cleruchs_decision_desc
+	selection_tooltip = LR_settle_cleruchs_decision_tooltip
+	confirm_text = LR_settle_cleruchs_decision_confirm
+	decision_group_type = realm
+	sort_order = 45
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = alexandrian_administrative_government has_government = hellenistic_basileia_government
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_settle_cleruchs_decision_county_tt
+			any_held_title = {
+				tier = tier_county
+				NOT = { has_county_modifier = LR_cleruchy_county_modifier }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 250
+	}
+
+	effect = {
+		ordered_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { has_county_modifier = LR_cleruchy_county_modifier }
+			}
+			order_by = { value = 0 subtract = prosperity_level }
+			add_county_modifier = {
+				modifier = LR_cleruchy_county_modifier
+			}
+			save_scope_as = LR_settle_cleruchs_decision_county
+		}
+		custom_tooltip = LR_settle_cleruchs_decision_effect_tt
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_send_royal_couriers_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	desc = LR_send_royal_couriers_decision_desc
+	selection_tooltip = LR_send_royal_couriers_decision_tooltip
+	confirm_text = LR_send_royal_couriers_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = persianate_administrative_government has_government = persianate_imperial_government
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_send_royal_couriers_decision_capital_tt
+			exists = capital_county
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 250
+	}
+
+	effect = {
+		add_prestige = 100
+		capital_county = {
+			duchy = {
+				every_de_jure_county = {
+					limit = { holder = root }
+					add_county_modifier = {
+						modifier = LR_royal_couriers_county_modifier
+						years = 10
+					}
+				}
+			}
+		}
+		custom_tooltip = LR_send_royal_couriers_decision_effect_tt
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_send_the_missi_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_knight_kneeling.dds"
+	}
+	desc = LR_send_the_missi_decision_desc
+	selection_tooltip = LR_send_the_missi_decision_tooltip
+	confirm_text = LR_send_the_missi_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = western_administrative_government has_government = western_imperial_government
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 150
+	}
+
+	effect = {
+		every_vassal = {
+			add_opinion = {
+				target = root
+				modifier = LR_missi_opinion
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = LR_missi_modifier
+			years = 5
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_reassign_the_iqtas_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_recruitment.dds"
+	}
+	desc = LR_reassign_the_iqtas_decision_desc
+	selection_tooltip = LR_reassign_the_iqtas_decision_tooltip
+	confirm_text = LR_reassign_the_iqtas_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = iqta_administrative_government has_government = iqta_imperial_government
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 200
+	}
+
+	effect = {
+		every_vassal = {
+			add_opinion = {
+				target = root
+				modifier = LR_iqtas_reassigned_opinion
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = LR_iqtas_reassigned_modifier
+			years = 5
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_grant_an_agrahara_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	desc = LR_grant_an_agrahara_decision_desc
+	selection_tooltip = LR_grant_an_agrahara_decision_tooltip
+	confirm_text = LR_grant_an_agrahara_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		OR = {
+			has_government = gupta_administrative_government has_government = gupta_imperial_government
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_grant_an_agrahara_decision_county_tt
+			any_held_title = {
+				tier = tier_county
+				NOT = { has_county_modifier = LR_agrahara_county_modifier }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 200
+	}
+
+	effect = {
+		add_piety = 200
+		ordered_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { has_county_modifier = LR_agrahara_county_modifier }
+			}
+			order_by = { value = 0 subtract = prosperity_level }
+			add_county_modifier = {
+				modifier = LR_agrahara_county_modifier
+				years = 10
+			}
+			save_scope_as = LR_grant_an_agrahara_decision_county
+		}
+		custom_tooltip = LR_grant_an_agrahara_decision_effect_tt
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_grant_court_ranks_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_grant_court_ranks_decision_desc
+	selection_tooltip = LR_grant_court_ranks_decision_tooltip
+	confirm_text = LR_grant_court_ranks_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = japan_imperial_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 200
+	}
+
+	effect = {
+		every_vassal = {
+			add_opinion = {
+				target = root
+				modifier = LR_court_ranks_opinion
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = LR_court_ranks_granted_modifier
+			years = 5
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_summon_the_gokenin_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_knight_kneeling.dds"
+	}
+	desc = LR_summon_the_gokenin_decision_desc
+	selection_tooltip = LR_summon_the_gokenin_decision_tooltip
+	confirm_text = LR_summon_the_gokenin_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = japan_bakufu_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 250
+	}
+
+	effect = {
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = LR_gokenin_summoned_modifier
+			years = 5
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_issue_an_imperial_edict_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_issue_an_imperial_edict_decision_desc
+	selection_tooltip = LR_issue_an_imperial_edict_decision_tooltip
+	confirm_text = LR_issue_an_imperial_edict_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = japan_tenka_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 200
+	}
+
+	effect = {
+		add_prestige = 100
+		every_vassal = {
+			add_opinion = {
+				target = root
+				modifier = LR_imperial_edict_opinion
+				years = 5
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_hold_a_crown_wearing_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_hold_a_crown_wearing_decision_desc
+	selection_tooltip = LR_hold_a_crown_wearing_decision_tooltip
+	confirm_text = LR_hold_a_crown_wearing_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 3 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 36
+		kingdom = 36
+		empire = 36
+		hegemony = 36
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = sacral_imperial_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 150
+	}
+
+	effect = {
+		add_prestige = 150
+		add_legitimacy = 50
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 40
+	}
+}
+
+LR_hold_the_nowruz_court_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_cerimonial_decision.dds"
+	}
+	desc = LR_hold_the_nowruz_court_decision_desc
+	selection_tooltip = LR_hold_the_nowruz_court_decision_tooltip
+	confirm_text = LR_hold_the_nowruz_court_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = persianate_farr_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 200
+	}
+
+	effect = {
+		add_prestige = 150
+		every_powerful_vassal = {
+			add_opinion = {
+				target = root
+				modifier = LR_nowruz_court_opinion
+				years = 10
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_perform_a_rajasuya_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_perform_a_rajasuya_decision_desc
+	selection_tooltip = LR_perform_a_rajasuya_decision_tooltip
+	confirm_text = LR_perform_a_rajasuya_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 10 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = gupta_sarvabhauma_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 1000
+	}
+
+	effect = {
+		add_prestige = 500
+		add_legitimacy = 100
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 40
+	}
+}
+
+LR_hold_an_imperial_diet_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	desc = LR_hold_an_imperial_diet_decision_desc
+	selection_tooltip = LR_hold_an_imperial_diet_decision_tooltip
+	confirm_text = LR_hold_an_imperial_diet_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = western_universum_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 300
+	}
+
+	effect = {
+		every_vassal = {
+			add_opinion = {
+				target = root
+				modifier = LR_imperial_diet_opinion
+				years = 10
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_invest_the_bishops_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_invest_the_bishops_decision_desc
+	selection_tooltip = LR_invest_the_bishops_decision_tooltip
+	confirm_text = LR_invest_the_bishops_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = sacral_maiestas_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 300
+	}
+
+	effect = {
+		every_vassal = {
+			add_opinion = {
+				target = root
+				modifier = LR_invested_bishops_opinion
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = LR_bishops_invested_modifier
+			years = 5
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_send_the_hajj_caravan_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds"
+	}
+	desc = LR_send_the_hajj_caravan_decision_desc
+	selection_tooltip = LR_send_the_hajj_caravan_decision_tooltip
+	confirm_text = LR_send_the_hajj_caravan_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = iqta_imama_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 300
+	}
+
+	effect = {
+		add_piety = 300
+		add_prestige = 150
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_feast_the_household_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_recruitment.dds"
+	}
+	desc = LR_feast_the_household_decision_desc
+	selection_tooltip = LR_feast_the_household_decision_tooltip
+	confirm_text = LR_feast_the_household_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 5 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 60
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = mamlakah_alma_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 300
+	}
+
+	effect = {
+		add_prestige = 150
+		add_character_modifier = {
+			modifier = LR_household_feasted_modifier
+			years = 5
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_bring_out_the_ark_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_bring_out_the_ark_decision_desc
+	selection_tooltip = LR_bring_out_the_ark_decision_tooltip
+	confirm_text = LR_bring_out_the_ark_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 10 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = nilotic_kebra_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		piety = 500
+	}
+
+	effect = {
+		add_prestige = 300
+		add_legitimacy = 100
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+LR_make_the_hajj_of_gold_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds"
+	}
+	desc = LR_make_the_hajj_of_gold_decision_desc
+	selection_tooltip = LR_make_the_hajj_of_gold_decision_tooltip
+	confirm_text = LR_make_the_hajj_of_gold_decision_confirm
+	decision_group_type = realm
+	sort_order = 43
+	cooldown = { years = 10 }
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = sudanic_kurufaba_government
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		treasury = 1000
+	}
+
+	effect = {
+		add_prestige = 1000
+		add_piety = 300
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}

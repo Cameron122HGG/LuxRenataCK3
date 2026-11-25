@@ -1,0 +1,180 @@
+﻿# LR 2026-11-25 universal ranks (tools/universal_ranks/build_universal_ranks.py)
+# root = a ruler. Called from LR_normalize_dynastic_government_effect (every government change, title gain and yearly).
+# Universum Regnum: the holder of h_hre; otherwise western_imperial
+LR_western_universum_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = western_universum_government
+		}
+		change_government = western_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = yes
+			top_liege = this
+			has_title = title:h_hre
+			OR = {
+				has_government = western_imperial_government
+				has_government = western_administrative_government
+			}
+		}
+		change_government = western_universum_government
+	}
+	else_if = {
+		limit = {
+			has_government = western_universum_government
+			NOR = {
+				has_title = title:h_hre
+			}
+		}
+		change_government = western_imperial_government
+	}
+}
+
+# Maiestas: the holder of h_sacral_empire; otherwise sacral_imperial
+LR_sacral_maiestas_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = sacral_maiestas_government
+		}
+		change_government = sacral_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = yes
+			top_liege = this
+			has_title = title:h_sacral_empire
+			OR = {
+				has_government = sacral_imperial_government
+				has_government = sacral_administrative_government
+			}
+		}
+		change_government = sacral_maiestas_government
+	}
+	else_if = {
+		limit = {
+			has_government = sacral_maiestas_government
+			NOR = {
+				has_title = title:h_sacral_empire
+			}
+		}
+		change_government = sacral_imperial_government
+	}
+}
+
+# Imama: the holder of h_dar_al_islam; otherwise iqta_imperial
+LR_iqta_imama_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = iqta_imama_government
+		}
+		change_government = iqta_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = yes
+			top_liege = this
+			has_title = title:h_dar_al_islam
+			OR = {
+				has_government = iqta_imperial_government
+				has_government = iqta_administrative_government
+			}
+		}
+		change_government = iqta_imama_government
+	}
+	else_if = {
+		limit = {
+			has_government = iqta_imama_government
+			NOR = {
+				has_title = title:h_dar_al_islam
+			}
+		}
+		change_government = iqta_imperial_government
+	}
+}
+
+# Alma: the holder of h_mamlekhet_yisrael or after Proclaim the Everlasting Kingdom while at hegemony tier; otherwise mamlakah_imperial
+LR_mamlakah_alma_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = mamlakah_alma_government
+		}
+		change_government = mamlakah_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = yes
+			top_liege = this
+			has_title = title:h_mamlekhet_yisrael
+			OR = {
+				has_government = mamlakah_imperial_government
+				has_government = mamlakah_administrative_government
+			}
+		}
+		change_government = mamlakah_alma_government
+	}
+	else_if = {
+		limit = {
+			has_government = mamlakah_alma_government
+			NOR = {
+				has_title = title:h_mamlekhet_yisrael
+				AND = {
+					has_character_flag = LR_mamlakah_alma_proclaimed
+					highest_held_title_tier >= tier_hegemony
+				}
+			}
+		}
+		change_government = mamlakah_imperial_government
+	}
+}
+
+# Kebra: after Proclaim the Glory of Kings while at hegemony tier; otherwise nilotic_imperial
+LR_nilotic_kebra_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = nilotic_kebra_government
+		}
+		change_government = nilotic_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_government = nilotic_kebra_government
+			NOR = {
+				AND = {
+					has_character_flag = LR_nilotic_kebra_proclaimed
+					highest_held_title_tier >= tier_hegemony
+				}
+			}
+		}
+		change_government = nilotic_imperial_government
+	}
+}
+
+# Kurufaba: after Swear the Great Union while at hegemony tier; otherwise sudanic_imperial
+LR_sudanic_kurufaba_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = sudanic_kurufaba_government
+		}
+		change_government = sudanic_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_government = sudanic_kurufaba_government
+			NOR = {
+				AND = {
+					has_character_flag = LR_sudanic_kurufaba_proclaimed
+					highest_held_title_tier >= tier_hegemony
+				}
+			}
+		}
+		change_government = sudanic_imperial_government
+	}
+}
+

@@ -1,0 +1,625 @@
+﻿# LR 2026-11-25: GRADUS imperial rise decisions (tools/imperial_rise/build_imperial_rise.py, re-runnable).
+# Same shape for every group (see LR_GRADUS_government_system.md, Uniqueness): independent, empire tier, small empire,
+# prestige level 3, peace; the group's own rise currency; the realm's governors rise too. The Sinic one is
+# LR_institute_imperial_examinations_decision (00_Culture/Sinic/LR_sinic_examinations_decisions.txt).
+
+LR_proclaim_king_of_kings_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_cerimonial_decision.dds"
+	}
+	desc = LR_proclaim_king_of_kings_decision_desc
+	selection_tooltip = LR_proclaim_king_of_kings_decision_tooltip
+	confirm_text = LR_proclaim_king_of_kings_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = persianate_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+		custom_tooltip = {
+			text = LR_proclaim_king_of_kings_decision_houses_tt
+			any_powerful_vassal = {
+				count = all
+				opinion = {
+					target = root
+					value >= 20
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 750
+		treasury = 500
+	}
+
+	effect = {
+		change_government = persianate_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = persianate_administrative_government TO = persianate_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = arrogant
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_raise_the_royal_household_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_recruitment.dds"
+	}
+	desc = LR_raise_the_royal_household_decision_desc
+	selection_tooltip = LR_raise_the_royal_household_decision_tooltip
+	confirm_text = LR_raise_the_royal_household_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = mamlakah_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+		number_of_maa_regiments >= 6
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 500
+		treasury = 750
+	}
+
+	effect = {
+		change_government = mamlakah_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = mamlakah_administrative_government TO = mamlakah_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = ambitious
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_proclaim_the_sacred_kingship_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_proclaim_the_sacred_kingship_decision_desc
+	selection_tooltip = LR_proclaim_the_sacred_kingship_decision_tooltip
+	confirm_text = LR_proclaim_the_sacred_kingship_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = nilotic_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+		piety_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 500
+		piety = 750
+	}
+
+	effect = {
+		change_government = nilotic_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = nilotic_administrative_government TO = nilotic_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = zealous
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_proclaim_the_lord_of_tribute_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds"
+	}
+	desc = LR_proclaim_the_lord_of_tribute_decision_desc
+	selection_tooltip = LR_proclaim_the_lord_of_tribute_decision_tooltip
+	confirm_text = LR_proclaim_the_lord_of_tribute_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = sudanic_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 300
+		treasury = 1000
+	}
+
+	effect = {
+		change_government = sudanic_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = sudanic_administrative_government TO = sudanic_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = greedy
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_renew_the_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_renew_the_empire_decision_desc
+	selection_tooltip = LR_renew_the_empire_decision_tooltip
+	confirm_text = LR_renew_the_empire_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = western_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+		piety_level >= 2
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 750
+		piety = 500
+	}
+
+	effect = {
+		change_government = western_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = western_administrative_government TO = western_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = zealous
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_proclaim_the_sultanate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_cerimonial_decision.dds"
+	}
+	desc = LR_proclaim_the_sultanate_decision_desc
+	selection_tooltip = LR_proclaim_the_sultanate_decision_tooltip
+	confirm_text = LR_proclaim_the_sultanate_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = iqta_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+		piety_level >= 2
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		piety = 500
+		treasury = 750
+	}
+
+	effect = {
+		change_government = iqta_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = iqta_administrative_government TO = iqta_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = ambitious
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_proclaim_the_chakravartin_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_proclaim_the_chakravartin_decision_desc
+	selection_tooltip = LR_proclaim_the_chakravartin_decision_tooltip
+	confirm_text = LR_proclaim_the_chakravartin_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = gupta_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+		piety_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 300
+		piety = 1000
+	}
+
+	effect = {
+		change_government = gupta_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = gupta_administrative_government TO = gupta_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = zealous
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_convene_the_daijokan_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_convene_the_daijokan_decision_desc
+	selection_tooltip = LR_convene_the_daijokan_decision_tooltip
+	confirm_text = LR_convene_the_daijokan_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = japan_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 500
+		treasury = 500
+	}
+
+	effect = {
+		change_government = japan_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = japan_administrative_government TO = japan_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = diligent
+				has_trait = ambitious
+			}
+		}
+	}
+}
+
+LR_receive_the_anointing_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_receive_the_anointing_decision_desc
+	selection_tooltip = LR_receive_the_anointing_decision_tooltip
+	confirm_text = LR_receive_the_anointing_decision_confirm
+	decision_group_type = realm
+	sort_order = 42
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes # the imperial ranks need All Under Heaven (merit)
+		has_government = sacral_administrative_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_empire
+		prestige_level >= 3
+		realm_size >= small_empire_size_value
+		piety_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 500
+		piety = 750
+	}
+
+	effect = {
+		change_government = sacral_imperial_government
+		custom_tooltip = LR_imperial_rise_governors_tt
+		hidden_effect = {
+			LR_raise_realm_administrations_effect = { FROM = sacral_administrative_government TO = sacral_imperial_government }
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = zealous
+				has_trait = ambitious
+			}
+		}
+	}
+}

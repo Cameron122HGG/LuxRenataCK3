@@ -26,7 +26,10 @@ LR_proclaim_sacral_empire_decision = {
 			text = LR_proclaim_sacral_empire_government_trigger
 			trigger_if = {
 				limit = { has_dlc_feature = roads_to_power }
-				has_government = western_administrative_government
+				OR = { # LR 2026-11-25 Maiestas: or the Sacral administrative ranks (Palatine, Unctio, Maiestas)
+					has_government = western_administrative_government
+					government_has_flag = government_is_sacral_administrative
+				}
 			}
 			trigger_else = { has_government = feudal_government }
 		}

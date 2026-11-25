@@ -1,0 +1,33 @@
+﻿# LR 2026-11-25 Farr (tools/persianate_farr/build_persianate_farr.py)
+# root = a ruler. Called from LR_normalize_dynastic_government_effect (every government change, title gain and yearly).
+#   - without All Under Heaven Farr falls back to Shahanshahi (normalized further on the next pass);
+#   - the independent holder of h_persian_empire (Eranshahr) on Shahanshahi or Dibiran takes Farr;
+#   - a Farr ruler who no longer holds Eranshahr steps down to Shahanshahi.
+LR_persianate_farr_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = persianate_farr_government
+		}
+		change_government = persianate_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = yes
+			top_liege = this
+			has_title = title:h_persian_empire
+			OR = {
+				has_government = persianate_imperial_government
+				has_government = persianate_administrative_government
+			}
+		}
+		change_government = persianate_farr_government
+	}
+	else_if = {
+		limit = {
+			has_government = persianate_farr_government
+			NOT = { has_title = title:h_persian_empire }
+		}
+		change_government = persianate_imperial_government
+	}
+}

@@ -1,0 +1,39 @@
+﻿# LR 2026-11-25 Sarvabhauma (tools/gupta_sarvabhauma/build_gupta_sarvabhauma.py)
+# root = a ruler. Called from LR_normalize_dynastic_government_effect (every government change, title gain and yearly).
+#   - without All Under Heaven Sarvabhauma falls back to Samrajya (normalized further on the next pass);
+#   - the independent holder of h_india on Samrajya or Amatya takes Sarvabhauma;
+#   - a Sarvabhauma ruler keeps it while holding h_india, or after the Ashvamedha while still at hegemony tier; else Samrajya.
+LR_gupta_sarvabhauma_government_effect = {
+	if = {
+		limit = {
+			has_tgp_dlc_trigger = no
+			has_government = gupta_sarvabhauma_government
+		}
+		change_government = gupta_imperial_government
+	}
+	else_if = {
+		limit = {
+			has_tgp_dlc_trigger = yes
+			top_liege = this
+			has_title = title:h_india
+			OR = {
+				has_government = gupta_imperial_government
+				has_government = gupta_administrative_government
+			}
+		}
+		change_government = gupta_sarvabhauma_government
+	}
+	else_if = {
+		limit = {
+			has_government = gupta_sarvabhauma_government
+			NOT = { has_title = title:h_india }
+			NOT = {
+				AND = {
+					has_character_flag = LR_ashvamedha_performed
+					highest_held_title_tier >= tier_hegemony
+				}
+			}
+		}
+		change_government = gupta_imperial_government
+	}
+}
