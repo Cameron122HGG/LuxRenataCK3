@@ -6,8 +6,10 @@
 # Requirements, mirroring Restore the Hegemony of the West / East:
 #   - a republic (Republic Tier Law kingdom or higher), independent, not at war, prestige level 4
 #   - the half's capital county (Rome / Constantinople) in the realm
-#   - the half's core prefecture: Italia (West) / Macedonia (East): each diocese's land controlled, or the diocese held
-#     in the realm (LR 11-18: republics cannot create titles); the effect grants the dioceses
+#   - the half's imperial core region completely controlled, as Restore the Roman Administration (LR 2026-11-25; was the
+#     core prefecture). The effect still grants the half's dioceses (LR 11-18: republics cannot create titles)
+# Since 2026-11-25 the effect founds the hegemony half (h_<half>_roman_republic, via the empire's
+#   LR_found_roman_hegemony_with_shadow_effect), keeping e_<half>_roman_republic as its shadow.
 # Effect: event LR_roman_republic.0001 / 0002 runs LR_restore_roman_republic_effect.
 #
 # United Res Publica (LR 11-18): LR_unite_roman_republic_decision, at the end of this file.
@@ -49,10 +51,7 @@ LR_restore_western_roman_republic_decision = {
 			text = LR_restore_roman_republic_rome_in_realm_tt
 			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_roma_urbs }
 		}
-		custom_tooltip = {
-			text = LR_restore_roman_republic_prefecture_italia_tt
-			LR_roman_republic_prefecture_italia_trigger = yes
-		}
+		completely_controls_region = custom_western_roman_imperial_core # LR 2026-11-25 republic alignment (tools/roman_republic_align/align_roman_republics.py): the empire's gate (Restore the Roman Administration)
 	}
 
 	is_valid_showing_failures_only = {
@@ -69,7 +68,7 @@ LR_restore_western_roman_republic_decision = {
 
 	effect = {
 		show_as_tooltip = {
-			LR_restore_roman_republic_effect = { HALF = western }
+			LR_restore_roman_republic_effect = { HALF = western COUNT = wre }
 		}
 		if = {
 			limit = { capital_county != title:c_roma_urbs }
@@ -133,10 +132,7 @@ LR_restore_eastern_roman_republic_decision = {
 			text = LR_restore_roman_republic_constantinople_in_realm_tt
 			LR_roman_restoration_county_in_realm_trigger = { COUNTY = c_byzantion }
 		}
-		custom_tooltip = {
-			text = LR_restore_roman_republic_prefecture_macedonia_tt
-			LR_roman_republic_prefecture_macedonia_trigger = yes
-		}
+		completely_controls_region = custom_eastern_roman_imperial_core # LR 2026-11-25 republic alignment (tools/roman_republic_align/align_roman_republics.py): the empire's gate (Restore the Roman Administration)
 	}
 
 	is_valid_showing_failures_only = {
@@ -153,7 +149,7 @@ LR_restore_eastern_roman_republic_decision = {
 
 	effect = {
 		show_as_tooltip = {
-			LR_restore_roman_republic_effect = { HALF = eastern }
+			LR_restore_roman_republic_effect = { HALF = eastern COUNT = ere }
 		}
 		if = {
 			limit = { capital_county != title:c_byzantion }
@@ -205,9 +201,11 @@ LR_unite_roman_republic_decision = {
 		is_ruler = yes
 		is_playable_character = yes
 		government_has_flag = government_is_republic
-		OR = {
+		OR = { # LR 2026-11-25 republic alignment (tools/roman_republic_align/align_roman_republics.py): either tier of either half
 			has_title = title:e_western_roman_republic
 			has_title = title:e_eastern_roman_republic
+			has_title = title:h_western_roman_republic
+			has_title = title:h_eastern_roman_republic
 		}
 		NOT = { exists = title:h_roman_republic.holder }
 		NOT = {
@@ -219,8 +217,14 @@ LR_unite_roman_republic_decision = {
 	}
 
 	is_valid = {
-		has_title = title:e_western_roman_republic
-		has_title = title:e_eastern_roman_republic
+		OR = { # LR 2026-11-25 republic alignment (tools/roman_republic_align/align_roman_republics.py)
+			has_title = title:e_western_roman_republic
+			has_title = title:h_western_roman_republic
+		}
+		OR = {
+			has_title = title:e_eastern_roman_republic
+			has_title = title:h_eastern_roman_republic
+		}
 		prestige_level >= max_prestige_level
 		custom_tooltip = {
 			text = LR_restore_roman_republic_rome_in_realm_tt

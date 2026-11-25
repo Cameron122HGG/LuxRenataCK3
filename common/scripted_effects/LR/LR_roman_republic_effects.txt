@@ -9,7 +9,7 @@
 #     under the title yet (see LR_sort_existing_*_dioceses_effect).
 
 # Character scope (the restorer). HALF = western / eastern (title e_<HALF>_roman_republic)
-LR_restore_roman_republic_effect = {
+LR_restore_roman_republic_effect = { # LR 2026-11-25 republic alignment (tools/roman_republic_align/align_roman_republics.py): takes COUNT (wre / ere) for the hegemony
 	save_scope_as = roman_republic_ruler
 	primary_title = { save_scope_as = old_primary_title }
 
@@ -124,6 +124,10 @@ LR_restore_roman_republic_effect = {
 			value = root
 		}
 	}
+	# LR 2026-11-25 republic alignment (tools/roman_republic_align/align_roman_republics.py): straight to the hegemony, as Restore the Roman Administration. e_$HALF$_roman_republic
+	# stays beside it as its shadow; the title twins give the republic h_$HALF$_roman_republic a day later.
+	custom_tooltip = LR_restore_roman_administration_hegemony_tt
+	LR_found_roman_hegemony_with_shadow_effect = { HALF = $HALF$ COUNT = $COUNT$ }
 }
 
 # Character scope. COUNTY = the half's capital county (c_roma_urbs / c_byzantion)
@@ -244,5 +248,18 @@ LR_unite_roman_republic_effect = {
 			name = flag_united_roman_republic
 			value = root
 		}
+	}
+	# LR 2026-11-25 republic alignment (tools/roman_republic_align/align_roman_republics.py): the hegemony halves dissolve into the Res Publica, as Restore the Roman Empire
+	# does for the empire halves; the empire-tier halves stay under h_roman_republic
+	hidden_effect = {
+		if = {
+			limit = { has_title = title:h_western_roman_republic }
+			destroy_title = title:h_western_roman_republic
+		}
+		if = {
+			limit = { has_title = title:h_eastern_roman_republic }
+			destroy_title = title:h_eastern_roman_republic
+		}
+		set_primary_title_to = title:h_roman_republic
 	}
 }

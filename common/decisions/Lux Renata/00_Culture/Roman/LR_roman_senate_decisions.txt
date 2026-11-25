@@ -1,0 +1,201 @@
+﻿# LR 2026-11-25 Reconvene the Senate (tools/roman_senate/build_roman_senate.py)
+
+LR_reconvene_western_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_reconvene_western_senate_decision_desc
+	selection_tooltip = LR_reconvene_western_senate_decision_tooltip
+	confirm_text = LR_reconvene_western_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_plain_roman_republic_trigger = yes
+		OR = {
+			has_title = title:e_western_roman_republic
+			has_title = title:h_western_roman_republic
+			has_title = title:h_roman_republic
+		}
+		NOT = { title:e_western_roman_republic = { has_variable = LR_roman_senate } }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reconvene_senate_half_tt
+			has_title = title:e_western_roman_republic
+		}
+		custom_tooltip = {
+			text = LR_hegemony_prefecture_italia_tt
+			LR_roman_restoration_prefecture_italia_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_hegemony_neighbour_west_tt
+			OR = {
+				LR_roman_restoration_prefecture_gallia_trigger = yes
+				LR_roman_restoration_prefecture_illyricum_trigger = yes
+				LR_roman_restoration_prefecture_germania_trigger = yes
+			}
+		}
+		custom_tooltip = {
+			text = LR_reconvene_senate_authority_tt
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		LR_roman_senate_establish_effect = { HALF = western SEAT = c_roma_urbs }
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_reconvene_eastern_senate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_reconvene_eastern_senate_decision_desc
+	selection_tooltip = LR_reconvene_eastern_senate_decision_tooltip
+	confirm_text = LR_reconvene_eastern_senate_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 149
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		LR_plain_roman_republic_trigger = yes
+		OR = {
+			has_title = title:e_eastern_roman_republic
+			has_title = title:h_eastern_roman_republic
+			has_title = title:h_roman_republic
+		}
+		NOT = { title:e_eastern_roman_republic = { has_variable = LR_roman_senate } }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = LR_reconvene_senate_half_tt
+			has_title = title:e_eastern_roman_republic
+		}
+		custom_tooltip = {
+			text = LR_hegemony_prefecture_macedonia_tt
+			LR_roman_restoration_prefecture_macedonia_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_hegemony_neighbour_oriens_illyricum_tt
+			OR = {
+				LR_roman_restoration_prefecture_oriens_trigger = yes
+				LR_roman_restoration_prefecture_illyricum_trigger = yes
+			}
+		}
+		custom_tooltip = {
+			text = LR_reconvene_senate_authority_tt
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		LR_roman_senate_establish_effect = { HALF = eastern SEAT = c_byzantion }
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+LR_hold_senatus_consultum_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	desc = LR_hold_senatus_consultum_decision_desc
+	selection_tooltip = LR_hold_senatus_consultum_decision_tooltip
+	confirm_text = LR_hold_senatus_consultum_decision_confirm
+	decision_group_type = lr_ts_roman
+	sort_order = 148
+	cooldown = { years = 5 }
+	ai_check_interval = 60
+
+	is_shown = {
+		is_ruler = yes
+		is_playable_character = yes
+		government_has_flag = government_is_republic
+		any_held_title = { has_variable = LR_roman_senate }
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = LR_reconvene_senate_authority_tt
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = 200
+	}
+
+	effect = {
+		primary_title = {
+			every_full_assembly_member = {
+				limit = { this != root }
+				add_opinion = {
+					target = root
+					modifier = LR_senatus_consultum_opinion
+					years = 5
+				}
+			}
+		}
+		add_character_modifier = {
+			modifier = LR_senatus_consultum_modifier
+			years = 5
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}

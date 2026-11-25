@@ -1,0 +1,113 @@
+﻿# LR 2026-11-25 Reconvene the Senate (tools/roman_senate/build_roman_senate.py)
+
+# root = the Republic's head. HALF = western / eastern, SEAT = the Senate's county
+LR_roman_senate_establish_effect = {
+	title:e_$HALF$_roman_republic = {
+		set_variable = LR_roman_senate
+		LR_roman_title_names_refresh_effect = yes # named by its seat (LR_roman_senate_name_effect)
+	}
+	title:$SEAT$ = {
+		if = {
+			limit = { NOT = { has_county_modifier = LR_roman_curia_modifier } }
+			add_county_modifier = LR_roman_curia_modifier
+		}
+	}
+	if = {
+		limit = { NOT = { has_character_modifier = LR_princeps_senatus_modifier } }
+		add_character_modifier = LR_princeps_senatus_modifier
+	}
+	add_prestige = major_prestige_gain
+	add_legitimacy = major_legitimacy_gain
+	# Senatorial provinces: the governors of the dioceses and prefectures sit in the Senate
+	every_vassal_or_below = {
+		limit = {
+			is_landed = yes
+			any_held_title = { LR_roman_senate_province_title_trigger = yes }
+		}
+		add_character_flag = republic_appointed_senator
+	}
+	custom_tooltip = LR_roman_senate_provinces_tt
+	if = {
+		limit = { has_realm_law = republic_senate_size_1 }
+		add_realm_law_skip_effects = republic_senate_size_2
+	}
+	else_if = {
+		limit = { has_realm_law = republic_senate_size_2 }
+		add_realm_law_skip_effects = republic_senate_size_3
+	}
+	LR_roman_senate_update_effect = yes
+}
+
+# Title: name a Senate title after its seat, in the Roman title-name style (var:LR_rtn_pick, set by LR_roman_title_names_refresh_effect)
+LR_roman_senate_name_effect = {
+	if = {
+		limit = { has_variable = LR_roman_title_name }
+		remove_variable = LR_roman_title_name
+	}
+	if = {
+		limit = { OR = { this = title:e_western_roman_republic this = title:e_western_roman_empire } }
+		LR_roman_senate_set_name_effect = { KEY = LR_senate_western }
+	}
+	else = {
+		LR_roman_senate_set_name_effect = { KEY = LR_senate_eastern }
+	}
+}
+
+LR_roman_senate_set_name_effect = {
+	if = {
+		limit = { LR_roman_court_style_latin_trigger = yes }
+		set_title_name = $KEY$_latin
+	}
+	else_if = {
+		limit = { LR_roman_court_style_greek_trigger = yes }
+		set_title_name = $KEY$_greek
+	}
+	else = {
+		set_title_name = $KEY$_foreign
+	}
+}
+
+# root = a ruler. The seat modifier while the capital is the seat of a Senate the ruler holds (normalizer, every change and yearly)
+LR_roman_senate_update_effect = {
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					any_held_title = {
+						has_variable = LR_roman_senate
+						OR = { this = title:e_western_roman_republic this = title:e_western_roman_empire }
+					}
+					capital_county ?= title:c_roma_urbs
+				}
+				AND = {
+					any_held_title = {
+						has_variable = LR_roman_senate
+						OR = { this = title:e_eastern_roman_republic this = title:e_eastern_roman_empire }
+					}
+					capital_county ?= title:c_byzantion
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { has_character_modifier = LR_roman_senate_seat_modifier } }
+			add_character_modifier = LR_roman_senate_seat_modifier
+		}
+	}
+	else_if = {
+		limit = { has_character_modifier = LR_roman_senate_seat_modifier }
+		remove_character_modifier = LR_roman_senate_seat_modifier
+	}
+}
+
+# root = a ruler leaving the Republic for the Dominate: the Senate is no longer the half's government
+LR_roman_senate_clear_effect = {
+	every_held_title = {
+		limit = { has_variable = LR_roman_senate }
+		remove_variable = LR_roman_senate
+		LR_roman_title_names_refresh_effect = yes
+	}
+	if = {
+		limit = { has_character_modifier = LR_roman_senate_seat_modifier }
+		remove_character_modifier = LR_roman_senate_seat_modifier
+	}
+}
