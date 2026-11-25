@@ -106,6 +106,15 @@ LR_roman_dux_setup_effect = {
 		}
 	}
 	else_if = {
+		# LR magister BEGIN (tools/magister_militum_offices.py)
+		limit = { scope:title = { LR_is_roman_magister_title_trigger = yes } }
+		if = {
+			limit = { NOT = { has_character_modifier = LR_roman_magister_militum_modifier } }
+			add_character_modifier = LR_roman_magister_militum_modifier
+		}
+		}
+		else_if = {
+		# LR magister END
 		limit = { scope:title = { LR_is_roman_comes_title_trigger = yes } }
 		if = {
 			limit = { NOT = { has_character_modifier = LR_roman_comes_modifier } }
@@ -124,6 +133,9 @@ LR_roman_dux_setup_effect = {
 		limit = {
 			scope:title = {
 				OR = {
+					# LR magister BEGIN (tools/magister_militum_offices.py)
+					LR_is_roman_magister_title_trigger = yes # the magister commands field troops
+					# LR magister END
 					LR_is_roman_legion_title_trigger = yes
 					AND = {
 						LR_is_roman_comes_title_trigger = yes

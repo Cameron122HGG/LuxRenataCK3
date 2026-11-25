@@ -4,6 +4,7 @@
 # Root is the restoring ruler. Usage: LR_restore_roman_administration_effect = { OLD = e_spqr NEW = e_western_roman_empire COUNT = wre }
 #   OLD: the decayed empire title, transferred to NEW when held (an already restored ruler just sets up the dioceses)
 #   COUNT: suffix of the global num_of_provinces_restored_<COUNT> counter (wre / ere)
+#   HALF: western / eastern (LR 2026-11-25: the hegemony h_<HALF>_roman_empire is founded with NEW as its shadow)
 LR_restore_roman_administration_effect = {
 	# The title first, so the restored title is held when the government changes
 	if = {
@@ -79,6 +80,12 @@ LR_restore_roman_administration_effect = {
 	hidden_effect = {
 		LR_count_existing_dioceses_$COUNT$_effect = yes
 	}
+
+	# LR 2026-11-25 (user): straight to the hegemony. NEW stays beside it as its shadow, the empire tier over the
+	# half's kingdoms until their prefectures are restored (LR_roman_imperial_court_effects.txt)
+	custom_tooltip = LR_restore_roman_administration_hegemony_tt
+	LR_roman_court_claim_shadow_effect = { HALF = $HALF$ } # a hegemon without the half (936 East) gets it
+	LR_found_roman_hegemony_with_shadow_effect = { HALF = $HALF$ COUNT = $COUNT$ }
 }
 
 # Restore the Hegemony of the Romans of the West (Africa and Mauretania are restored together, so they count once)

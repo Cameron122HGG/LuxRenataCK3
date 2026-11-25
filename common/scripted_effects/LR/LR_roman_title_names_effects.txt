@@ -17,7 +17,11 @@ LR_roman_title_names_refresh_effect = {
 	if = {
 		limit = { exists = holder }
 		LR_roman_title_names_pick_style_effect = yes
-		if = {
+		if = { # LR 2026-11-25: a Roman half that is now the Imperial Court is named by its residence (LR_roman_imperial_court_effects.txt)
+			limit = { has_variable = LR_imperial_court }
+			LR_roman_court_name_effect = yes
+		}
+		else_if = {
 			limit = {
 				OR = {
 					NOT = { has_variable = LR_roman_title_name }

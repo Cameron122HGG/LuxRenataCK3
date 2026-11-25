@@ -795,7 +795,13 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 	}
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = lugdunensis }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_lugdunensis }
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = viennensis }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_viennensis }
 }
 
@@ -941,4 +947,7 @@ LR_restore_gallic_empire_effect = {	if = {
 			target = flag:restore_gallic_empire_decision
 		}
 	}
+	# LR 2026-11-25 (user): straight to the Gallic hegemony, e_gallic_empire as its shadow (LR_roman_imperial_court_effects.txt)
+	custom_tooltip = LR_evolve_regional_hegemony_tt
+	LR_found_regional_hegemony_with_shadow_effect = { SHADOW = e_gallic_empire HEGEMONY = h_gallic_empire REGION = custom_roman_prefecture_gallia SORT = gallic }
 }

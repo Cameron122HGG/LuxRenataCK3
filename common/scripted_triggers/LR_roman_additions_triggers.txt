@@ -42,12 +42,19 @@ LR_magisterium_italia_diocese_trigger = {
 	}
 }
 
-# Character: their realm holds one of the Magisterium per Italiam's dioceses
-LR_magisterium_italia_can_form_trigger = {
+# Character: their realm holds one of the Magisterium per Italiam's dioceses (Appoint a Magister Militum per Italiam)
+LR_magisterium_italia_any_diocese_trigger = {
 	OR = {
 		title:k_diocese_italia_annonaria = { is_titular = no holder.top_liege ?= root }
 		title:k_diocese_italia_suburbicaria = { is_titular = no holder.top_liege ?= root }
 	}
+}
+
+# Character: their realm holds every diocese of the Magisterium per Italiam, and a Magister Militum per Italiam is in office
+LR_magisterium_italia_can_form_trigger = {
+	title:k_diocese_italia_annonaria = { is_titular = no holder.top_liege ?= root }
+	title:k_diocese_italia_suburbicaria = { is_titular = no holder.top_liege ?= root }
+	title:k_magister_militum_italia.holder.top_liege ?= root
 }
 
 # Is DIOCESE one of the Magisterium per Africam's? Usage: LR_magisterium_africa_diocese_trigger = { DIOCESE = k_diocese_x }
@@ -60,12 +67,19 @@ LR_magisterium_africa_diocese_trigger = {
 	}
 }
 
-# Character: their realm holds one of the Magisterium per Africam's dioceses
-LR_magisterium_africa_can_form_trigger = {
+# Character: their realm holds one of the Magisterium per Africam's dioceses (Appoint a Magister Militum per Africam)
+LR_magisterium_africa_any_diocese_trigger = {
 	OR = {
 		title:k_diocese_africa = { is_titular = no holder.top_liege ?= root }
 		title:k_diocese_mauretania = { is_titular = no holder.top_liege ?= root }
 	}
+}
+
+# Character: their realm holds every diocese of the Magisterium per Africam, and a Magister Militum per Africam is in office
+LR_magisterium_africa_can_form_trigger = {
+	title:k_diocese_africa = { is_titular = no holder.top_liege ?= root }
+	title:k_diocese_mauretania = { is_titular = no holder.top_liege ?= root }
+	title:k_magister_militum_africa.holder.top_liege ?= root
 }
 
 # Character: their realm holds every province of the Quaestura exercitus

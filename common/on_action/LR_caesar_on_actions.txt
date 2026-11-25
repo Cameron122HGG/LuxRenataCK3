@@ -6,6 +6,32 @@ on_death = {
 on_title_gain = {
 	on_actions = { LR_caesar_on_title_gain }
 }
+on_title_gain_inheritance = {
+	on_actions = { LR_caesar_command_inherited }
+}
+
+# 2026-11-25 (dynamic commands): a Caesar's heir inherits his command. If the heir is the Augustus himself the
+# command simply ends; otherwise the Augustus confirms the heir as Caesar or recalls the command (LR_caesar.0006).
+LR_caesar_command_inherited = {
+	trigger = {
+		scope:title = { has_variable = LR_caesar_region NOT = { has_variable = LR_caesar_usurper } }
+	}
+	effect = {
+		scope:title = { save_scope_as = lr_inherited_command LR_caesar_command_name_effect = yes }
+		if = {
+			limit = { scope:title.var:LR_caesar_augustus ?= root }
+			scope:title = { LR_caesar_command_end_effect = yes }
+		}
+		else_if = {
+			limit = { scope:title.var:LR_caesar_augustus ?= { is_alive = yes } }
+			save_scope_as = lr_heir
+			scope:title.var:LR_caesar_augustus = { trigger_event = LR_caesar.0006 }
+		}
+		else = {
+			scope:title = { LR_caesar_command_usurp_effect = yes } # no Augustus left to serve
+		}
+	}
+}
 
 # An Augustus dies (2026-11-24, Imperial College). His hegemony remembers him (LR_college_prev_augustus).
 # At Harmonia (lr_college_tetrarchic_succession) and unless his heir is a Caesar, his senior Caesar is marked
@@ -54,6 +80,7 @@ LR_caesar_on_title_gain = {
 	effect = {
 		if = {
 			limit = { has_trait = caesar }
+			LR_caesar_commands_of_root_effect = { MODE = end } # 2026-11-25: his command's land joins the hegemony
 			LR_caesar_unmake_effect = yes
 			add_trait = augustus
 		}

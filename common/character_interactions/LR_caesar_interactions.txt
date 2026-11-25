@@ -22,6 +22,7 @@ LR_recall_caesar_interaction = {
 
 	on_accept = {
 		scope:recipient = {
+			LR_caesar_commands_of_root_effect = { MODE = end } # 2026-11-25: the dynamic command ends; the land returns with his fealty
 			LR_college_leave_effect = yes
 			remove_variable = LR_caesar_augustus
 		}
@@ -30,7 +31,7 @@ LR_recall_caesar_interaction = {
 		}
 		scope:recipient = {
 			every_held_title = {
-				limit = { has_variable = LR_caesar_of }
+				limit = { has_variable = LR_caesar_of NOT = { has_variable = LR_caesar_region } } # a static command (old saves)
 				change_title_holder = { holder = scope:actor change = scope:change }
 			}
 		}
@@ -53,6 +54,7 @@ LR_recall_caesar_interaction = {
 				limit = { has_variable = LR_caesar_of }
 				scope:actor = { add_pressed_claim = prev }
 			}
+			LR_caesar_commands_of_root_effect = { MODE = usurp } # 2026-11-25: his command becomes an empire of his own
 			LR_college_leave_effect = yes
 			remove_variable = LR_caesar_augustus
 			LR_caesar_unmake_effect = yes

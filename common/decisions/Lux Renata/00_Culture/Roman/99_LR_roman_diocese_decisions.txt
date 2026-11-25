@@ -12,27 +12,19 @@
 	decision_group_type = lr_ts_roman
 
 	is_shown = {
+		# LR 2026-11-25 (user): Reorganize our Imperium. The hegemony comes with Restore the Roman Administration; this
+		# turns e_western_roman_empire, the hegemony's shadow, into the Imperial Court. Once per court, not once per game.
 		is_ruler = yes
 		is_playable_character = yes
 		OR = {
 			has_title = title:e_western_roman_empire
-			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
-				has_title = title:e_western_roman_republic
-				has_government = roman_principate_government
-			}
+			has_title = title:e_western_roman_republic
+			has_title = title:h_western_roman_empire
+			has_title = title:h_western_roman_republic
+			has_title = title:h_roman_empire
+			has_title = title:h_roman_republic
 		}
-		NOT = { exists = title:h_roman_empire.holder } # LR 2026-11-06: no new hegemony once Rome is restored
-		is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:western_roman_diocese_restored
-			}
-		
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:retake_western_provinces_decision
-			}
-		}
+		LR_roman_court_holds_western_trigger = no
 	}
 
 	is_valid = {
@@ -40,6 +32,17 @@
 		OR = {
 			government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
 			has_government = roman_principate_government # LR 2026-11-19: a Roman imperial government on republic mechanics
+		}
+		custom_tooltip = { # LR 2026-11-25: the half is yours, or nobody's
+			text = LR_reorganize_imperium_half_tt
+			OR = {
+				has_title = title:e_western_roman_empire
+				has_title = title:e_western_roman_republic
+				AND = {
+					NOT = { exists = title:e_western_roman_empire.holder }
+					NOT = { exists = title:e_western_roman_republic.holder }
+				}
+			}
 		}
 		custom_tooltip = {
 			text = LR_hegemony_prefecture_italia_tt
@@ -85,11 +88,13 @@
 	ai_potential = {
 		OR = {
 			has_title = title:e_western_roman_empire
-			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
-				has_title = title:e_western_roman_republic
-				has_government = roman_principate_government
-			}
+			has_title = title:e_western_roman_republic
+			has_title = title:h_western_roman_empire
+			has_title = title:h_western_roman_republic
+			has_title = title:h_roman_empire
+			has_title = title:h_roman_republic
 		}
+		LR_roman_court_holds_western_trigger = no
 		is_at_war = no
 		NOT = { exists = involved_activity }
 		is_imprisoned = no
@@ -120,6 +125,7 @@ restore_western_roman_administration_decision = {
 		OR = {
 			has_title = title:e_spqr
 			has_title = title:e_western_roman_empire # Already restored: just set up the dioceses
+			has_title = title:h_western_roman_empire # LR 2026-11-25: a hegemon who never set up the dioceses (936 East)
 			has_title = title:h_roman_empire # LR 2026-11-06: the Augustus, whichever half restored Rome
 		}
         NOT = { #Can only do it once.
@@ -138,7 +144,7 @@ restore_western_roman_administration_decision = {
     effect = {
 		# LR 2026-11-19 (user): streamlined like the regional restorations (LR_proclaim_regional_roman_empire_effect):
 		# the title first, then the government (no Dominate while a decayed title is held), rewards, diocese count
-		LR_restore_roman_administration_effect = { OLD = e_spqr NEW = e_western_roman_empire COUNT = wre }
+		LR_restore_roman_administration_effect = { OLD = e_spqr NEW = e_western_roman_empire COUNT = wre HALF = western }
 
         custom_tooltip = restore_western_diocese_system_effect_tooltip
         custom_tooltip = restore_western_diocese_system_unlock_tooltip
@@ -205,33 +211,19 @@ LR_restore_eastern_hegemony_decision = {
 	decision_group_type = lr_ts_roman
 
 	is_shown = {
+		# LR 2026-11-25 (user): Reorganize our Imperium. The hegemony comes with Restore the Roman Administration; this
+		# turns e_eastern_roman_empire, the hegemony's shadow, into the Imperial Court. Once per court, not once per game.
 		is_ruler = yes
 		is_playable_character = yes
 		OR = {
 			has_title = title:e_eastern_roman_empire
-			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
-				has_title = title:e_eastern_roman_republic
-				has_government = roman_principate_government
-			}
+			has_title = title:e_eastern_roman_republic
+			has_title = title:h_eastern_roman_empire
+			has_title = title:h_eastern_roman_republic
+			has_title = title:h_roman_empire
+			has_title = title:h_roman_republic
 		}
-		NOT = { exists = title:h_roman_empire.holder } # LR 2026-11-06: no new hegemony once Rome is restored
-		is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:eastern_roman_diocese_restored
-			}
-		
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:retake_eastern_provinces_decision
-			}
-		}
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:LR_restore_eastern_hegemony_decision
-			}
-		}
+		LR_roman_court_holds_eastern_trigger = no
 	}
 
 	is_valid = {
@@ -239,6 +231,17 @@ LR_restore_eastern_hegemony_decision = {
 		OR = {
 			government_has_mechanic = administrative # LR: incl. Roman Imperial, which lacks the vanilla administrative flag
 			has_government = roman_principate_government # LR 2026-11-19: a Roman imperial government on republic mechanics
+		}
+		custom_tooltip = { # LR 2026-11-25: the half is yours, or nobody's
+			text = LR_reorganize_imperium_half_tt
+			OR = {
+				has_title = title:e_eastern_roman_empire
+				has_title = title:e_eastern_roman_republic
+				AND = {
+					NOT = { exists = title:e_eastern_roman_empire.holder }
+					NOT = { exists = title:e_eastern_roman_republic.holder }
+				}
+			}
 		}
 		custom_tooltip = {
 			text = LR_hegemony_prefecture_macedonia_tt
@@ -297,11 +300,13 @@ LR_restore_eastern_hegemony_decision = {
 	ai_potential = {
 		OR = {
 			has_title = title:e_eastern_roman_empire
-			AND = { # LR 2026-11-19: a Princeps holds the Republic twin
-				has_title = title:e_eastern_roman_republic
-				has_government = roman_principate_government
-			}
+			has_title = title:e_eastern_roman_republic
+			has_title = title:h_eastern_roman_empire
+			has_title = title:h_eastern_roman_republic
+			has_title = title:h_roman_empire
+			has_title = title:h_roman_republic
 		}
+		LR_roman_court_holds_eastern_trigger = no
 		is_at_war = no
 		NOT = { exists = involved_activity }
 		is_imprisoned = no
@@ -332,6 +337,7 @@ restore_eastern_roman_administration_decision = {
 		OR = {
 			has_title = title:e_byzantium
 			has_title = title:e_eastern_roman_empire # Already restored (e.g. the 936 start): just set up the dioceses
+			has_title = title:h_eastern_roman_empire # LR 2026-11-25: a hegemon who never set up the dioceses (936 East)
 			has_title = title:h_roman_empire # LR 2026-11-06: the Augustus, whichever half restored Rome
 		}
         NOT = { #Can only do it once.
@@ -350,7 +356,7 @@ restore_eastern_roman_administration_decision = {
     effect = {
 		# LR 2026-11-19 (user): streamlined like the regional restorations (LR_proclaim_regional_roman_empire_effect):
 		# the title first, then the government (no Dominate while a decayed title is held), rewards, diocese count
-		LR_restore_roman_administration_effect = { OLD = e_byzantium NEW = e_eastern_roman_empire COUNT = ere }
+		LR_restore_roman_administration_effect = { OLD = e_byzantium NEW = e_eastern_roman_empire COUNT = ere HALF = eastern }
 
         custom_tooltip = restore_eastern_diocese_system_effect_tooltip
         custom_tooltip = restore_eastern_diocese_system_unlock_tooltip

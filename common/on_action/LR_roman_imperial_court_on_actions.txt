@@ -1,0 +1,77 @@
+﻿# LR Imperial Court (tools/imperial_court/gen_imperial_court.py, 2026-11-25). GENERATED - edit the generator.
+
+on_title_gain = {
+	on_actions = { LR_court_on_title_gain }
+}
+on_title_lost = {
+	on_actions = { LR_court_on_title_lost }
+}
+on_realm_capital_change = {
+	on_actions = { LR_court_on_capital_change }
+}
+
+# Root gains a title. A line's hegemony brings its title along; any court title refreshes name and modifier.
+LR_court_on_title_gain = {
+	trigger = {
+		OR = {
+			scope:title = title:h_western_roman_empire
+			scope:title = title:h_western_roman_republic
+			scope:title = title:h_eastern_roman_empire
+			scope:title = title:h_eastern_roman_republic
+			scope:title = title:h_gallic_empire
+			scope:title = title:h_palmyrene_empire
+			scope:title = title:h_brittanic_empire
+			scope:title = title:h_southern_roman_empire
+			scope:title = { has_variable = LR_imperial_court }
+		}
+	}
+	effect = {
+		if = {
+			limit = { OR = { scope:title = title:h_western_roman_empire scope:title = title:h_western_roman_republic } }
+			LR_roman_court_follow_one_effect = { TITLE = e_western_roman_empire }
+			LR_roman_court_follow_one_effect = { TITLE = e_western_roman_republic }
+		}
+		else_if = {
+			limit = { OR = { scope:title = title:h_eastern_roman_empire scope:title = title:h_eastern_roman_republic } }
+			LR_roman_court_follow_one_effect = { TITLE = e_eastern_roman_empire }
+			LR_roman_court_follow_one_effect = { TITLE = e_eastern_roman_republic }
+		}
+		else_if = {
+			limit = { scope:title = title:h_gallic_empire }
+			LR_roman_court_follow_one_effect = { TITLE = e_gallic_empire }
+		}
+		else_if = {
+			limit = { scope:title = title:h_palmyrene_empire }
+			LR_roman_court_follow_one_effect = { TITLE = e_palmyrene_empire }
+		}
+		else_if = {
+			limit = { scope:title = title:h_brittanic_empire }
+			LR_roman_court_follow_one_effect = { TITLE = e_brittanic_empire }
+		}
+		else_if = {
+			limit = { scope:title = title:h_southern_roman_empire }
+			LR_roman_court_follow_one_effect = { TITLE = e_southern_roman_empire }
+		}
+		LR_roman_court_update_effect = yes
+	}
+}
+
+# Root loses a court title: the residence modifier goes
+LR_court_on_title_lost = {
+	trigger = { has_character_modifier = LR_imperial_residence_modifier }
+	effect = { LR_roman_court_update_effect = yes }
+}
+
+# Root = the new capital barony, scope:holder = the ruler
+LR_court_on_capital_change = {
+	trigger = {
+		scope:holder ?= {
+			OR = {
+				any_held_title = { has_variable = LR_imperial_court }
+				has_character_modifier = LR_imperial_residence_modifier
+			}
+		}
+	}
+	effect = { scope:holder = { trigger_event = LR_imperial_court.0002 } } # root here is the barony
+}
+

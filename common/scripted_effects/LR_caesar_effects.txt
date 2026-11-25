@@ -1,86 +1,212 @@
 ﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
 
-# Root (the Augustus) makes scope:new_holder Caesar of scope:caesar_command: the command title, your counties,
-# titles and direct vassals in its area (LR_cleave_hand_over_half_effect), the command under your hegemony.
+# Root (the Augustus) makes scope:new_holder Caesar of command scope:caesar_cmd (a flag; scope:caesar_area = the
+# static title of that area). 2026-11-25: a new dynamic empire title (title_type_lr_caesar_command) is made for
+# the Caesar, with the area's arms; then your counties, duchies, kingdoms and direct vassals in the area go to
+# him (LR_caesar_hand_over_effect). The static Roman titles (halves, regional empires, prefectures, magisteria)
+# never move. scope:caesar_command = the new title.
 LR_caesar_appoint_effect = {
 	save_scope_as = caesar_augustus
 	custom_tooltip = LR_caesar_appoint_tt
 	if = {
-		limit = { scope:caesar_command = title:e_western_roman_empire }
-		LR_cleave_give_title_effect = { TITLE = e_western_roman_empire } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_west }
+		limit = { scope:caesar_cmd = flag:west }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_west_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_western_roman_empire set_variable = { name = LR_caesar_region value = flag:west } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_west } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_eastern_roman_empire }
-		LR_cleave_give_title_effect = { TITLE = e_eastern_roman_empire } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_east }
+		limit = { scope:caesar_cmd = flag:east }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_east_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_eastern_roman_empire set_variable = { name = LR_caesar_region value = flag:east } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_east } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_brittanic_empire }
-		LR_cleave_give_title_effect = { TITLE = e_brittanic_empire } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_britannia }
+		limit = { scope:caesar_cmd = flag:britannia }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_britannia_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_brittanic_empire set_variable = { name = LR_caesar_region value = flag:britannia } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_britannia } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_gallic_empire }
-		LR_cleave_give_title_effect = { TITLE = e_gallic_empire } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_gallia }
+		limit = { scope:caesar_cmd = flag:gallia }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_gallia_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_gallic_empire set_variable = { name = LR_caesar_region value = flag:gallia } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_gallia } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_palmyrene_empire }
-		LR_cleave_give_title_effect = { TITLE = e_palmyrene_empire } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_palmyra }
+		limit = { scope:caesar_cmd = flag:palmyra }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_palmyra_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_palmyrene_empire set_variable = { name = LR_caesar_region value = flag:palmyra } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_palmyra } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_praetorian_prefecture_gallia }
-		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_gallia } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_gallia }
+		limit = { scope:caesar_cmd = flag:southern }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_southern_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_southern_roman_empire set_variable = { name = LR_caesar_region value = flag:southern } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_southern } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_praetorian_prefecture_italia }
-		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_italia } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_italia }
+		limit = { scope:caesar_cmd = flag:pp_britannia }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_britannia_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_britannia set_variable = { name = LR_caesar_region value = flag:pp_britannia } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_britannia } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_praetorian_prefecture_illyricum }
-		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_illyricum } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_illyricum }
+		limit = { scope:caesar_cmd = flag:pp_gallia }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_gallia_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_gallia set_variable = { name = LR_caesar_region value = flag:pp_gallia } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_gallia } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_praetorian_prefecture_germania }
-		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_germania } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_germania }
+		limit = { scope:caesar_cmd = flag:pp_italia }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_italia_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_italia set_variable = { name = LR_caesar_region value = flag:pp_italia } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_italia } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_praetorian_prefecture_macedonia }
-		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_macedonia } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_macedonia }
+		limit = { scope:caesar_cmd = flag:pp_illyricum }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_illyricum_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_illyricum set_variable = { name = LR_caesar_region value = flag:pp_illyricum } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_illyricum } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_praetorian_prefecture_pontica }
-		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_pontica } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_pontica }
+		limit = { scope:caesar_cmd = flag:pp_germania }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_germania_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_germania set_variable = { name = LR_caesar_region value = flag:pp_germania } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_germania } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_praetorian_prefecture_oriens }
-		LR_cleave_give_title_effect = { TITLE = e_praetorian_prefecture_oriens } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_pp_oriens }
+		limit = { scope:caesar_cmd = flag:pp_macedonia }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_macedonia_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_macedonia set_variable = { name = LR_caesar_region value = flag:pp_macedonia } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_macedonia } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_magisterium_italia }
-		LR_cleave_give_title_effect = { TITLE = e_magisterium_italia } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_mag_italia }
+		limit = { scope:caesar_cmd = flag:pp_pontica }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_pontica_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_pontica set_variable = { name = LR_caesar_region value = flag:pp_pontica } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_pontica } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	else_if = {
-		limit = { scope:caesar_command = title:e_magisterium_africa }
-		LR_cleave_give_title_effect = { TITLE = e_magisterium_africa } # first: the command's tier lets duke-tier vassals be handed over
-		LR_cleave_hand_over_half_effect = { REGION = custom_caesar_mag_africa }
+		limit = { scope:caesar_cmd = flag:pp_oriens }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_pp_oriens_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_praetorian_prefecture_oriens set_variable = { name = LR_caesar_region value = flag:pp_oriens } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_pp_oriens } # after the title: its empire tier lets duke-tier vassals be handed over
+	}
+	else_if = {
+		limit = { scope:caesar_cmd = flag:mag_italia }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_mag_italia_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_magisterium_italia set_variable = { name = LR_caesar_region value = flag:mag_italia } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_mag_italia } # after the title: its empire tier lets duke-tier vassals be handed over
+	}
+	else_if = {
+		limit = { scope:caesar_cmd = flag:mag_africa }
+		create_dynamic_title = {
+			type = title_type_lr_caesar_command
+			tier = empire
+			holder = scope:new_holder
+			name = LR_caesar_cmd_mag_africa_latin
+			save_scope_as = caesar_command
+		}
+		scope:caesar_command = { set_coa = title:e_magisterium_africa set_variable = { name = LR_caesar_region value = flag:mag_africa } }
+		LR_caesar_hand_over_effect = { REGION = custom_caesar_mag_africa } # after the title: its empire tier lets duke-tier vassals be handed over
 	}
 	hidden_effect = {
-		if = {
-			limit = { primary_title.tier = tier_hegemony }
-			scope:caesar_command = { set_de_jure_liege_title = root.primary_title }
+		scope:caesar_command = {
+			set_variable = { name = LR_caesar_of value = scope:new_holder }
+			set_variable = { name = LR_caesar_augustus value = root }
+			LR_caesar_command_name_effect = yes
 		}
-		scope:caesar_command = { set_variable = { name = LR_caesar_of value = scope:new_holder } }
+		add_to_global_variable_list = { name = LR_caesar_commands target = scope:caesar_command }
 	}
 	scope:new_holder = {
 		if = {
@@ -165,13 +291,482 @@ LR_college_leave_effect = {
 	}
 }
 
-# Character: stop being a Caesar (recalled, proclaimed Augustus, or promoted)
+# Character: stop being a Caesar (recalled, proclaimed Augustus, or promoted). The dynamic command itself is
+# ended (LR_caesar_command_end_effect) or turned usurper (LR_caesar_command_usurp_effect) by the caller; a static
+# command from before 2026-11-25 just loses its mark.
 LR_caesar_unmake_effect = {
 	if = { limit = { has_trait = caesar } remove_trait = caesar }
 	if = { limit = { has_character_flag = LR_caesar_flag } remove_character_flag = LR_caesar_flag }
 	every_held_title = {
-		limit = { has_variable = LR_caesar_of }
+		limit = { has_variable = LR_caesar_of NOT = { has_variable = LR_caesar_region } }
 		remove_variable = LR_caesar_of
+	}
+}
+
+# Root (the Augustus) gives scope:new_holder his counties, duchies and kingdoms in REGION and his direct vassals based
+# there. Like LR_cleave_hand_over_half_effect, but empire-tier titles stay: the static Roman titles never move.
+LR_caesar_hand_over_effect = {
+	if = {
+		limit = { exists = domicile domicile.domicile_location = { geographical_region = $REGION$ } }
+		domicile = { move_domicile = root.capital_province }
+	}
+	create_title_and_vassal_change = { type = granted save_scope_as = change add_claim_on_loss = no }
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			is_landless_type_title = no
+			title_province = { geographical_region = $REGION$ }
+			NOT = { this = root.capital_county }
+		}
+		change_title_holder = { holder = scope:new_holder change = scope:change }
+	}
+	every_held_title = {
+		limit = {
+			tier >= tier_duchy
+			tier <= tier_kingdom
+			is_landless_type_title = no
+			NOT = { this = root.primary_title }
+			any_de_jure_county = { percent >= 0.51 title_province = { geographical_region = $REGION$ } }
+		}
+		change_title_holder = { holder = scope:new_holder change = scope:change }
+	}
+	resolve_title_and_vassal_change = scope:change
+	create_title_and_vassal_change = { type = granted save_scope_as = change add_claim_on_loss = no }
+	every_vassal = {
+		limit = {
+			NOT = { this = scope:new_holder }
+			highest_held_title_tier >= tier_county
+			capital_province = { geographical_region = $REGION$ }
+		}
+		change_liege = { liege = scope:new_holder change = scope:change }
+	}
+	resolve_title_and_vassal_change = scope:change
+}
+
+# Title: a dynamic Caesar command. Named by its area and its holder's culture (Latin / Greek / English, the Roman
+# title-name styles); a usurper's (LR_caesar_usurper) is an empire of its own.
+LR_caesar_command_name_effect = {
+	if = {
+		limit = { exists = holder }
+		LR_roman_title_names_pick_style_effect = yes
+		if = { limit = { LR_roman_court_style_latin_trigger = yes } set_variable = { name = LR_caesar_style value = flag:latin } }
+		else_if = { limit = { LR_roman_court_style_greek_trigger = yes } set_variable = { name = LR_caesar_style value = flag:greek } }
+		else = { set_variable = { name = LR_caesar_style value = flag:foreign } }
+		remove_variable = LR_rtn_pick
+		if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_west_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_west_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_west_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_west_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_west_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:west var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_west_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_east_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_east_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_east_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_east_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_east_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:east var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_east_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:britannia var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:gallia var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_palmyra_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_palmyra_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_palmyra_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_palmyra_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_palmyra_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:palmyra var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_palmyra_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_southern_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_southern_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_southern_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_southern_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_southern_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:southern var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_southern_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_britannia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_britannia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_britannia var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_britannia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_gallia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_gallia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_gallia var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_gallia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_italia var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_illyricum_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_illyricum_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_illyricum_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_illyricum_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_illyricum_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_illyricum var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_illyricum_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_germania_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_germania_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_germania_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_germania_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_germania_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_germania var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_germania_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_macedonia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_macedonia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_macedonia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_macedonia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_macedonia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_macedonia var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_macedonia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_pontica_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_pontica_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_pontica_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_pontica_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_pontica_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_pontica var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_pontica_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_oriens_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_oriens_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_oriens_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_oriens_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_pp_oriens_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:pp_oriens var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_pp_oriens_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_mag_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_mag_italia_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_mag_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_mag_italia_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_mag_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_italia var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_mag_italia_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:latin NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_mag_africa_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:latin has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_mag_africa_latin
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:greek NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_mag_africa_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:greek has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_mag_africa_greek
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:foreign NOT = { has_variable = LR_caesar_usurper } }
+			set_title_name = LR_caesar_cmd_mag_africa_foreign
+		}
+		else_if = {
+			limit = { var:LR_caesar_region ?= flag:mag_africa var:LR_caesar_style = flag:foreign has_variable = LR_caesar_usurper }
+			set_title_name = LR_caesar_usurp_mag_africa_foreign
+		}
+		remove_variable = LR_caesar_style
+	}
+}
+
+# Title: a dynamic Caesar command ends (recall, promotion, confirmed lapse): out of the lists and the college,
+# then destroyed by its holder. The land stays where it is (the caller moves it first if needed).
+LR_caesar_command_end_effect = {
+	save_scope_as = lr_ending_command
+	remove_list_global_variable = { name = LR_caesar_commands target = scope:lr_ending_command }
+	title_confederation ?= { remove_confederation_member_title = scope:lr_ending_command }
+	holder ?= { destroy_title = scope:lr_ending_command }
+}
+
+# Title: a dynamic Caesar command whose Caesar breaks away (refused recall, Proclaim Yourself Augustus): it stays
+# his, renamed as an empire of its own, out of the lists and the college.
+LR_caesar_command_usurp_effect = {
+	save_scope_as = lr_usurped_command
+	remove_list_global_variable = { name = LR_caesar_commands target = scope:lr_usurped_command }
+	title_confederation ?= { remove_confederation_member_title = scope:lr_usurped_command }
+	remove_variable = LR_caesar_of
+	remove_variable = LR_caesar_augustus
+	set_variable = LR_caesar_usurper
+	LR_caesar_command_name_effect = yes
+}
+
+# Character: end or turn usurper every dynamic command root holds (MODE = end / usurp)
+LR_caesar_commands_of_root_effect = {
+	every_held_title = {
+		limit = { has_variable = LR_caesar_region NOT = { has_variable = LR_caesar_usurper } }
+		LR_caesar_command_$MODE$_effect = yes
 	}
 }
 

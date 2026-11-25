@@ -1,0 +1,51 @@
+﻿# LR Magister Militum offices (tools/magister_militum_offices.py, 2026-11-25). GENERATED - edit the generator.
+
+on_title_lost = {
+	on_actions = { LR_roman_magister_on_title_lost }
+}
+on_game_start = {
+	on_actions = { LR_roman_magister_on_game_start }
+}
+
+# root = old holder, scope:title = the title
+LR_roman_magister_on_title_lost = {
+	trigger = {
+		is_alive = yes
+		scope:title = { LR_is_roman_magister_title_trigger = yes }
+		has_character_modifier = LR_roman_magister_militum_modifier
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					any_held_title = {
+						this != scope:title
+						LR_is_roman_magister_title_trigger = yes
+					}
+				}
+			}
+			remove_character_modifier = LR_roman_magister_militum_modifier
+		}
+	}
+}
+
+# Magistri set in a start date's history get the same setup as newly appointed ones
+LR_roman_magister_on_game_start = {
+	effect = {
+		title:k_magister_militum_italia = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+		title:k_magister_militum_africa = {
+			if = {
+				limit = { exists = holder }
+				save_scope_as = title
+				holder = { LR_roman_dux_setup_effect = yes }
+			}
+		}
+	}
+}
+

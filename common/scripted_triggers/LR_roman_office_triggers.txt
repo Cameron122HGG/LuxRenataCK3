@@ -6,6 +6,7 @@ LR_is_roman_prefect_title_trigger = {
 		this = title:k_praefectus_praetorio_gallia
 		this = title:k_praefectus_praetorio_illyricum
 		this = title:k_praefectus_praetorio_germania
+		this = title:k_praefectus_praetorio_britannia # LR 2026-11-25 (user): the fictional Prefecture of the Britains
 		this = title:k_praefectus_praetorio_macedonia
 		this = title:k_praefectus_praetorio_oriens
 	}
@@ -131,6 +132,17 @@ LR_roman_prefecture_germania_available_trigger = {
 	exists = title:k_diocese_germania.holder
 	title:k_diocese_germania.holder.top_liege = root
 	NOT = { exists = title:k_praefectus_praetorio_germania.holder }
+}
+
+# LR 2026-11-25 (user): every diocese of the fictional prefecture of the Britains is held within root's realm, and it has no prefect
+LR_roman_prefecture_britannia_available_trigger = {
+	exists = title:k_diocese_britannia.holder
+	title:k_diocese_britannia.holder.top_liege = root
+	exists = title:k_diocese_caledonia.holder
+	title:k_diocese_caledonia.holder.top_liege = root
+	exists = title:k_diocese_hibernia.holder
+	title:k_diocese_hibernia.holder.top_liege = root
+	NOT = { exists = title:k_praefectus_praetorio_britannia.holder }
 }
 
 # Every diocese of the prefecture of Macedonia is held within root's realm, and the prefecture has no prefect

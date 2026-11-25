@@ -1,0 +1,98 @@
+﻿# LR Magister Militum offices (tools/magister_militum_offices.py, 2026-11-25). GENERATED - edit the generator.
+
+# Appoint a Magister Militum per Italiam: a commander, not the territorial magisterium (Form the Magisterium per Italiam)
+LR_appoint_magister_militum_italia_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
+	}
+	ai_check_interval = 60
+	decision_group_type = roman_offices
+	desc = LR_appoint_magister_militum_italia_decision_desc
+	selection_tooltip = LR_appoint_magister_militum_italia_decision_tooltip
+	confirm_text = LR_appoint_magister_militum_italia_decision_confirm
+	is_shown = {
+		is_ruler = yes
+		is_independent_ruler = yes
+		is_restored_roman_emperor_trigger = yes
+		NOT = { exists = title:k_magister_militum_italia.holder }
+		OR = { title:k_diocese_italia_annonaria = { is_titular = no holder.top_liege ?= root } title:k_diocese_italia_suburbicaria = { is_titular = no holder.top_liege ?= root } }
+	}
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 200 }
+			if = { limit = { LR_rw_capital_in_phase_trigger = { PHASE = rw_restoration } } multiply = 0.75 } # the Roman World's Restoration phase
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 200 }
+			if = { limit = { LR_rw_capital_in_phase_trigger = { PHASE = rw_restoration } } multiply = 0.75 } # the Roman World's Restoration phase
+		}
+		prestige = {
+			value = 300
+			if = { limit = { LR_rw_capital_in_phase_trigger = { PHASE = rw_restoration } } multiply = 0.75 } # the Roman World's Restoration phase
+		}
+	}
+	is_valid = {
+		LR_has_classical_government_trigger = yes
+	}
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+	effect = {
+		custom_tooltip = LR_appoint_magister_militum_italia_decision_effect_tt
+		LR_appoint_roman_command_effect = { TITLE = k_magister_militum_italia LAW = LR_roman_magister_appointment_succession_law }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 50 }
+}
+
+# Appoint a Magister Militum per Africam: a commander, not the territorial magisterium (Form the Magisterium per Africam)
+LR_appoint_magister_militum_africa_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/loading_screens/load_31.dds"
+	}
+	ai_check_interval = 60
+	decision_group_type = roman_offices
+	desc = LR_appoint_magister_militum_africa_decision_desc
+	selection_tooltip = LR_appoint_magister_militum_africa_decision_tooltip
+	confirm_text = LR_appoint_magister_militum_africa_decision_confirm
+	is_shown = {
+		is_ruler = yes
+		is_independent_ruler = yes
+		is_restored_roman_emperor_trigger = yes
+		NOT = { exists = title:k_magister_militum_africa.holder }
+		OR = { title:k_diocese_africa = { is_titular = no holder.top_liege ?= root } title:k_diocese_mauretania = { is_titular = no holder.top_liege ?= root } }
+	}
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 200 }
+			if = { limit = { LR_rw_capital_in_phase_trigger = { PHASE = rw_restoration } } multiply = 0.75 } # the Roman World's Restoration phase
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 200 }
+			if = { limit = { LR_rw_capital_in_phase_trigger = { PHASE = rw_restoration } } multiply = 0.75 } # the Roman World's Restoration phase
+		}
+		prestige = {
+			value = 300
+			if = { limit = { LR_rw_capital_in_phase_trigger = { PHASE = rw_restoration } } multiply = 0.75 } # the Roman World's Restoration phase
+		}
+	}
+	is_valid = {
+		LR_has_classical_government_trigger = yes
+	}
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+	effect = {
+		custom_tooltip = LR_appoint_magister_militum_africa_decision_effect_tt
+		LR_appoint_roman_command_effect = { TITLE = k_magister_militum_africa LAW = LR_roman_magister_appointment_succession_law }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 50 }
+}
+

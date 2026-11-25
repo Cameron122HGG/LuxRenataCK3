@@ -514,6 +514,44 @@ types TmmMapModes
 							}
 						}
 					}
+					# LR imperium BEGIN (tools/imperium_gui/gen_imperium_gui.py)
+					widget = {
+						name = "LR_imp_map_mode_button"
+						parentanchor = vcenter
+						size = { 32 32 }
+						datacontext = "[GetSituation( 'LR_imperium' )]"
+						visible = "[CanChangeMapMode]"
+						button_round = {
+							visible = "[Situation.IsValid]"
+							size = { 100% 100% }
+							using = tooltip_nw
+							onclick = "[GetScriptedGui( 'LR_imp_open' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[ToggleGameViewData( Situation.GetWindowName, Situation.GetID )]"
+							tooltip = "LR_IMP_MAP_MODE_BUTTON_TT"
+							icon = {
+								parentanchor = center
+								size = { 24 24 }
+								alwaystransparent = yes
+								texture = "gfx/interface/icons/situation_types/LR_imperium.dds"
+							}
+						}
+						button_round = {
+							visible = "[Not( Situation.IsValid )]"
+							size = { 100% 100% }
+							using = tooltip_nw
+							onclick = "[GetScriptedGui( 'LR_imp_start' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GetScriptedGui( 'LR_imp_start' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							tooltip = "LR_IMP_MAP_MODE_BUTTON_START_TT"
+							icon = {
+								parentanchor = center
+								size = { 24 24 }
+								alwaystransparent = yes
+								alpha = 0.5
+								texture = "gfx/interface/icons/situation_types/LR_imperium.dds"
+							}
+						}
+					}
+					# LR imperium END
 					# LR title set map end
 				}
 
