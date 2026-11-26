@@ -686,16 +686,95 @@
 						position = { -18 0 }
 						vbox = {
 
+							# LR 2026-11-25 (user: "add a drop down menu to the side bar and fit the three 1066 bookmark groups under it"): a 1066
+							# header that opens and closes (frontend variable lr_bm_1066_closed; open by default) over the 1066 groups:
+							# 6066 (1.1.1066), exiles (Exiles, 1.1.1066), warlords (Lux Invicta, 9.26.1066). Other groups stay in the list below.
+							widget = {
+								name = "lr_bm_dropdown_1066"
+								size = { 290 62 }
+
+								button_normal = {
+									size = { 270 56 }
+									position = { 10 3 }
+									onclick = "[GetVariableSystem.Toggle( 'lr_bm_1066_closed' )]"
+									tooltip = "LR_BM_DROPDOWN_1066_TT"
+									using = tooltip_es
+
+									background = {
+										texture = "gfx/interface/component_tiles/tile_window_background.dds"
+										spriteType = Corneredtiled
+									}
+									background = {
+										texture = "gfx/interface/buttons/button_stone_glass_overlay.dds"
+										blend_mode = overlay
+										alpha = 0.6
+									}
+
+									hbox = {
+										margin_left = 14
+										margin_right = 14
+
+										vbox = {
+											layoutpolicy_horizontal = expanding
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_1066"
+												default_format = "#high;bold;glow_color:{0,0,0,1}"
+												using = Font_Size_Big
+												using = Font_Type_Flavor
+											}
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_1066_SUB"
+												default_format = "#clickable;bold"
+												fontsize = 14
+												using = Font_Type_Flavor
+											}
+										}
+
+										# points right when closed, down when open
+										icon = {
+											size = { 28 28 }
+											texture = "gfx/interface/buttons/button_tree_expand.dds"
+											framesize = { 36 36 }
+											frame = "[Select_int32( GetVariableSystem.Exists( 'lr_bm_1066_closed' ), '(int32)1', '(int32)2' )]"
+										}
+									}
+								}
+							}
+
+							vbox = {
+								name = "lr_bm_dropdown_1066_list"
+								visible = "[Not( GetVariableSystem.Exists( 'lr_bm_1066_closed' ) )]"
+								datamodel = "[GameSetup.AccessBookmarkGroups]"
+								spacing = -5
+								bottomtotop = yes
+								ignoreinvisible = yes
+
+								item = {
+									widget = {
+										size = { 290 72 }
+										visible = "[Or( EqualTo_string( BookmarkGroup.GetName, '6066' ), Or( EqualTo_string( BookmarkGroup.GetName, 'exiles' ), EqualTo_string( BookmarkGroup.GetName, 'warlords' ) ) )]"
+										widget_bookmark_group_button = {
+											name = "bookmark_group_tab"
+											size = { 260 72 }
+											position = { 26 0 }
+										}
+									}
+								}
+							}
+
 							vbox = {
 								datamodel = "[GameSetup.AccessBookmarkGroups]"
 								spacing = -5
 								bottomtotop = yes
+								ignoreinvisible = yes
 
 								item = {
 									widget_bookmark_group_button = {
 										name = "bookmark_group_tab"
 										size = { 290 80 }
-
+										visible = "[Not( Or( EqualTo_string( BookmarkGroup.GetName, '6066' ), Or( EqualTo_string( BookmarkGroup.GetName, 'exiles' ), EqualTo_string( BookmarkGroup.GetName, 'warlords' ) ) ) )]" # LR 2026-11-25: the 1066 groups sit under the drop-down above
 									}
 								}
 							}
@@ -2969,6 +3048,12 @@ types BookmarkPortraits
 				modify_texture = {
 					visible = "[EqualTo_string( BookmarkGroup.GetName, 'warlords' )]"
 					texture = "gfx/interface/illustrations/loading_screens/load_7.dds"
+					blend_mode = normal
+					alpha = 0.5
+				}
+				modify_texture = { # LR 2026-11-25: the Exiles group (bm_group_LI_exiles)
+					visible = "[EqualTo_string( BookmarkGroup.GetName, 'exiles' )]"
+					texture = "gfx/interface/bookmarks/bm_LI_exiles_west.dds"
 					blend_mode = normal
 					alpha = 0.5
 				}
