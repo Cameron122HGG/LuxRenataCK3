@@ -889,23 +889,24 @@
 									}
 								}
 							}
-							widget = {
+							vbox = { # LR 2026-11-26
 								name = "lr_bm_dropdown_936_list"
 								visible = "[Not( GetVariableSystem.Exists( 'lr_bm_936_closed' ) )]"
-								size = { 290 44 }
-								text_single = {
-									parentanchor = vcenter
-									position = { 44 0 }
-									text = "LR_BM_DROPDOWN_936_SOON"
-									default_format = "#high;italic" # readable on the marble
-									background = { # LR 2026-11-25: dark fade behind the text (glow_radius is not a text property)
-										texture = "gfx/interface/component_masks/mask_fade_circle.dds"
-										color = { 0.1 0.1 0.1 1 }
-										margin = { 30 0 }
-										margin_bottom = 5
+								datamodel = "[GameSetup.AccessBookmarkGroups]"
+								spacing = -5
+								bottomtotop = yes
+								ignoreinvisible = yes
+
+								item = {
+									widget = {
+										size = { 290 72 }
+										visible = "[EqualTo_string( BookmarkGroup.GetName, '5936' )]"
+										widget_bookmark_group_button = {
+											name = "bookmark_group_tab"
+											size = { 260 72 }
+											position = { 26 0 }
+										}
 									}
-									fontsize = 16
-									using = Font_Type_Flavor
 								}
 							}
 
@@ -919,7 +920,7 @@
 									widget_bookmark_group_button = {
 										name = "bookmark_group_tab"
 										size = { 290 80 }
-										visible = "[Not( Or( EqualTo_string( BookmarkGroup.GetName, '6066' ), Or( EqualTo_string( BookmarkGroup.GetName, 'exiles' ), EqualTo_string( BookmarkGroup.GetName, 'warlords' ) ) ) )]" # LR 2026-11-25: the 1066 groups sit under the drop-down above
+										visible = "[Not( Or( EqualTo_string( BookmarkGroup.GetName, '5936' ), Or( EqualTo_string( BookmarkGroup.GetName, '6066' ), Or( EqualTo_string( BookmarkGroup.GetName, 'exiles' ), EqualTo_string( BookmarkGroup.GetName, 'warlords' ) ) ) ) )]" # LR 2026-11-25: the 1066 groups sit under the drop-down above; 2026-11-26: the 936 group under its own
 									}
 								}
 							}
@@ -3199,6 +3200,12 @@ types BookmarkPortraits
 				modify_texture = { # LR 2026-11-25: the Exiles group (bm_group_LI_exiles)
 					visible = "[EqualTo_string( BookmarkGroup.GetName, 'exiles' )]"
 					texture = "gfx/interface/bookmarks/bm_LI_exiles_west.dds"
+					blend_mode = normal
+					alpha = 0.5
+				}
+				modify_texture = { # LR 2026-11-26: the 936 group
+					visible = "[EqualTo_string( BookmarkGroup.GetName, '5936' )]"
+					texture = "gfx/interface/icons/bookmark_buttons/bm_5936_roman_test.dds"
 					blend_mode = normal
 					alpha = 0.5
 				}

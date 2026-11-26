@@ -1,0 +1,125 @@
+﻿# LR 2026-11-26 Restore Our Own Customs (tools/old_customs/build_old_customs.py)
+# Character: an independent ruler whose government is on another group's ladder, while his culture names its own group
+LR_can_restore_own_customs_trigger = {
+	is_independent_ruler = yes
+	is_landed = yes
+	LR_has_group_ladder_government_trigger = yes
+	culture = { LR_culture_has_government_tradition_trigger = yes }
+	LR_government_matches_culture_group_trigger = no
+	NOT = { faith = { religion_tag = islam_religion } } # Iqta follows the faith, automatically
+	NAND = { # the Gaul sacral realm keeps its sacral governments
+		LR_in_sacral_group_trigger = yes
+		LR_in_sacral_kingdom_gaul_realm_trigger = yes
+	}
+}
+
+# Character (a vassal): his customs are those of his top liege's CURRENT group (checked before the switch)
+LR_old_customs_aggrieved_trigger = {
+	OR = {
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_classical }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_classical_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_western }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_western_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_despotic }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_despotic_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_indic }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_indic_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_mamlakah }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_mamlakah_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_sudanic }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_sudanic_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_nilotic }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_nilotic_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_sinic }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_sinic_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_japanese }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_japanese_group_trigger = yes }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_barbarian }
+			NOT = { faith = { religion_tag = islam_religion } }
+			top_liege = { LR_in_barbarian_group_trigger = yes }
+		}
+		AND = {
+			faith = { religion_tag = islam_religion }
+			top_liege = { LR_in_islamic_group_trigger = yes }
+		}
+	}
+}
+
+# Character (a vassal): his customs are his top liege's culture's group (the group the ruler would restore)
+LR_old_customs_pleased_trigger = {
+	OR = {
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_classical }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_classical } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_western }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_western } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_despotic }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_despotic } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_indic }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_indic } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_mamlakah }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_mamlakah } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_sudanic }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_sudanic } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_nilotic }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_nilotic } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_sinic }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_sinic } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_japanese }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
+		}
+		AND = {
+			culture = { has_cultural_tradition = lux_tradition_gov_barbarian }
+			top_liege = { culture = { has_cultural_tradition = lux_tradition_gov_barbarian } }
+		}
+	}
+}
+
+# Character: the aggrieved vassals are strong enough to revolt (a third of the realm's counties)
+LR_old_customs_revolt_trigger = {
+	LR_old_customs_aggrieved_counties_value >= LR_old_customs_revolt_threshold_value
+}

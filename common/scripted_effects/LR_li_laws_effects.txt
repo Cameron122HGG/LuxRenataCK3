@@ -67,14 +67,14 @@ LR_li_set_administration_by_rank_effect = {
 		limit = { is_landed = yes }
 		if = {
 			limit = { LR_li_gradus_rank_value <= 0 }
-			add_realm_law_skip_effects = LR_administration_0
+			if = { limit = { NOT = { has_realm_law = LR_administration_0 } } add_realm_law_skip_effects = LR_administration_0 } # 2026-11-26: no re-add (1,110 errors a launch)
 		}
 		else_if = {
 			limit = { LR_li_gradus_rank_value <= 2 }
-			add_realm_law_skip_effects = LR_administration_1
+			if = { limit = { NOT = { has_realm_law = LR_administration_1 } } add_realm_law_skip_effects = LR_administration_1 } # 2026-11-26: no re-add (1,110 errors a launch)
 		}
 		else = {
-			add_realm_law_skip_effects = LR_administration_2
+			if = { limit = { NOT = { has_realm_law = LR_administration_2 } } add_realm_law_skip_effects = LR_administration_2 } # 2026-11-26: no re-add (1,110 errors a launch)
 		}
 	}
 }

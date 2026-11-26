@@ -148,7 +148,15 @@ LR_replace_vanilla_default_government_effect = {
 			else_if = {
 				limit = { culture = { has_cultural_tradition = lux_tradition_gov_japanese } }
 				if = {
-					limit = { LR_gradus_has_auh_trigger = yes }
+					limit = {
+						LR_gradus_has_auh_trigger = yes
+						top_liege = { # LR 2026-11-26: Ritsuryo's own can_get_government (error.log: "Trying to set illegal government")
+							OR = {
+								government_is_japanese_trigger = yes
+								has_character_flag = tgp_japan_restore_japanese_government_flag
+							}
+						}
+					}
 					change_government = japan_administrative_government
 				}
 				else = {
