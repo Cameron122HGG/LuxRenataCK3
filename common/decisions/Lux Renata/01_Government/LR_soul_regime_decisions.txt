@@ -198,6 +198,86 @@ LR_proclaim_messianic_regime_decision = {
 	ai_will_do = { base = 100 }
 }
 
+LR_proclaim_martial_regime_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_proclaim_martial_regime_decision_desc
+	selection_tooltip = LR_proclaim_martial_regime_decision_tooltip
+	confirm_text = LR_proclaim_regime_decision_confirm
+	decision_group_type = major
+
+	is_shown = {
+		is_landed = yes
+		LR_li_soul_martial_trigger = yes
+		NOT = { LR_has_soul_regime_martial_trigger = yes }
+	}
+
+	is_valid = {
+		has_realm_law = LR_soul_martial_4
+		martial >= 14
+		prestige_level >= 2
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		NOT = { LR_has_soul_regime_anarchist_trigger = yes }
+	}
+
+	cost = {
+		prestige = 400
+	}
+
+	effect = {
+		custom_tooltip = LR_soul_regime_personal_tt
+		LR_soul_regime_set_effect = { REGIME = martial }
+	}
+
+	ai_check_interval = 60
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_proclaim_traditional_regime_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_proclaim_traditional_regime_decision_desc
+	selection_tooltip = LR_proclaim_traditional_regime_decision_tooltip
+	confirm_text = LR_proclaim_regime_decision_confirm
+	decision_group_type = major
+
+	is_shown = {
+		is_landed = yes
+		LR_li_soul_traditional_trigger = yes
+		NOT = { LR_has_soul_regime_traditional_trigger = yes }
+	}
+
+	is_valid = {
+		has_realm_law = LR_soul_traditional_4
+		diplomacy >= 12
+		prestige_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		NOT = { LR_has_soul_regime_anarchist_trigger = yes }
+	}
+
+	cost = {
+		prestige = 400
+	}
+
+	effect = {
+		custom_tooltip = LR_soul_regime_personal_tt
+		LR_soul_regime_set_effect = { REGIME = traditional }
+	}
+
+	ai_check_interval = 60
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
 LR_renounce_soul_regime_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
@@ -326,6 +406,66 @@ LR_mystic_conversion_decision = {
 			save_scope_as = LR_mystic_county
 		}
 		scope:LR_mystic_county = { set_county_faith = root.faith }
+	}
+
+	ai_check_interval = 24
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_hold_a_triumph_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	desc = LR_hold_a_triumph_decision_desc
+	selection_tooltip = LR_hold_a_triumph_decision_tooltip
+	confirm_text = LR_hold_a_triumph_decision_confirm
+	cooldown = { years = 5 }
+
+	is_shown = {
+		LR_has_soul_regime_martial_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 150
+	}
+
+	effect = {
+		add_prestige = 400
+		add_dread = 15
+	}
+
+	ai_check_interval = 24
+	ai_potential = { always = yes }
+	ai_will_do = { base = 50 }
+}
+
+LR_proclaim_ancestral_custom_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds"
+	}
+	desc = LR_proclaim_ancestral_custom_decision_desc
+	selection_tooltip = LR_proclaim_ancestral_custom_decision_tooltip
+	confirm_text = LR_proclaim_ancestral_custom_decision_confirm
+	cooldown = { years = 10 }
+
+	is_shown = {
+		LR_has_soul_regime_traditional_trigger = yes
+	}
+
+	cost = {
+		prestige = 300
+	}
+
+	effect = {
+		every_sub_realm_county = {
+			limit = { culture = root.culture }
+			add_county_modifier = { modifier = LR_ancestral_custom_county_modifier years = 10 }
+		}
 	}
 
 	ai_check_interval = 24
