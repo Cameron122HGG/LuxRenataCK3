@@ -1,0 +1,39 @@
+﻿# LR 2026-11-25 republic diarch titles (tools/group_republics/build_diarch_titles.py)
+LR_republic_diarch_title_on_action = {
+	effect = {
+		scope:old_diarch ?= { LR_clear_republic_diarch_title_effect = yes }
+		if = {
+			limit = { is_alive = yes }
+			LR_republic_diarch_title_effect = yes
+		}
+	}
+}
+
+LR_republic_diarch_title_entered_on_action = {
+	effect = {
+		LR_republic_diarch_title_effect = yes
+	}
+}
+
+on_entered_diarchy = {
+	on_actions = { LR_republic_diarch_title_entered_on_action }
+}
+
+on_diarch_change = {
+	on_actions = { LR_republic_diarch_title_on_action }
+}
+
+on_left_diarchy = {
+	on_actions = { LR_republic_diarch_title_on_action }
+}
+
+LR_republic_diarch_title_yearly_on_action = {
+	trigger = { exists = diarch }
+	effect = {
+		LR_republic_diarch_title_effect = yes
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = { LR_republic_diarch_title_yearly_on_action }
+}

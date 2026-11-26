@@ -1,0 +1,53 @@
+﻿# LR 2026-11-25 republic diarch titles (tools/group_republics/build_diarch_titles.py)
+# character scope: clear every republic diarch title variable
+LR_clear_republic_diarch_title_effect = {
+	if = {
+		limit = { has_variable = LR_title_co_consul }
+		remove_variable = LR_title_co_consul
+	}
+	if = {
+		limit = { has_variable = LR_title_strategos_autokrator }
+		remove_variable = LR_title_strategos_autokrator
+	}
+	if = {
+		limit = { has_variable = LR_title_co_suffete }
+		remove_variable = LR_title_co_suffete
+	}
+	if = {
+		limit = { has_variable = LR_title_uparaja }
+		remove_variable = LR_title_uparaja
+	}
+}
+
+# character scope (the liege): give the current diarch the title of this republic's office
+LR_republic_diarch_title_effect = {
+	diarch ?= { LR_clear_republic_diarch_title_effect = yes }
+	if = {
+		limit = {
+			has_diarchy_type = consular_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_co_consul }
+	}
+	else_if = {
+		limit = {
+			has_diarchy_type = strategos_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_strategos_autokrator }
+	}
+	else_if = {
+		limit = {
+			has_diarchy_type = suffete_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_co_suffete }
+	}
+	else_if = {
+		limit = {
+			has_diarchy_type = uparaja_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_uparaja }
+	}
+}
