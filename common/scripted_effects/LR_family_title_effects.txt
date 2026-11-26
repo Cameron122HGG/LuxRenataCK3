@@ -8,9 +8,18 @@ LR_give_family_title_effect = {
 			exists = house
 			LR_government_needs_family_title_trigger = yes
 			NOT = { any_held_title = { is_noble_family_title = yes } }
+			LR_gradus_has_rtp_trigger = yes  # domiciles are Roads to Power content
+			trigger_if = {  # these seats are All Under Heaven content
+				limit = { OR = { has_government = chinese_feudal_government has_government = japanese_government has_government = sacral_government } }
+				LR_gradus_has_auh_trigger = yes
+			}
 			OR = {
 				is_independent_ruler = yes
-				highest_held_title_tier >= tier_county
+				AND = {
+					LR_gradus_plain_rank_trigger = no
+					highest_held_title_tier >= tier_county
+				}
+				highest_held_title_tier >= tier_duchy
 			}
 		}
 		save_temporary_scope_as = LR_family_title_ruler

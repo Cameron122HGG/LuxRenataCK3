@@ -1,0 +1,31 @@
+﻿# LR 2026-11-26 grow-with-rank domiciles (tools/domiciles/build_rank_domiciles.py)
+
+# Character: on a GRADUS plain rank
+LR_gradus_plain_rank_trigger = {
+	OR = {
+		has_government = classical_government
+		has_government = despotic_government
+		has_government = mamlakah_government
+		has_government = nilotic_government
+		has_government = sudanic_government
+		has_government = iqta_government
+		has_government = western_feudal_government
+		has_government = indic_feudal_government
+		has_government = chinese_feudal_government
+		has_government = japanese_government
+		has_government = sacral_government
+	}
+}
+
+# Character (domicile owner): may build the Dynastic tier of the family seat
+LR_domicile_dynastic_rank_trigger = {
+	NOT = { LR_gradus_plain_rank_trigger = yes }
+}
+
+# Character (domicile owner): may build the administrative tier (Influence, governors, the last main level)
+LR_domicile_admin_rank_trigger = {
+	OR = {
+		government_has_mechanic = administrative
+		government_has_flag = government_is_principate
+	}
+}
