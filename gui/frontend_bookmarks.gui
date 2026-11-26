@@ -635,8 +635,15 @@
 					size = { 310 100%} # LR 2026-11-25: 40 wider, so the 1066 header's arrow clears the border (was 270)
 					position = { -10 -50 }
 
+					# LR 2026-11-25 (user): marble, not the flat dark fill (was using = Background_Area_Solid); tools/bookmark_marble/make_marble.py
 					background = {
-						using = Background_Area_Solid
+						texture = "gfx/interface/bookmarks/LR_marble_panel.dds"
+						spriteType = Corneredtiled
+						spriteborder = { 0 0 }
+					}
+					background = { # a soft shadow towards the right edge, so the tabs stand out
+						texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+						color = { 0 0 0 0.35 }
 					}
 
 					icon = {
@@ -659,7 +666,8 @@
 
 						text_single = {
 							text = "BOOKMARK_SELECT_BOOKMARK"
-							default_format = "#weak"
+							default_format = "#high;glow_color:{0,0,0,1}" # LR 2026-11-25: readable on the white marble (was #weak)
+							glow_radius = 3
 							align = nobaseline
 
 						}
@@ -784,6 +792,100 @@
 											position = { 26 0 }
 										}
 									}
+								}
+							}
+
+							# LR 2026-11-25 (user: "add a 936 A.D group with no bookmark groups in it so it just says coming soon underneath"):
+							# a 936 header like the 1066 one (frontend variable lr_bm_936_closed; open by default) over a Coming soon line. When the 936
+							# bookmarks are released, swap the Coming soon line for a group list like the 1066 one, with the 936 group names.
+							widget = {
+								name = "lr_bm_dropdown_936"
+								size = { 290 62 }
+
+								button_normal = {
+									size = { 270 56 }
+									position = { 10 3 }
+									onclick = "[GetVariableSystem.Toggle( 'lr_bm_936_closed' )]"
+									tooltip = "LR_BM_DROPDOWN_936_TT"
+									using = tooltip_es
+
+									# LR 2026-11-25 (user: "a little flat"): built like the group tabs: stone tile, a faint painting (the
+									# shapur banner), the stone-glass overlay, and a dark fade behind the text
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/component_tiles/tile_window_background.dds"
+
+										modify_texture = {
+											texture = "gfx/interface/icons/bookmark_buttons/bm_LI_persias_glittering_fires.dds"
+											blend_mode = normal
+											alpha = 0.45
+										}
+										modify_texture = {
+											texture = "gfx/interface/buttons/button_stone_glass_overlay.dds"
+											blend_mode = overlay
+											texture_density = 2
+										}
+									}
+									icon = {
+										size = { 75% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										mirror = horizontal # dark on the left, behind the text
+										color = { 0 0 0 0.65 }
+									}
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/buttons/button_stone_glass_glow.dds"
+										alpha = 0.15
+									}
+
+									hbox = {
+										margin_left = 14
+										margin_right = 14
+
+										vbox = {
+											layoutpolicy_horizontal = expanding
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_936"
+												default_format = "#high;bold;glow_color:{0,0,0,1}"
+												using = Font_Size_Big
+												using = Font_Type_Flavor
+											}
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_936_SUB"
+												default_format = "#high;bold;glow_color:{0,0,0,1}" # LR: was #clickable, hard to read
+												glow_radius = 3
+												fontsize = 15
+												using = Font_Type_Flavor
+											}
+										}
+
+										# points right when closed, down when open
+										icon = {
+											size = { 28 28 }
+											texture = "gfx/interface/buttons/button_tree_expand.dds"
+											framesize = { 36 36 }
+											frame = "[Select_int32( GetVariableSystem.Exists( 'lr_bm_936_closed' ), '(int32)1', '(int32)2' )]"
+										}
+									}
+								}
+							}
+							widget = {
+								name = "lr_bm_dropdown_936_list"
+								visible = "[Not( GetVariableSystem.Exists( 'lr_bm_936_closed' ) )]"
+								size = { 290 44 }
+								text_single = {
+									parentanchor = vcenter
+									position = { 44 0 }
+									text = "LR_BM_DROPDOWN_936_SOON"
+									default_format = "#high;italic;glow_color:{0,0,0,1}" # readable on the white marble
+									glow_radius = 3
+									fontsize = 16
+									using = Font_Type_Flavor
 								}
 							}
 
