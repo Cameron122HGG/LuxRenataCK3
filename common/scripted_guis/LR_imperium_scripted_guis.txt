@@ -1,0 +1,717 @@
+﻿# LR Imperium window (tools/imperium_gui/gen_imperium_gui.py, 2026-11-25). GENERATED - edit the generator.
+
+LR_imp_open = {
+	scope = character
+	effect = { LR_imp_open_effect = yes }
+}
+
+LR_imp_start = {
+	scope = character
+	is_valid = { NOT = { exists = situation:LR_imperium } }
+	effect = { LR_imp_open_effect = yes }
+}
+
+# Title checks (root = a title)
+LR_imp_title_held = {
+	scope = landed_title
+	is_shown = { exists = holder }
+}
+LR_imp_title_unheld = {
+	scope = landed_title
+	is_shown = { NOT = { exists = holder } }
+}
+LR_imp_title_court = {
+	scope = landed_title
+	is_shown = { has_variable = LR_imperial_court }
+}
+LR_imp_title_shadow = {
+	scope = landed_title
+	is_shown = {
+		exists = holder
+		NOT = { has_variable = LR_imperial_court }
+		de_jure_liege ?= { tier = tier_hegemony }
+	}
+}
+LR_imp_title_has_liege = {
+	scope = landed_title
+	is_shown = { exists = de_jure_liege }
+}
+LR_imp_holder_caesar = {
+	scope = landed_title
+	is_shown = { holder ?= { has_trait = caesar } }
+}
+
+# Player and title checks (root = the player, scope:target = a title)
+LR_imp_mine = {
+	scope = character
+	is_shown = { scope:target.holder.top_liege ?= root }
+}
+LR_imp_other = {
+	scope = character
+	is_shown = {
+		exists = scope:target.holder
+		NOT = { scope:target.holder.top_liege ?= root }
+	}
+}
+LR_imp_held_by_me = {
+	scope = character
+	is_shown = { has_title = scope:target }
+}
+LR_imp_in_my_college = {
+	scope = character
+	is_shown = {
+		exists = scope:target.holder
+		exists = primary_title.title_confederation
+		scope:target.title_confederation ?= primary_title.title_confederation
+	}
+}
+LR_imp_in_college = {
+	scope = character
+	is_shown = { exists = primary_title.title_confederation }
+}
+
+LR_imp_reach_aegyptus = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_aegyptus.holder }
+		completely_controls_region = custom_roman_aegyptus
+	}
+}
+LR_imp_reach_aethiopia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_aethiopia.holder }
+		completely_controls_region = custom_roman_aethiopia
+	}
+}
+LR_imp_reach_africa = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_africa.holder }
+		completely_controls_region = custom_roman_africa
+	}
+}
+LR_imp_reach_arabia_felix = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_arabia_felix.holder }
+		completely_controls_region = custom_roman_arabia_felix
+	}
+}
+LR_imp_reach_armenia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_armenia.holder }
+		completely_controls_region = custom_roman_armenia
+	}
+}
+LR_imp_reach_asia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_asia.holder }
+		completely_controls_region = custom_roman_asia
+	}
+}
+LR_imp_reach_assyria = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_assyria.holder }
+		completely_controls_region = custom_roman_assyria
+	}
+}
+LR_imp_reach_britannia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_britannia.holder }
+		completely_controls_region = custom_roman_britannia
+	}
+}
+LR_imp_reach_caledonia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_caledonia.holder }
+		completely_controls_region = custom_roman_caledonia
+	}
+}
+LR_imp_reach_dacia_traiana = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_dacia_traiana.holder }
+		completely_controls_region = custom_roman_dacia_traiana
+	}
+}
+LR_imp_reach_dardania = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_dardania.holder }
+		completely_controls_region = custom_roman_dardania
+	}
+}
+LR_imp_reach_germania = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_germania.holder }
+		completely_controls_region = custom_roman_germania
+	}
+}
+LR_imp_reach_gothia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_gothia.holder }
+		completely_controls_region = custom_roman_gothia
+	}
+}
+LR_imp_reach_hibernia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_hibernia.holder }
+		completely_controls_region = custom_roman_hibernia
+	}
+}
+LR_imp_reach_hispania = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_hispania.holder }
+		completely_controls_region = custom_roman_hispania
+	}
+}
+LR_imp_reach_illyricum = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_illyricum.holder }
+		completely_controls_region = custom_roman_illyricum
+	}
+}
+LR_imp_reach_italia_annonaria = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_italia_annonaria.holder }
+		completely_controls_region = custom_roman_italia_annonaria
+	}
+}
+LR_imp_reach_italia_suburbicaria = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_italia_suburbicaria.holder }
+		completely_controls_region = custom_roman_italia_suburbicaria
+	}
+}
+LR_imp_reach_lugdunensis = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_lugdunensis.holder }
+		completely_controls_region = custom_roman_lugdunensis
+	}
+}
+LR_imp_reach_macedonia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_macedonia.holder }
+		completely_controls_region = custom_roman_macedonia
+	}
+}
+LR_imp_reach_marcomannia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_marcomannia.holder }
+		completely_controls_region = custom_roman_marcomannia
+	}
+}
+LR_imp_reach_mauretania = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_mauretania.holder }
+		completely_controls_region = custom_roman_mauretania
+	}
+}
+LR_imp_reach_noricum = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_noricum.holder }
+		completely_controls_region = custom_roman_noricum
+	}
+}
+LR_imp_reach_palestine = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_palestine.holder }
+		completely_controls_region = custom_roman_palestine
+	}
+}
+LR_imp_reach_pannonia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_pannonia.holder }
+		completely_controls_region = custom_roman_pannonia
+	}
+}
+LR_imp_reach_pontus = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_pontus.holder }
+		completely_controls_region = custom_roman_pontus
+	}
+}
+LR_imp_reach_syria = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_syria.holder }
+		completely_controls_region = custom_roman_syria
+	}
+}
+LR_imp_reach_thracia = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_thracia.holder }
+		completely_controls_region = custom_roman_thracia
+	}
+}
+LR_imp_reach_viennensis = {
+	scope = character
+	is_shown = {
+		NOT = { exists = title:k_diocese_viennensis.holder }
+		completely_controls_region = custom_roman_viennensis
+	}
+}
+
+# Roman World phase of the player's capital
+LR_imp_phase_rw_imperium = {
+	scope = character
+	is_shown = { LR_rw_capital_in_phase_trigger = { PHASE = rw_imperium } }
+}
+LR_imp_phase_rw_crisis = {
+	scope = character
+	is_shown = { LR_rw_capital_in_phase_trigger = { PHASE = rw_crisis } }
+}
+LR_imp_phase_rw_anarchy = {
+	scope = character
+	is_shown = { LR_rw_capital_in_phase_trigger = { PHASE = rw_anarchy } }
+}
+LR_imp_phase_rw_restoration = {
+	scope = character
+	is_shown = { LR_rw_capital_in_phase_trigger = { PHASE = rw_restoration } }
+}
+LR_imp_phase_rw_pax = {
+	scope = character
+	is_shown = { LR_rw_capital_in_phase_trigger = { PHASE = rw_pax } }
+}
+
+# Next steps (is_shown: the step applies to you; is_valid: it is met)
+LR_imp_step_w_admin = {
+	scope = character
+	is_shown = { has_title = title:e_spqr }
+	is_valid = { completely_controls_region = custom_western_roman_imperial_core is_independent_ruler = yes }
+}
+LR_imp_step_w_italia = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_western_roman_empire has_title = title:h_western_roman_empire } LR_roman_court_holds_western_trigger = no }
+	is_valid = { LR_roman_restoration_prefecture_italia_trigger = yes }
+}
+LR_imp_step_w_border = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_western_roman_empire has_title = title:h_western_roman_empire } LR_roman_court_holds_western_trigger = no }
+	is_valid = { OR = { LR_roman_restoration_prefecture_gallia_trigger = yes LR_roman_restoration_prefecture_illyricum_trigger = yes LR_roman_restoration_prefecture_germania_trigger = yes } }
+}
+LR_imp_step_e_admin = {
+	scope = character
+	is_shown = { has_title = title:e_byzantium }
+	is_valid = { completely_controls_region = custom_eastern_roman_imperial_core is_independent_ruler = yes }
+}
+LR_imp_step_e_macedonia = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_eastern_roman_empire has_title = title:h_eastern_roman_empire } LR_roman_court_holds_eastern_trigger = no }
+	is_valid = { LR_roman_restoration_prefecture_macedonia_trigger = yes }
+}
+LR_imp_step_e_border = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_eastern_roman_empire has_title = title:h_eastern_roman_empire } LR_roman_court_holds_eastern_trigger = no }
+	is_valid = { OR = { LR_roman_restoration_prefecture_oriens_trigger = yes LR_roman_restoration_prefecture_illyricum_trigger = yes } }
+}
+LR_imp_step_g_evolve = {
+	scope = character
+	is_shown = { has_title = title:e_syagria }
+	is_valid = { completely_controls_region = custom_roman_lugdunensis completely_controls_region = custom_roman_viennensis prestige_level >= high_prestige_level }
+}
+LR_imp_step_g_reorg = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_gallic_empire has_title = title:h_gallic_empire } LR_roman_court_holds_gallic_trigger = no }
+	is_valid = { LR_roman_restoration_prefecture_gallia_trigger = yes }
+}
+LR_imp_step_p_evolve = {
+	scope = character
+	is_shown = { has_title = title:e_tadmor }
+	is_valid = { completely_controls_region = custom_roman_syria completely_controls_region = custom_roman_palestine prestige_level >= high_prestige_level }
+}
+LR_imp_step_p_reorg = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_palmyrene_empire has_title = title:h_palmyrene_empire } LR_roman_court_holds_palmyrene_trigger = no }
+	is_valid = { LR_roman_restoration_prefecture_oriens_trigger = yes }
+}
+LR_imp_step_b_evolve = {
+	scope = character
+	is_shown = { has_title = title:e_constantinid }
+	is_valid = { completely_controls_region = custom_roman_britannia OR = { completely_controls_region = custom_roman_caledonia completely_controls_region = custom_roman_hibernia } prestige_level >= high_prestige_level }
+}
+LR_imp_step_b_reorg = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_brittanic_empire has_title = title:h_brittanic_empire } LR_roman_court_holds_brittanic_trigger = no }
+	is_valid = { LR_roman_restoration_prefecture_britannia_trigger = yes }
+}
+LR_imp_step_s_evolve = {
+	scope = character
+	is_shown = { has_title = title:e_lepcis }
+	is_valid = { completely_controls_region = custom_roman_africa completely_controls_region = custom_roman_mauretania prestige_level >= high_prestige_level }
+}
+LR_imp_step_s_dioceses = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_southern_roman_empire has_title = title:h_southern_roman_empire } NOT = { exists = title:k_diocese_africa.holder } }
+	is_valid = { completely_controls_region = custom_roman_africa completely_controls_region = custom_roman_mauretania }
+}
+LR_imp_step_s_reorg = {
+	scope = character
+	is_shown = { OR = { has_title = title:e_southern_roman_empire has_title = title:h_southern_roman_empire } LR_roman_court_holds_southern_trigger = no }
+	is_valid = { LR_roman_restoration_prefecture_africa_trigger = yes }
+}
+LR_imp_step_court = {
+	scope = character
+	is_shown = { any_held_title = { has_variable = LR_imperial_court } }
+	is_valid = { LR_roman_court_at_residence_trigger = yes }
+}
+LR_imp_any_line = {
+	scope = character
+	is_shown = {
+		OR = {
+			has_title = title:e_spqr
+			AND = { OR = { has_title = title:e_western_roman_empire has_title = title:h_western_roman_empire } LR_roman_court_holds_western_trigger = no }
+			AND = { OR = { has_title = title:e_western_roman_empire has_title = title:h_western_roman_empire } LR_roman_court_holds_western_trigger = no }
+			has_title = title:e_byzantium
+			AND = { OR = { has_title = title:e_eastern_roman_empire has_title = title:h_eastern_roman_empire } LR_roman_court_holds_eastern_trigger = no }
+			AND = { OR = { has_title = title:e_eastern_roman_empire has_title = title:h_eastern_roman_empire } LR_roman_court_holds_eastern_trigger = no }
+			has_title = title:e_syagria
+			AND = { OR = { has_title = title:e_gallic_empire has_title = title:h_gallic_empire } LR_roman_court_holds_gallic_trigger = no }
+			has_title = title:e_tadmor
+			AND = { OR = { has_title = title:e_palmyrene_empire has_title = title:h_palmyrene_empire } LR_roman_court_holds_palmyrene_trigger = no }
+			has_title = title:e_constantinid
+			AND = { OR = { has_title = title:e_brittanic_empire has_title = title:h_brittanic_empire } LR_roman_court_holds_brittanic_trigger = no }
+			has_title = title:e_lepcis
+			AND = { OR = { has_title = title:e_southern_roman_empire has_title = title:h_southern_roman_empire } NOT = { exists = title:k_diocese_africa.holder } }
+			AND = { OR = { has_title = title:e_southern_roman_empire has_title = title:h_southern_roman_empire } LR_roman_court_holds_southern_trigger = no }
+			any_held_title = { has_variable = LR_imperial_court }
+			is_restored_roman_emperor_trigger = yes
+		}
+	}
+}
+
+# Move the Imperial Residence (shares a 10-year wait with the decision)
+LR_imp_at_residence = {
+	scope = character
+	is_shown = { LR_roman_court_at_residence_trigger = yes }
+}
+LR_imp_move_roma = {
+	scope = character
+	is_shown = {
+		has_title = title:c_roma_urbs
+		NOT = { capital_county ?= title:c_roma_urbs }
+		title:c_roma_urbs = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_roma_urbs } }
+}
+LR_imp_move_mediolanum = {
+	scope = character
+	is_shown = {
+		has_title = title:c_lombardia
+		NOT = { capital_county ?= title:c_lombardia }
+		title:c_lombardia = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_lombardia } }
+}
+LR_imp_move_ravenna = {
+	scope = character
+	is_shown = {
+		has_title = title:c_ravenna
+		NOT = { capital_county ?= title:c_ravenna }
+		title:c_ravenna = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_ravenna } }
+}
+LR_imp_move_treveri = {
+	scope = character
+	is_shown = {
+		has_title = title:c_trier
+		NOT = { capital_county ?= title:c_trier }
+		title:c_trier = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_trier } }
+}
+LR_imp_move_arelate = {
+	scope = character
+	is_shown = {
+		has_title = title:c_arles
+		NOT = { capital_county ?= title:c_arles }
+		title:c_arles = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_arles } }
+}
+LR_imp_move_sirmium = {
+	scope = character
+	is_shown = {
+		has_title = title:c_szerem
+		NOT = { capital_county ?= title:c_szerem }
+		title:c_szerem = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_szerem } }
+}
+LR_imp_move_constantinopolis = {
+	scope = character
+	is_shown = {
+		has_title = title:c_byzantion
+		NOT = { capital_county ?= title:c_byzantion }
+		title:c_byzantion = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_byzantion } }
+}
+LR_imp_move_nicomedia = {
+	scope = character
+	is_shown = {
+		has_title = title:c_nikomedia
+		NOT = { capital_county ?= title:c_nikomedia }
+		title:c_nikomedia = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_nikomedia } }
+}
+LR_imp_move_antiochia = {
+	scope = character
+	is_shown = {
+		has_title = title:c_antiocheia
+		NOT = { capital_county ?= title:c_antiocheia }
+		title:c_antiocheia = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_antiocheia } }
+}
+LR_imp_move_thessalonica = {
+	scope = character
+	is_shown = {
+		has_title = title:c_thessalonika
+		NOT = { capital_county ?= title:c_thessalonika }
+		title:c_thessalonika = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_thessalonika } }
+}
+LR_imp_move_serdica = {
+	scope = character
+	is_shown = {
+		has_title = title:c_sredets
+		NOT = { capital_county ?= title:c_sredets }
+		title:c_sredets = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_sredets } }
+}
+LR_imp_move_g_lugdunum = {
+	scope = character
+	is_shown = {
+		has_title = title:c_lyon
+		NOT = { capital_county ?= title:c_lyon }
+		title:c_lyon = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_lyon } }
+}
+LR_imp_move_g_agrippina = {
+	scope = character
+	is_shown = {
+		has_title = title:c_cologne
+		NOT = { capital_county ?= title:c_cologne }
+		title:c_cologne = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_cologne } }
+}
+LR_imp_move_p_palmyra = {
+	scope = character
+	is_shown = {
+		has_title = title:c_palmyra
+		NOT = { capital_county ?= title:c_palmyra }
+		title:c_palmyra = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_palmyra } }
+}
+LR_imp_move_p_emesa = {
+	scope = character
+	is_shown = {
+		has_title = title:c_homs
+		NOT = { capital_county ?= title:c_homs }
+		title:c_homs = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_homs } }
+}
+LR_imp_move_p_alexandria = {
+	scope = character
+	is_shown = {
+		has_title = title:c_alexandria
+		NOT = { capital_county ?= title:c_alexandria }
+		title:c_alexandria = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_alexandria } }
+}
+LR_imp_move_b_londinium = {
+	scope = character
+	is_shown = {
+		has_title = title:c_middlesex
+		NOT = { capital_county ?= title:c_middlesex }
+		title:c_middlesex = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_middlesex } }
+}
+LR_imp_move_b_eboracum = {
+	scope = character
+	is_shown = {
+		has_title = title:c_north_riding
+		NOT = { capital_county ?= title:c_north_riding }
+		title:c_north_riding = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_north_riding } }
+}
+LR_imp_move_b_camulodunum = {
+	scope = character
+	is_shown = {
+		has_title = title:c_essex
+		NOT = { capital_county ?= title:c_essex }
+		title:c_essex = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_essex } }
+}
+LR_imp_move_s_carthago = {
+	scope = character
+	is_shown = {
+		has_title = title:c_tunis
+		NOT = { capital_county ?= title:c_tunis }
+		title:c_tunis = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_tunis } }
+}
+LR_imp_move_s_lepcis = {
+	scope = character
+	is_shown = {
+		has_title = title:c_tripolitana
+		NOT = { capital_county ?= title:c_tripolitana }
+		title:c_tripolitana = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_tripolitana } }
+}
+LR_imp_move_s_cirta = {
+	scope = character
+	is_shown = {
+		has_title = title:c_constantine
+		NOT = { capital_county ?= title:c_constantine }
+		title:c_constantine = { LR_roman_court_residence_for_root_trigger = yes }
+	}
+	is_valid = {
+		NOT = { has_variable = LR_imp_moved_residence }
+		gold >= 150
+		is_at_war = no
+	}
+	effect = { LR_imp_move_residence_effect = { COUNTY = c_constantine } }
+}

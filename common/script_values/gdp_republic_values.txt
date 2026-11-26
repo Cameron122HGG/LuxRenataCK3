@@ -1,0 +1,4995 @@
+﻿gdp_attacking_republic_cb_cost_value = {
+	value = 0.5
+}
+
+gdp_republic_tier_modifier_scale_value = {
+	value = 1
+	if = {
+		limit = {
+			exists = scope:target_republic_for_modifier
+		}
+		add = {
+			value = scope:target_republic_for_modifier.primary_title.tier
+			subtract = 1
+		}
+	}
+}
+
+gdp_trade_league_min_member_penalty_value = 3
+gdp_trade_league_max_member_penalty_value = 10
+
+# Align with cohesion_threshold 3 and 4 in 10_trade_league.txt.
+gdp_league_fortified_arsenal_cohesion_value = 70
+gdp_league_great_arsenal_cohesion_value = 95
+
+gdp_league_focused_category_xp_gain_mult = 0.25
+gdp_league_focused_category_sell_price_mult = 0.01
+gdp_league_focused_category_production_mult = 0.20
+
+gdp_trade_league_monthly_change_base_value = {
+	value = 0
+	# Base value per league member
+	add = {
+		value = 0
+		every_confederation_member = {
+			limit = { exists = primary_title.title_confederation }
+			add = 0.01
+		}
+		desc = NUMBER_OF_TRADE_LEAGUE_MEMBERS
+	}
+	# If we have very few members, add a small penalty
+	if = {
+		limit = {
+			any_confederation_member = {
+				exists = primary_title.title_confederation
+				count < gdp_trade_league_min_member_penalty_value
+			}
+		}
+		add = {
+			value = -0.1
+			if = {
+				limit = {
+					cohesion <= 20
+				}
+				add = {
+					value = -0.06
+					multiply = gdp_confederation_title_member_count_value
+				}
+			}
+			if = {
+				limit = {
+					cohesion > 20
+				}
+				add = {
+					value = -0.12
+					multiply = gdp_confederation_title_member_count_value
+				}
+			}
+			if = {
+				limit = {
+					cohesion > 45
+				}
+				add = {
+					value = -0.06
+					multiply = gdp_confederation_title_member_count_value
+				}
+			}
+			if = {
+				limit = {
+					cohesion > 70
+				}
+				add = {
+					value = -0.06
+					multiply = gdp_confederation_title_member_count_value
+				}
+			}
+			desc = LEAGUE_HAS_TOO_FEW_MEMBERS
+		}
+	}
+	# If we have too many members, add a scaling penalty
+	if = {
+		limit = {
+			any_confederation_member = {
+				exists = primary_title.title_confederation
+				count > gdp_trade_league_max_member_penalty_value
+			}
+		}
+		add = {
+			value = -0.1
+			every_confederation_member = {
+				limit = { exists = primary_title.title_confederation }
+				add = {
+					value = -0.06
+					multiply = { # Multiply by the number of members above the soft limit
+						value = prev.gdp_confederation_title_member_count_value
+						subtract = gdp_trade_league_max_member_penalty_value
+					}
+				}
+			}
+			desc = LEAGUE_HAS_TOO_MANY_MEMBERS
+		}
+	}
+	# Add a bonus for every owned monopoly
+	if = {
+		limit = {
+			any_trade_monopoly_for_confederation = {
+				count > 0
+			}
+		}
+		add = {
+			value = 0
+			every_trade_monopoly_for_confederation = {
+				if = {
+					limit = { is_complete_monopoly = yes }
+					add = 0.04
+				}
+				else = {
+					add = 0.02
+				}
+			}
+			desc = LEAGUE_HAS_TRADE_MONOPOLIES
+		}
+	}
+}
+
+gdp_trade_league_monthly_change_per_title_value = {
+	value = 0
+	# A member contributes based on tier
+	if = {
+		limit = { scope:title.tier = tier_hegemony }
+		add = {
+			value = 0.1
+			desc = concept_hegemony
+		}
+	}
+	else_if = {
+		limit = { scope:title.tier = tier_empire }
+		add = {
+			value = 0.06
+			desc = concept_empire
+		}
+	}
+	else_if = {
+		limit = { scope:title.tier = tier_kingdom }
+		add = {
+			value = 0.03
+			desc = concept_kingdom
+		}
+	}
+	else_if = {
+		limit = { scope:title.tier = tier_duchy }
+		add = {
+			value = 0.02
+			desc = concept_duchy
+		}
+	}
+	else = {
+		add = {
+			value = 0.01
+			desc = concept_county
+		}
+	}
+
+	# Size of capital
+	add = {
+		value = scope:title.holder.capital_province.province_size_level
+		multiply = 0.015
+		desc = capital_province_size_level_desc
+	}
+
+	# Prosperity of capital
+	add = {
+		value = scope:title.holder.capital_province.county.prosperity_level
+		multiply = 0.001
+		desc = "[prosperity|E]"
+	}
+
+	# Owned trade posts
+	add = {
+		value = scope:title.holder.trade_post_count
+		scope:title.holder = {
+			every_vassal_or_below = {
+				limit = {
+					gdp_is_patrician_trigger = yes
+					highest_liege_matching_rule:uses_assembly = scope:title.holder
+					trade_post_count > 0
+				}
+				add = trade_post_count
+			}
+		}
+		multiply = 0.005
+		desc = "[trade_posts|E]"
+	}
+
+	# Capital has a League Chapter House
+	if = {
+		limit = {
+			scope:title.holder.capital_province ?= {
+				has_building_or_higher = republic_league_chapter_house_01
+			}
+		}
+		add = {
+			value = 0.05
+			desc = capital_has_league_chapter_house_desc
+		}
+	}
+
+	# Cultural traditions
+	if = {
+		limit = {
+			scope:title.holder.culture ?= {
+				has_cultural_parameter = trade_league_cohesion_bonus
+			}
+		}
+		add = {
+			value = 0.02
+			desc = trade_league_cohesion_bonus_desc
+		}
+	}
+
+	# Opinion of leader
+	if = {
+		limit = {
+			has_leading_title = yes
+			exists = leading_title.holder
+			exists = scope:title.holder
+			NOT = { scope:title.holder = leading_title.holder }
+		}
+		add = {
+			value = 0
+			scope:title.holder = {
+				add = {
+					value = "opinion(root.leading_title.holder)"
+					multiply = 0.001
+				}
+			}
+			desc = gdp_league_opinion_of_leader_desc
+		}
+	}
+}
+
+# Scope should be confederation
+gdp_confederation_title_member_count_value = {
+	value = 0
+	every_confederation_member = {
+		limit = { exists = primary_title.title_confederation }
+		add = 1
+	}
+}
+
+# Gold offered when pressing a league leader to step aside, floored so it stays a real concession
+gdp_league_leadership_bribe_value = {
+	value = major_gold_value
+	min = 50
+}
+
+# Gold offered with Expel Rival Traders
+gdp_league_expulsion_bribe_value = {
+	value = major_gold_value
+	min = 50
+}
+
+# Successor score: title tier, then capital size, then prestige.
+gdp_trade_league_automatic_leader_score_value = {
+	value = 0
+	add = {
+		value = highest_held_title_tier
+		multiply = 1000000
+	}
+	if = {
+		limit = { exists = capital_province }
+		add = {
+			value = capital_province.province_size_level
+			multiply = 10000
+		}
+	}
+	add = prestige
+}
+
+gdp_republic_revoke_title_law_monetary_cost_value = {
+	value = {
+		value = 1000
+		desc = BASE
+	}
+}
+
+gdp_republic_pass_title_law_monetary_cost_value = {
+	value = {
+		value = 500
+		desc = BASE
+	}
+}
+
+gdp_republic_revoke_title_law_cost_scale_value = {
+	value = {
+		value = 0
+		# For republics we keep the cost of removing a law higher than replacing it
+		if = {
+			limit = {
+				highest_held_title_tier = tier_hegemony
+			}
+			add = 2
+		}
+		else_if = {
+			limit = {
+				highest_held_title_tier = tier_empire
+			}
+			add = 4
+		}
+		else_if = {
+			limit = {
+				highest_held_title_tier = tier_kingdom
+			}
+			add = 8
+		}
+		else_if = {
+			limit = {
+				highest_held_title_tier = tier_duchy
+			}
+			add = 16
+		}
+		else_if = {
+			limit = {
+				highest_held_title_tier = tier_county
+			}
+			add = 40
+		}
+		# Fallback - for any cases not covered by the above, we use the default value (i.e. multiply cost with 1)
+		else = {
+			add = 1
+		}
+		desc = "[republic_government|E]"
+	}
+}
+
+# General republic law acceptance - Common additions used for ALL republican laws
+ai_law_approval_republic_base_value = {
+	# Base - We add a base of 0 for clarity
+	value = {
+		value = 0
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	if = {
+		limit = {
+			exists = scope:proposer
+			this != scope:proposer
+		}
+		# Relations
+		if = {
+			limit = {
+				has_relation_friend = scope:proposer
+			}
+			add = {
+				value = 20
+				desc = LAW_FRIEND_DESC
+			}
+		}
+		if = {
+			limit = {
+				has_relation_rival = scope:proposer
+			}
+			add = {
+				value = -20
+				desc = LAW_RIVAL_DESC
+			}
+		}
+		if = {
+			limit = {
+				exists = house
+				exists = scope:proposer.house
+				house = scope:proposer.house
+			}
+			add = {
+				value = 10
+				desc = LAW_SAME_HOUSE_DESC
+			}
+		}
+		
+		# Dread
+		if = {
+			limit = {
+				has_dread_level_towards = {
+					target = scope:proposer
+					level = 1
+				}
+			}
+			add = {
+				value = 10
+				desc = LAW_INTIMIDATED_DESC
+			}
+		}
+		if = {
+			limit = {
+				has_dread_level_towards = {
+					target = scope:proposer
+					level = 2
+				}
+			}
+			add = {
+				value = 25
+				desc = LAW_COWED_DESC
+			}
+		}
+
+		# Lifestyle Perks
+		if = {
+			limit = {
+				scope:proposer = {
+					has_perk = true_ruler_perk
+				}
+			}
+			add = {
+				value = gdp_republic_true_ruler_perk_value
+				desc = LAW_HAS_TRUE_RULER_PERK_DESC
+			}
+		}
+		if = {
+			limit = {
+				scope:proposer = {
+					has_perk = large_levies_perk
+				}
+			}
+			add = {
+				value = gdp_republic_large_levies_perk_value
+				desc = LAW_HAS_LARGE_LEVIES_PERK_DESC
+			}
+		}
+
+		# Bonuses from modifiers
+		if = {
+			limit = {
+				scope:proposer = {
+					has_character_modifier = gdp_republic_bureaucrat_modifier
+				}
+			}
+			add = {
+				value = gdp_republic_bureaucrat_assembly_approval_bonus_value
+				desc = gdp_republic_bureaucrat_modifier_tt_desc
+			}
+		}
+	}
+	
+	# Personality
+	if = {
+		limit = {
+			has_trait = trusting
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_TRUSTING_DESC
+		}
+	}
+
+	add = republic_assembly_preparation_approval_value
+	add = republic_procedural_advantage_approval_value
+	add = republic_caucus_room_approval_value
+	add = republic_pledged_law_support_approval_value
+}
+
+republic_assembly_preparation_approval_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = scope:proposer
+			scope:proposer = {
+				is_alive = yes
+				has_variable = republic_assembly_preparation_value
+			}
+		}
+		add = {
+			value = scope:proposer.var:republic_assembly_preparation_value
+			desc = REPUBLIC_ASSEMBLY_PREPARATION_APPROVAL_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:proposer }
+			scope:enactor ?= {
+				has_variable = republic_assembly_preparation_value
+			}
+		}
+		add = {
+			value = scope:enactor.var:republic_assembly_preparation_value
+			desc = REPUBLIC_ASSEMBLY_PREPARATION_APPROVAL_DESC
+		}
+	}
+}
+
+republic_procedural_advantage_approval_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = scope:proposer
+			scope:proposer = {
+				has_character_modifier = republic_procedural_advantage_modifier
+			}
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_PROCEDURAL_ADVANTAGE_APPROVAL_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:proposer }
+			scope:enactor ?= {
+				has_character_modifier = republic_procedural_advantage_modifier
+			}
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_PROCEDURAL_ADVANTAGE_APPROVAL_DESC
+		}
+	}
+}
+
+republic_caucus_room_approval_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = scope:proposer
+			scope:proposer = { domicile ?= { has_domicile_parameter = republic_caucus_t5 } }
+		}
+		add = { value = 20 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			exists = scope:proposer
+			scope:proposer = { domicile ?= { has_domicile_parameter = republic_caucus_t4 } }
+		}
+		add = { value = 16 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			exists = scope:proposer
+			scope:proposer = { domicile ?= { has_domicile_parameter = republic_caucus_t3 } }
+		}
+		add = { value = 12 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			exists = scope:proposer
+			scope:proposer = { domicile ?= { has_domicile_parameter = republic_caucus_t2 } }
+		}
+		add = { value = 8 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			exists = scope:proposer
+			scope:proposer = { domicile ?= { has_domicile_parameter = republic_caucus_t1 } }
+		}
+		add = { value = 4 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:proposer }
+			scope:enactor ?= { domicile ?= { has_domicile_parameter = republic_caucus_t5 } }
+		}
+		add = { value = 20 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:proposer }
+			scope:enactor ?= { domicile ?= { has_domicile_parameter = republic_caucus_t4 } }
+		}
+		add = { value = 16 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:proposer }
+			scope:enactor ?= { domicile ?= { has_domicile_parameter = republic_caucus_t3 } }
+		}
+		add = { value = 12 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:proposer }
+			scope:enactor ?= { domicile ?= { has_domicile_parameter = republic_caucus_t2 } }
+		}
+		add = { value = 8 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:proposer }
+			scope:enactor ?= { domicile ?= { has_domicile_parameter = republic_caucus_t1 } }
+		}
+		add = { value = 4 desc = REPUBLIC_CAUCUS_ROOM_APPROVAL_DESC }
+	}
+}
+
+republic_pledged_law_support_approval_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = scope:proposer
+			this != scope:proposer
+			scope:proposer = {
+				is_alive = yes
+				is_target_in_variable_list = {
+					name = law_approvers
+					target = root
+				}
+			}
+		}
+		add = {
+			value = 100
+			desc = REPUBLIC_PLEDGED_LAW_SUPPORT_APPROVAL_DESC
+		}
+	}
+}
+
+gdp_pledged_assembly_vote_duration_value = 5
+
+ai_law_approval_opinion_value = {
+	if = {
+		limit = {
+			exists = scope:proposer
+			this != scope:proposer
+		}
+		value = "opinion(scope:proposer)"
+	}
+	else = {
+		value = 0
+	}
+}
+
+ai_law_approval_house_relation_value = {
+	if = {
+		limit = {
+			exists = scope:proposer.house
+			this != scope:proposer
+			house ?= {
+				any_house_relation = {
+					any_relation_house = { this = scope:proposer.house }
+					OR = {
+						has_house_relation_level = feud
+						has_house_relation_level = rivalry
+						has_house_relation_level = quarrel
+						has_house_relation_level = cordial
+						has_house_relation_level = friendly
+						has_house_relation_level = amity
+					}
+				}
+			}
+		}
+		value = {
+			value = 0
+			house ?= {
+				every_house_relation = {
+					limit = {
+						any_relation_house = {
+							this = scope:proposer.house
+						}
+					}
+					switch = {
+						trigger = has_house_relation_level
+						feud = { add = -15 }
+						rivalry = { add = -10 }
+						quarrel = { add = -5 }
+						cordial = { add = 5 }
+						friendly = { add = 10 }
+						amity = { add = 15 }
+					}
+				}
+			}
+		}
+	}
+	else = {
+		value = 0
+	}
+}
+
+# Grace period for laws - to prevent the AI from constantly attempting to change laws
+ai_law_grace_period_value = {
+	# Base is 1 (to keep the value unchanged, since this is a multiplier)
+	value = 1
+
+	# Never change a law...
+	if = {
+		limit = {
+			months_from_game_start < 24 # Immediately after game start
+		}
+		multiply = 0
+	}
+}
+
+# Law specific acceptance
+ai_law_approval_republic_army_organization_levy_value = {
+	value = 0
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -10
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_aggrandizement }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_AGGRANDIZEMENT_AMBITION_DESC
+		}
+	}
+
+	# Other
+	if = {
+		limit = {
+			ai_has_economical_boom_personality = yes
+		}
+		add = {
+			value = 10
+			desc = LAW_ECONOMICAL_BOOM_PERSONALITY_DESC
+		}
+	}
+	add = ai_law_approval_despot_mild_penalty_value
+}
+ai_law_approval_republic_army_organization_maa_value = {
+	value = 0
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_aggrandizement }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_AGGRANDIZEMENT_AMBITION_DESC
+		}
+	}
+
+	# Other
+	if = {
+		limit = {
+			ai_has_warlike_personality = yes
+		}
+		add = {
+			value = 10
+			desc = LAW_WARLIKE_PERSONALITY_DESC
+		}
+	}
+	add = ai_law_approval_despot_mild_bonus_value
+}
+ai_law_approval_republic_army_organization_merc_value = {
+	value = 0
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_agitation }
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_AGITATION_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_commerce }
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_COMMERCE_AMBITION_DESC
+		}
+	}
+}
+
+ai_law_approval_title_revocation_1_value = {
+	# Base
+	value = {
+		add = 10
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# Vassal stance
+	add = {
+		value = 0
+		if = {
+			limit = {
+				exists = liege
+				this != liege
+				is_ruler = yes
+				has_vassal_stance = parochial
+			}
+			add = -20
+		}
+		desc = LAW_VASSAL_STANCE_DESC
+	}
+	
+	# Other
+}
+ai_law_approval_title_revocation_2_value = {
+	# Base
+	value = {
+		add = -10
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# Vassal stance
+	add = {
+		value = 0
+		if = {
+			limit = {
+				exists = liege
+				this != liege
+				is_ruler = yes
+				has_vassal_stance = parochial
+			}
+			add = 10
+		}
+		desc = LAW_VASSAL_STANCE_DESC
+	}
+	
+	# Other
+}
+
+ai_law_approval_retract_vassal_1_value = {
+	# Base
+	value = {
+		add = 10
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# Vassal stance
+	add = {
+		value = 0
+		if = {
+			limit = {
+				exists = liege
+				this != liege
+				is_ruler = yes
+				has_vassal_stance = parochial
+			}
+			add = -20
+		}
+		desc = LAW_VASSAL_STANCE_DESC
+	}
+	
+	# Other
+}
+ai_law_approval_retract_vassal_2_value = {
+	# Base
+	value = {
+		add = -10
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# Vassal stance
+	add = {
+		value = 0
+		if = {
+			limit = {
+				exists = liege
+				this != liege
+				is_ruler = yes
+				has_vassal_stance = parochial
+			}
+			add = 10
+		}
+		desc = LAW_VASSAL_STANCE_DESC
+	}
+	
+	# Other
+	
+}
+
+ai_law_approval_vassal_refusal_1_value = {
+	# Base
+	value = {
+		value = 25
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+	
+	# Opinion - No reason to refuse based on opinion, unless they are very petty
+	if = {
+		limit = {
+			exists = liege
+			OR = {
+				opinion = {
+					value > 0
+					target = liege
+				}
+				AND = {
+					ai_rationality <= -75
+					has_trait = stubborn
+				}
+			}
+		}
+		add = {
+			value = ai_law_approval_opinion_value
+			desc = LAW_PROPOSER_OPINION_DESC
+		}
+
+		# House relation
+		add = {
+			value = ai_law_approval_house_relation_value
+			desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+		}
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_commerce }
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_COMMERCE_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	
+	# Other
+	if = {
+		limit = {
+			is_landed = yes
+		}
+		add = {
+			value = 30
+			desc = LAW_LANDED_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = {
+			value = 15
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = forgiving
+		}
+		add = {
+			value = 15
+			desc = LAW_TRAIT_FORGIVING_DESC
+		}
+	}
+	add = ai_law_approval_democratic_bonus_value
+	add = ai_law_approval_despot_mild_penalty_value
+}
+ai_law_approval_vassal_refusal_2_value = {
+	# Base
+	value = {
+		value = -25
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_commerce }
+		}
+		add = {
+			value = -20
+			desc = REPUBLIC_COMMERCE_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	
+	# Other
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		add = {
+			value = -20
+			desc = LAW_TRAIT_COMPASSIONATE_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = paranoid
+		}
+		add = {
+			value = -50
+			desc = LAW_TRAIT_PARANOID_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = vengeful
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_VENGEFUL_DESC
+		}
+	}
+	add = ai_law_approval_despot_bonus_value
+	add = ai_law_approval_democratic_penalty_value
+}
+
+ai_law_approval_despot_bonus_value = {
+	if = {
+		limit = {
+			has_realm_law = republican_despot_succession_law
+		}
+		add = {
+			value = 25
+			desc = LAW_DESPOT_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			exists = house
+			exists = liege.house
+			house = liege.house
+		}
+		add = {
+			value = 25
+			desc = LAW_DESPOT_HOUSE_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			is_player_heir_of = liege
+		}
+		add = {
+			value = 25
+			desc = LAW_DESPOT_HEIR_DESC
+		}
+	}
+}
+
+ai_law_approval_despot_penalty_value = {
+	if = {
+		limit = {
+			has_realm_law = republican_despot_succession_law
+		}
+		add = {
+			value = -25
+			desc = LAW_DESPOT_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			exists = house
+			exists = liege.house
+			house = liege.house
+		}
+		add = {
+			value = -25
+			desc = LAW_DESPOT_HOUSE_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			is_player_heir_of = liege
+		}
+		add = {
+			value = -25
+			desc = LAW_DESPOT_HEIR_DESC
+		}
+	}
+}
+
+ai_law_approval_despot_mild_bonus_value = {
+	if = {
+		limit = {
+			has_realm_law = republican_despot_succession_law
+		}
+		add = {
+			value = 10
+			desc = LAW_DESPOT_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			exists = house
+			exists = liege.house
+			house = liege.house
+		}
+		add = {
+			value = 10
+			desc = LAW_DESPOT_HOUSE_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			is_player_heir_of = liege
+		}
+		add = {
+			value = 10
+			desc = LAW_DESPOT_HEIR_DESC
+		}
+	}
+}
+
+ai_law_approval_despot_mild_penalty_value = {
+	if = {
+		limit = {
+			has_realm_law = republican_despot_succession_law
+		}
+		add = {
+			value = -10
+			desc = LAW_DESPOT_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			exists = house
+			exists = liege.house
+			house = liege.house
+		}
+		add = {
+			value = -10
+			desc = LAW_DESPOT_HOUSE_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			is_player_heir_of = liege
+		}
+		add = {
+			value = -10
+			desc = LAW_DESPOT_HEIR_DESC
+		}
+	}
+}
+
+ai_law_approval_democratic_bonus_value = {
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_type_popular
+				liege ?= { has_realm_law = republic_type_popular }
+			}
+		}
+		add = {
+			value = 25
+			desc = LAW_POPULAR_REPUBLIC_DESC
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_composition_parliament
+				liege ?= { has_realm_law = republic_assembly_composition_parliament }
+			}
+		}
+		add = {
+			value = 25
+			desc = LAW_PARLIAMENT_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_composition_general
+				liege ?= { has_realm_law = republic_assembly_composition_general }
+			}
+		}
+		add = {
+			value = 25
+			desc = LAW_GENERAL_ASSEMBLY_DESC
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_authority_constitutional
+				liege ?= { has_realm_law = republic_assembly_authority_constitutional }
+			}
+		}
+		add = {
+			value = 25
+			desc = LAW_CONSTITUTIONAL_DESC
+		}
+	}
+}
+
+ai_law_approval_democratic_penalty_value = {
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_type_popular
+				liege ?= { has_realm_law = republic_type_popular }
+			}
+		}
+		add = {
+			value = -25
+			desc = LAW_POPULAR_REPUBLIC_DESC
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_composition_parliament
+				liege ?= { has_realm_law = republic_assembly_composition_parliament }
+			}
+		}
+		add = {
+			value = -25
+			desc = LAW_PARLIAMENT_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_composition_general
+				liege ?= { has_realm_law = republic_assembly_composition_general }
+			}
+		}
+		add = {
+			value = -25
+			desc = LAW_GENERAL_ASSEMBLY_DESC
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_authority_constitutional
+				liege ?= { has_realm_law = republic_assembly_authority_constitutional }
+			}
+		}
+		add = {
+			value = -25
+			desc = LAW_CONSTITUTIONAL_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_authority_legislative
+				liege ?= { has_realm_law = republic_assembly_authority_legislative }
+			}
+		}
+		add = {
+			value = -10
+			desc = LAW_LEGISLATIVE_DESC
+		}
+	}
+}
+
+ai_law_approval_democratic_mild_penalty_value = {
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_type_popular
+				liege ?= { has_realm_law = republic_type_popular }
+			}
+		}
+		add = {
+			value = -15
+			desc = LAW_POPULAR_REPUBLIC_DESC
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_composition_parliament
+				liege ?= { has_realm_law = republic_assembly_composition_parliament }
+			}
+		}
+		add = {
+			value = -15
+			desc = LAW_PARLIAMENT_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_composition_general
+				liege ?= { has_realm_law = republic_assembly_composition_general }
+			}
+		}
+		add = {
+			value = -15
+			desc = LAW_GENERAL_ASSEMBLY_DESC
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_authority_constitutional
+				liege ?= { has_realm_law = republic_assembly_authority_constitutional }
+			}
+		}
+		add = {
+			value = -15
+			desc = LAW_CONSTITUTIONAL_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_realm_law = republic_assembly_authority_legislative
+				liege ?= { has_realm_law = republic_assembly_authority_legislative }
+			}
+		}
+		add = {
+			value = -5
+			desc = LAW_LEGISLATIVE_DESC
+		}
+	}
+}
+
+ai_law_approval_criminal_bonus_value = {
+	if = {
+		limit = {
+			gdp_is_criminal_for_republic_punishment_laws_trigger = yes
+		}
+		add = {
+			value = 25
+			desc = LAW_CRIMINAL_DESC
+		}
+	}
+}
+
+ai_law_approval_criminal_penalty_value = {
+	if = {
+		limit = {
+			gdp_is_criminal_for_republic_punishment_laws_trigger = yes
+		}
+		add = {
+			value = -25
+			desc = LAW_CRIMINAL_DESC
+		}
+	}
+}
+
+ai_law_approval_criminal_mild_bonus_value = {
+	if = {
+		limit = {
+			gdp_is_criminal_for_republic_punishment_laws_trigger = yes
+		}
+		add = {
+			value = 10
+			desc = LAW_CRIMINAL_DESC
+		}
+	}
+}
+
+ai_law_approval_criminal_mild_penalty_value = {
+	if = {
+		limit = {
+			gdp_is_criminal_for_republic_punishment_laws_trigger = yes
+		}
+		add = {
+			value = -15
+			desc = LAW_CRIMINAL_DESC
+		}
+	}
+}
+
+ai_law_approval_banishment_1_value = {
+	# Base
+	value = {
+		add = 10
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+
+	# Other
+	if = {
+		limit = {
+			is_landed = yes
+		}
+		add = {
+			value = 20
+			desc = LAW_LANDED_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_COMPASSIONATE_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = paranoid
+		}
+		add = {
+			value = 20
+			desc = LAW_TRAIT_PARANOID_DESC
+		}
+	}
+	add = ai_law_approval_despot_penalty_value
+	add = ai_law_approval_criminal_bonus_value
+}
+
+ai_law_approval_banishment_2_value = {
+	# Base
+	value = {
+		value = 0
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# Other
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = {
+			value = 15
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+	add = ai_law_approval_despot_mild_penalty_value
+	add = ai_law_approval_democratic_bonus_value
+	add = ai_law_approval_criminal_mild_bonus_value
+}
+
+ai_law_approval_banishment_3_value = {
+	# Base
+	value = {
+		add = -10
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_agitation }
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_AGITATION_AMBITION_DESC
+		}
+	}
+
+	# Other
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		add = {
+			value = -20
+			desc = LAW_TRAIT_COMPASSIONATE_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = paranoid
+		}
+		add = {
+			value = -50
+			desc = LAW_TRAIT_PARANOID_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = vengeful
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_VENGEFUL_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = arbitrary
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_ARBITRARY_DESC
+		}
+	}
+	add = ai_law_approval_despot_bonus_value
+	add = ai_law_approval_democratic_penalty_value
+	add = ai_law_approval_criminal_penalty_value
+}
+
+ai_law_approval_execution_1_value = {
+	# Base
+	value = {
+		value = 25
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+
+	# Other
+	if = {
+		limit = {
+			is_landed = yes
+		}
+		add = {
+			value = 20
+			desc = LAW_LANDED_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		add = {
+			value = 20
+			desc = LAW_TRAIT_COMPASSIONATE_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+	add = ai_law_approval_despot_penalty_value
+	add = ai_law_approval_democratic_bonus_value
+	add = ai_law_approval_criminal_bonus_value
+}
+
+ai_law_approval_execution_2_value = {
+	# Base
+	value = {
+		value = 0
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# Other
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = {
+			value = 20
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		add = {
+			value = -10
+			desc = LAW_TRAIT_COMPASSIONATE_DESC
+		}
+	}
+	add = ai_law_approval_despot_mild_bonus_value
+	add = ai_law_approval_democratic_mild_penalty_value
+	add = ai_law_approval_criminal_mild_penalty_value
+}
+
+ai_law_approval_execution_3_value = {
+	# Base
+	value = {
+		value = -25
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_agitation }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_AGITATION_AMBITION_DESC
+		}
+	}
+
+	# Other
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		add = {
+			value = -20
+			desc = LAW_TRAIT_COMPASSIONATE_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = {
+			value = -25
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = paranoid
+		}
+		add = {
+			value = -50
+			desc = LAW_TRAIT_PARANOID_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = vengeful
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_VENGEFUL_DESC
+		}
+	}
+	if = {
+		limit = {
+			has_trait = arbitrary
+		}
+		add = {
+			value = 15
+			desc = LAW_TRAIT_ARBITRARY_DESC
+		}
+	}
+	add = ai_law_approval_despot_bonus_value
+	add = ai_law_approval_democratic_penalty_value
+	add = ai_law_approval_criminal_penalty_value
+}
+
+ai_law_approval_assembly_composition_patrician_value = {
+	# Base
+	value = {
+		value = 0
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# Other
+	if = { # Family heads
+		limit = {
+			any_held_title = { is_noble_family_title = yes }
+		}
+		add = {
+			value = 30
+			desc = LAW_PATRICIAN_DESC
+		}
+	}
+	if = { # Family members
+		limit = {
+			NOT = {
+				any_held_title = { is_noble_family_title = yes }
+			}
+			house ?= {
+				any_house_member = {
+					any_held_title = { is_noble_family_title = yes }
+					exists = liege
+					liege = root.liege
+				}
+			}
+		}
+		add = {
+			value = 15
+			desc = LAW_PATRICIAN_FAMILY_DESC
+		}
+	}
+	if = { # Councillors dislike this if they are also not part of a patrician family
+		limit = {
+			exists = liege
+			is_councillor_of = liege
+			liege = { has_realm_law = republic_assembly_composition_council }
+			house ?= {
+				NOT = {
+					any_house_member = {
+						any_held_title = { is_noble_family_title = yes }
+						liege = root.liege
+					}
+				}
+			}
+		}
+		add = {
+			value = -20
+			desc = LAW_COUNCILLOR_DESC
+		}
+	}
+	if = { # Any assembly member who isn't a patrician will dislike this
+		limit = {
+			house ?= {
+				NOT = {
+					any_house_member = {
+						any_held_title = { is_noble_family_title = yes }
+						exists = liege
+						liege = root.liege
+					}
+				}
+			}
+		}
+		add = {
+			value = -50
+			desc = LAW_LOSE_ASSEMBLY_MEMBERSHIP_DESC
+		}
+	}
+}
+ai_law_approval_assembly_composition_council_value = {
+	# Base
+	value = {
+		value = 0
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	
+	# Other
+	if = {
+		limit = { # Current councillors
+			exists = liege
+			is_councillor_of = liege
+		}
+		add = {
+			value = 30
+			desc = LAW_COUNCILLOR_DESC
+		}
+	}
+	if = { # Family heads who are not councillors greatly oppose
+		limit = {
+			any_held_title = { is_noble_family_title = yes }
+			exists = liege
+			NOT = { is_councillor_of = liege }
+		}
+		add = {
+			value = -50
+			desc = LAW_PATRICIAN_DESC
+		}
+	}
+}
+ai_law_approval_assembly_composition_general_value = {
+	# Base
+	value = {
+		value = 0
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	
+	# Other
+	
+}
+ai_law_approval_assembly_composition_parliament_value = {
+	# Base
+	value = {
+		value = 0
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_aggrandizement }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_AGGRANDIZEMENT_AMBITION_DESC
+		}
+	}
+	
+	# Other
+	if = { # Bonus for having the Sicilian Parliament
+		limit = {
+			highest_liege_matching_rule:uses_assembly = {
+				capital_province ?= { province_has_district = special_sicilian_parliament_01_district }
+			}
+		}
+		add = {
+			value = 15
+			desc = "[GetDistrictType('special_sicilian_parliament_01_district').GetName]"
+		}
+	}
+}
+
+ai_law_approval_assembly_authority_constitutional_value = {
+	# Base
+	value = {
+		value = 25
+		if = {
+			limit = {
+				liege ?= { has_realm_law = republic_assembly_authority_ceremonial }
+			}
+			add = 25
+		}
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		if = { # Don't let opinion matter as much if you have the communal ambition
+			limit = {
+				house ?= { has_house_aspiration_parameter = republic_communal }
+			}
+			multiply = 0.5
+		}
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		if = {
+			limit = {
+				house ?= { has_house_aspiration_parameter = republic_communal }
+			}
+			multiply = 0.5
+		}
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	
+	# Other
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = {
+			value = 25
+			if = {
+				limit = {
+					liege ?= { has_realm_law = republic_assembly_authority_ceremonial }
+				}
+				add = 25
+			}
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+}
+ai_law_approval_assembly_authority_legislative_value = {
+	# Base
+	if = {
+		limit = {
+			liege ?= { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+		value = {
+			value = 25
+			desc = LAW_BASE_WILLINGNESS_DESC
+		}
+	}
+	else = {
+		value = {
+			value = -25
+			desc = LAW_BASE_RELUCTANCE_DESC
+		}
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		if = {
+			limit = {
+				liege ?= { has_realm_law = republic_assembly_authority_constitutional }
+			}
+			add = {
+				value = -20
+				desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				liege ?= { has_realm_law = republic_assembly_authority_ceremonial }
+			}
+			add = {
+				value = 20
+				desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+			}
+		}
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# Other
+	if = {
+		limit = {
+			has_trait = just
+			liege ?= { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+		add = {
+			value = 25
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+}
+ai_law_approval_assembly_authority_ceremonial_value = {
+	# Base
+	value = {
+		value = -100
+		if = {
+			limit = {
+				liege ?= { has_realm_law = republic_assembly_authority_legislative }
+			}
+			add = 50
+		}
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+	
+	# Other
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = {
+			value = -25
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+}
+
+ai_law_approval_assembly_voting_thresholds_simple_majority_value = {
+	# Base
+	value = 0
+	if = {
+		limit = {
+			highest_liege_matching_rule:uses_assembly ?= { has_realm_law = republic_assembly_voting_thresholds_unanimous }
+		}
+		add = {
+			value = 50
+			desc = LAW_BASE_WILLINGNESS_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			highest_liege_matching_rule:uses_assembly ?= { has_realm_law = republic_assembly_voting_thresholds_large_majority }
+		}
+		add = {
+			value = 5
+			desc = LAW_BASE_WILLINGNESS_DESC
+		}
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_agitation }
+		}
+		add = {
+			value = 10
+			desc = REPUBLIC_AGITATION_AMBITION_DESC
+		}
+	}
+
+	# Vassal stance
+	add = {
+		value = 0
+		if = {
+			limit = {
+				exists = liege
+				this != liege
+				is_ruler = yes
+				OR = {
+					has_vassal_stance = courtly
+					has_vassal_stance = barons_and_minor_landholders
+				}
+			}
+			add = 10
+		}
+		desc = LAW_VASSAL_STANCE_DESC
+	}
+	
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		desc = LAW_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+
+	# Other
+	if = {
+		limit = {
+			has_trait = impatient
+		}
+		add = {
+			value = 10
+			desc = LAW_TRAIT_IMPATIENT_DESC
+		}
+	}
+}
+ai_law_approval_assembly_voting_thresholds_large_majority_value = {
+	# Base
+	if = {
+		limit = {
+			highest_liege_matching_rule:uses_assembly ?= { has_realm_law = republic_assembly_voting_thresholds_unanimous }
+		}
+		add = {
+			value = 50
+			desc = LAW_BASE_WILLINGNESS_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			highest_liege_matching_rule:uses_assembly ?= { has_realm_law = republic_assembly_voting_thresholds_simple_majority }
+		}
+		add = {
+			value = -15
+			desc = LAW_BASE_RELUCTANCE_DESC
+		}
+	}
+	
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_agitation }
+		}
+		add = {
+			value = -10
+			desc = REPUBLIC_AGITATION_AMBITION_DESC
+		}
+	}
+
+	# Vassal stance
+	add = {
+		value = 0
+		if = {
+			limit = {
+				exists = liege
+				this != liege
+				is_ruler = yes
+			}
+			if = {
+				limit = { has_vassal_stance = parochial }
+				add = 10
+			}
+			else_if = {
+				limit = { has_vassal_stance = glory_hound }
+				add = -10
+			}
+		}
+		desc = LAW_VASSAL_STANCE_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		desc = LAW_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+}
+
+ai_law_approval_increase_term_length_value = {
+	# Base
+	add = {
+		value = -25
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -50
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 50
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+}
+ai_law_approval_decrease_term_length_value = {
+	# Base
+	add = {
+		value = 25
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 50
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -50
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+}
+
+ai_law_approval_republic_end_term_law_1_value = {
+	# Base
+	add = {
+		value = -20
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+
+	# Personality
+	if = {
+		limit = { has_trait = paranoid }
+		add = {
+			value = 10
+			desc = LAW_TRAIT_PARANOID_DESC
+		}
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = -20
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_agitation }
+		}
+		add = {
+			value = -10
+			desc = REPUBLIC_AGITATION_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+
+	# Other
+	add = ai_law_approval_democratic_penalty_value
+}
+ai_law_approval_republic_end_term_law_2_value = {
+	# Base
+	add = {
+		value = 10
+		desc = LAW_BASE_WILLINGNESS_DESC
+	}
+
+	# Personality
+	if = {
+		limit = { has_trait = just }
+		add = {
+			value = 10
+			desc = LAW_TRAIT_JUST_DESC
+		}
+	}
+	if = {
+		limit = { has_trait = compassionate }
+		add = {
+			value = 10
+			desc = LAW_TRAIT_COMPASSIONATE_DESC
+		}
+	}
+
+	# House ambition
+	if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_communal }
+		}
+		add = {
+			value = 40
+			desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_agitation }
+		}
+		add = {
+			value = 20
+			desc = REPUBLIC_AGITATION_AMBITION_DESC
+		}
+	}
+	else_if = {
+		limit = {
+			house ?= { has_house_aspiration_parameter = republic_signorial }
+		}
+		add = {
+			value = -25
+			desc = REPUBLIC_SIGNORIAL_AMBITION_DESC
+		}
+	}
+
+	# Other
+	add = ai_law_approval_democratic_bonus_value
+}
+ai_law_approval_republic_end_term_law_3_value = {
+	highest_liege_matching_rule:uses_assembly = {
+		save_temporary_scope_as = assembly_ruler
+	}
+
+	# Base
+	add = {
+		value = -15
+		desc = LAW_BASE_RELUCTANCE_DESC
+	}
+
+	if = {
+		limit = {
+			exists = scope:assembly_ruler
+		}
+		# Opinion - more likely to approve if we dislike the ruler
+		if = {
+			limit = { this != scope:assembly_ruler }
+			add = {
+				value = "opinion(scope:assembly_ruler)"
+				multiply = -1
+				desc = LAW_LIEGE_OPINION_DESC
+			}
+		}
+
+		# Relations
+		if = {
+			limit = {
+				has_relation_rival = scope:assembly_ruler
+				scope:assembly_ruler != scope:proposer
+			}
+			add = {
+				value = 25
+				desc = LAW_RULER_RIVAL_DESC
+			}
+		}
+		if = {
+			limit = {
+				has_relation_friend = scope:assembly_ruler
+				scope:assembly_ruler != scope:proposer
+			}
+			add = {
+				value = -10
+				desc = LAW_RULER_FRIEND_DESC
+			}
+		}
+
+		# House ambition
+		if = {
+			limit = {
+				exists = scope:assembly_ruler.primary_heir.house
+				house ?= {
+					has_house_aspiration_parameter = republic_signorial
+					NOT = { has_same_house_aspiration_as = scope:assembly_ruler.primary_heir.house }
+				}
+			}
+			add = {
+				value = -15
+				desc = LAW_CANDIDATE_NOT_SIGNORIAL_DESC
+			}
+		}
+		if = {
+			limit = {
+				house ?= {
+					has_house_aspiration_parameter = republic_communal
+				}
+			}
+			add = {
+				value = 10
+				desc = REPUBLIC_COMMUNAL_AMBITION_DESC
+			}
+		}
+
+		# Ruler specific acceptance
+		if = {
+			limit = {
+				this != scope:assembly_ruler # To avoid weird acceptance in relation to themself
+			}
+			scope:assembly_ruler = {
+				# Criminal
+				if = {
+					limit = {
+						gdp_is_criminal_for_republic_punishment_laws_trigger = yes
+					}
+					add = {
+						value = 25
+						desc = LAW_LIEGE_CRIMINAL_DESC
+					}
+				}
+
+				# House considerations
+				if = {
+					limit = {
+						house ?= root.house
+						this != scope:proposer
+					}
+					add = {
+						value = -20
+						if = {
+							limit = {
+								root.house ?= {
+									OR = {
+										has_house_aspiration_parameter = republic_aggrandizement
+										has_house_aspiration_parameter = republic_signorial
+									}
+								}
+							}
+							multiply = 2
+						}
+						desc = LAW_LIEGE_SAME_HOUSE_DESC
+					}
+				}
+
+				# Popular opinion
+				if = {
+					limit = {
+						capital_county.popular_opinion < 0
+					}
+					add = {
+						value = capital_county.popular_opinion
+						if = {
+							limit = {
+								root.house ?= {
+									has_house_aspiration_parameter = republic_communal
+								}
+							}
+							multiply = -0.5
+						}
+						else = {
+							multiply = -0.25
+						}
+						desc = LAW_RULER_POPULAR_OPINION_DESC
+					}
+				}
+			}
+		}
+
+		# Ruler self acceptance (i.e. ruler is voting on themself)
+		if = {
+			limit = {
+				this = scope:assembly_ruler
+				# Ruler is not the primary heir, otherwise this can just be a tactical re-election
+				primary_heir ?= { this != root }
+			}
+			# The ruler wants to stay in office
+			if = {
+				limit = { has_trait = ambitious }
+				add = {
+					value = -50
+					desc = LAW_TRAIT_AMBITIOUS_DESC
+				}
+			}
+			if = {
+				limit = { has_trait = stubborn }
+				add = {
+					value = -20
+					desc = LAW_TRAIT_STUBBORN_DESC
+				}
+			}
+			if = {
+				limit = { has_trait = arrogant }
+				add = {
+					value = -10
+					desc = LAW_TRAIT_ARROGANT_DESC
+				}
+			}
+			if = {
+				limit = { has_trait = greedy }
+				add = {
+					value = -10
+					desc = LAW_TRAIT_GREEDY_DESC
+				}
+			}
+
+			# The ruler is willing to admit defeat
+			if = {
+				limit = { has_trait = humble }
+				add = {
+					value = 20
+					desc = LAW_TRAIT_HUMBLE_DESC
+				}
+			}
+			if = {
+				limit = { has_trait = fickle }
+				add = {
+					value = 10
+					desc = LAW_TRAIT_FICKLE_DESC
+				}
+			}
+		}
+	}
+}
+
+ai_approval_republic_trade_specialization_trading_value = {
+	add = {
+		value = 25
+		desc = LAW_TRADING_IN_GOODS_DESC
+	}
+}
+
+ai_approval_republic_trade_specialization_else_value = {
+	add = {
+		value = -25
+		desc = LAW_NOT_TRADING_IN_GOODS_DESC
+	}
+
+	# Opinion
+	add = {
+		value = ai_law_approval_opinion_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_OPINION_DESC
+	}
+
+	# House relation
+	add = {
+		value = ai_law_approval_house_relation_value
+		multiply = 0.5
+		desc = LAW_PROPOSER_HOUSE_RELATION_DESC
+	}
+}
+
+# Decree acceptance values
+ai_decree_approval_opinion_value = {
+	if = {
+		limit = {
+			exists = liege
+			this != liege
+		}
+		value = "opinion(liege)"
+	}
+	else = {
+		value = 0
+	}
+}
+ai_decree_approval_house_relation_value = {
+	if = {
+		limit = {
+			exists = scope:enactor.house
+			this != scope:enactor
+			house ?= {
+				any_house_relation = {
+					any_relation_house = { this = scope:enactor.house }
+					OR = {
+						has_house_relation_level = feud
+						has_house_relation_level = rivalry
+						has_house_relation_level = quarrel
+						has_house_relation_level = cordial
+						has_house_relation_level = friendly
+						has_house_relation_level = amity
+					}
+				}
+			}
+		}
+		value = {
+			value = 0
+			house ?= {
+				every_house_relation = {
+					limit = {
+						any_relation_house = {
+							this = scope:enactor.house
+						}
+					}
+					switch = {
+						trigger = has_house_relation_level
+						feud = { add = -15 }
+						rivalry = { add = -10 }
+						quarrel = { add = -5 }
+						cordial = { add = 5 }
+						friendly = { add = 10 }
+						amity = { add = 15 }
+					}
+				}
+			}
+		}
+	}
+	else = {
+		value = 0
+	}
+}
+
+ai_decree_approval_punitive_reluctance_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = liege
+			this != liege
+		}
+		if = {
+			limit = {
+				has_relation_nemesis = liege
+			}
+			add = {
+				value = -75
+				desc = DECREE_NEMESIS_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				has_relation_rival = liege
+			}
+			add = {
+				value = -75
+				desc = DECREE_RIVAL_DESC
+			}
+		}
+		if = {
+			limit = {
+				has_relation_best_friend = liege
+			}
+			add = {
+				value = 30
+				desc = DECREE_BEST_FRIEND_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				has_relation_friend = liege
+			}
+			add = {
+				value = 20
+				desc = DECREE_FRIEND_DESC
+			}
+		}
+		if = {
+			limit = {
+				house_has_feud_relation_with_trigger = { TARGET = root.liege }
+			}
+			add = {
+				value = -75
+				desc = DECREE_HOUSE_FEUD_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				house ?= {
+					has_house_relation_with = root.liege.house
+					any_house_relation = {
+						any_relation_house = { root.liege.house ?= this }
+						has_house_relation_level = amity
+					}
+				}
+			}
+			add = {
+				value = 30
+				desc = DECREE_HOUSE_RELATION_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				house ?= {
+					has_house_relation_with = root.liege.house
+					any_house_relation = {
+						any_relation_house = { root.liege.house ?= this }
+						has_house_relation_level = friendly
+					}
+				}
+			}
+			add = {
+				value = 20
+				desc = DECREE_HOUSE_RELATION_DESC
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					gg_first_and_second_are_opposite_sides_trigger = { FIRST = liege SECOND = root }
+					gg_target_house_head_is_opposite_side_trigger = {
+						ACTOR = liege
+						TARGET = root
+					}
+				}
+			}
+			add = {
+				value = -75
+				desc = DECREE_OPPOSITE_GG_SIDE_DESC
+			}
+		}
+		if = {
+			limit = {
+				liege = {
+					OR = {
+						has_banish_reason = root
+						has_imprisonment_reason = root
+						has_execute_reason = root
+					}
+				}
+			}
+			add = {
+				value = -75
+				desc = DECREE_CRIME_REASON_DESC
+			}
+		}
+		if = {
+			limit = {
+				has_trait = just
+				liege = { has_trait = just }
+			}
+			add = {
+				value = 15
+				desc = LAW_TRAIT_JUST_DESC
+			}
+		}
+		if = {
+			limit = {
+				has_trait = just
+				liege = { has_trait = arbitrary }
+			}
+			add = {
+				value = -25
+				desc = DECREE_LIEGE_ARBITRARY_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = just
+				liege = { has_trait = sadistic }
+			}
+			add = {
+				value = -25
+				desc = DECREE_LIEGE_SADISTIC_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				has_trait = just
+				liege = { has_trait = callous }
+			}
+			add = {
+				value = -25
+				desc = DECREE_LIEGE_CALLOUS_DESC
+			}
+		}
+	}
+}
+
+ai_decree_approval_indicted_kin_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = liege
+			this != liege
+			liege.var:gdp_indicted_character ?= { is_alive = yes }
+		}
+		liege.var:gdp_indicted_character = {
+			save_temporary_scope_as = indicted_character
+		}
+		if = {
+			limit = {
+				this = scope:indicted_character
+			}
+			add = {
+				value = -200
+				desc = DECREE_INDICTED_IS_SELF_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					is_close_family_of = scope:indicted_character
+					is_spouse_of = scope:indicted_character
+				}
+			}
+			add = {
+				value = -75
+				desc = DECREE_INDICTED_IS_FAMILY_DESC
+			}
+		}
+	}
+}
+
+ai_decree_approval_indicted_pledged_kin_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = liege
+			this != liege
+			liege.var:gdp_indicted_character ?= {
+				is_alive = yes
+				this != root
+				OR = {
+					is_close_family_of = root
+					is_spouse_of = root
+				}
+			}
+		}
+		add = {
+			value = -40
+			desc = DECREE_INDICTED_IS_FAMILY_PLEDGE_DESC
+		}
+	}
+}
+
+ai_decree_approval_indicted_character_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = liege
+			this != liege
+			liege.var:gdp_indicted_character ?= { is_alive = yes }
+		}
+		liege.var:gdp_indicted_character = {
+			save_temporary_scope_as = indicted_character
+		}
+		if = {
+			limit = {
+				NOR = {
+					this = scope:indicted_character
+					is_close_family_of = scope:indicted_character
+					is_spouse_of = scope:indicted_character
+				}
+			}
+			if = {
+				limit = {
+					is_extended_family_of = scope:indicted_character
+				}
+				add = {
+					value = -50
+					desc = DECREE_INDICTED_IS_EXTENDED_FAMILY_DESC
+				}
+			}
+			else_if = {
+				limit = {
+					exists = house
+					exists = scope:indicted_character.house
+					house = scope:indicted_character.house
+				}
+				add = {
+					value = -25
+					desc = DECREE_INDICTED_IS_HOUSE_DESC
+				}
+			}
+		}
+		if = {
+			limit = {
+				this != scope:indicted_character
+			}
+			add = {
+				value = "opinion(scope:indicted_character)"
+				multiply = -0.25
+				desc = DECREE_INDICTED_OPINION_DESC
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_relation_rival = scope:indicted_character
+					has_relation_nemesis = scope:indicted_character
+				}
+			}
+			add = {
+				value = 30
+				desc = DECREE_INDICTED_IS_RIVAL_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_relation_friend = scope:indicted_character
+					has_relation_best_friend = scope:indicted_character
+				}
+			}
+			add = {
+				value = -30
+				desc = DECREE_INDICTED_IS_FRIEND_DESC
+			}
+		}
+		if = {
+			limit = {
+				house_has_feud_relation_with_trigger = { TARGET = scope:indicted_character }
+			}
+			add = {
+				value = 20
+				desc = DECREE_INDICTED_HOUSE_FEUD_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				exists = scope:indicted_character.house
+				house ?= {
+					this != scope:indicted_character.house
+					has_house_relation_with = scope:indicted_character.house
+					any_house_relation = {
+						has_house_relation_level = amity
+						any_relation_house = { this = scope:indicted_character.house }
+					}
+				}
+			}
+			add = {
+				value = -20
+				desc = DECREE_INDICTED_HOUSE_AMITY_DESC
+			}
+		}
+		if = {
+			limit = {
+				this != scope:indicted_character
+				gg_first_and_second_are_opposite_sides_trigger = {
+					FIRST = root
+					SECOND = scope:indicted_character
+				}
+			}
+			add = {
+				value = 20
+				desc = DECREE_INDICTED_OPPOSITE_GG_SIDE_DESC
+			}
+		}
+		else_if = {
+			limit = {
+				this != scope:indicted_character
+				gg_first_and_second_are_same_side_trigger = {
+					FIRST = root
+					SECOND = scope:indicted_character
+				}
+			}
+			add = {
+				value = -20
+				desc = DECREE_INDICTED_SAME_GG_SIDE_DESC
+			}
+		}
+		if = {
+			limit = {
+				scope:indicted_character = { is_adult = no }
+			}
+			add = {
+				value = -30
+				desc = DECREE_INDICTED_IS_CHILD_DESC
+			}
+		}
+	}
+}
+
+ai_decree_approval_indicted_grounds_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = liege
+			this != liege
+			liege.var:gdp_indicted_character ?= { is_alive = yes }
+		}
+		liege.var:gdp_indicted_character = {
+			save_temporary_scope_as = indicted_character
+		}
+		if = {
+			limit = {
+				liege = {
+					OR = {
+						has_execute_reason = scope:indicted_character
+						has_banish_reason = scope:indicted_character
+					}
+				}
+			}
+			add = {
+				value = 15
+				desc = DECREE_INDICTED_HAS_GROUNDS_DESC
+			}
+		}
+		else = {
+			add = {
+				value = -25
+				desc = DECREE_INDICTED_NO_GROUNDS_DESC
+			}
+		}
+	}
+}
+
+ai_decree_approval_proscription_grounds_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = liege
+			this != liege
+			liege.var:gdp_indicted_character ?= { is_alive = yes }
+		}
+		liege.var:gdp_indicted_character = {
+			save_temporary_scope_as = indicted_character
+		}
+		if = {
+			limit = {
+				liege = {
+					OR = {
+						has_execute_reason = scope:indicted_character
+						has_banish_reason = scope:indicted_character
+					}
+				}
+			}
+			add = {
+				value = 15
+				desc = DECREE_INDICTED_HAS_GROUNDS_DESC
+			}
+		}
+		else = {
+			add = {
+				value = -50
+				desc = DECREE_INDICTED_NO_GROUNDS_DESC
+			}
+		}
+	}
+}
+
+# Republic House Ambition AI values
+republic_commerce_ai_score_value = {
+	value = 0
+	
+	# Base AI
+	if = {
+		limit = {
+			ai_has_cautious_personality = yes
+		}
+		add = 25
+	}
+	
+	# Traits
+	if = {
+		limit = { has_trait = education_stewardship }
+		add = 10
+	}
+	if = {
+		limit = { has_trait = greedy }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = diligent }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = content } # I.e. we rather focus on trade than republican politics
+		add = 5
+	}
+	
+	# AI Values
+	if = {
+		limit = { ai_boldness < 0 }
+		add = {
+			value = ai_boldness
+			multiply = -0.25
+		}
+	}
+	if = {
+		limit = { ai_greed > 0 }
+		add = {
+			value = ai_greed
+			multiply = 0.25
+		}
+	}
+}
+
+republic_aggrandizement_ai_score_value = {
+	value = 0
+	
+	# Traits
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_diplomacy_5
+				has_trait = education_martial_5
+				has_trait = education_stewardship_5
+				has_trait = education_intrigue_5
+				has_trait = education_learning_5
+			}
+		}
+		add = 10
+	}
+	if = {
+		limit = { has_trait = ambitious }
+		add = 10
+	}
+	if = {
+		limit = { has_trait = arrogant }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = callous }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = brave }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = stubborn }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = craven }
+		add = -5
+	}
+	if = {
+		limit = { has_trait = fickle }
+		add = -5
+	}
+	if = {
+		limit = { has_trait = content }
+		add = -10
+	}
+	
+	# AI Values
+	if = {
+		limit = { ai_boldness > 0 }
+		add = {
+			value = ai_boldness
+			multiply = 0.75
+		}
+	}
+	if = {
+		limit = { ai_energy > 0 }
+		add = {
+			value = ai_energy
+			multiply = 0.2
+		}
+	}
+}
+
+republic_communal_ai_score_value = {
+	value = 0
+	
+	# Traits
+	if = {
+		limit = { has_trait = education_diplomacy }
+		add = 10
+	}
+	if = {
+		limit = { has_trait = education_republican_knowledge }
+		add = 10
+	}
+	if = {
+		limit = { has_trait = compassionate }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = just }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = honest }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = humble }
+		add = 5
+	}
+	
+	# AI Values
+	if = {
+		limit = { ai_compassion > 0 }
+		add = {
+			value = ai_compassion
+			multiply = 0.6
+		}
+	}
+	if = {
+		limit = { ai_sociability > 0 }
+		add = {
+			value = ai_sociability
+			multiply = 0.25
+		}
+	}
+}
+
+republic_signorial_ai_score_value = {
+	value = 0
+	
+	# Traits
+	if = {
+		limit = { has_trait = education_martial }
+		add = 10
+	}
+	if = {
+		limit = { has_trait = arbitrary }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = vengeful }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = wrathful }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = compassionate }
+		add = -10
+	}
+	
+	# AI Values
+	if = {
+		limit = { ai_boldness > 0 }
+		add = {
+			value = ai_boldness
+			multiply = 0.7
+		}
+	}
+	if = {
+		limit = { ai_compassion < 0 }
+		add = {
+			value = ai_compassion
+			multiply = -0.2
+		}
+	}
+}
+
+republic_agitation_ai_score_value = {
+	value = 0
+	
+	# Traits
+	if = {
+		limit = { has_trait = education_intrigue }
+		add = 10
+	}
+	if = {
+		limit = { has_trait = deceitful }
+		add = 10
+	}
+	if = {
+		limit = { has_trait = paranoid }
+		add = 5
+	}
+	
+	# Relation with liege
+	if = {
+		limit = {
+			opinion = {
+				target = liege
+				value < -25
+			}
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			house ?= {
+				any_house_relation = {
+					OR = {
+						has_house_relation_level = rivalry
+						has_house_relation_level = feud
+					}
+					any_relation_house = {
+						this = root.liege.house
+						this != root.house
+					}
+				}
+			}
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			house ?= {
+				any_house_relation = {
+					OR = {
+						has_house_relation_level = friendly
+						has_house_relation_level = amity
+					}
+					any_relation_house = {
+						this = root.liege.house
+						this != root.house
+					}
+				}
+			}
+		}
+		add = -20
+	}
+	
+	# AI Values
+	if = {
+		limit = { ai_vengefulness > 0 }
+		add = {
+			value = ai_vengefulness
+			multiply = 0.5
+		}
+	}
+	if = {
+		limit = { ai_honor < 0 }
+		add = {
+			value = ai_honor
+			multiply = -0.2
+		}
+	}
+	
+	# Other
+	if = { # Reduce chance of picking this ambition if we are leading the republic
+		limit = {
+			OR = {
+				this = liege
+				liege = {
+					NOT = { government_has_flag = government_is_republic }
+				}
+			}
+		}
+		multiply = 0.5
+	}
+}
+
+base_republic_law_prestige_cost = 100
+total_republic_law_prestige_cost = {
+	add = {
+		value = base_republic_law_prestige_cost
+		desc = BASE
+	}
+	if = {
+		limit = {
+			has_perk = large_levies_perk
+		}
+		subtract = {
+			value = base_republic_law_prestige_cost
+			multiply = gdp_republic_large_levies_perk_law_cost_value
+			desc = large_levies_perk_name_desc
+		}
+	}
+	if = {
+		limit = {
+			dynasty ?= { has_dynasty_perk = gdp_republic_legacy_3 }
+		}
+		multiply = {
+			value = 1
+			subtract = gdp_republic_legacy_change_law_cost_value
+			desc = gdp_republic_legacy_3_perk_desc
+		}
+	}
+}
+base_republic_law_gold_cost = 50
+total_republic_law_gold_cost = {
+	add = {
+		value = base_republic_law_gold_cost
+		desc = BASE
+	}
+	if = {
+		limit = {
+			has_perk = large_levies_perk
+		}
+		subtract = {
+			value = base_republic_law_gold_cost
+			multiply = gdp_republic_large_levies_perk_law_cost_value
+			desc = large_levies_perk_name_desc
+		}
+	}
+	if = {
+		limit = {
+			dynasty ?= { has_dynasty_perk = gdp_republic_legacy_3 }
+		}
+		multiply = {
+			value = 1
+			subtract = gdp_republic_legacy_change_law_cost_value
+			desc = gdp_republic_legacy_3_perk_desc
+		}
+	}
+}
+
+base_republic_decree_gold_cost = {
+	if = {
+		limit = {
+			has_treasury = yes
+		}
+		value = major_treasury_value
+	}
+	else = {
+		value = major_gold_value
+	}
+}
+total_republic_decree_gold_cost = {
+	value = base_republic_decree_gold_cost
+}
+total_republic_decree_prestige_cost = {
+	# Base value
+	value = major_prestige_value
+}
+total_republic_proscription_decree_prestige_cost = {
+	value = total_republic_decree_prestige_cost
+	multiply = 2
+}
+
+ambition_improved_task_support_schemes_1_value = 5
+ambition_improved_task_support_schemes_2_value = 10
+ambition_improved_task_support_schemes_3_value = 15
+ambition_improved_task_support_schemes_4_value = 20
+
+ambition_improved_task_logistics_and_market_1_value = 5
+ambition_improved_task_logistics_and_market_2_value = 10
+ambition_improved_task_logistics_and_market_3_value = 15
+ambition_improved_task_logistics_and_market_4_value = 20
+
+ambition_candidate_score_per_renown_1_value = 2
+ambition_candidate_score_per_renown_2_value = 4
+ambition_candidate_score_per_renown_3_value = 6
+ambition_candidate_score_per_renown_4_value = 8
+
+ambition_improved_republic_monopoly_acceptance_1_value = 4
+ambition_improved_republic_monopoly_acceptance_2_value = 8
+ambition_improved_republic_monopoly_acceptance_3_value = 12
+
+republic_aquire_land_gold_bribe_value = {
+	value = scope:recipient.major_gold_value
+}
+republic_aquire_land_treasury_bribe_value = {
+	value = scope:recipient.major_gold_value
+}
+
+law_term_length_1_value = 5
+law_term_length_2_value = 10
+law_term_length_3_value = 15
+law_term_length_4_value = 20
+law_term_length_5_value = 25
+
+title_held_for_term_length_value = {
+	value = 0
+	holder ?= {
+		if = { # LR 2026-11-25 LI laws (tools/li_laws/build_li_laws.py)
+			limit = { has_realm_law = LR_republic_term_annual }
+			add = 1
+		}
+		else_if = {
+			limit = { has_realm_law = republic_assembly_term_length_1 }
+			add = law_term_length_1_value
+		}
+		else_if = {
+			limit = { has_realm_law = republic_assembly_term_length_2 }
+			add = law_term_length_2_value
+		}
+		else_if = {
+			limit = { has_realm_law = republic_assembly_term_length_3 }
+			add = law_term_length_3_value
+		}
+		else_if = {
+			limit = { has_realm_law = republic_assembly_term_length_4 }
+			add = law_term_length_4_value
+		}
+		else_if = {
+			limit = { has_realm_law = republic_assembly_term_length_5 }
+			add = law_term_length_5_value
+		}
+	}
+}
+
+republic_senate_size_1_value = 10
+republic_senate_size_2_value = 20
+republic_senate_size_3_value = 30
+republic_senate_size_max_value = {
+	value = 0
+	if = {
+		limit = { has_realm_law = republic_senate_size_3 }
+		add = republic_senate_size_3_value
+	}
+	else_if = {
+		limit = { has_realm_law = republic_senate_size_2 }
+		add = republic_senate_size_2_value
+	}
+	else_if = {
+		limit = { has_realm_law = republic_senate_size_1 }
+		add = republic_senate_size_1_value
+	}
+}
+
+gdp_ghibelline_ecclesiastical_succession_penalty_value = 40
+gdp_ghibelline_family_ecclesiastical_succession_penalty_value = 15
+
+# Patrican Rating
+gdp_patrician_slander_rating_penalty_value = -50
+gdp_patrician_promote_rating_bonus_value = 30
+gdp_patrician_clerical_region_holder_rating_value = 10
+
+patrician_house_score_value = {
+	value = {
+		value = 0
+
+		save_temporary_scope_as = patrician_house
+
+		if = {
+			limit = {
+				exists = house_head
+			}
+
+			# If our house is the leader of the republic
+			if = {
+				limit = {
+					any_house_member = {
+						top_liege = prev.house_head.top_liege
+						government_has_flag = government_is_republic
+						OR = {
+							this = top_liege
+							liege = {
+								NOT = { government_has_flag = government_is_republic }
+							}
+						}
+						is_landed = yes
+						save_temporary_scope_as = house_republic_ruler
+					}
+				}
+				# Add a base bonus
+				add = {
+					value = 25 # Base bonus
+
+					# Depending on laws, we increase the bonus further
+					scope:house_republic_ruler = {
+						if = {
+							limit = {
+								has_realm_law = republic_assembly_authority_legislative
+							}
+							add = 10
+						}
+						if = {
+							limit = {
+								has_realm_law = republic_assembly_authority_ceremonial
+							}
+							add = 25
+						}
+						if = {
+							limit = {
+								has_realm_law = republic_assembly_term_length_indefinite
+							}
+							add = 10
+						}
+						if = {
+							limit = {
+								has_realm_law = republic_vassal_refusal_2_treason
+							}
+							add = 5
+						}
+						if = {
+							limit = {
+								has_realm_law = republican_despot_succession_law
+							}
+							add = 50
+						}
+					}
+
+					desc = house_member_is_republic_leader_desc
+				}
+
+				add = {
+					value = scope:house_republic_ruler.capital_county.popular_opinion
+					desc = popular_opinion_in_realm_capital_desc
+				}
+			}
+
+			# Trade income
+			add = {
+				value = house_head.trade_income
+				multiply = {
+					value = 4
+					subtract = {
+						value = house_head.trade_income
+						multiply = 0.06
+					}
+					min = 1.5
+				}
+				round = yes
+				desc = patrician_trade_income_desc
+			}
+
+			# House relation with other Patrician Families
+			if = {
+				limit = {
+					any_house_relation = {
+						OR = {
+							has_house_relation_level = cordial
+							has_house_relation_level = friendly
+							has_house_relation_level = amity
+						}
+						any_relation_house = {
+							this != scope:patrician_house
+							house_head = {
+								government_has_flag = government_is_republic
+								top_liege = scope:patrician_house.house_head.top_liege
+							}
+						}
+					}
+				}
+				add = {
+					value = 0
+					every_house_relation = {
+						limit = {
+							has_house_relation_level = cordial
+							any_relation_house = {
+								this != scope:patrician_house
+								house_head = {
+									government_has_flag = government_is_republic
+									top_liege = scope:patrician_house.house_head.top_liege
+								}
+							}
+						}
+						add = 5
+					}
+					every_house_relation = {
+						limit = {
+							has_house_relation_level = friendly
+							any_relation_house = {
+								this != scope:patrician_house
+								house_head = {
+									government_has_flag = government_is_republic
+									top_liege = scope:patrician_house.house_head.top_liege
+								}
+							}
+						}
+						add = 10
+					}
+					every_house_relation = {
+						limit = {
+							has_house_relation_level = amity
+							any_relation_house = {
+								this != scope:patrician_house
+								house_head = {
+									government_has_flag = government_is_republic
+									top_liege = scope:patrician_house.house_head.top_liege
+								}
+							}
+						}
+						add = 15
+					}
+					desc = patrician_good_house_relation_desc
+				}
+			}
+			if = {
+				limit = {
+					any_house_relation = {
+						OR = {
+							has_house_relation_level = feud
+							has_house_relation_level = rivalry
+							has_house_relation_level = quarrel
+						}
+						any_relation_house = {
+							this != scope:patrician_house
+							house_head = {
+								government_has_flag = government_is_republic
+								top_liege = scope:patrician_house.house_head.top_liege
+							}
+						}
+					}
+				}
+				add = {
+					value = 0
+					every_house_relation = {
+						limit = {
+							has_house_relation_level = quarrel
+							any_relation_house = {
+								this != scope:patrician_house
+								house_head = {
+									government_has_flag = government_is_republic
+									top_liege = scope:patrician_house.house_head.top_liege
+								}
+							}
+						}
+						add = -5
+					}
+					every_house_relation = {
+						limit = {
+							has_house_relation_level = rivalry
+							any_relation_house = {
+								this != scope:patrician_house
+								house_head = {
+									government_has_flag = government_is_republic
+									top_liege = scope:patrician_house.house_head.top_liege
+								}
+							}
+						}
+						add = -10
+					}
+					every_house_relation = {
+						limit = {
+							has_house_relation_level = feud
+							any_relation_house = {
+								this != scope:patrician_house
+								house_head = {
+									government_has_flag = government_is_republic
+									top_liege = scope:patrician_house.house_head.top_liege
+								}
+							}
+						}
+						add = -15
+					}
+					desc = patrician_bad_house_relation_desc
+				}
+			}
+
+			# House head's prestige level
+			add = {
+				value = house_head.prestige_level
+				subtract = 1 # So that the base level is 0
+				multiply = 10
+				desc = house_head_prestige_level_desc
+			}
+
+			# Dynasty renown/prestige level
+			add = {
+				value = house_dynasty.dynasty_prestige_level
+				multiply = 10
+				desc = house_head_dynasty_prestige_level_desc
+			}
+
+			if = {
+				limit = {
+					house_head = {
+						has_trait = excommunicated
+					}
+				}
+				add = {
+					value = -25
+					desc = house_head_excommunicated_desc
+				}
+			}
+
+			if = {
+				limit = {
+					OR = {
+						has_any_criminal_trait_in_rite_trigger = {
+							CHARACTER = scope:patrician_house.house_head
+							RITE = scope:patrician_house.house_head.top_liege.rite
+						}
+						scope:patrician_house.house_head.liege ?= {
+							OR = {
+								has_imprisonment_reason = scope:patrician_house.house_head
+								has_banish_reason = scope:patrician_house.house_head
+								has_execute_reason = scope:patrician_house.house_head
+								has_revoke_title_reason = scope:patrician_house.house_head
+							}
+						}
+					}
+				}
+				add = {
+					value = -25
+					desc = house_head_criminal_desc
+				}
+			}
+
+			if = {
+				limit = {
+					house_head = {
+						has_character_modifier = favored_by_pope_modifier
+					}
+				}
+				add = {
+					value = 25
+					desc = house_head_favored_by_pope_desc
+				}
+			}
+
+			if = {
+				limit = {
+					house_head = {
+						has_character_modifier = scorned_pope_modifier
+					}
+				}
+				add = {
+					value = -25
+					desc = house_head_scorned_by_pope_desc
+				}
+			}
+
+			# House members on liege's council
+			add = {
+				value = 0
+				every_house_member = {
+					limit = {
+						is_councillor = yes
+						liege = house.house_head.liege
+					}
+					add = 5
+				}
+				desc = number_of_house_members_on_council_desc
+			}
+
+			# House members on the assembly
+			add = {
+				value = 0
+				every_house_member = {
+					limit = {
+						government_has_flag = government_is_republic
+						is_assembly_member = yes
+						liege = house.house_head.liege
+					}
+					add = 5
+				}
+				desc = number_of_house_members_on_assembly_desc
+			}
+
+			add = {
+				value = 0
+				every_house_member = {
+					limit = {
+						liege = house.house_head.liege
+						faith = house.house_head.faith
+						any_held_title = {
+							has_clerical_region = yes
+						}
+					}
+					add = gdp_patrician_clerical_region_holder_rating_value
+				}
+				max = 30
+				desc = number_of_clerical_region_house_members_desc
+			}
+
+			# Landed governors
+			if = {
+				limit = {
+					any_house_member = {
+						# They are a landed republic
+						government_has_flag = government_is_republic
+						is_landed = yes
+						# But is not the liege
+						gdp_is_assembly_head_trigger = no
+						# But within the same realm
+						any_liege_or_above = {
+							OR = {
+								this = house.house_head
+								this = house.house_head.liege
+							}
+						}
+					}
+				}
+				add = {
+					value = 0
+					every_house_member = {
+						limit = {
+							# They are a landed republic
+							government_has_flag = government_is_republic
+							is_landed = yes
+							# But is not the liege
+							gdp_is_assembly_head_trigger = no
+							# But within the same realm
+							any_liege_or_above = {
+								OR = {
+									this = house.house_head
+									this = house.house_head.liege
+								}
+							}
+						}
+						add = 5
+					}
+					desc = number_of_governor_house_members_desc
+				}
+			}
+
+			# Lifestyle Perks
+			if = {
+				limit = {
+					house_head ?= { has_perk = embassies_perk }
+				}
+				add = {
+					value = 0
+					house_head = {
+						every_ally = {
+							add = gdp_embassies_perk_republic_value
+						}
+					}
+					desc = embassies_perk_name_desc
+				}
+			}
+			if = {
+				limit = {
+					house_head ?= { has_perk = soon_forgiven_perk }
+				}
+				add = {
+					value = gdp_republic_soon_forgiven_perk_value
+					multiply = house_head.stewardship
+					floor = yes
+					desc = soon_forgiven_perk_name_desc
+				}
+			}
+			if = {
+				limit = {
+					house_head ?= {
+						has_perk = kidnapper_perk
+						any_prisoner = {
+							house.house_head ?= {
+								government_has_flag = government_is_republic
+								OR = {
+									liege = scope:patrician_house.house_head
+									this = scope:patrician_house.house_head.liege
+									liege = scope:patrician_house.house_head.liege
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = 0
+					house_head = {
+						every_prisoner = {
+							limit = {
+								house.house_head ?= {
+									government_has_flag = government_is_republic
+									OR = {
+										liege = scope:patrician_house.house_head
+										this = scope:patrician_house.house_head.liege
+										liege = scope:patrician_house.house_head.liege
+									}
+								}
+							}
+							add = gdp_republic_kidnapper_perk_value
+						}
+					}
+					desc = kidnapper_perk_name_desc
+				}
+			}
+
+			# Domicile buildings
+			if = {
+				limit = {
+					house_head.domicile ?= {
+						OR = {
+							has_domicile_parameter = company_patrician_rating_bonus_1
+							has_domicile_parameter = company_patrician_rating_bonus_2
+							has_domicile_parameter = company_patrician_rating_bonus_3
+							has_domicile_parameter = company_patrician_rating_bonus_4
+							has_domicile_parameter = company_patrician_rating_bonus_5
+						}
+					}
+				}
+				add = {
+					value = 0
+					house_head.domicile = {
+						if = {
+							limit = { has_domicile_parameter = company_patrician_rating_bonus_5 }
+							add = gdp_company_patrician_rating_bonus_5_value
+						}
+						else_if = {
+							limit = { has_domicile_parameter = company_patrician_rating_bonus_4 }
+							add = gdp_company_patrician_rating_bonus_4_value
+						}
+						else_if = {
+							limit = { has_domicile_parameter = company_patrician_rating_bonus_3 }
+							add = gdp_company_patrician_rating_bonus_3_value
+						}
+						else_if = {
+							limit = { has_domicile_parameter = company_patrician_rating_bonus_2 }
+							add = gdp_company_patrician_rating_bonus_2_value
+						}
+						else = {
+							add = gdp_company_patrician_rating_bonus_1_value
+						}
+					}
+					desc = DOMICILE_RESOURCE_FROM_DOMICILE
+				}
+			}
+
+			# House head has alliances with other realms
+			if = {
+				limit = {
+					house_head = {
+						any_ally = {
+							top_liege = this # I.e. is independent
+						}
+					}
+				}
+				add = {
+					value = 0
+					house_head = {
+						every_ally = {
+							limit = {
+								top_liege = this
+							}
+							if = {
+								limit = {
+									highest_held_title_tier >= tier_hegemony
+								}
+								add = 25
+							}
+							else_if = {
+								limit = {
+									highest_held_title_tier >= tier_empire
+								}
+								add = 20
+							}
+							else_if = {
+								limit = {
+									highest_held_title_tier >= tier_kingdom
+								}
+								add = 15
+							}
+							else_if = {
+								limit = {
+									highest_held_title_tier >= tier_duchy
+								}
+								add = 10
+							}
+							else = {
+								add = 5
+							}
+						}
+					}
+					desc = house_head_allied_to_rulers_desc
+				}
+			}
+
+			# Legacies
+			if = {
+				limit = {
+					house_head.dynasty ?= {
+						has_dynasty_perk = gdp_republic_legacy_2
+					}
+				}
+				add = {
+					value = gdp_republic_legacy_patrician_rating_value
+					desc = gdp_republic_legacy_2_perk_desc
+				}
+			}
+
+			# Disgrace from a failed incite unrest scheme
+			if = {
+				limit = {
+					house_head = {
+						has_character_modifier = gdp_caught_inciting_unrest_modifier
+					}
+				}
+				add = {
+					value = -50
+					desc = gdp_caught_inciting_unrest_modifier
+				}
+			}
+
+			if = {
+				limit = {
+					has_house_modifier = gdp_patrician_slandered_house_modifier
+				}
+				add = {
+					value = gdp_patrician_slander_rating_penalty_value
+					desc = gdp_patrician_slandered_house_modifier
+				}
+			}
+
+			if = {
+				limit = {
+					has_house_modifier = gdp_patrician_promoted_house_modifier
+				}
+				add = {
+					value = gdp_patrician_promote_rating_bonus_value
+					desc = gdp_patrician_promoted_house_modifier
+				}
+			}
+
+			# Patricians providing or giving support
+			if = { # Gaining support from others
+				limit = {
+					has_variable_list = patrician_house_support_gained
+					variable_list_size = {
+						name = patrician_house_support_gained
+						value > 0
+					}
+				}
+				add = {
+					value = 0
+					every_in_list = {
+						variable = patrician_house_support_gained
+						limit = {
+							is_alive = yes
+						}
+						add = provide_patrician_house_support_value
+					}
+					desc = patrician_house_support_gained_desc
+				}
+			}
+			if = { # Providing support to others
+				limit = {
+					has_variable_list = patrician_house_support_provided
+					variable_list_size = {
+						name = patrician_house_support_provided
+						value > 0
+					}
+					any_in_list = { # Ensure that the provided support is still gained by the other party
+						variable = patrician_house_support_provided
+						house ?= {
+							has_variable_list = patrician_house_support_gained
+							variable_list_size = {
+								name = patrician_house_support_gained
+								value > 0
+							}
+							any_in_list = {
+								variable = patrician_house_support_gained
+								this = scope:patrician_house.house_head
+							}
+						}
+					}
+				}
+				add = {
+					value = 0
+					every_in_list = {
+						variable = patrician_house_support_provided
+						limit = {
+							house ?= {
+								has_variable_list = patrician_house_support_gained
+								variable_list_size = {
+									name = patrician_house_support_gained
+									value > 0
+								}
+								any_in_list = {
+									variable = patrician_house_support_gained
+									this = scope:patrician_house.house_head
+								}
+							}
+						}
+						subtract = provide_patrician_house_support_value
+					}
+					desc = patrician_house_support_provided_desc
+				}
+			}
+
+			if = {
+				limit = {
+					house_head = {
+						has_character_modifier = gdp_secured_republic_monopoly_modifier
+					}
+				}
+				add = {
+					value = secured_republic_monopoly_rating_bonus_value
+					desc = secured_republic_monopoly_rating_desc
+				}
+			}
+		}
+		# Civic Works contributions
+		add = {
+			value = 0
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_labor_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_materials_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_amenities_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_market_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_guilds_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_settlement_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_order_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			if = {
+				limit = { house_head ?= { has_character_modifier = gdp_republic_civic_works_school_character_modifier } }
+				add = gdp_civic_works_patrician_rating_bonus_value
+			}
+			desc = gdp_civic_works_patronage_desc
+		}
+
+		# Great Plaza
+		if = {
+			limit = { house_head ?= { has_character_modifier = gdp_republic_bureaucrat_modifier } }
+			add = {
+				value = gdp_republic_bureaucrat_patrician_rating_bonus_value
+				desc = gdp_republic_bureaucrat_modifier_tt_desc
+			}
+		}
+
+		# Successful law change
+		if = {
+			limit = { house_head ?= { has_character_modifier = gdp_republic_law_maker_modifier } }
+			add = {
+				value = gdp_republic_law_maker_patrician_rating_bonus_value
+				desc = gdp_republic_law_maker_modifier_tt_desc
+			}
+		}
+
+		# Patricians investing in the city
+		if = {
+			limit = { 
+				house_head ?= { has_character_modifier = gdp_patrician_city_investments_modifier }
+			}
+			add = {
+				value = gdp_republic_investor_patrician_rating_bonus_value
+				desc = gdp_republic_investor_patrician_modifier_tt_desc
+			}
+		}
+
+		# Ambition bonus from the Promote scheme
+		if = {
+			limit = { 
+				house_head ?= { has_character_modifier = gdp_ambition_promote_scheme_bonus_modifier }
+			}
+			add = {
+				value = gdp_ambition_promote_scheme_bonus_value
+				desc = gdp_ambition_promote_scheme_bonus_modifier_tt_desc
+			}
+		}
+
+		# Legacy decision bonus
+		if = {
+			limit = {
+				has_house_modifier = gdp_gather_popular_support_house_t3_modifier
+			}
+			add = {
+				value = gdp_gather_popular_support_house_t3_patrician_rating_bonus_value
+				desc = gdp_gather_popular_support_house_t3_modifier
+			}
+		}
+		else_if = {
+			limit = {
+				has_house_modifier = gdp_gather_popular_support_house_t2_modifier
+			}
+			add = {
+				value = gdp_gather_popular_support_house_t2_patrician_rating_bonus_value
+				desc = gdp_gather_popular_support_house_t2_modifier
+			}
+		}
+		else_if = {
+			limit = {
+				has_house_modifier = gdp_gather_popular_support_house_t1_modifier
+			}
+			add = {
+				value = gdp_gather_popular_support_house_t1_patrician_rating_bonus_value
+				desc = gdp_gather_popular_support_house_t1_modifier
+			}
+		}
+
+		# Roman Censor
+		if = {
+			limit = {
+				any_house_member = {
+					has_court_position = roman_censor_court_position
+				}
+			}
+			add = {
+				value = roman_censor_employee_rating_value
+				desc = house_member_is_roman_censor_desc
+			}
+		}
+		if = {
+			limit = {
+				house_head ?= {
+					exists = court_position:roman_censor_court_position
+					court_position:roman_censor_court_position = {
+						aptitude:roman_censor_court_position >= 1
+					}
+				}
+			}
+			add = {
+				value = {
+					value = 0
+					house_head ?= {
+						court_position:roman_censor_court_position = {
+							if = {
+								limit = { aptitude:roman_censor_court_position >= 4 }
+								add = roman_censor_employer_rating_4_value
+							}
+							else_if = {
+								limit = { aptitude:roman_censor_court_position = 3 }
+								add = roman_censor_employer_rating_3_value
+							}
+							else_if = {
+								limit = { aptitude:roman_censor_court_position = 2 }
+								add = roman_censor_employer_rating_2_value
+							}
+							else = {
+								add = roman_censor_employer_rating_1_value
+							}
+						}
+					}
+				}
+				desc = roman_censor_court_position_name_desc
+			}
+		}
+	}
+}
+
+provide_patrician_house_support_value = 20
+provide_patrician_house_support_duration_value = 10
+
+secured_republic_monopoly_rating_bonus_value = 10
+gdp_civic_works_patrician_rating_bonus_value = 10
+
+council_scaled_republic_value = {
+	value = 0 # No one but republics should get this bonus
+	if = {
+		limit = {
+			government_has_flag = government_is_republic
+			house ?= { has_house_aspiration_parameter = republic_aggrandizement }
+		}
+		if = {
+			limit = {
+				house ?= { has_house_aspiration_parameter = ambition_councillor_bonus_4 }
+			}
+			add = 4
+		}
+		else_if = {
+			limit = {
+				house ?= { has_house_aspiration_parameter = ambition_councillor_bonus_3 }
+			}
+			add = 3
+		}
+		else_if = {
+			limit = {
+				house ?= { has_house_aspiration_parameter = ambition_councillor_bonus_2 }
+			}
+			add = 2
+		}
+		else_if = {
+			limit = {
+				house ?= { has_house_aspiration_parameter = ambition_councillor_bonus_1 }
+			}
+			add = 1
+		}
+	}
+}
+
+republic_assembly_preparation_patrician_bonus_value = 20
+
+gdp_patrician_house_score_threshold_1_value = 50
+gdp_patrician_house_score_threshold_2_value = 150
+gdp_patrician_house_score_threshold_3_value = 300
+
+gdp_republic_legacy_patrician_rating_value = 20
+gdp_republic_legacy_elective_support_value = 10
+gdp_republic_legacy_change_law_cost_value = 0.2
+gdp_republic_legacy_change_law_cost_display_value = {
+	value = gdp_republic_legacy_change_law_cost_value
+	multiply = -1
+}
+gdp_republic_legacy_cheaper_great_plaza_contributions_value = 0.1
+gdp_republic_legacy_cheaper_great_plaza_contributions_display_value = {
+	value = gdp_republic_legacy_cheaper_great_plaza_contributions_value
+	multiply = -1
+}
+gdp_republic_legacy_apppointment_candidate_score_bonus_value = 10
+
+gdp_forced_vassalage_perk_republic_value = 20
+gdp_embassies_perk_republic_value = 5
+gdp_republic_true_ruler_perk_value = 12
+gdp_republic_large_levies_perk_value = 10
+gdp_republic_large_levies_perk_law_cost_value = 0.1
+gdp_republic_large_levies_perk_law_cost_display_value = {
+	value = gdp_republic_large_levies_perk_law_cost_value
+	multiply = -1
+}
+gdp_republic_soon_forgiven_perk_value = 0.5
+gdp_republic_kidnapper_perk_value = 5
+gdp_republic_flexible_truces_perk_value = 10
+
+gdp_company_patrician_rating_bonus_1_value = 4
+gdp_company_patrician_rating_bonus_2_value = 8
+gdp_company_patrician_rating_bonus_3_value = 12
+gdp_company_patrician_rating_bonus_4_value = 16
+gdp_company_patrician_rating_bonus_5_value = 20
+
+gdp_company_candidate_score_bonus_1_value = 10
+gdp_company_candidate_score_bonus_2_value = 20
+gdp_company_candidate_score_bonus_3_value = 30
+
+gdp_new_term_grace_period = 2
+
+overthrow_government_start_public_opinion_value = {
+	value = 0
+}
+
+overthrow_government_start_control_value = {
+	value = 20
+}
+
+steal_trade_post_cohesion_value = -3
+
+steal_trade_post_local_ruler_success_value = 10
+
+republic_trade_pricing_value = 0.01
+
+gdp_republic_government_war_aids_enforced_value = 10
+
+great_plaza_building_base_starting_cost = {
+	value = 0
+	if = {
+		limit = {
+			has_treasury = yes
+		}
+		add = major_treasury_value
+	}
+	else = {
+		add = major_gold_value
+	}
+	min = 250
+}
+great_plaza_building_base_contribution_cost = {
+	value = 0
+	# Base cost
+	add = {
+		if = {
+			limit = {
+				has_treasury = yes
+			}
+			add = medium_treasury_value
+		}
+		else = {
+			add = medium_gold_value
+		}
+		desc = great_project_base_contribution_cost_desc
+	}
+	min = 75
+
+	if = {
+		limit = {
+			dynasty ?= { has_dynasty_perk = gdp_republic_legacy_5 }
+		}
+		multiply = {
+			value = 1
+			subtract = gdp_republic_legacy_cheaper_great_plaza_contributions_value
+			desc = gdp_republic_legacy_5_perk_desc
+		}
+	}
+}
+great_plaza_trade_experience_value = 200
+
+gdp_republic_trade_experience_modifier_scale_value = {
+	value = 1 # For tooltip visibility
+	if = {
+		limit = {
+			exists = scope:target_trade_category_for_modifier
+		}
+		subtract = 1 # To remove the base number above
+		add = {
+			value = "scope:domicile_title_for_trade_xp_level.trade_good_category_level(scope:target_trade_category_for_modifier)"
+			divide = 5
+			floor = yes
+		}
+		min = 1
+	}
+}
+
+gdp_republic_trade_post_modifier_scale_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = scope:owned_trade_posts
+		}
+		add = scope:owned_trade_posts
+	}
+	min = 1
+}
+
+gdp_popular_opinion_modifier_scale_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = capital_county
+		}
+		add = capital_county.popular_opinion
+		divide = 10
+		round = yes
+	}
+	min = 1
+}
+
+gdp_gather_popular_support_house_t1_patrician_rating_bonus_value = 20
+gdp_gather_popular_support_house_t2_patrician_rating_bonus_value = 40
+gdp_gather_popular_support_house_t3_patrician_rating_bonus_value = 60
+gdp_gather_popular_support_house_t1_elective_bonus_value = 10
+gdp_gather_popular_support_house_t2_elective_bonus_value = 20
+gdp_gather_popular_support_house_t3_elective_bonus_value = 30
+
+gdp_republic_investor_patrician_rating_bonus_value = 5
+
+gdp_republic_bureaucrat_patrician_rating_bonus_value = 10
+gdp_republic_bureaucrat_assembly_approval_bonus_value = 10
+gdp_ambition_promote_scheme_bonus_value = 25
+gdp_republic_law_maker_patrician_rating_bonus_value = 15
+
+gdp_count_realm_patrician_houses_aggrandizement = {
+	value = 0
+	liege = {
+		every_vassal = {
+			limit = {
+				this != root
+				government_has_flag = government_is_republic
+				domicile ?= { is_domicile_type = merchant_company }
+				house ?= { has_house_aspiration_parameter = republic_aggrandizement }
+			}
+			add = 1
+		}
+	}
+}
+
+gdp_count_realm_patrician_houses_signorial = {
+	value = 0
+	liege = {
+		every_vassal = {
+			limit = {
+				this != root
+				government_has_flag = government_is_republic
+				domicile ?= { is_domicile_type = merchant_company }
+				house ?= { has_house_aspiration_parameter = republic_signorial }
+			}
+			add = 1
+		}
+	}
+}
+
+gdp_count_realm_patrician_houses_agitation = {
+	value = 0
+	liege = {
+		every_vassal = {
+			limit = {
+				this != root
+				government_has_flag = government_is_republic
+				domicile ?= { is_domicile_type = merchant_company }
+				house ?= { has_house_aspiration_parameter = republic_agitation }
+			}
+			add = 1
+		}
+	}
+}
+
+gdp_count_realm_patrician_houses_communal = {
+	value = 0
+	liege = {
+		every_vassal = {
+			limit = {
+				this != root
+				government_has_flag = government_is_republic
+				domicile ?= { is_domicile_type = merchant_company }
+				house ?= { has_house_aspiration_parameter = republic_communal }
+			}
+			add = 1
+		}
+	}
+}
+
+gdp_profit_route_count_value = {
+	value = 0
+	every_trade_route = {
+		limit = { is_profit_route = yes }
+		add = 1
+	}
+}
+
+gdp_patrician_profit_route_count_value = {
+	value = 0
+	if = {
+		limit = { gdp_is_patrician_trigger = yes }
+		add = gdp_profit_route_count_value
+	}
+}
+
+# Profit Routes of the scoped ruler plus those of their Patrician vassals
+gdp_realm_profit_route_count_value = {
+	value = gdp_profit_route_count_value
+	every_vassal = {
+		add = gdp_patrician_profit_route_count_value
+	}
+}
+
+gdp_patrician_trade_post_count_value = {
+	value = 0
+	if = {
+		limit = { gdp_is_patrician_trigger = yes }
+		add = trade_post_count
+	}
+}
+
+# Trade Posts of the scoped ruler plus those of their Patrician vassals
+gdp_realm_trade_post_count_value = {
+	value = trade_post_count
+	every_vassal = {
+		add = gdp_patrician_trade_post_count_value
+	}
+}
+
+republic_slander_election_value = {
+	value = -10
+}

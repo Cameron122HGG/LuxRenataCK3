@@ -1,0 +1,199 @@
+﻿# LR 2026-11-25 Politeia road to the Hellenic League (tools/politeia/build_hellenic_league_road.py)
+
+LR_found_hellenic_league_politeia_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+	desc = LR_found_hellenic_league_politeia_decision_desc
+	selection_tooltip = LR_found_hellenic_league_politeia_decision_tooltip
+	confirm_text = LR_found_hellenic_league_politeia_decision_confirm
+	ai_check_interval = 120
+
+	is_shown = {
+		has_government = hellenic_republic_government
+		is_independent_ruler = yes
+		NOT = { exists = global_var:LR_hellenic_league }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_hellenic_league
+			}
+		}
+	}
+
+	is_valid = {
+		is_confederation_member = no
+		highest_held_title_tier >= tier_duchy
+		prestige_level >= 2
+		custom_tooltip = {
+			text = LR_hellenic_league_partner_tt
+			any_independent_ruler = {
+				has_government = hellenic_republic_government
+				this != root
+				is_confederation_member = no
+				opinion = { target = root value >= 0 }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 300
+	}
+
+	effect = {
+		custom_tooltip = LR_found_hellenic_league_politeia_effect_tt
+		hidden_effect = {
+			save_scope_as = LR_league_founder
+			create_confederation = {
+				name = LR_HELLENIC_LEAGUE_NAME
+				type = confederation_type:trade_league
+				leading_title = scope:LR_league_founder.primary_title
+			}
+			scope:new_confederation ?= {
+				set_variable = LR_hellenic_league
+				set_cohesion = 30
+				set_coa = scope:LR_league_founder.primary_title
+				save_scope_as = LR_league
+			}
+			every_independent_ruler = {
+				limit = {
+					has_government = hellenic_republic_government
+					this != root
+					is_confederation_member = no
+					opinion = { target = root value >= 0 }
+				}
+				scope:LR_league ?= { add_confederation_member_title = prev.primary_title }
+			}
+			set_global_variable = { name = LR_hellenic_league value = scope:LR_league }
+			set_global_variable = { name = LR_hellenic_league_title value = primary_title }
+		}
+		add_prestige = medium_prestige_gain
+	}
+
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 60
+	}
+}
+
+LR_join_hellenic_league_politeia_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = decisions
+	desc = LR_join_hellenic_league_politeia_decision_desc
+	selection_tooltip = LR_join_hellenic_league_politeia_decision_tooltip
+	confirm_text = LR_join_hellenic_league_politeia_decision_confirm
+	ai_check_interval = 120
+
+	is_shown = {
+		has_government = hellenic_republic_government
+		is_independent_ruler = yes
+		exists = global_var:LR_hellenic_league
+		is_confederation_member = no
+	}
+
+	is_valid = {
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 100
+	}
+
+	effect = {
+		custom_tooltip = LR_join_hellenic_league_politeia_effect_tt
+		global_var:LR_hellenic_league = { add_confederation_member_title = root.primary_title }
+	}
+
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 40
+	}
+}
+
+LR_proclaim_league_hegemony_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+	desc = LR_proclaim_league_hegemony_decision_desc
+	selection_tooltip = LR_proclaim_league_hegemony_decision_tooltip
+	confirm_text = LR_proclaim_league_hegemony_decision_confirm
+	ai_check_interval = 120
+
+	is_shown = {
+		has_government = hellenic_republic_government
+		exists = global_var:LR_hellenic_league
+		exists = global_var:LR_hellenic_league_title
+		has_title = global_var:LR_hellenic_league_title
+		NOT = { exists = title:e_hellenic_league.holder }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_hellenic_league
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= 3
+		global_var:LR_hellenic_league = {
+			cohesion >= 75
+			any_confederation_member = { count >= 3 }
+		}
+		custom_tooltip = {
+			text = LR_proclaim_league_hegemony_athens_tt
+			title:c_attica.holder ?= { is_member_of_confederation = global_var:LR_hellenic_league }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+	}
+
+	effect = {
+		save_scope_as = founder
+		LR_form_hellenic_league_effect = yes
+		if = {
+			limit = { NOT = { has_realm_law = republic_tier_empire } }
+			add_realm_law_skip_effects = republic_tier_empire
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_formed_hellenic_league
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 100
+	}
+}

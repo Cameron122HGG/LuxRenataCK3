@@ -106,9 +106,9 @@
 			limit = {
 				liege != this
 				OR = {
-					liege = { government_has_flag = government_is_islamic_group }
+					liege = { LR_in_islamic_group_trigger = yes }
 					AND = {
-						liege = { government_has_flag = government_is_islamic_group }
+						liege = { LR_in_islamic_group_trigger = yes }
 						religion = religion:islam_religion
 					}
 				}
@@ -162,7 +162,7 @@
 			}
 			else_if = {
 				limit = {
-					government_has_flag = government_is_islamic_group
+					LR_in_islamic_group_trigger = yes
 				}
 				every_vassal_or_below = {
 					limit = { government_has_flag = government_is_great_tribal }
@@ -206,7 +206,7 @@
 adopt_gaul_gov_decision = {
 	picture = {
 		trigger = {
-			has_tgp_dlc_trigger = yes
+			LR_gradus_has_auh_trigger = yes
 			liege = {
 				culture = { has_cultural_pillar = heritage_japonic }
 			}
@@ -230,8 +230,8 @@ adopt_gaul_gov_decision = {
 
 	is_shown = {
 		is_independent_ruler = no
-		liege = { government_has_flag = government_is_sacral_group } # incl. Sacral Kingship without the DLC
-		NOT = { government_has_flag = government_is_sacral_group }
+		liege = { LR_in_sacral_group_trigger = yes } # incl. Sacral Kingship without the DLC
+		NOT = { LR_in_sacral_group_trigger = yes }
 		OR = {
 			OR = { has_government = western_feudal_government has_government = western_dynastic_government }
 			government_has_flag = government_is_administrative
@@ -239,7 +239,7 @@ adopt_gaul_gov_decision = {
 	}
 
 	is_valid = {
-		liege = { government_has_flag = government_is_sacral_group } # incl. Sacral Kingship without the DLC
+		liege = { LR_in_sacral_group_trigger = yes } # incl. Sacral Kingship without the DLC
 	}
 
 	is_valid_showing_failures_only = {
@@ -308,7 +308,7 @@ convert_to_administrative_decision = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					has_tgp_dlc_trigger = yes
+					LR_gradus_has_auh_trigger = yes
 				}
 				desc = convert_to_administrative_decision_title_multiple
 			}
@@ -320,7 +320,7 @@ convert_to_administrative_decision = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					has_tgp_dlc_trigger = yes
+					LR_gradus_has_auh_trigger = yes
 				}
 				desc = convert_to_administrative_decision_tooltip_multiple
 			}
@@ -331,7 +331,7 @@ convert_to_administrative_decision = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					has_tgp_dlc_trigger = yes
+					LR_gradus_has_auh_trigger = yes
 				}
 				desc = convert_to_administrative_decision_confirm_multiple
 			}
@@ -349,9 +349,10 @@ convert_to_administrative_decision = {
 	}
 
 	is_shown = {
+		NOT = { has_government = japan_bakufu_government } # LR 2026-11-25 Japanese ranks (tools/japan_ranks/build_japan_ranks.py): Bakufu has the Soryo flag but is a universal rank
 		OR = {
-			has_ep3_dlc_trigger = yes
-			has_tgp_dlc_trigger = yes
+			LR_gradus_has_rtp_trigger = yes
+			LR_gradus_has_auh_trigger = yes
 		}
 		OR = {
 			government_has_flag = government_is_feudal
@@ -363,7 +364,7 @@ convert_to_administrative_decision = {
 			government_has_flag = government_is_iqta
 			government_has_flag = government_is_chinese_feudal
 			government_has_flag = government_is_japanese_plain
-			government_has_flag = government_is_indic_group
+			LR_in_indic_group_trigger = yes
 			AND = { # Republic doges may become admin
 				government_has_flag = government_is_republic
 				highest_liege_matching_rule:uses_assembly = this
@@ -378,6 +379,7 @@ convert_to_administrative_decision = {
 	}
 
 	is_valid = {
+		LR_li_has_legal_administration_trigger = yes # LR 2026-11-25 LI laws (tools/li_laws/build_li_laws.py)
 		trigger_if = {
 			limit = { top_liege != this }
 			liege = { government_has_mechanic = administrative }
@@ -654,6 +656,18 @@ convert_to_administrative_decision = {
 		show_from_start = no
 
 		# LR: each option is shown only to its own group (LR_convert_administrative_triggers.txt)
+		item = { # LR 2026-11-25: with Roads to Power alone, one option for every group: Autocratic
+			value = go_rtp_autocratic_government
+			is_shown = {
+				LR_convert_admin_sees_rtp_autocratic_trigger = yes
+			}
+			current_description = go_rtp_autocratic_government_desc
+			localization = go_rtp_autocratic_government_name
+			icon = "gfx/interface/icons/government_types/rtp_autocratic_government.dds"
+			ai_chance = {
+				value = 20
+			}
+		}
 		item = {
 			value = go_administrative_government
 			is_shown = {
@@ -765,6 +779,18 @@ convert_to_administrative_decision = {
 				value = 20
 			}
 		}
+		item = { # LR 2026-11-25 Sinic twins: Junxian
+			value = go_sinic_administrative_government
+			is_shown = {
+				LR_convert_admin_sees_sinic_administrative_trigger = yes
+			}
+			current_description = go_sinic_administrative_government_desc
+			localization = go_sinic_administrative_government_name
+			icon = "gfx/interface/icons/government_types/sinic_administrative_government.dds"
+			ai_chance = {
+				value = 50
+			}
+		}
 		item = {
 			value = go_meritocratic_government
 			is_shown = {
@@ -847,6 +873,10 @@ convert_to_administrative_decision = {
 			}
 			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:administrative }
 		}
+		else_if = { # LR 2026-11-25
+			limit = { scope:go_rtp_autocratic_government = yes }
+			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:rtp_autocratic }
+		}
 		else_if = {
 			limit = { scope:go_celestial_government = yes }
 			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:celestial }
@@ -854,6 +884,10 @@ convert_to_administrative_decision = {
 		else_if = {
 			limit = { scope:go_meritocratic_government = yes }
 			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:meritocratic }
+		}
+		else_if = { # LR 2026-11-25 Sinic twins
+			limit = { scope:go_sinic_administrative_government = yes }
+			convert_to_administrative_from_feudalism_effect = { GOVERNMENT_TO_ADOPT = flag:sinic_administrative }
 		}
 		else_if = {
 			limit = { scope:go_japan_administrative_government = yes }
@@ -1061,12 +1095,12 @@ convert_to_feudalism_from_administrative_decision = {
 		OR = {
 			LR_has_dynastic_twin_trigger = yes
 			NOR = {
-				government_has_flag = government_is_classical_group
-				government_has_flag = government_is_despotic_group
-				government_has_flag = government_is_western_group
-				government_has_flag = government_is_sinic_group
-				government_has_flag = government_is_islamic_group
-				government_has_flag = government_is_indic_group
+				LR_in_classical_group_trigger = yes
+				LR_in_despotic_group_trigger = yes
+				LR_in_western_group_trigger = yes
+				LR_in_sinic_group_trigger = yes
+				LR_in_islamic_group_trigger = yes
+				LR_in_indic_group_trigger = yes
 			}
 		}
 	}
@@ -1110,9 +1144,9 @@ convert_to_feudalism_from_administrative_decision = {
 					}
 					trigger_if = {
 						limit = {
-							has_realm_law_in_group = roman_autocratic_bureaucracy
+							has_realm_law_in_group = roman_imperial_bureaucracy
 						}
-						has_realm_law = roman_autocratic_bureaucracy_0 
+						has_realm_law = roman_imperial_bureaucracy_0 
 					}
 					trigger_if = { # LR
 						limit = {
@@ -1179,6 +1213,24 @@ convert_to_feudalism_from_administrative_decision = {
 							has_realm_law_in_group = mamlakah_imperial_bureaucracy
 						}
 						has_realm_law = mamlakah_imperial_bureaucracy_0
+					}
+					trigger_if = { # LR 2026-11-19 Latin
+						limit = {
+							has_realm_law_in_group = western_imperial_bureaucracy
+						}
+						has_realm_law = western_imperial_bureaucracy_0
+					}
+					trigger_if = { # LR 2026-11-19 Iqta
+						limit = {
+							has_realm_law_in_group = iqta_imperial_bureaucracy
+						}
+						has_realm_law = iqta_imperial_bureaucracy_0
+					}
+					trigger_if = { # LR 2026-11-19 Indic
+						limit = {
+							has_realm_law_in_group = gupta_imperial_bureaucracy
+						}
+						has_realm_law = gupta_imperial_bureaucracy_0
 					}
 					trigger_if = { # LR 2026-11-19 Sudanic
 						limit = {
@@ -1251,9 +1303,9 @@ convert_to_feudalism_from_administrative_decision = {
 			}
 			trigger_if = {
 				limit = {
-					has_realm_law_in_group = roman_autocratic_bureaucracy
+					has_realm_law_in_group = roman_imperial_bureaucracy
 				}
-				has_realm_law = roman_autocratic_bureaucracy_3
+				has_realm_law = roman_imperial_bureaucracy_3
 			}
 			trigger_if = { # LR
 				limit = {
@@ -1320,6 +1372,24 @@ convert_to_feudalism_from_administrative_decision = {
 					has_realm_law_in_group = mamlakah_imperial_bureaucracy
 				}
 				has_realm_law = mamlakah_imperial_bureaucracy_3
+			}
+			trigger_if = { # LR 2026-11-19 Latin
+				limit = {
+					has_realm_law_in_group = western_imperial_bureaucracy
+				}
+				has_realm_law = western_imperial_bureaucracy_3
+			}
+			trigger_if = { # LR 2026-11-19 Iqta
+				limit = {
+					has_realm_law_in_group = iqta_imperial_bureaucracy
+				}
+				has_realm_law = iqta_imperial_bureaucracy_3
+			}
+			trigger_if = { # LR 2026-11-19 Indic
+				limit = {
+					has_realm_law_in_group = gupta_imperial_bureaucracy
+				}
+				has_realm_law = gupta_imperial_bureaucracy_3
 			}
 			trigger_if = { # LR 2026-11-19 Sudanic
 				limit = {

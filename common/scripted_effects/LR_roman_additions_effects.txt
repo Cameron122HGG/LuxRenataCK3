@@ -1,0 +1,361 @@
+﻿# LR Roman additions (tools/register_roman_additions.py, 2026-11-24). GENERATED.
+
+# Layout of the Diocese of Dacia Traiana: provinces under it, counties into the provinces
+LR_roman_provinces_diocese_dacia_traiana_effect = {
+	# Dacia Apulensis
+	title:d_roman_province_dacia_apulensis = { set_de_jure_liege_title = title:k_diocese_dacia_traiana }
+	title:c_feher = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	title:c_hunyad = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	title:c_fogaras = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	title:c_barcasag = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	title:c_szekelyfold = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	title:c_temes = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	title:c_krasso = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	title:c_keve = { set_de_jure_liege_title = title:d_roman_province_dacia_apulensis }
+	# Dacia Porolissensis
+	title:d_roman_province_dacia_porolissensis = { set_de_jure_liege_title = title:k_diocese_dacia_traiana }
+	title:c_beszterce = { set_de_jure_liege_title = title:d_roman_province_dacia_porolissensis }
+	title:c_torda = { set_de_jure_liege_title = title:d_roman_province_dacia_porolissensis }
+	title:c_zarand = { set_de_jure_liege_title = title:d_roman_province_dacia_porolissensis }
+	# Dacia Malvensis
+	title:d_roman_province_dacia_malvensis = { set_de_jure_liege_title = title:k_diocese_dacia_traiana }
+	title:c_craiova = { set_de_jure_liege_title = title:d_roman_province_dacia_malvensis }
+	title:c_severin = { set_de_jure_liege_title = title:d_roman_province_dacia_malvensis }
+	title:c_targu_jiu = { set_de_jure_liege_title = title:d_roman_province_dacia_malvensis }
+	title:c_calafat = { set_de_jure_liege_title = title:d_roman_province_dacia_malvensis }
+	title:c_campulung = { set_de_jure_liege_title = title:d_roman_province_dacia_malvensis }
+	title:c_polovragi = { set_de_jure_liege_title = title:d_roman_province_dacia_malvensis }
+	title:c_tabla_butii = { set_de_jure_liege_title = title:d_roman_province_dacia_malvensis }
+}
+
+# Root restores the Diocese of Dacia Traiana
+LR_radd_restore_dacia_traiana_effect = {
+	if = { limit = { NOT = { exists = title:k_diocese_dacia_traiana.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:k_diocese_dacia_traiana = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	if = { limit = { root.primary_title.tier = tier_empire } title:k_diocese_dacia_traiana = { set_de_jure_liege_title = root.primary_title } }
+	LR_roman_provinces_diocese_dacia_traiana_effect = yes
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_dacia_traiana PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_dacia_traiana }
+}
+
+# Layout of the Diocese of Marcomannia: provinces under it, counties into the provinces
+LR_roman_provinces_diocese_marcomannia_effect = {
+	# Marcomannia
+	title:d_roman_province_marcomannia = { set_de_jure_liege_title = title:k_diocese_marcomannia }
+	title:c_boleslav = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	title:c_caslav = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	title:c_doudleby = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	title:c_hradec = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	title:c_litomerice = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	title:c_plzen = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	title:c_praha = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	title:c_zatec = { set_de_jure_liege_title = title:d_roman_province_marcomannia }
+	# Quadia
+	title:d_roman_province_quadia = { set_de_jure_liege_title = title:k_diocese_marcomannia }
+	title:c_brno = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_jihlava = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_olomouc = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_opava = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_prerov = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_znojmo = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_bars = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_gemer = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_hont = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_lipto = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_nyitra = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_orava = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_trenscen = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	title:c_zolyom = { set_de_jure_liege_title = title:d_roman_province_quadia }
+	# Sarmatia Iazygum
+	title:d_roman_province_sarmatia_iazygum = { set_de_jure_liege_title = title:k_diocese_marcomannia }
+	title:c_bacs = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	title:c_bodrog = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	title:c_bekes = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	title:c_csanad = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	title:c_arad = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	title:c_szabolcs = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	title:c_bihar = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	title:c_szatmar = { set_de_jure_liege_title = title:d_roman_province_sarmatia_iazygum }
+	# Sarmatia Superior
+	title:d_roman_province_sarmatia_superior = { set_de_jure_liege_title = title:k_diocese_marcomannia }
+	title:c_abauj = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+	title:c_borsod = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+	title:c_saris = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+	title:c_spis = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+	title:c_ungvar = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+	title:c_zemplen = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+	title:c_bereg = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+	title:c_marmaros = { set_de_jure_liege_title = title:d_roman_province_sarmatia_superior }
+}
+
+# Root restores the Diocese of Marcomannia
+LR_radd_restore_marcomannia_effect = {
+	if = { limit = { NOT = { exists = title:k_diocese_marcomannia.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:k_diocese_marcomannia = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	if = { limit = { root.primary_title.tier = tier_empire } title:k_diocese_marcomannia = { set_de_jure_liege_title = root.primary_title } }
+	LR_roman_provinces_diocese_marcomannia_effect = yes
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_marcomannia PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_marcomannia }
+}
+
+# Layout of the Diocese of Assyria: provinces under it, counties into the provinces
+LR_roman_provinces_diocese_assyria_effect = {
+	# Assyria
+	title:d_roman_province_assyria = { set_de_jure_liege_title = title:k_diocese_assyria }
+	title:c_mosul = { set_de_jure_liege_title = title:d_roman_province_assyria }
+	title:c_ninive = { set_de_jure_liege_title = title:d_roman_province_assyria }
+	title:c_irbil = { set_de_jure_liege_title = title:d_roman_province_assyria }
+	title:c_kurdistan = { set_de_jure_liege_title = title:d_roman_province_assyria }
+	title:c_shahrazur = { set_de_jure_liege_title = title:d_roman_province_assyria }
+	# Babylonia
+	title:d_roman_province_babylonia = { set_de_jure_liege_title = title:k_diocese_assyria }
+	title:c_baghdad = { set_de_jure_liege_title = title:d_roman_province_babylonia }
+	title:c_iskaf = { set_de_jure_liege_title = title:d_roman_province_babylonia }
+	title:c_anbar = { set_de_jure_liege_title = title:d_roman_province_babylonia }
+	title:c_karbala = { set_de_jure_liege_title = title:d_roman_province_babylonia }
+	title:c_badaraya = { set_de_jure_liege_title = title:d_roman_province_babylonia }
+	title:c_wasit = { set_de_jure_liege_title = title:d_roman_province_babylonia }
+	title:c_tib = { set_de_jure_liege_title = title:d_roman_province_babylonia }
+	# Mesene
+	title:d_roman_province_mesene = { set_de_jure_liege_title = title:k_diocese_assyria }
+	title:c_basra = { set_de_jure_liege_title = title:d_roman_province_mesene }
+	title:c_ubulla = { set_de_jure_liege_title = title:d_roman_province_mesene }
+	title:c_rusafa = { set_de_jure_liege_title = title:d_roman_province_mesene }
+}
+
+# Root restores the Diocese of Assyria
+LR_radd_restore_assyria_effect = {
+	if = { limit = { NOT = { exists = title:k_diocese_assyria.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:k_diocese_assyria = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	if = { limit = { root.primary_title.tier = tier_empire } title:k_diocese_assyria = { set_de_jure_liege_title = root.primary_title } }
+	LR_roman_provinces_diocese_assyria_effect = yes
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_assyria PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_assyria }
+}
+
+# Layout of the Diocese of Arabia Felix: provinces under it, counties into the provinces
+LR_roman_provinces_diocese_arabia_felix_effect = {
+	# Arabia Felix
+	title:d_roman_province_arabia_felix = { set_de_jure_liege_title = title:k_diocese_arabia_felix }
+	title:c_sanaa = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_najran = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_tihamat-al-yamani = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_zabid = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_taizz = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_dathina = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_mandab = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_jawf-al-yamani = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	title:c_wabar = { set_de_jure_liege_title = title:d_roman_province_arabia_felix }
+	# Hadramautica
+	title:d_roman_province_hadramautica = { set_de_jure_liege_title = title:k_diocese_arabia_felix }
+	title:c_hadramawt = { set_de_jure_liege_title = title:d_roman_province_hadramautica }
+	title:c_ahqaf = { set_de_jure_liege_title = title:d_roman_province_hadramautica }
+	title:c_kinda_sakun = { set_de_jure_liege_title = title:d_roman_province_hadramautica }
+	title:c_mahra = { set_de_jure_liege_title = title:d_roman_province_hadramautica }
+	title:c_al-asa = { set_de_jure_liege_title = title:d_roman_province_hadramautica }
+	title:c_dhofar = { set_de_jure_liege_title = title:d_roman_province_hadramautica }
+	title:c_socotra = { set_de_jure_liege_title = title:d_roman_province_hadramautica }
+}
+
+# Root restores the Diocese of Arabia Felix
+LR_radd_restore_arabia_felix_effect = {
+	if = { limit = { NOT = { exists = title:k_diocese_arabia_felix.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:k_diocese_arabia_felix = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	if = { limit = { root.primary_title.tier = tier_empire } title:k_diocese_arabia_felix = { set_de_jure_liege_title = root.primary_title } }
+	LR_roman_provinces_diocese_arabia_felix_effect = yes
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_arabia_felix PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_arabia_felix }
+}
+
+# Layout of the Diocese of Aethiopia: provinces under it, counties into the provinces
+LR_roman_provinces_diocese_aethiopia_effect = {
+	# Aethiopia Inferior
+	title:d_roman_province_aethiopia_inferior = { set_de_jure_liege_title = title:k_diocese_aethiopia }
+	title:c_dongola = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_abwab = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_atbara = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_meroe = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_sai = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_wadi_el-milk = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_abu_hammad = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_kurgus = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	title:c_shamir = { set_de_jure_liege_title = title:d_roman_province_aethiopia_inferior }
+	# Aethiopia Superior
+	title:d_roman_province_aethiopia_superior = { set_de_jure_liege_title = title:k_diocese_aethiopia }
+	title:c_alodia = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_eleila = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_gezira = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_naga = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_ushara = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_fazughli = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_gumuz = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_sennar = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	title:c_tagali = { set_de_jure_liege_title = title:d_roman_province_aethiopia_superior }
+	# Trogodytica
+	title:d_roman_province_trogodytica = { set_de_jure_liege_title = title:k_diocese_aethiopia }
+	title:c_baqlin = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_djarin = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_kassala = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_qataa = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_showak = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_wolqayt = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_badi = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_bazin = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_suakin = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_aydhab = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_naqis = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+	title:c_wadi_amur = { set_de_jure_liege_title = title:d_roman_province_trogodytica }
+}
+
+# Root restores the Diocese of Aethiopia
+LR_radd_restore_aethiopia_effect = {
+	if = { limit = { NOT = { exists = title:k_diocese_aethiopia.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:k_diocese_aethiopia = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	if = { limit = { root.primary_title.tier = tier_empire } title:k_diocese_aethiopia = { set_de_jure_liege_title = root.primary_title } }
+	LR_roman_provinces_diocese_aethiopia_effect = yes
+	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_aethiopia PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_aethiopia }
+}
+
+# Root restores the province of Mesopotamia in k_diocese_syria
+LR_radd_restore_province_mesopotamia_effect = {
+	title:d_roman_province_mesopotamia = { set_de_jure_liege_title = title:k_diocese_syria }
+	title:c_amida = { set_de_jure_liege_title = title:d_roman_province_mesopotamia }
+	title:c_tall_basma = { set_de_jure_liege_title = title:d_roman_province_mesopotamia }
+	title:c_nasibin = { set_de_jure_liege_title = title:d_roman_province_mesopotamia }
+	title:c_sinjar = { set_de_jure_liege_title = title:d_roman_province_mesopotamia }
+	title:c_khabur = { set_de_jure_liege_title = title:d_roman_province_mesopotamia }
+	title:c_upper_khabur = { set_de_jure_liege_title = title:d_roman_province_mesopotamia }
+}
+
+# Root restores the province of Sophanene in k_diocese_syria
+LR_radd_restore_province_sophanene_effect = {
+	title:d_roman_province_sophanene = { set_de_jure_liege_title = title:k_diocese_syria }
+	title:c_mayyafariqin = { set_de_jure_liege_title = title:d_roman_province_sophanene }
+	title:c_bakriya = { set_de_jure_liege_title = title:d_roman_province_sophanene }
+	title:c_hakkari = { set_de_jure_liege_title = title:d_roman_province_sophanene }
+}
+
+# Root restores the province of Garamantia in k_diocese_africa
+LR_radd_restore_province_garamantia_effect = {
+	title:d_roman_province_garamantia = { set_de_jure_liege_title = title:k_diocese_africa }
+	title:c_germa = { set_de_jure_liege_title = title:d_roman_province_garamantia }
+	title:c_murzuk = { set_de_jure_liege_title = title:d_roman_province_garamantia }
+	title:c_zawila = { set_de_jure_liege_title = title:d_roman_province_garamantia }
+	title:c_ghat = { set_de_jure_liege_title = title:d_roman_province_garamantia }
+	title:c_djanet = { set_de_jure_liege_title = title:d_roman_province_garamantia }
+}
+
+# Called at the end of LR_sort_diocese_into_hegemony_effect: a diocese of a formed magisterium goes under it
+# (DIOCESE = k_diocese_x). The magisterium's holder may be the emperor or his vassal.
+LR_magisteria_reroute_effect = {
+	if = {
+		limit = {
+			LR_magisterium_italia_diocese_trigger = { DIOCESE = $DIOCESE$ }
+			title:e_magisterium_italia = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$DIOCESE$ = { set_de_jure_liege_title = title:e_magisterium_italia }
+	}
+	if = {
+		limit = {
+			LR_magisterium_africa_diocese_trigger = { DIOCESE = $DIOCESE$ }
+			title:e_magisterium_africa = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$DIOCESE$ = { set_de_jure_liege_title = title:e_magisterium_africa }
+	}
+}
+
+# Root (a restored Roman emperor) forms the Magisterium per Italiam
+LR_form_magisterium_italia_effect = {
+	if = { limit = { NOT = { exists = title:e_magisterium_italia.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:e_magisterium_italia = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	set_global_variable = { name = LR_magisterium_italia_formed value = yes }
+	LR_resort_magisteria_effect = yes # under your hegemony, Rome or (below them) your empire
+	if = { limit = { title:k_diocese_italia_annonaria = { is_titular = no } } title:k_diocese_italia_annonaria = { set_de_jure_liege_title = title:e_magisterium_italia } }
+	if = { limit = { title:k_diocese_italia_suburbicaria = { is_titular = no } } title:k_diocese_italia_suburbicaria = { set_de_jure_liege_title = title:e_magisterium_italia } }
+	if = { limit = { title:e_praetorian_prefecture_italia = { NOT = { any_de_jure_county = { always = yes } } } }
+		title:e_praetorian_prefecture_italia = { set_variable = { name = LR_merged_into_magisterium value = title:e_magisterium_italia } }
+		if = { limit = { has_title = title:e_praetorian_prefecture_italia } destroy_title = title:e_praetorian_prefecture_italia }
+	}
+}
+
+# Root (a restored Roman emperor) forms the Magisterium per Africam
+LR_form_magisterium_africa_effect = {
+	if = { limit = { NOT = { exists = title:e_magisterium_africa.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:e_magisterium_africa = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	set_global_variable = { name = LR_magisterium_africa_formed value = yes }
+	LR_resort_magisteria_effect = yes # under your hegemony, Rome or (below them) your empire
+	if = { limit = { title:k_diocese_africa = { is_titular = no } } title:k_diocese_africa = { set_de_jure_liege_title = title:e_magisterium_africa } }
+	if = { limit = { title:k_diocese_mauretania = { is_titular = no } } title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_magisterium_africa } }
+	if = { limit = { title:e_praetorian_prefecture_italia = { NOT = { any_de_jure_county = { always = yes } } } }
+		title:e_praetorian_prefecture_italia = { set_variable = { name = LR_merged_into_magisterium value = title:e_magisterium_africa } }
+		if = { limit = { has_title = title:e_praetorian_prefecture_italia } destroy_title = title:e_praetorian_prefecture_italia }
+	}
+}
+
+# Character: put the formed magisteria held in your realm under your hegemony, Rome, or your empire
+LR_resort_magisteria_effect = {
+	save_scope_as = LR_radd_mag_ruler
+	if = { limit = { has_title = title:h_roman_empire } title:h_roman_empire = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_roman_republic } title:h_roman_republic = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_western_roman_empire } title:h_western_roman_empire = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_western_roman_republic } title:h_western_roman_republic = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_eastern_roman_empire } title:h_eastern_roman_empire = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { has_title = title:h_eastern_roman_republic } title:h_eastern_roman_republic = { save_scope_as = LR_radd_mag_liege } }
+	else_if = { limit = { primary_title.tier = tier_empire } primary_title = { save_scope_as = LR_radd_mag_liege } }
+	if = {
+		limit = { exists = scope:LR_radd_mag_liege }
+		if = {
+			limit = {
+				title:e_magisterium_italia = { OR = { holder ?= scope:LR_radd_mag_ruler holder.top_liege ?= scope:LR_radd_mag_ruler } }
+				NOT = { scope:LR_radd_mag_liege = title:e_magisterium_italia }
+			}
+			title:e_magisterium_italia = { set_de_jure_liege_title = scope:LR_radd_mag_liege }
+		}
+		if = {
+			limit = {
+				title:e_magisterium_africa = { OR = { holder ?= scope:LR_radd_mag_ruler holder.top_liege ?= scope:LR_radd_mag_ruler } }
+				NOT = { scope:LR_radd_mag_liege = title:e_magisterium_africa }
+			}
+			title:e_magisterium_africa = { set_de_jure_liege_title = scope:LR_radd_mag_liege }
+		}
+	}
+}
+
+# Root (an eastern restored emperor) forms the Quaestura exercitus
+LR_form_quaestura_exercitus_effect = {
+	if = { limit = { NOT = { exists = title:k_quaestura_exercitus.holder } }
+		create_title_and_vassal_change = { type = created save_scope_as = LR_radd_change add_claim_on_loss = no }
+		title:k_quaestura_exercitus = { change_title_holder = { holder = root change = scope:LR_radd_change } }
+		resolve_title_and_vassal_change = scope:LR_radd_change
+	}
+	set_global_variable = { name = LR_quaestura_exercitus_formed value = yes }
+	title:k_quaestura_exercitus = { set_de_jure_liege_title = title:e_praetorian_prefecture_macedonia }
+	title:d_roman_province_moesia_secunda = { set_de_jure_liege_title = title:k_quaestura_exercitus }
+	title:d_roman_province_scythia = { set_de_jure_liege_title = title:k_quaestura_exercitus }
+	title:d_roman_province_insulae = { set_de_jure_liege_title = title:k_quaestura_exercitus }
+	title:d_roman_province_caria = { set_de_jure_liege_title = title:k_quaestura_exercitus }
+	title:d_roman_province_cyprus = { set_de_jure_liege_title = title:k_quaestura_exercitus }
+}
+

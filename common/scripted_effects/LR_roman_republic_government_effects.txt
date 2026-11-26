@@ -1,0 +1,113 @@
+﻿# LR 2026-11-25 regional republics (tools/regional_republics/build_regional_republics.py)
+# Root = a ruler (normalizer). A plain republic with the Roman republic law is the Roman Republic, and back.
+LR_roman_republic_government_effect = {
+	# 2026-11-25 (user: "why am I still turning into regular republic"): on_government_change runs inside the very
+	# change_government that sets the Roman Republic, before the restore effects add the Roman republic law, so a law-only
+	# test sent every new Roman Republic back to a plain republic. Holding a Roman Republic title now counts as well.
+	if = {
+		limit = {
+			has_government = republic_government
+			OR = {
+				has_realm_law_flag = LR_roman_republic_type
+				LR_is_roman_republic_consul_trigger = yes
+				LR_roman_group_republic_trigger = yes # a republic of the Roman group
+			}
+		}
+		change_government = roman_republic_government # 2026-11-25: the government first: the republic_type_roman law is exclusive to it
+		if = {
+			limit = { NOT = { has_realm_law_flag = LR_roman_republic_type } }
+			add_realm_law_skip_effects = republic_type_roman
+		}
+	}
+	else_if = {
+		limit = {
+			has_government = roman_republic_government
+			NOT = { has_realm_law_flag = LR_roman_republic_type }
+			LR_is_roman_republic_consul_trigger = no
+			LR_roman_group_republic_trigger = no
+			gdp_is_assembly_head_trigger = yes # 2026-11-25: vassal republics follow their liege instead (LR_republic_vassal_follows_liege_effect)
+		}
+		change_government = republic_government
+	}
+}
+
+# Root = a regional Roman emperor whose line sits in Senate (Restore the Res Publica). As vanilla's
+# gdp_found_a_republic_effect, without its new title: the government, a merchant family for the domicile, the Roman
+# republic laws, a starting treasury; the titles swap to their Republic twins a day later.
+LR_regional_res_publica_effect = {
+	save_scope_as = republican_founder
+	if = {
+		limit = {
+			OR = {
+				NOT = { exists = domicile }
+				domicile ?= { NOT = { is_domicile_type = merchant_company } }
+			}
+		}
+		save_temporary_scope_as = create_merchant_title
+	}
+	save_scope_value_as = {
+		name = income_treasury_conversion
+		value = monthly_character_income
+	}
+	change_government = roman_republic_government
+	if = {
+		limit = {
+			exists = scope:create_merchant_title
+			NOT = { domicile ?= { is_domicile_type = merchant_company } }
+		}
+		every_held_title = {
+			limit = { is_noble_family_title = yes }
+			root = { destroy_title = prev }
+		}
+		create_dynamic_title = {
+			name = NEW_PATRICIAN_TITLE_NAME
+			tier = county
+			type = title_type_merchant_family
+			holder = scope:republican_founder
+			article = DEFAULT_TITLE_NAME_ARTICLE
+			save_scope_as = new_patrician_title
+		}
+		scope:new_patrician_title ?= { add_title_law = noble_family_succession_law }
+	}
+	if = {
+		limit = { NOT = { has_realm_law = republic_tier_empire } }
+		add_realm_law_skip_effects = republic_tier_empire
+	}
+	if = {
+		limit = { NOT = { has_realm_law_flag = LR_roman_republic_type } }
+		add_realm_law_skip_effects = republic_type_roman
+	}
+	if = {
+		limit = { NOT = { has_realm_law = republic_assembly_composition_roman_senate } }
+		add_realm_law_skip_effects = republic_assembly_composition_roman_senate
+	}
+	add_treasury = {
+		value = scope:income_treasury_conversion
+		multiply = 36
+		min = 100
+		round = yes
+	}
+	if = {
+		limit = { has_character_modifier = LR_regional_consul_modifier }
+		remove_character_modifier = LR_regional_consul_modifier
+	}
+	if = {
+		limit = { NOT = { has_character_modifier = LR_princeps_senatus_modifier } }
+		add_character_modifier = LR_princeps_senatus_modifier
+	}
+	if = {
+		limit = { has_trait = augustus }
+		remove_trait = augustus
+	}
+	add_prestige = major_prestige_gain
+	LR_roman_senate_enrol_effect = yes # the governors sit in the Senate (the republic branch)
+	domicile ?= {
+		if = {
+			limit = { domicile_location != scope:republican_founder.capital_province }
+			move_domicile = scope:republican_founder.capital_province
+		}
+	}
+	LR_schedule_roman_title_twins_effect = yes # the line's titles become their Republic twins a day later
+	# LR 2026-11-25: re-check the Roman Republic government now that the Roman law is in place (on_government_change ran before it)
+	LR_roman_republic_government_effect = yes
+}

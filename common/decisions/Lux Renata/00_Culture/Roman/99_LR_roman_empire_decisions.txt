@@ -57,7 +57,7 @@ LR_restore_western_empire_decision = {
 		}
 
 		if = {
-			limit = { has_ep3_dlc_trigger = yes }			
+			limit = { LR_gradus_has_rtp_trigger = yes }			
 			convert_to_administrative_from_feudalism_effect = { 
 				GOVERNMENT_TO_ADOPT = flag:roman_administrative 
 			}
@@ -160,11 +160,14 @@ restore_roman_empire_decision = {
 		is_independent_ruler = yes
 		is_at_war = no
 
-		OR = {
-			religion = { is_in_family = rf_abrahamic }
-			religion = { is_in_family = rf_graeco_roman }
-			culture = { has_cultural_pillar = heritage_latin }
-			culture = { has_cultural_pillar = heritage_byzantine }
+		custom_tooltip = { # LR 2026-11-25: tiger tip, OR too complex for a failures-only tooltip
+			text = LR_restore_roman_empire_faith_or_culture_tt
+			OR = {
+				religion = { is_in_family = rf_abrahamic }
+				religion = { is_in_family = rf_graeco_roman }
+				culture = { has_cultural_pillar = heritage_latin }
+				culture = { has_cultural_pillar = heritage_byzantine }
+			}
 		}
 	}
 
@@ -361,7 +364,7 @@ restore_gallic_empire_decision = {
 		OR = {
 			government_has_flag = government_is_sacral_feudal
 			government_has_flag = government_is_sacral_administrative
-			#government_has_flag = government_is_roman_autocratic
+			#government_has_flag = government_is_roman_imperial_rank
 			#government_has_flag = government_is_administrative
 		}
 		culture = { has_cultural_pillar = heritage_latin }
@@ -387,7 +390,7 @@ restore_gallic_empire_decision = {
 				liege = {
 					OR = {
 						government_has_flag = government_is_roman_administrative
-						government_has_flag = government_is_roman_autocratic
+						government_has_flag = government_is_roman_imperial_rank
 						government_has_flag = government_is_roman_imperial_type # LR 2026-11-19: the Principate too
 						government_has_flag = government_is_sacral_administrative
 					}
@@ -447,8 +450,9 @@ LR_evolve_syagria_decision = {
 
 	is_valid = {
 		is_independent_ruler = yes
-		prestige_level >= medium_prestige_level
+		prestige_level >= high_prestige_level # LR 2026-11-25: was medium
 		completely_controls_region = custom_roman_lugdunensis
+		completely_controls_region = custom_roman_viennensis # LR 2026-11-25 (user): raised, it now gives a hegemony
 	}
 
 	is_valid_showing_failures_only = {
@@ -466,6 +470,8 @@ LR_evolve_syagria_decision = {
 
 	effect = {
 		LR_proclaim_regional_roman_empire_effect = { OLD = e_syagria NEW = e_gallic_empire }
+		custom_tooltip = LR_evolve_regional_hegemony_tt # LR 2026-11-25 (user): straight to the hegemony, the empire as its shadow
+		LR_found_regional_hegemony_with_shadow_effect = { SHADOW = e_gallic_empire HEGEMONY = h_gallic_empire REGION = custom_roman_prefecture_gallia SORT = gallic }
 		hidden_effect = {
 			add_to_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -512,8 +518,9 @@ LR_evolve_tadmor_decision = {
 
 	is_valid = {
 		is_independent_ruler = yes
-		prestige_level >= medium_prestige_level
+		prestige_level >= high_prestige_level # LR 2026-11-25: was medium
 		completely_controls_region = custom_roman_syria
+		completely_controls_region = custom_roman_palestine # LR 2026-11-25 (user): raised, it now gives a hegemony
 	}
 
 	is_valid_showing_failures_only = {
@@ -531,6 +538,8 @@ LR_evolve_tadmor_decision = {
 
 	effect = {
 		LR_proclaim_regional_roman_empire_effect = { OLD = e_tadmor NEW = e_palmyrene_empire }
+		custom_tooltip = LR_evolve_regional_hegemony_tt # LR 2026-11-25 (user): straight to the hegemony, the empire as its shadow
+		LR_found_regional_hegemony_with_shadow_effect = { SHADOW = e_palmyrene_empire HEGEMONY = h_palmyrene_empire REGION = custom_roman_prefecture_oriens SORT = palmyrene }
 		hidden_effect = {
 			add_to_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -577,8 +586,12 @@ LR_evolve_constantinid_decision = {
 
 	is_valid = {
 		is_independent_ruler = yes
-		prestige_level >= medium_prestige_level
+		prestige_level >= high_prestige_level # LR 2026-11-25: was medium
 		completely_controls_region = custom_roman_britannia
+		OR = { # LR 2026-11-25 (user): raised, it now gives a hegemony
+			completely_controls_region = custom_roman_caledonia
+			completely_controls_region = custom_roman_hibernia
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -596,6 +609,8 @@ LR_evolve_constantinid_decision = {
 
 	effect = {
 		LR_proclaim_regional_roman_empire_effect = { OLD = e_constantinid NEW = e_brittanic_empire }
+		custom_tooltip = LR_evolve_regional_hegemony_tt # LR 2026-11-25 (user): straight to the hegemony, the empire as its shadow
+		LR_found_regional_hegemony_with_shadow_effect = { SHADOW = e_brittanic_empire HEGEMONY = h_brittanic_empire REGION = custom_roman_prefecture_britannia SORT = brittanic }
 		hidden_effect = {
 			add_to_global_variable_list = {
 				name = unavailable_unique_decisions

@@ -6,24 +6,25 @@
 # Character scope: the government is in none of the Lux Renata groups (vanilla Feudal or Clan)
 LR_has_no_government_group_trigger = {
 	NOR = {
-		government_has_flag = government_is_classical_group
-		government_has_flag = government_is_western_group
-		government_has_flag = government_is_despotic_group
-		government_has_flag = government_is_mamlakah_group
-		government_has_flag = government_is_sudanic_group
-		government_has_flag = government_is_nilotic_group
-		government_has_flag = government_is_indic_group
-		government_has_flag = government_is_islamic_group
-		government_has_flag = government_is_sinic_group
-		government_has_flag = government_is_japanese_group
-		government_has_flag = government_is_sacral_group
-		government_has_flag = government_is_barbarian_group
+		LR_in_classical_group_trigger = yes
+		LR_in_western_group_trigger = yes
+		LR_in_despotic_group_trigger = yes
+		LR_in_mamlakah_group_trigger = yes
+		LR_in_sudanic_group_trigger = yes
+		LR_in_nilotic_group_trigger = yes
+		LR_in_indic_group_trigger = yes
+		LR_in_islamic_group_trigger = yes
+		LR_in_sinic_group_trigger = yes
+		LR_in_japanese_group_trigger = yes
+		LR_in_sacral_group_trigger = yes
+		LR_in_barbarian_group_trigger = yes
 	}
 }
 
 # Character scope
 LR_convert_admin_sees_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
 		LR_has_no_government_group_trigger = yes
@@ -37,18 +38,19 @@ LR_convert_admin_sees_administrative_trigger = {
 
 # Character scope
 LR_convert_admin_sees_roman_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_classical_group
+		LR_in_classical_group_trigger = yes
 		LR_culture_is_hellenic_trigger = no # Hellenistic heritages take the Alexandrian branch
 	}
 	trigger_else = {
 		top_liege = {
 			OR = {
 				has_government = roman_administrative_government
-				has_government = roman_rtp_government # LR 2026-11-19 RtP-only tier
-				has_government = roman_autocratic_government
+				LR_rtp_autocratic_roman_trigger = yes # LR 2026-11-25 Autocratic of this group
+				has_government = roman_imperial_government
 				has_government = roman_dominate_government
 			}
 		}
@@ -57,19 +59,19 @@ LR_convert_admin_sees_roman_administrative_trigger = {
 
 # Character scope
 LR_convert_admin_sees_alexandrian_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_classical_group
+		LR_in_classical_group_trigger = yes
 		LR_culture_is_hellenic_trigger = yes # Hellenistic, Indo-Hellenic and Sino-Hellenic heritages
 	}
 	trigger_else = {
 		top_liege = {
 			OR = {
 				has_government = alexandrian_administrative_government
-				has_government = alexandrian_rtp_government # LR 2026-11-19 RtP-only tier
-				has_government = hellenistic_autocratic_government
-				has_government = hellenistic_imperial_government
+				LR_rtp_autocratic_alexandrian_trigger = yes # LR 2026-11-25 Autocratic of this group
+				has_government = hellenistic_basileia_government
 				has_government = hellenistic_kosmokratoria_government
 			}
 		}
@@ -78,31 +80,34 @@ LR_convert_admin_sees_alexandrian_administrative_trigger = {
 
 # Character scope
 LR_convert_admin_sees_western_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_western_group
+		LR_in_western_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
-			OR = { has_government = western_administrative_government has_government = western_rtp_government }
+			OR = { has_government = western_administrative_government LR_rtp_autocratic_western_trigger = yes }
 		}
 	}
 }
 
 # Character scope
 LR_convert_admin_sees_persianate_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_despotic_group
+		LR_in_despotic_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
 			OR = {
 				has_government = persianate_administrative_government
-				has_government = persianate_rtp_government # LR 2026-11-19 RtP-only tier
-				has_government = persianate_autocratic_government
+				LR_rtp_autocratic_persianate_trigger = yes # LR 2026-11-25 Autocratic of this group
+				has_government = persianate_imperial_government
+				has_government = persianate_farr_government # LR 2026-11-25 Farr (tools/persianate_farr/build_persianate_farr.py)
 			}
 		}
 	}
@@ -110,49 +115,61 @@ LR_convert_admin_sees_persianate_administrative_trigger = {
 
 # Character scope (LR 2026-11-19)
 LR_convert_admin_sees_mamlakah_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_mamlakah_group
+		LR_in_mamlakah_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
 			OR = {
 				has_government = mamlakah_administrative_government
-				has_government = mamlakah_rtp_government # LR 2026-11-19 RtP-only tier
+				LR_rtp_autocratic_mamlakah_trigger = yes # LR 2026-11-25 Autocratic of this group
 				has_government = mamlakah_imperial_government
+				has_government = mamlakah_alma_government # LR 2026-11-25 universal ranks (tools/universal_ranks/build_universal_ranks.py)
+				has_government = western_imperial_government
+				has_government = western_universum_government # LR 2026-11-25 universal ranks (tools/universal_ranks/build_universal_ranks.py)
+				has_government = iqta_imperial_government
+				has_government = iqta_imama_government # LR 2026-11-25 universal ranks (tools/universal_ranks/build_universal_ranks.py)
+				has_government = gupta_imperial_government
+				has_government = gupta_sarvabhauma_government # LR 2026-11-25 Sarvabhauma (tools/gupta_sarvabhauma/build_gupta_sarvabhauma.py)
 			}
 		}
 	}
 }
 LR_convert_admin_sees_sudanic_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_sudanic_group
+		LR_in_sudanic_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
 			OR = {
 				has_government = sudanic_administrative_government
-				has_government = sudanic_rtp_government # LR 2026-11-19 RtP-only tier
+				LR_rtp_autocratic_sudanic_trigger = yes # LR 2026-11-25 Autocratic of this group
 				has_government = sudanic_imperial_government
+				has_government = sudanic_kurufaba_government # LR 2026-11-25 universal ranks (tools/universal_ranks/build_universal_ranks.py)
 			}
 		}
 	}
 }
 LR_convert_admin_sees_nilotic_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_nilotic_group
+		LR_in_nilotic_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
 			OR = {
 				has_government = nilotic_administrative_government
-				has_government = nilotic_rtp_government # LR 2026-11-19 RtP-only tier
+				LR_rtp_autocratic_nilotic_trigger = yes # LR 2026-11-25 Autocratic of this group
 				has_government = nilotic_imperial_government
+				has_government = nilotic_kebra_government # LR 2026-11-25 universal ranks (tools/universal_ranks/build_universal_ranks.py)
 			}
 		}
 	}
@@ -160,38 +177,41 @@ LR_convert_admin_sees_nilotic_administrative_trigger = {
 
 # Character scope
 LR_convert_admin_sees_gupta_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_indic_group
+		LR_in_indic_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
-			OR = { has_government = gupta_administrative_government has_government = gupta_rtp_government }
+			OR = { has_government = gupta_administrative_government LR_rtp_autocratic_gupta_trigger = yes }
 		}
 	}
 }
 
 # Character scope
 LR_convert_admin_sees_iqta_administrative_trigger = {
-	has_ep3_dlc_trigger = yes
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # LR 2026-11-25: with Roads to Power alone the only option is Autocratic
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_islamic_group
+		LR_in_islamic_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
-			OR = { has_government = iqta_administrative_government has_government = iqta_rtp_government }
+			OR = { has_government = iqta_administrative_government LR_rtp_autocratic_iqta_trigger = yes }
 		}
 	}
 }
 
 # Character scope
 LR_convert_admin_sees_meritocratic_trigger = {
-	has_tgp_dlc_trigger = yes
+	LR_gradus_has_auh_trigger = yes
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_sinic_group
+		LR_in_sinic_group_trigger = yes
+		highest_held_title_tier >= tier_empire # LR 2026-11-25: Meritocratic is the Sinic imperial rank
 	}
 	trigger_else = {
 		top_liege = {
@@ -202,10 +222,10 @@ LR_convert_admin_sees_meritocratic_trigger = {
 
 # Character scope
 LR_convert_admin_sees_celestial_trigger = {
-	has_tgp_dlc_trigger = yes
+	LR_gradus_has_auh_trigger = yes
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_sinic_group
+		has_title = title:h_china # LR 2026-11-25: Celestial is the universal rank of the Chinese hegemony
 	}
 	trigger_else = {
 		top_liege = {
@@ -216,10 +236,10 @@ LR_convert_admin_sees_celestial_trigger = {
 
 # Character scope
 LR_convert_admin_sees_japan_administrative_trigger = {
-	has_tgp_dlc_trigger = yes
+	LR_gradus_has_auh_trigger = yes
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_japanese_group
+		LR_in_japanese_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
@@ -230,10 +250,10 @@ LR_convert_admin_sees_japan_administrative_trigger = {
 
 # Character scope
 LR_convert_admin_sees_sacral_administrative_trigger = {
-	has_tgp_dlc_trigger = yes
+	LR_gradus_has_auh_trigger = yes
 	trigger_if = {
 		limit = { top_liege = this }
-		government_has_flag = government_is_sacral_group
+		LR_in_sacral_group_trigger = yes
 	}
 	trigger_else = {
 		top_liege = {
@@ -245,6 +265,7 @@ LR_convert_admin_sees_sacral_administrative_trigger = {
 # Character scope: any option of convert_to_administrative_decision is open to the ruler
 LR_convert_admin_sees_any_option_trigger = {
 	OR = {
+		LR_convert_admin_sees_rtp_autocratic_trigger = yes # LR 2026-11-25
 		LR_convert_admin_sees_administrative_trigger = yes
 		LR_convert_admin_sees_roman_administrative_trigger = yes
 		LR_convert_admin_sees_alexandrian_administrative_trigger = yes
@@ -255,9 +276,40 @@ LR_convert_admin_sees_any_option_trigger = {
 		LR_convert_admin_sees_nilotic_administrative_trigger = yes
 		LR_convert_admin_sees_gupta_administrative_trigger = yes
 		LR_convert_admin_sees_iqta_administrative_trigger = yes
+		LR_convert_admin_sees_sinic_administrative_trigger = yes # LR 2026-11-25 Sinic twins
 		LR_convert_admin_sees_meritocratic_trigger = yes
 		LR_convert_admin_sees_celestial_trigger = yes
 		LR_convert_admin_sees_japan_administrative_trigger = yes
 		LR_convert_admin_sees_sacral_administrative_trigger = yes
+	}
+}
+
+# LR 2026-11-25 (user): with Roads to Power alone every group but Barbarian converts to Autocratic, the one option shown.
+# Character scope
+LR_convert_admin_sees_rtp_autocratic_trigger = {
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = yes
+	trigger_if = {
+		limit = { top_liege = this }
+		NOT = { government_has_flag = government_is_barbarian_group }
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = rtp_autocratic_government
+		}
+	}
+}
+
+# # LR 2026-11-25 Sinic twins: Junxian, the Sinic administrative twin. Character scope
+LR_convert_admin_sees_sinic_administrative_trigger = {
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_test_LR_has_rtp_governments_dlc_trigger = no # with Roads to Power alone the only option is Autocratic
+	trigger_if = {
+		limit = { top_liege = this }
+		LR_in_sinic_group_trigger = yes
+	}
+	trigger_else = {
+		top_liege = {
+			has_government = sinic_administrative_government
+		}
 	}
 }

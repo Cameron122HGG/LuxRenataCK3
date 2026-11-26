@@ -1,0 +1,276 @@
+﻿# LR Caliphal ajnad title set (tools/register_ajnad_set.py, 2026-11-24). GENERATED.
+
+# Title: one of the ajnad set's titles (al-Khilafa, the wilayat, the districts)
+LR_title_set_ajnad_title_trigger = {
+	OR = {
+		this = title:e_khilafa
+		this = title:k_wilaya_sham
+		this = title:d_jund_filastin
+		this = title:d_jund_urdunn
+		this = title:d_jund_dimashq
+		this = title:d_kura_balqa
+		this = title:d_jund_hims
+		this = title:d_jund_qinnasrin
+		this = title:d_thughur_awasim
+		this = title:k_wilaya_jazira
+		this = title:d_diyar_bakr
+		this = title:d_diyar_mudar
+		this = title:d_diyar_rabia
+		this = title:d_kura_mawsil
+		this = title:d_kura_shahrazur
+		this = title:k_wilaya_iraq
+		this = title:d_kura_madinat_al_salam
+		this = title:d_kura_anbar
+		this = title:d_kura_kufa
+		this = title:d_kura_wasit
+		this = title:d_kura_basra
+		this = title:d_kura_samarra
+		this = title:k_wilaya_hijaz
+		this = title:d_kura_makka
+		this = title:d_kura_madina
+	}
+}
+
+# Character: may use the ajnad set: any Muslim ruler (user, 2026-11-24)
+LR_title_set_ajnad_native_trigger = {
+	faith.religion ?= religion:islam_religion
+}
+
+LR_title_set_ajnad_outsider_trigger = {
+	NOT = { LR_title_set_ajnad_native_trigger = yes }
+	any_held_title = { LR_title_set_ajnad_title_trigger = yes }
+}
+
+# Character: holds a caliph title
+LR_ajnad_holds_caliph_title_trigger = {
+	OR = {
+		has_title = title:d_sunni
+		has_title = title:d_shiite
+		has_title = title:d_laamp_sevener_caliph
+		has_title = title:d_laamp_twelver_caliph
+	}
+}
+
+# Character: completely controls both holy cities
+LR_ajnad_holds_holy_cities_trigger = {
+	completely_controls = title:c_mecca
+	completely_controls = title:c_medina
+}
+
+# Character: holds at least two wilayat
+LR_ajnad_holds_two_wilayat_trigger = {
+	calc_true_if = {
+		amount >= 2
+		has_title = title:k_wilaya_sham
+		has_title = title:k_wilaya_jazira
+		has_title = title:k_wilaya_iraq
+		has_title = title:k_wilaya_hijaz
+	}
+}
+
+# Character: completely controls the districts of Wilayat al-Sham
+LR_ajnad_sham_controlled_trigger = {
+	completely_controls = title:c_jaffa
+	completely_controls = title:c_jerusalem
+	completely_controls = title:c_ghazza
+	completely_controls = title:c_negev
+	completely_controls = title:c_tiberias
+	completely_controls = title:c_acre
+	completely_controls = title:c_irbid
+	completely_controls = title:c_damascus
+	completely_controls = title:c_juwair
+	completely_controls = title:c_baalbek
+	completely_controls = title:c_hauran
+	completely_controls = title:c_beirut
+	completely_controls = title:c_tripoli
+	completely_controls = title:c_qaryatan
+	completely_controls = title:c_balqa
+	completely_controls = title:c_jilat
+	completely_controls = title:c_kerak
+	completely_controls = title:c_maab
+	completely_controls = title:c_homs
+	completely_controls = title:c_hama
+	completely_controls = title:c_shayzar
+	completely_controls = title:c_masyaf
+	completely_controls = title:c_latakia
+	completely_controls = title:c_antartus
+	completely_controls = title:c_palmyra
+	completely_controls = title:c_qinnasrin
+	completely_controls = title:c_aleppo
+	completely_controls = title:c_cyrrhestica
+	completely_controls = title:c_suriya
+	completely_controls = title:c_syrrusafa
+	completely_controls = title:c_sukhna
+	completely_controls = title:c_antiocheia
+	completely_controls = title:c_alexandretta
+	completely_controls = title:c_baghras
+}
+
+# Character: completely controls the districts of Wilayat al-Jazira
+LR_ajnad_jazira_controlled_trigger = {
+	completely_controls = title:c_amida
+	completely_controls = title:c_mayyafariqin
+	completely_controls = title:c_tall_basma
+	completely_controls = title:c_hakkari
+	completely_controls = title:c_bakriya
+	completely_controls = title:c_raqqa
+	completely_controls = title:c_harran
+	completely_controls = title:c_dausar
+	completely_controls = title:c_rahba
+	completely_controls = title:c_nasibin
+	completely_controls = title:c_sinjar
+	completely_controls = title:c_khabur
+	completely_controls = title:c_upper_khabur
+	completely_controls = title:c_mosul
+	completely_controls = title:c_ninive
+	completely_controls = title:c_irbil
+	completely_controls = title:c_shahrazur
+	completely_controls = title:c_kurdistan
+}
+
+# Character: completely controls the districts of Wilayat al-Iraq
+LR_ajnad_iraq_controlled_trigger = {
+	completely_controls = title:c_baghdad
+	completely_controls = title:c_iskaf
+	completely_controls = title:c_badaraya
+	completely_controls = title:c_anbar
+	completely_controls = title:c_hadithat-ana
+	completely_controls = title:c_al-haditha
+	completely_controls = title:c_kufa
+	completely_controls = title:c_karbala
+	completely_controls = title:c_safata
+	completely_controls = title:c_qadisiya
+	completely_controls = title:c_akhadid
+	completely_controls = title:c_waqisa
+	completely_controls = title:c_wasit
+	completely_controls = title:c_tib
+	completely_controls = title:c_batiha
+	completely_controls = title:c_basra
+	completely_controls = title:c_ubulla
+	completely_controls = title:c_rusafa
+	completely_controls = title:c_samarra
+	completely_controls = title:c_takrit
+	completely_controls = title:c_kirkuk
+	completely_controls = title:c_hulwan
+}
+
+# Character: completely controls the districts of Wilayat al-Hijaz
+LR_ajnad_hijaz_controlled_trigger = {
+	completely_controls = title:c_mecca
+	completely_controls = title:c_taif
+	completely_controls = title:c_tihama
+	completely_controls = title:c_bisha
+	completely_controls = title:c_medina
+	completely_controls = title:c_yanbu
+	completely_controls = title:c_wajh
+	completely_controls = title:c_khaybar
+	completely_controls = title:c_harrat_rahat
+}
+
+# County: in Wilayat al-Sham
+LR_ajnad_sham_county_trigger = {
+	OR = {
+		this = title:c_jaffa
+		this = title:c_jerusalem
+		this = title:c_ghazza
+		this = title:c_negev
+		this = title:c_tiberias
+		this = title:c_acre
+		this = title:c_irbid
+		this = title:c_damascus
+		this = title:c_juwair
+		this = title:c_baalbek
+		this = title:c_hauran
+		this = title:c_beirut
+		this = title:c_tripoli
+		this = title:c_qaryatan
+		this = title:c_balqa
+		this = title:c_jilat
+		this = title:c_kerak
+		this = title:c_maab
+		this = title:c_homs
+		this = title:c_hama
+		this = title:c_shayzar
+		this = title:c_masyaf
+		this = title:c_latakia
+		this = title:c_antartus
+		this = title:c_palmyra
+		this = title:c_qinnasrin
+		this = title:c_aleppo
+		this = title:c_cyrrhestica
+		this = title:c_suriya
+		this = title:c_syrrusafa
+		this = title:c_sukhna
+		this = title:c_antiocheia
+		this = title:c_alexandretta
+		this = title:c_baghras
+	}
+}
+
+# County: in Wilayat al-Jazira
+LR_ajnad_jazira_county_trigger = {
+	OR = {
+		this = title:c_amida
+		this = title:c_mayyafariqin
+		this = title:c_tall_basma
+		this = title:c_hakkari
+		this = title:c_bakriya
+		this = title:c_raqqa
+		this = title:c_harran
+		this = title:c_dausar
+		this = title:c_rahba
+		this = title:c_nasibin
+		this = title:c_sinjar
+		this = title:c_khabur
+		this = title:c_upper_khabur
+		this = title:c_mosul
+		this = title:c_ninive
+		this = title:c_irbil
+		this = title:c_shahrazur
+		this = title:c_kurdistan
+	}
+}
+
+# County: in Wilayat al-Iraq
+LR_ajnad_iraq_county_trigger = {
+	OR = {
+		this = title:c_baghdad
+		this = title:c_iskaf
+		this = title:c_badaraya
+		this = title:c_anbar
+		this = title:c_hadithat-ana
+		this = title:c_al-haditha
+		this = title:c_kufa
+		this = title:c_karbala
+		this = title:c_safata
+		this = title:c_qadisiya
+		this = title:c_akhadid
+		this = title:c_waqisa
+		this = title:c_wasit
+		this = title:c_tib
+		this = title:c_batiha
+		this = title:c_basra
+		this = title:c_ubulla
+		this = title:c_rusafa
+		this = title:c_samarra
+		this = title:c_takrit
+		this = title:c_kirkuk
+		this = title:c_hulwan
+	}
+}
+
+# County: in Wilayat al-Hijaz
+LR_ajnad_hijaz_county_trigger = {
+	OR = {
+		this = title:c_mecca
+		this = title:c_taif
+		this = title:c_tihama
+		this = title:c_bisha
+		this = title:c_medina
+		this = title:c_yanbu
+		this = title:c_wajh
+		this = title:c_khaybar
+		this = title:c_harrat_rahat
+	}
+}
+

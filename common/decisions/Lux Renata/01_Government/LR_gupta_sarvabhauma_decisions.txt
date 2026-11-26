@@ -1,0 +1,57 @@
+﻿# LR 2026-11-25 Sarvabhauma (tools/gupta_sarvabhauma/build_gupta_sarvabhauma.py)
+LR_perform_the_ashvamedha_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	desc = LR_perform_the_ashvamedha_decision_desc
+	selection_tooltip = LR_perform_the_ashvamedha_decision_tooltip
+	confirm_text = LR_perform_the_ashvamedha_decision_confirm
+	decision_group_type = realm
+	sort_order = 41
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 120
+	}
+
+	is_shown = {
+		LR_gradus_has_auh_trigger = yes # the universal ranks need All Under Heaven
+		has_government = gupta_imperial_government
+		is_independent_ruler = yes
+	}
+
+	is_valid = {
+		highest_held_title_tier >= tier_hegemony
+		piety_level >= 5
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		piety = 1500
+		prestige = 500
+	}
+
+	effect = {
+		add_character_flag = LR_ashvamedha_performed
+		change_government = gupta_sarvabhauma_government
+		add_legitimacy = 100
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}

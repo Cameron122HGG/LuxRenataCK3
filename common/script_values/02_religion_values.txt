@@ -4072,6 +4072,40 @@ faith_conversion_cost_mult = {
 			}
 		}
 	}
+	# LR 2026-11-25: Sacral Gaul event discounts (LR_tgp_sacral_gaul_yearly_events.1010: the rite you sided with;
+	# .1040: the Gallic Church after the Roman bridge oratory)
+	if = {
+		limit = {
+			scope:character = {
+				has_variable = gaul_1010_discount
+			}
+			scope:new_rite = scope:character.var:gaul_1010_discount
+		}
+		multiply = {
+			value = 1
+			subtract = {
+				desc = faith_conversion_cost_LR_tgp_sacral_gaul_1010_event
+				format = "BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD"
+				value = 0.5
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:character = {
+				has_character_flag = LR_tgp_sacral_gaul_1040_discount
+			}
+			scope:new_rite.faith = faith:gallic_faith
+		}
+		multiply = {
+			value = 1
+			subtract = {
+				desc = faith_conversion_cost_LR_tgp_sacral_gaul_1040_event
+				format = "BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD"
+				value = 0.5
+			}
+		}
+	}
 
 	# Removing 1 to offset the value and present it as expected by the code
 	subtract = {

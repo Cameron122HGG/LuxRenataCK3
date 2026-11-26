@@ -1,0 +1,74 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+
+# 2026-11-24: Caesars are independent, so Recall is a demand. Accepted: the command goes back to the Augustus and
+# the Caesar swears fealty with the rest of his realm. Refused: he leaves the college and the Augustus gets a
+# pressed claim on the command.
+LR_recall_caesar_interaction = {
+	category = interaction_category_diplomacy
+	desc = LR_recall_caesar_interaction_desc
+	cooldown_against_recipient = { years = 5 }
+
+	is_shown = {
+		scope:recipient = {
+			OR = { has_trait = caesar has_character_flag = LR_proconsul_flag }
+			exists = var:LR_caesar_augustus
+			var:LR_caesar_augustus = scope:actor
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = { is_at_war = no }
+		scope:recipient = { is_at_war = no }
+	}
+
+	on_accept = {
+		scope:recipient = {
+			LR_caesar_commands_of_root_effect = { MODE = end } # 2026-11-25: the dynamic command ends; the land returns with his fealty
+			LR_college_leave_effect = yes
+			remove_variable = LR_caesar_augustus
+		}
+		scope:actor = {
+			create_title_and_vassal_change = { type = revoked save_scope_as = change add_claim_on_loss = no }
+		}
+		scope:recipient = {
+			every_held_title = {
+				limit = { has_variable = LR_caesar_of NOT = { has_variable = LR_caesar_region } } # a static command (old saves)
+				change_title_holder = { holder = scope:actor change = scope:change }
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		scope:recipient = {
+			LR_caesar_unmake_effect = yes
+			if = {
+				limit = { is_landed = yes is_independent_ruler = yes }
+				create_title_and_vassal_change = { type = swear_fealty save_scope_as = lr_recall_fealty add_claim_on_loss = no }
+				change_liege = { liege = scope:actor change = scope:lr_recall_fealty }
+				resolve_title_and_vassal_change = scope:lr_recall_fealty
+			}
+			add_opinion = { target = scope:actor modifier = revoked_title }
+		}
+	}
+	on_decline = {
+		scope:recipient = {
+			primary_title.title_confederation ?= { change_cohesion = -25 }
+			every_held_title = {
+				limit = { has_variable = LR_caesar_of }
+				scope:actor = { add_pressed_claim = prev }
+			}
+			LR_caesar_commands_of_root_effect = { MODE = usurp } # 2026-11-25: his command becomes an empire of his own
+			LR_college_leave_effect = yes
+			remove_variable = LR_caesar_augustus
+			LR_caesar_unmake_effect = yes
+		}
+	}
+
+	ai_accept = {
+		base = -25
+		opinion_modifier = { who = scope:recipient opinion_target = scope:actor multiplier = 0.5 desc = AI_OPINION_REASON }
+		modifier = { add = 25 scope:recipient.primary_title.title_confederation ?= { cohesion >= 45 } desc = LR_recall_caesar_cohesion_reason }
+		modifier = { add = 25 scope:recipient.primary_title.title_confederation ?= { cohesion >= 70 } desc = LR_recall_caesar_cohesion_reason }
+		modifier = { add = -30 scope:recipient = { max_military_strength >= scope:actor.max_military_strength } desc = LR_recall_caesar_strength_reason }
+	}
+	ai_will_do = {
+		base = 0
+	}
+}

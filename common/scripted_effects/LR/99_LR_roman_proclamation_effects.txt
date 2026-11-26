@@ -4,21 +4,24 @@ LR_proclaim_regional_roman_empire_effect = {
 	# Government: the emperor and their great Roman vassals take up Roman Autocratic, as restore_gallic_empire_decision does
 	if = {
 		limit = {
-			has_ep3_dlc_trigger = yes
-			has_tgp_dlc_trigger = yes
+			LR_gradus_has_rtp_trigger = yes
+			LR_gradus_has_auh_trigger = yes
 		}
 		if = {
-			limit = { NOT = { government_has_flag = government_is_roman_autocratic } }
-			change_government = roman_autocratic_government
+			limit = {
+				NOT = { government_has_flag = government_is_roman_imperial_rank }
+				NOT = { government_has_flag = government_is_republic } # LR 2026-11-25 regional republics (tools/regional_republics/build_regional_republics.py): a republic stays one (Republic twins)
+			}
+			change_government = roman_imperial_government
 		}
 		every_vassal_or_below = {
 			custom = LR_proclaim_roman_empire_vassals_custom
 			limit = {
 				highest_held_title_tier >= tier_duchy
-				government_has_flag = government_is_classical_group
-				NOT = { government_has_flag = government_is_roman_autocratic }
+				LR_in_classical_group_trigger = yes
+				NOT = { government_has_flag = government_is_roman_imperial_rank }
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 		}
 	}
 
@@ -33,7 +36,7 @@ LR_proclaim_regional_roman_empire_effect = {
 	}
 	every_vassal = {
 		custom = LR_proclaim_roman_empire_opinion_custom
-		limit = { government_has_flag = government_is_classical_group }
+		limit = { LR_in_classical_group_trigger = yes }
 		add_opinion = {
 			target = root
 			modifier = LR_proclaimed_roman_empire_opinion

@@ -1,21 +1,19 @@
 ﻿namespace = LR_tgp_sacral_gaul_yearly_events
-# LR TODO (2026-11-22, sacral Gaul rework): this file is a reskin of All Under Heaven's Japan yearly events.
-# Events marked "LR TODO: replace" below still carry Japanese content (Buddhism, yokai, Shinto, onsen, bonsai,
-# the Japonic language...) and need replacing with Gaulish/Frankish content, not a reskin. Many are gated on
-# Japanese culture or faith, so they never fire in Gaul until rewritten. See LR_sacral_gaul_rework_proposal.md.
+# LR 2026-11-25: the Sacral Gaul yearly events. They began as a reskin of All Under Heaven's Japan yearly events;
+# the Japanese content was rewritten as Gaulish/Frankish content on 2026-11-25 (comments "Gaulish rewrite (was ...)").
 
 ##########################################################
-# Japan Yearly Events
+# Sacral Gaul Yearly Events (from All Under Heaven's Japan Yearly Events)
 # LR_tgp_sacral_gaul_yearly_events - 1000-1999
 # by Ariana Tranumn
 ##########################################################
 
 ##########################################################
-# 1000 - You see some Onibi, follow them or no?
-# 1010 - Two buddhist sects are fighting, and ask you to pick a side
-# 1020 - Your senses are playing tricks on you, and you encounter a new Yokai
+# 1000 - You see daimon flames (will-o'-the-wisps), follow them or no?
+# 1010 - Two Christian rites at court are quarrelling, and ask you to pick a side
+# 1020 - Your senses are playing tricks on you, and you meet a Gaulish daimon
 # 1030 - Praying at a shrine for future success
-# 1040 - You come across a red bridge
+# 1040 - You come across an old Roman bridge with a wayside oratory
 # 1050 - You are accused of violating a dumb rule
 # 1060 - A prisoner requests to be mercy killed
 # 1070 - A temple in your realm has burned down
@@ -23,22 +21,22 @@
 # 1090 - Growing old with no heir
 # 1100 - You become guilty after killing some people
 # 1110 - An animal is seen near the shrine of a God
-# 1120 - You meet a warrior monk
+# 1120 - You meet an oath-bound champion guarding the road
 # 1130 - Your daughter expresses an interest in poetry
-# 1140 - You are stopped in Soryo lands as a Ritsuryo ruler
+# 1140 - A palace official is stopped at a warlord count's toll
 # 1150 - The Emperor is passing through your realm, chance to gain favor or be mean
 # 1160 - You are offered a concubine from a rival house
-# 1170 - The prose that you're reading is of an unknown language
-# 1180 - You've been gifted a Bonsai tree for your garden
+# 1170 - The verse that you're reading is in a neighbouring tongue you don't speak
+# 1180 - Your gardener presents a box tree clipped in the Roman topiary manner
 # 1190 - You have a bad trait and you're making some decisions at night
-# 1220 - You've witnessed a miracle made by a Buddhist monk
-# 1230 - Fear of a low durability artifact coming to life (Yokai)
-# 1240 - A traveler poet visits court and can't read from right to left
-# 1250 - Being gifted a Kakejiku scroll (Wedding)
+# 1220 - You hear of a miracle worked by a wandering hermit
+# 1230 - Fear of a neglected artifact being taken by a daimon
+# 1240 - A foreign poet visits court and stumbles over the Merovingian hand
+# 1250 - Being gifted a decorated scroll (Wedding) (LR 2026-11-25: was a Kakejiku scroll)
 ##########################################################
 
-# You see some Onibi, follow them or no?
-# LR TODO: replace -- Japanese content (buddh); needs a Gaulish/Frankish rewrite
+# You see daimon flames (feux follets), follow them or no?
+# LR 2026-11-25: Gaulish rewrite (was onibi ghost fires)
 LR_tgp_sacral_gaul_yearly_events.1000 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1000.t
@@ -61,7 +59,7 @@ LR_tgp_sacral_gaul_yearly_events.1000 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_travelling_adult = yes
 		is_location_valid_for_travel_event_on_land = yes
 		government_is_sacral_trigger = yes
@@ -107,7 +105,7 @@ LR_tgp_sacral_gaul_yearly_events.1000 = {
 		}
 	}
 
-    #Option A) Follow the Onibi!
+    #Option A) Follow the daimon flames!
     option = {
         name = LR_tgp_sacral_gaul_yearly_events.1000.a
 
@@ -134,10 +132,11 @@ LR_tgp_sacral_gaul_yearly_events.1000 = {
 					title = LR_tgp_sacral_gaul_yearly_events.1000.a.tt.failure
 					left_icon = root
 					add_stress = minor_stress_impact_gain
-                    random = {
-                        chance = 20
-                        increase_wounds_no_death_effect = { REASON = lost_in_the_forest }
-                    }
+				}
+				# LR 2026-11-25: moved out of send_interface_toast (tiger: random inside a toast does not work right)
+				random = {
+					chance = 20
+					increase_wounds_no_death_effect = { REASON = lost_in_the_forest }
 				}
 			}
 		}
@@ -163,7 +162,7 @@ LR_tgp_sacral_gaul_yearly_events.1000 = {
 		}
     }
 
-    #Option B) Talk about Onibi!
+    #Option B) Talk about the daimon flames!
     option = {
         name = LR_tgp_sacral_gaul_yearly_events.1000.b
 		trigger = {
@@ -190,7 +189,7 @@ LR_tgp_sacral_gaul_yearly_events.1000 = {
 							left_icon = root
 							right_icon = scope:chaplain
 							add_character_modifier = {
-								modifier = LR_gaul_tgp_learned_from_onibi_modifier
+								modifier = LR_gaul_tgp_learned_from_daimon_flames_modifier
 								years = 3
 							}
 						}
@@ -257,8 +256,9 @@ LR_tgp_sacral_gaul_yearly_events.1000 = {
     }
 }
 
-# Two buddhist sects are fighting, and ask you to pick a side
-# LR TODO: replace -- Japanese content (buddh, yokai); needs a Gaulish/Frankish rewrite
+# Two Christian rites at court are quarrelling, and ask you to pick a side
+# LR 2026-11-25: Gaulish rewrite (was two Buddhist sects; now two councillors of different Christian rites,
+# e.g. the Gallic semipelagian_rite against frankish_christianity, arian_rite, celtic_christ or roman_rite)
 LR_tgp_sacral_gaul_yearly_events.1010 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1010.t
@@ -271,72 +271,71 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 		animation = chaplain
 	}
 	right_portrait = {
-		character = scope:buddhist_councillor_1
+		character = scope:rite_councillor_1
 		animation = debating
 	}
 
 	lower_center_portrait = {
-		character = scope:buddhist_councillor_2
+		character = scope:rite_councillor_2
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
+		government_is_sacral_trigger = yes
+		is_valid_for_gaul_events_trigger = yes
 		exists = cp:councillor_court_chaplain
-		#find a councilor
+		#find a Christian councillor
 		any_councillor = {
-			faith = {
-				religion = religion:buddhism_religion
-				save_temporary_scope_as = buddhist_sect
-			}
+			faith.religion = religion:christianity_religion
+			rite = { save_temporary_scope_as = christian_rite }
 		}
-		#find a councilor of a different sect
+		#find a Christian councillor of a different rite
 		any_councillor = {
-			faith = {
-				religion = religion:buddhism_religion
-				this != scope:buddhist_sect
+			faith.religion = religion:christianity_religion
+			rite = {
+				this != scope:christian_rite
 			}
 		}
 	}
-	#probably more interesting if you are Buddhist yourself
+	#probably more interesting if you are Christian yourself
 	weight_multiplier = {
 		base = 10
         modifier = {
 			add = 10
-			faith.religion = religion:buddhism_religion
+			faith.religion = religion:christianity_religion
 		}
 	}
 
 	immediate = {
 		#find chaplain to get mad if you do nothing
 		cp:councillor_court_chaplain = { save_scope_as = chaplain }
-		#find a councilor
+		#find a councillor
 		random_councillor = {
 			limit = {
-				faith = {
-					religion = religion:buddhism_religion
-				}
+				faith.religion = religion:christianity_religion
 			}
-			save_scope_as = buddhist_councillor_1
+			save_scope_as = rite_councillor_1
 		}
 
 		random_councillor = {
 			limit = {
-				faith = {
-					this != scope:buddhist_councillor_1.faith
-					religion = religion:buddhism_religion
+				faith.religion = religion:christianity_religion
+				rite = {
+					this != scope:rite_councillor_1.rite
 				}
 			}
-			save_scope_as = buddhist_councillor_2
+			save_scope_as = rite_councillor_2
 		}
 	}
 
-	# Option A) Sect A is correct
+	# Option A) Rite A is correct
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.1010.a
+		# LR 2026-11-25: Gaulish rewrite (was Buddhist sect faiths; now rites, discount read by 02_religion_values)
 		if = {
 			limit = {
-				faith = scope:buddhist_councillor_1.faith
+				rite = scope:rite_councillor_1.rite
 			}
 			add_piety = medium_piety_gain
 		}
@@ -344,15 +343,15 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 			custom_tooltip = LR_tgp_sacral_gaul_yearly_events.1010.a_discount
 			set_variable = {
 				name = gaul_1010_discount
-				value = scope:buddhist_councillor_1.faith
+				value = scope:rite_councillor_1.rite
 			}
 		}
 
 		every_vassal = {
 			limit = {
-				faith = scope:buddhist_councillor_1.faith
+				rite = scope:rite_councillor_1.rite
 			}
-			custom = every_buddhist_sect_1_vassal
+			custom = LR_tgp_sacral_gaul_1010_rite_1_vassal
 			add_opinion = {
 				modifier = pleased_opinion
 				target = root
@@ -362,9 +361,9 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 
 		every_vassal = {
 			limit = {
-				faith = scope:buddhist_councillor_2.faith
+				rite = scope:rite_councillor_2.rite
 			}
-			custom = every_buddhist_sect_2_vassal
+			custom = LR_tgp_sacral_gaul_1010_rite_2_vassal
 			add_opinion = {
 				modifier = disappointed_opinion
 				target = root
@@ -372,10 +371,17 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 			}
 		}
 
-		scope:buddhist_councillor_2.faith = {
-			change_fervor = {
-				value = 1
-				desc = fervor_gain_persecuted
+		if = {
+			limit = {
+				scope:rite_councillor_2 = {
+					NOT = { faith = scope:rite_councillor_1.faith }
+				}
+			}
+			scope:rite_councillor_2.faith = {
+				change_fervor = {
+					value = 1
+					desc = fervor_gain_persecuted
+				}
 			}
 		}
 
@@ -387,24 +393,24 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 			base = 100
 			modifier = {
 				factor = 0
-				faith = scope:buddhist_councillor_2.faith
+				rite = scope:rite_councillor_2.rite
 			}
 			modifier = {
 				factor = 2
 				AND = {
-					faith = scope:buddhist_councillor_1.faith
+					rite = scope:rite_councillor_1.rite
 					NOT = { has_trait = cynical }
 				}
 			}
 		}
 	}
 
-	# Option B) Sect B is correct
+	# Option B) Rite B is correct
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.1010.b
 		if = {
 			limit = {
-				faith = scope:buddhist_councillor_2.faith
+				rite = scope:rite_councillor_2.rite
 			}
 			add_piety = medium_piety_gain
 		}
@@ -412,15 +418,15 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 			custom_tooltip = LR_tgp_sacral_gaul_yearly_events.1010.b_discount
 			set_variable = {
 				name = gaul_1010_discount
-				value = scope:buddhist_councillor_2.faith
+				value = scope:rite_councillor_2.rite
 			}
 		}
 
 		every_vassal = {
 			limit = {
-				faith = scope:buddhist_councillor_2.faith
+				rite = scope:rite_councillor_2.rite
 			}
-			custom = every_buddhist_sect_2_vassal
+			custom = LR_tgp_sacral_gaul_1010_rite_2_vassal
 			add_opinion = {
 				modifier = pleased_opinion
 				target = root
@@ -430,9 +436,9 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 
 		every_vassal = {
 			limit = {
-				faith = scope:buddhist_councillor_1.faith
+				rite = scope:rite_councillor_1.rite
 			}
-			custom = every_buddhist_sect_1_vassal
+			custom = LR_tgp_sacral_gaul_1010_rite_1_vassal
 			add_opinion = {
 				modifier = disappointed_opinion
 				target = root
@@ -440,10 +446,17 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 			}
 		}
 
-		scope:buddhist_councillor_1.faith = {
-			change_fervor = {
-				value = 1
-				desc = fervor_gain_persecuted
+		if = {
+			limit = {
+				scope:rite_councillor_1 = {
+					NOT = { faith = scope:rite_councillor_2.faith }
+				}
+			}
+			scope:rite_councillor_1.faith = {
+				change_fervor = {
+					value = 1
+					desc = fervor_gain_persecuted
+				}
 			}
 		}
 
@@ -455,19 +468,19 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 			base = 100
 			modifier = {
 				factor = 0
-				faith = scope:buddhist_councillor_1.faith
+				rite = scope:rite_councillor_1.rite
 			}
 			modifier = {
 				factor = 2
 				AND = {
-					faith = scope:buddhist_councillor_2.faith
+					rite = scope:rite_councillor_2.rite
 					NOT = { has_trait = cynical }
 				}
 			}
 		}
 	}
 
-	# Option C) Let them fight, I don't care
+	# Option C) Let them quarrel, I don't care
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.1010.c
 
@@ -479,7 +492,7 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 				left_icon = root
 				right_icon = scope:chaplain
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_buddhist_fighting_modifier
+					modifier = LR_gaul_tgp_rite_quarrel_modifier
 					years = 5
 				}
 			}
@@ -509,8 +522,8 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 				factor = 0
 				AND = {
 					OR = {
-						faith = scope:buddhist_councillor_2.faith
-						faith = scope:buddhist_councillor_1.faith
+						rite = scope:rite_councillor_2.rite
+						rite = scope:rite_councillor_1.rite
 					}
 					has_trait = zealous
 				}
@@ -523,8 +536,8 @@ LR_tgp_sacral_gaul_yearly_events.1010 = {
 	}
 }
 
-# Your senses are playing tricks on you, and you encounter a new Yokai
-# LR TODO: replace -- Japanese content (yokai); needs a Gaulish/Frankish rewrite
+# Your senses are playing tricks on you, and you meet a Gaulish daimon
+# LR 2026-11-25: Gaulish rewrite (was yokai; now a dame blanche, a carved Gaulish head, a stray shadow)
 LR_tgp_sacral_gaul_yearly_events.1020 = {
 	type = character_event
 	title = {
@@ -532,19 +545,19 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			first_valid = {
 				triggered_desc = {
 					trigger = {
-						scope:yokai_legend = flag:siren
+						scope:daimon_legend = flag:siren
 					}
 					desc = LR_tgp_sacral_gaul_yearly_events.1020.t_siren
 				}
 				triggered_desc = {
 					trigger = {
-						scope:yokai_legend = flag:garden
+						scope:daimon_legend = flag:garden
 					}
 					desc = LR_tgp_sacral_gaul_yearly_events.1020.t_garden
 				}
 				triggered_desc = {
 					trigger = {
-						scope:yokai_legend = flag:shadow
+						scope:daimon_legend = flag:shadow
 					}
 					desc = LR_tgp_sacral_gaul_yearly_events.1020.t_shadow
 				}
@@ -555,19 +568,19 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					scope:yokai_legend = flag:siren
+					scope:daimon_legend = flag:siren
 				}
 				desc = LR_tgp_sacral_gaul_yearly_events.1020.desc_siren
 			}
 			triggered_desc = {
 				trigger = {
-					scope:yokai_legend = flag:garden
+					scope:daimon_legend = flag:garden
 				}
 				desc = LR_tgp_sacral_gaul_yearly_events.1020.desc_garden
 			}
 			triggered_desc = {
 				trigger = {
-					scope:yokai_legend = flag:shadow
+					scope:daimon_legend = flag:shadow
 				}
 				desc = LR_tgp_sacral_gaul_yearly_events.1020.desc_shadow
 			}
@@ -578,17 +591,17 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
     cooldown = { years = 25 }
 
 	override_background = {
-		trigger = { scope:yokai_legend = flag:garden }
+		trigger = { scope:daimon_legend = flag:garden }
 		reference = garden
 	}
 
 	override_background = {
-		trigger = { scope:yokai_legend = flag:siren }
+		trigger = { scope:daimon_legend = flag:siren }
 		reference = bedchamber
 	}
 
 	override_background = {
-		trigger = { scope:yokai_legend = flag:shadow }
+		trigger = { scope:daimon_legend = flag:shadow }
 		reference = alley_night
 	}
 
@@ -598,7 +611,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		government_is_sacral_trigger = yes
 		is_valid_for_gaul_events_trigger = yes
@@ -624,14 +637,14 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 		}
 		modifier = {
 			add = 5
-			has_character_modifier = LR_gaul_tgp_burned_yokai_modifier
+			has_character_modifier = LR_gaul_tgp_burned_daimon_modifier
 		}
 	}
 
 	immediate = {
-		# Choose Yokai
+		# Choose the daimon
 		random_list = {
-			10 = { # Siren
+			10 = { # Siren (a dame blanche)
 				modifier = {
 					add = 3
 					OR = {
@@ -644,11 +657,11 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 					has_focus_diplomacy = yes
 				}
 				save_scope_value_as = {
-					name = yokai_legend
+					name = daimon_legend
 					value = flag:siren
 				}
 			}
-			10 = { # Garden
+			10 = { # Garden (a carved Gaulish head)
 				modifier = {
 					add = 3
 					OR = {
@@ -665,7 +678,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 					}
 				}
 				save_scope_value_as = {
-					name = yokai_legend
+					name = daimon_legend
 					value = flag:garden
 				}
 			}
@@ -686,7 +699,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 					}
 				}
 				save_scope_value_as = {
-					name = yokai_legend
+					name = daimon_legend
 					value = flag:shadow
 				}
 			}
@@ -700,19 +713,19 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 				first_valid = {
 					triggered_desc = {
 						trigger = {
-							scope:yokai_legend = flag:siren
+							scope:daimon_legend = flag:siren
 						}
 						desc = LR_tgp_sacral_gaul_yearly_events.1020.a_siren
 					}
 					triggered_desc = {
 						trigger = {
-							scope:yokai_legend = flag:garden
+							scope:daimon_legend = flag:garden
 						}
 						desc = LR_tgp_sacral_gaul_yearly_events.1020.a_garden
 					}
 					triggered_desc = {
 						trigger = {
-							scope:yokai_legend = flag:shadow
+							scope:daimon_legend = flag:shadow
 						}
 						desc = LR_tgp_sacral_gaul_yearly_events.1020.a_shadow
 					}
@@ -721,10 +734,10 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 		}
 
 		switch = {
-			trigger = scope:yokai_legend
+			trigger = scope:daimon_legend
 			flag:siren = {
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_siren_yokai_love_modifier
+					modifier = LR_gaul_tgp_siren_daimon_love_modifier
 					years = 5
 				}
 				stress_impact = {
@@ -733,7 +746,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			}
 			flag:garden = {
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_garden_yokai_bloom_modifier
+					modifier = LR_gaul_tgp_garden_daimon_bloom_modifier
 					years = 5
 				}
 
@@ -756,7 +769,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			}
 			flag:shadow = {
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_shadow_yokai_imitation_modifier
+					modifier = LR_gaul_tgp_shadow_daimon_imitation_modifier
 					years = 5
 				}
 				stress_impact = {
@@ -771,21 +784,21 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			modifier = {
 				factor = 0
 				AND = {
-					scope:yokai_legend = flag:siren
+					scope:daimon_legend = flag:siren
 					has_trait = chaste
 				}
 			}
 			modifier = {
 				factor = 2
 				AND = {
-					scope:yokai_legend = flag:siren
+					scope:daimon_legend = flag:siren
 					has_trait = lustful
 				}
 			}
 			modifier = {
 				factor = 2
 				AND = {
-					scope:yokai_legend = flag:garden
+					scope:daimon_legend = flag:garden
 					OR = {
 						has_trait = lifestyle_gardener
 						has_focus_learning = yes
@@ -795,7 +808,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			modifier = {
 				factor = 2
 				AND = {
-					scope:yokai_legend = flag:shadow
+					scope:daimon_legend = flag:shadow
 					OR = {
 						has_trait = callous
 						has_trait = arrogant
@@ -813,19 +826,19 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 				first_valid = {
 					triggered_desc = {
 						trigger = {
-							scope:yokai_legend = flag:siren
+							scope:daimon_legend = flag:siren
 						}
 						desc = LR_tgp_sacral_gaul_yearly_events.1020.b_siren
 					}
 					triggered_desc = {
 						trigger = {
-							scope:yokai_legend = flag:garden
+							scope:daimon_legend = flag:garden
 						}
 						desc = LR_tgp_sacral_gaul_yearly_events.1020.b_garden
 					}
 					triggered_desc = {
 						trigger = {
-							scope:yokai_legend = flag:shadow
+							scope:daimon_legend = flag:shadow
 						}
 						desc = LR_tgp_sacral_gaul_yearly_events.1020.b_shadow
 					}
@@ -834,10 +847,10 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 		}
 
 		switch = {
-			trigger = scope:yokai_legend
+			trigger = scope:daimon_legend
 			flag:siren = {
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_siren_yokai_prose_modifier
+					modifier = LR_gaul_tgp_siren_daimon_prose_modifier
 					years = 5
 				}
 				if = {
@@ -858,7 +871,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			}
 			flag:garden = {
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_garden_yokai_building_modifier
+					modifier = LR_gaul_tgp_garden_daimon_building_modifier
 					years = 5
 				}
 
@@ -869,7 +882,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			}
 			flag:shadow = {
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_shadow_yokai_torch_modifier
+					modifier = LR_gaul_tgp_shadow_daimon_torch_modifier
 					years = 5
 				}
 				stress_impact = {
@@ -883,14 +896,14 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			modifier = {
 				factor = 2
 				AND = {
-					scope:yokai_legend = flag:siren
+					scope:daimon_legend = flag:siren
 					has_focus_diplomacy = yes
 				}
 			}
 			modifier = {
 				factor = 2
 				AND = {
-					scope:yokai_legend = flag:garden
+					scope:daimon_legend = flag:garden
 					OR = {
 						has_trait = architect
 						has_trait = diligent
@@ -901,7 +914,7 @@ LR_tgp_sacral_gaul_yearly_events.1020 = {
 			modifier = {
 				factor = 2
 				AND = {
-					scope:yokai_legend = flag:shadow
+					scope:daimon_legend = flag:shadow
 					OR = {
 						has_trait = paranoid
 						has_focus_intrigue = yes
@@ -954,7 +967,7 @@ LR_tgp_sacral_gaul_yearly_events.1030 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 	}
 
@@ -1095,8 +1108,8 @@ LR_tgp_sacral_gaul_yearly_events.1030 = {
 	}
 }
 
-# You come across a red bridge
-# LR TODO: replace -- Japanese content (immaterial_harmony, shinto); needs a Gaulish/Frankish rewrite
+# You come across an old Roman bridge with a wayside oratory
+# LR 2026-11-25: Gaulish rewrite (was a red Shinto bridge and a Shinto conversion discount)
 LR_tgp_sacral_gaul_yearly_events.1040 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1040.t
@@ -1112,7 +1125,7 @@ LR_tgp_sacral_gaul_yearly_events.1040 = {
 	override_background = { reference = bp3_riverside }
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_travelling_adult = yes
 		is_location_valid_for_travel_event_on_land = yes
 		location = {
@@ -1125,11 +1138,13 @@ LR_tgp_sacral_gaul_yearly_events.1040 = {
 	option = {
 		name = LR_tgp_sacral_gaul_yearly_events.1040.a
 
+		# LR 2026-11-25: Gaulish rewrite (was immaterial_harmony / Shinto discount; now Christians and
+		# Gaulish pagans gain piety, anyone else a discount on converting to the Gallic Church, gallic_faith)
 		if = {
 			limit = {
 				OR = {
-					religion = religion:christianity_religion
-					faith = { has_doctrine = special_doctrine_immaterial_harmony }
+					faith.religion = religion:christianity_religion
+					faith.religion = religion:celtic_religion
 				}
 			}
 			add_piety = minor_piety_gain
@@ -1241,7 +1256,7 @@ LR_tgp_sacral_gaul_yearly_events.1050 = {
 	cooldown = { years = 25 }
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		location = { geographical_region = LR_world_europe_gaul }
 		is_independent_ruler = no
 		short_term_gold >= minor_gold_value
@@ -1463,7 +1478,7 @@ LR_tgp_sacral_gaul_yearly_events.1060 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		location = { geographical_region = LR_world_europe_gaul }
 		any_prisoner = {
 			age >= 14
@@ -1641,7 +1656,7 @@ LR_tgp_sacral_gaul_yearly_events.1070 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_valid_for_gaul_events_trigger = yes
 		government_is_sacral_trigger = yes
 		any_sub_realm_county = {
@@ -1758,7 +1773,7 @@ LR_tgp_sacral_gaul_yearly_events.1070 = {
 }
 
 # Follow up event
-# LR TODO: replace -- Japanese content (yokai); needs a Gaulish/Frankish rewrite
+# LR 2026-11-25: Gaulish rewrite (was a yokai blamed for the fire; now a daimon)
 LR_tgp_sacral_gaul_yearly_events.1071 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1070.t
@@ -1767,9 +1782,9 @@ LR_tgp_sacral_gaul_yearly_events.1071 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					scope:burn_reason = flag:yokai
+					scope:burn_reason = flag:daimon
 				}
-				desc = LR_tgp_sacral_gaul_yearly_events.1071.desc_yokai
+				desc = LR_tgp_sacral_gaul_yearly_events.1071.desc_daimon
 			}
 			triggered_desc = {
 				trigger = {
@@ -1806,7 +1821,7 @@ LR_tgp_sacral_gaul_yearly_events.1071 = {
 	immediate = {
 		random_list = {
 			10 = {
-				save_scope_value_as = { name = burn_reason value = flag:yokai }
+				save_scope_value_as = { name = burn_reason value = flag:daimon }
 			}
 			10 = {
 				save_scope_value_as = { name = burn_reason value = flag:heretics }
@@ -1835,9 +1850,9 @@ LR_tgp_sacral_gaul_yearly_events.1071 = {
 
 		switch = {
 			trigger = scope:burn_reason
-			flag:yokai = {
+			flag:daimon = {
 				add_character_modifier = {
-					modifier = LR_gaul_tgp_burned_yokai_modifier
+					modifier = LR_gaul_tgp_burned_daimon_modifier
 					years = 5
 				}
 				stress_impact = {
@@ -1884,7 +1899,7 @@ LR_tgp_sacral_gaul_yearly_events.1071 = {
 				factor = 2
 				AND = {
 					has_trait = paranoid
-					scope:burn_reason = flag:yokai
+					scope:burn_reason = flag:daimon
 				}
 			}
 			modifier = {
@@ -1939,7 +1954,7 @@ LR_tgp_sacral_gaul_yearly_events.1080 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		location = {
 			geographical_region = LR_world_europe_gaul
@@ -2196,7 +2211,7 @@ LR_tgp_sacral_gaul_yearly_events.1090 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		location = {
 			geographical_region = LR_world_europe_gaul
@@ -2456,7 +2471,7 @@ LR_tgp_sacral_gaul_yearly_events.1100 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		location = {
 			geographical_region = LR_world_europe_gaul
@@ -2576,7 +2591,7 @@ LR_tgp_sacral_gaul_yearly_events.1110 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		religion = religion:christianity_religion
 		location.religion = religion:christianity_religion
@@ -2706,8 +2721,8 @@ LR_tgp_sacral_gaul_yearly_events.1110 = {
 	}
 }
 
-# You come across a warrior in your travels
-# LR TODO: replace -- Japanese content (japan); needs a Gaulish/Frankish rewrite
+# You come across an oath-bound champion in your travels
+# LR 2026-11-25: Gaulish rewrite (was a Japanese warrior monk; now a champion under a vow who would become your antrustion)
 LR_tgp_sacral_gaul_yearly_events.1120 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1120.t
@@ -2737,20 +2752,16 @@ LR_tgp_sacral_gaul_yearly_events.1120 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_travelling_adult = yes
 		is_location_valid_for_travel_event_on_land = yes
 
+		# LR 2026-11-25: Gaulish rewrite (was the Japanese warrior-monk tradition gate; now Gaul + sacral government only)
 		location = {
-			OR = {
-				#anywhere with warrior monks, this is currently only Japan, but hopefully elsewhere going forward.
-				county.culture = {
-					has_cultural_tradition = tradition_tgp_warrior_monks
-				}
-				geographical_region = LR_world_europe_gaul
-			}
+			geographical_region = LR_world_europe_gaul
 		}
-		has_government = sacral_feudal_government
+		government_is_sacral_trigger = yes
+		is_valid_for_gaul_events_trigger = yes
 	}
 
 	immediate = {
@@ -2976,7 +2987,7 @@ scripted_trigger LR_tgp_sacral_gaul_valid_child_1130 = {
 }
 
 # Your daughter expresses an interest in poetry
-# LR TODO: replace -- Japanese content (onsen); needs a Gaulish/Frankish rewrite
+# LR 2026-11-25: Gaulish rewrite (was a Japanese court-poetry daughter; now Latin verse in the manner of Fortunatus)
 LR_tgp_sacral_gaul_yearly_events.1130 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1130.t
@@ -2995,7 +3006,7 @@ LR_tgp_sacral_gaul_yearly_events.1130 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		location = {
 			geographical_region = LR_world_europe_gaul
@@ -3184,8 +3195,8 @@ LR_tgp_sacral_gaul_yearly_events.1130 = {
 	}
 }
 
-# You are stopped in Soryo lands as a Ritsuryo ruler
-# LR TODO: replace -- Japanese content (japan); needs a Gaulish/Frankish rewrite
+# A palace official is stopped at a warlord count's toll on the old Roman road
+# LR 2026-11-25: Gaulish rewrite (was Soryo clan roads vs Ritsuryo Imperial roads; now a seized royal toll, the teloneum)
 LR_tgp_sacral_gaul_yearly_events.1140 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1140.t
@@ -3207,7 +3218,7 @@ LR_tgp_sacral_gaul_yearly_events.1140 = {
 
 	trigger = {
 		is_ai = no
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_travelling_adult = yes
 		is_location_valid_for_travel_event_on_land = yes
 		location = {
@@ -3382,7 +3393,7 @@ LR_tgp_sacral_gaul_yearly_events.1140 = {
 	}
 }
 
-# The ruler of Japan is passing in your lands
+# 1150 - The ruler of Gaul is passing through your lands (LR 2026-11-25: was "The ruler of Japan")
 LR_tgp_sacral_gaul_yearly_events.1150 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1150.t
@@ -3398,7 +3409,7 @@ LR_tgp_sacral_gaul_yearly_events.1150 = {
 
 	lower_center_portrait = scope:emperor
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		location = {
 			geographical_region = LR_world_europe_gaul
@@ -4167,7 +4178,7 @@ LR_tgp_sacral_gaul_yearly_events.1160 = {
 
 	trigger = {
 		is_at_war = no
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		exists = house
 		house.house_head = root
@@ -4419,8 +4430,19 @@ LR_tgp_sacral_gaul_yearly_events.1160 = {
 	}
 }
 
-# The poetry you're reading is in a language you're unfamiliar with
-# LR TODO: replace -- Japanese content (bonsai, japon); needs a Gaulish/Frankish rewrite
+# LR 2026-11-25: Gaulish rewrite (was a Chinese/Korean-speaker check) -- a neighbouring ruler whose tongue root does not know
+scripted_trigger LR_tgp_sacral_gaul_foreign_poetry_ruler_1170 = {
+	NOT = { this = root }
+	culture = {
+		save_temporary_scope_as = poetry_culture_temp
+		root = {
+			NOT = { knows_language_of_culture = scope:poetry_culture_temp }
+		}
+	}
+}
+
+# The poetry you're reading is in a neighbouring tongue you're unfamiliar with
+# LR 2026-11-25: Gaulish rewrite (was Japonic speaker reading Chinese/Korean poetry; now any neighbouring realm whose tongue you lack)
 LR_tgp_sacral_gaul_yearly_events.1170 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1170.t
@@ -4439,58 +4461,21 @@ LR_tgp_sacral_gaul_yearly_events.1170 = {
 	lower_center_portrait = scope:foreign_ruler
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		location = {
 			geographical_region = LR_world_europe_gaul
 		}
-		knows_language = language_japonic
-		#Find a country lead by a Chinese or Korean speaker and confirm you don't speak the language in question
-		any_neighboring_and_across_water_top_liege_realm_owner = {
-			OR = {
-				AND = {
-					knows_language = language_chinese
-					root = {
-						NOT = {
-							knows_language = language_chinese
-						}
-					}
-				}
-				AND = {
-					knows_language = language_korean
-					root = {
-						NOT = {
-							knows_language = language_korean
-						}
-					}
-				}
-			}
-		}
+		# LR 2026-11-25: Gaulish rewrite (was knows_language_japonic + Chinese/Korean neighbours)
+		government_is_sacral_trigger = yes
+		# Find a neighbouring realm whose ruler's tongue you do not speak
+		any_neighboring_and_across_water_top_liege_realm_owner = { LR_tgp_sacral_gaul_foreign_poetry_ruler_1170 = yes }
 	}
 
 	immediate = {
-	#Find a country lead by a Chinese or Korean speaker and confirm you don't speak the language in question
+		# Find a neighbouring realm whose ruler's tongue you do not speak
 		random_neighboring_and_across_water_top_liege_realm_owner = {
-			limit = {
-				OR = {
-					AND = {
-						knows_language = language_chinese
-						root = {
-							NOT = {
-								knows_language = language_chinese
-							}
-						}
-					}
-					AND = {
-						knows_language = language_korean
-						root = {
-							NOT = {
-								knows_language = language_korean
-							}
-						}
-					}
-				}
-			}
+			limit = { LR_tgp_sacral_gaul_foreign_poetry_ruler_1170 = yes }
 			save_scope_as = foreign_ruler
 		}
 	}
@@ -4614,8 +4599,8 @@ LR_tgp_sacral_gaul_yearly_events.1170 = {
 	}
 }
 
-# You've been gifted a Bonsai tree for your garden
-# LR TODO: replace -- Japanese content (bonsai); needs a Gaulish/Frankish rewrite
+# Your gardener presents a box tree clipped in the old Roman topiary manner
+# LR 2026-11-25: Gaulish rewrite (was a gifted bonsai tree; now Gallo-Roman topiary)
 LR_tgp_sacral_gaul_yearly_events.1180 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1180.t
@@ -4637,7 +4622,7 @@ LR_tgp_sacral_gaul_yearly_events.1180 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		is_valid_for_gaul_events_trigger = yes
 		government_is_sacral_trigger = yes
@@ -4682,7 +4667,7 @@ LR_tgp_sacral_gaul_yearly_events.1180 = {
 			gold = miniscule_gold_value
 		}
 		add_character_flag = {
-			flag = had_bonsai_tree_event
+			flag = had_bonsai_tree_event # kept: vanilla court gardener values read this flag
 			years = 10
 		}
 
@@ -4714,7 +4699,7 @@ LR_tgp_sacral_gaul_yearly_events.1180 = {
 }
 
 # You have a bad trait and you're making some decisions at night
-# LR TODO: replace -- Japanese content (zen); needs a Gaulish/Frankish rewrite
+# LR 2026-11-25: Gaulish rewrite (was gated to Japan by the vanilla on_action; now gated to Gaul in the trigger)
 LR_tgp_sacral_gaul_yearly_events.1190 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1190.t
@@ -4756,9 +4741,10 @@ LR_tgp_sacral_gaul_yearly_events.1190 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_landed = yes
 		is_available_adult = yes
+		is_valid_for_gaul_events_trigger = yes # LR 2026-11-25: Gaulish rewrite
 		OR = {
 			has_trait = irritable
 			has_trait = impatient
@@ -4900,8 +4886,8 @@ LR_tgp_sacral_gaul_yearly_events.1190 = {
 	}
 }
 
-# A courtier has witnessed a miracle
-# LR TODO: replace -- Japanese content (buddh, yokai); needs a Gaulish/Frankish rewrite
+# A courtier has witnessed a miracle worked by a wandering hermit
+# LR 2026-11-25: Gaulish rewrite (was a Buddhist monk's miracle; now a Christian hermit, Christian faith and location)
 LR_tgp_sacral_gaul_yearly_events.1220 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1220.t
@@ -4952,11 +4938,13 @@ LR_tgp_sacral_gaul_yearly_events.1220 = {
 	lower_center_portrait = scope:monk
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
-		faith = { religion = religion:buddhism_religion }
+		# LR 2026-11-25: Gaulish rewrite (was buddhism_religion for character and location)
+		is_valid_for_gaul_events_trigger = yes
+		faith = { religion = religion:christianity_religion }
 		location = {
-			faith = { religion = religion:buddhism_religion }
+			faith = { religion = religion:christianity_religion }
 		}
 		learning_lifestyle_unlockable_perks >= 1
 		any_courtier_or_guest = {
@@ -5218,9 +5206,9 @@ LR_tgp_sacral_gaul_yearly_events.1220 = {
 	}
 }
 
-# Fear of a low durability artifact coming to life (Yokai)
+# Fear of a neglected, low durability artifact being taken by a daimon
 # Chance to repair artifact for low price
-# LR TODO: replace -- Japanese content (japon); needs a Gaulish/Frankish rewrite
+# LR 2026-11-25: Gaulish rewrite (was the Japanese tsukumogami belief; now Gaulish folk belief in daimones)
 LR_tgp_sacral_gaul_yearly_events.1230 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1230.t
@@ -5239,7 +5227,7 @@ LR_tgp_sacral_gaul_yearly_events.1230 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
 		is_valid_for_gaul_events_trigger = yes
 		government_is_sacral_trigger = yes
@@ -5350,25 +5338,20 @@ LR_tgp_sacral_gaul_yearly_events.1230 = {
 	}
 }
 
+# LR 2026-11-25: Gaulish rewrite (was "no languages that have vertical script") -- any ruler in range whose tongue root does not know
 scripted_trigger LR_tgp_sacral_gaul_is_valid_ruler_1220 = {
 	NOT = { this = root }
 	culture = {
 		save_temporary_scope_as = culture_temp
-		NOR = { # no languages that have vertical script
-			has_cultural_pillar = language_japonic
-			has_cultural_pillar = language_chinese
-			has_cultural_pillar = language_korean
-			has_cultural_pillar = language_mongolic
-			has_cultural_pillar = language_vietnamese
-			has_cultural_pillar = language_khitan
+		NOT = {
 			root = { knows_language_of_culture = scope:culture_temp }
 		}
 	}
 	in_diplomatic_range = root
 }
 
-# 1240 - A traveler poet visits court and can't read from right to left
-# LR TODO: replace -- Japanese content (japon); needs a Gaulish/Frankish rewrite
+# 1240 - A foreign poet visits court and stumbles over the Merovingian hand
+# LR 2026-11-25: Gaulish rewrite (was a Japonic/Chinese-speaking court and a poet who can't read vertical script)
 LR_tgp_sacral_gaul_yearly_events.1240 = {
 	type = character_event
 	title = LR_tgp_sacral_gaul_yearly_events.1240.t
@@ -5387,17 +5370,16 @@ LR_tgp_sacral_gaul_yearly_events.1240 = {
 	}
 
 	trigger = {
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		is_available_adult = yes
-		OR = {
-			knows_language = language_japonic
-			knows_language = language_chinese
-		}
+		# LR 2026-11-25: Gaulish rewrite (was knows_language japonic/chinese)
+		is_valid_for_gaul_events_trigger = yes
+		government_is_sacral_trigger = yes
 		any_independent_ruler = { LR_tgp_sacral_gaul_is_valid_ruler_1220 = yes }
 	}
 
 	immediate = {
-		# Get a random county that isn't of chinese/gallic/korean
+		# Get a random ruler in range whose tongue we do not speak
 		random_independent_ruler = {
 			limit = { LR_tgp_sacral_gaul_is_valid_ruler_1220 = yes }
 			save_scope_as = ref_ruler
@@ -5534,7 +5516,7 @@ LR_tgp_sacral_gaul_yearly_events.1240 = {
 	}
 }
 
-# 1250 - Being gifted a Kakejiku scroll (Wedding)
+# 1250 - Being gifted a decorated scroll (Wedding) (LR 2026-11-25: was a Kakejiku scroll)
 LR_tgp_sacral_gaul_yearly_events.1250 = {
 	type = activity_event
 	title = LR_tgp_sacral_gaul_yearly_events.1250.t
@@ -5548,7 +5530,7 @@ LR_tgp_sacral_gaul_yearly_events.1250 = {
 		government_is_sacral_trigger = yes
 		#DLC check.
 		has_ep2_dlc_trigger = yes
-		has_tgp_dlc_trigger = yes
+		LR_gradus_has_auh_trigger = yes
 		location = involved_activity.activity_location
 		OR = {
 			involved_activity.special_guest:spouse_1 = root
@@ -5619,7 +5601,7 @@ LR_tgp_sacral_gaul_yearly_events.1250 = {
 		}
 
 		create_artifact = {
-			name = LR_gaul_artifact_kakejiku_scroll_name
+			name = LR_gaul_artifact_painted_scroll_name
 			description = placeholder
 			modifier = artifact_placeholder_modifier
 			type = miscellaneous
@@ -5677,19 +5659,19 @@ LR_tgp_sacral_gaul_yearly_events.1250 = {
 			switch = {
 				trigger = scope:scroll_story
 				flag:sword = {
-					set_artifact_description = LR_gaul_artifact_kakejiku_scroll_sword_desc
+					set_artifact_description = LR_gaul_artifact_painted_scroll_sword_desc
 					add_artifact_modifier = artifact_martial_2_modifier
 					add_artifact_modifier = artifact_monthly_tyranny_2_modifier
 					add_artifact_modifier = artifact_prowess_2_modifier
 				}
 				flag:friends = {
-					set_artifact_description = LR_gaul_artifact_kakejiku_scroll_friends_desc
+					set_artifact_description = LR_gaul_artifact_painted_scroll_friends_desc
 					add_artifact_modifier = artifact_diplomacy_3_modifier
 					add_artifact_modifier = artifact_monthly_prestige_add_3_modifier
 					add_artifact_modifier = artifact_owned_personal_scheme_success_chance_add_1_modifier
 				}
 				flag:crane = {
-					set_artifact_description = LR_gaul_artifact_kakejiku_scroll_crane_desc
+					set_artifact_description = LR_gaul_artifact_painted_scroll_crane_desc
 					add_artifact_modifier = artifact_learning_3_modifier
 					add_artifact_modifier = artifact_health_gain_2_modifier
 					add_artifact_modifier = artifact_stress_gain_4_modifier

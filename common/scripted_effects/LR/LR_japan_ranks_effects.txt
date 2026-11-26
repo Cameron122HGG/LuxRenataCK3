@@ -1,0 +1,69 @@
+﻿# LR 2026-11-25 Japanese ranks (tools/japan_ranks/build_japan_ranks.py)
+# root = a ruler. Called from LR_normalize_dynastic_government_effect (every government change, title gain and yearly).
+#   - without All Under Heaven the three ranks fall back to Ritsuryo (normalized further on the next pass);
+#   - the independent holder of e_japan after vanilla's Become Shogun takes Bakufu, after Emperor Restoration Tenka;
+#   - a Bakufu or Tenka ruler who no longer holds e_japan steps down to Chotei;
+#   - the holders of the court titles (e_north_japan, e_south_japan, e_japan) on a Japanese government take Chotei.
+LR_japanese_court_government_effect = {
+	if = {
+		limit = {
+			LR_gradus_has_auh_trigger = no
+			OR = {
+				has_government = japan_imperial_government
+				has_government = japan_bakufu_government
+				has_government = japan_tenka_government
+			}
+		}
+		change_government = japan_administrative_government
+	}
+	else_if = {
+		limit = {
+			LR_gradus_has_auh_trigger = yes
+			top_liege = this
+			has_title = title:e_japan
+			has_global_variable = shogunate_established
+			NOT = { has_global_variable = tenno_restored }
+			LR_in_japanese_group_trigger = yes
+			NOT = { has_government = japan_bakufu_government }
+		}
+		change_government = japan_bakufu_government
+	}
+	else_if = {
+		limit = {
+			LR_gradus_has_auh_trigger = yes
+			top_liege = this
+			has_title = title:e_japan
+			has_global_variable = tenno_restored
+			LR_in_japanese_group_trigger = yes
+			NOT = { has_government = japan_tenka_government }
+		}
+		change_government = japan_tenka_government
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_government = japan_bakufu_government
+				has_government = japan_tenka_government
+			}
+			NOT = { has_title = title:e_japan }
+		}
+		change_government = japan_imperial_government
+	}
+	else_if = {
+		limit = {
+			LR_gradus_has_auh_trigger = yes
+			OR = {
+				has_title = title:e_north_japan
+				has_title = title:e_south_japan
+				has_title = title:e_japan
+			}
+			LR_in_japanese_group_trigger = yes
+			NOR = {
+				has_government = japan_imperial_government
+				has_government = japan_bakufu_government
+				has_government = japan_tenka_government
+			}
+		}
+		change_government = japan_imperial_government
+	}
+}

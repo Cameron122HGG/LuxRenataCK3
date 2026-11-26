@@ -1,0 +1,29 @@
+﻿# LR 2026-11-26 Restore Our Own Customs (tools/old_customs/build_old_customs.py)
+# counties held by the direct vassals (and their sub-realms) who would be aggrieved
+LR_old_customs_aggrieved_counties_value = {
+	value = 0
+	every_vassal = {
+		limit = { LR_old_customs_aggrieved_trigger = yes }
+		add = sub_realm_size
+	}
+}
+
+LR_old_customs_revolt_threshold_value = {
+	value = sub_realm_size
+	multiply = 0.33
+	min = 1
+}
+
+# the aggrieved share of the realm, in percent (AI weighting and the tooltip)
+LR_old_customs_aggrieved_percent_value = {
+	value = LR_old_customs_aggrieved_counties_value
+	multiply = 100
+	divide = { value = sub_realm_size min = 1 }
+}
+
+LR_restore_own_customs_prestige_cost_value = {
+	value = 150
+	if = { limit = { highest_held_title_tier >= tier_kingdom } add = 150 }
+	if = { limit = { highest_held_title_tier >= tier_empire } add = 200 }
+	if = { limit = { highest_held_title_tier >= tier_hegemony } add = 300 }
+}

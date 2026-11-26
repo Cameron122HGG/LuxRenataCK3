@@ -1,0 +1,252 @@
+﻿# LR Kemet title set (tools/register_kemet_set.py, 2026-11-24). GENERATED.
+
+# Scope: a title left behind by a Kemet layout. If it has a holder but no de jure land left, the holder gets the
+# Kemet title of the same tier over its capital county (if unheld and theirs to use) and the old title is dissolved.
+LR_kemet_dissolve_if_empty_effect = {
+	if = {
+		limit = {
+			exists = holder
+			NOT = { LR_title_set_kemet_title_trigger = yes }
+			NOT = { any_de_jure_county = { always = yes } }
+		}
+		save_temporary_scope_as = LR_kemet_old
+		holder = { save_temporary_scope_as = LR_kemet_old_holder }
+		title_capital_county ?= {
+			if = {
+				limit = { scope:LR_kemet_old.tier = tier_duchy }
+				duchy ?= { save_temporary_scope_as = LR_kemet_new }
+			}
+			else_if = {
+				limit = { scope:LR_kemet_old.tier = tier_kingdom }
+				kingdom ?= { save_temporary_scope_as = LR_kemet_new }
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:LR_kemet_new
+				scope:LR_kemet_new = {
+					LR_title_set_kemet_title_trigger = yes
+					NOT = { exists = holder }
+				}
+				scope:LR_kemet_old_holder = { LR_title_set_kemet_native_trigger = yes }
+			}
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = LR_kemet_change
+				add_claim_on_loss = no
+			}
+			scope:LR_kemet_new = {
+				change_title_holder = {
+					holder = scope:LR_kemet_old_holder
+					change = scope:LR_kemet_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:LR_kemet_change
+		}
+		scope:LR_kemet_old_holder = { destroy_title = scope:LR_kemet_old }
+		clear_saved_scope = LR_kemet_new
+	}
+}
+
+# The ruler (root) raises the White Crown: the counties of Ta-Shemau go into its nomes, the nomes under
+# k_kemet_ta_shemau, the crown under Tawy. Old duchies and kingdoms left without land are dissolved.
+LR_kemet_raise_ta_shemau_effect = {
+	title:c_aswan = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_jabal_quzlum = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_qus = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_qusayr = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_asyut = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_kharga = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_dakhla = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_ushmun = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_bahnasa = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_bahriya = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_farafra = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_fayyum = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_aswan = { set_de_jure_liege_title = title:d_sepat_ta_seti }
+	title:c_jabal_quzlum = { set_de_jure_liege_title = title:d_sepat_ta_seti }
+	title:d_sepat_ta_seti = { set_de_jure_liege_title = title:k_kemet_ta_shemau }
+	title:c_qus = { set_de_jure_liege_title = title:d_sepat_waset }
+	title:c_qusayr = { set_de_jure_liege_title = title:d_sepat_waset }
+	title:d_sepat_waset = { set_de_jure_liege_title = title:k_kemet_ta_shemau }
+	title:c_asyut = { set_de_jure_liege_title = title:d_sepat_zawty }
+	title:c_kharga = { set_de_jure_liege_title = title:d_sepat_zawty }
+	title:c_dakhla = { set_de_jure_liege_title = title:d_sepat_zawty }
+	title:d_sepat_zawty = { set_de_jure_liege_title = title:k_kemet_ta_shemau }
+	title:c_ushmun = { set_de_jure_liege_title = title:d_sepat_wenet }
+	title:d_sepat_wenet = { set_de_jure_liege_title = title:k_kemet_ta_shemau }
+	title:c_bahnasa = { set_de_jure_liege_title = title:d_sepat_per_medjed }
+	title:c_bahriya = { set_de_jure_liege_title = title:d_sepat_per_medjed }
+	title:c_farafra = { set_de_jure_liege_title = title:d_sepat_per_medjed }
+	title:d_sepat_per_medjed = { set_de_jure_liege_title = title:k_kemet_ta_shemau }
+	title:c_fayyum = { set_de_jure_liege_title = title:d_sepat_ta_she }
+	title:d_sepat_ta_she = { set_de_jure_liege_title = title:k_kemet_ta_shemau }
+	title:k_kemet_ta_shemau = { set_de_jure_liege_title = title:e_kemet_tawy }
+	title:k_kemet_ta_shemau = { set_variable = LR_kemet_raised }
+	if = {
+		limit = { NOT = { exists = title:k_kemet_ta_shemau.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_kemet_change
+			add_claim_on_loss = no
+		}
+		title:k_kemet_ta_shemau = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_kemet_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_kemet_change
+	}
+	every_in_list = {
+		list = LR_kemet_old_titles
+		LR_kemet_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) raises the Red Crown: the counties of Ta-Mehu go into its nomes, the nomes under
+# k_kemet_ta_mehu, the crown under Tawy. Old duchies and kingdoms left without land are dissolved.
+LR_kemet_raise_ta_mehu_effect = {
+	title:c_giza = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_cairo = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_alexandria = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_al-buhaira = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_al-gharbiya = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_sharkiya = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_damietta = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_farama = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_firaun = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_sinai = {
+		duchy ?= { add_to_temporary_list = LR_kemet_old_titles }
+		kingdom ?= { add_to_temporary_list = LR_kemet_old_titles }
+	}
+	title:c_giza = { set_de_jure_liege_title = title:d_sepat_ineb_hedj }
+	title:d_sepat_ineb_hedj = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:c_cairo = { set_de_jure_liege_title = title:d_sepat_iunu }
+	title:d_sepat_iunu = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:c_alexandria = { set_de_jure_liege_title = title:d_sepat_raqedet }
+	title:d_sepat_raqedet = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:c_al-buhaira = { set_de_jure_liege_title = title:d_sepat_imenti }
+	title:d_sepat_imenti = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:c_al-gharbiya = { set_de_jure_liege_title = title:d_sepat_sap_meh }
+	title:d_sepat_sap_meh = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:c_sharkiya = { set_de_jure_liege_title = title:d_sepat_per_bastet }
+	title:d_sepat_per_bastet = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:c_damietta = { set_de_jure_liege_title = title:d_sepat_djanet }
+	title:d_sepat_djanet = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:c_farama = { set_de_jure_liege_title = title:d_sepat_ta_mefkat }
+	title:c_firaun = { set_de_jure_liege_title = title:d_sepat_ta_mefkat }
+	title:c_sinai = { set_de_jure_liege_title = title:d_sepat_ta_mefkat }
+	title:d_sepat_ta_mefkat = { set_de_jure_liege_title = title:k_kemet_ta_mehu }
+	title:k_kemet_ta_mehu = { set_de_jure_liege_title = title:e_kemet_tawy }
+	title:k_kemet_ta_mehu = { set_variable = LR_kemet_raised }
+	if = {
+		limit = { NOT = { exists = title:k_kemet_ta_mehu.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_kemet_change
+			add_claim_on_loss = no
+		}
+		title:k_kemet_ta_mehu = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_kemet_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_kemet_change
+	}
+	every_in_list = {
+		list = LR_kemet_old_titles
+		LR_kemet_dissolve_if_empty_effect = yes
+	}
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# The ruler (root) unites the Two Lands: creates Tawy over both crowns
+LR_kemet_unite_tawy_effect = {
+	if = {
+		limit = { NOT = { exists = title:e_kemet_tawy.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_kemet_change
+			add_claim_on_loss = no
+		}
+		title:e_kemet_tawy = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_kemet_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_kemet_change
+	}
+	title:k_kemet_ta_shemau = { set_de_jure_liege_title = title:e_kemet_tawy }
+	title:k_kemet_ta_mehu = { set_de_jure_liege_title = title:e_kemet_tawy }
+	set_primary_title_to = title:e_kemet_tawy
+	add_character_modifier = { modifier = LR_kemet_lord_of_the_two_lands_modifier }
+	LR_title_set_reorganise_realm_effect = yes
+}
+

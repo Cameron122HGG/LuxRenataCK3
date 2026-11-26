@@ -584,7 +584,7 @@
 
 			### Left sidebar
 			widget = {
-				size = { 250 120% }
+				size = { 290 120% } # LR 2026-11-25: 40 wider for the 1066 drop-down (was 250)
 				position = {0 40 }
 
 				state = {
@@ -632,11 +632,18 @@
 				}
 
 				widget = {
-					size = { 270 100%}
+					size = { 310 100%} # LR 2026-11-25: 40 wider, so the 1066 header's arrow clears the border (was 270)
 					position = { -10 -50 }
 
+					# LR 2026-11-25 (user): marble, not the flat dark fill (was using = Background_Area_Solid); tools/bookmark_marble/make_marble.py
 					background = {
-						using = Background_Area_Solid
+						texture = "gfx/interface/bookmarks/LR_marble_panel.dds"
+						spriteType = Corneredtiled
+						spriteborder = { 0 0 }
+					}
+					background = { # a soft shadow towards the right edge, so the tabs stand out
+						texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+						color = { 0 0 0 0.35 }
 					}
 
 					icon = {
@@ -659,7 +666,13 @@
 
 						text_single = {
 							text = "BOOKMARK_SELECT_BOOKMARK"
-							default_format = "#weak"
+							default_format = "#high" # LR 2026-11-25: readable on the marble (was #weak)
+							background = { # LR 2026-11-25: dark fade behind the text (glow_radius is not a text property)
+								texture = "gfx/interface/component_masks/mask_fade_circle.dds"
+								color = { 0.1 0.1 0.1 1 }
+								margin = { 30 0 }
+								margin_bottom = 5
+							}
 							align = nobaseline
 
 						}
@@ -686,16 +699,228 @@
 						position = { -18 0 }
 						vbox = {
 
+							# LR 2026-11-25 (user: "add a drop down menu to the side bar and fit the three 1066 bookmark groups under it"): a 1066
+							# header that opens and closes (frontend variable lr_bm_1066_closed; open by default) over the 1066 groups:
+							# 6066 (1.1.1066), exiles (Exiles, 1.1.1066), warlords (Lux Invicta, 9.26.1066). Other groups stay in the list below.
+							widget = {
+								name = "lr_bm_dropdown_1066"
+								size = { 290 62 }
+
+								button_normal = {
+									size = { 270 56 }
+									position = { 10 3 }
+									onclick = "[GetVariableSystem.Toggle( 'lr_bm_1066_closed' )]"
+									tooltip = "LR_BM_DROPDOWN_1066_TT"
+									using = tooltip_es
+
+									# LR 2026-11-25 (user: "a little flat"): built like the group tabs: stone tile, a faint painting (the
+									# Twilight of the Empire banner), the stone-glass overlay, and a dark fade behind the text
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/component_tiles/tile_window_background.dds"
+
+										modify_texture = {
+											texture = "gfx/interface/icons/bookmark_buttons/bm_1066_AD_004.dds"
+											blend_mode = normal
+											alpha = 0.45
+										}
+										modify_texture = {
+											texture = "gfx/interface/buttons/button_stone_glass_overlay.dds"
+											blend_mode = overlay
+											texture_density = 2
+										}
+									}
+									icon = {
+										size = { 75% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										mirror = horizontal # dark on the left, behind the text
+										color = { 0 0 0 0.65 }
+									}
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/buttons/button_stone_glass_glow.dds"
+										alpha = 0.15
+									}
+
+									hbox = {
+										margin_left = 14
+										margin_right = 14
+
+										vbox = {
+											layoutpolicy_horizontal = expanding
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_1066"
+												default_format = "#high;bold;glow_color:{0,0,0,1}"
+												using = Font_Size_Big
+												using = Font_Type_Flavor
+											}
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_1066_SUB"
+												default_format = "#high;bold" # LR: was #clickable, hard to read
+												background = { # LR 2026-11-25: dark fade behind the text (glow_radius is not a text property)
+													texture = "gfx/interface/component_masks/mask_fade_circle.dds"
+													color = { 0.1 0.1 0.1 1 }
+													margin = { 30 0 }
+													margin_bottom = 5
+												}
+												fontsize = 15
+												using = Font_Type_Flavor
+											}
+										}
+
+										# points right when closed, down when open
+										icon = {
+											size = { 28 28 }
+											texture = "gfx/interface/buttons/button_tree_expand.dds"
+											framesize = { 36 36 }
+											frame = "[Select_int32( GetVariableSystem.Exists( 'lr_bm_1066_closed' ), '(int32)1', '(int32)2' )]"
+										}
+									}
+								}
+							}
+
+							vbox = {
+								name = "lr_bm_dropdown_1066_list"
+								visible = "[Not( GetVariableSystem.Exists( 'lr_bm_1066_closed' ) )]"
+								datamodel = "[GameSetup.AccessBookmarkGroups]"
+								spacing = -5
+								bottomtotop = yes
+								ignoreinvisible = yes
+
+								item = {
+									widget = {
+										size = { 290 72 }
+										visible = "[Or( EqualTo_string( BookmarkGroup.GetName, '6066' ), Or( EqualTo_string( BookmarkGroup.GetName, 'exiles' ), EqualTo_string( BookmarkGroup.GetName, 'warlords' ) ) )]"
+										widget_bookmark_group_button = {
+											name = "bookmark_group_tab"
+											size = { 260 72 }
+											position = { 26 0 }
+										}
+									}
+								}
+							}
+
+							# LR 2026-11-25 (user: "add a 936 A.D group with no bookmark groups in it so it just says coming soon underneath"):
+							# a 936 header like the 1066 one (frontend variable lr_bm_936_closed; open by default) over a Coming soon line. When the 936
+							# bookmarks are released, swap the Coming soon line for a group list like the 1066 one, with the 936 group names.
+							widget = {
+								name = "lr_bm_dropdown_936"
+								size = { 290 62 }
+
+								button_normal = {
+									size = { 270 56 }
+									position = { 10 3 }
+									onclick = "[GetVariableSystem.Toggle( 'lr_bm_936_closed' )]"
+									tooltip = "LR_BM_DROPDOWN_936_TT"
+									using = tooltip_es
+
+									# LR 2026-11-25 (user: "a little flat"): built like the group tabs: stone tile, a faint painting (the
+									# shapur banner), the stone-glass overlay, and a dark fade behind the text
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/component_tiles/tile_window_background.dds"
+
+										modify_texture = {
+											texture = "gfx/interface/icons/bookmark_buttons/bm_LI_persias_glittering_fires.dds"
+											blend_mode = normal
+											alpha = 0.45
+										}
+										modify_texture = {
+											texture = "gfx/interface/buttons/button_stone_glass_overlay.dds"
+											blend_mode = overlay
+											texture_density = 2
+										}
+									}
+									icon = {
+										size = { 75% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										mirror = horizontal # dark on the left, behind the text
+										color = { 0 0 0 0.65 }
+									}
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/buttons/button_stone_glass_glow.dds"
+										alpha = 0.15
+									}
+
+									hbox = {
+										margin_left = 14
+										margin_right = 14
+
+										vbox = {
+											layoutpolicy_horizontal = expanding
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_936"
+												default_format = "#high;bold;glow_color:{0,0,0,1}"
+												using = Font_Size_Big
+												using = Font_Type_Flavor
+											}
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "LR_BM_DROPDOWN_936_SUB"
+												default_format = "#high;bold" # LR: was #clickable, hard to read
+												background = { # LR 2026-11-25: dark fade behind the text (glow_radius is not a text property)
+													texture = "gfx/interface/component_masks/mask_fade_circle.dds"
+													color = { 0.1 0.1 0.1 1 }
+													margin = { 30 0 }
+													margin_bottom = 5
+												}
+												fontsize = 15
+												using = Font_Type_Flavor
+											}
+										}
+
+										# points right when closed, down when open
+										icon = {
+											size = { 28 28 }
+											texture = "gfx/interface/buttons/button_tree_expand.dds"
+											framesize = { 36 36 }
+											frame = "[Select_int32( GetVariableSystem.Exists( 'lr_bm_936_closed' ), '(int32)1', '(int32)2' )]"
+										}
+									}
+								}
+							}
+							vbox = { # LR 2026-11-26
+								name = "lr_bm_dropdown_936_list"
+								visible = "[Not( GetVariableSystem.Exists( 'lr_bm_936_closed' ) )]"
+								datamodel = "[GameSetup.AccessBookmarkGroups]"
+								spacing = -5
+								bottomtotop = yes
+								ignoreinvisible = yes
+
+								item = {
+									widget = {
+										size = { 290 72 }
+										visible = "[EqualTo_string( BookmarkGroup.GetName, '5936' )]"
+										widget_bookmark_group_button = {
+											name = "bookmark_group_tab"
+											size = { 260 72 }
+											position = { 26 0 }
+										}
+									}
+								}
+							}
+
 							vbox = {
 								datamodel = "[GameSetup.AccessBookmarkGroups]"
 								spacing = -5
 								bottomtotop = yes
+								ignoreinvisible = yes
 
 								item = {
 									widget_bookmark_group_button = {
 										name = "bookmark_group_tab"
 										size = { 290 80 }
-
+										visible = "[Not( Or( EqualTo_string( BookmarkGroup.GetName, '5936' ), Or( EqualTo_string( BookmarkGroup.GetName, '6066' ), Or( EqualTo_string( BookmarkGroup.GetName, 'exiles' ), EqualTo_string( BookmarkGroup.GetName, 'warlords' ) ) ) ) )]" # LR 2026-11-25: the 1066 groups sit under the drop-down above; 2026-11-26: the 936 group under its own
 									}
 								}
 							}
@@ -2968,13 +3193,25 @@ types BookmarkPortraits
 				}
 				modify_texture = {
 					visible = "[EqualTo_string( BookmarkGroup.GetName, 'warlords' )]"
-					texture = "gfx/interface/illustrations/loading_screens/load_7.dds"
+					texture = "gfx/interface/icons/bookmark_buttons/bm_Lux_Invicta_warlords.dds" # LR 2026-11-25 (user): the team's banner (was load_7.dds)
+					blend_mode = normal
+					alpha = 0.5
+				}
+				modify_texture = { # LR 2026-11-25: the Exiles group (bm_group_LI_exiles)
+					visible = "[EqualTo_string( BookmarkGroup.GetName, 'exiles' )]"
+					texture = "gfx/interface/bookmarks/bm_LI_exiles_west.dds"
+					blend_mode = normal
+					alpha = 0.5
+				}
+				modify_texture = { # LR 2026-11-26: the 936 group
+					visible = "[EqualTo_string( BookmarkGroup.GetName, '5936' )]"
+					texture = "gfx/interface/icons/bookmark_buttons/bm_5936_roman_test.dds"
 					blend_mode = normal
 					alpha = 0.5
 				}
 				modify_texture = {
 					visible = "[EqualTo_string( BookmarkGroup.GetName, '6066' )]"
-					texture = "gfx/interface/illustrations/loading_screens/LR_loadscreen_alexander.dds"
+					texture = "gfx/interface/icons/bookmark_buttons/bm_1066_AD_003.dds" # LR 2026-11-25 (user): the team's banner (was LR_loadscreen_alexander.dds)
 					blend_mode = normal
 					alpha = 0.5
 				}
@@ -3314,7 +3551,7 @@ types BookmarkPortraits
 						text_single = {
 							name = "bm_group_name"
 							text = "[Localize(Concatenate('bm_group_', Localize(Concatenate(BookmarkGroup.GetName,'_subtitle'))))]"
-							default_format = "#clickable;bold;glow_color:{0.2,0.2,0.2,1}"
+							default_format = "#high;bold;glow_color:{0,0,0,1}" # LR 2026-11-25 (user): white like the 1066 header (was #clickable gold)
 							fontsize = 15
 							using = Font_Type_Flavor
 							#max_width = 155
@@ -3431,6 +3668,7 @@ types BookmarkPortraits
 			modify_texture = {
 				name = "tab_shimmer"
 				visible = "[GameSetup.IsBookmarkSelected( Bookmark.Self )]"
+				alpha = 0 # LR 2026-11-25: faded in by the shimmer states, not shown at full strength
 				texture = "gfx/interface/component_effects/effect_shimmer.dds"
 				blend_mode = colordodge
 				translate_uv = { 0.2 0.2 }
@@ -3451,7 +3689,7 @@ types BookmarkPortraits
 
 				modify_texture = {
 					name = "tab_glow_selected"
-					alpha = 1
+					alpha = 0.3 # LR 2026-11-25 (user): was 1, bleached the bookmark banners
 				}
 			}
 
@@ -3497,7 +3735,7 @@ types BookmarkPortraits
 				modify_texture = {
 					name = "tab_shimmer"
 					translate_uv = { 1 -1 }
-					alpha = 0.6
+					alpha = 0.25 # LR 2026-11-25: was 0.6
 				}
 			}
 
@@ -3511,7 +3749,7 @@ types BookmarkPortraits
 				modify_texture = {
 					name = "tab_shimmer"
 					translate_uv = { -1 1 }
-					alpha = 0.6
+					alpha = 0.25 # LR 2026-11-25: was 0.6
 				}
 				start_sound = {
 					soundeffect = "event:/SFX/UI/Frontend/sfx_ui_frontend_topbar_tab_shimmer_on_loop"
@@ -3527,7 +3765,7 @@ types BookmarkPortraits
 				modify_texture = {
 					name = "tab_shimmer"
 					translate_uv = { 1 -1 }
-					alpha = 0.6
+					alpha = 0.25 # LR 2026-11-25: was 0.6
 				}
 			}
 

@@ -1,0 +1,216 @@
+﻿# LR 2026-11-25 GRADUS window (tools/gradus_window/build_gradus_window.py)
+# Placed in the character window (window_character.gui, search LR_gradus_window). Shown while the variable system holds
+# and the frontend variable lr_gradus_window (the GRADUS button in window_character.gui). Tabs: GetVariableSystem 'lr_gradus_tab'.
+
+types LR_gradus_window_types
+{
+	type LR_gradus_window = window {
+		name = "LR_gradus_window"
+		datacontext = "[GetPlayer]"
+		visible = "[And( GetVariableSystem.Exists( 'lr_gradus_window' ), Not( IsPauseMenuShown ) )]"
+		parentanchor = top|left
+		position = { 755 70 }
+		size = { 1160 780 }
+		allow_outside = yes
+
+		using = Window_Background
+		using = Window_Decoration_Spike
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+		}
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+		}
+
+		vbox = {
+			using = Window_Margins
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 8
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+				blockoverride "header_text" { text = "LR_GRADUS_WIN_TITLE" }
+				blockoverride "button_close" { onclick = "[GetVariableSystem.Clear( 'lr_gradus_window' )]" }
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				spacing = 12
+
+				# where you stand (live)
+				vbox = {
+					layoutpolicy_vertical = expanding
+					minimumsize = { 300 -1 }
+					maximumsize = { 300 -1 }
+					margin = { 14 12 }
+					spacing = 8
+
+					background = {
+						using = Background_Area
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "LR_GRADUS_WIN_HERE"
+						default_format = "#high;bold"
+						using = Font_Size_Medium
+					}
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						text = "LR_GRADUS_WIN_GROUP"
+						max_width = 272
+						autoresize = yes
+						using = Font_Size_Small
+					}
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						text = "LR_GRADUS_WIN_GOV"
+						max_width = 272
+						autoresize = yes
+						using = Font_Size_Small
+					}
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						text = "LR_GRADUS_WIN_RANK"
+						max_width = 272
+						autoresize = yes
+						using = Font_Size_Small
+					}
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						text = "LR_GRADUS_WIN_DLC"
+						max_width = 272
+						autoresize = yes
+						using = Font_Size_Small
+					}
+					expand = {}
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						text = "LR_GRADUS_WIN_FOOT"
+						max_width = 272
+						autoresize = yes
+						default_format = "#weak"
+						using = Font_Size_Small
+					}
+				}
+
+				# the manual
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					spacing = 6
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 4
+						button_standard_small = {
+							size = { 118 30 }
+							text = "LR_GRADUS_TAB_OVERVIEW"
+							onclick = "[GetVariableSystem.Set( 'lr_gradus_tab', 'overview' )]"
+							enabled = "[Not( Or( Not( GetVariableSystem.Exists( 'lr_gradus_tab' ) ), GetVariableSystem.HasValue( 'lr_gradus_tab', 'overview' ) ) )]"
+						}
+						button_standard_small = {
+							size = { 118 30 }
+							text = "LR_GRADUS_TAB_GROUPS"
+							onclick = "[GetVariableSystem.Set( 'lr_gradus_tab', 'groups' )]"
+							enabled = "[Not( GetVariableSystem.HasValue( 'lr_gradus_tab', 'groups' ) )]"
+						}
+						button_standard_small = {
+							size = { 118 30 }
+							text = "LR_GRADUS_TAB_RANKS"
+							onclick = "[GetVariableSystem.Set( 'lr_gradus_tab', 'ranks' )]"
+							enabled = "[Not( GetVariableSystem.HasValue( 'lr_gradus_tab', 'ranks' ) )]"
+						}
+						button_standard_small = {
+							size = { 118 30 }
+							text = "LR_GRADUS_TAB_MIXED"
+							onclick = "[GetVariableSystem.Set( 'lr_gradus_tab', 'mixed' )]"
+							enabled = "[Not( GetVariableSystem.HasValue( 'lr_gradus_tab', 'mixed' ) )]"
+						}
+						button_standard_small = {
+							size = { 118 30 }
+							text = "LR_GRADUS_TAB_DLC"
+							onclick = "[GetVariableSystem.Set( 'lr_gradus_tab', 'dlc' )]"
+							enabled = "[Not( GetVariableSystem.HasValue( 'lr_gradus_tab', 'dlc' ) )]"
+						}
+						button_standard_small = {
+							size = { 118 30 }
+							text = "LR_GRADUS_TAB_UPGRADES"
+							onclick = "[GetVariableSystem.Set( 'lr_gradus_tab', 'upgrades' )]"
+							enabled = "[Not( GetVariableSystem.HasValue( 'lr_gradus_tab', 'upgrades' ) )]"
+						}
+						expand = {}
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						blockoverride "scrollbox_content" {
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								margin = { 10 8 }
+								text_multi = {
+									visible = "[Or( Not( GetVariableSystem.Exists( 'lr_gradus_tab' ) ), GetVariableSystem.HasValue( 'lr_gradus_tab', 'overview' ) )]"
+									text = "LR_GRADUS_TXT_OVERVIEW"
+									max_width = 720
+									min_width = 720
+									autoresize = yes
+									margin_bottom = 16
+								}
+								text_multi = {
+									visible = "[GetVariableSystem.HasValue( 'lr_gradus_tab', 'groups' )]"
+									text = "LR_GRADUS_TXT_GROUPS"
+									max_width = 720
+									min_width = 720
+									autoresize = yes
+									margin_bottom = 16
+								}
+								text_multi = {
+									visible = "[GetVariableSystem.HasValue( 'lr_gradus_tab', 'ranks' )]"
+									text = "LR_GRADUS_TXT_RANKS"
+									max_width = 720
+									min_width = 720
+									autoresize = yes
+									margin_bottom = 16
+								}
+								text_multi = {
+									visible = "[GetVariableSystem.HasValue( 'lr_gradus_tab', 'mixed' )]"
+									text = "LR_GRADUS_TXT_MIXED"
+									max_width = 720
+									min_width = 720
+									autoresize = yes
+									margin_bottom = 16
+								}
+								text_multi = {
+									visible = "[GetVariableSystem.HasValue( 'lr_gradus_tab', 'dlc' )]"
+									text = "LR_GRADUS_TXT_DLC"
+									max_width = 720
+									min_width = 720
+									autoresize = yes
+									margin_bottom = 16
+								}
+								text_multi = {
+									visible = "[GetVariableSystem.HasValue( 'lr_gradus_tab', 'upgrades' )]"
+									text = "LR_GRADUS_TXT_UPGRADES"
+									max_width = 720
+									min_width = 720
+									autoresize = yes
+									margin_bottom = 16
+								}
+								expand = {}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

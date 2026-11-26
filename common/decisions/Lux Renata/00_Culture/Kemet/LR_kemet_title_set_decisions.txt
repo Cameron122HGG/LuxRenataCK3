@@ -1,0 +1,130 @@
+﻿# LR Kemet title set (tools/register_kemet_set.py, 2026-11-24). GENERATED.
+# A native Egyptian ruler raises the two crowns of the nomes, then unites the Two Lands.
+
+LR_kemet_raise_ta_shemau_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
+	decision_group_type = lr_ts_kemet
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_kemet_raise_ta_shemau_decision_desc
+	selection_tooltip = LR_kemet_raise_ta_shemau_decision_tooltip
+	confirm_text = LR_kemet_raise_ta_shemau_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 }
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 }
+		}
+		prestige = 300
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_title_set_kemet_native_trigger = yes
+		highest_held_title_tier >= tier_duchy
+		LR_satrapy_restorable_trigger = { SATRAPY = k_kemet_ta_shemau }
+		any_realm_county = { LR_kemet_ta_shemau_county_trigger = yes } # only for rulers with land there
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_kemet_raise_ta_shemau_decision_trigger
+			LR_kemet_ta_shemau_controlled_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_kemet_raise_ta_shemau_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_kemet_ta_shemau }
+		hidden_effect = { LR_kemet_raise_ta_shemau_effect = yes }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_kemet_raise_ta_mehu_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
+	decision_group_type = lr_ts_kemet
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_kemet_raise_ta_mehu_decision_desc
+	selection_tooltip = LR_kemet_raise_ta_mehu_decision_tooltip
+	confirm_text = LR_kemet_raise_ta_mehu_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 }
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 }
+		}
+		prestige = 300
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_title_set_kemet_native_trigger = yes
+		highest_held_title_tier >= tier_duchy
+		LR_satrapy_restorable_trigger = { SATRAPY = k_kemet_ta_mehu }
+		any_realm_county = { LR_kemet_ta_mehu_county_trigger = yes } # only for rulers with land there
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_kemet_raise_ta_mehu_decision_trigger
+			LR_kemet_ta_mehu_controlled_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_kemet_raise_ta_mehu_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_kemet_ta_mehu }
+		hidden_effect = { LR_kemet_raise_ta_mehu_effect = yes }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_kemet_unite_tawy_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
+	decision_group_type = lr_ts_kemet
+	ai_check_interval = 60
+	desc = LR_kemet_unite_tawy_decision_desc
+	selection_tooltip = LR_kemet_unite_tawy_decision_tooltip
+	confirm_text = LR_kemet_unite_tawy_decision_confirm
+	cost = { prestige = 500 }
+	is_shown = {
+		is_ruler = yes
+		LR_title_set_kemet_native_trigger = yes
+		NOT = { exists = title:e_kemet_tawy.holder }
+		OR = {
+			has_title = title:k_kemet_ta_shemau
+			has_title = title:k_kemet_ta_mehu
+		}
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		has_title = title:k_kemet_ta_shemau
+		has_title = title:k_kemet_ta_mehu
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+	effect = {
+		custom_tooltip = LR_kemet_unite_tawy_decision_effect_tt
+		show_as_tooltip = { get_title = title:e_kemet_tawy }
+		hidden_effect = { LR_kemet_unite_tawy_effect = yes }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+

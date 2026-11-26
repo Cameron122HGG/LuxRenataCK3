@@ -64,7 +64,7 @@
 convert_to_feudalism_liege_converted_decision = {
 	picture = {
 		trigger = {
-			has_tgp_dlc_trigger = yes
+			LR_gradus_has_auh_trigger = yes
 			liege = {
 				culture = { has_cultural_pillar = heritage_japonic }
 			}
@@ -386,7 +386,7 @@ convert_feudalism_to_clan_through_liege_decision = {
 convert_whole_realm_to_feudalism_decision = {
 	picture = {
 		trigger = {
-			has_tgp_dlc_trigger = yes
+			LR_gradus_has_auh_trigger = yes
 			liege = {
 				culture = { has_cultural_pillar = heritage_japonic }
 			}
@@ -894,13 +894,11 @@ strengthen_bloodline_decision = {
 				}
 				dynasty ?= root.dynasty
 			}
-			AND = {
-				player_heir ?= {
-					OR = {
-						has_trait = intellect_good
-						has_trait = beauty_good
-						has_trait = physique_good
-					}
+			player_heir ?= {
+				OR = {
+					has_trait = intellect_good
+					has_trait = beauty_good
+					has_trait = physique_good
 				}
 			}
 		}
@@ -1599,18 +1597,16 @@ adopt_special_succession_decision = {
 		trigger_if = {
 			limit = { highest_held_title_tier = tier_kingdom }
 			#Either hold a valid top-tier king title as a king...
-			AND = {
-				any_held_title = {
-					title_tier = kingdom
-					NOR = {
-						custom_description = {
-							text = found_kingdom_decision_advanced_succesion
-							has_title_law_flag = advanced_succession_law
-						}
-						custom_description = {
-							text = found_kingdom_decision_elective_succesion
-							has_title_law_flag = elective_succession_law
-						}
+			any_held_title = {
+				title_tier = kingdom
+				NOR = {
+					custom_description = {
+						text = found_kingdom_decision_advanced_succesion
+						has_title_law_flag = advanced_succession_law
+					}
+					custom_description = {
+						text = found_kingdom_decision_elective_succesion
+						has_title_law_flag = elective_succession_law
 					}
 				}
 			}

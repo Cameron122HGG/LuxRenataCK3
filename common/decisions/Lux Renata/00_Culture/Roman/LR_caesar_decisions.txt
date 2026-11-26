@@ -1,0 +1,145 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+
+# Any Augustus (Rome, the West or the East) names a Caesar over one of his Roman commands
+LR_name_caesar_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds" }
+	decision_group_type = roman
+	ai_check_interval = 120
+	cooldown = { years = 5 }
+	desc = LR_name_caesar_decision_desc
+	selection_tooltip = LR_name_caesar_decision_tooltip
+	cost = {
+		prestige = 500
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_caesar_is_augustus_trigger = yes
+	}
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_name_caesar_decision_command_tt
+			LR_caesar_any_command_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_name_caesar_decision_room_tt
+			LR_caesar_has_room_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_name_caesar_decision_effect_tt
+		trigger_event = LR_caesar.0001
+	}
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 5
+		modifier = { add = 15 realm_size >= 200 }
+	}
+}
+
+# A Caesar breaks with his Augustus: a claim war for the Augustus's hegemony (Caesars are independent since
+# 2026-11-24). Hidden at Restitutor Orbis; below 10 cohesion no prestige is needed.
+LR_caesar_proclaim_augustus_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = roman
+	ai_check_interval = 60
+	desc = LR_caesar_proclaim_augustus_decision_desc
+	selection_tooltip = LR_caesar_proclaim_augustus_decision_tooltip
+	confirm_text = LR_caesar_proclaim_augustus_decision_confirm
+	is_shown = {
+		is_ruler = yes
+		has_trait = caesar
+		exists = var:LR_caesar_augustus
+		var:LR_caesar_augustus = { is_alive = yes LR_caesar_is_augustus_trigger = yes }
+		NOT = { primary_title.title_confederation ?= { has_cohesion_level_parameter = lr_college_no_usurpation } }
+	}
+	is_valid = {
+		is_at_war = no
+		trigger_if = {
+			limit = { NOT = { primary_title.title_confederation ?= { cohesion < 10 } } }
+			prestige_level >= medium_prestige_level
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_imprisoned = no
+	}
+	effect = {
+		custom_tooltip = LR_caesar_proclaim_augustus_decision_effect_tt
+		var:LR_caesar_augustus = { save_scope_as = old_augustus }
+		save_scope_as = usurper
+		scope:old_augustus.primary_title = { save_scope_as = usurp_target }
+		hidden_effect = {
+			primary_title.title_confederation ?= { change_cohesion = -30 }
+			LR_caesar_commands_of_root_effect = { MODE = usurp } # 2026-11-25: his command becomes an empire of his own
+			LR_college_leave_effect = yes
+			remove_variable = LR_caesar_augustus
+		}
+		LR_caesar_unmake_effect = yes
+		add_trait = augustus
+		add_pressed_claim = scope:usurp_target
+		start_war = {
+			casus_belli = claim_cb
+			target = scope:old_augustus
+			claimant = root
+			target_title = scope:usurp_target
+		}
+		scope:old_augustus = { trigger_event = LR_caesar.0004 }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 0
+		modifier = { add = 20 opinion = { target = var:LR_caesar_augustus value <= -30 } }
+		modifier = { add = 20 max_military_strength >= var:LR_caesar_augustus.max_military_strength }
+		modifier = { factor = 2 primary_title.title_confederation ?= { cohesion < 10 } }
+	}
+}
+
+# A co-Augustus leaves the college; his Caesars' commands go with him into a college of his own
+LR_break_concord_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = roman
+	ai_check_interval = 120
+	desc = LR_break_concord_decision_desc
+	selection_tooltip = LR_break_concord_decision_tooltip
+	confirm_text = LR_break_concord_decision_confirm
+	is_shown = {
+		is_ruler = yes
+		LR_caesar_is_augustus_trigger = yes
+		exists = primary_title.title_confederation
+		NOT = { primary_title.title_confederation.leading_title ?= primary_title }
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_break_concord_decision_effect_tt
+		primary_title.title_confederation = { save_scope_as = lr_old_college }
+		hidden_effect = {
+			scope:lr_old_college = {
+				every_confederation_member = { limit = { LR_caesar_of_root_trigger = yes } add_to_list = lr_my_caesars }
+				change_cohesion = -40
+			}
+			LR_college_leave_effect = yes
+			every_in_list = { list = lr_my_caesars LR_college_leave_effect = yes }
+			scope:lr_old_college ?= { if = { limit = { any_confederation_member = { count > 1 } } LR_college_rename_effect = yes } }
+			every_in_list = {
+				list = lr_my_caesars
+				every_held_title = {
+					limit = { has_variable = LR_caesar_of }
+					save_scope_as = college_title
+					root = { LR_college_add_title_effect = yes }
+				}
+			}
+		}
+	}
+	ai_potential = { always = yes }
+	ai_will_do = {
+		base = 0
+		modifier = { add = 25 opinion = { target = primary_title.title_confederation.leading_title.holder value <= -40 } }
+		modifier = { factor = 0 primary_title.title_confederation ?= { cohesion >= 45 } }
+	}
+}

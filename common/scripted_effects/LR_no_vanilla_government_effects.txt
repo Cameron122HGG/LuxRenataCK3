@@ -1,0 +1,26 @@
+﻿# LR 2026-11-25 no vanilla governments (tools/no_vanilla_governments/build_no_vanilla_governments.py)
+# Root = a ruler, after the remap (LR_replace_vanilla_default_government_effect). Still on a vanilla government: the remap's
+# target refused them. Every escape hatch for a day, then the plain government of their top liege's group, else Feudum.
+LR_no_vanilla_government_effect = {
+	if = {
+		limit = {
+			OR = { has_government = administrative_government has_government = feudal_government has_government = clan_government }
+			NOT = { has_character_flag = LR_vanilla_remap_pending } # the clan branch's deliberate step through vanilla feudal
+		}
+		add_character_flag = { flag = LR_gradus_dlc_test_fallback days = 1 } # plain Sacral, plain Japanese, Autocratic
+		add_character_flag = { flag = can_become_sacral_feudal days = 1 } # Manorial (its own Sacral gate)
+		add_character_flag = { flag = can_become_japanese_feudal days = 1 } # Soryo (tgp_can_become_japanese_feudal_trigger)
+		if = {
+			limit = { top_liege = { LR_in_sacral_group_trigger = yes } }
+			change_government = sacral_government # lifted to Manorial / Palatine by the normalizer with the DLC
+		}
+		else_if = {
+			limit = { top_liege = { LR_in_japanese_group_trigger = yes } }
+			change_government = japanese_government
+		}
+		if = { # anything still vanilla: Feudum, which no gate refuses
+			limit = { OR = { has_government = administrative_government has_government = feudal_government has_government = clan_government } }
+			change_government = western_feudal_government
+		}
+	}
+}

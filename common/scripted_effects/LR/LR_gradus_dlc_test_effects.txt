@@ -1,0 +1,21 @@
+﻿# LR 2026-11-25 GRADUS DLC test (tools/gradus_dlc_test/build_gradus_dlc_test.py)
+# The game-start order of the GRADUS normalizer (LR_dynastic_government_on_actions.txt): independent rulers first, then vassals
+# from the highest tier down, so each vassal sees its top liege's final government.
+LR_gradus_dlc_test_renormalize_effect = {
+	every_ruler = {
+		limit = { is_independent_ruler = yes }
+		LR_normalize_dynastic_government_effect = yes
+	}
+	every_ruler = {
+		limit = { is_independent_ruler = no highest_held_title_tier >= tier_kingdom }
+		LR_normalize_dynastic_government_effect = yes
+	}
+	every_ruler = {
+		limit = { is_independent_ruler = no highest_held_title_tier = tier_duchy }
+		LR_normalize_dynastic_government_effect = yes
+	}
+	every_ruler = {
+		limit = { is_independent_ruler = no highest_held_title_tier <= tier_county }
+		LR_normalize_dynastic_government_effect = yes
+	}
+}

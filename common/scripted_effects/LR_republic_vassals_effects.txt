@@ -1,0 +1,59 @@
+﻿# LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+# character scope: a republic vassal of a republic takes its liege's republic government
+LR_republic_vassal_follows_liege_effect = {
+	if = {
+		limit = {
+			government_has_flag = government_is_republic
+			NOT = { government_has_flag = government_is_principate }
+			gdp_is_assembly_head_trigger = no
+		}
+		if = {
+			limit = {
+				liege = { has_government = roman_republic_government }
+				NOT = { has_government = roman_republic_government }
+			}
+			change_government = roman_republic_government
+		}
+		else_if = {
+			limit = {
+				liege = { has_government = hellenic_republic_government }
+				NOT = { has_government = hellenic_republic_government }
+			}
+			change_government = hellenic_republic_government
+		}
+		else_if = {
+			limit = {
+				liege = { has_government = punic_republic_government }
+				NOT = { has_government = punic_republic_government }
+			}
+			change_government = punic_republic_government
+		}
+		else_if = {
+			limit = {
+				liege = { has_government = gana_republic_government }
+				NOT = { has_government = gana_republic_government }
+			}
+			change_government = gana_republic_government
+		}
+		else_if = {
+			limit = {
+				liege = { has_government = republic_government }
+				NOT = { has_government = republic_government }
+			}
+			change_government = republic_government
+		}
+	}
+}
+
+# character scope: after a republic's government settles, its republic vassals follow it
+LR_republic_update_vassals_effect = {
+	if = {
+		limit = { government_has_flag = government_is_republic }
+		every_vassal = {
+			limit = {
+				government_has_flag = government_is_republic
+			}
+			LR_republic_vassal_follows_liege_effect = yes
+		}
+	}
+}

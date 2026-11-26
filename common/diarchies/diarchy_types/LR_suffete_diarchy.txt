@@ -1,0 +1,64 @@
+﻿# LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+suffete_diarchy = {
+	start = { always = yes }
+
+	end = {
+		liege = {
+			OR = {
+				NOT = { has_government = punic_republic_government }
+				NOT = { has_realm_law_flag = LR_two_suffetes }
+			}
+		}
+	}
+
+	mandate = fill_coffers
+	mandate = promote_authority
+	aptitude_score = {
+		add = mandate_type_qualification:fill_coffers
+		add = mandate_type_qualification:promote_authority
+	}
+
+	power_level = {
+		swing = 0
+		parameter = unlock_syphon_treasury_interaction
+	}
+	power_level = {
+		swing = 30
+		parameter = unlock_shift_privileges_interaction
+		parameter = liege_pays_currency_surcharge_for_mundane_interactions_mild
+	}
+	power_level = {
+		swing = 60
+		parameter = liege_pays_currency_surcharge_for_mundane_interactions_medium
+	}
+	power_level = {
+		swing = 90
+		parameter = liege_pays_currency_surcharge_for_mundane_interactions_major
+	}
+
+	swing_balance = { add = adult_co_ruler_power_balance_scaling_value }
+
+	succession = no
+
+	power_level = {
+		swing = 0
+		hidden_parameter = diarchy_is_co_rulership
+		hidden_parameter = mandate_tempo_slow
+	}
+
+	loyalty_score = { add = diarch_loyalty_score_type_co_emperorship_value }
+
+	liege_modifier = {
+		name = LR_from_co_suffete_tax
+		domain_tax_mult = 0.002
+		scale = {
+			add = stewardship
+			max = 20
+		}
+	}
+
+	diarch_modifier = {
+		name = LR_to_co_suffete_prestige
+		monthly_prestige = 1
+	}
+}

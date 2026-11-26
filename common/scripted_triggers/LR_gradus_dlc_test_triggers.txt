@@ -1,0 +1,37 @@
+﻿# LR 2026-11-25 GRADUS DLC test (tools/gradus_dlc_test/build_gradus_dlc_test.py)
+# The setting: the global variable LR_gradus_dlc_sim once a debug decision has set it (0 owned, 1 none, 2 rtp, 3 rtp_auh),
+# otherwise the game rule lr_gradus_dlc_test. Read only by LR_gradus_has_rtp/auh/gdp_trigger and the LR_gradus_test_* copies
+# (LR_gradus_dlc_test_gates_triggers.txt), never by anything the main menu evaluates (that crashed the game, 2026-11-25).
+LR_gradus_dlc_test_hides_rtp_trigger = {
+	trigger_if = {
+		limit = { has_global_variable = LR_gradus_dlc_sim }
+		global_var:LR_gradus_dlc_sim = 1
+	}
+	trigger_else = {
+		has_game_rule = lr_gradus_dlc_none
+	}
+}
+LR_gradus_dlc_test_hides_auh_trigger = {
+	trigger_if = {
+		limit = { has_global_variable = LR_gradus_dlc_sim }
+		OR = {
+			global_var:LR_gradus_dlc_sim = 1
+			global_var:LR_gradus_dlc_sim = 2
+		}
+	}
+	trigger_else = {
+		OR = {
+			has_game_rule = lr_gradus_dlc_none
+			has_game_rule = lr_gradus_dlc_rtp
+		}
+	}
+}
+LR_gradus_dlc_test_hides_gdp_trigger = {
+	trigger_if = {
+		limit = { has_global_variable = LR_gradus_dlc_sim }
+		global_var:LR_gradus_dlc_sim >= 1
+	}
+	trigger_else = {
+		NOT = { has_game_rule = lr_gradus_dlc_owned }
+	}
+}

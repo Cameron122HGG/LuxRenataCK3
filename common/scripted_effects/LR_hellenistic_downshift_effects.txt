@@ -1,0 +1,175 @@
+﻿# LR Hellenistic downshift (tools/register_hellenistic_downshift.py, 2026-11-24). GENERATED.
+
+# Root (Alexander's hegemon) downshifts Graeco-India: e_basileia_indike becomes a great kingdom under h_hellenistic_empire
+LR_downshift_india_effect = {
+	if = {
+		limit = { NOT = { exists = title:e_basileia_indike.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_downshift_change
+			add_claim_on_loss = no
+		}
+		title:e_basileia_indike = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_downshift_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_downshift_change
+	}
+	title:e_basileia_indike = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	if = { limit = { title:k_satrapy_poklais = { is_titular = no } } title:k_satrapy_poklais = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_kaspeiria = { is_titular = no } } title:k_satrapy_kaspeiria = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_sigerdis = { is_titular = no } } title:k_satrapy_sigerdis = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_sandrakotte = { is_titular = no } } title:k_satrapy_sandrakotte = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_gangesia = { is_titular = no } } title:k_satrapy_gangesia = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_kirrhadia = { is_titular = no } } title:k_satrapy_kirrhadia = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_kosalia = { is_titular = no } } title:k_satrapy_kosalia = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_mandalene = { is_titular = no } } title:k_satrapy_mandalene = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_saraostos = { is_titular = no } } title:k_satrapy_saraostos = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_sourasene = { is_titular = no } } title:k_satrapy_sourasene = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_ozene = { is_titular = no } } title:k_satrapy_ozene = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_kouria = { is_titular = no } } title:k_satrapy_kouria = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_marasthene = { is_titular = no } } title:k_satrapy_marasthene = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_tosalia = { is_titular = no } } title:k_satrapy_tosalia = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_kountale = { is_titular = no } } title:k_satrapy_kountale = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_damirike = { is_titular = no } } title:k_satrapy_damirike = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_andaria = { is_titular = no } } title:k_satrapy_andaria = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = { limit = { title:k_satrapy_taprobane = { is_titular = no } } title:k_satrapy_taprobane = { set_de_jure_liege_title = title:e_basileia_indike } }
+	if = {
+		limit = {
+			has_title = title:e_strategia_ariake
+			title:e_strategia_ariake = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_ariake
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_dakinabades
+			title:e_strategia_dakinabades = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_dakinabades
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_gangaradia
+			title:e_strategia_gangaradia = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_gangaradia
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_pentapotamia
+			title:e_strategia_pentapotamia = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_pentapotamia
+	}
+	if = {
+		limit = { has_title = title:h_greek_india }
+		destroy_title = title:h_greek_india
+	}
+	set_global_variable = { name = LR_india_downshifted value = yes }
+	add_to_global_variable_list = { name = unavailable_unique_decisions target = flag:flag_lux_greek_india_joined }
+	LR_title_set_reorganise_realm_effect = yes
+}
+
+# Root (Alexander's hegemon) downshifts Hellenic China: e_basileia_serike becomes a great kingdom under h_hellenistic_empire
+LR_downshift_china_effect = {
+	if = {
+		limit = { NOT = { exists = title:e_basileia_serike.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = LR_downshift_change
+			add_claim_on_loss = no
+		}
+		title:e_basileia_serike = {
+			change_title_holder = {
+				holder = root
+				change = scope:LR_downshift_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:LR_downshift_change
+	}
+	title:e_basileia_serike = { set_de_jure_liege_title = title:h_hellenistic_empire }
+	if = { limit = { title:k_satrapy_sina_daibei = { is_titular = no } } title:k_satrapy_sina_daibei = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_dali = { is_titular = no } } title:k_satrapy_sina_dali = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_dongchuan = { is_titular = no } } title:k_satrapy_sina_dongchuan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_fujian = { is_titular = no } } title:k_satrapy_sina_fujian = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_guannei = { is_titular = no } } title:k_satrapy_sina_guannei = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_hebei = { is_titular = no } } title:k_satrapy_sina_hebei = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_hedong = { is_titular = no } } title:k_satrapy_sina_hedong = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_henan = { is_titular = no } } title:k_satrapy_sina_henan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_hexi = { is_titular = no } } title:k_satrapy_sina_hexi = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_huainan = { is_titular = no } } title:k_satrapy_sina_huainan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_hunan = { is_titular = no } } title:k_satrapy_sina_hunan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_jiangdong = { is_titular = no } } title:k_satrapy_sina_jiangdong = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_jiangxi = { is_titular = no } } title:k_satrapy_sina_jiangxi = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_kuizhou = { is_titular = no } } title:k_satrapy_sina_kuizhou = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_liangzhe = { is_titular = no } } title:k_satrapy_sina_liangzhe = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_lingnan = { is_titular = no } } title:k_satrapy_sina_lingnan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_lingxi = { is_titular = no } } title:k_satrapy_sina_lingxi = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_qianzhong = { is_titular = no } } title:k_satrapy_sina_qianzhong = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_qingxu = { is_titular = no } } title:k_satrapy_sina_qingxu = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_shannan = { is_titular = no } } title:k_satrapy_sina_shannan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_viet = { is_titular = no } } title:k_satrapy_sina_viet = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_xia = { is_titular = no } } title:k_satrapy_sina_xia = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_xichuan = { is_titular = no } } title:k_satrapy_sina_xichuan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_xingyuan = { is_titular = no } } title:k_satrapy_sina_xingyuan = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = { limit = { title:k_satrapy_sina_youji = { is_titular = no } } title:k_satrapy_sina_youji = { set_de_jure_liege_title = title:e_basileia_serike } }
+	if = {
+		limit = {
+			has_title = title:e_strategia_sina_arktike
+			title:e_strategia_sina_arktike = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_sina_arktike
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_sina_hesperia
+			title:e_strategia_sina_hesperia = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_sina_hesperia
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_sina_mesogeios
+			title:e_strategia_sina_mesogeios = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_sina_mesogeios
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_sina_notia
+			title:e_strategia_sina_notia = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_sina_notia
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_sina_oreine
+			title:e_strategia_sina_oreine = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_sina_oreine
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_sina_paralia
+			title:e_strategia_sina_paralia = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_sina_paralia
+	}
+	if = {
+		limit = {
+			has_title = title:e_strategia_sina_potamia
+			title:e_strategia_sina_potamia = { NOT = { any_de_jure_county = { always = yes } } }
+		}
+		destroy_title = title:e_strategia_sina_potamia
+	}
+	if = {
+		limit = { has_title = title:h_hellenic_china }
+		destroy_title = title:h_hellenic_china
+	}
+	set_global_variable = { name = LR_china_downshifted value = yes }
+	LR_title_set_reorganise_realm_effect = yes
+}
+

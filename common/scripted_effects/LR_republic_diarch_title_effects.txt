@@ -1,0 +1,108 @@
+﻿# LR 2026-11-25 republic diarch titles (tools/group_republics/build_diarch_titles.py)
+# character scope: clear every republic diarch title variable
+LR_clear_republic_diarch_title_effect = {
+	if = {
+		limit = { has_variable = LR_title_co_consul }
+		remove_variable = LR_title_co_consul
+	}
+	if = {
+		limit = { has_variable = LR_title_strategos_autokrator }
+		remove_variable = LR_title_strategos_autokrator
+	}
+	if = {
+		limit = { has_variable = LR_title_co_suffete }
+		remove_variable = LR_title_co_suffete
+	}
+	if = {
+		limit = { has_variable = LR_title_uparaja }
+		remove_variable = LR_title_uparaja
+	}
+}
+
+# character scope (the liege): give the diarch his office's title a day later. Vanilla sets its co-ruler marker the
+# same way (diarchy.0023, days = 1): in the moment the diarchy starts, the new diarch is not in place yet (2026-11-25:
+# the immediate version found no diarch and the Strategos kept his county title).
+LR_republic_diarch_title_effect = {
+	trigger_event = { on_action = LR_republic_diarch_title_delayed_on_action days = 1 }
+}
+
+# character scope (the liege): give the current diarch the title of this republic's office, now
+LR_republic_diarch_title_apply_effect = {
+	diarch ?= { LR_clear_republic_diarch_title_effect = yes }
+	if = {
+		limit = {
+			has_diarchy_type = consular_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_co_consul }
+	}
+	else_if = {
+		limit = {
+			has_diarchy_type = strategos_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_strategos_autokrator }
+	}
+	else_if = {
+		limit = {
+			has_diarchy_type = suffete_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_co_suffete }
+	}
+	else_if = {
+		limit = {
+			has_diarchy_type = uparaja_diarchy
+			exists = diarch
+		}
+		diarch = { set_variable = LR_title_uparaja }
+	}
+}
+
+# character scope (normalizer): a ruler who has just become a group republic starts on its two-man law
+LR_group_republic_conversion_effect = {
+	if = {
+		limit = {
+			has_government = roman_republic_government
+			NOT = { var:LR_group_republic_gov ?= flag:roman }
+		}
+		set_variable = { name = LR_group_republic_gov value = flag:roman }
+		trigger_event = { on_action = LR_group_republic_conversion_on_action days = 1 }
+	}
+	else_if = {
+		limit = {
+			has_government = hellenic_republic_government
+			NOT = { var:LR_group_republic_gov ?= flag:hellenic }
+		}
+		set_variable = { name = LR_group_republic_gov value = flag:hellenic }
+		trigger_event = { on_action = LR_group_republic_conversion_on_action days = 1 }
+	}
+	else_if = {
+		limit = {
+			has_government = punic_republic_government
+			NOT = { var:LR_group_republic_gov ?= flag:punic }
+		}
+		set_variable = { name = LR_group_republic_gov value = flag:punic }
+		trigger_event = { on_action = LR_group_republic_conversion_on_action days = 1 }
+	}
+	else_if = {
+		limit = {
+			has_government = gana_republic_government
+			NOT = { var:LR_group_republic_gov ?= flag:gana }
+		}
+		set_variable = { name = LR_group_republic_gov value = flag:gana }
+		trigger_event = { on_action = LR_group_republic_conversion_on_action days = 1 }
+	}
+	else_if = {
+		limit = {
+			has_variable = LR_group_republic_gov
+			NOR = {
+				has_government = roman_republic_government
+				has_government = hellenic_republic_government
+				has_government = punic_republic_government
+				has_government = gana_republic_government
+			}
+		}
+		remove_variable = LR_group_republic_gov
+	}
+}

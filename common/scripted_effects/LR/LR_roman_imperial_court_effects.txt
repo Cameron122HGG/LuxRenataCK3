@@ -1,0 +1,691 @@
+﻿# LR Imperial Court (tools/imperial_court/gen_imperial_court.py, 2026-11-25). GENERATED - edit the generator.
+#
+# Every Roman line keeps its restored empire title beside its hegemony:
+#   shadow - the hegemony's empire tier over the line's kingdoms not yet in a restored prefecture
+#   court  - after Reorganize our Imperium (title variable LR_imperial_court): named by the residence
+
+# ------------------------------------------------------------------ the two halves
+# Root: the restorer (Restore the Roman Administration, Reorganize our Imperium). HALF = western / eastern,
+# COUNT = wre / ere. Turns the held half (the shadow) into the hegemony's empire tier: creates the hegemony when
+# nobody holds it (or Rome), sorts the restored dioceses into their prefectures and gathers the half's other
+# kingdoms under the shadow.
+LR_found_roman_hegemony_with_shadow_effect = {
+	if = {
+		limit = { has_title = title:e_$HALF$_roman_empire }
+		title:e_$HALF$_roman_empire = { save_scope_as = lr_shadow }
+	}
+	else_if = {
+		limit = { has_title = title:e_$HALF$_roman_republic }
+		title:e_$HALF$_roman_republic = { save_scope_as = lr_shadow }
+	}
+	if = {
+		limit = {
+			exists = scope:lr_shadow
+			NOT = { exists = title:h_$HALF$_roman_empire.holder }
+			NOT = { exists = title:h_$HALF$_roman_republic.holder }
+			NOR = {
+				has_title = title:h_roman_empire
+				has_title = title:h_roman_republic
+			}
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:h_$HALF$_roman_empire = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+			copy_title_history = scope:lr_shadow
+		}
+		resolve_title_and_vassal_change = scope:change
+		hidden_effect = {
+			scope:lr_shadow = { set_de_jure_liege_title = title:h_$HALF$_roman_empire }
+			set_primary_title_to = title:h_$HALF$_roman_empire
+			LR_sort_existing_$HALF$_dioceses_effect = yes
+		}
+		LR_schedule_roman_title_twins_effect = yes # a Republic holder gets the Republic twins a day later
+	}
+	if = {
+		limit = { exists = scope:lr_shadow }
+		hidden_effect = { LR_roman_shadow_gather_kingdoms_effect = { REGION = custom_theodosian_$COUNT$ } }
+	}
+}
+
+# Root: an Augustus who holds no half of HALF. Makes the half for root when nobody holds it (e.g. the 936
+# hegemon of the East, whose e_eastern_roman_empire is unheld).
+LR_roman_court_claim_shadow_effect = {
+	if = {
+		limit = {
+			NOR = {
+				has_title = title:e_$HALF$_roman_empire
+				has_title = title:e_$HALF$_roman_republic
+			}
+			NOT = { exists = title:e_$HALF$_roman_empire.holder }
+			NOT = { exists = title:e_$HALF$_roman_republic.holder }
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:e_$HALF$_roman_empire = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		hidden_effect = {
+			if = {
+				limit = { has_title = title:h_roman_empire }
+				title:e_$HALF$_roman_empire = { set_de_jure_liege_title = title:h_roman_empire }
+			}
+			else_if = {
+				limit = { has_title = title:h_$HALF$_roman_empire }
+				title:e_$HALF$_roman_empire = { set_de_jure_liege_title = title:h_$HALF$_roman_empire }
+			}
+		}
+		LR_schedule_roman_title_twins_effect = yes
+	}
+}
+
+# Root: the Augustus (Reorganize our Imperium). The held half becomes the Imperial Court.
+LR_roman_court_establish_effect = {
+	every_held_title = {
+		limit = {
+			OR = { this = title:e_$HALF$_roman_empire this = title:e_$HALF$_roman_republic }
+			NOT = { has_variable = LR_imperial_court }
+		}
+		set_variable = LR_imperial_court
+	}
+	LR_roman_court_update_effect = yes
+}
+
+# ------------------------------------------------------------------ the regional lines
+# Root: the regional emperor (evolve decisions, the Gallic restorations, Reorganize our Imperium).
+# SHADOW = the restored empire (e_gallic_empire...), HEGEMONY = its hegemony, REGION = the shadow's region,
+# SORT = the line (LR_sort_existing_<SORT>_dioceses_effect). Creates the hegemony when nobody holds it and root holds
+# no Roman hegemony, then gathers the region's kingdoms under the shadow.
+LR_found_regional_hegemony_with_shadow_effect = {
+	if = {
+		limit = { has_title = title:$SHADOW$ }
+		title:$SHADOW$ = { save_scope_as = lr_shadow }
+		if = {
+			limit = {
+				NOT = { exists = title:$HEGEMONY$.holder }
+				LR_holds_roman_hegemony_trigger = no
+			}
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			title:$HEGEMONY$ = {
+				change_title_holder = {
+					holder = root
+					change = scope:change
+				}
+				copy_title_history = scope:lr_shadow
+			}
+			resolve_title_and_vassal_change = scope:change
+			hidden_effect = {
+				scope:lr_shadow = { set_de_jure_liege_title = title:$HEGEMONY$ }
+				set_primary_title_to = title:$HEGEMONY$
+			}
+		}
+		hidden_effect = {
+			LR_sort_existing_$SORT$_dioceses_effect = yes
+			LR_roman_shadow_gather_kingdoms_effect = { REGION = $REGION$ }
+		}
+	}
+	LR_schedule_roman_title_twins_effect = yes # 2026-11-25: a Republic founder gets the Republic twins a day later
+}
+
+# Root: the regional emperor (Reorganize our Imperium). Claims the unheld shadow, founds the hegemony if missing,
+# and makes the shadow the Imperial Court.
+LR_regional_reorganize_effect = {
+	if = {
+		limit = {
+			NOT = { has_title = title:$SHADOW$ }
+			NOT = { exists = title:$SHADOW$.holder }
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:$SHADOW$ = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		hidden_effect = {
+			if = {
+				limit = { has_title = title:$HEGEMONY$ }
+				title:$SHADOW$ = { set_de_jure_liege_title = title:$HEGEMONY$ }
+			}
+		}
+	}
+	LR_found_regional_hegemony_with_shadow_effect = { SHADOW = $SHADOW$ HEGEMONY = $HEGEMONY$ REGION = $REGION$ SORT = $SORT$ }
+	if = {
+		limit = { NOT = { has_trait = augustus } }
+		add_trait = augustus
+	}
+	add_prestige = major_prestige_gain
+	add_legitimacy = major_legitimacy_gain
+	if = {
+		limit = { government_has_mechanic = administrative }
+		change_influence = major_influence_gain
+	}
+	dynasty ?= { add_dynasty_prestige = 1000 }
+	every_held_title = {
+		limit = {
+			this = title:$SHADOW$
+			NOT = { has_variable = LR_imperial_court }
+		}
+		set_variable = LR_imperial_court
+	}
+	LR_roman_court_update_effect = yes
+}
+
+# Character: every restored diocese of the Gallic Empire held in the realm goes into its prefecture under h_gallic_empire
+LR_sort_existing_gallic_dioceses_effect = {
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = lugdunensis } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_lugdunensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = viennensis } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_viennensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = hispania } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hispania PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = britannia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_britannia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = caledonia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_caledonia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_gallic_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = hibernia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hibernia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_gallic_empire }
+	}
+}
+
+# Character: every restored diocese of the Palmyrene Empire held in the realm goes into its prefecture under h_palmyrene_empire
+LR_sort_existing_palmyrene_dioceses_effect = {
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = syria } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_syria PREFECTURE = e_praetorian_prefecture_oriens HALF = h_palmyrene_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = palestine } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_palestine PREFECTURE = e_praetorian_prefecture_oriens HALF = h_palmyrene_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = aegyptus } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_aegyptus PREFECTURE = e_praetorian_prefecture_oriens HALF = h_palmyrene_empire }
+	}
+}
+
+# Character: every restored diocese of the Britannic Empire held in the realm goes into its prefecture under h_brittanic_empire
+LR_sort_existing_brittanic_dioceses_effect = {
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = britannia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_britannia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_brittanic_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = caledonia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_caledonia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_brittanic_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = hibernia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hibernia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_brittanic_empire }
+	}
+}
+
+# Character: every restored diocese of the Southern Roman Empire held in the realm goes into its prefecture under h_southern_roman_empire
+LR_sort_existing_southern_dioceses_effect = {
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = africa } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_africa PREFECTURE = e_praetorian_prefecture_africa HALF = h_southern_roman_empire }
+	}
+	if = {
+		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = mauretania } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_mauretania PREFECTURE = e_praetorian_prefecture_africa HALF = h_southern_roman_empire }
+	}
+}
+
+# Character: the restorer of DIOCESE (k_diocese_<DIOCESE>). A regional emperor who holds no Roman hegemony puts it
+# into the prefecture of their line under their hegemony (called from the diocese restore effects).
+LR_sort_diocese_into_regional_hegemony_effect = {
+	if = {
+		limit = { LR_holds_roman_hegemony_trigger = no }
+		if = {
+			limit = { has_title = title:h_gallic_empire }
+			if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_lugdunensis } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_lugdunensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_viennensis } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_viennensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_hispania } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hispania PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_britannia } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_britannia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_gallic_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_caledonia } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_caledonia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_gallic_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_hibernia } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hibernia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_gallic_empire }
+			}
+		}
+		else_if = {
+			limit = { has_title = title:h_palmyrene_empire }
+			if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_syria } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_syria PREFECTURE = e_praetorian_prefecture_oriens HALF = h_palmyrene_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_palestine } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_palestine PREFECTURE = e_praetorian_prefecture_oriens HALF = h_palmyrene_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_aegyptus } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_aegyptus PREFECTURE = e_praetorian_prefecture_oriens HALF = h_palmyrene_empire }
+			}
+		}
+		else_if = {
+			limit = { has_title = title:h_brittanic_empire }
+			if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_britannia } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_britannia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_brittanic_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_caledonia } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_caledonia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_brittanic_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_hibernia } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hibernia PREFECTURE = e_praetorian_prefecture_britannia HALF = h_brittanic_empire }
+			}
+		}
+		else_if = {
+			limit = { has_title = title:h_southern_roman_empire }
+			if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_africa } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_africa PREFECTURE = e_praetorian_prefecture_africa HALF = h_southern_roman_empire }
+			}
+			else_if = {
+				limit = { title:k_diocese_$DIOCESE$ = { this = title:k_diocese_mauretania } }
+				LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_mauretania PREFECTURE = e_praetorian_prefecture_africa HALF = h_southern_roman_empire }
+			}
+		}
+	}
+}
+
+# ------------------------------------------------------------------ shared
+# Root: the shadow's holder, scope:lr_shadow = the shadow. Every kingdom whose capital county lies in REGION and in
+# root's realm moves de jure under the shadow, unless its de jure liege is held, a prefecture, exarchate or
+# magisterium, or another Roman line's title (LR_roman_shadow_keeps_liege_trigger).
+LR_roman_shadow_gather_kingdoms_effect = {
+	every_county_in_region = {
+		region = $REGION$
+		limit = {
+			holder.top_liege ?= root
+			exists = kingdom
+		}
+		kingdom = { add_to_temporary_list = lr_shadow_kingdoms }
+	}
+	every_in_list = {
+		list = lr_shadow_kingdoms
+		limit = {
+			is_landless_type_title = no
+			NOT = { de_jure_liege ?= scope:lr_shadow }
+			title_capital_county ?= {
+				title_province = { geographical_region = $REGION$ }
+				holder.top_liege ?= root
+			}
+			NOT = { de_jure_liege ?= { LR_roman_shadow_keeps_liege_trigger = yes } }
+		}
+		set_de_jure_liege_title = scope:lr_shadow
+	}
+}
+
+# Character: renames their courts by residence and gives or removes the residence modifier
+LR_roman_court_update_effect = {
+	every_held_title = {
+		limit = { has_variable = LR_imperial_court }
+		if = {
+			limit = { LR_roman_named_title_trigger = yes }
+			LR_roman_title_names_force_refresh_effect = yes # its refresh hook calls LR_roman_court_name_effect
+		}
+		else = {
+			LR_roman_title_names_pick_style_effect = yes
+			LR_roman_court_name_effect = yes
+			remove_variable = LR_rtn_pick
+		}
+	}
+	if = {
+		limit = {
+			LR_roman_court_at_residence_trigger = yes
+			NOT = { has_character_modifier = LR_imperial_residence_modifier }
+		}
+		add_character_modifier = LR_imperial_residence_modifier
+	}
+	else_if = {
+		limit = {
+			LR_roman_court_at_residence_trigger = no
+			has_character_modifier = LR_imperial_residence_modifier
+		}
+		remove_character_modifier = LR_imperial_residence_modifier
+	}
+}
+
+# Root: a new holder of a line's hegemony (on_title_gain, scope:title). The line's title stays with its hegemony:
+# it is taken from anyone else who holds it under scope:title, except a Caesar (the title as his command).
+LR_roman_court_follow_one_effect = {
+	if = {
+		limit = {
+			exists = title:$TITLE$.holder
+			NOT = { title:$TITLE$.holder = root }
+			NOT = { title:$TITLE$.holder = { has_trait = caesar } }
+			title:$TITLE$ = { de_jure_liege ?= scope:title }
+		}
+		create_title_and_vassal_change = {
+			type = usurped
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:$TITLE$ = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+}
+
+# Title: a Roman line's title that is the Imperial Court (var:LR_rtn_pick set). Named after the holder's capital
+# when it is one of the court's residences, else after the line.
+LR_roman_court_name_effect = {
+	if = {
+		limit = { has_variable = LR_roman_title_name }
+		remove_variable = LR_roman_title_name # the normal names return if the court ever ends
+	}
+	if = {
+		limit = { LR_roman_court_style_latin_trigger = yes }
+		set_variable = { name = LR_court_style value = flag:latin }
+	}
+	else_if = {
+		limit = { LR_roman_court_style_greek_trigger = yes }
+		set_variable = { name = LR_court_style value = flag:greek }
+	}
+	else = {
+		set_variable = { name = LR_court_style value = flag:foreign }
+	}
+	if = {
+		limit = { OR = { this = title:e_western_roman_empire this = title:e_western_roman_republic } }
+		if = {
+			limit = { holder.capital_county ?= title:c_roma_urbs }
+			LR_roman_court_set_name_effect = { KEY = LR_court_roma }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_lombardia }
+			LR_roman_court_set_name_effect = { KEY = LR_court_mediolanum }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_ravenna }
+			LR_roman_court_set_name_effect = { KEY = LR_court_ravenna }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_trier }
+			LR_roman_court_set_name_effect = { KEY = LR_court_treveri }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_arles }
+			LR_roman_court_set_name_effect = { KEY = LR_court_arelate }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_szerem }
+			LR_roman_court_set_name_effect = { KEY = LR_court_sirmium }
+		}
+		else = {
+			LR_roman_court_set_name_effect = { KEY = LR_court_western_court }
+		}
+	}
+	else_if = {
+		limit = { OR = { this = title:e_eastern_roman_empire this = title:e_eastern_roman_republic } }
+		if = {
+			limit = { holder.capital_county ?= title:c_byzantion }
+			LR_roman_court_set_name_effect = { KEY = LR_court_constantinopolis }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_nikomedia }
+			LR_roman_court_set_name_effect = { KEY = LR_court_nicomedia }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_antiocheia }
+			LR_roman_court_set_name_effect = { KEY = LR_court_antiochia }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_thessalonika }
+			LR_roman_court_set_name_effect = { KEY = LR_court_thessalonica }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_sredets }
+			LR_roman_court_set_name_effect = { KEY = LR_court_serdica }
+		}
+		else = {
+			LR_roman_court_set_name_effect = { KEY = LR_court_eastern_court }
+		}
+	}
+	else_if = {
+		limit = { OR = { this = title:e_gallic_empire this = title:e_gallic_republic } }
+		if = {
+			limit = { holder.capital_county ?= title:c_lyon }
+			LR_roman_court_set_name_effect = { KEY = LR_court_g_lugdunum }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_trier }
+			LR_roman_court_set_name_effect = { KEY = LR_court_g_treveri }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_cologne }
+			LR_roman_court_set_name_effect = { KEY = LR_court_g_agrippina }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_arles }
+			LR_roman_court_set_name_effect = { KEY = LR_court_g_arelate }
+		}
+		else = {
+			LR_roman_court_set_name_effect = { KEY = LR_court_gallic_court }
+		}
+	}
+	else_if = {
+		limit = { OR = { this = title:e_palmyrene_empire this = title:e_palmyrene_republic } }
+		if = {
+			limit = { holder.capital_county ?= title:c_palmyra }
+			LR_roman_court_set_name_effect = { KEY = LR_court_p_palmyra }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_homs }
+			LR_roman_court_set_name_effect = { KEY = LR_court_p_emesa }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_antiocheia }
+			LR_roman_court_set_name_effect = { KEY = LR_court_p_antiochia }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_alexandria }
+			LR_roman_court_set_name_effect = { KEY = LR_court_p_alexandria }
+		}
+		else = {
+			LR_roman_court_set_name_effect = { KEY = LR_court_palmyrene_court }
+		}
+	}
+	else_if = {
+		limit = { OR = { this = title:e_brittanic_empire this = title:e_brittanic_republic } }
+		if = {
+			limit = { holder.capital_county ?= title:c_middlesex }
+			LR_roman_court_set_name_effect = { KEY = LR_court_b_londinium }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_north_riding }
+			LR_roman_court_set_name_effect = { KEY = LR_court_b_eboracum }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_essex }
+			LR_roman_court_set_name_effect = { KEY = LR_court_b_camulodunum }
+		}
+		else = {
+			LR_roman_court_set_name_effect = { KEY = LR_court_brittanic_court }
+		}
+	}
+	else_if = {
+		limit = { OR = { this = title:e_southern_roman_empire this = title:e_southern_roman_republic } }
+		if = {
+			limit = { holder.capital_county ?= title:c_tunis }
+			LR_roman_court_set_name_effect = { KEY = LR_court_s_carthago }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_tripolitana }
+			LR_roman_court_set_name_effect = { KEY = LR_court_s_lepcis }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_constantine }
+			LR_roman_court_set_name_effect = { KEY = LR_court_s_cirta }
+		}
+		else = {
+			LR_roman_court_set_name_effect = { KEY = LR_court_southern_court }
+		}
+	}
+	else_if = {
+		limit = { has_variable = LR_caesar_court_title }
+		if = {
+			limit = { holder.capital_county ?= title:c_roma_urbs }
+			LR_roman_court_set_name_effect = { KEY = LR_court_roma }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_lombardia }
+			LR_roman_court_set_name_effect = { KEY = LR_court_mediolanum }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_ravenna }
+			LR_roman_court_set_name_effect = { KEY = LR_court_ravenna }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_trier }
+			LR_roman_court_set_name_effect = { KEY = LR_court_treveri }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_arles }
+			LR_roman_court_set_name_effect = { KEY = LR_court_arelate }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_szerem }
+			LR_roman_court_set_name_effect = { KEY = LR_court_sirmium }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_byzantion }
+			LR_roman_court_set_name_effect = { KEY = LR_court_constantinopolis }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_nikomedia }
+			LR_roman_court_set_name_effect = { KEY = LR_court_nicomedia }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_antiocheia }
+			LR_roman_court_set_name_effect = { KEY = LR_court_antiochia }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_thessalonika }
+			LR_roman_court_set_name_effect = { KEY = LR_court_thessalonica }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_sredets }
+			LR_roman_court_set_name_effect = { KEY = LR_court_serdica }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_lyon }
+			LR_roman_court_set_name_effect = { KEY = LR_court_g_lugdunum }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_cologne }
+			LR_roman_court_set_name_effect = { KEY = LR_court_g_agrippina }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_palmyra }
+			LR_roman_court_set_name_effect = { KEY = LR_court_p_palmyra }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_homs }
+			LR_roman_court_set_name_effect = { KEY = LR_court_p_emesa }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_alexandria }
+			LR_roman_court_set_name_effect = { KEY = LR_court_p_alexandria }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_middlesex }
+			LR_roman_court_set_name_effect = { KEY = LR_court_b_londinium }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_north_riding }
+			LR_roman_court_set_name_effect = { KEY = LR_court_b_eboracum }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_essex }
+			LR_roman_court_set_name_effect = { KEY = LR_court_b_camulodunum }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_tunis }
+			LR_roman_court_set_name_effect = { KEY = LR_court_s_carthago }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_tripolitana }
+			LR_roman_court_set_name_effect = { KEY = LR_court_s_lepcis }
+		}
+		else_if = {
+			limit = { holder.capital_county ?= title:c_constantine }
+			LR_roman_court_set_name_effect = { KEY = LR_court_s_cirta }
+		}
+		else = {
+			LR_caesar_court_fallback_name_effect = yes # tools/cleave_caesars.py
+		}
+	}
+	remove_variable = LR_court_style
+}
+
+LR_roman_court_set_name_effect = {
+	if = {
+		limit = { var:LR_court_style = flag:latin }
+		set_title_name = $KEY$_latin
+	}
+	else_if = {
+		limit = { var:LR_court_style = flag:greek }
+		set_title_name = $KEY$_greek
+	}
+	else = {
+		set_title_name = $KEY$_foreign
+	}
+}
+

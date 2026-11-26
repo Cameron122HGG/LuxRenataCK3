@@ -1,0 +1,60 @@
+﻿# LR 2026-11-24 (user): hand out titles to new characters automatically (LR_hand_out_titles_effects.txt).
+# Player tools: the AI never takes them.
+
+LR_hand_out_titles_liege_decision = {
+	decision_group_type = realm
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	desc = LR_hand_out_titles_liege_decision_desc
+	selection_tooltip = LR_hand_out_titles_liege_decision_tooltip
+	confirm_text = LR_hand_out_titles_liege_decision_confirm
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		highest_held_title_tier > tier_county
+	}
+	is_valid = {
+		custom_tooltip = {
+			text = LR_hand_out_titles_decision_has_titles
+			any_held_title = { LR_ho_can_hand_out_title_trigger = yes }
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_hand_out_titles_liege_decision_effect_tt
+		hidden_effect = { LR_hand_out_titles_effect = { MODE = liege } }
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+LR_hand_out_titles_local_decision = {
+	decision_group_type = realm
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	desc = LR_hand_out_titles_local_decision_desc
+	selection_tooltip = LR_hand_out_titles_local_decision_tooltip
+	confirm_text = LR_hand_out_titles_local_decision_confirm
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		highest_held_title_tier > tier_county
+	}
+	is_valid = {
+		custom_tooltip = {
+			text = LR_hand_out_titles_decision_has_titles
+			any_held_title = { LR_ho_can_hand_out_title_trigger = yes }
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_hand_out_titles_local_decision_effect_tt
+		hidden_effect = { LR_hand_out_titles_effect = { MODE = local } }
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

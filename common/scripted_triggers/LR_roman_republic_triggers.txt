@@ -20,12 +20,20 @@ LR_is_roman_republic_consul_trigger = {
 		has_title = title:h_roman_republic
 		has_title = title:h_western_roman_republic # LR 2026-11-19
 		has_title = title:h_eastern_roman_republic # LR 2026-11-19
+		has_title = title:e_gallic_republic # regional
+		has_title = title:e_palmyrene_republic # regional
+		has_title = title:e_brittanic_republic # regional
+		has_title = title:e_southern_roman_republic # regional
+		has_title = title:h_gallic_republic # regional
+		has_title = title:h_palmyrene_republic # regional
+		has_title = title:h_brittanic_republic # regional
+		has_title = title:h_southern_roman_republic # regional
 	}
 }
 
 # Character scope: who may see a restore-the-republic decision. HALF = western / eastern
 LR_roman_republic_restorer_shown_trigger = {
-	has_gdp_dlc_trigger = yes
+	LR_gradus_has_gdp_trigger = yes
 	is_ruler = yes
 	is_playable_character = yes
 	government_has_flag = government_is_republic
@@ -73,4 +81,16 @@ LR_roman_republic_prefecture_macedonia_trigger = {
 	LR_roman_republic_diocese_ready_trigger = { DIOCESE = pontus }
 	LR_roman_republic_diocese_ready_trigger = { DIOCESE = asia }
 	LR_roman_republic_diocese_ready_trigger = { DIOCESE = armenia }
+}
+
+# LR 2026-11-25 (user: "make roman republic happen if you become a republic as the roman group")
+# A republic of the Roman group: a landed assembly head whose culture keeps Classical Statecraft, not of Hellenistic heritage
+# (those take the Hellenistic branch). It takes the Roman republic law and the Roman Republic government.
+LR_roman_group_republic_trigger = {
+	government_has_flag = government_is_republic
+	NOT = { government_has_flag = government_is_principate }
+	is_landed = yes
+	gdp_is_assembly_head_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_classical }
+	LR_culture_is_hellenic_trigger = no
 }

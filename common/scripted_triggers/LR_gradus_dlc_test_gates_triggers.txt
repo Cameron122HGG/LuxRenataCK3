@@ -1,0 +1,49 @@
+﻿# LR 2026-11-25 GRADUS DLC test (tools/gradus_dlc_test/build_gradus_dlc_test.py)
+# Test-aware copies of the DLC-gating triggers that governments / landed titles / scripted rules use (those stay on
+# the real DLC, in case the main menu evaluates them). LR's in-game script uses these copies.
+
+LR_gradus_test_LR_has_dynastic_governments_dlc_trigger = {
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_has_auh_trigger = yes
+}
+
+LR_gradus_test_LR_has_roman_evolution_dlc_trigger = {
+	custom_tooltip = {
+		text = LR_has_roman_evolution_dlc_tt
+		LR_gradus_has_rtp_trigger = yes
+		LR_gradus_has_gdp_trigger = yes
+		LR_gradus_has_auh_trigger = yes
+	}
+}
+
+LR_gradus_test_LR_has_rtp_governments_dlc_trigger = {
+	LR_gradus_has_rtp_trigger = yes
+	LR_gradus_has_auh_trigger = no
+}
+
+LR_gradus_test_LR_tgp_can_become_sacral_feudal_trigger = {
+	LR_gradus_has_auh_trigger = yes
+	OR = {
+		top_liege = { government_is_sacral_trigger = yes } # Soryo not created outside Ritsuryo/Soryo Realms
+		domicile ?= { is_domicile_type = sacral_manor } # Vassalized Ritsuryo/Soryo stay Soryo
+		has_character_flag = can_become_sacral_feudal
+	}
+}
+
+# the DLC, unless the GRADUS DLC test hides it
+LR_gradus_has_rtp_trigger = {
+	has_ep3_dlc_trigger = yes
+	LR_gradus_dlc_test_hides_rtp_trigger = no
+}
+
+# the DLC, unless the GRADUS DLC test hides it
+LR_gradus_has_auh_trigger = {
+	has_tgp_dlc_trigger = yes
+	LR_gradus_dlc_test_hides_auh_trigger = no
+}
+
+# the DLC, unless the GRADUS DLC test hides it
+LR_gradus_has_gdp_trigger = {
+	has_gdp_dlc_trigger = yes
+	LR_gradus_dlc_test_hides_gdp_trigger = no
+}

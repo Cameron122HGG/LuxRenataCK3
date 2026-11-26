@@ -695,8 +695,7 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 	}
 
 	#Sort the Dioceses
-		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
-		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { exists = title:h_gallic_empire.holder }
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
@@ -708,6 +707,10 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 		limit = { exists = title:e_gallic_empire.holder }
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_gallic_empire }
 		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_gallic_empire }
+	}
+	else = {
+		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	}
 
 	hidden_effect = {
@@ -792,7 +795,13 @@ restore_gallic_empire_provinces_viennensis_decision_effect = {
 	}
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = lugdunensis }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_lugdunensis }
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = viennensis }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_viennensis }
 }
 
@@ -864,9 +873,10 @@ LR_transfer_empire_title_effect = {
 # (LR_tgp_sacral_gaul_gallic_empire_decision). Character scope (the new Gallic emperor).
 LR_restore_gallic_empire_effect = {	if = {
 		limit = {
-		has_dlc_feature = all_under_heaven
+		LR_gradus_has_auh_trigger = yes
+		NOT = { government_has_flag = government_is_republic } # LR 2026-11-25 regional republics (tools/regional_republics/build_regional_republics.py): a republic stays one (Republic twins)
 		}
-		change_government = roman_autocratic_government
+		change_government = roman_imperial_government
 		save_scope_as = actor
 		#restore_gallic_empire_provinces_viennensis_decision_effect = yes
 	}
@@ -878,7 +888,7 @@ LR_restore_gallic_empire_effect = {	if = {
 	every_vassal_or_below = {
 		if = {
 			limit = {
-				has_dlc_feature = all_under_heaven
+				LR_gradus_has_auh_trigger = yes
 				OR = {
 					government_has_flag = government_is_sacral_administrative
 					AND = {
@@ -887,11 +897,11 @@ LR_restore_gallic_empire_effect = {	if = {
 					}
 				}
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 		}
 		else_if = {
 			limit = {
-				NOT = { has_dlc_feature = all_under_heaven }
+				NOT = { LR_gradus_has_auh_trigger = yes }
 				OR = {
 					government_has_flag = government_is_sacral_feudal
 					AND = {
@@ -900,7 +910,7 @@ LR_restore_gallic_empire_effect = {	if = {
 					}
 				}
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 		}
 	}
 	title:e_gallic_empire = {
@@ -938,4 +948,7 @@ LR_restore_gallic_empire_effect = {	if = {
 			target = flag:restore_gallic_empire_decision
 		}
 	}
+	# LR 2026-11-25 (user): straight to the Gallic hegemony, e_gallic_empire as its shadow (LR_roman_imperial_court_effects.txt)
+	custom_tooltip = LR_evolve_regional_hegemony_tt
+	LR_found_regional_hegemony_with_shadow_effect = { SHADOW = e_gallic_empire HEGEMONY = h_gallic_empire REGION = custom_roman_prefecture_gallia SORT = gallic }
 }

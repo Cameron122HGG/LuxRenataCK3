@@ -1,0 +1,28 @@
+﻿# LR 2026-11-25 Unctio (tools/sacral_unctio/build_sacral_unctio.py)
+# root = a ruler. Called from LR_normalize_dynastic_government_effect (every government change, title gain and yearly).
+#   - without All Under Heaven Unctio falls back to Palatine (normalized further on the next pass);
+#   - the restored Sacral King (Restore Direct Sacral Rule) who holds e_sacral_kingdom_gaul as an independent ruler takes Unctio.
+# Rulers who rose by Receive the Anointing keep it; the universal rank is planned for later.
+LR_sacral_unctio_government_effect = {
+	if = {
+		limit = {
+			LR_gradus_has_auh_trigger = no
+			has_government = sacral_imperial_government
+		}
+		change_government = sacral_administrative_government
+	}
+	else_if = {
+		limit = {
+			LR_gradus_has_auh_trigger = yes
+			has_global_variable = sacral_king_gaul_restored
+			top_liege = this
+			has_title = title:e_sacral_kingdom_gaul
+			LR_in_sacral_group_trigger = yes
+			NOR = { # a Maiestas emperor (the universal rank) is already above Unctio
+				has_government = sacral_imperial_government
+				has_government = sacral_maiestas_government
+			}
+		}
+		change_government = sacral_imperial_government
+	}
+}

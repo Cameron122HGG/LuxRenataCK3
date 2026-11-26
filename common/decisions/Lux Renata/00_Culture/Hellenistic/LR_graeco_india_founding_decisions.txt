@@ -1,0 +1,1014 @@
+﻿# LR Graeco-India founding (tools/register_graeco_india_founding.py, 2026-11-24). GENERATED.
+# Found the Strategia of X (a foothold: seat + a quarter of the counties), then Restore the Satrapy of X for
+# the strategia's holder (seat + half the counties). TEMP: thresholds, costs and claims are first guesses.
+
+LR_india_restore_poklais_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_poklais_decision_desc
+	selection_tooltip = LR_india_restore_poklais_decision_tooltip
+	confirm_text = LR_india_restore_poklais_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_pentapotamia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_poklais } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_poklais }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_poklais_decision_trigger
+			LR_india_poklais_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_poklais_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_poklais }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_poklais EMPIRE = e_strategia_pentapotamia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_kaspeiria_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_kaspeiria_decision_desc
+	selection_tooltip = LR_india_restore_kaspeiria_decision_tooltip
+	confirm_text = LR_india_restore_kaspeiria_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_pentapotamia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_kaspeiria } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kaspeiria }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_kaspeiria_decision_trigger
+			LR_india_kaspeiria_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_kaspeiria_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_kaspeiria }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_kaspeiria EMPIRE = e_strategia_pentapotamia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_sigerdis_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_sigerdis_decision_desc
+	selection_tooltip = LR_india_restore_sigerdis_decision_tooltip
+	confirm_text = LR_india_restore_sigerdis_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_pentapotamia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_sigerdis } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sigerdis }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_sigerdis_decision_trigger
+			LR_india_sigerdis_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_sigerdis_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_sigerdis }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_sigerdis EMPIRE = e_strategia_pentapotamia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_sandrakotte_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_sandrakotte_decision_desc
+	selection_tooltip = LR_india_restore_sandrakotte_decision_tooltip
+	confirm_text = LR_india_restore_sandrakotte_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_gangaradia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_sandrakotte } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sandrakotte }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_sandrakotte_decision_trigger
+			LR_india_sandrakotte_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_sandrakotte_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_sandrakotte }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_sandrakotte EMPIRE = e_strategia_gangaradia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_gangesia_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_gangesia_decision_desc
+	selection_tooltip = LR_india_restore_gangesia_decision_tooltip
+	confirm_text = LR_india_restore_gangesia_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_gangaradia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_gangesia } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_gangesia }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_gangesia_decision_trigger
+			LR_india_gangesia_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_gangesia_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_gangesia }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_gangesia EMPIRE = e_strategia_gangaradia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_kirrhadia_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_kirrhadia_decision_desc
+	selection_tooltip = LR_india_restore_kirrhadia_decision_tooltip
+	confirm_text = LR_india_restore_kirrhadia_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_gangaradia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_kirrhadia } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kirrhadia }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_kirrhadia_decision_trigger
+			LR_india_kirrhadia_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_kirrhadia_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_kirrhadia }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_kirrhadia EMPIRE = e_strategia_gangaradia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_kosalia_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_kosalia_decision_desc
+	selection_tooltip = LR_india_restore_kosalia_decision_tooltip
+	confirm_text = LR_india_restore_kosalia_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_gangaradia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_kosalia } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kosalia }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_kosalia_decision_trigger
+			LR_india_kosalia_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_kosalia_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_kosalia }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_kosalia EMPIRE = e_strategia_gangaradia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_mandalene_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_mandalene_decision_desc
+	selection_tooltip = LR_india_restore_mandalene_decision_tooltip
+	confirm_text = LR_india_restore_mandalene_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_gangaradia has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_mandalene } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_mandalene }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_mandalene_decision_trigger
+			LR_india_mandalene_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_mandalene_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_mandalene }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_mandalene EMPIRE = e_strategia_gangaradia } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_saraostos_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_saraostos_decision_desc
+	selection_tooltip = LR_india_restore_saraostos_decision_tooltip
+	confirm_text = LR_india_restore_saraostos_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_ariake has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_saraostos } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_saraostos }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_saraostos_decision_trigger
+			LR_india_saraostos_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_saraostos_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_saraostos }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_saraostos EMPIRE = e_strategia_ariake } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_sourasene_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_sourasene_decision_desc
+	selection_tooltip = LR_india_restore_sourasene_decision_tooltip
+	confirm_text = LR_india_restore_sourasene_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_ariake has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_sourasene } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_sourasene }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_sourasene_decision_trigger
+			LR_india_sourasene_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_sourasene_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_sourasene }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_sourasene EMPIRE = e_strategia_ariake } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_ozene_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_ozene_decision_desc
+	selection_tooltip = LR_india_restore_ozene_decision_tooltip
+	confirm_text = LR_india_restore_ozene_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_ariake has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_ozene } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_ozene }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_ozene_decision_trigger
+			LR_india_ozene_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_ozene_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_ozene }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_ozene EMPIRE = e_strategia_ariake } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_kouria_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_kouria_decision_desc
+	selection_tooltip = LR_india_restore_kouria_decision_tooltip
+	confirm_text = LR_india_restore_kouria_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_ariake has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_kouria } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kouria }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_kouria_decision_trigger
+			LR_india_kouria_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_kouria_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_kouria }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_kouria EMPIRE = e_strategia_ariake } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_marasthene_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_marasthene_decision_desc
+	selection_tooltip = LR_india_restore_marasthene_decision_tooltip
+	confirm_text = LR_india_restore_marasthene_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_dakinabades has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_marasthene } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_marasthene }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_marasthene_decision_trigger
+			LR_india_marasthene_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_marasthene_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_marasthene }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_marasthene EMPIRE = e_strategia_dakinabades } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_tosalia_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_tosalia_decision_desc
+	selection_tooltip = LR_india_restore_tosalia_decision_tooltip
+	confirm_text = LR_india_restore_tosalia_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_dakinabades has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_tosalia } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_tosalia }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_tosalia_decision_trigger
+			LR_india_tosalia_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_tosalia_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_tosalia }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_tosalia EMPIRE = e_strategia_dakinabades } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_kountale_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_kountale_decision_desc
+	selection_tooltip = LR_india_restore_kountale_decision_tooltip
+	confirm_text = LR_india_restore_kountale_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_dakinabades has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_kountale } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_kountale }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_kountale_decision_trigger
+			LR_india_kountale_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_kountale_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_kountale }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_kountale EMPIRE = e_strategia_dakinabades } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_damirike_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_damirike_decision_desc
+	selection_tooltip = LR_india_restore_damirike_decision_tooltip
+	confirm_text = LR_india_restore_damirike_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_dakinabades has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_damirike } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_damirike }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_damirike_decision_trigger
+			LR_india_damirike_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_damirike_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_damirike }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_damirike EMPIRE = e_strategia_dakinabades } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_andaria_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_andaria_decision_desc
+	selection_tooltip = LR_india_restore_andaria_decision_tooltip
+	confirm_text = LR_india_restore_andaria_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_dakinabades has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_andaria } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_andaria }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_andaria_decision_trigger
+			LR_india_andaria_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_andaria_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_andaria }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_andaria EMPIRE = e_strategia_dakinabades } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_restore_taprobane_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_legitimacy.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	cooldown = { years = 5 }
+	desc = LR_india_restore_taprobane_decision_desc
+	selection_tooltip = LR_india_restore_taprobane_decision_tooltip
+	confirm_text = LR_india_restore_taprobane_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 300 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 300 } # TEMP
+		}
+		prestige = 300 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		OR = { has_title = title:e_strategia_dakinabades has_title = title:e_basileia_indike } # or the downshifted great king
+		any_realm_county = { title_province = { geographical_region = custom_satrapy_taprobane } } # only with land there
+		LR_satrapy_restorable_trigger = { SATRAPY = k_satrapy_taprobane }
+	}
+	is_valid = {
+		OR = { is_independent_ruler = yes has_title = title:e_basileia_indike } # the great king may be the hegemon's vassal
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_restore_taprobane_decision_trigger
+			LR_india_taprobane_half_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_restore_taprobane_decision_effect_tt
+		show_as_tooltip = { get_title = title:k_satrapy_taprobane }
+		hidden_effect = { LR_restore_satrapy_effect = { SATRAPY = k_satrapy_taprobane EMPIRE = e_strategia_dakinabades } }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_found_strategia_pentapotamia_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	desc = LR_india_found_strategia_pentapotamia_decision_desc
+	selection_tooltip = LR_india_found_strategia_pentapotamia_decision_tooltip
+	confirm_text = LR_india_found_strategia_pentapotamia_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 200 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 200 } # TEMP
+		}
+		prestige = 500 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_title_set_hellenistic_native_trigger = yes
+		highest_held_title_tier >= tier_duchy # TEMP
+		NOT = { exists = title:e_strategia_pentapotamia.holder }
+		NOT = { has_global_variable = LR_india_downshifted } # tools/register_hellenistic_downshift.py
+		any_realm_county = { title_province = { geographical_region = custom_strategia_pentapotamia } } # only with land there
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_found_strategia_pentapotamia_decision_seat
+			LR_india_found_pentapotamia_seat_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_india_found_strategia_pentapotamia_decision_share
+			LR_india_found_pentapotamia_share_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_found_strategia_pentapotamia_decision_effect_tt
+		show_as_tooltip = { get_title = title:e_strategia_pentapotamia }
+		hidden_effect = { LR_india_found_strategia_pentapotamia_effect = yes }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_found_strategia_gangaradia_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	desc = LR_india_found_strategia_gangaradia_decision_desc
+	selection_tooltip = LR_india_found_strategia_gangaradia_decision_tooltip
+	confirm_text = LR_india_found_strategia_gangaradia_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 200 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 200 } # TEMP
+		}
+		prestige = 500 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_title_set_hellenistic_native_trigger = yes
+		highest_held_title_tier >= tier_duchy # TEMP
+		NOT = { exists = title:e_strategia_gangaradia.holder }
+		NOT = { has_global_variable = LR_india_downshifted } # tools/register_hellenistic_downshift.py
+		any_realm_county = { title_province = { geographical_region = custom_strategia_gangaradia } } # only with land there
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_found_strategia_gangaradia_decision_seat
+			LR_india_found_gangaradia_seat_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_india_found_strategia_gangaradia_decision_share
+			LR_india_found_gangaradia_share_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_found_strategia_gangaradia_decision_effect_tt
+		show_as_tooltip = { get_title = title:e_strategia_gangaradia }
+		hidden_effect = { LR_india_found_strategia_gangaradia_effect = yes }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_found_strategia_ariake_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	desc = LR_india_found_strategia_ariake_decision_desc
+	selection_tooltip = LR_india_found_strategia_ariake_decision_tooltip
+	confirm_text = LR_india_found_strategia_ariake_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 200 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 200 } # TEMP
+		}
+		prestige = 500 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_title_set_hellenistic_native_trigger = yes
+		highest_held_title_tier >= tier_duchy # TEMP
+		NOT = { exists = title:e_strategia_ariake.holder }
+		NOT = { has_global_variable = LR_india_downshifted } # tools/register_hellenistic_downshift.py
+		any_realm_county = { title_province = { geographical_region = custom_strategia_ariake } } # only with land there
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_found_strategia_ariake_decision_seat
+			LR_india_found_ariake_seat_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_india_found_strategia_ariake_decision_share
+			LR_india_found_ariake_share_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_found_strategia_ariake_decision_effect_tt
+		show_as_tooltip = { get_title = title:e_strategia_ariake }
+		hidden_effect = { LR_india_found_strategia_ariake_effect = yes }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+
+LR_india_found_strategia_dakinabades_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds" }
+	decision_group_type = lr_ts_graeco_india
+	ai_check_interval = 60
+	desc = LR_india_found_strategia_dakinabades_decision_desc
+	selection_tooltip = LR_india_found_strategia_dakinabades_decision_tooltip
+	confirm_text = LR_india_found_strategia_dakinabades_decision_confirm
+	cost = {
+		treasury = {
+			value = 0
+			if = { limit = { has_treasury = yes } add = 200 } # TEMP
+		}
+		gold = {
+			value = 0
+			if = { limit = { has_treasury = no } add = 200 } # TEMP
+		}
+		prestige = 500 # TEMP
+	}
+	is_shown = {
+		is_ruler = yes
+		LR_title_set_hellenistic_native_trigger = yes
+		highest_held_title_tier >= tier_duchy # TEMP
+		NOT = { exists = title:e_strategia_dakinabades.holder }
+		NOT = { has_global_variable = LR_india_downshifted } # tools/register_hellenistic_downshift.py
+		any_realm_county = { title_province = { geographical_region = custom_strategia_dakinabades } } # only with land there
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_india_found_strategia_dakinabades_decision_seat
+			LR_india_found_dakinabades_seat_trigger = yes
+		}
+		custom_tooltip = {
+			text = LR_india_found_strategia_dakinabades_decision_share
+			LR_india_found_dakinabades_share_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+	effect = {
+		custom_tooltip = LR_india_found_strategia_dakinabades_decision_effect_tt
+		show_as_tooltip = { get_title = title:e_strategia_dakinabades }
+		hidden_effect = { LR_india_found_strategia_dakinabades_effect = yes }
+	}
+	ai_potential = { always = yes }
+	ai_will_do = { base = 100 }
+}
+

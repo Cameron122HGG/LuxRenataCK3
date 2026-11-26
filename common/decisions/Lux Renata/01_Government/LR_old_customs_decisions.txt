@@ -1,0 +1,59 @@
+﻿# LR 2026-11-26 Restore Our Own Customs (tools/old_customs/build_old_customs.py)
+LR_restore_own_customs_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	desc = LR_restore_own_customs_decision_desc
+	selection_tooltip = LR_restore_own_customs_decision_tooltip
+	ai_check_interval = 60
+
+	is_shown = {
+		LR_can_restore_own_customs_trigger = yes
+	}
+
+	is_valid = {
+		is_at_war = no
+		custom_tooltip = {
+			text = LR_restore_own_customs_cooldown_tt
+			NOT = { has_character_flag = LR_restored_own_customs }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		prestige = LR_restore_own_customs_prestige_cost_value
+	}
+
+	effect = {
+		custom_tooltip = LR_restore_own_customs_switch_tt
+		if = {
+			limit = { LR_old_customs_revolt_trigger = yes }
+			custom_tooltip = LR_restore_own_customs_revolt_tt
+		}
+		else_if = {
+			limit = { any_vassal = { LR_old_customs_aggrieved_trigger = yes } }
+			custom_tooltip = LR_restore_own_customs_grievance_tt
+		}
+		hidden_effect = { LR_restore_own_customs_effect = yes }
+	}
+
+	ai_potential = {
+		is_at_war = no
+	}
+	ai_will_do = {
+		base = 0
+		modifier = { # cautious: only when the old customs' vassals are weak
+			add = 30
+			LR_old_customs_aggrieved_percent_value < 10
+		}
+		modifier = { add = 20 has_trait = zealous }
+		modifier = { add = 20 has_trait = arrogant }
+		modifier = { add = 15 has_trait = stubborn }
+		modifier = { factor = 0 LR_old_customs_aggrieved_percent_value >= 20 }
+	}
+}

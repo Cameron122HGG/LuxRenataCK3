@@ -1,0 +1,581 @@
+﻿# LR Imperium window (tools/imperium_gui/gen_imperium_gui.py, 2026-11-25). GENERATED - edit the generator.
+
+LR_imp_ensure_situation_effect = {
+	if = {
+		limit = { NOT = { exists = situation:LR_imperium } }
+		start_situation = {
+			type = LR_imperium
+			start_phase = LR_imp_watch
+		}
+	}
+}
+
+# Root: the player opening the window. Repaints the dioceses for them.
+LR_imp_open_effect = {
+	LR_imp_ensure_situation_effect = yes
+	save_scope_as = LR_imp_viewer
+	situation:LR_imperium ?= {
+		save_scope_as = situation
+		every_county_in_region = {
+			region = custom_LR_imperium_all
+			save_temporary_scope_as = LR_imp_county
+			scope:situation.situation_sub_region:LR_imp_mine = {
+				if = {
+					limit = { situation_sub_region_has_county = scope:LR_imp_county }
+					remove_dejure_title_from_sub_region = scope:LR_imp_county
+				}
+			}
+			scope:situation.situation_sub_region:LR_imp_other = {
+				if = {
+					limit = { situation_sub_region_has_county = scope:LR_imp_county }
+					remove_dejure_title_from_sub_region = scope:LR_imp_county
+				}
+			}
+			scope:situation.situation_sub_region:LR_imp_reach = {
+				if = {
+					limit = { situation_sub_region_has_county = scope:LR_imp_county }
+					remove_dejure_title_from_sub_region = scope:LR_imp_county
+				}
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_aegyptus.holder }
+			if = {
+				limit = { title:k_diocese_aegyptus.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_aegyptus }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_aegyptus }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_aegyptus } }
+			every_county_in_region = {
+				region = custom_roman_aegyptus
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_aethiopia.holder }
+			if = {
+				limit = { title:k_diocese_aethiopia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_aethiopia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_aethiopia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_aethiopia } }
+			every_county_in_region = {
+				region = custom_roman_aethiopia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_africa.holder }
+			if = {
+				limit = { title:k_diocese_africa.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_africa }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_africa }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_africa } }
+			every_county_in_region = {
+				region = custom_roman_africa
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_arabia_felix.holder }
+			if = {
+				limit = { title:k_diocese_arabia_felix.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_arabia_felix }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_arabia_felix }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_arabia_felix } }
+			every_county_in_region = {
+				region = custom_roman_arabia_felix
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_armenia.holder }
+			if = {
+				limit = { title:k_diocese_armenia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_armenia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_armenia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_armenia } }
+			every_county_in_region = {
+				region = custom_roman_armenia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_asia.holder }
+			if = {
+				limit = { title:k_diocese_asia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_asia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_asia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_asia } }
+			every_county_in_region = {
+				region = custom_roman_asia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_assyria.holder }
+			if = {
+				limit = { title:k_diocese_assyria.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_assyria }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_assyria }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_assyria } }
+			every_county_in_region = {
+				region = custom_roman_assyria
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_britannia.holder }
+			if = {
+				limit = { title:k_diocese_britannia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_britannia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_britannia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_britannia } }
+			every_county_in_region = {
+				region = custom_roman_britannia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_caledonia.holder }
+			if = {
+				limit = { title:k_diocese_caledonia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_caledonia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_caledonia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_caledonia } }
+			every_county_in_region = {
+				region = custom_roman_caledonia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_dacia_traiana.holder }
+			if = {
+				limit = { title:k_diocese_dacia_traiana.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_dacia_traiana }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_dacia_traiana }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_dacia_traiana } }
+			every_county_in_region = {
+				region = custom_roman_dacia_traiana
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_dardania.holder }
+			if = {
+				limit = { title:k_diocese_dardania.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_dardania }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_dardania }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_dardania } }
+			every_county_in_region = {
+				region = custom_roman_dardania
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_germania.holder }
+			if = {
+				limit = { title:k_diocese_germania.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_germania }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_germania }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_germania } }
+			every_county_in_region = {
+				region = custom_roman_germania
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_gothia.holder }
+			if = {
+				limit = { title:k_diocese_gothia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_gothia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_gothia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_gothia } }
+			every_county_in_region = {
+				region = custom_roman_gothia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_hibernia.holder }
+			if = {
+				limit = { title:k_diocese_hibernia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_hibernia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_hibernia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_hibernia } }
+			every_county_in_region = {
+				region = custom_roman_hibernia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_hispania.holder }
+			if = {
+				limit = { title:k_diocese_hispania.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_hispania }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_hispania }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_hispania } }
+			every_county_in_region = {
+				region = custom_roman_hispania
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_illyricum.holder }
+			if = {
+				limit = { title:k_diocese_illyricum.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_illyricum }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_illyricum }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_illyricum } }
+			every_county_in_region = {
+				region = custom_roman_illyricum
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_italia_annonaria.holder }
+			if = {
+				limit = { title:k_diocese_italia_annonaria.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_italia_annonaria }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_italia_annonaria }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_italia_annonaria } }
+			every_county_in_region = {
+				region = custom_roman_italia_annonaria
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_italia_suburbicaria.holder }
+			if = {
+				limit = { title:k_diocese_italia_suburbicaria.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_italia_suburbicaria }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_italia_suburbicaria }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_italia_suburbicaria } }
+			every_county_in_region = {
+				region = custom_roman_italia_suburbicaria
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_lugdunensis.holder }
+			if = {
+				limit = { title:k_diocese_lugdunensis.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_lugdunensis }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_lugdunensis }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_lugdunensis } }
+			every_county_in_region = {
+				region = custom_roman_lugdunensis
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_macedonia.holder }
+			if = {
+				limit = { title:k_diocese_macedonia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_macedonia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_macedonia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_macedonia } }
+			every_county_in_region = {
+				region = custom_roman_macedonia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_marcomannia.holder }
+			if = {
+				limit = { title:k_diocese_marcomannia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_marcomannia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_marcomannia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_marcomannia } }
+			every_county_in_region = {
+				region = custom_roman_marcomannia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_mauretania.holder }
+			if = {
+				limit = { title:k_diocese_mauretania.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_mauretania }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_mauretania }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_mauretania } }
+			every_county_in_region = {
+				region = custom_roman_mauretania
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_noricum.holder }
+			if = {
+				limit = { title:k_diocese_noricum.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_noricum }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_noricum }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_noricum } }
+			every_county_in_region = {
+				region = custom_roman_noricum
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_palestine.holder }
+			if = {
+				limit = { title:k_diocese_palestine.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_palestine }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_palestine }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_palestine } }
+			every_county_in_region = {
+				region = custom_roman_palestine
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_pannonia.holder }
+			if = {
+				limit = { title:k_diocese_pannonia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_pannonia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_pannonia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_pannonia } }
+			every_county_in_region = {
+				region = custom_roman_pannonia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_pontus.holder }
+			if = {
+				limit = { title:k_diocese_pontus.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_pontus }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_pontus }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_pontus } }
+			every_county_in_region = {
+				region = custom_roman_pontus
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_syria.holder }
+			if = {
+				limit = { title:k_diocese_syria.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_syria }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_syria }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_syria } }
+			every_county_in_region = {
+				region = custom_roman_syria
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_thracia.holder }
+			if = {
+				limit = { title:k_diocese_thracia.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_thracia }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_thracia }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_thracia } }
+			every_county_in_region = {
+				region = custom_roman_thracia
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		if = {
+			limit = { exists = title:k_diocese_viennensis.holder }
+			if = {
+				limit = { title:k_diocese_viennensis.holder.top_liege = scope:LR_imp_viewer }
+				situation_sub_region:LR_imp_mine = { add_dejure_title_to_sub_region = title:k_diocese_viennensis }
+			}
+			else = {
+				situation_sub_region:LR_imp_other = { add_dejure_title_to_sub_region = title:k_diocese_viennensis }
+			}
+		}
+		else_if = {
+			limit = { scope:LR_imp_viewer = { completely_controls_region = custom_roman_viennensis } }
+			every_county_in_region = {
+				region = custom_roman_viennensis
+				save_temporary_scope_as = LR_imp_county
+				scope:situation.situation_sub_region:LR_imp_reach = { add_dejure_title_to_sub_region = scope:LR_imp_county }
+			}
+		}
+		# 2026-11-25: the Caesars' dynamic commands (no fixed keys), for the Commands and College tabs
+		clear_variable_list = LR_imp_caesars
+		every_in_global_list = {
+			variable = LR_caesar_commands
+			limit = { exists = holder }
+			save_temporary_scope_as = LR_imp_cmd
+			scope:situation = { add_to_variable_list = { name = LR_imp_caesars target = scope:LR_imp_cmd } }
+		}
+	}
+}
+
+# Root: the player. Moves the capital and the court to residence county COUNTY (the window's buttons)
+LR_imp_move_residence_effect = {
+	remove_short_term_gold = 150
+	set_realm_capital = title:$COUNTY$
+	set_variable = { name = LR_imp_moved_residence years = 10 }
+	LR_roman_court_update_effect = yes
+}
+

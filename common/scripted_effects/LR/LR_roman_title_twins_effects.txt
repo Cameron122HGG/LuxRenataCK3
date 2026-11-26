@@ -31,17 +31,33 @@ LR_align_roman_title_twins_effect = {
 		# Empires first, then the hegemony, so the hegemony swap also moves the new empire titles under it
 		LR_swap_roman_title_twin_effect = { OLD = e_western_roman_republic NEW = e_western_roman_empire }
 		LR_swap_roman_title_twin_effect = { OLD = e_eastern_roman_republic NEW = e_eastern_roman_empire }
+		LR_swap_roman_title_twin_effect = { OLD = e_gallic_republic NEW = e_gallic_empire } # regional
+		LR_swap_roman_title_twin_effect = { OLD = e_palmyrene_republic NEW = e_palmyrene_empire } # regional
+		LR_swap_roman_title_twin_effect = { OLD = e_brittanic_republic NEW = e_brittanic_empire } # regional
+		LR_swap_roman_title_twin_effect = { OLD = e_southern_roman_republic NEW = e_southern_roman_empire } # regional
 		LR_swap_roman_title_twin_effect = { OLD = h_western_roman_republic NEW = h_western_roman_empire }
 		LR_swap_roman_title_twin_effect = { OLD = h_eastern_roman_republic NEW = h_eastern_roman_empire }
 		LR_swap_roman_title_twin_effect = { OLD = h_roman_republic NEW = h_roman_empire }
+		LR_swap_roman_title_twin_effect = { OLD = h_gallic_republic NEW = h_gallic_empire } # regional
+		LR_swap_roman_title_twin_effect = { OLD = h_palmyrene_republic NEW = h_palmyrene_empire } # regional
+		LR_swap_roman_title_twin_effect = { OLD = h_brittanic_republic NEW = h_brittanic_empire } # regional
+		LR_swap_roman_title_twin_effect = { OLD = h_southern_roman_republic NEW = h_southern_roman_empire } # regional
 	}
 	else_if = {
-		limit = { has_government = republic_government }
+		limit = { OR = { has_government = republic_government has_government = roman_republic_government } }
 		LR_swap_roman_title_twin_effect = { OLD = e_western_roman_empire NEW = e_western_roman_republic }
 		LR_swap_roman_title_twin_effect = { OLD = e_eastern_roman_empire NEW = e_eastern_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = e_gallic_empire NEW = e_gallic_republic } # regional
+		LR_swap_roman_title_twin_effect = { OLD = e_palmyrene_empire NEW = e_palmyrene_republic } # regional
+		LR_swap_roman_title_twin_effect = { OLD = e_brittanic_empire NEW = e_brittanic_republic } # regional
+		LR_swap_roman_title_twin_effect = { OLD = e_southern_roman_empire NEW = e_southern_roman_republic } # regional
 		LR_swap_roman_title_twin_effect = { OLD = h_western_roman_empire NEW = h_western_roman_republic }
 		LR_swap_roman_title_twin_effect = { OLD = h_eastern_roman_empire NEW = h_eastern_roman_republic }
 		LR_swap_roman_title_twin_effect = { OLD = h_roman_empire NEW = h_roman_republic }
+		LR_swap_roman_title_twin_effect = { OLD = h_gallic_empire NEW = h_gallic_republic } # regional
+		LR_swap_roman_title_twin_effect = { OLD = h_palmyrene_empire NEW = h_palmyrene_republic } # regional
+		LR_swap_roman_title_twin_effect = { OLD = h_brittanic_empire NEW = h_brittanic_republic } # regional
+		LR_swap_roman_title_twin_effect = { OLD = h_southern_roman_empire NEW = h_southern_roman_republic } # regional
 	}
 }
 
@@ -92,6 +108,18 @@ LR_transfer_roman_title_twin_effect = {
 		if = {
 			limit = { title:$OLD$ = { has_variable = refounded_praetorian_guard } }
 			title:$NEW$ = { set_variable = refounded_praetorian_guard }
+		}
+		if = { # LR 2026-11-25: the Imperial Court (LR_roman_imperial_court_effects.txt)
+			limit = { title:$OLD$ = { has_variable = LR_imperial_court } }
+			title:$NEW$ = { set_variable = LR_imperial_court }
+		}
+		if = { # LR 2026-11-25 regional republics (tools/regional_republics/build_regional_republics.py): the regional Senate's line
+			limit = { title:$OLD$ = { has_variable = LR_regional_senate } }
+			title:$NEW$ = { set_variable = { name = LR_regional_senate value = title:$OLD$.var:LR_regional_senate } }
+		}
+		if = { # LR 2026-11-25 Reconvene the Senate (tools/roman_senate/build_roman_senate.py)
+			limit = { title:$OLD$ = { has_variable = LR_roman_senate } }
+			title:$NEW$ = { set_variable = LR_roman_senate }
 		}
 
 		# De jure: NEW takes OLD's place above and below

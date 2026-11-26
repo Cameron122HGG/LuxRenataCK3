@@ -1,0 +1,73 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+# 2026-11-24 (user): debug decision to make a Caesar (debug mode only).
+
+LR_debug_make_caesar_decision = {
+	decision_group_type = debug
+	picture = { reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds" }
+	desc = LR_debug_make_caesar_decision_desc
+	selection_tooltip = LR_debug_make_caesar_decision_desc
+	confirm_text = LR_debug_make_caesar_decision_confirm
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+	}
+	effect = {
+		custom_tooltip = LR_debug_make_caesar_decision_desc
+		trigger_event = LR_caesar.0090
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+# 2026-11-24 (user): debug decision to start a Tetrarchy
+LR_debug_start_tetrarchy_decision = {
+	decision_group_type = debug
+	picture = { reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds" }
+	desc = LR_debug_start_tetrarchy_decision_desc
+	selection_tooltip = LR_debug_start_tetrarchy_decision_desc
+	confirm_text = LR_debug_start_tetrarchy_decision_confirm
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { exists = title:h_western_roman_empire.holder }
+		NOT = { exists = title:h_eastern_roman_empire.holder }
+	}
+	effect = {
+		custom_tooltip = LR_debug_start_tetrarchy_decision_desc
+		if = {
+			limit = { NOT = { has_title = title:h_roman_empire } }
+			hidden_effect = {
+				title:h_roman_empire.holder ?= { destroy_title = title:h_roman_empire }
+				LR_restore_roman_empire_effect = yes
+			}
+		}
+		if = { limit = { has_title = title:h_roman_empire } set_primary_title_to = title:h_roman_empire }
+		trigger_event = LR_caesar.0091
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+# 2026-11-24 (user): debug decision to raise college cohesion (+25 a use, so each level can be reached in turn)
+LR_debug_raise_college_cohesion_decision = {
+	decision_group_type = debug
+	picture = { reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds" }
+	desc = LR_debug_raise_college_cohesion_decision_desc
+	selection_tooltip = LR_debug_raise_college_cohesion_decision_desc
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		exists = primary_title.title_confederation
+	}
+	effect = {
+		custom_tooltip = LR_debug_raise_college_cohesion_decision_desc
+		primary_title.title_confederation = { change_cohesion = 25 }
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

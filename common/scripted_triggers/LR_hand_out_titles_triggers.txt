@@ -1,0 +1,26 @@
+﻿# LR 2026-11-24: hand out titles (LR_hand_out_titles_effects.txt). Title scope; root = the liege.
+# A held title below the liege's highest tier, not the capital county or the capital's de jure duchy, not a landless
+# type title (mercenaries, holy orders, adventurers, merchant companies...).
+LR_ho_can_hand_out_title_trigger = {
+	holder = root
+	is_landless_type_title = no
+	trigger_if = {
+		limit = { tier = tier_county }
+		NOT = { this = root.capital_county }
+		root.highest_held_title_tier > tier_county
+	}
+	trigger_else_if = {
+		limit = { tier = tier_duchy }
+		NOT = { this = root.capital_county.duchy }
+		root.highest_held_title_tier > tier_duchy
+	}
+	trigger_else_if = {
+		limit = { tier = tier_kingdom }
+		root.highest_held_title_tier > tier_kingdom
+	}
+	trigger_else_if = {
+		limit = { tier = tier_empire }
+		root.highest_held_title_tier > tier_empire
+	}
+	trigger_else = { always = no }
+}

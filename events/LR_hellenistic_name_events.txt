@@ -1,0 +1,87 @@
+﻿# LR 2026-11-24 (user): "add an event to change the name of the title like china gets".
+# Like the Chinese dynastic cycle's naming event (tgp_dynastic_cycle.9001), a new house that gains Alexander's hegemony
+# (h_hellenistic_empire) names it: one of the Greek names below, or any name typed in. Fired from
+# common/on_action/LR_hellenistic_name_on_actions.txt; the title remembers the house that named it
+# (title variable LR_hellenistic_named_house), so it asks again only when another house takes the throne.
+
+namespace = LR_hellenistic_name
+
+LR_hellenistic_name.0001 = {
+	type = character_event
+	title = LR_hellenistic_name.0001.t
+	desc = LR_hellenistic_name.0001.desc
+	theme = realm
+
+	left_portrait = {
+		character = root
+		animation = emperor
+	}
+
+	trigger = {
+		is_alive = yes
+		has_title = title:h_hellenistic_empire
+	}
+
+	# NAMING WIDGET (as in tgp_dynastic_cycle.9001)
+	widget = {
+		gui = "event_window_widget_enter_text"
+		container = "dynamic_birth_name"
+		controller = {
+			type = text
+			data = {
+				key = new_realm_title_name
+				default = {
+					localization_key = LR_hellenistic_name_alexandrou
+					trigger = { always = yes }
+				}
+				default = {
+					localization_key = LR_hellenistic_name_makedonon
+					trigger = { always = yes }
+				}
+				default = {
+					localization_key = LR_hellenistic_name_hellenon
+					trigger = { always = yes }
+				}
+				default = {
+					localization_key = LR_hellenistic_name_oikoumene
+					trigger = { always = yes }
+				}
+				default = {
+					localization_key = LR_hellenistic_name_kosmokratoria
+					trigger = { always = yes }
+				}
+			}
+		}
+	}
+
+	option = { # Proclaim the name in the box
+		name = LR_hellenistic_name.0001.a
+		if = {
+			limit = { is_ai = no }
+			title:h_hellenistic_empire = { set_title_name_dynamic = LR_hellenistic_name_entered_text }
+		}
+		else = {
+			title:h_hellenistic_empire = {
+				random_list = {
+					40 = { set_title_name = LR_hellenistic_name_alexandrou }
+					20 = { set_title_name = LR_hellenistic_name_makedonon }
+					20 = { set_title_name = LR_hellenistic_name_hellenon }
+					10 = { set_title_name = LR_hellenistic_name_oikoumene }
+					10 = { set_title_name = LR_hellenistic_name_kosmokratoria }
+				}
+			}
+		}
+		add_prestige = 250
+	}
+
+	option = { # Keep the name the hegemony already bears
+		name = LR_hellenistic_name.0001.b
+		ai_chance = { base = 0 }
+	}
+
+	after = {
+		title:h_hellenistic_empire = {
+			set_variable = { name = LR_hellenistic_named_house value = root.house }
+		}
+	}
+}

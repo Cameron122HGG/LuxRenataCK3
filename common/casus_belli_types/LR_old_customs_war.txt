@@ -1,0 +1,79 @@
+﻿# LR 2026-11-26 Restore Our Own Customs (tools/old_customs/build_old_customs.py)
+# Script-only (civil_war group): vassals of the old customs rise when their independent liege restores his own.
+LR_old_customs_war = {
+	icon = dissolution_war
+	group = civil_war
+	ai_only_against_liege = yes
+	allow_hostages = no
+	allowed_for_character = { always = yes }
+	allowed_against_character = {
+		scope:attacker = { liege = scope:defender }
+	}
+	target_de_jure_regions_above = yes
+	valid_to_start = { always = yes }
+	should_invalidate = {
+		scope:attacker = {
+			OR = {
+				NOT = { any_liege_or_above = { this = scope:defender } }
+				is_landed = no
+			}
+		}
+		scope:defender = { NOT = { has_variable = LR_old_customs_gov } }
+	}
+	cost = {}
+	on_declaration = {
+		# no on_declared_war: it expects scope:target_character (vanilla refused_liege_demand_war leaves it out too)
+	}
+
+	on_victory_desc = { desc = LR_old_customs_war_victory_desc }
+	on_victory = {
+		on_victory_effect = yes
+		scope:defender = {
+			LR_restore_old_customs_government_effect = yes
+			add_prestige = -300
+		}
+		scope:attacker = { add_prestige_experience = medium_prestige_value }
+		hidden_effect = {
+			scope:attacker = {
+				add_truce_both_ways = { character = scope:defender days = 1825 war = root.war result = victory }
+			}
+		}
+	}
+
+	on_white_peace_desc = { desc = LR_old_customs_war_white_peace_desc }
+	on_white_peace = {
+		on_white_peace_effect = yes
+		scope:defender = { remove_variable = LR_old_customs_gov }
+	}
+
+	on_defeat_desc = { desc = LR_old_customs_war_defeat_desc }
+	on_defeat = {
+		on_defeat_effect = yes
+		scope:defender = {
+			remove_variable = LR_old_customs_gov
+			add_dread = medium_dread_gain
+		}
+		scope:attacker = {
+			remove_opinion = { target = scope:defender modifier = LR_abandoned_old_customs_opinion }
+		}
+	}
+
+	on_invalidated_desc = msg_invalidate_war_title
+	on_invalidated = {}
+	check_attacker_inheritance_validity = no
+	transfer_behavior = invalidate
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+	war_name = "LR_OLD_CUSTOMS_WAR_NAME"
+	war_name_base = "LR_OLD_CUSTOMS_WAR_NAME_BASE"
+	cb_name = "LR_OLD_CUSTOMS_CB_NAME"
+	interface_priority = 80
+	use_de_jure_wargoal_only = yes
+	attacker_wargoal_percentage = 0.8
+	max_attacker_score_from_battles = 100
+	max_defender_score_from_battles = 50
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+}

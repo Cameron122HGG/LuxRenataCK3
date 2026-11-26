@@ -10906,15 +10906,18 @@ MA_lysa_gora2 = {
 	}
 	show_disabled = yes
 	is_enabled = {
-		OR = {
-			christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder }
-			AND = {
-				scope:holder.faith.religion = {
-					is_in_family = rf_pagan
-				}
-				NOT = {
-					scope:holder.rite = {
-						rite_has_parameter = unreformed
+		custom_tooltip = { # LR 2026-11-25: tiger tip, OR too complex for a failures-only tooltip
+			text = LR_MA_christian_or_reformed_pagan_tt
+			OR = {
+				christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder }
+				AND = {
+					scope:holder.faith.religion = {
+						is_in_family = rf_pagan
+					}
+					NOT = {
+						scope:holder.rite = {
+							rite_has_parameter = unreformed
+						}
 					}
 				}
 			}

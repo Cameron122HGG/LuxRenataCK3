@@ -17,7 +17,15 @@ LR_roman_title_names_refresh_effect = {
 	if = {
 		limit = { exists = holder }
 		LR_roman_title_names_pick_style_effect = yes
-		if = {
+		if = { # LR 2026-11-25: a Roman half that is now the Imperial Court is named by its residence (LR_roman_imperial_court_effects.txt)
+			limit = { has_variable = LR_imperial_court }
+			LR_roman_court_name_effect = yes
+		}
+		else_if = { # LR 2026-11-25 Reconvene the Senate (tools/roman_senate/build_roman_senate.py): a Republic half that is the Senate is named by its seat
+			limit = { has_variable = LR_roman_senate }
+			LR_roman_senate_name_effect = yes
+		}
+		else_if = {
 			limit = {
 				OR = {
 					NOT = { has_variable = LR_roman_title_name }
@@ -773,6 +781,126 @@ LR_roman_title_names_apply_effect = {
 		else_if = {
 			limit = { var:LR_rtn_pick = flag:greek }
 			set_title_name = LR_rtn_h_palmyrene_empire_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:e_gallic_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_e_gallic_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_e_gallic_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_e_gallic_republic_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:h_gallic_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_h_gallic_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_h_gallic_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_h_gallic_republic_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:e_palmyrene_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_e_palmyrene_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_e_palmyrene_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_e_palmyrene_republic_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:h_palmyrene_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_h_palmyrene_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_h_palmyrene_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_h_palmyrene_republic_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:e_brittanic_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_e_brittanic_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_e_brittanic_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_e_brittanic_republic_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:h_brittanic_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_h_brittanic_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_h_brittanic_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_h_brittanic_republic_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:e_southern_roman_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_e_southern_roman_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_e_southern_roman_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_e_southern_roman_republic_greek
+		}
+	}
+	else_if = {
+		limit = { this = title:h_southern_roman_republic }
+		if = {
+			limit = { var:LR_rtn_pick = flag:foreign }
+			set_title_name = LR_rtn_h_southern_roman_republic_foreign
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:latin }
+			set_title_name = LR_rtn_h_southern_roman_republic_latin
+		}
+		else_if = {
+			limit = { var:LR_rtn_pick = flag:greek }
+			set_title_name = LR_rtn_h_southern_roman_republic_greek
 		}
 	}
 }

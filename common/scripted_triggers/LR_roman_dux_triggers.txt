@@ -69,7 +69,7 @@ LR_can_be_roman_dux_trigger = {
 		is_ruler = no
 		AND = {
 			OR = {
-				government_has_flag = government_is_roman_autocratic
+				government_has_flag = government_is_roman_imperial_rank
 				government_has_flag = government_is_principate # LR 2026-11-19: a Princeps' legates
 			}
 			highest_held_title_tier <= tier_duchy
@@ -79,7 +79,7 @@ LR_can_be_roman_dux_trigger = {
 
 # Is the diocese $DIOCESE$ held within this emperor's realm, and its command not yet filled?
 LR_roman_dux_command_available_trigger = {
-	exists = title:$DIOCESE$.holder
+	title:$DIOCESE$ = { is_title_created = yes }
 	title:$DIOCESE$.holder.top_liege = root
-	NOT = { exists = title:$TITLE$.holder }
+	NOT = { title:$TITLE$ = { is_title_created = yes } }
 }

@@ -1,0 +1,110 @@
+﻿# LR Caesars (tools/cleave_caesars.py, 2026-11-24). GENERATED.
+# 2026-11-24 (LR_imperial_college_proposal.md): one title confederation per Roman college. Leading title: the
+# senior Augustus's hegemony. Members: his Caesars' commands (Caesars are independent) and, after Two Augusti /
+# Tetrarchy, the other half's hegemony. Defensive wars only (user).
+
+lr_imperial_college = {
+	diplomatic_icon_frame_index = 6
+	confederation_base = title
+
+	is_valid_confederation = {
+		any_confederation_member = { count > 1 }
+	}
+
+	is_valid_member_title = {
+		scope:title = { tier >= tier_empire }
+	}
+	is_valid_member_character = {
+		scope:character = {
+			OR = { has_trait = caesar LR_caesar_is_augustus_trigger = yes has_character_flag = LR_proconsul_flag LR_proconsul_granter_trigger = yes }
+		}
+	}
+
+	# Concordia (20) and up: members defend each other (defensive only, user 2026-11-24)
+	member_would_join_war = {
+		cohesion >= 20
+		scope:ally = { is_at_war = no }
+	}
+
+	cohesion_level = {
+		cohesion_threshold = 20
+		parameters = {
+			lr_college_concordia = yes
+		}
+		leading_title_holder = {
+			monthly_legitimacy_add = 0.1
+		}
+		member_title_holder = {
+			monthly_prestige_gain_mult = 0.05
+		}
+		member_title_landed_vassal = {
+			opinion_of_liege = 2
+		}
+	}
+	cohesion_level = {
+		cohesion_threshold = 45
+		parameters = {
+			lr_college_concordia = yes
+			lr_college_tetrarchic_succession = yes
+		}
+		leading_title_holder = {
+			monthly_legitimacy_add = 0.2
+		}
+		member_title_holder = {
+			monthly_prestige_gain_mult = 0.05
+			levy_size = 0.1
+			men_at_arms_maintenance = -0.05
+		}
+		member_title_landed_vassal = {
+			opinion_of_liege = 5
+		}
+	}
+	cohesion_level = {
+		cohesion_threshold = 70
+		parameters = {
+			lr_college_concordia = yes
+			lr_college_tetrarchic_succession = yes
+			lr_college_unitas = yes
+		}
+		leading_title_holder = {
+			monthly_legitimacy_add = 0.3
+			monthly_prestige_gain_mult = 0.1
+		}
+		member_title_holder = {
+			monthly_prestige_gain_mult = 0.1
+			levy_size = 0.1
+			men_at_arms_maintenance = -0.05
+			domain_tax_mult = 0.05
+		}
+		member_title_landed_vassal = {
+			opinion_of_liege = 5
+		}
+	}
+	cohesion_level = {
+		cohesion_threshold = 95
+		parameters = {
+			lr_college_concordia = yes
+			lr_college_tetrarchic_succession = yes
+			lr_college_unitas = yes
+			lr_college_no_usurpation = yes
+		}
+		leading_title_holder = {
+			monthly_legitimacy_add = 0.5
+			monthly_prestige_gain_mult = 0.15
+			vassal_opinion = 5
+		}
+		member_title_holder = {
+			monthly_prestige_gain_mult = 0.1
+			levy_size = 0.15
+			men_at_arms_maintenance = -0.1
+			domain_tax_mult = 0.1
+			vassal_opinion = 5
+		}
+		member_title_landed_vassal = {
+			opinion_of_liege = 10
+		}
+	}
+
+	cohesion_base_change_monthly = { value = LR_college_cohesion_monthly_value }
+	cohesion_soft_cap = { value = 60 }
+}

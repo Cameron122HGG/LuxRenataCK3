@@ -4,6 +4,7 @@
 # Root is the restoring ruler. Usage: LR_restore_roman_administration_effect = { OLD = e_spqr NEW = e_western_roman_empire COUNT = wre }
 #   OLD: the decayed empire title, transferred to NEW when held (an already restored ruler just sets up the dioceses)
 #   COUNT: suffix of the global num_of_provinces_restored_<COUNT> counter (wre / ere)
+#   HALF: western / eastern (LR 2026-11-25: the hegemony h_<HALF>_roman_empire is founded with NEW as its shadow)
 LR_restore_roman_administration_effect = {
 	# The title first, so the restored title is held when the government changes
 	if = {
@@ -17,35 +18,35 @@ LR_restore_roman_administration_effect = {
 	# All Under Heaven; with Roads to Power alone, Roman (the Roads-to-Power-only tier, LR 2026-11-19 user); without Roads to
 	# Power, Classical. A ruler already on the Dominate keeps it.
 	if = {
-		limit = { LR_has_dynastic_governments_dlc_trigger = yes }
+		limit = { LR_gradus_test_LR_has_dynastic_governments_dlc_trigger = yes }
 		if = {
 			limit = {
 				NOR = {
-					has_government = roman_autocratic_government
+					has_government = roman_imperial_government
 					has_government = roman_dominate_government
 				}
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 		}
 		every_vassal_or_below = {
 			custom = LR_proclaim_roman_empire_vassals_custom
 			limit = {
 				highest_held_title_tier >= tier_duchy
-				government_has_flag = government_is_classical_group
+				LR_in_classical_group_trigger = yes
 				NOT = { government_has_flag = government_is_republic }
 				NOR = {
-					has_government = roman_autocratic_government
+					has_government = roman_imperial_government
 					has_government = roman_dominate_government
 				}
 			}
-			change_government = roman_autocratic_government
+			change_government = roman_imperial_government
 		}
 	}
 	else_if = { # LR 2026-11-19: Roads to Power without All Under Heaven (great vassals follow their liege's administration)
-		limit = { LR_has_rtp_governments_dlc_trigger = yes }
+		limit = { LR_gradus_test_LR_has_rtp_governments_dlc_trigger = yes }
 		if = {
-			limit = { NOT = { has_government = roman_rtp_government } }
-			change_government = roman_rtp_government
+			limit = { NOT = { has_government = rtp_autocratic_government } }
+			change_government = rtp_autocratic_government
 		}
 	}
 	else = {
@@ -64,7 +65,7 @@ LR_restore_roman_administration_effect = {
 	}
 	every_vassal = {
 		custom = LR_proclaim_roman_empire_opinion_custom
-		limit = { government_has_flag = government_is_classical_group }
+		limit = { LR_in_classical_group_trigger = yes }
 		add_opinion = {
 			target = root
 			modifier = LR_proclaimed_roman_empire_opinion
@@ -79,6 +80,12 @@ LR_restore_roman_administration_effect = {
 	hidden_effect = {
 		LR_count_existing_dioceses_$COUNT$_effect = yes
 	}
+
+	# LR 2026-11-25 (user): straight to the hegemony. NEW stays beside it as its shadow, the empire tier over the
+	# half's kingdoms until their prefectures are restored (LR_roman_imperial_court_effects.txt)
+	custom_tooltip = LR_restore_roman_administration_hegemony_tt
+	LR_roman_court_claim_shadow_effect = { HALF = $HALF$ } # a hegemon without the half (936 East) gets it
+	LR_found_roman_hegemony_with_shadow_effect = { HALF = $HALF$ COUNT = $COUNT$ }
 }
 
 # Restore the Hegemony of the Romans of the West (Africa and Mauretania are restored together, so they count once)

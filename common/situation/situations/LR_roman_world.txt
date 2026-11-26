@@ -4,7 +4,7 @@
 # Anarchy and Pax Romana are set by LR_rw_update_effect; the rest move on catalyst points.
 LR_roman_world = {
 	is_unique = yes
-	gui_window_name = "window_LR_world_situation" # LR: vanilla window plus the Greek East meter
+	gui_window_name = "window_LR_imperium" # LR 2026-11-25 (user): the big Imperium Romanum window (Roman World tab); was window_LR_world_situation
 	gui_participation_window_name = "window_situation_participation"
 	illustration = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
 	situation_group_type = major
@@ -90,10 +90,7 @@ LR_roman_world = {
 
 			on_start = {
 				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						limit = { is_ai = no }
-						trigger_event = LR_world_situation.0001
-					}
+					every_player = { trigger_event = { id = LR_world_great.0001 days = 1 } } # LR 2026-11-25: great event (was LR_world_situation.0001)
 				}
 			}
 			future_phases = {
@@ -143,10 +140,7 @@ LR_roman_world = {
 
 			on_start = {
 				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						limit = { is_ai = no }
-						trigger_event = LR_world_situation.0002
-					}
+					every_player = { trigger_event = { id = LR_world_great.0002 days = 1 } } # LR 2026-11-25: great event (was LR_world_situation.0002)
 				}
 			}
 			future_phases = {
@@ -193,19 +187,17 @@ LR_roman_world = {
 
 			on_start = {
 				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						limit = { is_ai = no }
-						trigger_event = LR_world_situation.0003
-					}
+					every_player = { trigger_event = { id = LR_world_great.0003 days = 1 } } # LR 2026-11-25: great event (was LR_world_situation.0003)
 				}
-				# The East's Anarchy is the old Eastern Anarchy situation, now run by the Roman World (user 2026-11-06)
-				if = {
-					limit = {
-						scope:situation_sub_region = { situation_sub_region_has_county = title:c_byzantion }
-						NOT = { exists = situation:LR_eastern_anarchy }
-					}
-					LR_start_eastern_anarchy_effect = yes
-				}
+				# LR 2026-11-25 (user): "Turn it off fully". The Eastern Anarchy situation is no longer started; the East's
+				# Anarchy phase keeps its own effects. Was (user 2026-11-06): the Roman World started it here.
+				# if = {
+				# 	limit = {
+				# 		scope:situation_sub_region = { situation_sub_region_has_county = title:c_byzantion }
+				# 		NOT = { exists = situation:LR_eastern_anarchy }
+				# 	}
+				# 	LR_start_eastern_anarchy_effect = yes
+				# }
 			}
 			on_end = {
 				if = {
@@ -258,10 +250,7 @@ LR_roman_world = {
 
 			on_start = {
 				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						limit = { is_ai = no }
-						trigger_event = LR_world_situation.0004
-					}
+					every_player = { trigger_event = { id = LR_world_great.0004 days = 1 } } # LR 2026-11-25: great event (was LR_world_situation.0004)
 				}
 			}
 			future_phases = {
@@ -316,10 +305,7 @@ LR_roman_world = {
 
 			on_start = {
 				scope:situation_sub_region = {
-					every_situation_sub_region_participant = {
-						limit = { is_ai = no }
-						trigger_event = LR_world_situation.0005
-					}
+					every_player = { trigger_event = { id = LR_world_great.0005 days = 1 } } # LR 2026-11-25: great event (was LR_world_situation.0005)
 				}
 			}
 			future_phases = {

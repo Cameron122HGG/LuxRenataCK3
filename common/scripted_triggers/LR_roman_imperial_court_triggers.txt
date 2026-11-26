@@ -1,0 +1,253 @@
+﻿# LR Imperial Court (tools/imperial_court/gen_imperial_court.py, 2026-11-25). GENERATED - edit the generator.
+
+# County title: an imperial residence of the western court
+LR_roman_court_residence_western_trigger = {
+	OR = {
+		this = title:c_roma_urbs # Comitatus Urbis
+		this = title:c_lombardia # Comitatus Mediolanensis
+		this = title:c_ravenna # Comitatus Ravennas
+		this = title:c_trier # Comitatus Treverensis
+		this = title:c_arles # Comitatus Arelatensis
+		this = title:c_szerem # Comitatus Sirmiensis
+	}
+}
+
+# Character: holds the western line's title as its Imperial Court
+LR_roman_court_holds_western_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		OR = { this = title:e_western_roman_empire this = title:e_western_roman_republic }
+	}
+}
+
+# County title: an imperial residence of the eastern court
+LR_roman_court_residence_eastern_trigger = {
+	OR = {
+		this = title:c_byzantion # Sacrum Palatium Constantinopolitanum
+		this = title:c_nikomedia # Sacrum Palatium Nicomediense
+		this = title:c_antiocheia # Sacrum Palatium Antiochenum
+		this = title:c_thessalonika # Sacrum Palatium Thessalonicense
+		this = title:c_sredets # Sacrum Palatium Serdicense
+	}
+}
+
+# Character: holds the eastern line's title as its Imperial Court
+LR_roman_court_holds_eastern_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		OR = { this = title:e_eastern_roman_empire this = title:e_eastern_roman_republic }
+	}
+}
+
+# County title: an imperial residence of the gallic court
+LR_roman_court_residence_gallic_trigger = {
+	OR = {
+		this = title:c_lyon # Comitatus Lugdunensis
+		this = title:c_trier # Comitatus Galliarum Treverensis
+		this = title:c_cologne # Comitatus Agrippinensis
+		this = title:c_arles # Comitatus Galliarum Arelatensis
+	}
+}
+
+# Character: holds the gallic line's title as its Imperial Court
+LR_roman_court_holds_gallic_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		OR = { this = title:e_gallic_empire this = title:e_gallic_republic }
+	}
+}
+
+# County title: an imperial residence of the palmyrene court
+LR_roman_court_residence_palmyrene_trigger = {
+	OR = {
+		this = title:c_palmyra # Aula Palmyrena
+		this = title:c_homs # Aula Emesena
+		this = title:c_antiocheia # Aula Antiochena
+		this = title:c_alexandria # Aula Alexandrina
+	}
+}
+
+# Character: holds the palmyrene line's title as its Imperial Court
+LR_roman_court_holds_palmyrene_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		OR = { this = title:e_palmyrene_empire this = title:e_palmyrene_republic }
+	}
+}
+
+# County title: an imperial residence of the brittanic court
+LR_roman_court_residence_brittanic_trigger = {
+	OR = {
+		this = title:c_middlesex # Comitatus Londiniensis
+		this = title:c_north_riding # Comitatus Eboracensis
+		this = title:c_essex # Comitatus Camulodunensis
+	}
+}
+
+# Character: holds the brittanic line's title as its Imperial Court
+LR_roman_court_holds_brittanic_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		OR = { this = title:e_brittanic_empire this = title:e_brittanic_republic }
+	}
+}
+
+# County title: an imperial residence of the southern court
+LR_roman_court_residence_southern_trigger = {
+	OR = {
+		this = title:c_tunis # Comitatus Carthaginiensis
+		this = title:c_tripolitana # Comitatus Lepcitanus
+		this = title:c_constantine # Comitatus Cirtensis
+	}
+}
+
+# Character: holds the southern line's title as its Imperial Court
+LR_roman_court_holds_southern_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		OR = { this = title:e_southern_roman_empire this = title:e_southern_roman_republic }
+	}
+}
+
+# County title: any imperial residence (a Caesar's court)
+LR_roman_court_residence_caesar_trigger = {
+	OR = {
+		this = title:c_roma_urbs
+		this = title:c_lombardia
+		this = title:c_ravenna
+		this = title:c_trier
+		this = title:c_arles
+		this = title:c_szerem
+		this = title:c_byzantion
+		this = title:c_nikomedia
+		this = title:c_antiocheia
+		this = title:c_thessalonika
+		this = title:c_sredets
+		this = title:c_lyon
+		this = title:c_cologne
+		this = title:c_palmyra
+		this = title:c_homs
+		this = title:c_alexandria
+		this = title:c_middlesex
+		this = title:c_north_riding
+		this = title:c_essex
+		this = title:c_tunis
+		this = title:c_tripolitana
+		this = title:c_constantine
+	}
+}
+
+# Character: holds a Caesar's dynamic Imperial Court
+LR_roman_court_holds_caesar_trigger = {
+	any_held_title = {
+		has_variable = LR_imperial_court
+		has_variable = LR_caesar_court_title
+	}
+}
+
+# County title (root = the character): a residence of a court root holds
+LR_roman_court_residence_for_root_trigger = {
+	OR = {
+		AND = {
+			LR_roman_court_residence_western_trigger = yes
+			root = { LR_roman_court_holds_western_trigger = yes }
+		}
+		AND = {
+			LR_roman_court_residence_eastern_trigger = yes
+			root = { LR_roman_court_holds_eastern_trigger = yes }
+		}
+		AND = {
+			LR_roman_court_residence_gallic_trigger = yes
+			root = { LR_roman_court_holds_gallic_trigger = yes }
+		}
+		AND = {
+			LR_roman_court_residence_palmyrene_trigger = yes
+			root = { LR_roman_court_holds_palmyrene_trigger = yes }
+		}
+		AND = {
+			LR_roman_court_residence_brittanic_trigger = yes
+			root = { LR_roman_court_holds_brittanic_trigger = yes }
+		}
+		AND = {
+			LR_roman_court_residence_southern_trigger = yes
+			root = { LR_roman_court_holds_southern_trigger = yes }
+		}
+		AND = {
+			LR_roman_court_residence_caesar_trigger = yes
+			root = { LR_roman_court_holds_caesar_trigger = yes }
+		}
+	}
+}
+
+# Character: their capital is a residence of a court they hold
+LR_roman_court_at_residence_trigger = {
+	capital_county ?= { LR_roman_court_residence_for_root_trigger = yes }
+}
+
+# Character: they hold a residence of their court that is not their capital
+LR_roman_court_can_move_trigger = {
+	any_held_title = {
+		tier = tier_county
+		NOT = { this = root.capital_county }
+		LR_roman_court_residence_for_root_trigger = yes
+	}
+}
+
+# Title (a de jure liege): the shadow never takes kingdoms from it
+LR_roman_shadow_keeps_liege_trigger = {
+	OR = {
+		exists = holder # a held empire keeps its kingdoms
+		LR_is_roman_prefecture_or_exarchate_title_trigger = yes
+		this = title:e_brittanic_empire
+		this = title:e_brittanic_republic
+		this = title:e_eastern_roman_empire
+		this = title:e_eastern_roman_republic
+		this = title:e_gallic_empire
+		this = title:e_gallic_republic
+		this = title:e_magisterium_africa
+		this = title:e_magisterium_italia
+		this = title:e_palmyrene_empire
+		this = title:e_palmyrene_republic
+		this = title:e_southern_roman_empire
+		this = title:e_southern_roman_republic
+		this = title:e_western_roman_empire
+		this = title:e_western_roman_republic
+	}
+}
+
+# Character: holds Rome, a Roman half's hegemony or a Republic twin (the regional sort stays out of their way)
+LR_holds_roman_hegemony_trigger = {
+	OR = { has_title = title:h_roman_empire has_title = title:h_roman_republic has_title = title:h_western_roman_empire has_title = title:h_western_roman_republic has_title = title:h_eastern_roman_empire has_title = title:h_eastern_roman_republic }
+}
+
+# Title (a Roman line's title, var:LR_rtn_pick set by LR_roman_title_names_pick_style_effect)
+LR_roman_court_style_latin_trigger = {
+	OR = {
+		var:LR_rtn_pick = flag:latin
+		var:LR_rtn_pick = flag:restored_latin
+		var:LR_rtn_pick = flag:western_rome_latin
+		var:LR_rtn_pick = flag:eastern_rome_latin
+		var:LR_rtn_pick = flag:res_publica
+	}
+}
+
+LR_roman_court_style_greek_trigger = {
+	OR = {
+		var:LR_rtn_pick = flag:greek
+		var:LR_rtn_pick = flag:restored_greek
+		var:LR_rtn_pick = flag:rhomaion
+	}
+}
+
+# The new prefectures' dioceses (a prefecture counts when all its dioceses are held in your realm)
+LR_roman_restoration_prefecture_britannia_trigger = {
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = britannia }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = caledonia }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = hibernia }
+}
+
+LR_roman_restoration_prefecture_africa_trigger = {
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = africa }
+	LR_roman_restoration_diocese_held_trigger = { DIOCESE = mauretania }
+}
+

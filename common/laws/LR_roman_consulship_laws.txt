@@ -1,0 +1,68 @@
+﻿# LR 2026-11-25 Roman consulship diarchy (tools/roman_consulship/build_consulship.py)
+LR_consulship_sole = {
+	law_group_type = LR_roman_consulship
+	index = 0
+	can_have = {
+		has_government = roman_republic_government
+	}
+	can_pass = {
+		gdp_can_pass_republic_law_trigger = yes
+	}
+	pass_cost = {
+		prestige = total_republic_law_prestige_cost
+		treasury_or_gold = total_republic_law_gold_cost
+	}
+	on_pass = {
+		gdp_consume_republic_assembly_preparation_effect = yes
+		gdp_spend_pledged_law_approvers_effect = yes
+	}
+	requires_approve = { gdp_requires_assembly_approval_trigger = yes }
+	ai_approval = {
+		if = {
+			limit = { scope:proposer ?= root }
+			value = ai_law_approval_self_proposer_value
+		}
+		else = {
+			value = 0
+		}
+	}
+	on_after_pass = {
+		LR_end_consulship_effect = yes
+	}
+}
+
+LR_consulship_dual = {
+	law_group_type = LR_roman_consulship
+	index = 1
+	flag = LR_two_consuls
+	can_have = {
+		has_government = roman_republic_government
+	}
+	modifier = {
+		vassal_opinion = 5
+	}
+	can_pass = {
+		gdp_can_pass_republic_law_trigger = yes
+	}
+	pass_cost = {
+		prestige = total_republic_law_prestige_cost
+		treasury_or_gold = total_republic_law_gold_cost
+	}
+	on_pass = {
+		gdp_consume_republic_assembly_preparation_effect = yes
+		gdp_spend_pledged_law_approvers_effect = yes
+	}
+	requires_approve = { gdp_requires_assembly_approval_trigger = yes }
+	ai_approval = {
+		if = {
+			limit = { scope:proposer ?= root }
+			value = ai_law_approval_self_proposer_value
+		}
+		else = {
+			value = 0
+		}
+	}
+	on_after_pass = {
+		LR_appoint_co_consul_effect = yes
+	}
+}

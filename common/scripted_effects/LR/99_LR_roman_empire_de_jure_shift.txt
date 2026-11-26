@@ -37,40 +37,14 @@
 	hidden_effect = { 
 		legend_seed_great_deed_dynasty_effect = yes 
 		
-		# Creating the Hegemony of Western Roman Empire
-		create_title_and_vassal_change = {
-			type = created
-			save_scope_as = change
-			add_claim_on_loss = no
-		}
-		title:h_western_roman_empire = {
-			change_title_holder = {
-				holder = root
-				change = scope:change
-			}
-			if = { # LR 2026-11-19: a Princeps holds the Republic twin
-				limit = { root = { has_title = title:e_western_roman_republic } }
-				copy_title_history = title:e_western_roman_republic
-			}
-			else = {
-				copy_title_history = title:e_western_roman_empire
-			}
-		}
-		resolve_title_and_vassal_change = scope:change
-
-		every_held_title = { # The old empire titles go; prefectures, exarchates and landless offices stay (LR 2026-11-06)
-			limit = {
-				tier = tier_empire
-				is_landless_type_title = no
-				LR_is_roman_prefecture_or_exarchate_title_trigger = no
-			}
-			root = { destroy_title = prev }
-		}
-
-		# LR 2026-11-06 (user): only restored dioceses move, into the three Theodosian prefectures (Italia, Gallia,
-		# Illyricum); warlord kingdoms stay where they are until their diocese is restored
+		# LR 2026-11-25 (user): Reorganize our Imperium. The hegemony now comes with Restore the Roman Administration;
+		# this step keeps e_western_roman_empire (no longer destroyed) and makes it the Imperial Court. A ruler without
+		# the half or the hegemony (e.g. a Republic) gets them here. Old code: backups/imperial_court_20261125.
+		LR_roman_court_claim_shadow_effect = { HALF = western }
+		LR_found_roman_hegemony_with_shadow_effect = { HALF = western COUNT = wre }
 		LR_sort_existing_western_dioceses_effect = yes
 	}
+	LR_roman_court_establish_effect = { HALF = western }
 
 	every_vassal = {
 		custom = custom.every_admin_vassal
@@ -213,8 +187,7 @@ restore_roman_provinces_viennensis_decision_effect = {
 	}
 
 	#Sort the Dioceses
-		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
-		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:h_roman_empire }
 		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
@@ -226,6 +199,10 @@ restore_roman_provinces_viennensis_decision_effect = {
 		limit = { has_title = title:e_western_roman_empire }
 		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	else = {
+		#title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+		title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	}
 
 	hidden_effect = {
@@ -310,6 +287,9 @@ restore_roman_provinces_viennensis_decision_effect = {
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_viennensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = viennensis }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_viennensis }
 }
 
@@ -333,8 +313,7 @@ restore_roman_provinces_lugdunensis_decision_effect = {
 	}
 
 	#Sort the Dioceses
-		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
-		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:h_roman_empire }
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
@@ -346,6 +325,10 @@ restore_roman_provinces_lugdunensis_decision_effect = {
 		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_western_roman_empire }
 		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	else = {
+		title:k_diocese_lugdunensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+		#title:k_diocese_viennensis = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	}
 
 	hidden_effect = {
@@ -428,6 +411,9 @@ restore_roman_provinces_lugdunensis_decision_effect = {
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_lugdunensis PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = lugdunensis }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_lugdunensis }
 }
 
@@ -461,8 +447,7 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 	resolve_title_and_vassal_change = scope:change
 
 	#Sort the Dioceses
-		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
-		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:h_roman_empire }
 		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
@@ -474,6 +459,10 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_africa = { set_de_jure_liege_title = title:e_western_roman_empire }
 		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	else = {
+		title:k_diocese_africa = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
+		title:k_diocese_mauretania = { set_de_jure_liege_title = title:e_praetorian_prefecture_italia }
 	}
 
 
@@ -534,7 +523,13 @@ restore_roman_provinces_africa_mauretania_decision_effect = {
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_mauretania PREFECTURE = e_praetorian_prefecture_italia HALF = h_western_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = africa }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_africa }
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = mauretania }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_mauretania }
 }
 
@@ -554,10 +549,13 @@ restore_roman_provinces_syria_decision_effect  = {
 	resolve_title_and_vassal_change = scope:change
 
 	#Sort the Diocese
-	title:k_diocese_syria = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:e_eastern_roman_empire }
 		title:k_diocese_syria = { set_de_jure_liege_title = title:e_eastern_roman_empire }
+	}
+	else = {
+		title:k_diocese_syria = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
 	}
 
 
@@ -597,6 +595,9 @@ restore_roman_provinces_syria_decision_effect  = {
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_syria PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = syria }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_syria }
 }
 
@@ -616,10 +617,13 @@ restore_roman_provinces_palestine_decision_effect  = {
 	resolve_title_and_vassal_change = scope:change
 
 	#Sort the Diocese
-	title:k_diocese_palestine = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:e_eastern_roman_empire }
 		title:k_diocese_palestine = { set_de_jure_liege_title = title:e_eastern_roman_empire }
+	}
+	else = {
+		title:k_diocese_palestine = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
 	}
 
 	hidden_effect = {
@@ -661,6 +665,9 @@ restore_roman_provinces_palestine_decision_effect  = {
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_palestine PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = palestine }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_palestine }
 }
 
@@ -680,10 +687,13 @@ restore_roman_provinces_aegyptus_decision_effect  = {
 	resolve_title_and_vassal_change = scope:change
 
 	#Sort the Dioceses
-	title:k_diocese_aegyptus = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:e_eastern_roman_empire }
 		title:k_diocese_aegyptus = { set_de_jure_liege_title = title:e_eastern_roman_empire }
+	}
+	else = {
+		title:k_diocese_aegyptus = { set_de_jure_liege_title = title:e_praetorian_prefecture_oriens }
 	}
 		hidden_effect = {	
 		#To Fezzan
@@ -720,6 +730,9 @@ restore_roman_provinces_aegyptus_decision_effect  = {
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_aegyptus PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = aegyptus }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_aegyptus }
 }
 
@@ -739,10 +752,28 @@ restore_roman_provinces_hispania_decision_effect = {
 	resolve_title_and_vassal_change = scope:change
 
 	#Sort the Dioceses
-	title:k_diocese_hispania = { set_de_jure_liege_title = title:e_spain }
+	# LR 2026-11-24: one chain (was e_spain, then WRE, then own realm, then hegemony prefecture, each overriding the last)
 	if = {
+		limit = { has_title = title:h_western_roman_empire }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_western_roman_empire }
+	}
+	else_if = {
+		limit = { has_title = title:h_roman_empire }
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_roman_empire }
+	}
+	else_if = {
+		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
+		# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
+		title:k_diocese_hispania = { set_de_jure_liege_title = root.primary_title }
+	}
+	else_if = {
 		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	else = {
+		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_spain }
 	}
 		
 	title:e_spain = { set_coa = e_spain }
@@ -766,27 +797,15 @@ restore_roman_provinces_hispania_decision_effect = {
 		title:k_portugal = { set_de_jure_liege_title = title:e_spain }
 	}	
 
-	# Restored by an emperor outside the Western Roman line (e.g. a regional empire): keep it in their own realm
-	if = {
-		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
-		title:k_diocese_hispania = { set_de_jure_liege_title = root.primary_title }
-	}
-	# Under a Roman hegemony the diocese sits in its prefecture
-	if = {
-		limit = { has_title = title:h_western_roman_empire }
-		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
-		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_western_roman_empire }
-	}
-	else_if = {
-		limit = { has_title = title:h_roman_empire }
-		title:k_diocese_hispania = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
-		title:e_praetorian_prefecture_gallia = { set_de_jure_liege_title = title:h_roman_empire }
-	}
+	# (own-realm and hegemony placement folded into the chain at "Sort the Dioceses", 2026-11-24)
 
 	# LR 2026-11-06: once a hegemony or Rome exists, the diocese goes to its prefecture under it
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hispania PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = hispania }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_hispania }
 }
 
@@ -806,10 +825,13 @@ restore_roman_provinces_britannia_decision_effect = {
 	resolve_title_and_vassal_change = scope:change
 
 	#Sort the Dioceses
-	title:k_diocese_britannia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_britannia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	else = {
+		title:k_diocese_britannia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	}
 		
 
@@ -829,6 +851,9 @@ restore_roman_provinces_britannia_decision_effect = {
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_britannia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
 	# LR 2026-11-06 (user): one rule replaces the old kingdom lists. A landed kingdom held in the restorer's realm
 	# whose capital is now de jure in the diocese is destroyed; independent rivals keep their crowns.
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = britannia }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_britannia }
 }
 
@@ -848,10 +873,13 @@ restore_roman_provinces_hibernia_decision_effect = {
 	}
 	resolve_title_and_vassal_change = scope:change
 
-	title:k_diocese_hibernia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_hibernia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	else = {
+		title:k_diocese_hibernia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	}
 	if = {
 		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
@@ -863,6 +891,9 @@ restore_roman_provinces_hibernia_decision_effect = {
 	}
 
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_hibernia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = hibernia }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_hibernia }
 }
 
@@ -882,10 +913,13 @@ restore_roman_provinces_caledonia_decision_effect = {
 	}
 	resolve_title_and_vassal_change = scope:change
 
-	title:k_diocese_caledonia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
+	# LR 2026-11-24: default folded into the else branch (was a move that the branches overrode)
 	if = {
 		limit = { has_title = title:e_western_roman_empire }
 		title:k_diocese_caledonia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	}
+	else = {
+		title:k_diocese_caledonia = { set_de_jure_liege_title = title:e_praetorian_prefecture_gallia }
 	}
 	if = {
 		limit = { NOT = { is_restored_western_roman_emperor_trigger = yes } }
@@ -897,6 +931,9 @@ restore_roman_provinces_caledonia_decision_effect = {
 	}
 
 	LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_caledonia PREFECTURE = e_praetorian_prefecture_gallia HALF = h_western_roman_empire }
+	# LR regional courts BEGIN (tools/imperial_court/gen_imperial_court.py)
+	LR_sort_diocese_into_regional_hegemony_effect = { DIOCESE = caledonia }
+	# LR regional courts END
 	LR_destroy_kingdoms_in_restored_diocese_effect = { DIOCESE = k_diocese_caledonia }
 }
 
@@ -938,46 +975,14 @@ LR_restore_eastern_hegemony_decision_effect = {
 
 
 
-		# Creating the Hegemony of the Eastern Roman Empire
-		# Create Eastern Roman Empire, shift dejure/history/laws, destroy e_byzantium.
-		# Capital must be in Constantinople
-		create_title_and_vassal_change = {
-			type = created
-			save_scope_as = change
-			add_claim_on_loss = no
-		}
-		title:h_eastern_roman_empire = {
-			change_title_holder = {
-				holder = root
-				change = scope:change
-			}
-			if = { # LR 2026-11-19: a Princeps holds the Republic twin
-				limit = { root = { has_title = title:e_eastern_roman_republic } }
-				copy_title_history = title:e_eastern_roman_republic
-			}
-			else = {
-				copy_title_history = title:e_eastern_roman_empire
-			}
-		}
-		resolve_title_and_vassal_change = scope:change
-
-		every_held_title = { # The old empire titles go; prefectures, exarchates and landless offices stay (LR 2026-11-06)
-			limit = {
-				tier = tier_empire
-				is_landless_type_title = no
-				LR_is_roman_prefecture_or_exarchate_title_trigger = no
-			}
-			root = { destroy_title = prev }
-		}
-
-		# LR 2026-11-06: only restored dioceses move, into the Macedonian (or Pontic) and Oriental prefectures;
-		# warlord kingdoms stay where they are until their diocese is restored
+		# LR 2026-11-25 (user): Reorganize our Imperium. The hegemony now comes with Restore the Roman Administration;
+		# this step keeps e_eastern_roman_empire (no longer destroyed) and makes it the Imperial Court. A ruler without
+		# the half or the hegemony (e.g. the 936 hegemon, or a Republic) gets them here. Old code: backups/imperial_court_20261125.
+		LR_roman_court_claim_shadow_effect = { HALF = eastern }
+		LR_found_roman_hegemony_with_shadow_effect = { HALF = eastern COUNT = ere }
 		LR_sort_existing_eastern_dioceses_effect = yes
-
-		#Byzantium Imperial Court
-		#Shift the kingdoms
-
 	}
+	LR_roman_court_establish_effect = { HALF = eastern }
 	
 	every_vassal = {
 		custom = custom.every_admin_vassal
@@ -1387,6 +1392,22 @@ LR_sort_diocese_into_hegemony_effect = {
 					title:$HALF$ = title:h_eastern_roman_empire
 					has_title = title:h_eastern_roman_republic
 				}
+				AND = {
+					title:$HALF$ = title:h_gallic_empire
+					has_title = title:h_gallic_republic
+				} # regional
+				AND = {
+					title:$HALF$ = title:h_palmyrene_empire
+					has_title = title:h_palmyrene_republic
+				} # regional
+				AND = {
+					title:$HALF$ = title:h_brittanic_empire
+					has_title = title:h_brittanic_republic
+				} # regional
+				AND = {
+					title:$HALF$ = title:h_southern_roman_empire
+					has_title = title:h_southern_roman_republic
+				} # regional
 			}
 		}
 		if = {
@@ -1402,6 +1423,22 @@ LR_sort_diocese_into_hegemony_effect = {
 			title:$HALF$ = { save_scope_as = diocese_hegemony }
 		}
 		else_if = {
+			limit = { title:$HALF$ = title:h_gallic_empire has_title = title:h_gallic_republic } # regional
+			title:h_gallic_republic = { save_scope_as = diocese_hegemony }
+		}
+		else_if = {
+			limit = { title:$HALF$ = title:h_palmyrene_empire has_title = title:h_palmyrene_republic } # regional
+			title:h_palmyrene_republic = { save_scope_as = diocese_hegemony }
+		}
+		else_if = {
+			limit = { title:$HALF$ = title:h_brittanic_empire has_title = title:h_brittanic_republic } # regional
+			title:h_brittanic_republic = { save_scope_as = diocese_hegemony }
+		}
+		else_if = {
+			limit = { title:$HALF$ = title:h_southern_roman_empire has_title = title:h_southern_roman_republic } # regional
+			title:h_southern_roman_republic = { save_scope_as = diocese_hegemony }
+		}
+		else_if = {
 			limit = { has_title = title:h_western_roman_republic }
 			title:h_western_roman_republic = { save_scope_as = diocese_hegemony }
 		}
@@ -1411,6 +1448,9 @@ LR_sort_diocese_into_hegemony_effect = {
 		title:$DIOCESE$ = { set_de_jure_liege_title = title:$PREFECTURE$ }
 		title:$PREFECTURE$ = { set_de_jure_liege_title = scope:diocese_hegemony }
 	}
+	# LR additions BEGIN (tools/register_roman_additions.py)
+	LR_magisteria_reroute_effect = { DIOCESE = $DIOCESE$ }
+	# LR additions END
 }
 
 # LR 2026-11-06: sort every existing (restored) Western diocese into the three Theodosian prefectures
@@ -1468,6 +1508,15 @@ LR_sort_existing_western_dioceses_effect = {
 		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = dardania } }
 		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_dardania PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
 	}
+	# LR additions BEGIN (tools/register_roman_additions.py)
+	if = { limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = dacia_traiana } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_dacia_traiana PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	}
+	if = { limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = marcomannia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_marcomannia PREFECTURE = e_praetorian_prefecture_illyricum HALF = h_western_roman_empire }
+	}
+	LR_resort_magisteria_effect = yes
+	# LR additions END
 }
 
 # LR 2026-11-06: the same for the East: Macedonia (or Pontica after the split) and Oriens. Character scope.
@@ -1517,6 +1566,17 @@ LR_sort_existing_eastern_dioceses_effect = {
 		limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = germania } }
 		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_germania PREFECTURE = e_praetorian_prefecture_germania HALF = h_eastern_roman_empire }
 	}
+	# LR additions BEGIN (tools/register_roman_additions.py)
+	if = { limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = assyria } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_assyria PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	}
+	if = { limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = arabia_felix } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_arabia_felix PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	}
+	if = { limit = { LR_roman_restoration_diocese_held_trigger = { DIOCESE = aethiopia } }
+		LR_sort_diocese_into_hegemony_effect = { DIOCESE = k_diocese_aethiopia PREFECTURE = e_praetorian_prefecture_oriens HALF = h_eastern_roman_empire }
+	}
+	# LR additions END
 }
 
 # LR 2026-11-06: the fictional Diocese of Germania (Rhine provinces and the lands beyond)

@@ -33,7 +33,65 @@ LR_diadochi_ensure_successor_empire_effect = {
 LR_restore_satrapy_effect = {
 	title:$SATRAPY$ = { save_scope_as = restored_satrapy }
 	title:$EMPIRE$ = { save_scope_as = satrapy_empire }
-	if = {
+	if = { # downshifted great kingdoms (tools/register_hellenistic_downshift.py, 2026-11-24)
+		limit = {
+			LR_is_indian_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_basileia_indike = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_basileia_indike }
+	}
+	else_if = {
+		limit = {
+			LR_is_chinese_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_basileia_serike = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_basileia_serike }
+	}
+	# LR epikrateiai BEGIN (tools/register_hellenistic_epikrateiai.py)
+	else_if = {
+		limit = {
+			LR_epikrateia_upper_satrapies_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_epikrateia_upper_satrapies = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_upper_satrapies }
+	}
+	else_if = {
+		limit = {
+			LR_epikrateia_asia_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_epikrateia_asia = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_asia }
+	}
+	else_if = {
+		limit = {
+			LR_epikrateia_egypt_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_epikrateia_egypt = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_egypt }
+	}
+	else_if = {
+		limit = {
+			LR_epikrateia_syria_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_epikrateia_syria = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_syria }
+	}
+	else_if = {
+		limit = {
+			LR_epikrateia_nesoi_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_epikrateia_nesoi = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_nesoi }
+	}
+	else_if = {
+		limit = {
+			LR_epikrateia_bautai_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+			title:e_epikrateia_bautai = { OR = { holder ?= root holder.top_liege ?= root } }
+		}
+		title:$SATRAPY$ = { set_de_jure_liege_title = title:e_epikrateia_bautai }
+	}
+	# LR epikrateiai END
+	else_if = {
 		limit = { has_title = title:h_hellenistic_empire }
 		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_hellenistic_empire }
 	}
@@ -43,6 +101,13 @@ LR_restore_satrapy_effect = {
 			LR_is_indian_satrapy_trigger = { SATRAPY = $SATRAPY$ }
 		}
 		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_greek_india }
+	}
+	else_if = { # Hellenic China (tools/register_hellenic_china_set.py, 2026-11-24)
+		limit = {
+			has_title = title:h_hellenic_china
+			LR_is_chinese_satrapy_trigger = { SATRAPY = $SATRAPY$ }
+		}
+		LR_satrapy_strategia_$SATRAPY$_effect = { HEGEMONY = h_hellenic_china }
 	}
 	else_if = { # Diadochi hegemony (gen_diadochi_hegemonies.py)
 		limit = { LR_holds_diadochi_hegemony_trigger = yes }
@@ -1445,18 +1510,18 @@ LR_satrapy_strategia_k_satrapy_media_major_effect = {
 }
 
 LR_satrapy_strategia_k_satrapy_bactria_effect = {
-	title:k_satrapy_bactria = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	title:k_satrapy_bactria = { set_de_jure_liege_title = title:e_strategia_baktriane }
+	title:e_strategia_baktriane = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_chorasmia_effect = {
-	title:k_satrapy_chorasmia = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	title:k_satrapy_chorasmia = { set_de_jure_liege_title = title:e_strategia_baktriane }
+	title:e_strategia_baktriane = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_sogdiana_effect = {
-	title:k_satrapy_sogdiana = { set_de_jure_liege_title = title:e_strategia_upper_satrapies }
-	title:e_strategia_upper_satrapies = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	title:k_satrapy_sogdiana = { set_de_jure_liege_title = title:e_strategia_baktriane }
+	title:e_strategia_baktriane = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_arachosia_effect = {
@@ -1470,18 +1535,18 @@ LR_satrapy_strategia_k_satrapy_gedrosia_effect = {
 }
 
 LR_satrapy_strategia_k_satrapy_magan_effect = {
-	title:k_satrapy_magan = { set_de_jure_liege_title = title:e_strategia_persis }
-	title:e_strategia_persis = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	title:k_satrapy_magan = { set_de_jure_liege_title = title:e_strategia_arabia_eudaimon }
+	title:e_strategia_arabia_eudaimon = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_nubia_effect = {
-	title:k_satrapy_nubia = { set_de_jure_liege_title = title:e_strategia_egypt }
-	title:e_strategia_egypt = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	title:k_satrapy_nubia = { set_de_jure_liege_title = title:e_strategia_aithiopia }
+	title:e_strategia_aithiopia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_trogodytike_effect = {
-	title:k_satrapy_trogodytike = { set_de_jure_liege_title = title:e_strategia_egypt }
-	title:e_strategia_egypt = { set_de_jure_liege_title = title:$HEGEMONY$ }
+	title:k_satrapy_trogodytike = { set_de_jure_liege_title = title:e_strategia_aithiopia }
+	title:e_strategia_aithiopia = { set_de_jure_liege_title = title:$HEGEMONY$ }
 }
 
 LR_satrapy_strategia_k_satrapy_poklais_effect = {
@@ -1577,6 +1642,7 @@ LR_satrapy_strategia_k_satrapy_taprobane_effect = {
 # When Alexander's Hegemony is formed: every satrapy of his empire already restored moves into its strategia
 # (the Indian strategiai join it through LR_join_greek_india_to_hegemony_decision)
 LR_sort_satrapies_into_strategiai_effect = {
+	LR_sort_completion_satrapies_into_strategiai_effect = yes # tools/register_hellenistic_completion.py
 	if = {
 		limit = { title:k_satrapy_macedonia = { is_titular = no } }
 		LR_satrapy_strategia_k_satrapy_macedonia_effect = { HEGEMONY = h_hellenistic_empire }
@@ -1705,6 +1771,7 @@ LR_sort_satrapies_into_strategiai_effect = {
 		limit = { title:k_satrapy_trogodytike = { is_titular = no } }
 		LR_satrapy_strategia_k_satrapy_trogodytike_effect = { HEGEMONY = h_hellenistic_empire }
 	}
+	LR_resort_epikrateiai_effect = yes # tools/register_hellenistic_epikrateiai.py
 }
 
 # Root founds the Basileia Indike: any Indian satrapy already restored moves into its strategia under it

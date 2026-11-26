@@ -1,0 +1,93 @@
+﻿# LR proconsuls (tools/cleave_caesars.py, 2026-11-25). GENERATED.
+namespace = LR_proconsul
+
+# To the Republic's head: a Proconsul's term is over (root = the head, scope:lr_proconsul)
+LR_proconsul.0001 = {
+	type = character_event
+	title = LR_proconsul.0001.t
+	desc = LR_proconsul.0001.desc
+	theme = realm
+	left_portrait = { character = root animation = personality_rational }
+	right_portrait = { character = scope:lr_proconsul animation = personality_honorable }
+	trigger = { scope:lr_proconsul = { is_alive = yes has_character_flag = LR_proconsul_flag } }
+	option = {
+		name = LR_proconsul.0001.a
+		trigger = { prestige >= 100 }
+		add_prestige = -100
+		scope:lr_proconsul = {
+			set_variable = { name = LR_proconsul_term years = 10 }
+			remove_variable = LR_proconsul_term_ended
+			add_opinion = { target = root modifier = grateful_opinion opinion = 15 }
+		}
+		ai_chance = {
+			base = 60
+			modifier = { add = -40 scope:lr_proconsul = { opinion = { target = root value <= -25 } } }
+		}
+	}
+	option = {
+		name = LR_proconsul.0001.b
+		save_scope_as = lr_head
+		scope:lr_proconsul = { trigger_event = LR_proconsul.0002 }
+		ai_chance = { base = 40 }
+	}
+}
+
+# To the Proconsul: the Republic recalls you (root = the Proconsul, scope:lr_head)
+LR_proconsul.0002 = {
+	type = character_event
+	title = LR_proconsul.0002.t
+	desc = LR_proconsul.0002.desc
+	theme = realm
+	left_portrait = { character = root animation = personality_rational }
+	right_portrait = { character = scope:lr_head animation = personality_rational }
+	trigger = { has_character_flag = LR_proconsul_flag exists = var:LR_caesar_augustus }
+	option = {
+		name = LR_proconsul.0002.a
+		LR_proconsul_lay_down_effect = yes
+		ai_chance = {
+			base = 70
+			modifier = { add = 20 opinion = { target = scope:lr_head value >= 25 } }
+		}
+	}
+	option = {
+		name = LR_proconsul.0002.b
+		trigger = { is_at_war = no }
+		LR_proconsul_rubicon_effect = yes
+		ai_chance = {
+			base = 10
+			modifier = { add = 40 max_military_strength >= scope:lr_head.max_military_strength }
+			modifier = { add = 20 opinion = { target = scope:lr_head value <= -30 } }
+		}
+	}
+}
+
+# To the Republic's head: a Proconsul crossed the Rubicon (root = the head, scope:usurper)
+LR_proconsul.0003 = {
+	type = character_event
+	title = LR_proconsul.0003.t
+	desc = LR_proconsul.0003.desc
+	theme = war
+	left_portrait = { character = root animation = anger }
+	right_portrait = { character = scope:usurper animation = war_attacker }
+	option = { name = LR_proconsul.0003.a }
+}
+
+# To the Republic's head: a Proconsul died; his command has lapsed (root = the head)
+LR_proconsul.0004 = {
+	type = character_event
+	title = LR_proconsul.0004.t
+	desc = LR_proconsul.0004.desc
+	theme = realm
+	left_portrait = { character = root animation = personality_rational }
+	option = {
+		name = LR_proconsul.0004.a
+		trigger = { LR_caesar_any_command_trigger = yes LR_caesar_has_room_trigger = yes }
+		save_scope_value_as = { name = proconsular value = yes }
+		trigger_event = LR_caesar.0001
+		ai_chance = { base = 60 }
+	}
+	option = {
+		name = LR_proconsul.0004.b
+		ai_chance = { base = 40 }
+	}
+}
