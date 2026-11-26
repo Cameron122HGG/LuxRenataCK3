@@ -1524,7 +1524,7 @@ window = {
 						maximumsize = { 0 5 }
 					}
 
-					coa_house_big = {
+					coa_house_big = { # Dynastic emblem in Character window
 						widget = {
 							parentanchor = bottom|right
 							widgetanchor = bottom|right
@@ -1602,12 +1602,15 @@ window = {
 					expand = {}
 				}
 
+				### PATRUM SCUTA ###
+				
 				button_group = {
 					datacontext = "[Character.GetOrganization]"
+					datacontext = "[Character.GetCulture]"
 					visible = "[Organization.IsValid]"
 					parentanchor = top|left
-					size = { 55 55 }
-					position = { 7 7 }
+					size = { 26 26 }
+					position = { 15 15 } # Position of organization COA
 
 					onclick = "[ToggleGameViewData( 'organization', Organization.Self )]"
 
@@ -1615,16 +1618,28 @@ window = {
 
 					# TODO - make proper reusable type
 
-					coat_of_arms_icon = {
+					coat_of_arms_icon = { # The actual COA design inside the roundel
 						parentanchor = center
-						size = { 44 44 }
+						size = { 32 32 }
 						coat_of_arms = "[Organization.GetOrganizationCoA.GetTexture('(int32)56','(int32)56')]"
 						coat_of_arms_slot = "[Organization.GetOrganizationCoA.GetSlot('(int32)56','(int32)56')]"
-						coat_of_arms_mask = "gfx/interface/coat_of_arms/frames/house_frame_05_mask.dds"
+						
+						# by default
+						# 	coat_of_arms_mask = "gfx/interface/coat_of_arms/frames/house_frame_05_mask.dds"
 
-						coa_house_frame = {
-							size = { 55 55 }
-							texture = "gfx/interface/coat_of_arms/frames/house_frame_05.dds"
+						# PS					
+						coat_of_arms_mask = "[Culture.GetCultureDynastyCoAMask]"
+						coat_of_arms_offset = "[Culture.GetCultureDynastyCoAOffset]"
+						coat_of_arms_scale = "[Culture.GetCultureDynastyCoAScale]"						
+			
+
+						coa_house_frame = { # Round frame for organization COA
+							size = { 42 42 }
+							# by default house 05
+							# texture = "gfx/interface/coat_of_arms/frames/house_frame_05.dds"
+							
+							# PS
+							texture = "[Culture.GetCultureDynastyCoAFrame]"
 
 							blockoverride "frame_override" {
 								frame = 5
@@ -1632,6 +1647,8 @@ window = {
 						}
 					}
 				}
+				### PATRUM SCUTA ###
+			
 			}
 		}
 

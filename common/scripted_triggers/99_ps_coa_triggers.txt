@@ -175,6 +175,21 @@ ps_coa_theocratic_trigger = {
 	}
 }
 
+ps_coa_monastic_order_trigger = {
+	exists = root
+	government_has_flag = government_is_monastic_holy_order
+}
+
+ps_coa_holy_order_trigger = {
+	exists = root
+	government_has_flag = government_is_military_holy_order
+}
+
+ps_coa_ecclesiastical_trigger = {
+	exists = root
+	government_has_flag = government_is_ecclesiastical
+}
+
 ps_coa_switch_to_pagan_trigger = {
 	holder = {
 		NOT = {
@@ -209,4 +224,329 @@ ps_coa_switch_to_norse_trigger = {
 			culture = { has_coa_gfx = norse_coa_gfx }
 		}
 	}
+}
+
+ps_coa_mongol_trigger = {
+	scope:culture = {
+		has_coa_gfx = mongol_coa_gfx
+	}
+}
+
+ps_coa_chinese_trigger = {
+	scope:culture = {
+		has_coa_gfx = chinese_group_coa_gfx
+	}
+}
+
+ps_coa_burman_trigger = {
+	scope:culture = {
+		has_coa_gfx = burman_group_coa_gfx
+	}
+}
+
+ps_coa_indian_gfx_trigger = {
+	scope:culture = {
+		OR = {
+			has_coa_gfx = indo_aryan_group_coa_gfx
+			has_coa_gfx = dravidian_group_coa_gfx
+		}
+	}
+}
+
+ps_coa_west_turkic_trigger = { # Cuman, Pechenegs, Oghuz, Khazar, Bolghar
+    OR = {
+        AND = {
+            exists = culture
+            culture = {
+                OR = {
+                    this = culture:turkish # Oghuz
+                    this = culture:turkmen
+                    this = culture:pecheneg
+                    this = culture:cuman
+                    this = culture:khazar
+                    this = culture:bolghar
+                    this = culture:chuvash
+                    this = culture:avar
+                }
+            }
+        }
+        AND = {
+            exists = holder
+            holder = {
+                culture = {
+                    OR = {
+                        this = culture:turkish # Oghuz
+                        this = culture:turkmen
+                        this = culture:pecheneg
+                        this = culture:cuman
+                        this = culture:khazar
+                        this = culture:bolghar
+                        this = culture:chuvash
+                        this = culture:avar
+                    }
+                }
+            }
+        }
+    }
+}
+
+ps_coa_central_turkic_trigger = { # Central bridge group
+    OR = {
+        AND = {
+            exists = culture
+            culture = {
+                OR = {
+                    this = culture:bashkir
+                    this = culture:kimek
+                    this = culture:kipchak
+                    this = culture:laktan
+                    this = culture:kazak
+                }
+            }
+        }
+        AND = {
+            exists = holder
+            holder = {
+                culture = {
+                    OR = {
+                        this = culture:bashkir
+                        this = culture:kimek
+                        this = culture:kipchak
+                        this = culture:laktan
+                        this = culture:kazak
+                    }
+                }
+            }
+        }
+    }
+}
+
+ps_coa_east_turkic_trigger = { # Altai, Silk Road, Siberian, Uyghur
+    OR = {
+        AND = {
+            exists = culture
+            culture = {
+                OR = {
+                    this = culture:kirghiz
+                    this = culture:karluk
+                    this = culture:uyghur
+                    this = culture:yughur
+                    this = culture:uriankhai
+                    this = culture:shatuo
+                    this = culture:ongud
+                }
+            }
+        }
+        AND = {
+            exists = holder
+            holder = {
+                culture = {
+                    OR = {
+                        this = culture:kirghiz
+                        this = culture:karluk
+                        this = culture:uyghur
+                        this = culture:yughur
+                        this = culture:uriankhai
+                        this = culture:shatuo
+                        this = culture:ongud
+                    }
+                }
+            }
+        }
+    }
+}
+
+ps_coa_mameluk_heraldry_trigger = { # For the mameluk round frame heraldry type 
+    OR = {
+        AND = {
+            exists = culture
+            culture = {
+                OR = {
+                    this = culture:egyptian
+                    this = culture:maghrebi
+					this = culture:levantine
+                }
+            }
+        }
+        AND = {
+            exists = holder
+            holder = {
+                culture = {
+                    OR = {
+                        this = culture:egyptian
+                        this = culture:maghrebi
+						this = culture:levantine
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Mamluk runuk designs (probably overcomplicated this)
+ps_coa_mamluk_runuk_trigger = {
+    OR = { # Core cultures
+        AND = { # character
+            exists = culture
+            culture = {
+                OR = {
+                    this = culture:egyptian
+                    this = culture:maghrebi
+                    this = culture:levantine
+                }
+            }
+        }
+        AND = { # title
+            exists = holder
+            holder = {
+                culture = {
+                    OR = {
+                        this = culture:egyptian
+                        this = culture:maghrebi
+                        this = culture:levantine
+                    }
+                }
+            }
+        }
+
+        # Vassal of an above core culture & kingdom tier at least
+        AND = {
+            exists = culture
+            culture = {
+                OR = { # Kipchak and Cuman could probably be added also
+                    this = culture:bedouin
+                    this = culture:yemeni
+                    this = culture:beja
+                    this = culture:turkish
+                    this = culture:kurdish
+					# nubian probably
+                }
+            }
+            OR = {
+                AND = {
+                    exists = top_liege
+                    top_liege = {
+                        highest_held_title_tier >= tier_kingdom
+                        culture = {
+                            OR = {
+                                this = culture:egyptian
+                                this = culture:maghrebi
+                                this = culture:levantine
+                            }
+                        }
+                    }
+                }
+                AND = {
+                    exists = liege
+                    liege = {
+                        highest_held_title_tier >= tier_kingdom
+                        culture = {
+                            OR = {
+                                this = culture:egyptian
+                                this = culture:maghrebi
+                                this = culture:levantine
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        AND = { # title
+            exists = holder
+            holder = {
+                culture = {
+                    OR = {
+                        this = culture:bedouin
+                        this = culture:yemeni
+                        this = culture:beja
+                        this = culture:turkish
+                        this = culture:kurdish
+                    }
+                }
+                OR = {
+                    AND = {
+                        exists = top_liege
+                        top_liege = {
+                            highest_held_title_tier >= tier_kingdom
+                            culture = {
+                                OR = {
+                                    this = culture:egyptian
+                                    this = culture:maghrebi
+                                    this = culture:levantine
+                                }
+                            }
+                        }
+                    }
+                    AND = {
+                        exists = liege
+                        liege = {
+                            highest_held_title_tier >= tier_kingdom
+                            culture = {
+                                OR = {
+                                    this = culture:egyptian
+                                    this = culture:maghrebi
+                                    this = culture:levantine
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Frame type (solomon seal star shape for some berber cultures)
+ps_coa_frame_06 = { # TODO rename
+    OR = {
+        AND = {
+            exists = culture
+            culture = {
+                OR = {
+                    this = culture:butr
+                    this = culture:baranis
+                }
+            }
+        }
+        AND = {
+            exists = holder
+            holder = {
+                culture = {
+                    OR = {
+                    this = culture:butr
+                    this = culture:baranis
+                    }
+                }
+            }
+        }
+    }
+}
+
+ps_coa_hmong_trigger = { # Culture trigger to include Hmong people too
+	exists = culture
+	culture = {
+		OR = {
+			this = culture:hmong
+			this = culture:yao
+		}
+	}
+}
+
+# Faith types
+
+ps_coa_orthodox_trigger = {
+	scope:faith = faith:orthodox
+}
+
+# orthodox subs (or possibly just cultural)
+# slavic rite
+# Georgian
+
+ps_coa_coptic_trigger = {
+	scope:faith = faith:miaphysitism
+}
+
+ps_coa_judaism_trigger = {
+	scope:faith.religion = religion:judaism_religion
 }
