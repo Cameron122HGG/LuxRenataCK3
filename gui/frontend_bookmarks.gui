@@ -584,7 +584,7 @@
 
 			### Left sidebar
 			widget = {
-				size = { 250 120% }
+				size = { 290 120% } # LR 2026-11-25: 40 wider for the 1066 drop-down (was 250)
 				position = {0 40 }
 
 				state = {
@@ -632,7 +632,7 @@
 				}
 
 				widget = {
-					size = { 270 100%}
+					size = { 310 100%} # LR 2026-11-25: 40 wider, so the 1066 header's arrow clears the border (was 270)
 					position = { -10 -50 }
 
 					background = {
@@ -700,14 +700,36 @@
 									tooltip = "LR_BM_DROPDOWN_1066_TT"
 									using = tooltip_es
 
-									background = {
+									# LR 2026-11-25 (user: "a little flat"): built like the group tabs: stone tile, a faint painting (the
+									# Twilight of the Empire banner), the stone-glass overlay, and a dark fade behind the text
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
 										texture = "gfx/interface/component_tiles/tile_window_background.dds"
-										spriteType = Corneredtiled
+
+										modify_texture = {
+											texture = "gfx/interface/icons/bookmark_buttons/bm_1066_AD_004.dds"
+											blend_mode = normal
+											alpha = 0.45
+										}
+										modify_texture = {
+											texture = "gfx/interface/buttons/button_stone_glass_overlay.dds"
+											blend_mode = overlay
+											texture_density = 2
+										}
 									}
-									background = {
-										texture = "gfx/interface/buttons/button_stone_glass_overlay.dds"
-										blend_mode = overlay
-										alpha = 0.6
+									icon = {
+										size = { 75% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										mirror = horizontal # dark on the left, behind the text
+										color = { 0 0 0 0.65 }
+									}
+									icon = {
+										size = { 100% 100% }
+										alwaystransparent = yes
+										texture = "gfx/interface/buttons/button_stone_glass_glow.dds"
+										alpha = 0.15
 									}
 
 									hbox = {
@@ -726,8 +748,9 @@
 											text_single = {
 												layoutpolicy_horizontal = expanding
 												text = "LR_BM_DROPDOWN_1066_SUB"
-												default_format = "#clickable;bold"
-												fontsize = 14
+												default_format = "#high;bold;glow_color:{0,0,0,1}" # LR: was #clickable, hard to read
+												glow_radius = 3
+												fontsize = 15
 												using = Font_Type_Flavor
 											}
 										}
@@ -3047,7 +3070,7 @@ types BookmarkPortraits
 				}
 				modify_texture = {
 					visible = "[EqualTo_string( BookmarkGroup.GetName, 'warlords' )]"
-					texture = "gfx/interface/illustrations/loading_screens/load_7.dds"
+					texture = "gfx/interface/icons/bookmark_buttons/bm_Lux_Invicta_warlords.dds" # LR 2026-11-25 (user): the team's banner (was load_7.dds)
 					blend_mode = normal
 					alpha = 0.5
 				}
@@ -3059,7 +3082,7 @@ types BookmarkPortraits
 				}
 				modify_texture = {
 					visible = "[EqualTo_string( BookmarkGroup.GetName, '6066' )]"
-					texture = "gfx/interface/illustrations/loading_screens/LR_loadscreen_alexander.dds"
+					texture = "gfx/interface/icons/bookmark_buttons/bm_1066_AD_003.dds" # LR 2026-11-25 (user): the team's banner (was LR_loadscreen_alexander.dds)
 					blend_mode = normal
 					alpha = 0.5
 				}
@@ -3399,7 +3422,7 @@ types BookmarkPortraits
 						text_single = {
 							name = "bm_group_name"
 							text = "[Localize(Concatenate('bm_group_', Localize(Concatenate(BookmarkGroup.GetName,'_subtitle'))))]"
-							default_format = "#clickable;bold;glow_color:{0.2,0.2,0.2,1}"
+							default_format = "#high;bold;glow_color:{0,0,0,1}" # LR 2026-11-25 (user): white like the 1066 header (was #clickable gold)
 							fontsize = 15
 							using = Font_Type_Flavor
 							#max_width = 155
@@ -3516,6 +3539,7 @@ types BookmarkPortraits
 			modify_texture = {
 				name = "tab_shimmer"
 				visible = "[GameSetup.IsBookmarkSelected( Bookmark.Self )]"
+				alpha = 0 # LR 2026-11-25: faded in by the shimmer states, not shown at full strength
 				texture = "gfx/interface/component_effects/effect_shimmer.dds"
 				blend_mode = colordodge
 				translate_uv = { 0.2 0.2 }
@@ -3536,7 +3560,7 @@ types BookmarkPortraits
 
 				modify_texture = {
 					name = "tab_glow_selected"
-					alpha = 1
+					alpha = 0.3 # LR 2026-11-25 (user): was 1, bleached the bookmark banners
 				}
 			}
 
@@ -3582,7 +3606,7 @@ types BookmarkPortraits
 				modify_texture = {
 					name = "tab_shimmer"
 					translate_uv = { 1 -1 }
-					alpha = 0.6
+					alpha = 0.25 # LR 2026-11-25: was 0.6
 				}
 			}
 
@@ -3596,7 +3620,7 @@ types BookmarkPortraits
 				modify_texture = {
 					name = "tab_shimmer"
 					translate_uv = { -1 1 }
-					alpha = 0.6
+					alpha = 0.25 # LR 2026-11-25: was 0.6
 				}
 				start_sound = {
 					soundeffect = "event:/SFX/UI/Frontend/sfx_ui_frontend_topbar_tab_shimmer_on_loop"
@@ -3612,7 +3636,7 @@ types BookmarkPortraits
 				modify_texture = {
 					name = "tab_shimmer"
 					translate_uv = { 1 -1 }
-					alpha = 0.6
+					alpha = 0.25 # LR 2026-11-25: was 0.6
 				}
 			}
 
