@@ -6,10 +6,25 @@ LR_strategia_none = {
 		has_government = hellenic_republic_government
 	}
 	can_pass = {
-		is_at_war = no
+		gdp_can_pass_republic_law_trigger = yes
 	}
 	pass_cost = {
-		prestige = 200
+		prestige = total_republic_law_prestige_cost
+		treasury_or_gold = total_republic_law_gold_cost
+	}
+	on_pass = {
+		gdp_consume_republic_assembly_preparation_effect = yes
+		gdp_spend_pledged_law_approvers_effect = yes
+	}
+	requires_approve = { gdp_requires_assembly_approval_trigger = yes }
+	ai_approval = {
+		if = {
+			limit = { scope:proposer ?= root }
+			value = ai_law_approval_self_proposer_value
+		}
+		else = {
+			value = 0
+		}
 	}
 	on_after_pass = {
 		LR_end_strategia_effect = yes
@@ -27,10 +42,25 @@ LR_strategia_autokrator = {
 		levy_size = 0.05
 	}
 	can_pass = {
-		is_at_war = no
+		gdp_can_pass_republic_law_trigger = yes
 	}
 	pass_cost = {
-		prestige = 100
+		prestige = total_republic_law_prestige_cost
+		treasury_or_gold = total_republic_law_gold_cost
+	}
+	on_pass = {
+		gdp_consume_republic_assembly_preparation_effect = yes
+		gdp_spend_pledged_law_approvers_effect = yes
+	}
+	requires_approve = { gdp_requires_assembly_approval_trigger = yes }
+	ai_approval = {
+		if = {
+			limit = { scope:proposer ?= root }
+			value = ai_law_approval_self_proposer_value
+		}
+		else = {
+			value = 0
+		}
 	}
 	on_after_pass = {
 		LR_appoint_strategos_effect = yes
