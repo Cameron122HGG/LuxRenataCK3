@@ -1,0 +1,37 @@
+﻿# LR 2026-11-25 Politeia (tools/politeia/build_politeia.py)
+LR_strategia_upkeep_on_action = {
+	effect = {
+		LR_strategia_upkeep_effect = yes
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = { LR_strategia_upkeep_on_action }
+}
+
+# a new term: a new strategos (scope:new_holder is the realm ruler for the next term)
+LR_strategia_term_on_action = {
+	effect = {
+		scope:new_holder ?= {
+			LR_end_strategia_effect = yes
+			LR_appoint_strategos_effect = yes
+		}
+	}
+}
+
+on_term_ended = {
+	on_actions = { LR_strategia_term_on_action }
+}
+
+LR_strategia_game_start_on_action = {
+	effect = {
+		every_ruler = {
+			limit = { has_government = hellenic_republic_government }
+			LR_strategia_upkeep_effect = yes
+		}
+	}
+}
+
+on_game_start_after_lobby = {
+	on_actions = { LR_strategia_game_start_on_action }
+}

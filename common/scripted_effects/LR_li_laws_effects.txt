@@ -79,6 +79,21 @@ LR_li_set_administration_by_rank_effect = {
 	}
 }
 
+# character scope, on a government change: Administration rises to the new rank's floor (never lowered: the ruler's own choice stays)
+LR_li_raise_administration_to_rank_effect = {
+	if = {
+		limit = { is_landed = yes }
+		if = {
+			limit = { LR_li_gradus_rank_value >= 3 NOT = { has_realm_law = LR_administration_2 } }
+			add_realm_law_skip_effects = LR_administration_2
+		}
+		else_if = {
+			limit = { LR_li_gradus_rank_value >= 1 has_realm_law = LR_administration_0 }
+			add_realm_law_skip_effects = LR_administration_1
+		}
+	}
+}
+
 # character scope, AI: one Administration step up when the realm meets the step's needs (the AI does not pass these laws itself)
 LR_li_ai_administration_step_effect = {
 	if = {

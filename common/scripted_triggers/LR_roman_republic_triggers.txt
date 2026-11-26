@@ -82,3 +82,15 @@ LR_roman_republic_prefecture_macedonia_trigger = {
 	LR_roman_republic_diocese_ready_trigger = { DIOCESE = asia }
 	LR_roman_republic_diocese_ready_trigger = { DIOCESE = armenia }
 }
+
+# LR 2026-11-25 (user: "make roman republic happen if you become a republic as the roman group")
+# A republic of the Roman group: a landed assembly head whose culture keeps Classical Statecraft, not of Hellenistic heritage
+# (those take the Hellenistic branch). It takes the Roman republic law and the Roman Republic government.
+LR_roman_group_republic_trigger = {
+	government_has_flag = government_is_republic
+	NOT = { government_has_flag = government_is_principate }
+	is_landed = yes
+	gdp_is_assembly_head_trigger = yes
+	culture = { has_cultural_tradition = lux_tradition_gov_classical }
+	LR_culture_is_hellenic_trigger = no
+}

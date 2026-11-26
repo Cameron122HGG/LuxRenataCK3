@@ -663,6 +663,7 @@ republic_type_roman = {
 				any_held_title = { this = title:h_roman_republic }
 				LR_is_roman_republic_consul_trigger = yes
 				government_has_flag = government_is_principate
+				LR_roman_group_republic_trigger = yes # LR 2026-11-25 (user: "make roman republic happen if you become a republic as the roman group")
 			}
 		}
 	}
@@ -681,6 +682,7 @@ republic_type_roman = {
 				any_held_title = { this = title:h_roman_republic }
 				LR_is_roman_republic_consul_trigger = yes
 				government_has_flag = government_is_principate
+				LR_roman_group_republic_trigger = yes # LR 2026-11-25 (user: "make roman republic happen if you become a republic as the roman group")
 			}
 		}
 	}
@@ -691,7 +693,121 @@ republic_type_roman = {
 			any_held_title = { this = title:h_roman_republic }
 			LR_is_roman_republic_consul_trigger = yes
 			government_has_flag = government_is_principate
+			LR_roman_group_republic_trigger = yes # LR 2026-11-25 (user: "make roman republic happen if you become a republic as the roman group")
 		}
+	}
+
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_hellenic = { # LR 2026-11-25 Politeia (tools/politeia/build_politeia.py)
+	law_group_type = republic_type
+	index = 7
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		vassal_limit_max = 20
+		urban_tax_mult = 0.1
+		domain_tax_mult = 0.05
+		embarkation_cost_mult = -0.25
+	}
+
+	flag = uses_republic_type
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_hellenic
+			}
+		}
+		trigger_else = {
+			LR_hellenic_group_republic_trigger = yes
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_hellenic
+			}
+		}
+		trigger_else = {
+			LR_hellenic_group_republic_trigger = yes
+		}
+	}
+	
+	should_start_with = {
+		LR_hellenic_group_republic_trigger = yes
 	}
 
 	pass_cost = {

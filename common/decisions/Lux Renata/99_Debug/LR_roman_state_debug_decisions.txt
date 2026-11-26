@@ -18,13 +18,23 @@ LR_debug_become_roman_republic_decision = {
 
 	is_valid = {
 		LR_gradus_has_gdp_trigger = yes
+		government_has_flag = government_is_republic
+		custom_tooltip = { text = LR_debug_roman_republic_half_free_tt OR = { NOT = { exists = title:e_western_roman_republic.holder } NOT = { exists = title:e_eastern_roman_republic.holder } } }
+		NOT = { exists = title:h_roman_republic.holder }
 	}
 
 	effect = {
-		LR_regional_res_publica_effect = yes
-		if = { limit = { highest_held_title_tier = tier_county } add_realm_law_skip_effects = republic_tier_county }
-		else_if = { limit = { highest_held_title_tier = tier_duchy } add_realm_law_skip_effects = republic_tier_duchy }
-		else_if = { limit = { highest_held_title_tier = tier_kingdom } add_realm_law_skip_effects = republic_tier_kingdom }
+		if = {
+			limit = { NOT = { exists = title:e_western_roman_republic.holder } }
+			LR_restore_roman_republic_effect = { HALF = western COUNT = wre }
+		}
+		else = {
+			LR_restore_roman_republic_effect = { HALF = eastern COUNT = ere }
+		}
+		if = {
+			limit = { has_government = republic_government has_realm_law = republic_type_roman }
+			change_government = roman_republic_government
+		}
 		LR_appoint_co_consul_effect = yes
 	}
 
@@ -94,6 +104,51 @@ LR_debug_become_imperium_decision = {
 
 	effect = {
 		change_government = roman_imperial_government
+	}
+
+	ai_check_interval = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+LR_debug_form_brittanic_republic_decision = {
+	decision_group_type = debug
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_debug_form_brittanic_republic_decision_desc
+	selection_tooltip = LR_debug_form_brittanic_republic_decision_tooltip
+	confirm_text = LR_debug_form_brittanic_republic_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { exists = title:e_brittanic_republic.holder }
+	}
+
+	is_valid = {
+		LR_gradus_has_gdp_trigger = yes
+	}
+
+	effect = {
+		show_as_tooltip = { get_title = title:e_brittanic_republic }
+		hidden_effect = {
+			title:e_brittanic_empire.holder ?= { destroy_title = title:e_brittanic_empire } # its imperial twin goes
+			get_title = title:e_brittanic_republic
+			set_primary_title_to = title:e_brittanic_republic
+			title:e_brittanic_republic = { set_variable = LR_roman_senate } # the Senate of the Britains is convened
+			LR_regional_res_publica_effect = yes # government, Roman laws, patrician seat, treasury, Senate seats
+			if = {
+				limit = { has_government = republic_government has_realm_law = republic_type_roman }
+				change_government = roman_republic_government
+			}
+			LR_appoint_co_consul_effect = yes
+		}
 	}
 
 	ai_check_interval = 0
