@@ -1,0 +1,106 @@
+﻿# LR 2026-11-25 Roman state debug decisions (tools/roman_consulship/build_roman_state_debug.py)
+
+LR_debug_become_roman_republic_decision = {
+	decision_group_type = debug
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_debug_become_roman_republic_decision_desc
+	selection_tooltip = LR_debug_become_roman_republic_decision_tooltip
+	confirm_text = LR_debug_become_roman_republic_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = roman_republic_government }
+	}
+
+	is_valid = {
+		LR_gradus_has_gdp_trigger = yes
+	}
+
+	effect = {
+		LR_regional_res_publica_effect = yes
+		if = { limit = { highest_held_title_tier = tier_county } add_realm_law_skip_effects = republic_tier_county }
+		else_if = { limit = { highest_held_title_tier = tier_duchy } add_realm_law_skip_effects = republic_tier_duchy }
+		else_if = { limit = { highest_held_title_tier = tier_kingdom } add_realm_law_skip_effects = republic_tier_kingdom }
+		LR_appoint_co_consul_effect = yes
+	}
+
+	ai_check_interval = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+LR_debug_become_magistratus_decision = {
+	decision_group_type = debug
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_debug_become_magistratus_decision_desc
+	selection_tooltip = LR_debug_become_magistratus_decision_tooltip
+	confirm_text = LR_debug_become_magistratus_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = roman_administrative_government }
+	}
+
+	is_valid = {
+		LR_gradus_has_rtp_trigger = yes
+		LR_gradus_has_auh_trigger = yes
+	}
+
+	effect = {
+		change_government = roman_administrative_government
+	}
+
+	ai_check_interval = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+LR_debug_become_imperium_decision = {
+	decision_group_type = debug
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	desc = LR_debug_become_imperium_decision_desc
+	selection_tooltip = LR_debug_become_imperium_decision_tooltip
+	confirm_text = LR_debug_become_imperium_decision_confirm
+
+	is_shown = {
+		debug_only = yes
+		is_ruler = yes
+		is_landed = yes
+		NOT = { has_government = roman_imperial_government }
+	}
+
+	is_valid = {
+		LR_gradus_has_rtp_trigger = yes
+		LR_gradus_has_auh_trigger = yes
+	}
+
+	effect = {
+		change_government = roman_imperial_government
+	}
+
+	ai_check_interval = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
