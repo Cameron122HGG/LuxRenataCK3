@@ -1,0 +1,95 @@
+﻿# LR 2026-11-25 LI laws (tools/li_laws/build_li_laws.py)
+
+# character scope: set Centralization from the score (<=1 Decentralized, 2-3, 4-5, 6-7, >=8 Maximum); tribal realms the clan steps
+LR_li_update_centralization_effect = {
+	if = {
+		limit = {
+			is_landed = yes
+			NOT = { government_has_flag = government_is_landless_adventurer }
+			highest_held_title_tier >= tier_duchy
+		}
+		if = {
+			limit = { LR_li_centralization_score_value <= 1 }
+			if = {
+				limit = { LR_li_tribal_realm_trigger = yes }
+				if = { limit = { NOT = { has_realm_law = LR_clan_centralization_0 } } add_realm_law_skip_effects = LR_clan_centralization_0 }
+			}
+			else = {
+				if = { limit = { NOT = { has_realm_law = LR_centralization_0 } } add_realm_law_skip_effects = LR_centralization_0 }
+			}
+		}
+		else_if = {
+			limit = { LR_li_centralization_score_value >= 2 LR_li_centralization_score_value <= 3 }
+			if = {
+				limit = { LR_li_tribal_realm_trigger = yes }
+				if = { limit = { NOT = { has_realm_law = LR_clan_centralization_1 } } add_realm_law_skip_effects = LR_clan_centralization_1 }
+			}
+			else = {
+				if = { limit = { NOT = { has_realm_law = LR_centralization_1 } } add_realm_law_skip_effects = LR_centralization_1 }
+			}
+		}
+		else_if = {
+			limit = { LR_li_centralization_score_value >= 4 LR_li_centralization_score_value <= 5 }
+			if = {
+				limit = { LR_li_tribal_realm_trigger = yes }
+				if = { limit = { NOT = { has_realm_law = LR_clan_centralization_2 } } add_realm_law_skip_effects = LR_clan_centralization_2 }
+			}
+			else = {
+				if = { limit = { NOT = { has_realm_law = LR_centralization_2 } } add_realm_law_skip_effects = LR_centralization_2 }
+			}
+		}
+		else_if = {
+			limit = { LR_li_centralization_score_value >= 6 LR_li_centralization_score_value <= 7 }
+			if = {
+				limit = { LR_li_tribal_realm_trigger = yes }
+				if = { limit = { NOT = { has_realm_law = LR_clan_centralization_3 } } add_realm_law_skip_effects = LR_clan_centralization_3 }
+			}
+			else = {
+				if = { limit = { NOT = { has_realm_law = LR_centralization_3 } } add_realm_law_skip_effects = LR_centralization_3 }
+			}
+		}
+		else_if = {
+			limit = { LR_li_centralization_score_value >= 8 }
+			if = {
+				limit = { LR_li_tribal_realm_trigger = yes }
+				if = { limit = { NOT = { has_realm_law = LR_clan_centralization_4 } } add_realm_law_skip_effects = LR_clan_centralization_4 }
+			}
+			else = {
+				if = { limit = { NOT = { has_realm_law = LR_centralization_4 } } add_realm_law_skip_effects = LR_centralization_4 }
+			}
+		}
+	}
+}
+
+# character scope: the Administration step for the GRADUS rank (game start): plain Informal, dynastic and administrative Legal, imperial and universal Imperial
+LR_li_set_administration_by_rank_effect = {
+	if = {
+		limit = { is_landed = yes }
+		if = {
+			limit = { LR_li_gradus_rank_value <= 0 }
+			add_realm_law_skip_effects = LR_administration_0
+		}
+		else_if = {
+			limit = { LR_li_gradus_rank_value <= 2 }
+			add_realm_law_skip_effects = LR_administration_1
+		}
+		else = {
+			add_realm_law_skip_effects = LR_administration_2
+		}
+	}
+}
+
+# character scope, AI: one Administration step up when the realm meets the step's needs (the AI does not pass these laws itself)
+LR_li_ai_administration_step_effect = {
+	if = {
+		limit = { is_ai = yes is_landed = yes is_at_war = no }
+		if = {
+			limit = { has_realm_law = LR_administration_0 has_realm_law_flag = LR_centralization_1plus }
+			add_realm_law_skip_effects = LR_administration_1
+		}
+		else_if = {
+			limit = { has_realm_law = LR_administration_1 has_realm_law_flag = LR_centralization_3plus highest_held_title_tier >= tier_empire }
+			add_realm_law_skip_effects = LR_administration_2
+		}
+	}
+}

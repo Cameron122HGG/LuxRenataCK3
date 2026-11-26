@@ -1,0 +1,52 @@
+﻿# LR 2026-11-25 Roman consulship diarchy (tools/roman_consulship/build_consulship.py)
+# character scope (the first consul): appoint the most prestigious adult vassal of another house, else the most diplomatic courtier
+LR_appoint_co_consul_effect = {
+	if = {
+		limit = {
+			has_government = roman_republic_government
+			has_realm_law_flag = LR_two_consuls
+		}
+		save_scope_as = LR_first_consul
+		if = {
+			limit = { any_vassal = { LR_co_consul_candidate_trigger = yes } }
+			ordered_vassal = {
+				limit = { LR_co_consul_candidate_trigger = yes }
+				order_by = prestige
+				save_scope_as = LR_co_consul
+			}
+		}
+		else_if = {
+			limit = { any_courtier = { LR_co_consul_candidate_trigger = yes } }
+			ordered_courtier = {
+				limit = { LR_co_consul_candidate_trigger = yes }
+				order_by = diplomacy
+				save_scope_as = LR_co_consul
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_co_consul }
+			try_start_diarchy = consular_diarchy
+			set_diarch = scope:LR_co_consul
+		}
+	}
+}
+
+# character scope: end a running consulship
+LR_end_consulship_effect = {
+	if = {
+		limit = { has_diarchy_type = consular_diarchy }
+		end_diarchy = yes
+	}
+}
+
+# character scope, yearly and at each new term: fill an empty co-consulship
+LR_consulship_upkeep_effect = {
+	if = {
+		limit = {
+			has_government = roman_republic_government
+			has_realm_law_flag = LR_two_consuls
+			NOT = { exists = diarch }
+		}
+		LR_appoint_co_consul_effect = yes
+	}
+}

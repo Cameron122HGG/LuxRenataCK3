@@ -1,0 +1,105 @@
+﻿# LR 2026-11-25 LI laws (tools/li_laws/build_li_laws.py)
+# Administration part C: a Barbarian culture head with Legal Administration settles the culture into the government
+# tradition of the realm's capital: the culture gives up lux_tradition_gov_barbarian, and the normalizer moves its rulers.
+LR_settle_the_people_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	desc = LR_settle_the_people_decision_desc
+	selection_tooltip = LR_settle_the_people_decision_tooltip
+	confirm_text = LR_settle_the_people_decision_confirm
+	decision_group_type = major
+
+	is_shown = {
+		is_landed = yes
+		culture = { has_cultural_tradition = lux_tradition_gov_barbarian }
+	}
+
+	is_valid = {
+		culture = { culture_head = root }
+		LR_li_has_legal_administration_trigger = yes
+		capital_county.culture = {
+			NOT = { has_cultural_tradition = lux_tradition_gov_barbarian }
+			OR = {
+				has_cultural_tradition = lux_tradition_gov_classical
+				has_cultural_tradition = lux_tradition_gov_western
+				has_cultural_tradition = lux_tradition_gov_despotic
+				has_cultural_tradition = lux_tradition_gov_indic
+				has_cultural_tradition = lux_tradition_gov_mamlakah
+				has_cultural_tradition = lux_tradition_gov_sudanic
+				has_cultural_tradition = lux_tradition_gov_nilotic
+				has_cultural_tradition = lux_tradition_gov_sinic
+				has_cultural_tradition = lux_tradition_gov_japanese
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		capital_county.culture = { save_scope_as = LR_settle_model }
+		culture = {
+			if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_classical } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_classical
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_western } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_western
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_despotic } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_despotic
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_indic } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_indic
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_mamlakah } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_mamlakah
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_sudanic } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_sudanic
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_nilotic } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_nilotic
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_sinic } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_sinic
+			}
+			else_if = {
+				limit = { scope:LR_settle_model = { has_cultural_tradition = lux_tradition_gov_japanese } }
+				remove_culture_tradition = lux_tradition_gov_barbarian
+				add_culture_tradition = lux_tradition_gov_japanese
+			}
+		}
+	}
+
+	ai_check_interval = 120
+
+	ai_potential = {
+		is_landed = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

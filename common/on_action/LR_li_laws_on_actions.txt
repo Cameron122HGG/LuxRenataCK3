@@ -1,0 +1,35 @@
+﻿# LR 2026-11-25 LI laws (tools/li_laws/build_li_laws.py)
+LR_li_laws_update_on_action = {
+	effect = {
+		LR_li_update_centralization_effect = yes
+		LR_li_ai_administration_step_effect = yes
+	}
+}
+
+LR_li_laws_game_start_on_action = {
+	effect = {
+		every_ruler = {
+			limit = { is_landed = yes }
+			LR_li_set_administration_by_rank_effect = yes
+			LR_li_update_centralization_effect = yes
+		}
+	}
+}
+
+LR_li_laws_government_change_on_action = {
+	effect = {
+		LR_li_update_centralization_effect = yes
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = { LR_li_laws_update_on_action }
+}
+
+on_game_start_after_lobby = {
+	on_actions = { LR_li_laws_game_start_on_action }
+}
+
+on_government_change = {
+	on_actions = { LR_li_laws_government_change_on_action }
+}

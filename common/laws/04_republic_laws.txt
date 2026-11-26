@@ -1991,9 +1991,82 @@ republic_assembly_voting_thresholds_unanimous = {
 # Note: realms that use assembly expect this law group
 # Length is in months, and 0 means appointment for life
 # If no law from this group is present, term length is 0
-republic_assembly_term_length_1 = {
+LR_republic_term_annual = { # LR 2026-11-25 LI laws (tools/li_laws/build_li_laws.py): Annual Consulship, Roman Republic only
 	law_group_type = republic_assembly_term_length_laws
 	index = 0
+
+	modifier = {
+	}
+
+	can_keep = {
+		NOT = { government_has_flag = government_is_principate } # LR 2026-11-19 Principate
+		gdp_is_assembly_head_trigger = yes
+		custom_tooltip = {
+			text = succession_does_not_use_terms_desc
+			has_realm_law_flag = succession_uses_term_length
+		}
+	}
+
+	can_have = {
+		has_realm_law = republic_type_roman # LR: consuls served one year
+		NOT = { government_has_flag = government_is_principate } # LR 2026-11-19 Principate
+		gdp_is_assembly_head_trigger = yes
+	}
+
+	can_pass = {
+		gdp_can_pass_republic_law_trigger = yes
+	}
+
+	pass_cost = {
+		prestige = total_republic_law_prestige_cost
+	}
+
+	on_pass = {
+		gdp_consume_republic_assembly_preparation_effect = yes
+		gdp_spend_pledged_law_approvers_effect = yes
+		capital_county = { add_popular_opinion = 10 }
+	}
+
+	requires_approve = { gdp_requires_assembly_approval_trigger = yes }
+
+	ai_approval = {
+		if = {
+			limit = { scope:proposer ?= root }
+			value = ai_law_approval_self_proposer_value
+		}
+		else = {
+			value = 0
+			if = {
+				limit = {
+					liege ?= {
+						OR = {
+							has_realm_law = republic_assembly_term_length_2
+							has_realm_law = republic_assembly_term_length_3
+							has_realm_law = republic_assembly_term_length_4
+							has_realm_law = republic_assembly_term_length_5
+							has_realm_law = republic_assembly_term_length_indefinite
+						}
+					}
+				}
+				add = ai_law_approval_decrease_term_length_value
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = law_ai_will_do_republic_assembly_term_length_1_value
+	}
+
+	term_length = {
+		value = {
+			value = law_term_length_1_value
+			multiply = 12
+		}
+	}
+}
+republic_assembly_term_length_1 = {
+	law_group_type = republic_assembly_term_length_laws
+	index = 1
 
 	modifier = {
 	}
@@ -2066,7 +2139,7 @@ republic_assembly_term_length_1 = {
 
 republic_assembly_term_length_2 = {
 	law_group_type = republic_assembly_term_length_laws
-	index = 1
+	index = 2
 
 	can_keep = {
 		NOT = { government_has_flag = government_is_principate } # LR 2026-11-19 Principate
@@ -2147,7 +2220,7 @@ republic_assembly_term_length_2 = {
 
 republic_assembly_term_length_3 = {
 	law_group_type = republic_assembly_term_length_laws
-	index = 2
+	index = 3
 
 	modifier = {
 		character_capital_popular_opinion_add = -5
@@ -2245,7 +2318,7 @@ republic_assembly_term_length_3 = {
 
 republic_assembly_term_length_4 = {
 	law_group_type = republic_assembly_term_length_laws
-	index = 3
+	index = 4
 
 	modifier = {
 		character_capital_popular_opinion_add = -10
@@ -2342,7 +2415,7 @@ republic_assembly_term_length_4 = {
 
 republic_assembly_term_length_5 = {
 	law_group_type = republic_assembly_term_length_laws
-	index = 4
+	index = 5
 
 	modifier = {
 		character_capital_popular_opinion_add = -15
@@ -2436,7 +2509,7 @@ republic_assembly_term_length_5 = {
 
 republic_assembly_term_length_indefinite = {
 	law_group_type = republic_assembly_term_length_laws
-	index = 5
+	index = 6
 
 	should_start_with = { # LR 2026-11-19 Principate
 		government_has_flag = government_is_principate # LR 2026-11-19 Principate

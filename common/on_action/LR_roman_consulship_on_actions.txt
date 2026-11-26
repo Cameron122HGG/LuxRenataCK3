@@ -1,0 +1,37 @@
+﻿# LR 2026-11-25 Roman consulship diarchy (tools/roman_consulship/build_consulship.py)
+LR_consulship_upkeep_on_action = {
+	effect = {
+		LR_consulship_upkeep_effect = yes
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = { LR_consulship_upkeep_on_action }
+}
+
+# a new term: a new co-consul from another great house (scope:new_holder is the realm ruler for the next term)
+LR_consulship_term_on_action = {
+	effect = {
+		scope:new_holder ?= {
+			LR_end_consulship_effect = yes
+			LR_appoint_co_consul_effect = yes
+		}
+	}
+}
+
+on_term_ended = {
+	on_actions = { LR_consulship_term_on_action }
+}
+
+LR_consulship_game_start_on_action = {
+	effect = {
+		every_ruler = {
+			limit = { has_government = roman_republic_government }
+			LR_consulship_upkeep_effect = yes
+		}
+	}
+}
+
+on_game_start_after_lobby = {
+	on_actions = { LR_consulship_game_start_on_action }
+}
