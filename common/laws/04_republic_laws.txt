@@ -34,10 +34,10 @@ republic_type_communal = {
 	flag = uses_republic_type
 	flag = can_change_succession_laws
 
-	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
+	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
 
 	can_keep = {
-		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government }
+		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government }
 		trigger_if = {
 			limit = {
 				gdp_is_assembly_head_trigger = no
@@ -112,10 +112,10 @@ republic_type_civic = {
 	flag = uses_republic_type
 	flag = can_change_succession_laws
 
-	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
+	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
 
 	can_keep = {
-		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government }
+		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government }
 		trigger_if = {
 			limit = {
 				gdp_is_assembly_head_trigger = no
@@ -231,10 +231,10 @@ republic_type_popular = {
 	flag = uses_republic_type
 	flag = can_change_succession_laws
 
-	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
+	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
 
 	can_keep = {
-		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government }
+		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government }
 		trigger_if = {
 			limit = {
 				gdp_is_assembly_head_trigger = no
@@ -422,10 +422,10 @@ republic_type_maritime = {
 	flag = can_change_succession_laws
 	flag = can_change_purpose_for_free
 	
-	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
+	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
 
 	can_keep = {
-		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government }
+		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government }
 		trigger_if = {
 			limit = {
 				gdp_is_assembly_head_trigger = no
@@ -557,10 +557,10 @@ republic_type_noble = {
 	flag = uses_republic_type
 	flag = can_change_succession_laws
 
-	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
+	potential = { NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government } } # LR 2026-11-25 (user): the Roman Republic and the Politeia have only their own administrations
 
 	can_keep = {
-		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government }
+		NOT = { has_government = roman_republic_government } NOT = { has_government = hellenic_republic_government } NOT = { has_government = punic_republic_government } NOT = { has_government = gana_republic_government }
 		trigger_if = {
 			limit = {
 				gdp_is_assembly_head_trigger = no
@@ -1465,6 +1465,888 @@ republic_type_hellenic_koinon = { # LR 2026-11-25 Roman and Hellenic republic ad
 		}
 		trigger_else = {
 			has_government = hellenic_republic_government
+		}
+	}
+	
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_punic_adirim = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 14
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		domain_tax_mult = 0.1
+		urban_tax_mult = 0.1
+		vassal_limit_max = 20
+	}
+
+	flag = uses_republic_type
+	flag = LR_punic_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_adirim
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_adirim
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+	
+	should_start_with = {
+		has_government = punic_republic_government
+	}
+
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_punic_barcid = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 15
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		men_at_arms_limit = 2
+		levy_size = 0.1
+		knight_effectiveness_mult = 0.1
+		vassal_limit_max = 10
+	}
+
+	flag = uses_republic_type
+	flag = LR_punic_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_barcid
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_barcid
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+	
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_punic_kohanim = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 16
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		monthly_piety_gain_mult = 0.15
+		vassal_opinion = 5
+		vassal_limit_max = 10
+	}
+
+	flag = uses_republic_type
+	flag = LR_punic_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_kohanim
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_kohanim
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+	
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_punic_colonial = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 17
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		embarkation_cost_mult = -0.3
+		vassal_tax_mult = 0.05
+		vassal_limit_max = 30
+	}
+
+	flag = uses_republic_type
+	flag = LR_punic_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_colonial
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_punic_colonial
+			}
+		}
+		trigger_else = {
+			has_government = punic_republic_government
+		}
+	}
+	
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_gana_kula = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 18
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		vassal_opinion = 10
+		levy_size = 0.1
+		vassal_limit_max = 20
+	}
+
+	flag = uses_republic_type
+	flag = LR_gana_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_kula
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_kula
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
+		}
+	}
+	
+	should_start_with = {
+		has_government = gana_republic_government
+	}
+
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_gana_sangha = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 19
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		character_capital_popular_opinion_add = 15
+		monthly_learning_lifestyle_xp_gain_mult = 0.1
+		vassal_limit_max = 30
+	}
+
+	flag = uses_republic_type
+	flag = LR_gana_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_sangha
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_sangha
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
+		}
+	}
+	
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_gana_shreni = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 20
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		domain_tax_mult = 0.1
+		urban_tax_mult = 0.1
+		vassal_limit_max = 10
+	}
+
+	flag = uses_republic_type
+	flag = LR_gana_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_shreni
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_shreni
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
+		}
+	}
+	
+	pass_cost = {
+		prestige = {
+			add = {
+				value = @republic_type_prestige_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_prestige_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_prestige_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+		treasury = {
+			add = {
+				value = @republic_type_treasury_cost
+				desc = BASE
+			}
+			if = {
+				limit = { sub_realm_size > 1 }
+				add = {
+					value = @republic_type_realm_size_treasury_cost
+					multiply = sub_realm_size # Per county within the (sub)realm
+					desc = realm_size
+				}
+			}
+			if = {
+				limit = {
+					culture ?= { has_cultural_tradition = tradition_ruling_caste }
+				}
+				subtract = {
+					value = @republic_type_treasury_cost
+					multiply = 0.1
+					desc = culture_has_ruling_caste_desc
+				}
+			}
+		}
+	}
+	
+	on_pass = {
+		# Remove modifiers.
+		remove_law_related_modifiers_effect = yes
+	}
+	
+	requires_approve = { always = no }
+
+	ai_will_do = {
+		value = ai_will_do_republic_type_roman_value
+	}
+}
+
+republic_type_gana_ayudhajivi = { # LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+	law_group_type = republic_type
+	index = 21
+
+	pass_phrase =  republic_type_pass_phrase
+	confirmation_title = republic_type_pass_phrase
+	confirmation_button_text = republic_type_confirmation_button_text
+	
+	modifier = {
+		men_at_arms_limit = 2
+		levy_size = 0.15
+		knight_effectiveness_mult = 0.1
+		vassal_limit_max = 10
+	}
+
+	flag = uses_republic_type
+	flag = LR_gana_republic_type # LR 2026-11-25 Roman and Hellenic republic administrations (tools/politeia/build_republic_admins.py)
+	flag = can_change_succession_laws
+
+	potential = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_ayudhajivi
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
+		}
+	}
+
+	can_keep = {
+		trigger_if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+			}
+			liege ?= {
+				has_realm_law = republic_type_gana_ayudhajivi
+			}
+		}
+		trigger_else = {
+			has_government = gana_republic_government
 		}
 	}
 	

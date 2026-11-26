@@ -1,0 +1,89 @@
+﻿# LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+# Normalizer (LR_normalize_dynastic_government_effect): a republic of Phoenician heritage (Carthage, Tyre, Gades) becomes the Suffetate (government
+# first: its administrations are exclusive to it), then gets its default administration; one that no longer qualifies
+# goes back to the plain republic.
+LR_punic_republic_government_effect = {
+	if = {
+		limit = {
+			has_government = republic_government
+			LR_punic_group_republic_trigger = yes
+		}
+		change_government = punic_republic_government
+		if = {
+			limit = { NOT = { has_realm_law_flag = LR_punic_republic_type } }
+			add_realm_law_skip_effects = republic_type_punic_adirim
+		}
+	}
+	else_if = {
+		limit = {
+			has_government = punic_republic_government
+			LR_punic_group_republic_trigger = no
+			gdp_is_assembly_head_trigger = yes # 2026-11-25: vassal republics follow their liege instead (LR_republic_vassal_follows_liege_effect)
+			NOT = { has_realm_law_flag = LR_punic_republic_type }
+		}
+		change_government = republic_government
+	}
+}
+
+# character scope (the head of the republic): appoint the Co-Suffete
+LR_appoint_co_suffete_effect = {
+	if = {
+		limit = {
+			has_government = punic_republic_government
+			has_realm_law_flag = LR_two_suffetes
+		}
+		save_scope_as = LR_first_suffete
+		if = {
+			limit = { any_vassal = { LR_co_suffete_candidate_trigger = yes } }
+			ordered_vassal = {
+				limit = { LR_co_suffete_candidate_trigger = yes }
+				order_by = gold
+				save_scope_as = LR_group_diarch
+			}
+		}
+		else_if = {
+			limit = { any_courtier = { LR_co_suffete_candidate_trigger = yes } }
+			ordered_courtier = {
+				limit = { LR_co_suffete_candidate_trigger = yes }
+				order_by = gold
+				save_scope_as = LR_group_diarch
+			}
+		}
+		if = {
+			limit = { exists = scope:LR_group_diarch }
+			designate_diarch = scope:LR_group_diarch
+			try_start_diarchy = suffete_diarchy
+			set_diarch = scope:LR_group_diarch
+		}
+	}
+}
+
+LR_end_suffeteship_effect = {
+	if = {
+		limit = { has_diarchy_type = suffete_diarchy }
+		end_diarchy = yes
+	}
+}
+
+LR_suffeteship_upkeep_effect = {
+	if = {
+		limit = {
+			has_government = punic_republic_government
+			has_realm_law_flag = LR_two_suffetes
+			NOT = { exists = diarch }
+		}
+		LR_appoint_co_suffete_effect = yes
+	}
+}
+
+# game start, a day late (after the normalizer): every such republic starts on the two-man law, then the diarch
+LR_punic_diarchy_start_effect = {
+	if = {
+		limit = { has_government = punic_republic_government }
+		if = {
+			limit = { NOT = { has_realm_law = LR_suffetes_two } }
+			add_realm_law_skip_effects = LR_suffetes_two
+		}
+		LR_suffeteship_upkeep_effect = yes
+	}
+}

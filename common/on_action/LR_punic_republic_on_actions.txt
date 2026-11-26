@@ -1,0 +1,43 @@
+﻿# LR 2026-11-25 group republics (tools/group_republics/build_group_republics.py)
+LR_punic_diarchy_upkeep_on_action = {
+	effect = {
+		LR_suffeteship_upkeep_effect = yes
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = { LR_punic_diarchy_upkeep_on_action }
+}
+
+# a new term: a new diarch (scope:new_holder is the realm ruler for the next term)
+LR_punic_diarchy_term_on_action = {
+	effect = {
+		scope:new_holder ?= {
+			LR_end_suffeteship_effect = yes
+			LR_appoint_co_suffete_effect = yes
+		}
+	}
+}
+
+on_term_ended = {
+	on_actions = { LR_punic_diarchy_term_on_action }
+}
+
+LR_punic_diarchy_start_on_action = {
+	effect = {
+		LR_punic_diarchy_start_effect = yes
+	}
+}
+
+LR_punic_diarchy_game_start_on_action = {
+	effect = {
+		every_ruler = {
+			limit = { government_has_flag = government_is_republic }
+			trigger_event = { on_action = LR_punic_diarchy_start_on_action days = 1 }
+		}
+	}
+}
+
+on_game_start_after_lobby = {
+	on_actions = { LR_punic_diarchy_game_start_on_action }
+}

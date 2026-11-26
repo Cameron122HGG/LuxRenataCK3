@@ -18,6 +18,7 @@ LR_hellenic_republic_government_effect = {
 		limit = {
 			has_government = hellenic_republic_government
 			LR_hellenic_group_republic_trigger = no
+			gdp_is_assembly_head_trigger = yes # 2026-11-25: vassal republics follow their liege instead (LR_republic_vassal_follows_liege_effect)
 			NOT = { has_realm_law_flag = LR_hellenic_republic_type }
 		}
 		change_government = republic_government
@@ -50,6 +51,7 @@ LR_appoint_strategos_effect = {
 		}
 		if = {
 			limit = { exists = scope:LR_strategos }
+			designate_diarch = scope:LR_strategos
 			try_start_diarchy = strategos_diarchy
 			set_diarch = scope:LR_strategos
 		}
@@ -71,5 +73,17 @@ LR_strategia_upkeep_effect = {
 			NOT = { exists = diarch }
 		}
 		LR_appoint_strategos_effect = yes
+	}
+}
+
+# game start, a day late (after the normalizer): every Politeia starts on Strategos Autokrator, then the strategos
+LR_strategia_start_effect = {
+	if = {
+		limit = { has_government = hellenic_republic_government }
+		if = {
+			limit = { NOT = { has_realm_law = LR_strategia_autokrator } }
+			add_realm_law_skip_effects = LR_strategia_autokrator
+		}
+		LR_strategia_upkeep_effect = yes
 	}
 }

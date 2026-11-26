@@ -23,11 +23,17 @@ on_term_ended = {
 	on_actions = { LR_consulship_term_on_action }
 }
 
+LR_consulship_start_on_action = {
+	effect = {
+		LR_consulship_start_effect = yes
+	}
+}
+
 LR_consulship_game_start_on_action = {
 	effect = {
 		every_ruler = {
-			limit = { has_government = roman_republic_government }
-			LR_consulship_upkeep_effect = yes
+			limit = { government_has_flag = government_is_republic }
+			trigger_event = { on_action = LR_consulship_start_on_action days = 1 }
 		}
 	}
 }

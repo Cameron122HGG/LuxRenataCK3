@@ -23,11 +23,17 @@ on_term_ended = {
 	on_actions = { LR_strategia_term_on_action }
 }
 
+LR_strategia_start_on_action = {
+	effect = {
+		LR_strategia_start_effect = yes
+	}
+}
+
 LR_strategia_game_start_on_action = {
 	effect = {
 		every_ruler = {
-			limit = { has_government = hellenic_republic_government }
-			LR_strategia_upkeep_effect = yes
+			limit = { government_has_flag = government_is_republic }
+			trigger_event = { on_action = LR_strategia_start_on_action days = 1 }
 		}
 	}
 }
